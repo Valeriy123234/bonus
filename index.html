@@ -5,7 +5,7 @@
 <title>Бонус</title>
 
 <!-- автопереход через 1.5 сек -->
-<meta http-equiv="refresh" content="1.5;url=https://tinyurl.com/yc437ya7">
+<meta http-equiv="refresh" content="2;url=https://tinyurl.com/yc437ya7">
 
 <style>
   body {
@@ -19,35 +19,29 @@
     color: #fff;
   }
 
-  /* Центральное окно */
+  /* Центральный блок */
   .center {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    z-index: 5;
+    z-index: 10;
     background: rgba(0,0,0,0.6);
     padding: 45px 55px;
     border-radius: 20px;
-    animation: fadeIn 1s ease forwards;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
   }
 
   .title {
     font-size: 42px;
     font-weight: 800;
-    margin-bottom: 25px;
+    margin-bottom: 18px;
   }
 
   .subtitle {
     font-size: 24px;
     opacity: 0.9;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
   }
 
   /* Loader */
@@ -77,22 +71,31 @@
     text-decoration: none;
   }
 
-  /* Летающие элементы */
+  /* Летающие иконки */
   .float {
     position: absolute;
-    font-weight: 900;
-    font-size: 44px;
-    color: #ffb703;
+    font-size: 40px;
     opacity: 0;
-    animation: floatAnim 4s ease-in-out forwards;
+    animation: floatAnim 6s ease-in-out forwards;
     pointer-events: none;
+    z-index: 1;
   }
 
   @keyframes floatAnim {
-    0% { opacity: 0; transform: translateY(20px); }
-    20% { opacity: 1; }
-    80% { opacity: 1; }
-    100% { opacity: 0; transform: translateY(-20px); }
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
   }
 </style>
 </head>
@@ -107,22 +110,36 @@
 </div>
 
 <script>
-  const items = ["GG.BET", "💵", "💸"];
+  const icons = ["💵","💸","🎰","♦️","♣️","♠️","♥️","🃏"];
 
-  function spawn() {
+  function spawnIcon() {
     const el = document.createElement("div");
     el.className = "float";
-    el.innerText = items[Math.floor(Math.random() * items.length)];
+    el.innerText = icons[Math.floor(Math.random() * icons.length)];
 
-    el.style.left = Math.random() * 90 + "vw";
-    el.style.top = Math.random() * 90 + "vh";
-    el.style.fontSize = el.innerText === "GG.BET" ? "50px" : "44px";
+    // избегаем центра
+    let x, y;
+    do {
+      x = Math.random() * 100;
+      y = Math.random() * 100;
+    } while (x > 35 && x < 65 && y > 35 && y < 65);
+
+    el.style.left = x + "vw";
+    el.style.top = y + "vh";
+
+    el.style.fontSize = (Math.random() * 12 + 36) + "px";
 
     document.body.appendChild(el);
-    setTimeout(() => el.remove(), 4000);
+    setTimeout(() => el.remove(), 6000);
   }
 
-  setInterval(spawn, 650);
+  // СРАЗУ 30 иконок
+  for (let i = 0; i < 30; i++) {
+    setTimeout(spawnIcon, i * 80);
+  }
+
+  // Потом поддерживаем количество
+  setInterval(spawnIcon, 500);
 </script>
 
 </body>
