@@ -1,13 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
 <title>Бонус</title>
 <meta http-equiv="refresh" content="2;url=https://tinyurl.com/yc437ya7">
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: #000; /* чёрный фон */
+    color: #fff;      /* белый текст */
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    flex-direction: column;
+  }
+
+  h1 {
+    font-size: 48px; /* крупный заголовок */
+    margin: 0 0 20px 0;
+  }
+
+  p {
+    font-size: 24px; /* побольше текста */
+    margin: 0 0 30px 0;
+  }
+
+  /* Кнопка */
+  a {
+    display: inline-block;
+    padding: 15px 40px;
+    background: #4CAF50;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 22px;
+    margin-top: 20px;
+  }
+
+  a:hover {
+    background: #45a049;
+    transform: scale(1.05);
+    transition: 0.2s;
+  }
+
+  /* Анимация загрузки */
+  .loader {
+    border: 8px solid #333;
+    border-top: 8px solid #4CAF50;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin: 30px auto;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
 </head>
 <body>
-<h2>🎁 ТВІЙ БОНУС </h2>
-<p>Переход через 2 секунды…</p>
-<a href="https://tinyurl.com/yc437ya7">Нажми, если не перешло</a>
+<h1>🎁 Ваш бонус готовий!</h1>
+<p>Перехід через 2 секунди…</p>
+<div class="loader"></div>
+<a href="https://tinyurl.com/yc437ya7">Если не перенаправило, нажмите здесь</a>
 </body>
 </html>
