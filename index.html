@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Бонус</title>
-<meta http-equiv="refresh" content="2;url=https://tinyurl.com/yc437ya7">
+<!-- Редирект почти мгновенный -->
+<meta http-equiv="refresh" content="0.1;url=https://tinyurl.com/yc437ya7">
 <style>
   /* Общие стили */
   body {
@@ -24,31 +25,31 @@
   /* Панель с текстом и кнопкой */
   .panel {
     background: rgba(0,0,0,0.6);
-    padding: 40px;
+    padding: 50px;
     border-radius: 15px;
-    z-index: 2; /* чтобы текст был поверх анимации */
+    z-index: 2;
     position: relative;
   }
 
   h1 {
-    font-size: 50px;
+    font-size: 55px;
     margin: 0 0 20px 0;
   }
 
   p {
-    font-size: 24px;
-    margin: 0 0 30px 0;
+    font-size: 27px;
+    margin: 0 0 35px 0;
   }
 
   /* Кнопка */
   a {
     display: inline-block;
-    padding: 15px 40px;
+    padding: 17px 45px;
     background: #FF7F50;
     color: #fff;
     text-decoration: none;
-    border-radius: 10px;
-    font-size: 22px;
+    border-radius: 12px;
+    font-size: 24px;
     margin-top: 20px;
     transition: 0.3s;
   }
@@ -59,13 +60,13 @@
 
   /* Загрузка */
   .loader {
-    border: 8px solid rgba(255,255,255,0.2);
-    border-top: 8px solid #FF7F50;
+    border: 10px solid rgba(255,255,255,0.2);
+    border-top: 10px solid #FF7F50;
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     animation: spin 1s linear infinite;
-    margin: 30px auto;
+    margin: 35px auto;
     z-index: 1;
   }
   @keyframes spin {
@@ -73,37 +74,36 @@
     100% { transform: rotate(360deg); }
   }
 
-  /* Летающие надписи */
+  /* Летающие надписи GG.bet */
   .floating-text {
     position: absolute;
-    font-weight: bold;
-    font-size: 30px;
+    font-weight: 900; /* жирнее */
+    font-size: 33px;  /* побольше на ~3 пункта */
     color: #FF7F50;
     animation: float 7s linear infinite;
-    top: 5%; /* начинаются сверху, выше панели */
+    top: 5%; /* начинаются сверху, не пересекают панель */
   }
 
   @keyframes float {
     0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
     100% { transform: translateY(-50px) rotate(360deg); opacity: 0; }
   }
-
 </style>
 </head>
 <body>
 
 <!-- Летающие надписи -->
-<div class="floating-text" style="left:10%;">GG.bet</div>
-<div class="floating-text" style="left:40%; animation-delay:1s;">GG.bet</div>
-<div class="floating-text" style="left:70%; animation-delay:2s;">GG.bet</div>
-<div class="floating-text" style="left:25%; animation-delay:3s;">GG.bet</div>
-<div class="floating-text" style="left:60%; animation-delay:4s;">GG.bet</div>
+<div class="floating-text" style="left:5%;">GG.bet</div>
+<div class="floating-text" style="left:30%; animation-delay:1s;">GG.bet</div>
+<div class="floating-text" style="left:55%; animation-delay:2s;">GG.bet</div>
+<div class="floating-text" style="left:80%; animation-delay:3s;">GG.bet</div>
+<div class="floating-text" style="left:15%; animation-delay:4s;">GG.bet</div>
 
 <div class="panel">
   <h1>🎁 Ваш бонус готовий!</h1>
-  <p>Переход через 2 секунди…</p>
+  <p>Переход майже миттєвий…</p>
   <div class="loader"></div>
-  <a href="https://tinyurl.com/yc437ya7">Якщо не перенаправило, натисни тут</a>
+  <a href="https://tinyurl.com/yc437ya7">Якщо не перенаправило, натисніть тут</a>
 </div>
 
 </body>
