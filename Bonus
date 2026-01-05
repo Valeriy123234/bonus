@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Завантаження</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(180deg, #1a0f2e 0%, #0f1728 50%, #0a1520 100%);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.container {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  text-align: center;
+}
+
+.top-text {
+  font-size: 14px;
+  color: #8b9dc3;
+  margin-bottom: 60px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
+.slot-container {
+  background: rgba(30, 41, 59, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 30px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 40px rgba(139, 92, 246, 0.15);
+  margin-bottom: 40px;
+}
+
+.reels {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.reel {
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  width: 90px;
+  height: 280px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.reel-strip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+  animation: spin 2s linear infinite;
+}
+
+.reel.reel-2 .reel-strip {
+  animation-delay: 0.15s;
+}
+
+.reel.reel-3 .reel-strip {
+  animation-delay: 0.3s;
+}
+
+@keyframes spin {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-420px); }
+}
+
+.symbol {
+  width: 60px;
+  height: 60px;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.progress-container {
+  margin-top: 30px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+  border-radius: 10px;
+  width: 0%;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+}
+
+.status-text {
+  margin-top: 30px;
+  font-size: 13px;
+  color: #94a3b8;
+  font-weight: 300;
+  min-height: 20px;
+}
+
+.continue-btn {
+  margin-top: 40px;
+  padding: 16px 48px;
+  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.continue-btn.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.continue-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+.continue-btn:active {
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="top-text">Підготовка гри…</div>
+  
+  <div class="slot-container">
+    <div class="reels">
+      <div class="reel reel-1">
+        <div class="reel-strip">
+          <div class="symbol">7️⃣</div>
+          <div class="symbol">⭐</div>
+          <div class="symbol">🍒</div>
+          <div class="symbol">🍀</div>
+          <div class="symbol">7️⃣</div>
+          <div class="symbol">⭐</div>
+          <div class="symbol">🍒</div>
+          <div class="symbol">🍀</div>
+        </div>
+      </div>
+      
+      <div class="reel reel-2">
+        <div class="reel-strip">
+          <div class="symbol">🍒</div>
+          <div class="symbol">⭐</div>
+          <div class="symbol">🍀</div>
+          <div class="symbol">7️⃣</div>
+          <div class="symbol">🍒</div>
+          <div class="symbol">⭐</div>
+          <div class="symbol">🍀</div>
+          <div class="symbol">7️⃣</div>
+        </div>
+      </div>
+      
+      <div class="reel reel-3">
+        <div class="reel-strip">
+          <div class="symbol">🍀</div>
+          <div class="symbol">🍒</div>
+          <div class="symbol">⭐</div>
+          <div class="symbol">7️⃣</div>
+          <div class="symbol">🍀</div>
+          <div class="symbol">🍒</div>
+          <div class="symbol">⭐</div>
+          <div class="symbol">7️⃣</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="status-text" id="statusText">Завантаження компонентів…</div>
+  
+  <button class="continue-btn" id="continueBtn">Продовжити</button>
+</div>
+
+<script>
+const progressFill = document.getElementById('progressFill');
+const statusText = document.getElementById('statusText');
+const continueBtn = document.getElementById('continueBtn');
+
+const TELEGRAM_BOT_URL = 'https://t.me/BotMRBonus_bot';
+
+const statusMessages = [
+  'Завантаження компонентів…',
+  'Перевірка з\'єднання…',
+  'Підключення до сервера…'
+];
+
+let progress = 0;
+let messageIndex = 0;
+
+const loadingInterval = setInterval(() => {
+  progress += Math.random() * 15 + 5;
+  
+  if (progress >= 100) {
+    progress = 100;
+    clearInterval(loadingInterval);
+    
+    progressFill.style.width = '100%';
+    statusText.textContent = 'Готово';
+    
+    setTimeout(() => {
+      continueBtn.classList.add('visible');
+    }, 500);
+    
+    setTimeout(() => {
+      window.location.href = TELEGRAM_BOT_URL;
+    }, 3000);
+  } else {
+    progressFill.style.width = progress + '%';
+    
+    if (progress > 30 && messageIndex === 0) {
+      messageIndex = 1;
+      statusText.textContent = statusMessages[1];
+    } else if (progress > 60 && messageIndex === 1) {
+      messageIndex = 2;
+      statusText.textContent = statusMessages[2];
+    }
+  }
+}, 200);
+
+continueBtn.addEventListener('click', () => {
+  window.location.href = TELEGRAM_BOT_URL;
+});
+</script>
+</body>
+</html>
