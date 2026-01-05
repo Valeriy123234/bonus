@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Бонус</title>
 
-<!-- Редирект через 1.5 сек -->
+<!-- автопереход через 1.5 сек -->
 <meta http-equiv="refresh" content="1.5;url=https://tinyurl.com/yc437ya7">
 
 <style>
@@ -19,6 +19,7 @@
     color: #fff;
   }
 
+  /* Центральное окно */
   .center {
     position: absolute;
     top: 50%;
@@ -26,44 +27,72 @@
     transform: translate(-50%, -50%);
     text-align: center;
     z-index: 5;
+    background: rgba(0,0,0,0.6);
+    padding: 45px 55px;
+    border-radius: 20px;
+    animation: fadeIn 1s ease forwards;
   }
 
-  .center h1 {
-    font-size: 78px;
-    font-weight: 900;
-    margin: 0 0 20px;
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 
-  .center p {
-    font-size: 28px;
+  .title {
+    font-size: 42px;
+    font-weight: 800;
+    margin-bottom: 25px;
+  }
+
+  .subtitle {
+    font-size: 24px;
     opacity: 0.9;
+    margin-bottom: 30px;
   }
 
+  /* Loader */
+  .loader {
+    width: 64px;
+    height: 64px;
+    border: 6px solid rgba(255,255,255,0.2);
+    border-top: 6px solid #ffb703;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 25px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Кнопка */
+  .btn {
+    display: inline-block;
+    padding: 14px 40px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #000;
+    background: #ffb703;
+    border-radius: 14px;
+    text-decoration: none;
+  }
+
+  /* Летающие элементы */
   .float {
     position: absolute;
     font-weight: 900;
-    font-size: 42px;
+    font-size: 44px;
     color: #ffb703;
     opacity: 0;
-    animation: fadeMove 4s ease-in-out forwards;
+    animation: floatAnim 4s ease-in-out forwards;
     pointer-events: none;
   }
 
-  @keyframes fadeMove {
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    20% {
-      opacity: 1;
-    }
-    80% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
+  @keyframes floatAnim {
+    0% { opacity: 0; transform: translateY(20px); }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-20px); }
   }
 </style>
 </head>
@@ -71,8 +100,10 @@
 <body>
 
 <div class="center">
-  <h1>GG.BET</h1>
-  <p>Ваш бонус майже готовий…</p>
+  <div class="title">🎁 Ваш бонус майже готовий 🎰</div>
+  <div class="subtitle">Завантаження…</div>
+  <div class="loader"></div>
+  <a class="btn" href="https://tinyurl.com/yc437ya7">Перейти до бонусу</a>
 </div>
 
 <script>
@@ -85,17 +116,13 @@
 
     el.style.left = Math.random() * 90 + "vw";
     el.style.top = Math.random() * 90 + "vh";
-
-    el.style.fontSize =
-      el.innerText === "GG.BET" ? "48px" : "42px";
+    el.style.fontSize = el.innerText === "GG.BET" ? "50px" : "44px";
 
     document.body.appendChild(el);
-
     setTimeout(() => el.remove(), 4000);
   }
 
-  // Плавное появление, без перегруза
-  setInterval(spawn, 600);
+  setInterval(spawn, 650);
 </script>
 
 </body>
