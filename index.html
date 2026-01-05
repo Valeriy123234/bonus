@@ -5,27 +5,37 @@
 <title>Бонус</title>
 <meta http-equiv="refresh" content="2;url=https://tinyurl.com/yc437ya7">
 <style>
+  /* Общие стили */
   body {
     margin: 0;
     padding: 0;
-    background: #000; /* чёрный фон */
-    color: #fff;      /* белый текст */
     font-family: Arial, sans-serif;
+    height: 100vh;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    background: url('https://i.imgur.com/твойфон.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
     text-align: center;
     flex-direction: column;
   }
 
+  /* Полупрозрачная панель для текста */
+  .panel {
+    background: rgba(0,0,0,0.6);
+    padding: 40px;
+    border-radius: 15px;
+  }
+
   h1 {
-    font-size: 48px; /* крупный заголовок */
+    font-size: 50px;
     margin: 0 0 20px 0;
   }
 
   p {
-    font-size: 24px; /* побольше текста */
+    font-size: 24px;
     margin: 0 0 30px 0;
   }
 
@@ -33,41 +43,62 @@
   a {
     display: inline-block;
     padding: 15px 40px;
-    background: #4CAF50;
+    background: #FF7F50; /* оранжевый */
     color: #fff;
     text-decoration: none;
     border-radius: 10px;
     font-size: 22px;
     margin-top: 20px;
+    transition: 0.3s;
   }
-
   a:hover {
-    background: #45a049;
+    background: #FFA500;
     transform: scale(1.05);
-    transition: 0.2s;
   }
 
-  /* Анимация загрузки */
+  /* Загрузка */
   .loader {
     border: 8px solid #333;
-    border-top: 8px solid #4CAF50;
+    border-top: 8px solid #FF7F50;
     border-radius: 50%;
     width: 60px;
     height: 60px;
     animation: spin 1s linear infinite;
     margin: 30px auto;
   }
-
   @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+
+  /* Летающие надписи */
+  .floating-text {
+    position: absolute;
+    font-weight: bold;
+    font-size: 30px;
+    color: #FF7F50;
+    animation: float 5s linear infinite;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-50px) rotate(360deg); opacity: 0; }
+  }
 </style>
 </head>
 <body>
-<h1>🎁 Ваш бонус готовий!</h1>
-<p>Перехід через 2 секунди…</p>
-<div class="loader"></div>
-<a href="https://tinyurl.com/yc437ya7">Якщо не перенаправило, натисніть тут</a>
+
+<!-- Летающие надписи -->
+<div class="floating-text" style="left:10%;">GG.bet</div>
+<div class="floating-text" style="left:40%; animation-delay:1s;">GG.bet</div>
+<div class="floating-text" style="left:70%; animation-delay:2s;">GG.bet</div>
+
+<div class="panel">
+  <h1>🎁 Ваш бонус готовий!</h1>
+  <p>Перевдресація через 2 секунди…</p>
+  <div class="loader"></div>
+  <a href="https://tinyurl.com/yc437ya7">Якщо не перенаправило, натисни тут</a>
+</div>
+
 </body>
 </html>
