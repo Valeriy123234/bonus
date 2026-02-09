@@ -93,6 +93,36 @@ async def check_button(callback: types.CallbackQuery):
         video_id = "BAACAgIAAxkBAAEg9i5piifCqwOlwZg_ttkV0vkS1RTWegACq40AAkw7UEiOPnRSZxL5pDoE"
         link = "https://твій_pwa_2"
         name = "Betking"
+
+     elif callback.data == "parik24":
+        video_id = "BAACAgIAAxkBAAEg9jxpiih6kYdqlowvRHxXIuHSMYJSYgACso0AAkw7UEggMxOyT44MWjoE"
+        link = "https://твій_pwa_2"
+        name = "Parik24"
+
+     elif callback.data == "beton":
+        video_id = "BAACAgIAAxkBAAEg9j5piikLYQ1mvuDxSSVn54cBDMQ2FQACt40AAkw7UEiKPnialKbd6DoE"
+        link = "https://твій_pwa_2"
+        name = "Beton"
+
+     elif callback.data == "gg":
+        video_id = "BAACAgIAAxkBAAEg9kBpiimz_ugL6IKU3sTgTyLzkk6DfQACvI0AAkw7UEgIdg_MU4wLUjoE"
+        link = "https://твій_pwa_2"
+        name = "GG-BET"
+
+     elif callback.data == "gorilla":
+        video_id = "BAACAgIAAxkBAAEg9kJpiioQ0P0_L_7MLXbjJ4b4yhlSMAACwY0AAkw7UEh_IW_pISZSEzoE"
+        link = "https://твій_pwa_2"
+        name = "Gorilla"
+
+     elif callback.data == "vegas":
+        video_id = "BAACAgIAAxkBAAEg9kZpiiqtNw4sDVfTjr19EfS2h3rIoQACxo0AAkw7UEhGhv2yHGz4PzoE"
+        link = "https://твій_pwa_2"
+        name = "Vegas"
+
+     elif callback.data == "championclub":
+        video_id = "BAACAgIAAxkBAAEg9kxpiitWxTlnOJ3YEopf29xJ8l_3AgACzI0AAkw7UEjYBZJCIRwK1ToE"
+        link = "https://твій_pwa_2"
+        name = "Championclub"
         
     # Спільний текст для всіх
     caption = (
