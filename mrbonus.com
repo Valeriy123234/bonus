@@ -1,0 +1,122 @@
+import logging
+import asyncio
+from aiogram import Bot, Dispatcher, types
+from aiogram.utils import executor
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+
+# 1. НАЛАШТУВАННЯ
+API_TOKEN = '8203507097:AAHrvoAqt11KkF3-I1XS1V6xdzB2RdwgTWo'
+ADMIN_ID = 1634779056 
+VIDEO_FILE_ID = 'BAACAgIAAxkBAAEg9dBpihmaGJlULq1741ecly-VDN7aFQAC7IwAAkw7UEgUZMGnHAbyvjoE'
+
+bot = Bot(token=API_TOKEN)
+dp = Dispatcher(bot)
+users_db = set()
+
+# 2. ПЕРШЕ ПОВІДОМЛЕННЯ (START)
+@dp.message_handler(commands=['start'])
+async def send_welcome(message: types.Message):
+    user_name = message.from_user.first_name
+    users_db.add(message.from_user.id)
+    
+    welcome_text = (
+        f"Привіт, {user_name} ❤️👋\n\n"
+        "🎁 **Бонус 200 грн на Slot City** та ще 10 подарунків прийдуть сюди за 5 секунд.\n\n"
+        "👇 Поки чекаєш, [подай запит](https://t.me/+c33timlTVpYyOGQ6) у наш канал (там бонуси щодня):"
+    )
+    
+    first_kb = InlineKeyboardMarkup(row_width=1)
+    first_kb.add(InlineKeyboardButton("📢 ПОДАТИ ЗАПИТ", url="https://t.me/+c33timlTVpYyOGQ6"))
+    
+    await message.answer(welcome_text, reply_markup=first_kb, parse_mode="Markdown")
+
+    # 3. ЗАРИМКА 5 СЕКУНД ТА ВІДЕО-ОФЕР
+    await asyncio.sleep(5)
+    
+    second_kb = InlineKeyboardMarkup(row_width=2)
+    second_kb.add(
+        InlineKeyboardButton("🎰 SlotCity: 200ГРН", callback_data="slot"),
+        InlineKeyboardButton("🚀 FirstCasino: 1300FS", callback_data="first"),
+        InlineKeyboardButton("💎 777: 777FS", callback_data="777"),
+        InlineKeyboardButton("🔥 TopMatch: 100FS", callback_data="topmatch"),
+        InlineKeyboardButton("🃏 Betking: 200FS", callback_data="betking"),
+        InlineKeyboardButton("🍀 Parik24: 200FS", callback_data="parik24"),
+        InlineKeyboardButton("👑 BETON: 500FS", callback_data="beton"),
+        InlineKeyboardButton("⚡️ GG-BET: 100FS", callback_data="gg"),
+        InlineKeyboardButton("🎯 GORILLA: 300FS", callback_data="gorilla"),
+        InlineKeyboardButton("🌟 VEGAS: 150FS", callback_data="vegas"),
+        InlineKeyboardButton("💰 CHAMPIONCLUB: 1000FS", callback_data="championclub")
+    )
+    
+    await message.answer("📺 **Обери казино, подивись відео та забирай бонус:**", reply_markup=second_kb)
+
+# 4. ОБРОБКА КНОПОК
+@dp.callback_query_handler()
+async def check_button(callback: types.CallbackQuery):
+    name = ""
+    link = ""
+    video_id = ""
+
+    if callback.data == "slot":
+        video_id = "BAACAgIAAxkBAAEg9hJpiiWDnE_Ew7M7ECFzudEEteFGtgACnY0AAkw7UEiaMjbT0_u6rDoE"
+        link = "http://play.mrbonusua.space/bonus2.html"
+        name = "SlotCity"
+    elif callback.data == "first":
+        video_id = "BAACAgIAAxkBAAEg9hhpiiYyP3ISfrh1YYgBJrdBaGNqZwACn40AAkw7UEiYZCT8y8yENToE"
+        link = "https://твій_pwa_2"
+        name = "FirstCasino"
+    elif callback.data == "777":
+        video_id = "BAACAgIAAxkBAAEg9iRpiibKY28-6FbyHcPPdtLnS0jBMAACo40AAkw7UEgPSRCY6I4tejoE"
+        link = "https://твій_pwa_3"
+        name = "777"
+    elif callback.data == "topmatch":
+        video_id = "BAACAgIAAxkBAAEg9ihpiidOtDTjiyXSKa0ZNFGry2s-XgACpo0AAkw7UEj_G7OcLDT4FzoE"
+        link = "https://твій_pwa_4"
+        name = "Topmatch"
+    elif callback.data == "betking":
+        video_id = "BAACAgIAAxkBAAEg9i5piifCqwOlwZg_ttkV0vkS1RTWegACq40AAkw7UEiOPnRSZxL5pDoE"
+        link = "https://твій_pwa_5"
+        name = "Betking"
+    elif callback.data == "parik24":
+        video_id = "BAACAgIAAxkBAAEg9jxpiih6kYdqlowvRHxXIuHSMYJSYgACso0AAkw7UEggMxOyT44MWjoE"
+        link = "https://твій_pwa_6"
+        name = "Parik24"
+    elif callback.data == "beton":
+        video_id = "BAACAgIAAxkBAAEg9j5piikLYQ1mvuDxSSVn54cBDMQ2FQACt40AAkw7UEiKPnialKbd6DoE"
+        link = "https://твій_pwa_7"
+        name = "Beton"
+    elif callback.data == "gg":
+        video_id = "BAACAgIAAxkBAAEg9kBpiimz_ugL6IKU3sTgTyLzkk6DfQACvI0AAkw7UEgIdg_MU4wLUjoE"
+        link = "https://твій_pwa_8"
+        name = "GG-BET"
+    elif callback.data == "gorilla":
+        video_id = "BAACAgIAAxkBAAEg9kJpiioQ0P0_L_7MLXbjJ4b4yhlSMAACwY0AAkw7UEh_IW_pISZSEzoE"
+        link = "https://твій_pwa_9"
+        name = "Gorilla"
+    elif callback.data == "vegas":
+        video_id = "BAACAgIAAxkBAAEg9kZpiiqtNw4sDVfTjr19EfS2h3rIoQACxo0AAkw7UEhGhv2yHGz4PzoE"
+        link = "https://твій_pwa_10"
+        name = "Vegas"
+    elif callback.data == "championclub":
+        video_id = "BAACAgIAAxkBAAEg9kxpiitWxTlnOJ3YEopf29xJ8l_3AgACzI0AAkw7UEjYBZJCIRwK1ToE"
+        link = "https://твій_pwa_11"
+        name = "Championclub"
+
+    caption = (
+        f"➖➖➖➖➖➖➖➖➖➖➖\n"
+        f"⠀ ⠀ ⠀ 🎰 **{name.upper()}** 💰\n"
+        f"➖➖➖➖➖➖➖➖➖➖➖\n\n"
+        f"Твій бонус чекає тут:\n"
+        f"🔥 [ ЗАБРАТИ БОНУС ]({link}) 🔥\n\n"
+        f"👇 Реєструйся, верифікуйся та роби деп від 100 грн!"
+    )
+
+    try:
+        await bot.send_video(callback.from_user.id, video=video_id, caption=caption, parse_mode="Markdown")
+    except Exception as e:
+        await bot.send_message(callback.from_user.id, "Помилка завантаження відео. Бонус:\n" + caption, parse_mode="Markdown")
+    
+    await bot.answer_callback_query(callback.id)
+
+if __name__ == '__main__':
+    executor.start_polling(dp, skip_updates=True)
