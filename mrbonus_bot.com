@@ -40,25 +40,26 @@ async def send_welcome(message: types.Message):
         "⠀ ⠀ ⠀ 🎰 **ГРОШІ НА БАЗІ!** 💰\n"
         "➖➖➖➖➖➖➖➖➖➖➖\n\n"
         "Твій основний бонус чекає тут:\n"
-        "🔥 [ SLOT CITY — 200 ГРН ](https://твій_pwa_лінк_1) 🔥\n\n"
+        "🔥 [ SLOT CITY — 200 ГРН ](http://play.mrbonusua.space/bonus2.html) 🔥\n\n"
         "👇 Нижче ще 10 ТОП-пропозицій.\n"
         "Обери казино, де ще не грав:"
     )
     
-    second_kb = InlineKeyboardMarkup(row_width=1)
-    # ЗАМІНИ ПОСИЛАННЯ НИЖЧЕ НА СВОЇ PWA ЛІНКИ
+        second_kb = InlineKeyboardMarkup(row_width=2) # Ставимо 2 кнопки в ряд
     second_kb.add(
-        InlineKeyboardButton("🚀 Vulcan: +500% до депу", url="https://pwa_2"),
-        InlineKeyboardButton("💎 Vavada: 100 FS", url="https://pwa_3"),
-        InlineKeyboardButton("🔥 Cosmolot: Бонус на старт", url="https://pwa_4"),
-        InlineKeyboardButton("🃏 PokerMatch: VIP пропозиція", url="https://pwa_5"),
-        InlineKeyboardButton("🍀 Favbet: Колесо фортуни", url="https://pwa_6"),
-        InlineKeyboardButton("👑 Pin-Up: Джекпот чекає", url="https://pwa_7"),
-        InlineKeyboardButton("⚡️ 777 Casino: Швидкі виплати", url="https://pwa_8"),
-        InlineKeyboardButton("🎯 Champion: Ретро слоти", url="https://pwa_9"),
-        InlineKeyboardButton("🌟 First Casino: Топ бонус", url="https://pwa_10"),
-        InlineKeyboardButton("💰 SlotoKing: Король бонусів", url="https://pwa_11")
+        InlineKeyboardButton("🎰 SlotCity: 200ГРН", url="лінк_1"),
+        InlineKeyboardButton("🚀 FirstCasino: 1300FS", url="лінк_2"),
+        InlineKeyboardButton("💎 777: 777FS", url="лінк_3"),
+        InlineKeyboardButton("🔥 TopMatch: 100FS", url="лінк_4"),
+        InlineKeyboardButton("🃏 Betking: 200FS", url="лінк_5"),
+        InlineKeyboardButton("🍀 Parik24: 200FS", url="лінк_6"),
+        InlineKeyboardButton("👑 BETON: 500FS", url="лінк_7"),
+        InlineKeyboardButton("⚡️ GG-BET: 100FS", url="лінк_8"),
+        InlineKeyboardButton("🎯 GORILLA: 300FS", url="лінк_9"),
+        InlineKeyboardButton("🌟 VEGAS: 150FS", url="лінк_10"),
+        InlineKeyboardButton("💰 CHAMPIONCLUB: 1000FS", url="лінк_11")
     )
+
     
     await bot.send_video(
         chat_id=message.chat.id,
