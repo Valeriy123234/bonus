@@ -47,44 +47,47 @@ async def send_welcome(message: types.Message):
     
         second_kb = InlineKeyboardMarkup(row_width=2) # Ставимо 2 кнопки в ряд
     second_kb.add(
-        InlineKeyboardButton("🎰 SlotCity: 200ГРН", url="лінк_1"),
-        InlineKeyboardButton("🚀 FirstCasino: 1300FS", url="лінк_2"),
-        InlineKeyboardButton("💎 777: 777FS", url="лінк_3"),
-        InlineKeyboardButton("🔥 TopMatch: 100FS", url="лінк_4"),
-        InlineKeyboardButton("🃏 Betking: 200FS", url="лінк_5"),
-        InlineKeyboardButton("🍀 Parik24: 200FS", url="лінк_6"),
-        InlineKeyboardButton("👑 BETON: 500FS", url="лінк_7"),
-        InlineKeyboardButton("⚡️ GG-BET: 100FS", url="лінк_8"),
-        InlineKeyboardButton("🎯 GORILLA: 300FS", url="лінк_9"),
-        InlineKeyboardButton("🌟 VEGAS: 150FS", url="лінк_10"),
-        InlineKeyboardButton("💰 CHAMPIONCLUB: 1000FS", url="лінк_11")
+        InlineKeyboardButton("🎰 SlotCity: 200ГРН", callback_data="slot"),
+        InlineKeyboardButton("🚀 FirstCasino: 1300FS", callback_data="first"),
+        InlineKeyboardButton("💎 777: 777FS", callback_data="777"),
+        InlineKeyboardButton("🔥 TopMatch: 100FS", callback_data="topmatch""),
+        InlineKeyboardButton("🃏 Betking: 200FS", callback_data="betking""),
+        InlineKeyboardButton("🍀 Parik24: 200FS", callback_data="parik24"),
+        InlineKeyboardButton("👑 BETON: 500FS", callback_data="beton"),
+        InlineKeyboardButton("⚡️ GG-BET: 100FS", callback_data="gg"),
+        InlineKeyboardButton("🎯 GORILLA: 300FS", callback_data="gorilla"),
+        InlineKeyboardButton("🌟 VEGAS: 150FS", callback_data="vegas"),
+        InlineKeyboardButton("💰 CHAMPIONCLUB: 1000FS", callback_data="championclub")
     )
 
     
-    await bot.send_video(
-        chat_id=message.chat.id,
-        video=VIDEO_FILE_ID,
-        caption=caption_text,
-        reply_markup=second_kb,
-        parse_mode="Markdown"
+       await message.answer("📺 **Обери казино, подивись відео та забирай бонус:**", reply_markup=casino_kb)
+
+# 3. ЩО РОБИТИ, КОЛИ НАТИСНУЛИ НА КАЗИНО
+@dp.callback_query_handler()
+async def check_button(callback: types.CallbackQuery):
+    
+    # Якщо натиснули Slot City (мітка "slot")
+    if callback.data == "slot":
+        video_id = "BAACAgIAAxkBAAEg9dBpihmaGJlULq1741ecly-VDN7aFQAC7IwAAkw7UEgUZMGnHAbyvjoE"
+        link = "https://твій_pwa_1"
+        name = "SLOT CITY"
+    
+    # Якщо натиснули Vulcan (мітка "vulc")
+    elif callback.data == "vulc":
+        video_id = "ID_ВІДЕО_ВУЛКАНА"
+        link = "https://твій_pwa_2"
+        name = "VULCAN"
+        
+    # Спільний текст для всіх
+    caption = (
+        f"🎰 **{name}**\n\n"
+        f"1️⃣ Реєструйся\n2️⃣ Депни від 100 грн\n\n"
+        f"🔥 [ ЗАБРАТИ БОНУС ]({link}) 🔥"
     )
 
-# 4. РОЗСИЛКА (ВИКОРИСТОВУЙ КОМАНДУ /send ТЕКСТ)
-@dp.message_handler(commands=['send'])
-async def broadcast(message: types.Message):
-    if message.from_user.id == ADMIN_ID:
-        text = message.get_args()
-        if not text:
-            return await message.answer("⚠️ Напиши текст після команди /send")
-        
-        count = 0
-        for user_id in users_db:
-            try:
-                await bot.send_message(user_id, text)
-                count += 1
-            except:
-                pass
-        await message.answer(f"✅ Розсилка завершена! Отримали: {count} юзерів.")
+    await bot.send_video(callback.from_user.id, video=video_id, caption=caption, parse_mode="Markdown")
+    await bot.answer_callback_query(callback.id) # Прибирає годинничок з кнопки
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
