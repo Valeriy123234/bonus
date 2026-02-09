@@ -67,17 +67,17 @@ async def send_welcome(message: types.Message):
 @dp.callback_query_handler()
 async def check_button(callback: types.CallbackQuery):
     
-    # Якщо натиснули Slot City (мітка "slot")
+    # Якщо натиснули SlotCity (мітка "slot")
     if callback.data == "slot":
-        video_id = "BAACAgIAAxkBAAEg9dBpihmaGJlULq1741ecly-VDN7aFQAC7IwAAkw7UEgUZMGnHAbyvjoE"
+        video_id = "BAACAgIAAxkBAAEg9hJpiiWDnE_Ew7M7ECFzudEEteFGtgACnY0AAkw7UEiaMjbT0_u6rDoE"
         link = "https://твій_pwa_1"
-        name = "SLOT CITY"
+        name = "SlotCity"
     
     # Якщо натиснули Vulcan (мітка "vulc")
-    elif callback.data == "vulc":
-        video_id = "ID_ВІДЕО_ВУЛКАНА"
+    elif callback.data == "first":
+        video_id = "BAACAgIAAxkBAAEg9hhpiiYyP3ISfrh1YYgBJrdBaGNqZwACn40AAkw7UEiYZCT8y8yENToE"
         link = "https://твій_pwa_2"
-        name = "VULCAN"
+        name = "FirstCasino"
         
     # Спільний текст для всіх
     caption = (
