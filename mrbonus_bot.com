@@ -78,6 +78,21 @@ async def check_button(callback: types.CallbackQuery):
         video_id = "BAACAgIAAxkBAAEg9hhpiiYyP3ISfrh1YYgBJrdBaGNqZwACn40AAkw7UEiYZCT8y8yENToE"
         link = "https://твій_pwa_2"
         name = "FirstCasino"
+
+     elif callback.data == "777":
+        video_id = "BAACAgIAAxkBAAEg9iRpiibKY28-6FbyHcPPdtLnS0jBMAACo40AAkw7UEgPSRCY6I4tejoE"
+        link = "https://твій_pwa_2"
+        name = "777"
+
+     elif callback.data == "topmatch":
+        video_id = "BAACAgIAAxkBAAEg9ihpiidOtDTjiyXSKa0ZNFGry2s-XgACpo0AAkw7UEj_G7OcLDT4FzoE"
+        link = "https://твій_pwa_2"
+        name = "Topmatch"
+
+     elif callback.data == "betking":
+        video_id = "BAACAgIAAxkBAAEg9i5piifCqwOlwZg_ttkV0vkS1RTWegACq40AAkw7UEiOPnRSZxL5pDoE"
+        link = "https://твій_pwa_2"
+        name = "Betking"
         
     # Спільний текст для всіх
     caption = (
