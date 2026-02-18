@@ -13,41 +13,46 @@
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; color: #fff; font-family: 'Montserrat', sans-serif; overflow: hidden; }
         
         /* ПРЕЛОАДЕР */
-        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
-        .l-cont { text-align: center; width: 100%; }
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: 1.2s ease-in-out; }
+        .l-cont { text-align: center; width: 85%; max-width: 400px; }
         
         .l-logo { 
-            width: 160px; height: 160px; margin: 0 auto 30px; 
+            width: 180px; height: 180px; margin: 0 auto 40px; 
             background: var(--img) center/cover no-repeat; 
-            border-radius: 40px; box-shadow: 0 0 40px rgba(191,149,63,0.2);
-            animation: breathe 3s infinite ease-in-out;
+            border-radius: 35px; box-shadow: 0 0 50px rgba(191,149,63,0.3);
+            animation: pulseShield 3s infinite ease-in-out;
         }
 
-        .l-perc {
-            font-family: 'Cinzel', serif; font-size: 42px; 
-            background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            letter-spacing: 5px; font-weight: 700; filter: drop-shadow(0 0 10px rgba(252, 246, 186, 0.5));
+        /* ПОТОВЩЕНА ЛІНІЯ ЗАВАНТАЖЕННЯ З ЦИФРАМИ */
+        .l-bar-wrapper { position: relative; width: 100%; height: 35px; background: rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden; border: 1px solid rgba(191,149,63,0.2); }
+        #l-fill { position: absolute; top: 0; left: 0; width: 0%; height: 100%; background: var(--gold); transition: width 0.1s linear; }
+        .l-perc { 
+            position: absolute; width: 100%; top: 0; left: 0; line-height: 35px; 
+            font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 16px; 
+            color: #fff; text-shadow: 0 0 5px #000; z-index: 2; text-align: center;
         }
 
-        /* ГОЛОВНИЙ ФОН - ЗОЛОТИЙ ТУМАН */
-        canvas { position: fixed; top: 0; left: 0; z-index: 1; opacity: 0.6; }
+        /* ФОН - ЗОЛОТІ ПЕЛЮСТКИ */
+        canvas { position: fixed; top: 0; left: 0; z-index: 1; }
 
-        .main { opacity: 0; display: flex; flex-direction: column; align-items: center; padding: 60px 20px; min-height: 100vh; transition: 2.5s ease; z-index: 2; position: relative; }
-        .s-logo { width: 70px; height: 70px; background: var(--img) center/cover no-repeat; border-radius: 15px; margin-bottom: 20px; border: 1px solid rgba(191,149,63,0.3); }
-        h1 { font-family: 'Cinzel', serif; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 24px; letter-spacing: 8px; margin: 0; }
+        .main { opacity: 0; display: flex; flex-direction: column; align-items: center; padding: 60px 20px; min-height: 100vh; transition: 2s; z-index: 2; position: relative; }
+        .s-logo { width: 80px; height: 80px; background: var(--img) center/cover no-repeat; border-radius: 15px; margin-bottom: 25px; border: 1px solid rgba(191,149,63,0.4); }
+        h1 { font-family: 'Cinzel', serif; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 28px; letter-spacing: 6px; }
         
-        .btns { width: 100%; max-width: 320px; margin-top: 50px; }
-        .btn { display: block; background: rgba(255,255,255,0.02); backdrop-filter: blur(20px); border: 1px solid rgba(191,149,63,0.2); color: #fcf6ba; text-decoration: none; padding: 22px; margin-bottom: 15px; border-radius: 10px; text-align: center; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 3px; transition: 0.5s; }
-        .btn:active { background: rgba(191, 149, 63, 0.1); border-color: #fcf6ba; }
+        .btns { width: 100%; max-width: 340px; margin-top: 40px; }
+        .btn { display: block; background: rgba(255,255,255,0.03); backdrop-filter: blur(15px); border: 1px solid rgba(191,149,63,0.3); color: #fcf6ba; text-decoration: none; padding: 20px; margin-bottom: 15px; border-radius: 12px; text-align: center; font-weight: 700; text-transform: uppercase; font-size: 13px; letter-spacing: 2px; }
 
-        @keyframes breathe { 0%, 100% { transform: scale(1); filter: brightness(0.8); } 50% { transform: scale(1.05); filter: brightness(1.2); } }
+        @keyframes pulseShield { 0%, 100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.04); filter: brightness(1.2); } }
     </style>
 </head>
 <body>
     <div id="loader">
         <div class="l-cont">
             <div class="l-logo"></div>
-            <div class="l-perc" id="pc">0%</div>
+            <div class="l-bar-wrapper">
+                <div id="l-fill"></div>
+                <div class="l-perc" id="pc">0%</div>
+            </div>
         </div>
     </div>
     <canvas id="c"></canvas>
@@ -55,14 +60,15 @@
         <div class="s-logo"></div>
         <h1>MR. BONUS VIP</h1>
         <div class="btns">
-            <a href="#" class="btn">🚀 ENTER THE HUB</a>
-            <a href="#" class="btn">💎 VIP OFFERS</a>
+            <a href="#" class="btn">🎰 ГРАТИ ЗАРАЗ</a>
+            <a href="#" class="btn">💎 VIP БОНУСИ</a>
         </div>
     </div>
     <script>
-        // ЛОГІКА ЦИФР 0-100%
+        // ЛОГІКА ЗАВАНТАЖЕННЯ
         let p = 0;
         const pc = document.getElementById('pc');
+        const fill = document.getElementById('l-fill');
         const iv = setInterval(() => {
             p += 1;
             if (p >= 100) {
@@ -70,34 +76,43 @@
                 setTimeout(() => {
                     document.getElementById('loader').style.opacity = '0';
                     document.getElementById('m').style.opacity = '1';
-                    setTimeout(() => document.getElementById('loader').style.display = 'none', 1500);
-                }, 600);
+                    setTimeout(() => document.getElementById('loader').style.display = 'none', 1200);
+                }, 500);
             }
             pc.innerText = p + '%';
-            pc.style.opacity = 0.5 + (p / 200); // Проявлення
-        }, 30);
+            fill.style.width = p + '%';
+        }, 35);
 
-        // ЗОЛОТИЙ ТУМАН (Dust/Mist Effect)
+        // ЗОЛОТІ ПЕЛЮСТКИ (Gold Flakes)
         const cv = document.getElementById('c'); const cx = cv.getContext('2d');
-        let dots = [];
+        let flakes = [];
         function rs() { cv.width = window.innerWidth; cv.height = window.innerHeight; }
         window.addEventListener('resize', rs); rs();
-        class Dot {
+        class Flake {
             constructor() { this.init(); }
             init() {
                 this.x = Math.random() * cv.width; this.y = Math.random() * cv.height;
-                this.vx = (Math.random() - 0.5) * 0.5; this.vy = (Math.random() - 0.5) * 0.5;
-                this.s = Math.random() * 1.5; this.o = Math.random() * 0.5;
+                this.vx = (Math.random() - 0.5) * 0.3; this.vy = Math.random() * 0.5 + 0.2;
+                this.s = Math.random() * 5 + 2; // Більший розмір
+                this.o = Math.random() * 0.4 + 0.1;
+                this.r = Math.random() * 360;
             }
             u() {
-                this.x += this.vx; this.y += this.vy;
-                if (this.x < 0 || this.x > cv.width) this.vx *= -1;
-                if (this.y < 0 || this.y > cv.height) this.vy *= -1;
+                this.x += this.vx; this.y += this.vy; this.r += 0.5;
+                if (this.y > cv.height) this.y = -10;
+                if (this.x > cv.width || this.x < 0) this.vx *= -1;
             }
-            d() { cx.fillStyle = `rgba(191, 149, 63, ${this.o})`; cx.beginPath(); cx.arc(this.x, this.y, this.s, 0, Math.PI*2); cx.fill(); }
+            d() {
+                cx.save(); cx.translate(this.x, this.y); cx.rotate(this.r * Math.PI / 180);
+                cx.fillStyle = `rgba(191, 149, 63, ${this.o})`;
+                cx.beginPath();
+                // Малюємо "пелюстку" замість точки
+                cx.ellipse(0, 0, this.s, this.s/2, 0, 0, Math.PI*2);
+                cx.fill(); cx.restore();
+            }
         }
-        for(let i=0; i<150; i++) dots.push(new Dot());
-        function an() { cx.clearRect(0,0,cv.width,cv.height); dots.forEach(d=>{d.u();d.d();}); requestAnimationFrame(an); }
+        for(let i=0; i<60; i++) flakes.push(new Flake());
+        function an() { cx.clearRect(0,0,cv.width,cv.height); flakes.forEach(f=>{f.u();f.d();}); requestAnimationFrame(an); }
         an();
     </script>
 </body>
