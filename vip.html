@@ -1,1 +1,170 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MrBonus VIP Access</title>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --gold: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            --dark-bg: #000000;
+        }
 
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background-color: var(--dark-bg);
+            color: white; font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+        }
+
+        /* ПРЕЛОАДЕР НА ВЕСЬ ЕКРАН */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 10000;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.8s ease-in-out;
+        }
+        .loader-content { text-align: center; width: 100%; }
+        
+        /* ЛОГОТИП НА ПОЛОВИНУ ЕКРАНА */
+        .loader-logo {
+            width: 60vw; max-width: 250px; height: 60vw; max-height: 250px;
+            margin: 0 auto 40px;
+            background: url('vip.png') center/cover no-repeat;
+            border-radius: 30px;
+            box-shadow: 0 0 50px rgba(191, 149, 63, 0.3);
+            animation: pulse 2s infinite ease-in-out;
+        }
+        
+        .loader-text {
+            font-family: 'Cinzel', serif; color: #fcf6ba;
+            font-size: 18px; letter-spacing: 5px; margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        
+        .loader-bar-bg { 
+            width: 70%; max-width: 300px; height: 3px; 
+            background: rgba(255,255,255,0.05); 
+            margin: 0 auto; border-radius: 5px; 
+        }
+        #loader-bar-fill { 
+            width: 0%; height: 100%; background: var(--gold); 
+            box-shadow: 0 0 15px #fcf6ba; border-radius: 5px;
+        }
+
+        /* ОСНОВНИЙ КОНТЕНТ (ЗОЛОТИЙ ПИЛ) */
+        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; }
+        .main-container {
+            display: flex; flex-direction: column; align-items: center;
+            padding: 60px 20px; min-height: 100vh; opacity: 0;
+            transition: opacity 1s ease-in;
+        }
+        
+        .shield-small {
+            width: 80px; height: 80px;
+            background: url('vip.png') center/cover no-repeat;
+            border-radius: 15px; margin-bottom: 20px;
+            border: 1px solid rgba(191, 149, 63, 0.4);
+        }
+        
+        h1 {
+            font-family: 'Cinzel', serif; background: var(--gold);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-size: 28px; letter-spacing: 6px; text-align: center; margin: 10px 0;
+        }
+
+        .btn-list { width: 100%; max-width: 340px; margin-top: 30px; }
+        .casino-btn {
+            display: block; background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(15px); border: 1px solid rgba(191, 149, 63, 0.2);
+            color: #fcf6ba; text-decoration: none; padding: 20px; margin-bottom: 15px;
+            border-radius: 15px; text-align: center; font-weight: 700;
+            text-transform: uppercase; transition: 0.3s;
+        }
+        .casino-btn:active { transform: scale(0.95); background: rgba(191,149,63,0.1); }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="loader">
+    <div class="loader-content">
+        <div class="loader-logo"></div>
+        <div class="loader-text"><span id="percent">0</span>%</div>
+        <div class="loader-bar-bg"><div id="loader-bar-fill"></div></div>
+    </div>
+</div>
+
+<canvas id="bg-canvas"></canvas>
+
+<div class="main-container" id="main-content">
+    <div class="shield-small"></div>
+    <h1>MR. BONUS VIP</h1>
+    <div class="btn-list">
+        <!-- Твої 11 казино через GitHub редиректи -->
+        <a href="https://valeriy123234.github.io" class="casino-btn">🎰 VULKAN • 500% BONUS</a>
+        <a href="https://valeriy123234.github.io" class="casino-btn">🔥 PIN-UP • 250 FS</a>
+        <!-- Додай сюди решту посилань -->
+    </div>
+</div>
+
+<script>
+    // ЛОГІКА ПРЕЛОАДЕРА (Рівно 3 секунди)
+    let width = 0;
+    const duration = 3000; // 3 секунди
+    const intervalTime = 30; // оновлення кожні 30мс
+    const step = 100 / (duration / intervalTime);
+
+    const loaderInterval = setInterval(() => {
+        width += step;
+        if (width >= 100) {
+            width = 100;
+            clearInterval(loaderInterval);
+            setTimeout(() => {
+                document.getElementById('loader').style.opacity = '0';
+                document.getElementById('main-content').style.opacity = '1';
+                setTimeout(() => { 
+                    document.getElementById('loader').style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }, 800);
+            }, 300);
+        }
+        document.getElementById('percent').innerText = Math.floor(width);
+        document.getElementById('loader-bar-fill').style.width = width + '%';
+    }, intervalTime);
+
+    // ЗОЛОТІ ЧАСТКИ НА ФОНІ
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize); resize();
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.speed = Math.random() * 0.7 + 0.2;
+            this.opacity = Math.random() * 0.5;
+        }
+        update() { this.y += this.speed; if (this.y > canvas.height) this.y = -10; }
+        draw() {
+            ctx.fillStyle = `rgba(191, 149, 63, ${this.opacity})`;
+            ctx.beginPath(); ctx.arc(this.x, this.y, 1.2, 0, Math.PI * 2); ctx.fill();
+        }
+    }
+    for (let i = 0; i < 70; i++) particles.push(new Particle());
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animate);
+    }
+    animate();
+</script>
+
+</body>
+</html>
