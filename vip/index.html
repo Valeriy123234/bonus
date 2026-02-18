@@ -53,98 +53,75 @@
        /* КОНТЕЙНЕР ЛОАДЕРА */
         /* LOADER - ГЛИБОКИЙ ЕФЕКТ ТЕМРЯВИ */
        /* LOADER - ЕФЕКТ ПЕКЕЛЬНОГО АЗАРТУ */
+        /* ULTRA-LUXURY LOADER (BLACK & GOLD ONLY) */
     #loader { 
         position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-        background: radial-gradient(circle at center, #200000 0%, #000000 100%); 
+        background: #000; /* Глибокий чорний без градієнтів */
         z-index: 10000; display: flex; justify-content: center; align-items: center; 
-        transition: 1.2s cubic-bezier(0.8, 0, 0.2, 1); 
+        transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1); 
     }
 
-    .l-cont { text-align: center; width: 90%; max-width: 500px; position: relative; }
+    .l-cont { text-align: center; width: 100%; max-width: 350px; }
 
-    /* ЛОГОТИП - РОЗПЕЧЕНЕ СКЛО */
+    /* ЛОГОТИП - ЕФЕКТ МАСИВНОГО ХРУСТАЛЮ */
     .l-logo { 
-        width: 190px; height: 190px; margin: 0 auto 50px; 
+        width: 180px; height: 180px; margin: 0 auto 70px; 
         background: var(--img) center/cover no-repeat; 
         border-radius: 40px; position: relative;
-        border: 2.5px solid #bf953f;
-        box-shadow: 0 0 50px rgba(255, 60, 0, 0.4), inset 0 0 30px rgba(255,255,255,0.1);
-        animation: pulseHeat 2s ease-in-out infinite;
+        border: 1px solid rgba(191, 149, 63, 0.4);
+        /* Багатошаровий об'єм: зовнішня тінь + внутрішнє заломлення */
+        box-shadow: 
+            0 40px 100px rgba(0,0,0,1), 
+            inset 0 0 40px rgba(255,255,255,0.05),
+            inset 0 2px 15px rgba(252, 246, 186, 0.3);
+        filter: contrast(1.1) brightness(0.95);
     }
 
-    /* СКЛЯНИЙ КОТЕЛ (РЕЗЕРВУАР) */
+    /* Ефект скляної лінзи поверх лого */
+    .l-logo::before {
+        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 45%, rgba(255,255,255,0.03) 50%, transparent 100%);
+        border-radius: 40px; pointer-events: none;
+    }
+
+    /* ЮВЕЛІРНА ЛІНІЯ (PRECISION GOLD THREAD) */
     .l-bar-wrapper { 
-        position: relative; width: 300px; height: 50px; 
-        background: rgba(0, 0, 0, 0.6); 
-        border-radius: 15px; margin: 0 auto;
-        border: 2px solid rgba(191, 149, 63, 0.6);
-        box-shadow: inset 0 0 25px #000, 0 0 15px rgba(255, 60, 0, 0.2);
-        overflow: hidden;
+        position: relative; width: 240px; height: 2px; /* Ультра-тонка лінія */
+        background: rgba(255, 255, 255, 0.05); 
+        border-radius: 4px; margin: 0 auto;
+        overflow: visible;
     }
 
-    /* КИПЛЯЧЕ ЗОЛОТО */
+    /* ПЛАВНЕ ЗАПОВНЕННЯ МЕТАЛОМ */
     #l-fill { 
-        position: absolute; bottom: 0; left: 0; height: 100%; 
-        background: linear-gradient(90deg, #aa771c, #fcf6ba, #ff3c00, #fcf6ba);
-        background-size: 300% 100%;
-        transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        animation: boiling 1.5s linear infinite;
-        display: flex; justify-content: center; align-items: center;
+        position: absolute; top: 0; left: 0; height: 100%; 
+        background: #bf953f; /* Солідне матове золото */
+        box-shadow: 0 0 15px #bf953f, 0 0 30px rgba(191,149,63,0.4);
+        transition: width 0.1s linear; /* Максимальна плавність */
     }
 
-    /* ІКОНКИ, ЩО ВИРИНАЮТЬ (🎰 💎 🔥) */
-    .l-icons {
-        position: absolute; width: 100%; height: 100%;
-        display: flex; justify-content: space-around; align-items: center;
-        font-size: 22px; pointer-events: none;
-    }
-    .l-icons span {
-        animation: iconsFloat 1.2s infinite ease-in-out;
-        filter: drop-shadow(0 0 5px #fff);
-        opacity: 0;
-    }
-    .l-icons span:nth-child(2) { animation-delay: 0.3s; }
-    .l-icons span:nth-child(3) { animation-delay: 0.6s; }
-
-    /* ПАРА ТА БУРЛІННЯ ЗВЕРХУ */
+    /* Ведуча іскра (Diamond Point) */
     #l-fill::after {
-        content: "";
-        position: absolute;
-        top: -15px; left: 0; width: 200%; height: 30px;
-        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org" viewBox="0 0 1000 100"><path fill="%23ff3c00" d="M0 50c100-80 200 80 300 0s200-80 300 0 200 80 300 0v50H0z"/></svg>');
-        background-size: 50% 100%;
-        animation: waveStorm 0.6s linear infinite;
-        filter: blur(1px) drop-shadow(0 0 8px #ff3c00);
+        content: ''; position: absolute; right: 0; top: 50%;
+        width: 6px; height: 6px; background: #fff;
+        border-radius: 50%; transform: translate(50%, -50%);
+        box-shadow: 0 0 20px #fff, 0 0 40px #fcf6ba;
+        animation: sparkPulse 2s infinite ease-in-out;
     }
 
-    /* ВІДСОТКИ */
+    /* ЦИФРИ - ТИПОГРАФІКА ROLLS-ROYCE */
     .l-perc { 
-        margin-top: 25px; font-family: 'Cinzel', serif; 
-        font-weight: 900; font-size: 32px; 
-        color: #fcf6ba; letter-spacing: 5px;
-        text-shadow: 0 0 15px rgba(191,149,63,0.8);
+        margin-top: 35px; font-family: 'Cinzel', serif; 
+        font-weight: 400; font-size: 13px; 
+        color: rgba(191, 149, 63, 0.7); letter-spacing: 12px; 
+        text-transform: uppercase;
     }
 
-    canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; opacity: 0.7; }
+    @keyframes sparkPulse {
+        0%, 100% { transform: translate(50%, -50%) scale(1); opacity: 0.7; }
+        50% { transform: translate(50%, -50%) scale(1.4); opacity: 1; }
+    }
 
-    /* АНІМАЦІЇ */
-    @keyframes iconsFloat {
-        0% { transform: translateY(30px) scale(0.5); opacity: 0; }
-        50% { opacity: 1; transform: translateY(0) scale(1.2); }
-        100% { transform: translateY(-30px) scale(0.5); opacity: 0; }
-    }
-    @keyframes boiling {
-        0% { background-position: 0% 50%; }
-        100% { background-position: 100% 50%; }
-    }
-    @keyframes waveStorm {
-        from { transform: translateX(0); }
-        to { transform: translateX(-50%); }
-    }
-    @keyframes pulseHeat {
-        0%, 100% { transform: scale(1); filter: brightness(1); }
-        50% { transform: scale(1.05); filter: brightness(1.3); box-shadow: 0 0 60px rgba(255, 60, 0, 0.6); }
-    }
 
 
 
