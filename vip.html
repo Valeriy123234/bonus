@@ -9,6 +9,8 @@
         :root {
             --gold: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
             --dark-bg: #000000;
+            /* ТВОЯ НАЗВА ФАЙЛУ НИЖЧЕ */
+            --logo-url: url('8C816B9D-90C0-4CD4-AA80-242F7BA3F77E.png');
         }
 
         body, html {
@@ -18,7 +20,7 @@
             overflow: hidden;
         }
 
-        /* ПРЕЛОАДЕР НА ВЕСЬ ЕКРАН */
+        /* ПРЕЛОАДЕР */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 10000;
@@ -27,11 +29,10 @@
         }
         .loader-content { text-align: center; width: 100%; }
         
-        /* ЛОГОТИП НА ПОЛОВИНУ ЕКРАНА */
         .loader-logo {
             width: 60vw; max-width: 250px; height: 60vw; max-height: 250px;
             margin: 0 auto 40px;
-            background: url('vip.png') center/cover no-repeat;
+            background: var(--logo-url) center/cover no-repeat;
             border-radius: 30px;
             box-shadow: 0 0 50px rgba(191, 149, 63, 0.3);
             animation: pulse 2s infinite ease-in-out;
@@ -39,8 +40,7 @@
         
         .loader-text {
             font-family: 'Cinzel', serif; color: #fcf6ba;
-            font-size: 18px; letter-spacing: 5px; margin-bottom: 20px;
-            text-transform: uppercase;
+            font-size: 22px; letter-spacing: 5px; margin-bottom: 20px;
         }
         
         .loader-bar-bg { 
@@ -53,7 +53,7 @@
             box-shadow: 0 0 15px #fcf6ba; border-radius: 5px;
         }
 
-        /* ОСНОВНИЙ КОНТЕНТ (ЗОЛОТИЙ ПИЛ) */
+        /* КОНТЕНТ */
         #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; }
         .main-container {
             display: flex; flex-direction: column; align-items: center;
@@ -63,7 +63,7 @@
         
         .shield-small {
             width: 80px; height: 80px;
-            background: url('vip.png') center/cover no-repeat;
+            background: var(--logo-url) center/cover no-repeat;
             border-radius: 15px; margin-bottom: 20px;
             border: 1px solid rgba(191, 149, 63, 0.4);
         }
@@ -82,7 +82,6 @@
             border-radius: 15px; text-align: center; font-weight: 700;
             text-transform: uppercase; transition: 0.3s;
         }
-        .casino-btn:active { transform: scale(0.95); background: rgba(191,149,63,0.1); }
 
         @keyframes pulse {
             0%, 100% { transform: scale(1); opacity: 0.8; }
@@ -106,39 +105,29 @@
     <div class="shield-small"></div>
     <h1>MR. BONUS VIP</h1>
     <div class="btn-list">
-        <!-- Твої 11 казино через GitHub редиректи -->
-        <a href="https://valeriy123234.github.io" class="casino-btn">🎰 VULKAN • 500% BONUS</a>
-        <a href="https://valeriy123234.github.io" class="casino-btn">🔥 PIN-UP • 250 FS</a>
-        <!-- Додай сюди решту посилань -->
+        <a href="#" class="casino-btn">🎰 VULKAN • 500% BONUS</a>
+        <a href="#" class="casino-btn">🔥 PIN-UP • 250 FS</a>
+        <!-- Додай свої 11 посилань тут -->
     </div>
 </div>
 
 <script>
-    // ЛОГІКА ПРЕЛОАДЕРА (Рівно 3 секунди)
     let width = 0;
-    const duration = 3000; // 3 секунди
-    const intervalTime = 30; // оновлення кожні 30мс
-    const step = 100 / (duration / intervalTime);
-
     const loaderInterval = setInterval(() => {
-        width += step;
+        width += 1;
         if (width >= 100) {
             width = 100;
             clearInterval(loaderInterval);
             setTimeout(() => {
                 document.getElementById('loader').style.opacity = '0';
                 document.getElementById('main-content').style.opacity = '1';
-                setTimeout(() => { 
-                    document.getElementById('loader').style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                }, 800);
-            }, 300);
+                setTimeout(() => { document.getElementById('loader').style.display = 'none'; }, 800);
+            }, 400);
         }
-        document.getElementById('percent').innerText = Math.floor(width);
+        document.getElementById('percent').innerText = width;
         document.getElementById('loader-bar-fill').style.width = width + '%';
-    }, intervalTime);
+    }, 30); // Рівно 3 секунди на завантаження
 
-    // ЗОЛОТІ ЧАСТКИ НА ФОНІ
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
@@ -148,7 +137,7 @@
         constructor() {
             this.x = Math.random() * canvas.width;
             this.y = Math.random() * canvas.height;
-            this.speed = Math.random() * 0.7 + 0.2;
+            this.speed = Math.random() * 0.6 + 0.2;
             this.opacity = Math.random() * 0.5;
         }
         update() { this.y += this.speed; if (this.y > canvas.height) this.y = -10; }
