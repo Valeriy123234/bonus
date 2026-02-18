@@ -3,68 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>MRBONUS-VIP | ELITE ACCESS</title>
+    <title>MRBONUS-VIP | ELITE ACCESS 2026</title>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
         :root {
             --gold: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
             --img: url('./8C816B9D-90C0-4CD4-AA80-242F7BA3F77E.png');
         }
+        
         * { box-sizing: border-box; margin: 0; padding: 0; background-color: transparent; }
         html, body { background-color: #000 !important; color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; min-height: 100vh; }
 
         /* LIVE COUNTER */
         .live-counter { 
-            position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.85); 
-            border: 1px solid #bf953f; padding: 8px 15px; border-radius: 12px; 
-            font-size: 10px; z-index: 1000; font-weight: 700; color: #fcf6ba; 
-            backdrop-filter: blur(10px); box-shadow: 0 0 15px rgba(191,149,63,0.3); min-width: 120px; 
+            position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.9); 
+            border: 2.5px solid #bf953f; padding: 8px 15px; border-radius: 12px; 
+            font-size: 10px; z-index: 1000; font-weight: 900; color: #fcf6ba; 
+            backdrop-filter: blur(10px); box-shadow: 0 0 20px rgba(191,149,63,0.4); min-width: 135px; 
         }
         .live-counter span { color: #fff; display: block; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
 
-        /* LOADER (LOGO x2) */
+        /* LOADER */
         #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: 1.2s cubic-bezier(0.65, 0, 0.35, 1); }
         .l-cont { text-align: center; width: 90%; max-width: 500px; }
         .l-logo { 
             width: 220px; height: 220px; margin: 0 auto 50px; background: var(--img) center/cover no-repeat; 
-            border-radius: 45px; box-shadow: 0 0 60px rgba(191,149,63,0.6); 
-            animation: pulseBig 3s ease-in-out infinite; border: 2px solid rgba(191,149,63,0.4); 
+            border-radius: 45px; box-shadow: 0 0 70px rgba(191,149,63,0.7); 
+            animation: pulseBig 3s ease-in-out infinite; border: 2.5px solid rgba(191,149,63,0.5); 
         }
-        .l-bar-wrapper { position: relative; width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; border: 1px solid rgba(191,149,63,0.2); }
+        .l-bar-wrapper { position: relative; width: 100%; height: 8px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; border: 1.5px solid rgba(191,149,63,0.3); }
         #l-fill { position: absolute; top: 0; left: 0; width: 0%; height: 100%; background: var(--gold); }
-        .l-perc { margin-top: 20px; font-weight: 900; font-size: 16px; color: #fcf6ba; letter-spacing: 4px; }
+        .l-perc { margin-top: 20px; font-weight: 900; font-size: 18px; color: #fcf6ba; letter-spacing: 4px; }
 
         canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; opacity: 0.9; }
 
         /* MAIN CONTENT */
-        .main { opacity: 0; display: flex; flex-direction: column; align-items: center; padding: 80px 20px 50px; min-height: 100vh; transition: 1s ease-out; z-index: 2; position: relative; }
-        .s-logo { width: 90px; height: 90px; background: var(--img) center/cover no-repeat; border-radius: 22px; margin-bottom: 15px; border: 1px solid rgba(191,149,63,0.5); box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
-        .brand-name { font-family: 'Cinzel', serif; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 28px; letter-spacing: 6px; font-weight: 700; margin-bottom: 10px; }
-        .live-win { font-size: 13px; color: #00ff95; margin-bottom: 40px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; height: 15px; text-shadow: 0 0 12px rgba(0,255,149,0.5); }
+        .main { opacity: 0; display: flex; flex-direction: column; align-items: center; padding: 80px 15px 60px; min-height: 100vh; transition: 1.5s ease-out; z-index: 2; position: relative; }
+        .s-logo { width: 95px; height: 95px; background: var(--img) center/cover no-repeat; border-radius: 22px; margin-bottom: 15px; border: 2.5px solid rgba(191,149,63,0.6); box-shadow: 0 10px 30px rgba(0,0,0,0.9); }
+        .brand-name { font-family: 'Cinzel', serif; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 30px; letter-spacing: 5px; font-weight: 700; margin-bottom: 10px; text-align: center; }
+        .live-win { font-size: 13px; color: #00ff95; margin-bottom: 40px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; height: 15px; text-shadow: 0 0 15px rgba(0,255,149,0.6); }
 
-        /* BTNS */
-        .btns { width: 100%; max-width: 380px; }
+        /* BUTTONS */
+        .btns { width: 100%; max-width: 400px; }
         .btn { 
-            display: block; position: relative; background: rgba(255, 255, 255, 0.04); 
-            backdrop-filter: blur(15px); border: 1px solid rgba(191, 149, 63, 0.35); 
-            color: #fff; text-decoration: none; padding: 22px 15px; margin-bottom: 18px; 
-            border-radius: 18px; text-align: center; font-weight: 900; 
-            text-transform: uppercase; font-size: 12px; letter-spacing: 1.8px; 
-            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+            display: block; position: relative; background: rgba(20, 20, 20, 0.6); 
+            backdrop-filter: blur(15px); border: 2.5px solid #bf953f; 
+            color: #fff; text-decoration: none; padding: 24px 15px; margin-bottom: 20px; 
+            border-radius: 20px; text-align: center; font-weight: 900; 
+            text-transform: uppercase; font-size: 14px; letter-spacing: 1.2px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6), inset 0 0 10px rgba(191,149,63,0.2); 
             opacity: 0; transform: translateY(30px); transition: 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
         .main.show .btn { opacity: 1; transform: translateY(0); }
-        .btn:active { transform: scale(0.95); background: rgba(191, 149, 63, 0.25); }
-        .btn-tg { background: rgba(0, 136, 204, 0.12); border-color: #0088cc; margin-top: 25px; margin-bottom: 60px; }
+        .btn:active { transform: scale(0.96) !important; background: rgba(191, 149, 63, 0.2); border-color: #fcf6ba; }
+        .btn-tg { background: rgba(0, 136, 204, 0.15); border: 2.5px solid #0088cc; margin-top: 30px; margin-bottom: 70px; }
 
-        /* PRINCIPLES */
-        .info-title { font-family: 'Cinzel', serif; color: #fcf6ba; font-size: 18px; margin-bottom: 30px; letter-spacing: 5px; text-align: center; }
-        .info-card { width: 100%; max-width: 400px; background: rgba(15, 15, 15, 0.9); border: 1px solid rgba(191, 149, 63, 0.3); border-radius: 22px; padding: 28px; margin-bottom: 18px; box-sizing: border-box; }
-        .info-card h3 { color: #fcf6ba; font-size: 13px; margin: 0 0 15px; border-bottom: 1px solid rgba(191, 149, 63, 0.2); padding-bottom: 12px; text-transform: uppercase; letter-spacing: 2.5px; }
-        .info-card p { font-size: 11px; color: #bbb; line-height: 1.8; margin: 0; text-align: left; }
+        /* PRINCIPLES (ALL CAPS) */
+        .info-title { font-family: 'Cinzel', serif; color: #fcf6ba; font-size: 20px; margin-bottom: 35px; letter-spacing: 4px; text-align: center; text-transform: uppercase; }
+        .info-card { width: 100%; max-width: 400px; background: rgba(15, 15, 15, 0.95); border: 2.2px solid rgba(191, 149, 63, 0.35); border-radius: 22px; padding: 30px; margin-bottom: 20px; box-sizing: border-box; }
+        .info-card h3 { color: #fcf6ba; font-size: 14px; margin: 0 0 15px; border-bottom: 1.5px solid rgba(191, 149, 63, 0.25); padding-bottom: 12px; text-transform: uppercase; letter-spacing: 2px; }
+        .info-card p { font-size: 12px; color: #ccc; line-height: 1.8; margin: 0; text-align: left; text-transform: uppercase; font-weight: 700; }
         
-        .warning-red { border: 2px solid #ff0000 !important; background: rgba(255, 0, 0, 0.05); text-align: center; margin-top: 25px; border-radius: 18px; }
-        .warning-red p { color: #ff5555; font-weight: 900; font-size: 10px; text-transform: uppercase; margin: 0; line-height: 1.5; }
+        .warning-red { border: 3px solid #ff0000 !important; background: rgba(255, 0, 0, 0.08); text-align: center; margin-top: 30px; border-radius: 20px; }
+        .warning-red p { color: #ff6666; font-weight: 900; font-size: 11px; text-transform: uppercase; margin: 0; letter-spacing: 0.5px; }
 
         @keyframes pulseBig { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); box-shadow: 0 0 80px rgba(191,149,63,0.8); } }
     </style>
@@ -73,8 +74,8 @@
     <audio id="cash" src="https://www.soundjay.com" preload="auto"></audio>
 
     <div class="live-counter">
-        <span id="on-val">ONLINE: 1542</span>
-        <span id="pl-val">PLAYING: 856</span>
+        <span id="on-val">ONLINE: 1582</span>
+        <span id="pl-val">PLAYING: 894</span>
     </div>
 
     <div id="loader"><div class="l-cont"><div class="l-logo"></div><div class="l-bar-wrapper"><div id="l-fill"></div></div><div class="l-perc" id="pc">0%</div></div></div>
@@ -83,11 +84,11 @@
     <div class="main" id="m">
         <div class="s-logo"></div>
         <div class="brand-name">MRBONUS-VIP</div>
-        <div id="live-win" class="live-win">CONNECTING...</div>
+        <div id="live-win" class="live-win">CONNECTING TO VIP SERVER...</div>
 
         <div class="btns">
             <a href="https://play.mrbonusua.space/bonus1.html" class="btn" style="transition-delay: 0.1s">FIRST CASINO • 1300 FS VIP 💎</a>
-            <a href="https://play.mrbonusua.space/bonus2.html" class="btn" style="transition-delay: 0.2s">SLOTS CITY • 700 FS + 150% 🔥</a>
+            <a href="https://play.mrbonusua.space/bonus2.html" class="btn" style="transition-delay: 0.2s">SLOT CITY • 700 FS + 150% 🔥</a>
             <a href="https://play.mrbonusua.space/pokerbet.html" class="btn" style="transition-delay: 0.3s">POKER BET • 650 FS + 100% 🃏</a>
             <a href="https://play.mrbonusua.space/topmatch.html" class="btn" style="transition-delay: 0.4s">TOP MATCH • 200₴ + 100 FS ⚡</a>
             <a href="https://play.mrbonusua.space/beton.html" class="btn" style="transition-delay: 0.5s">BETON • 500 FS + 150% 🎰</a>
@@ -95,23 +96,24 @@
             <a href="https://play.mrbonusua.space/betking.html" class="btn" style="transition-delay: 0.7s">BETKING • 200% + 200 FS 👑</a>
             <a href="https://play.mrbonusua.space/777.html" class="btn" style="transition-delay: 0.8s">777 CASINO • 1450 FS БЕЗДЕП 🎰</a>
             <a href="https://play.mrbonusua.space/vegas.html" class="btn" style="transition-delay: 0.9s">VEGAS • 150 FS ЩОДНЯ 🌃</a>
-            <a href="https://play.mrbonusua.space/" class="btn" style="transition-delay: 1.0s">GG BET • 1000 ФРІСПІНІВ 🔥</a>
+            <a href="https://play.mrbonusua.space/" class="btn" style="transition-delay: 1.0s">GG-BET • 1000 ФРІСПІНІВ 🔥</a>
             <a href="https://play.mrbonusua.space/parik24.html" class="btn" style="transition-delay: 1.1s">PARIK 24 • 150 FS + 100% 🟧</a>
-            <a href="https://play.mrbonusua.space/championclub.html" class="btn" style="transition-delay: 1.2s">CHAMPION CLUB • 1000 FS 🏆</a>
+            <a href="https://play.mrbonusua.space/championclub.html" class="btn" style="transition-delay: 1.2s">ЧЕМПІОН CLUB • 1000 FS 🏆</a>
             
-            <a href="https://t.me/+c33timlTVpYyOGQ6" class="btn btn-tg" target="_blank">📢 ЗАКРИТИЙ ТЕЛЕГРАМ КАНАЛ ✨</a>
+            <!-- Пряме посилання на ТГ канал -->
+            <a href="https://t.me/+c33timlTVpYyOGQ6" class="btn btn-tg" style="transition-delay: 1.4s">📢 JOIN ELITE TELEGRAM ✨</a>
         </div>
 
         <div class="info-title">НАШІ ПРИНЦИПИ</div>
 
         <div class="info-card">
             <h3>ЧЕСНА ГРА</h3>
-            <p>УСІ ПРЕДСТАВЛЕНІ САЙТИ ПРАЦЮЮТЬ НА СЕРТИФІКОВАНИХ ГЕНЕРАТОРАХ ВИПАДКОВИХ ЧИСЕЛ (RNG), ЩО ГАРАНТУЄ ПРОЗОРІСТЬ ТО НЕПЕРЕДБАЧУВАНІСТЬ РЕЗУЛЬТАТІВ ГРИ.</p>
+            <p>УСІ ПРЕДСТАВЛЕНІ САЙТИ ПРАЦЮЮТЬ НА СЕРТИФІКОВАНИХ ГЕНЕРАТОРАХ ВИПАДКОВИХ ЧИСЕЛ (RNG), ЩО ГАРАНТУЄ ПРОЗОРІСТЬ ТА НЕПЕРЕДБАЧУВАНІСТЬ РЕЗУЛЬТАТІВ ГРИ.</p>
         </div>
 
         <div class="info-card">
             <h3>ВІДПОВІДАЛЬНИЙ ПІДХІД</h3>
-            <p>Ми підтримуємо принципи відповідальної гри та надаємо повну інформацію про ризики та інструменти самоконтролю для гравців.</p>
+            <p>МИ ПІДТРИМУЄМО ПРИНЦИПИ ВІДПОВІДАЛЬНОЇ ГРИ ТА НАДАЄМО ПОВНУ ІНФОРМАЦІЮ ПРО РИЗИКИ ТА ІНСТРУМЕНТИ САМОКОНТРОЛЮ ДЛЯ ГРАВЦІВ.</p>
         </div>
 
         <div class="info-card">
@@ -139,29 +141,27 @@
                 setTimeout(() => {
                     if(canS) document.getElementById('cash').play();
                     document.getElementById('loader').style.opacity = '0';
-                    const main = document.getElementById('m');
-                    main.style.opacity = '1'; main.classList.add('show');
+                    const m = document.getElementById('m');
+                    m.style.opacity = '1'; m.classList.add('show');
                     setTimeout(() => document.getElementById('loader').remove(), 1200);
                 }, 200);
             }
         };
         update();
 
-        // ВИПРАВЛЕНО: ЛІЧИЛЬНИКИ ТЕПЕР ПРАЦЮЮТЬ
+        // LIVE COUNTER (ОНОВЛЕННЯ ЧИСЕЛ)
+        setInterval(() => {
+            document.getElementById('on-val').innerText = `ONLINE: ${1600 + Math.floor(Math.random()*150)}`;
+            document.getElementById('pl-val').innerText = `PLAYING: ${900 + Math.floor(Math.random()*100)}`;
+        }, 4000);
+
         setInterval(() => {
             if(document.getElementById('m').classList.contains('show')) {
-                const sums = ["+4,200₴", "+12,500₴", "+1,800₴", "+32,000₴", "+9,400₴"];
-                const slots = ["AVIATOR", "BOOK OF RA", "GATES OF OLYMPUS", "SUGAR RUSH"];
+                const sums = ["+5,400₴", "+14,200₴", "+1,900₴", "+38,000₴", "+6,700₴"];
+                const slots = ["AVIATOR", "BOOK OF RA", "GATES OF OLYMPUS", "SUGAR RUSH", "SWEET BONANZA"];
                 document.getElementById('live-win').innerText = `WIN: ${sums[Math.floor(Math.random()*sums.length)]} IN ${slots[Math.floor(Math.random()*slots.length)]} ⚡`;
             }
         }, 3500);
-
-        setInterval(() => {
-            const onVal = document.getElementById('on-val');
-            const plVal = document.getElementById('pl-val');
-            onVal.innerText = `ONLINE: ${1500 + Math.floor(Math.random()*150)}`;
-            plVal.innerText = `PLAYING: ${820 + Math.floor(Math.random()*100)}`;
-        }, 4000);
 
         const canvas = document.getElementById('c'); const ctx = canvas.getContext('2d');
         let w, h, particles = [];
@@ -169,13 +169,13 @@
         window.addEventListener('resize', resize); resize();
         class Particle {
             constructor() { this.init(); }
-            init() { this.x = Math.random()*w; this.y = Math.random()*h; this.s = Math.random()*2.8 + 0.6; this.v = Math.random()*0.6 + 0.15; this.o = Math.random()*0.65; }
+            init() { this.x = Math.random()*w; this.y = Math.random()*h; this.s = Math.random()*3.0 + 0.6; this.v = Math.random()*0.6 + 0.15; this.o = Math.random()*0.7; }
         }
-        for(let i=0; i<105; i++) particles.push(new Particle());
+        for(let i=0; i<115; i++) particles.push(new Particle());
         function anim() { 
             ctx.clearRect(0,0,w,h); 
             particles.forEach(p => {
-                p.y -= p.v; if(p.y < -10) p.init();
+                p.y -= p.v; if(p.y < -10) { p.y = h + 10; p.x = Math.random()*w; }
                 ctx.fillStyle = `rgba(252, 246, 186, ${p.o})`;
                 ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill();
             }); 
