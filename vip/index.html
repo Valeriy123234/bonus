@@ -3,125 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MrBonus VIP Portal</title>
+    <title>MrBonus VIP</title>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
         :root {
-            --gold-grad: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
-            --dark-bg: #050505;
+            --gold: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            /* ПРЯМЕ ПОСИЛАННЯ НА ТВІЙ ЛОГОТИП */
+            --logo: url('C816B9D-90C0-4CD4-AA80-242F7BA3F77E.png');
         }
 
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            background-color: var(--dark-bg);
-            color: white; font-family: 'Montserrat', sans-serif;
+            background-color: #000; color: white; font-family: 'Montserrat', sans-serif;
             overflow: hidden;
         }
 
-        /* ЕКРАН ЗАВАНТАЖЕННЯ */
+        /* ЕЛІТНИЙ ПРЕЛОАДЕР */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 10000;
             display: flex; justify-content: center; align-items: center;
-            transition: opacity 1s ease-in-out;
-        }
-        .loader-content { text-align: center; width: 100%; }
-        
-        /* Твій щит Porsche */
-        .loader-logo {
-            width: 200px; height: 200px; margin: 0 auto 40px;
-            background: url('logo.png') center/cover no-repeat;
-            border-radius: 25px;
-            box-shadow: 0 0 40px rgba(191, 149, 63, 0.4);
-            animation: pulse-shield 2s infinite ease-in-out;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        .loader-text {
-            font-family: 'Cinzel', serif; color: #fcf6ba;
-            font-size: 20px; letter-spacing: 4px; margin-bottom: 20px;
+        .l-content { text-align: center; width: 100%; }
+        
+        .l-logo {
+            width: 200px; height: 200px; margin: 0 auto 50px;
+            background: var(--logo) center/cover no-repeat;
+            border-radius: 30px;
+            box-shadow: 0 0 60px rgba(191, 149, 63, 0.3);
+            animation: pulseShield 2.5s infinite ease-in-out;
         }
         
-        .loader-bar-bg { 
-            width: 250px; height: 2px; background: rgba(255,255,255,0.1); 
-            margin: 0 auto; border-radius: 4px; overflow: hidden;
+        .l-bar-bg { 
+            width: 180px; height: 1px; background: rgba(255,255,255,0.05); 
+            margin: 0 auto; overflow: hidden;
         }
-        #loader-bar-fill { 
-            width: 0%; height: 100%; background: var(--gold-grad); 
+        #l-fill { 
+            width: 0%; height: 100%; background: var(--gold); 
             box-shadow: 0 0 15px #fcf6ba; transition: width 0.1s;
         }
 
-        /* ОСНОВНИЙ ФОН */
-        #gold-canvas { position: fixed; top: 0; left: 0; z-index: -1; }
+        /* ФОН З ЗОЛОТОМ */
+        #c { position: fixed; top: 0; left: 0; z-index: -1; }
         
-        .main-ui {
+        .main-view {
             opacity: 0; display: flex; flex-direction: column; align-items: center;
-            padding: 40px 20px; min-height: 100vh; transition: opacity 1.5s;
+            padding: 60px 20px; min-height: 100vh; transition: opacity 2s ease-in;
+        }
+        
+        .s-logo {
+            width: 90px; height: 90px; background: var(--logo) center/cover no-repeat;
+            border-radius: 18px; margin-bottom: 25px;
+            border: 1px solid rgba(191, 149, 63, 0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         
         h1 {
-            font-family: 'Cinzel', serif; background: var(--gold-grad);
+            font-family: 'Cinzel', serif; background: var(--gold);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            font-size: 30px; letter-spacing: 6px; text-align: center;
+            font-size: 32px; letter-spacing: 7px; text-align: center; margin: 10px 0;
         }
 
-        .btn-list { width: 100%; max-width: 350px; margin-top: 40px; }
-        .casino-btn {
-            display: block; background: rgba(20, 20, 20, 0.6);
-            backdrop-filter: blur(15px); border: 1px solid rgba(191, 149, 63, 0.4);
-            color: #fcf6ba; text-decoration: none; padding: 20px; margin-bottom: 15px;
+        .btn-container { width: 100%; max-width: 340px; margin-top: 40px; }
+        .vip-btn {
+            display: block; background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px); border: 1px solid rgba(191, 149, 63, 0.25);
+            color: #fcf6ba; text-decoration: none; padding: 22px; margin-bottom: 18px;
             border-radius: 12px; text-align: center; font-weight: 700;
-            text-transform: uppercase; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-            transition: 0.3s;
+            text-transform: uppercase; font-size: 13px; letter-spacing: 2px;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        .vip-btn:active { transform: scale(0.96); background: rgba(191, 149, 63, 0.1); border-color: #fcf6ba; }
 
-        @keyframes pulse-shield {
-            0%, 100% { transform: scale(1); filter: brightness(1); }
-            50% { transform: scale(1.08); filter: brightness(1.3); }
+        @keyframes pulseShield {
+            0%, 100% { transform: scale(1); opacity: 0.85; filter: brightness(1); }
+            50% { transform: scale(1.06); opacity: 1; filter: brightness(1.2) contrast(1.1); }
         }
     </style>
 </head>
 <body>
 
 <div id="loader">
-    <div class="loader-content">
-        <div class="loader-logo"></div>
-        <div class="loader-text"><span id="percent">0</span>% SECURE ACCESS</div>
-        <div class="loader-bar-bg"><div id="loader-bar-fill"></div></div>
+    <div class="l-content">
+        <div class="l-logo"></div>
+        <div class="l-bar-bg"><div id="l-fill"></div></div>
     </div>
 </div>
 
-<canvas id="gold-canvas"></canvas>
+<canvas id="c"></canvas>
 
-<div class="main-ui" id="main-ui">
+<div class="main-view" id="mv">
+    <div class="s-logo"></div>
     <h1>MR. BONUS VIP</h1>
-    <div class="btn-list">
-        <a href="#" class="casino-btn">🎰 ГРАТИ ЗАРАЗ</a>
-        <a href="#" class="casino-btn">🔥 ТОП БОНУСИ</a>
+    <div class="btn-container">
+        <!-- Твої редиректи -->
+        <a href="https://valeriy123234.github.io" class="vip-btn">🎰 ENTER THE CASINO</a>
+        <a href="https://valeriy123234.github.io" class="vip-btn">🔥 GET DAILY BONUS</a>
     </div>
 </div>
 
 <script>
-    // ЛОГІКА ПРЕЛОАДЕРА (3 секунди)
-    let p = 0;
-    const pLabel = document.getElementById('percent');
-    const pFill = document.getElementById('loader-bar-fill');
+    // ПРЕЛОАДЕР (3 секунди чистого кайфу)
+    let progress = 0;
+    const fill = document.getElementById('l-fill');
     
-    const loadInt = setInterval(() => {
-        p += Math.floor(Math.random() * 3) + 1;
-        if (p >= 100) {
-            p = 100; clearInterval(loadInt);
+    const interval = setInterval(() => {
+        progress += 1;
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
             setTimeout(() => {
                 document.getElementById('loader').style.opacity = '0';
-                document.getElementById('main-ui').style.opacity = '1';
-                setTimeout(() => document.getElementById('loader').style.display = 'none', 1000);
+                document.getElementById('mv').style.opacity = '1';
+                setTimeout(() => document.getElementById('loader').style.display = 'none', 1200);
             }, 500);
         }
-        pLabel.innerText = p;
-        pFill.style.width = p + '%';
-    }, 40);
+        fill.style.width = progress + '%';
+    }, 30);
 
-    // СКРИПТ ПАДАЮЧИХ ЗОЛОТИХ ЗЛИТКІВ (Advanced Canvas)
-    const canvas = document.getElementById('gold-canvas');
+    // 3D GOLD RAIN
+    const canvas = document.getElementById('c');
     const ctx = canvas.getContext('2d');
     let bars = [];
 
@@ -133,51 +136,40 @@
     resize();
 
     class GoldBar {
-        constructor() {
-            this.init();
-        }
+        constructor() { this.init(); }
         init() {
             this.x = Math.random() * canvas.width;
             this.y = -Math.random() * canvas.height;
-            this.w = Math.random() * 15 + 10; // Ширина злитка
-            this.h = this.w * 0.6; // Висота
-            this.speed = Math.random() * 2 + 1;
-            this.rot = Math.random() * Math.PI * 2;
-            this.rotSpeed = (Math.random() - 0.5) * 0.05;
-            this.opacity = Math.random() * 0.5 + 0.3;
+            this.w = Math.random() * 20 + 15;
+            this.h = this.w * 0.55;
+            this.vy = Math.random() * 1.5 + 1.2;
+            this.angle = Math.random() * Math.PI * 2;
+            this.vAngle = (Math.random() - 0.5) * 0.03;
+            this.opacity = Math.random() * 0.4 + 0.1;
         }
         draw() {
             ctx.save();
             ctx.translate(this.x, this.y);
-            ctx.rotate(this.rot);
-            
-            // Малюємо злиток з золотим градієнтом
-            let grad = ctx.createLinearGradient(-this.w/2, -this.h/2, this.w/2, this.h/2);
-            grad.addColorStop(0, '#bf953f');
-            grad.addColorStop(0.5, '#fcf6ba');
-            grad.addColorStop(1, '#b38728');
-            
-            ctx.fillStyle = grad;
+            ctx.rotate(this.angle);
+            let g = ctx.createLinearGradient(-this.w/2, -this.h/2, this.w/2, this.h/2);
+            g.addColorStop(0, '#bf953f'); g.addColorStop(0.5, '#fcf6ba'); g.addColorStop(1, '#aa771c');
+            ctx.fillStyle = g;
             ctx.globalAlpha = this.opacity;
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = "rgba(191, 149, 63, 0.5)";
-            
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = "rgba(191, 149, 63, 0.4)";
             ctx.fillRect(-this.w/2, -this.h/2, this.w, this.h);
-            
-            // Додаємо металевий відблиск зверху
-            ctx.strokeStyle = "rgba(255,255,255,0.4)";
+            ctx.strokeStyle = "rgba(255,255,255,0.3)";
             ctx.strokeRect(-this.w/2, -this.h/2, this.w, this.h);
-            
             ctx.restore();
         }
         update() {
-            this.y += this.speed;
-            this.rot += this.rotSpeed;
+            this.y += this.vy;
+            this.angle += this.vAngle;
             if (this.y > canvas.height + 50) this.init();
         }
     }
 
-    for (let i = 0; i < 40; i++) bars.push(new GoldBar());
+    for (let i = 0; i < 45; i++) bars.push(new GoldBar());
 
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
