@@ -55,69 +55,102 @@
        /* LOADER - ЕФЕКТ ПЕКЕЛЬНОГО АЗАРТУ */
         /* ULTRA-LUXURY LOADER (BLACK & GOLD ONLY) */
         /* ЗОЛОТІ РАМКИ ПО БОКАХ (VIP EFFECT) */
-    html::before, html::after {
-        content: ''; position: fixed; top: 0; bottom: 0; width: 1px;
-        background: linear-gradient(to bottom, transparent, #bf953f, transparent);
-        z-index: 9999; opacity: 0.4;
-    }
-    html::before { left: 5px; }
-    html::after { right: 5px; }
-
-    /* ПРЕЛОАДЕР */
-    #loader { 
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-        background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; 
-        transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1); 
+        /* 1. ВИПРАВЛЕННЯ ВІДСТУПУ (ПРИБИРАЄМО КРІНЖОВУ ПУСТОТУ) */
+    .main { 
+        opacity: 0; 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        padding: 20px 15px 40px; /* Мінімальний відступ зверху */
+        min-height: 100vh; 
+        transition: 1.5s ease-out; 
+        z-index: 2; 
+        position: relative; 
     }
 
-    .l-cont { text-align: center; width: 100%; max-width: 350px; }
-
-    /* КРИШТАЛЕВИЙ ЛОГОТИП */
+    /* 2. ЕФЕКТ МАСИВНОГО СКЛЯНОГО ЛОГОТИПУ У ЛОАДЕРІ */
     .l-logo { 
-        width: 170px; height: 170px; margin: 0 auto 50px; 
+        width: 180px; 
+        height: 180px; 
+        margin: 0 auto 60px; 
         background: var(--img) center/cover no-repeat; 
-        border-radius: 40px; position: relative;
-        border: 1px solid rgba(191, 149, 63, 0.5);
-        box-shadow: 0 40px 100px rgba(0,0,0,1), inset 0 0 30px rgba(252, 246, 186, 0.2);
-    }
-    .l-logo::after {
-        content: ''; position: absolute; inset: 0; border-radius: 40px;
-        background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
+        border-radius: 40px; 
+        position: relative;
+        /* Тонка золота рамка */
+        border: 1px solid rgba(191, 149, 63, 0.4);
+        /* Ефект товстого скла: зовнішня тінь + внутрішній об'єм + світіння країв */
+        box-shadow: 
+            0 30px 70px rgba(0,0,0,1), 
+            inset 0 0 40px rgba(255,255,255,0.1),
+            inset 0 4px 15px rgba(252, 246, 186, 0.3),
+            inset 0 -4px 15px rgba(0,0,0,0.5);
+        overflow: hidden;
     }
 
-    /* ЮВЕЛІРНА ЛІНІЯ ЗІ СВІТЛОВИМ ШЛЕЙФОМ */
+    /* Скляний блік поверх лого (ефект лінзи) */
+    .l-logo::before {
+        content: '';
+        position: absolute;
+        top: -20%;
+        left: -20%;
+        width: 140%;
+        height: 140%;
+        background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2) 0%, transparent 50%);
+        pointer-events: none;
+    }
+
+    /* Нижня грань скла для об'єму */
+    .l-logo::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 30%;
+        background: linear-gradient(to top, rgba(252, 246, 186, 0.1), transparent);
+        pointer-events: none;
+    }
+
+    /* 3. ЮВЕЛІРНА ЛІНІЯ (ТОП ЗАВАНТАЖЕННЯ) */
     .l-bar-wrapper { 
-        position: relative; width: 260px; height: 2px; 
-        background: rgba(191, 149, 63, 0.1); border-radius: 4px; margin: 0 auto;
+        position: relative; 
+        width: 240px; 
+        height: 2px; 
+        background: rgba(191, 149, 63, 0.1); 
+        border-radius: 2px; 
+        margin: 0 auto;
     }
 
     #l-fill { 
-        position: absolute; top: 0; left: 0; height: 100%; 
-        background: #bf953f; border-radius: 4px;
-        /* Сяйво, що рухається разом з лінією */
-        box-shadow: 0 0 20px #bf953f, 0 0 40px rgba(191,149,63,0.6);
+        position: absolute; 
+        top: 0; 
+        left: 0; 
+        height: 100%; 
+        background: #bf953f; 
+        box-shadow: 0 0 20px #bf953f, 0 0 40px rgba(191,149,63,0.5);
         transition: width 0.1s linear;
     }
 
-    /* ВЕДУЧА ІСКРА (DIAMOND POINT) */
+    /* Діамантова іскра на кінці нитки */
     #l-fill::after {
-        content: ''; position: absolute; right: 0; top: 50%;
-        width: 10px; height: 10px; background: #fff;
-        border-radius: 50%; transform: translate(50%, -50%);
-        box-shadow: 0 0 25px #fff, 0 0 50px #fcf6ba;
-        animation: diamondGlow 1.5s infinite ease-in-out;
+        content: ''; 
+        position: absolute; 
+        right: 0; 
+        top: 50%;
+        width: 8px; 
+        height: 8px; 
+        background: #fff;
+        border-radius: 50%; 
+        transform: translate(50%, -50%);
+        box-shadow: 0 0 20px #fff, 0 0 40px #fcf6ba;
+        animation: diamondPulse 1.5s infinite;
     }
 
-    @keyframes diamondGlow { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.8); transform: translate(50%, -50%) scale(1.3); } }
-
-    .l-perc { margin-top: 30px; font-family: 'Cinzel', serif; font-size: 13px; color: rgba(191, 149, 63, 0.8); letter-spacing: 12px; text-transform: uppercase; }
-
-    /* ВИПРАВЛЕННЯ ПУСТОГО МІСЦЯ ЗВЕРХУ (MAIN) */
-    .main { 
-        opacity: 0; display: flex; flex-direction: column; align-items: center; 
-        padding: 30px 15px 60px; /* ЗМЕНШЕНО ВІДСТУП ЗВЕРХУ З 80px ДО 30px */
-        min-height: 100vh; transition: 1.5s ease-out; z-index: 2; position: relative; 
+    @keyframes diamondPulse {
+        0%, 100% { transform: translate(50%, -50%) scale(1); opacity: 0.8; }
+        50% { transform: translate(50%, -50%) scale(1.4); opacity: 1; }
     }
+
 
     /* MAIN CONTENT */
         /* MAIN CONTENT */
