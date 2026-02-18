@@ -38,12 +38,32 @@
     canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; opacity: 0.9; }
 
     /* MAIN CONTENT */
+        /* MAIN CONTENT */
     .main { opacity: 0; display: flex; flex-direction: column; align-items: center; padding: 80px 15px 60px; min-height: 100vh; transition: 1.5s ease-out; z-index: 2; position: relative; }
-    .s-logo { width: 110px; height: 110px; background: var(--img) center/cover no-repeat; border-radius: 25px; margin-bottom: 20px; border: 2.5px solid rgba(191,149,63,0.6); box-shadow: 0 10px 30px rgba(0,0,0,0.9); }
+
+    /* ОНОВЛЕНИЙ ЛАКШЕРІ ЛОГОТИП */
+    .s-logo { 
+        width: 125px; height: 125px; 
+        background: var(--img) center/cover no-repeat; 
+        border-radius: 32px; margin-bottom: 20px; 
+        position: relative; overflow: hidden;
+        border: 2.8px solid #bf953f; 
+        box-shadow: 0 15px 40px rgba(0,0,0,0.8), 0 0 25px rgba(191,149,63,0.4), inset 0 0 20px rgba(252, 246, 186, 0.4);
+        animation: luxuryGlow 4s infinite ease-in-out;
+    }
+
+    /* Діамантовий блік на лого */
+    .s-logo::after {
+        content: ''; position: absolute; top: -150%; left: -150%; width: 300%; height: 300%;
+        background: linear-gradient(45deg, transparent 45%, rgba(255, 255, 255, 0.8) 50%, transparent 55%);
+        transform: rotate(30deg); animation: logoShine 6s infinite ease-in-out;
+    }
+
     .brand-name { font-family: 'Cinzel', serif; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 34px; letter-spacing: 4px; font-weight: 800; margin-bottom: 12px; text-align: center; }
+    
     .live-win { font-size: 15px; color: #00ff95; margin-bottom: 45px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; height: 18px; text-shadow: 0 0 15px rgba(0,255,149,0.6); }
 
-    /* КНОПКИ ЗІ ЗБІЛЬШЕНИМ ТЕКСТОМ */
+    /* КНОПКИ З ВЕЛИКИМ ТЕКСТОМ ТА ЕФЕКТАМИ */
     .btns { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 16px; }
     
     .btn { 
@@ -52,17 +72,26 @@
         backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
         border: 2.5px solid #bf953f; 
         color: #fff; text-decoration: none; 
-        padding: 22px 10px; /* Трохи ширші */
-        border-radius: 18px; text-align: center; 
-        font-weight: 900; 
-        text-transform: uppercase; 
-        font-size: 16px; /* ЗБІЛЬШЕНО */
-        letter-spacing: 1px; 
+        padding: 22px 10px; border-radius: 18px; text-align: center; 
+        font-weight: 900; text-transform: uppercase; 
+        font-size: 16px; letter-spacing: 1px; 
         box-shadow: 0 12px 35px rgba(0,0,0,0.6); 
         opacity: 0; transform: translateY(30px); 
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         overflow: hidden;
     }
+
+    /* Анімації для логотипа */
+    @keyframes luxuryGlow {
+        0%, 100% { transform: translateY(0); box-shadow: 0 15px 40px rgba(0,0,0,0.8), 0 0 25px rgba(191,149,63,0.4); }
+        50% { transform: translateY(-12px); box-shadow: 0 25px 55px rgba(0,0,0,0.9), 0 0 45px rgba(252, 246, 186, 0.6); }
+    }
+    @keyframes logoShine {
+        0% { top: -150%; left: -150%; }
+        20% { top: 100%; left: 100%; }
+        100% { top: 100%; left: 100%; }
+    }
+
 
     /* Анімований відблиск */
     .btn::before {
