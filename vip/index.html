@@ -179,6 +179,69 @@
 }
 
 /* Кнопка ТГ */
+.btn { 
+    display: block; 
+    position: relative; 
+    overflow: hidden; 
+    z-index: 1; /* Гарантує, що кнопка має свій шар */
+
+    /* Золотий градієнт */
+    background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fcf6ba, #bf953f);
+    background-size: 400% 400%;
+    animation: goldFlow 8s ease infinite;
+    
+    /* Рамка та вигляд */
+    border: 4px solid #bf953f; 
+    border-radius: 20px; 
+    margin-bottom: 22px; 
+    padding: 24px 10px; 
+    text-align: center; 
+    text-decoration: none;
+    
+    /* ТЕКСТ: Чорний для видимості, грубий і великий */
+    color: #000 !important; 
+    font-weight: 900; 
+    text-transform: uppercase; 
+    font-size: 20px; 
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+    opacity: 0; 
+    transform: translateY(30px); 
+    transition: 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Блік (перелив), який не закриває текст */
+.btn::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 100%);
+    transform: skewX(-25deg);
+    animation: shine 3s infinite;
+    z-index: -1; /* Блік буде ПІД текстом, але НАД фоном */
+}
+
+@keyframes goldFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes shine {
+    0% { left: -150%; }
+    100% { left: 150%; }
+}
+
+.main.show .btn { opacity: 1; transform: translateY(0); }
+
+.btn:active { transform: scale(0.95); filter: brightness(1.1); }
+
+/* Кнопка ТГ */
 .btn-tg { 
     background: #0088cc !important; 
     border: 4px solid #fff; 
@@ -186,6 +249,7 @@
     margin-top: 30px; 
     margin-bottom: 70px;
 }
+
 
         /* PRINCIPLES (ALL CAPS) */
         .info-title { font-family: 'Cinzel', serif; color: #fcf6ba; font-size: 20px; margin-bottom: 35px; letter-spacing: 4px; text-align: center; text-transform: uppercase; }
