@@ -12,29 +12,25 @@
         }
         body, html { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
         
-        .live-counter { position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.85); border: 1px solid #bf953f; padding: 8px 15px; border-radius: 12px; font-size: 10px; z-index: 1000; font-weight: 700; color: #fcf6ba; backdrop-filter: blur(10px); box-shadow: 0 0 15px rgba(191,149,63,0.3); min-width: 115px; }
+        .live-counter { position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.85); border: 1px solid #bf953f; padding: 8px 15px; border-radius: 12px; font-size: 10px; z-index: 1000; font-weight: 700; color: #fcf6ba; backdrop-filter: blur(10px); box-shadow: 0 0 15px rgba(191,149,63,0.3); min-width: 120px; text-align: left; }
         .live-counter span { color: #fff; display: block; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
 
         #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: 1.5s cubic-bezier(0.65, 0, 0.35, 1); }
         .l-cont { text-align: center; width: 80%; max-width: 350px; }
         .l-logo { width: 110px; height: 110px; margin: 0 auto 40px; background: var(--img) center/cover no-repeat; border-radius: 28px; box-shadow: 0 0 45px rgba(191,149,63,0.5); animation: pulse 3s ease-in-out infinite; }
         .l-bar-wrapper { position: relative; width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; border: 1px solid rgba(191,149,63,0.2); }
-        #l-fill { position: absolute; top: 0; left: 0; width: 0%; height: 100%; background: var(--gold); box-shadow: 0 0 20px #fcf6ba; transition: width 0.4s cubic-bezier(0.25, 0.1, 0.25, 1); }
+        #l-fill { position: absolute; top: 0; left: 0; width: 0%; height: 100%; background: var(--gold); box-shadow: 0 0 20px #fcf6ba; }
         .l-perc { margin-top: 15px; font-weight: 900; font-size: 13px; color: #fcf6ba; letter-spacing: 3px; }
 
-        canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; opacity: 0.7; }
+        canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; opacity: 0.8; }
 
         .main { opacity: 0; display: flex; flex-direction: column; align-items: center; padding: 70px 20px 50px; min-height: 100vh; transition: 2.5s ease-out; z-index: 2; position: relative; }
         .s-logo { width: 85px; height: 85px; background: var(--img) center/cover no-repeat; border-radius: 20px; margin-bottom: 15px; border: 1px solid rgba(191,149,63,0.5); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
         .brand-name { font-family: 'Cinzel', serif; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 26px; letter-spacing: 6px; font-weight: 700; margin-bottom: 10px; }
-        .live-win { font-size: 12px; color: #00ff95; margin-bottom: 40px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; height: 15px; }
-
-        .steps { display: grid; grid-template-columns: 1fr 1fr 1fr; width: 100%; max-width: 360px; margin-bottom: 40px; gap: 10px; }
-        .step { font-size: 8px; color: #888; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
-        .step span { display: block; color: #fcf6ba; font-weight: 900; font-size: 10px; margin-top: 6px; }
+        .live-win { font-size: 12px; color: #00ff95; margin-bottom: 40px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; height: 15px; text-shadow: 0 0 10px rgba(0,255,149,0.4); }
 
         .btns { width: 100%; max-width: 380px; }
-        .btn { display: block; position: relative; background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(15px); border: 1px solid rgba(191, 149, 63, 0.35); color: #fff; text-decoration: none; padding: 22px 15px; margin-bottom: 18px; border-radius: 18px; text-align: center; font-weight: 900; text-transform: uppercase; font-size: 12px; letter-spacing: 1.8px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 12px 25px rgba(0,0,0,0.4); overflow: hidden; }
+        .btn { display: block; position: relative; background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(15px); border: 1px solid rgba(191, 149, 63, 0.35); color: #fff; text-decoration: none; padding: 22px 15px; margin-bottom: 18px; border-radius: 18px; text-align: center; font-weight: 900; text-transform: uppercase; font-size: 12px; letter-spacing: 1.8px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 12px 25px rgba(0,0,0,0.4); }
         .btn:active { transform: scale(0.95); background: rgba(191, 149, 63, 0.25); }
         .btn-tg { background: rgba(0, 136, 204, 0.1); border: 1px solid #0088cc; margin-top: 25px; box-shadow: 0 0 20px rgba(0, 136, 204, 0.2); }
 
@@ -42,8 +38,8 @@
         .info-card { width: 100%; max-width: 380px; background: rgba(15, 15, 15, 0.9); border: 1px solid rgba(191, 149, 63, 0.1); border-radius: 22px; padding: 28px; margin-bottom: 25px; box-sizing: border-box; backdrop-filter: blur(8px); }
         .info-card h3 { color: #fcf6ba; font-size: 13px; margin: 0 0 15px; border-bottom: 1px solid rgba(191, 149, 63, 0.15); padding-bottom: 12px; text-transform: uppercase; letter-spacing: 2.5px; }
         .info-card p { font-size: 11px; color: #bbb; line-height: 1.8; margin: 0; letter-spacing: 0.6px; text-align: justify; }
-        .warning { border-color: #ff444455; background: rgba(255, 68, 68, 0.03); margin-bottom: 70px; }
-        .warning p { color: #ff8888; text-align: center; font-weight: 700; font-size: 9px; letter-spacing: 1px; }
+        .warning { border-color: #ff444455; background: rgba(255, 68, 68, 0.03); margin-bottom: 70px; padding: 15px; border-radius: 15px; }
+        .warning p { color: #ff8888; text-align: center; font-weight: 700; font-size: 10px; letter-spacing: 0.5px; line-height: 1.4; text-transform: uppercase; margin: 0; }
 
         @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.03); opacity: 1; } }
     </style>
@@ -54,26 +50,13 @@
         <span id="playing-now">PLAYING: 856</span>
     </div>
 
-    <div id="loader">
-        <div class="l-cont">
-            <div class="l-logo"></div>
-            <div class="l-bar-wrapper"><div id="l-fill"></div></div>
-            <div class="l-perc" id="pc">0%</div>
-        </div>
-    </div>
-
+    <div id="loader"><div class="l-cont"><div class="l-logo"></div><div class="l-bar-wrapper"><div id="l-fill"></div></div><div class="l-perc" id="pc">0%</div></div></div>
     <canvas id="c"></canvas>
 
     <div class="main" id="m">
         <div class="s-logo"></div>
         <div class="brand-name">MRBONUS-VIP</div>
-        <div id="live-win" class="live-win">LOADING DATA...</div>
-
-        <div class="steps">
-            <div class="step">Крок 1<span>ОБЕРИ КАЗИНО</span></div>
-            <div class="step">Крок 2<span>РЕЄСТРУЙСЯ</span></div>
-            <div class="step">Крок 3<span>ВИГРАВАЙ</span></div>
-        </div>
+        <div id="live-win" class="live-win">CONNECTING TO SERVER...</div>
 
         <div class="btns">
             <a href="https://play.mrbonusua.space/bonus1.html" class="btn">FIRST CASINO • 1300 FS VIP 💎</a>
@@ -89,14 +72,17 @@
             <a href="https://play.mrbonusua.space/" class="btn">GG BET • 1000 ФРІСПІНІВ 🔥</a>
             <a href="https://play.mrbonusua.space/parik24.html" class="btn">PARIK 24 • 150 FS + 100% 🟧</a>
             
-            <a href="https://t.me/+Dzn-_G1069k4OGNi" class="btn btn-tg">📢 ПРИЄДНАТИСЬ ДО TELEGRAM ✨</a>
+            <!-- ПРЯМА ССИЛКА В ТЕЛЕГРАМ -->
+            <a href="tg://join?invite=c33timlTVpYyOGQ6" class="btn btn-tg">📢 ПРИЄДНАТИСЬ ДО TELEGRAM ✨</a>
         </div>
 
         <div class="info-title">VIP СТАНДАРТИ</div>
         <div class="info-card"><h3>ЛІЦЕНЗОВАНІ ІГРИ</h3><p>УСІ ПЛАТФОРМИ МАЮТЬ ОФІЦІЙНУ ЛІЦЕНЗІЮ КРАЇН КРАУ, ЩО ГАРАНТУЄ ВИПЛАТУ ВИГРАШІВ ТА ЧЕСНІСТЬ ІГРОВИХ АВТОМАТІВ.</p></div>
         <div class="info-card"><h3>МИТТЄВІ ВИПЛАТИ</h3><p>МИ ОБИРАЄМО КАЗИНО, ЯКІ ПІДТРИМУЮТЬ ВИВЕДЕННЯ КОШТІВ НА КАРТКИ УКРАЇНСЬКИХ БАНКІВ ПРОТЯГОМ 5-30 ХВИЛИН.</p></div>
         <div class="info-card"><h3>НАДІЙНІСТЬ ТА БЕЗПЕКА</h3><p>МИ СПІВПРАЦЮЄМО З ПЛАТФОРМАМИ, ЩО ВИКОРИСТОВУЮТЬ SSL-ШИФРУВАННЯ ДЛЯ ЗАХИСТУ ВАШИХ ТРАНЗАКЦІЙ.</p></div>
-        <div class="info-card warning"><p>ГРАЙТЕ ВІДПОВІДАЛЬНО. 21+</p></div>
+        <div class="info-card warning">
+            <p>УЧАСТЬ В АЗАРТНИХ ІГРАХ МОЖЕ ВИКЛИКАТИ ІГРОВУ ЗАЛЕЖНІСТЬ. ДОТРИМУЙТЕСЯ ПРАВИЛ (ПРИНЦИПІВ) ВІДПОВІДАЛЬНОЇ ГРИ. 21+</p>
+        </div>
     </div>
 
     <script>
@@ -108,13 +94,13 @@
             w = canvas.width = window.innerWidth;
             h = canvas.height = window.innerHeight;
             particles = [];
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 45; i++) {
                 particles.push({
                     x: Math.random() * w, y: Math.random() * h,
-                    size: Math.random() * 1.5 + 0.3,
-                    speedX: (Math.random() - 0.5) * 0.25,
-                    speedY: (Math.random() - 0.5) * 0.25,
-                    alpha: Math.random() * 0.4 + 0.1
+                    size: Math.random() * 2.5 + 1.0, 
+                    speedX: (Math.random() - 0.5) * 0.12, 
+                    speedY: (Math.random() - 0.5) * 0.12,
+                    alpha: Math.random() * 0.6 + 0.2 
                 });
             }
         }
@@ -124,7 +110,7 @@
             particles.forEach(p => {
                 ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(252, 246, 186, ${p.alpha})`;
-                ctx.shadowBlur = 12; ctx.shadowColor = '#bf953f'; ctx.fill();
+                ctx.shadowBlur = 18; ctx.shadowColor = '#bf953f'; ctx.fill();
                 p.x += p.speedX; p.y += p.speedY;
                 if (p.x > w) p.x = 0; if (p.x < 0) p.x = w;
                 if (p.y > h) p.y = 0; if (p.y < 0) p.y = h;
@@ -134,10 +120,9 @@
 
         let currentProgress = 0;
         function updateLoader() {
-            let increment = (100.1 - currentProgress) / 45; 
-            if (increment < 0.1) increment = 0.15;
+            let increment = (100.2 - currentProgress) / 60; 
+            if (increment < 0.05) increment = 0.08;
             currentProgress += increment;
-            
             if (currentProgress >= 100) {
                 currentProgress = 100;
                 document.getElementById('l-fill').style.width = '100%';
@@ -147,7 +132,7 @@
                     setTimeout(() => {
                         document.getElementById('loader').style.display = 'none';
                         document.getElementById('m').style.opacity = '1';
-                    }, 1000);
+                    }, 1200);
                 }, 600);
                 return;
             }
@@ -156,21 +141,21 @@
             requestAnimationFrame(updateLoader);
         }
 
-        let currentPlaying = 856;
-        function updatePlaying() {
-            let target = Math.floor(Math.random() * (1000 - 800 + 1)) + 800;
-            let step = (target - currentPlaying) / 100;
-            let count = 0;
+        let online = 1542, playing = 856;
+        function smoothStats() {
+            let targetOnline = Math.floor(Math.random() * (1650 - 1450 + 1)) + 1450;
+            let targetPlaying = Math.floor(Math.random() * (1000 - 800 + 1)) + 800;
+            
             let interval = setInterval(() => {
-                currentPlaying += step;
-                document.getElementById('playing-now').innerText = `PLAYING: ${Math.floor(currentPlaying)}`;
-                count++;
-                if (count >= 100) clearInterval(interval);
-            }, 50);
+                if (online < targetOnline) online++; else if (online > targetOnline) online--;
+                if (playing < targetPlaying) playing++; else if (playing > targetPlaying) playing--;
+                document.getElementById('online-now').innerText = `ONLINE: ${online}`;
+                document.getElementById('playing-now').innerText = `PLAYING: ${playing}`;
+                if (online === targetOnline && playing === targetPlaying) clearInterval(interval);
+            }, 150);
         }
 
-        setInterval(updatePlaying, 5000);
-        
+        setInterval(smoothStats, 7000);
         setInterval(() => {
             const id = Math.floor(Math.random() * 900) + 100;
             const win = (Math.floor(Math.random() * 15000) + 3000).toLocaleString();
