@@ -7,71 +7,62 @@
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
         :root {
-            --gold: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            --gold-gradient: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            --gold-border: rgba(191, 149, 63, 0.4);
             --img: url('./8C816B9D-90C0-4CD4-AA80-242F7BA3F77E.png');
         }
         
         body, html { 
-            margin: 0; padding: 0; background: radial-gradient(circle at center, #1a1408 0%, #000 100%);
+            margin: 0; padding: 0; background: #000;
             color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; 
         }
 
-        .aurora {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(191, 149, 63, 0.08) 0%, transparent 70%);
-            animation: auroraFlow 10s ease-in-out infinite; z-index: 1; pointer-events: none;
-        }
-        @keyframes auroraFlow { 0%, 100% { transform: scale(1) translate(0,0); } 50% { transform: scale(1.15) translate(2%, 2%); } }
+        #particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        .aurora { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, rgba(191, 149, 63, 0.1) 0%, transparent 70%); z-index: 0; pointer-events: none; }
 
-        .live-counter { position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.85); border: 1px solid #bf953f; padding: 8px 15px; border-radius: 12px; font-size: 10px; z-index: 1000; font-weight: 700; color: #fcf6ba; backdrop-filter: blur(10px); box-shadow: 0 0 15px rgba(191,149,63,0.3); min-width: 120px; }
-        .live-counter span { color: #fff; display: block; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
+        /* LOADER 3 SEC */
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease; }
+        .l-cont { text-align: center; width: 80%; max-width: 400px; }
+        .l-logo { width: 150px; height: 150px; margin: 0 auto 40px; background: var(--img) center/cover no-repeat; border-radius: 35px; border: 1px solid var(--gold-border); box-shadow: 0 0 50px rgba(191,149,63,0.4); }
+        .l-bar-wrapper { height: 4px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
+        #l-fill { width: 0%; height: 100%; background: var(--gold-gradient); }
+        .l-perc { margin-top: 15px; font-weight: 900; color: #fcf6ba; letter-spacing: 3px; font-size: 14px; }
 
-        /* ОНОВЛЕНИЙ ЛОАДЕР З ВЕЛИКИМ ЛОГО */
-        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: 1.5s cubic-bezier(0.65, 0, 0.35, 1); }
-        .l-cont { text-align: center; width: 85%; max-width: 400px; }
-        .l-logo { 
-            width: 180px; height: 180px; /* ЗБІЛЬШЕНО */
-            margin: 0 auto 50px; background: var(--img) center/cover no-repeat; 
-            border-radius: 40px; box-shadow: 0 0 60px rgba(191,149,63,0.6); 
-            animation: bigPulse 3s ease-in-out infinite; border: 1px solid rgba(191,149,63,0.4);
-        }
-        .l-bar-wrapper { position: relative; width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; border: 1px solid rgba(191,149,63,0.2); }
-        #l-fill { position: absolute; top: 0; left: 0; width: 0%; height: 100%; background: var(--gold); box-shadow: 0 0 20px #fcf6ba; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
-        .l-perc { margin-top: 20px; font-weight: 900; font-size: 16px; color: #fcf6ba; letter-spacing: 4px; text-shadow: 0 0 10px rgba(191,149,63,0.5); }
+        /* CONTENT */
+        .main { opacity: 0; display: flex; flex-direction: column; align-items: center; padding: 60px 20px; min-height: 100vh; position: relative; z-index: 2; transition: opacity 1.5s ease; }
+        .brand-name { font-family: 'Cinzel', serif; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 28px; letter-spacing: 4px; font-weight: 700; margin: 20px 0; }
 
-        .main { opacity: 0; display: flex; flex-direction: column; align-items: center; padding: 70px 20px 50px; min-height: 100vh; transition: 2.5s ease-out; z-index: 2; position: relative; }
-        .s-logo { width: 85px; height: 85px; background: var(--img) center/cover no-repeat; border-radius: 20px; margin-bottom: 15px; border: 1px solid rgba(191,149,63,0.5); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
-        .brand-name { font-family: 'Cinzel', serif; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 26px; letter-spacing: 6px; font-weight: 700; margin-bottom: 10px; }
-        .live-win { font-size: 12px; color: #00ff95; margin-bottom: 40px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; height: 15px; text-shadow: 0 0 10px rgba(0,255,149,0.4); }
+        .btns { width: 100%; max-width: 400px; }
+        .btn { display: block; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid var(--gold-border); color: #fff; text-decoration: none; padding: 18px; margin-bottom: 12px; border-radius: 15px; text-align: center; font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .btn:active { transform: scale(0.97); background: rgba(191, 149, 63, 0.2); }
+        .btn-tg { background: rgba(0, 136, 204, 0.15); border-color: #0088cc; margin-top: 10px; margin-bottom: 45px; }
 
-        .btns { width: 100%; max-width: 380px; }
-        .btn { display: block; position: relative; background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(15px); border: 1px solid rgba(191, 149, 63, 0.35); color: #fff; text-decoration: none; padding: 22px 15px; margin-bottom: 18px; border-radius: 18px; text-align: center; font-weight: 900; text-transform: uppercase; font-size: 12px; letter-spacing: 1.8px; transition: 0.4s; box-shadow: 0 12px 25px rgba(0,0,0,0.4); }
-        .btn:active { transform: scale(0.95); background: rgba(191, 149, 63, 0.25); }
-        .btn-tg { background: rgba(0, 136, 204, 0.1); border: 1px solid #0088cc; margin-top: 25px; }
-
-        .info-card { width: 100%; max-width: 380px; background: rgba(15, 15, 15, 0.9); border: 1px solid rgba(191, 149, 63, 0.1); border-radius: 22px; padding: 25px; margin-bottom: 25px; box-sizing: border-box; }
-        .info-card h3 { color: #fcf6ba; font-size: 13px; margin: 0 0 12px; border-bottom: 1px solid rgba(191, 149, 63, 0.15); padding-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
-        .info-card p { font-size: 11px; color: #bbb; line-height: 1.8; margin: 0; text-align: justify; }
-        .warning { border-color: #ff444455; background: rgba(255, 68, 68, 0.03); margin-bottom: 70px; padding: 15px; border-radius: 15px; }
-        .warning p { color: #ff8888; text-align: center; font-weight: 700; font-size: 10px; letter-spacing: 0.5px; line-height: 1.4; text-transform: uppercase; margin: 0; }
-
-        @keyframes bigPulse { 0%, 100% { transform: scale(1); box-shadow: 0 0 50px rgba(191,149,63,0.5); } 50% { transform: scale(1.05); box-shadow: 0 0 80px rgba(191,149,63,0.8); } }
+        /* PRINCIPLES */
+        .principles-title { color: #fcf6ba; font-size: 18px; font-weight: 900; letter-spacing: 4px; margin-bottom: 25px; text-transform: uppercase; text-shadow: 0 0 15px rgba(191,149,63,0.3); }
+        .info-card { width: 100%; max-width: 400px; background: rgba(15, 15, 15, 0.8); border: 1px solid var(--gold-border); border-radius: 15px; padding: 22px; margin-bottom: 15px; box-sizing: border-box; box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
+        .info-card h3 { color: #fcf6ba; font-size: 13px; margin: 0 0 12px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; border-bottom: 1px solid rgba(191,149,63,0.2); padding-bottom: 8px; }
+        .info-card p { font-size: 11px; color: #ddd; line-height: 1.7; margin: 0; }
+        
+        /* FINAL WARNING RED */
+        .warning-red { border: 2px solid #ff0000 !important; background: rgba(255, 0, 0, 0.07); box-shadow: 0 0 20px rgba(255,0,0,0.2); margin-top: 25px; }
+        .warning-red p { color: #ff5555; font-weight: 900; font-size: 11px; text-align: center; text-transform: uppercase; }
     </style>
 </head>
 <body>
+    <canvas id="particle-canvas"></canvas>
     <div class="aurora"></div>
-    <div class="live-counter">
-        <span id="online-now">ONLINE: 1542</span>
-        <span id="playing-now">PLAYING: 856</span>
+
+    <div id="loader">
+        <div class="l-cont">
+            <div class="l-logo"></div>
+            <div class="l-bar-wrapper"><div id="l-fill"></div></div>
+            <div class="l-perc" id="pc">0%</div>
+        </div>
     </div>
 
-    <div id="loader"><div class="l-cont"><div class="l-logo"></div><div class="l-bar-wrapper"><div id="l-fill"></div></div><div class="l-perc" id="pc">0%</div></div></div>
-
     <div class="main" id="m">
-        <div class="s-logo"></div>
         <div class="brand-name">MRBONUS-VIP</div>
-        <div id="live-win" class="live-win">CONNECTING...</div>
-
+        
         <div class="btns">
             <a href="https://play.mrbonusua.space/bonus1.html" class="btn">FIRST CASINO • 1300 FS VIP 💎</a>
             <a href="https://play.mrbonusua.space/bonus2.html" class="btn">SLOTS CITY • 700 FS + 150% 🔥</a>
@@ -90,48 +81,57 @@
             <a href="tg://join?invite=c33timlTVpYyOGQ6" class="btn btn-tg">📢 ПРИЄДНАТИСЬ ДО TELEGRAM ✨</a>
         </div>
 
-        <div class="info-title">VIP СТАНДАРТИ</div>
-        <div class="info-card"><h3>ЛІЦЕНЗОВАНІ ІГРИ</h3><p>УСІ ПЛАТФОРМИ МАЮТЬ ОФІЦІЙНУ ЛІЦЕНЗІЮ КРАЇН КРАУ, ЩО ГАРАНТУЄ ВИПЛАТУ ВИГРАШІВ ТА ЧЕСНІСТЬ ІГРОВИХ АВТОМАТІВ.</p></div>
-        <div class="info-card"><h3>НАДІЙНІСТЬ ТА БЕЗПЕКА</h3><p>МИ СПІВПРАЦЮЄМО З ПЛАТФОРМАМИ, ЩО ВИКОРИСТОВУЮТЬ SSL-ШИФРУВАННЯ ДЛЯ ЗАХИСТУ ВАШИХ ТРАНЗАКЦІЙ.</p></div>
-        <div class="info-card warning">
+        <div class="principles-title">НАШІ ПРИНЦИПИ</div>
+
+        <div class="info-card">
+            <h3>ЧЕСНА ГРА</h3>
+            <p>УСІ ПРЕДСТАВЛЕНІ САЙТИ ПРАЦЮЮТЬ НА СЕРТИФІКОВАНИХ ГЕНЕРАТОРАХ ВИПАДКОВИХ ЧИСЕЛ (RNG), ЩО ГАРАНТУЄ ПРОЗОРІСТЬ ТА НЕПЕРЕДБАЧУВАНІСТЬ РЕЗУЛЬТАТІВ ГРИ.</p>
+        </div>
+
+        <div class="info-card">
+            <h3>ВІДПОВІДАЛЬНИЙ ПІДХІД</h3>
+            <p>Ми підтримуємо принципи відповідальної гри та надаємо повну інформацію про ризики та інструменти самоконтролю для гравців.</p>
+        </div>
+
+        <div class="info-card">
+            <h3>НАДІЙНІСТЬ ТА БЕЗПЕКА</h3>
+            <p>МИ СПІВПРАЦЮЄМО ЛИШЕ З ПЛАТФОРМАМИ, ЩО ВИКОРИСТОВУЮТЬ СУЧАСНІ ТЕХНОЛОГІЇ ШИФРУВАННЯ (SSL) ДЛЯ ЗАХИСТУ ВАШИХ ДАНИХ ТА ФІНАНСОВИХ ТРАНЗАКЦІЙ.</p>
+        </div>
+
+        <div class="info-card warning-red">
             <p>УЧАСТЬ В АЗАРТНИХ ІГРАХ МОЖЕ ВИКЛИКАТИ ІГРОВУ ЗАЛЕЖНІСТЬ. ДОТРИМУЙТЕСЯ ПРАВИЛ (ПРИНЦИПІВ) ВІДПОВІДАЛЬНОЇ ГРИ. 21+</p>
         </div>
     </div>
 
     <script>
-        let progress = 0;
-        const loadInterval = setInterval(() => {
-            progress += (Math.random() * 4.5);
-            if (progress >= 100) {
-                progress = 100;
-                clearInterval(loadInterval);
-                setTimeout(() => {
-                    document.getElementById('loader').style.opacity = '0';
-                    setTimeout(() => {
-                        document.getElementById('loader').style.display = 'none';
-                        document.getElementById('m').style.opacity = '1';
-                    }, 1000);
-                }, 700);
+        const duration = 3000; const startTime = Date.now();
+        const fill = document.getElementById('l-fill'); const perc = document.getElementById('pc');
+        function updateLoader() {
+            const elapsed = Date.now() - startTime;
+            let timePos = Math.min(elapsed / duration, 1);
+            let progress = Math.pow(timePos, 1.8) * 100; 
+            fill.style.width = progress + '%'; perc.innerText = Math.floor(progress) + '%';
+            if (elapsed < duration) { requestAnimationFrame(updateLoader); } 
+            else {
+                fill.style.width = '100%'; perc.innerText = '100%';
+                setTimeout(() => { document.getElementById('loader').style.opacity = '0'; document.getElementById('m').style.opacity = '1'; setTimeout(() => document.getElementById('loader').remove(), 800); }, 150);
             }
-            document.getElementById('l-fill').style.width = progress + '%';
-            document.getElementById('pc').innerText = Math.floor(progress) + '%';
-        }, 90);
+        }
+        updateLoader();
 
-        let onl = 1542, ply = 856;
-        setInterval(() => {
-            let targetOnl = Math.floor(Math.random() * (1650 - 1450 + 1)) + 1450;
-            let targetPly = Math.floor(Math.random() * (1000 - 800 + 1)) + 800;
-            onl += (targetOnl - onl) * 0.12;
-            ply += (targetPly - ply) * 0.12;
-            document.getElementById('online-now').innerText = `ONLINE: ${Math.floor(onl)}`;
-            document.getElementById('playing-now').innerText = `PLAYING: ${Math.floor(ply)}`;
-        }, 1800);
-
-        setInterval(() => {
-            const id = Math.floor(Math.random() * 900) + 100;
-            const win = (Math.floor(Math.random() * 15000) + 3000).toLocaleString();
-            document.getElementById('live-win').innerText = `USER ID ${id}... WIN ${win}₴`;
-        }, 4000);
+        const canvas = document.getElementById('particle-canvas'); const ctx = canvas.getContext('2d');
+        let particles = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
+        class Particle {
+            constructor() { this.init(); }
+            init() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 1.6 + 0.3; this.speedY = Math.random() * 0.4 + 0.1; this.opacity = Math.random() * 0.4 + 0.1; }
+            update() { this.y -= this.speedY; if (this.y < -10) { this.y = canvas.height + 10; this.x = Math.random() * canvas.width; } }
+            draw() { ctx.fillStyle = `rgba(252, 246, 186, ${this.opacity})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+        }
+        for (let i = 0; i < 60; i++) particles.push(new Particle());
+        function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+        animate();
     </script>
 </body>
 </html>
