@@ -24,18 +24,89 @@
         .live-counter span { color: #fff; display: block; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
 
         /* LOADER */
-        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: 1.2s cubic-bezier(0.65, 0, 0.35, 1); }
-        .l-cont { text-align: center; width: 90%; max-width: 500px; }
-        .l-logo { 
-            width: 220px; height: 220px; margin: 0 auto 50px; background: var(--img) center/cover no-repeat; 
-            border-radius: 45px; box-shadow: 0 0 70px rgba(191,149,63,0.7); 
-            animation: pulseBig 3s ease-in-out infinite; border: 2.5px solid rgba(191,149,63,0.5); 
-        }
-        .l-bar-wrapper { position: relative; width: 100%; height: 8px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; border: 1.5px solid rgba(191,149,63,0.3); }
-        #l-fill { position: absolute; top: 0; left: 0; width: 0%; height: 100%; background: var(--gold); }
-        .l-perc { margin-top: 20px; font-weight: 900; font-size: 18px; color: #fcf6ba; letter-spacing: 4px; }
+       #loader { 
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    background: #000; z-index: 10000; display: flex; 
+    justify-content: center; align-items: center; 
+    transition: 1.2s cubic-bezier(0.65, 0, 0.35, 1); 
+}
 
-        canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; opacity: 0.9; }
+.l-cont { text-align: center; width: 85%; max-width: 400px; }
+
+/* КРИШТАЛЕВИЙ ЛОГОТИП У ЛОАДЕРІ */
+.l-logo { 
+    width: 180px; height: 180px; margin: 0 auto 60px; 
+    background: var(--img) center/cover no-repeat; 
+    border-radius: 40px; 
+    /* Ефект товстої кришталевої грані */
+    border-top: 3px solid rgba(255, 255, 255, 0.9);
+    border-left: 2px solid rgba(255, 255, 255, 0.4);
+    border-right: 1px solid rgba(191, 149, 63, 0.3);
+    border-bottom: 1px solid rgba(191, 149, 63, 0.5);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.9), 0 0 40px rgba(191, 149, 63, 0.3); 
+    animation: pulseCrystal 4s ease-in-out infinite; 
+    position: relative;
+}
+
+/* Відблиск на склі логотипа */
+.l-logo::after {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 60%);
+    border-radius: 38px;
+}
+
+/* СМУГА ЗАВАНТАЖЕННЯ */
+.l-bar-wrapper { 
+    position: relative; width: 100%; height: 10px; 
+    background: rgba(255, 255, 255, 0.03); 
+    border-radius: 20px; overflow: visible; /* Щоб крапка світилася за межами */
+    border: 1px solid rgba(191, 149, 63, 0.2); 
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+#l-fill { 
+    position: absolute; top: 0; left: 0; width: 0%; height: 100%; 
+    /* Золотий перелив усередині смуги */
+    background: linear-gradient(90deg, #bf953f, #fcf6ba, #b38728);
+    background-size: 200% 100%;
+    animation: goldShine 2s linear infinite;
+    border-radius: 20px;
+    transition: width 0.3s ease;
+}
+
+/* СВІТНА ТОЧКА (КОМЕТА) */
+#l-fill::after {
+    content: "";
+    position: absolute;
+    right: -5px; top: 50%;
+    transform: translateY(-50%);
+    width: 15px; height: 15px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 25px 8px #fcf6ba, 0 0 10px #fff;
+}
+
+/* ТЕКСТ ВІДСОТКІВ */
+.l-perc { 
+    margin-top: 25px; font-weight: 900; font-size: 22px; 
+    background: var(--gold); -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent; 
+    letter-spacing: 6px; 
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+}
+
+/* АНІМАЦІЇ */
+@keyframes goldShine {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+@keyframes pulseCrystal {
+    0%, 100% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.03); filter: brightness(1.2); }
+}
+
 
         /* MAIN CONTENT */
         /* Основний контейнер: додав плавності */
