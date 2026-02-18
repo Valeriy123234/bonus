@@ -144,13 +144,62 @@
 }
 
 /* Статичний відблиск на іконці */
-.s-logo::after {
+/* ВИТОЧЕНИЙ КРИШТАЛЕВИЙ ЛОГОТИП */
+.s-logo { 
+    width: 110px; 
+    height: 110px; 
+    background: var(--img) center/cover no-repeat; 
+    border-radius: 32px; 
+    margin-bottom: 15px; 
+    position: relative;
+    
+    /* Ефект товстого ограненого скла */
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    
+    /* Складна випукла тінь (грані та об'єм) */
+    box-shadow: 
+        0 20px 40px rgba(0,0,0,0.8),                /* Зовнішня тінь */
+        inset 0 12px 20px rgba(255, 255, 255, 0.5),  /* Верхня випукла грань (світло) */
+        inset 0 -10px 20px rgba(0, 0, 0, 0.6),       /* Нижня глибина */
+        inset 10px 0 15px rgba(255, 255, 255, 0.2),  /* Бокове заломлення */
+        inset -10px 0 15px rgba(0, 0, 0, 0.3),       /* Бокова тінь */
+        0 0 0 5px rgba(255, 255, 255, 0.05);         /* Зовнішній шар скла */
+
+    backdrop-filter: blur(8px);
+    transform: perspective(500px) rotateX(5deg);    /* Легкий нахил для об'єму */
+}
+
+/* ГОСТРІ ГРАНІ (Алмазна огранка) */
+.s-logo::before {
     content: "";
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 50%);
-    border-radius: 23px;
+    border-radius: 30px;
+    /* Діагональний блиск на гранях */
+    background: linear-gradient(135deg, 
+        rgba(255,255,255,0.6) 0%, 
+        rgba(255,255,255,0) 30%, 
+        rgba(255,255,255,0) 70%, 
+        rgba(255,255,255,0.4) 100%);
+    z-index: 2;
+    pointer-events: none;
 }
+
+/* "ЖИВИЙ" ВІДБЛИСК НА ПОВЕРХНІ */
+.s-logo::after {
+    content: "";
+    position: absolute;
+    top: 5%; left: 10%;
+    width: 80%; height: 40%;
+    /* Світлова пляма зверху, що створює випуклість */
+    background: linear-gradient(to bottom, 
+        rgba(255,255,255,0.4) 0%, 
+        rgba(255,255,255,0) 100%);
+    border-radius: 50% 50% 80% 80%;
+    filter: blur(2px);
+    z-index: 3;
+}
+
 
 /* ПРЕМІАЛЬНА НАЗВА (Ефект платини/кришталю) */
 .brand-name { 
