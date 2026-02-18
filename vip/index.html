@@ -2,17 +2,40 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
     <title>MRBONUS-VIP | ELITE ACCESS 2026</title>
+    
+    <!-- Підключаємо елітні шрифти: Cinzel для заголовків, Montserrat для кнопок -->
     <link href="https://fonts.googleapis.com" rel="stylesheet">
+    
     <style>
     :root {
-        --gold: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+        /* Більш контрастне золото з ефектом металевого зрізу */
+        --gold: linear-gradient(135deg, #bf953f 0%, #fcf6ba 45%, #b38728 50%, #fcf6ba 55%, #aa771c 100%);
         --img: url('./8C816B9D-90C0-4CD4-AA80-242F7BA3F77E.png');
+        --bg-glow: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
     }
     
-    * { box-sizing: border-box; margin: 0; padding: 0; background-color: transparent; }
-    html, body { background-color: #000 !important; color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; min-height: 100vh; }
+    * { 
+        box-sizing: border-box; 
+        margin: 0; 
+        padding: 0; 
+        background-color: transparent; 
+        -webkit-tap-highlight-color: transparent; 
+    }
+
+    html, body { 
+        /* Замість мертвого чорного — ефект дорогого вінілу з підсвіткою центру */
+        background: var(--bg-glow) !important; 
+        background-attachment: fixed !important;
+        color: #fff; 
+        font-family: 'Montserrat', sans-serif; 
+        overflow-x: hidden; 
+        min-height: 100vh;
+        /* Тонка золота рамка по периметру для статусу */
+        border: 1px solid rgba(191, 149, 63, 0.1);
+    }
+
 
     /* LIVE COUNTER */
     .live-counter { 
