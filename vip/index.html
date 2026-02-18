@@ -44,45 +44,82 @@
         .live-win { font-size: 13px; color: #00ff95; margin-bottom: 40px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; height: 15px; text-shadow: 0 0 15px rgba(0,255,149,0.6); }
 
         /* BUTTONS */
-        .btns { width: 100%; max-width: 400px; }
-
-.btn { 
+       .btn { 
     display: block; 
     position: relative; 
-    /* Трішки світліший фон (еле-еле золотистий) */
-    background: rgba(191, 149, 63, 0.08); 
+    overflow: hidden; /* Обязательно для эффекта перелива */
+    
+    /* Золотистый градиентный фон */
+    background: linear-gradient(135px, #bf953f, #fcf6ba, #b38728, #fcf6ba, #bf953f);
+    background-size: 400% 400%;
+    animation: goldFlow 8s ease infinite; /* Плавный перелив фона */
+    
     backdrop-filter: blur(15px); 
-    /* Рамка товстіша (була 2.5px, стала 4px) */
-    border: 4px solid #bf953f; 
-    color: #fff; 
+    border: 4px solid #fcf6ba; /* Светло-золотая рамка */
+    color: #000; /* Текст лучше сделать темным для читаемости на золотом */
     text-decoration: none; 
-    /* Збільшив вертикальні відступи */
-    padding: 28px 10px; 
-    margin-bottom: 20px; 
+    padding: 24px 10px; 
+    margin-bottom: 22px; 
     border-radius: 20px; 
     text-align: center; 
     font-weight: 900; 
     text-transform: uppercase; 
-    /* Текст став значно більшим (був 14px) */
     font-size: 20px; 
-    /* Прибрав великий інтервал, щоб текст був щільним і грубим */
     letter-spacing: -0.5px; 
-    box-shadow: 0 8px 25px rgba(0,0,0,0.6), inset 0 0 15px rgba(191,149,63,0.15); 
+    
+    /* Тень, чтобы кнопка "парила" */
+    box-shadow: 0 10px 30px rgba(191, 149, 63, 0.4); 
+    
     opacity: 0; 
     transform: translateY(30px); 
     transition: 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+/* Эффект "бегущего блика" поверх кнопки */
+.btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
+    transform: skewX(-25deg);
+    animation: shine 3s infinite;
+}
+
+/* Анимация перелива цветов */
+@keyframes goldFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Анимация вспышки (блика) */
+@keyframes shine {
+    0% { left: -150%; }
+    100% { left: 150%; }
+}
+
 .main.show .btn { opacity: 1; transform: translateY(0); }
 
-.btn:active { transform: scale(0.96) !important; background: rgba(191, 149, 63, 0.3); border-color: #fcf6ba; }
-
-.btn-tg { 
-    background: rgba(0, 136, 204, 0.15); 
-    border: 4px solid #0088cc; 
-    margin-top: 30px; 
-    margin-bottom: 70px; 
+/* При нажатии */
+.btn:active { 
+    transform: scale(0.95); 
+    filter: brightness(1.2); 
 }
+
+/* Кнопка ТГ — оставляем синей или тоже в золото? */
+.btn-tg { 
+    background: #0088cc; 
+    border: 4px solid #fff; 
+    color: #fff;
+    margin-top: 30px; 
+    margin-bottom: 70px;
+    animation: none; /* Убираем золото с ТГ */
+}
+.btn-tg::before { animation: shine 4s infinite; }
+
 
 
         /* PRINCIPLES (ALL CAPS) */
