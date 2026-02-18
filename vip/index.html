@@ -110,17 +110,43 @@
 
         /* MAIN CONTENT */
         /* Основний контейнер: додав плавності */
+        
+/* ЧАСТИНКИ: на весь екран, під контентом, без розривів */
+canvas { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100vw; 
+    height: 100vh; 
+    z-index: 1; /* Під кнопками, але над фоном */
+    pointer-events: none; 
+    opacity: 0.8; 
+    display: block;
+}
+
+/* Прибираємо будь-які відступи у body, що могли давати білі смуги */
+html, body { 
+    margin: 0; 
+    padding: 0; 
+    width: 100%; 
+    height: 100%; 
+    background-color: #000 !important; 
+    overflow-x: hidden; 
+}
+
 .main { 
+    position: relative;
+    z-index: 2; /* Контент НАД частинками */
     opacity: 0; 
     display: flex; 
     flex-direction: column; 
     align-items: center; 
-    padding: 75px 15px 40px; /* 75px — це і є ваші ~2 см відступу */
+    padding: 75px 15px 40px; /* Ті самі 2 см зверху */
     min-height: 100vh; 
-    transition: 1s cubic-bezier(0.2, 0.8, 0.2, 1); 
-    z-index: 2; 
-    position: relative; 
+    transition: 1s ease-out; 
+    background: transparent !important; /* Щоб не перекривати фон з частинками */
 }
+
 
 /* КРИШТАЛЕВА ІКОНКА (Твоє фото в склі) */
 .s-logo { 
