@@ -3,87 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MrBonus VIP</title>
+    <title>MrBonus Elite</title>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
         :root {
             --gold: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
-            /* ВИКОРИСТОВУЄМО ТВОЮ НАЗВУ ФАЙЛУ */
             --img: url('./8C816B9D-90C0-4CD4-AA80-242F7BA3F77E.png');
         }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; color: #fff; font-family: 'Montserrat', sans-serif; overflow: hidden; }
         
-        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: 1.2s; }
-        .l-cont { text-align: center; width: 100%; z-index: 10001; }
-        .l-logo { width: 180px; height: 180px; margin: 0 auto 50px; background: var(--img) center/cover no-repeat; border-radius: 30px; box-shadow: 0 0 50px rgba(191,149,63,0.4); animation: pulse 2.5s infinite ease-in-out; }
-        .l-bar { width: 180px; height: 1px; background: rgba(255,255,255,0.05); margin: 0 auto; overflow: hidden; }
-        #l-fill { width: 0%; height: 100%; background: var(--gold); box-shadow: 0 0 15px #fcf6ba; }
+        /* ПРЕЛОАДЕР */
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .l-cont { text-align: center; width: 100%; }
+        
+        .l-logo { 
+            width: 160px; height: 160px; margin: 0 auto 30px; 
+            background: var(--img) center/cover no-repeat; 
+            border-radius: 40px; box-shadow: 0 0 40px rgba(191,149,63,0.2);
+            animation: breathe 3s infinite ease-in-out;
+        }
 
-        canvas { position: fixed; top: 0; left: 0; z-index: 1; }
-        .main { opacity: 0; display: flex; flex-direction: column; align-items: center; padding: 60px 20px; min-height: 100vh; transition: 2s; z-index: 2; position: relative; }
-        .s-logo { width: 80px; height: 80px; background: var(--img) center/cover no-repeat; border-radius: 15px; margin-bottom: 25px; border: 1px solid rgba(191,149,63,0.4); }
-        h1 { font-family: 'Cinzel', serif; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 28px; letter-spacing: 5px; text-align: center; }
-        .btns { width: 100%; max-width: 340px; margin-top: 40px; }
-        .btn { display: block; background: rgba(255,255,255,0.03); backdrop-filter: blur(15px); border: 1px solid rgba(191,149,63,0.25); color: #fcf6ba; text-decoration: none; padding: 20px; margin-bottom: 15px; border-radius: 12px; text-align: center; font-weight: 700; text-transform: uppercase; font-size: 13px; letter-spacing: 1px; }
+        .l-perc {
+            font-family: 'Cinzel', serif; font-size: 42px; 
+            background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            letter-spacing: 5px; font-weight: 700; filter: drop-shadow(0 0 10px rgba(252, 246, 186, 0.5));
+        }
 
-        @keyframes pulse { 0%, 100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.05); filter: brightness(1.25); } }
+        /* ГОЛОВНИЙ ФОН - ЗОЛОТИЙ ТУМАН */
+        canvas { position: fixed; top: 0; left: 0; z-index: 1; opacity: 0.6; }
+
+        .main { opacity: 0; display: flex; flex-direction: column; align-items: center; padding: 60px 20px; min-height: 100vh; transition: 2.5s ease; z-index: 2; position: relative; }
+        .s-logo { width: 70px; height: 70px; background: var(--img) center/cover no-repeat; border-radius: 15px; margin-bottom: 20px; border: 1px solid rgba(191,149,63,0.3); }
+        h1 { font-family: 'Cinzel', serif; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 24px; letter-spacing: 8px; margin: 0; }
+        
+        .btns { width: 100%; max-width: 320px; margin-top: 50px; }
+        .btn { display: block; background: rgba(255,255,255,0.02); backdrop-filter: blur(20px); border: 1px solid rgba(191,149,63,0.2); color: #fcf6ba; text-decoration: none; padding: 22px; margin-bottom: 15px; border-radius: 10px; text-align: center; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 3px; transition: 0.5s; }
+        .btn:active { background: rgba(191, 149, 63, 0.1); border-color: #fcf6ba; }
+
+        @keyframes breathe { 0%, 100% { transform: scale(1); filter: brightness(0.8); } 50% { transform: scale(1.05); filter: brightness(1.2); } }
     </style>
 </head>
 <body>
-    <div id="loader"><div class="l-cont"><div class="l-logo"></div><div class="l-bar"><div id="l-fill"></div></div></div></div>
+    <div id="loader">
+        <div class="l-cont">
+            <div class="l-logo"></div>
+            <div class="l-perc" id="pc">0%</div>
+        </div>
+    </div>
     <canvas id="c"></canvas>
     <div class="main" id="m">
         <div class="s-logo"></div>
         <h1>MR. BONUS VIP</h1>
         <div class="btns">
-            <a href="#" class="btn">🎰 ENTER CASINO</a>
-            <a href="#" class="btn">💎 GET BONUS</a>
+            <a href="#" class="btn">🚀 ENTER THE HUB</a>
+            <a href="#" class="btn">💎 VIP OFFERS</a>
         </div>
     </div>
     <script>
-        let w = 0;
-        const f = document.getElementById('l-fill');
+        // ЛОГІКА ЦИФР 0-100%
+        let p = 0;
+        const pc = document.getElementById('pc');
         const iv = setInterval(() => {
-            w += 1;
-            if (w >= 100) {
-                w = 100; clearInterval(iv);
+            p += 1;
+            if (p >= 100) {
+                p = 100; clearInterval(iv);
                 setTimeout(() => {
                     document.getElementById('loader').style.opacity = '0';
                     document.getElementById('m').style.opacity = '1';
-                    setTimeout(() => document.getElementById('loader').style.display = 'none', 1200);
-                }, 500);
+                    setTimeout(() => document.getElementById('loader').style.display = 'none', 1500);
+                }, 600);
             }
-            f.style.width = w + '%';
+            pc.innerText = p + '%';
+            pc.style.opacity = 0.5 + (p / 200); // Проявлення
         }, 30);
 
+        // ЗОЛОТИЙ ТУМАН (Dust/Mist Effect)
         const cv = document.getElementById('c'); const cx = cv.getContext('2d');
-        let bs = [];
+        let dots = [];
         function rs() { cv.width = window.innerWidth; cv.height = window.innerHeight; }
         window.addEventListener('resize', rs); rs();
-
-        class Bar {
+        class Dot {
             constructor() { this.init(); }
             init() {
-                this.x = Math.random()*cv.width; this.y = -Math.random()*cv.height;
-                this.w = Math.random()*20+15; this.h = this.w*0.5;
-                this.vy = Math.random()*1.2+1; this.a = Math.random()*Math.PI*2;
-                this.va = (Math.random()-0.5)*0.03; this.o = Math.random()*0.4+0.2;
+                this.x = Math.random() * cv.width; this.y = Math.random() * cv.height;
+                this.vx = (Math.random() - 0.5) * 0.5; this.vy = (Math.random() - 0.5) * 0.5;
+                this.s = Math.random() * 1.5; this.o = Math.random() * 0.5;
             }
-            u() { this.y += this.vy; this.a += this.va; if(this.y > cv.height+50) this.init(); }
-            d() {
-                cx.save(); cx.translate(this.x, this.y); cx.rotate(this.a);
-                // 3D ЕФЕКТ (Тінь + Градієнт)
-                cx.shadowBlur = 15; cx.shadowColor = "rgba(0,0,0,0.8)";
-                let g = cx.createLinearGradient(-this.w/2,-this.h/2,this.w/2,this.h/2);
-                g.addColorStop(0,'#bf953f'); g.addColorStop(0.5,'#fcf6ba'); g.addColorStop(1,'#aa771c');
-                cx.fillStyle = g; cx.fillRect(-this.w/2, -this.h/2, this.w, this.h);
-                // БЛІК (що робить злиток 3D)
-                cx.strokeStyle = "rgba(255,255,255,0.4)"; cx.strokeRect(-this.w/2,-this.h/2,this.w,this.h);
-                cx.restore();
+            u() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0 || this.x > cv.width) this.vx *= -1;
+                if (this.y < 0 || this.y > cv.height) this.vy *= -1;
             }
+            d() { cx.fillStyle = `rgba(191, 149, 63, ${this.o})`; cx.beginPath(); cx.arc(this.x, this.y, this.s, 0, Math.PI*2); cx.fill(); }
         }
-        for(let i=0; i<45; i++) bs.push(new Bar());
-        function an() { cx.clearRect(0,0,cv.width,cv.height); bs.forEach(b=>{b.u();b.d();}); requestAnimationFrame(an); }
+        for(let i=0; i<150; i++) dots.push(new Dot());
+        function an() { cx.clearRect(0,0,cv.width,cv.height); dots.forEach(d=>{d.u();d.d();}); requestAnimationFrame(an); }
         an();
     </script>
 </body>
