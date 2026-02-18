@@ -39,31 +39,35 @@
 
     /* MAIN CONTENT */
         /* MAIN CONTENT */
+        /* MAIN CONTENT */
     .main { opacity: 0; display: flex; flex-direction: column; align-items: center; padding: 80px 15px 60px; min-height: 100vh; transition: 1.5s ease-out; z-index: 2; position: relative; }
 
-    /* ОНОВЛЕНИЙ ЛАКШЕРІ ЛОГОТИП */
+    /* СТАТИЧНИЙ СКЛЯНИЙ ЛОГОТИП */
     .s-logo { 
         width: 125px; height: 125px; 
         background: var(--img) center/cover no-repeat; 
         border-radius: 32px; margin-bottom: 20px; 
-        position: relative; overflow: hidden;
+        position: relative; 
         border: 2.8px solid #bf953f; 
-        box-shadow: 0 15px 40px rgba(0,0,0,0.8), 0 0 25px rgba(191,149,63,0.4), inset 0 0 20px rgba(252, 246, 186, 0.4);
-        animation: luxuryGlow 4s infinite ease-in-out;
+        /* Ефект лінзи: зовнішня тінь + внутрішнє підсвічування країв */
+        box-shadow: 
+            0 15px 40px rgba(0,0,0,0.8), 
+            0 0 25px rgba(191,149,63,0.3), 
+            inset 0 0 20px rgba(255, 255, 255, 0.2), 
+            inset 0 0 10px rgba(252, 246, 186, 0.4);
     }
 
-    /* Діамантовий блік на лого */
-    .s-logo::after {
-        content: ''; position: absolute; top: -150%; left: -150%; width: 300%; height: 300%;
-        background: linear-gradient(45deg, transparent 45%, rgba(255, 255, 255, 0.8) 50%, transparent 55%);
-        transform: rotate(30deg); animation: logoShine 6s infinite ease-in-out;
+    /* Статичний відблиск зверху - імітація скла */
+    .s-logo::before {
+        content: ''; position: absolute; top: 5%; left: 10%; width: 80%; height: 40%;
+        background: linear-gradient(to bottom, rgba(255,255,255,0.2), transparent);
+        border-radius: 20px 20px 50% 50%; pointer-events: none;
     }
 
     .brand-name { font-family: 'Cinzel', serif; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 34px; letter-spacing: 4px; font-weight: 800; margin-bottom: 12px; text-align: center; }
-    
     .live-win { font-size: 15px; color: #00ff95; margin-bottom: 45px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; height: 18px; text-shadow: 0 0 15px rgba(0,255,149,0.6); }
 
-    /* КНОПКИ З ВЕЛИКИМ ТЕКСТОМ ТА ЕФЕКТАМИ */
+    /* КНОПКИ З ВЕЛИКИМ ТЕКСТОМ */
     .btns { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 16px; }
     
     .btn { 
@@ -81,23 +85,18 @@
         overflow: hidden;
     }
 
-    /* Анімації для логотипа */
-    /* М'яка, майже непомітна левітація лого */
-@keyframes luxuryGlow {
-    0%, 100% { transform: translateY(0); box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
-    50% { transform: translateY(-4px); box-shadow: 0 15px 40px rgba(191,149,63,0.3); }
-}
+    /* Рідкісний блиск - раз на 8 секунд (не відволікає) */
+    .btn::after {
+        content: ''; position: absolute; top: 0; left: -150%; width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+        animation: btnShine 8s infinite ease-in-out;
+    }
 
-/* Рідкісний блиск - раз на 8 секунд */
-.btn::before {
-    animation: lightSweep 8s infinite ease-in-out;
-}
-
-@keyframes lightSweep {
-    0% { left: -150%; }
-    10% { left: 150%; } /* Швидкий проліт */
-    100% { left: 150%; } /* Довга пауза */
-}
+    @keyframes btnShine {
+        0% { left: -150%; }
+        12% { left: 150%; }
+        100% { left: 150%; }
+    }
 
 /* Спокійний блік на логотипі - раз на 12 секунд */
 .s-logo::after {
