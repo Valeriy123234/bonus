@@ -23,152 +23,163 @@
         }
         .live-counter span { color: #fff; display: block; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
 
-        /* LOADER */
-        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: 1.2s cubic-bezier(0.65, 0, 0.35, 1); }
-        .l-cont { text-align: center; width: 80%; max-width: 350px; }
-        .l-logo { width: 120px; height: 120px; margin: 0 auto 40px; background: var(--img) center/cover no-repeat; border-radius: 30px; box-shadow: 0 0 45px rgba(191,149,63,0.5); animation: pulse 3s ease-in-out infinite; border: 1px solid rgba(191,149,63,0.3); }
-        .l-bar-wrapper { position: relative; width: 100%; height: 5px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; border: 1px solid rgba(191,149,63,0.2); }
-        #l-fill { position: absolute; top: 0; left: 0; width: 0%; height: 100%; background: var(--gold); box-shadow: 0 0 15px #fcf6ba; }
-        .l-perc { margin-top: 15px; font-weight: 900; font-size: 13px; color: #fcf6ba; letter-spacing: 3px; }
+        /* LOADER (ВЕЛИКЕ ЛОГО) */
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: 1.2s cubic-bezier(0.65, 0, 0.35, 1); cursor: pointer; }
+        .l-cont { text-align: center; width: 90%; max-width: 500px; }
+        .l-logo { 
+            width: 220px; height: 220px; margin: 0 auto 50px; background: var(--img) center/cover no-repeat; 
+            border-radius: 45px; box-shadow: 0 0 60px rgba(191,149,63,0.6); 
+            animation: pulseBig 3s ease-in-out infinite; border: 2px solid rgba(191,149,63,0.4); 
+        }
+        .l-bar-wrapper { position: relative; width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; border: 1px solid rgba(191,149,63,0.2); }
+        #l-fill { position: absolute; top: 0; left: 0; width: 0%; height: 100%; background: var(--gold); box-shadow: 0 0 20px #fcf6ba; }
+        .l-perc { margin-top: 20px; font-weight: 900; font-size: 16px; color: #fcf6ba; letter-spacing: 4px; }
+        .tap-hint { margin-top: 20px; font-size: 10px; color: rgba(252, 246, 186, 0.5); text-transform: uppercase; letter-spacing: 2px; }
 
-        /* CANVAS PARTICLES */
-        canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; }
+        /* CANVAS DUST */
+        canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; opacity: 0.9; }
 
         /* MAIN CONTENT */
-        .main { opacity: 0; display: flex; flex-direction: column; align-items: center; padding: 80px 20px 50px; min-height: 100vh; transition: 2s ease-out; z-index: 2; position: relative; }
+        .main { opacity: 0; display: flex; flex-direction: column; align-items: center; padding: 80px 20px 50px; min-height: 100vh; transition: 1s ease-out; z-index: 2; position: relative; }
         .s-logo { width: 90px; height: 90px; background: var(--img) center/cover no-repeat; border-radius: 22px; margin-bottom: 15px; border: 1px solid rgba(191,149,63,0.5); box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
-        .brand-name { font-family: 'Cinzel', serif; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 28px; letter-spacing: 5px; font-weight: 700; margin-bottom: 5px; }
-        .live-win { font-size: 11px; color: #00ff95; margin-bottom: 35px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; height: 15px; text-shadow: 0 0 10px rgba(0,255,149,0.4); }
+        .brand-name { font-family: 'Cinzel', serif; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 28px; letter-spacing: 6px; font-weight: 700; margin-bottom: 10px; }
+        .live-win { font-size: 13px; color: #00ff95; margin-bottom: 40px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; height: 15px; text-shadow: 0 0 12px rgba(0,255,149,0.5); }
 
-        /* BUTTONS */
+        /* BUTTONS & ANIMATION */
         .btns { width: 100%; max-width: 380px; }
-        .btn { display: block; background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(15px); border: 1px solid rgba(191, 149, 63, 0.3); color: #fff; text-decoration: none; padding: 20px 15px; margin-bottom: 15px; border-radius: 18px; text-align: center; font-weight: 800; text-transform: uppercase; font-size: 12px; letter-spacing: 1.5px; transition: 0.3s; box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
-        .btn:active { transform: scale(0.96); background: rgba(191, 149, 63, 0.15); }
-        .btn-tg { background: rgba(0, 136, 204, 0.15); border-color: #0088cc; margin-top: 15px; margin-bottom: 50px; }
-
-        /* INFO CARDS */
-        .info-title { font-family: 'Cinzel', serif; color: #fcf6ba; font-size: 18px; margin-bottom: 25px; letter-spacing: 4px; text-align: center; }
-        .info-card { width: 100%; max-width: 380px; background: rgba(15, 15, 15, 0.8); border: 1px solid rgba(191, 149, 63, 0.3); border-radius: 20px; padding: 25px; margin-bottom: 15px; box-sizing: border-box; }
-        .info-card h3 { color: #fcf6ba; font-size: 13px; margin-bottom: 12px; border-bottom: 1px solid rgba(191, 149, 63, 0.15); padding-bottom: 8px; text-transform: uppercase; letter-spacing: 2px; }
-        .info-card p { font-size: 11px; color: #bbb; line-height: 1.7; text-align: left; }
+        .btn { 
+            display: block; position: relative; background: rgba(255, 255, 255, 0.04); 
+            backdrop-filter: blur(15px); border: 1px solid rgba(191, 149, 63, 0.35); 
+            color: #fff; text-decoration: none; padding: 22px 15px; margin-bottom: 18px; 
+            border-radius: 18px; text-align: center; font-weight: 900; 
+            text-transform: uppercase; font-size: 12px; letter-spacing: 1.8px; 
+            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+            opacity: 0; transform: translateY(30px); transition: 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
         
-        .warning-red { border: 2px solid #ff0000 !important; background: rgba(255, 0, 0, 0.05); padding: 20px; text-align: center; margin-top: 20px; }
-        .warning-red p { color: #ff5555; font-weight: 800; font-size: 10px; text-transform: uppercase; }
+        .main.show .btn { opacity: 1; transform: translateY(0); }
+        .btn:active { transform: scale(0.95) !important; background: rgba(191, 149, 63, 0.25); }
+        .btn-tg { background: rgba(0, 136, 204, 0.12); border: 1px solid #0088cc; margin-top: 25px; box-shadow: 0 0 25px rgba(0, 136, 204, 0.25); margin-bottom: 60px; }
 
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        /* PRINCIPLES */
+        .info-title { font-family: 'Cinzel', serif; color: #fcf6ba; font-size: 18px; margin-bottom: 30px; letter-spacing: 5px; text-align: center; }
+        .info-card { width: 100%; max-width: 380px; background: rgba(15, 15, 15, 0.9); border: 1px solid rgba(191, 149, 63, 0.2); border-radius: 22px; padding: 28px; margin-bottom: 18px; box-sizing: border-box; }
+        .info-card h3 { color: #fcf6ba; font-size: 13px; margin: 0 0 15px; border-bottom: 1px solid rgba(191, 149, 63, 0.2); padding-bottom: 12px; text-transform: uppercase; letter-spacing: 2.5px; }
+        .info-card p { font-size: 11px; color: #bbb; line-height: 1.8; margin: 0; text-align: left; }
+        
+        .warning-red { border: 2px solid #ff0000 !important; background: rgba(255, 0, 0, 0.05); text-align: center; margin-top: 25px; border-radius: 18px; }
+        .warning-red p { color: #ff5555; font-weight: 900; font-size: 10px; text-transform: uppercase; margin: 0; }
+
+        @keyframes pulseBig { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 80px rgba(191,149,63,0.8); } }
     </style>
 </head>
-<body>
+<body onclick="enableAudio()">
+    <!-- Пряме посилання на звук касового апарату -->
+    <audio id="cashSound" src="https://www.soundjay.com" preload="auto"></audio>
+
     <div class="live-counter">
-        <span id="online-now">ONLINE: 1422</span>
-        <span id="playing-now">PLAYING: 734</span>
+        <span id="on-val">ONLINE: 1542</span>
+        <span id="pl-val">PLAYING: 856</span>
     </div>
 
-    <div id="loader"><div class="l-cont"><div class="l-logo"></div><div class="l-bar-wrapper"><div id="l-fill"></div></div><div class="l-perc" id="pc">0%</div></div></div>
+    <div id="loader">
+        <div class="l-cont">
+            <div class="l-logo"></div>
+            <div class="l-bar-wrapper"><div id="l-fill"></div></div>
+            <div class="l-perc" id="pc">0%</div>
+            <div class="tap-hint">Натисніть для входу</div>
+        </div>
+    </div>
     <canvas id="c"></canvas>
 
     <div class="main" id="m">
         <div class="s-logo"></div>
         <div class="brand-name">MRBONUS-VIP</div>
-        <div id="live-win" class="live-win">ПЕРЕВІРКА ПІДКЛЮЧЕННЯ...</div>
+        <div id="live-win" class="live-win">CONNECTING TO VIP SERVER...</div>
 
         <div class="btns">
-            <a href="https://play.mrbonusua.space/bonus1.html" class="btn">FIRST CASINO • 1300 FS VIP 💎</a>
-            <a href="https://play.mrbonusua.space/bonus2.html" class="btn">SLOTS CITY • 700 FS + 150% 🔥</a>
-            <a href="https://play.mrbonusua.space/pokerbet.html" class="btn">POKER-BET • 650 FS + 100% 🃏</a>
-            <a href="https://play.mrbonusua.space/topmatch.html" class="btn">TOP MATCH • 200₴ + 100 FS ⚡</a>
-            <a href="https://play.mrbonusua.space/beton.html" class="btn">BETON • 500 FS + 150% 🎰</a>
-            <a href="https://play.mrbonusua.space/gorilla.html" class="btn">GORILLA • 300 ФРІСПІНІВ 🦍</a>
-            <a href="https://play.mrbonusua.space/betking.html" class="btn">BETKING • 200% + 200 FS 👑</a>
-            <a href="https://play.mrbonusua.space/777.html" class="btn">777 CASINO • 1450 FS БЕЗДЕП 🎰</a>
-            <a href="https://play.mrbonusua.space/vegas.html" class="btn">VEGAS • 150 FS ЩОДНЯ 🌃</a>
-            <a href="https://play.mrbonusua.space/" class="btn">GG BET • 1000 ФРІСПІНІВ 🔥</a>
-            <a href="https://play.mrbonusua.space/parik24.html" class="btn">PARIK 24 • 150 FS + 100% 🟧</a>
-            <a href="https://play.mrbonusua.space/championclub.html" class="btn">CHAMPION CLUB • 1000 FS 🏆</a>
+            <a href="https://play.mrbonusua.space/bonus1.html" class="btn" style="transition-delay: 0.1s">FIRST CASINO • 1300 FS VIP 💎</a>
+            <a href="https://play.mrbonusua.space/bonus2.html" class="btn" style="transition-delay: 0.2s">SLOTS CITY • 700 FS + 150% 🔥</a>
+            <a href="https://play.mrbonusua.space/championclub.html" class="btn" style="transition-delay: 0.3s">CHAMPION CLUB • 1000 FS 🏆</a>
+            <a href="https://play.mrbonusua.space/pokerbet.html" class="btn" style="transition-delay: 0.4s">POKER-BET • 650 FS + 100% 🃏</a>
+            <a href="https://play.mrbonusua.space/topmatch.html" class="btn" style="transition-delay: 0.5s">TOP MATCH • 200₴ + 100 FS ⚡</a>
+            <a href="https://play.mrbonusua.space/beton.html" class="btn" style="transition-delay: 0.6s">BETON • 500 FS + 150% 🎰</a>
+            <a href="https://play.mrbonusua.space/gorilla.html" class="btn" style="transition-delay: 0.7s">GORILLA • 300 ФРІСПІНІВ 🦍</a>
+            <a href="https://play.mrbonusua.space/betking.html" class="btn" style="transition-delay: 0.8s">BETKING • 200% + 200 FS 👑</a>
+            <a href="https://play.mrbonusua.space/777.html" class="btn" style="transition-delay: 0.9s">777 CASINO • 1450 FS БЕЗДЕП 🎰</a>
+            <a href="https://play.mrbonusua.space/vegas.html" class="btn" style="transition-delay: 1.0s">VEGAS • 150 FS ЩОДНЯ 🌃</a>
+            <a href="https://play.mrbonusua.space/" class="btn" style="transition-delay: 1.1s">GG BET • 1000 ФРІСПІНІВ 🔥</a>
+            <a href="https://play.mrbonusua.space/parik24.html" class="btn" style="transition-delay: 1.2s">PARIK 24 • 150 FS + 100% 🟧</a>
             
-            <a href="https://t.me" class="btn btn-tg">📢 ЗАКРИТИЙ ТЕЛЕГРАМ КАНАЛ ✨</a>
+            <a href="tg://join?invite=c33timlTVpYyOGQ6" class="btn btn-tg" style="transition-delay: 1.4s">📢 JOIN ELITE TELEGRAM ✨</a>
         </div>
 
         <div class="info-title">НАШІ ПРИНЦИПИ</div>
-
-        <div class="info-card">
-            <h3>ЧЕСНА ГРА</h3>
-            <p>УСІ ПРЕДСТАВЛЕНІ САЙТИ ПРАЦЮЮТЬ НА СЕРТИФІКОВАНИХ ГЕНЕРАТОРАХ ВИПАДКОВИХ ЧИСЕЛ (RNG), ЩО ГАРАНТУЄ ПРОЗОРІСТЬ ТА НЕПЕРЕДБАЧУВАНІСТЬ РЕЗУЛЬТАТІВ ГРИ.</p>
-        </div>
-
-        <div class="info-card">
-            <h3>ВІДПОВІДАЛЬНИЙ ПІДХІД</h3>
-            <p>МИ ПІДТРИМУЄМО ПРИНЦИПИ ВІДПОВІДАЛЬНОЇ ГРИ ТА НАДАЄМО ПОВНУ ІНФОРМАЦІЮ ПРО РИЗИКИ ТА ІНСТРУМЕНТИ САМОКОНТРОЛЮ ДЛЯ ГРАВЦІВ.</p>
-        </div>
-
-        <div class="info-card">
-            <h3>НАДІЙНІСТЬ ТА БЕЗПЕКА</h3>
-            <p>МИ СПІВПРАЦЮЄМО ЛИШЕ З ПЛАТФОРМАМИ, ЩО ВИКОРИСТОВУЮТЬ СУЧАСНІ ТЕХНОЛОГІЇ ШИФРУВАННЯ (SSL) ДЛЯ ЗАХИСТУ ВАШИХ ДАНИХ ТА ФІНАНСОВИХ ТРАНЗАКЦІЙ.</p>
-        </div>
+        <div class="info-card"><h3>ЧЕСНА ГРА</h3><p>УСІ ПРЕДСТАВЛЕНІ САЙТИ ПРАЦЮЮТЬ НА СЕРТИФІКОВАНИХ ГЕНЕРАТОРАХ ВИПАДКОВИХ ЧИСЕЛ (RNG).</p></div>
+        <div class="info-card"><h3>ВІДПОВІДАЛЬНИЙ ПІДХІД</h3><p>МИ ПІДТРИМУЄМО ПРИНЦИПИ ВІДПОВІДАЛЬНОЇ ГРИ ТА КОНТРОЛЮ РИЗИКІВ.</p></div>
+        <div class="info-card"><h3>НАДІЙНІСТЬ ТА БЕЗПЕКА</h3><p>МИ СПІВПРАЦЮЄМО ЛИШЕ З ПЛАТФОРМАМИ З SSL-ШИФРУВАННЯМ.</p></div>
 
         <div class="info-card warning-red">
-            <p>УЧАСТЬ В АЗАРТНИХ ІГРАХ МОЖЕ ВИКЛИКАТИ ІГРОВУ ЗАЛЕЖНІСТЬ. ДОТРИМУЙТЕСЯ ПРАВИЛ (ПРИНЦИПІВ) ВІДПОВІДАЛЬНОЇ ГРИ. 21+</p>
+            <p>УЧАСТЬ В АЗАРТНИХ ІГРАХ МОЖЕ ВИКЛИКАТИ ІГРОВУ ЗАЛЕЖНІСТЬ. 21+</p>
         </div>
     </div>
 
     <script>
-        // --- LOADER (3 SEC WITH EASE) ---
-        const duration = 3000; const start = Date.now();
-        const fill = document.getElementById('l-fill'); const pc = document.getElementById('pc');
-        
-        function updateLoader() {
-            const elapsed = Date.now() - start;
-            let prog = Math.min(Math.pow(elapsed / duration, 1.8) * 100, 100);
-            fill.style.width = prog + '%'; pc.innerText = Math.floor(prog) + '%';
-            if (elapsed < duration) requestAnimationFrame(updateLoader);
-            else {
-                setTimeout(() => {
-                    document.getElementById('loader').style.opacity = '0';
-                    document.getElementById('m').style.opacity = '1';
-                    setTimeout(() => document.getElementById('loader').remove(), 1000);
-                }, 200);
+        let audioAllowed = false;
+        function enableAudio() {
+            if(!audioAllowed) {
+                const sound = document.getElementById('cashSound');
+                sound.play().then(() => {
+                    sound.pause();
+                    sound.currentTime = 0;
+                    audioAllowed = true;
+                }).catch(() => {});
             }
         }
+
+        // LOADER 3 SEC
+        const start = Date.now();
+        const updateLoader = () => {
+            const elap = Date.now() - start;
+            let prog = Math.min(Math.pow(elap/3000, 1.8)*100, 100);
+            document.getElementById('l-fill').style.width = prog + '%';
+            document.getElementById('pc').innerText = Math.floor(prog) + '%';
+            if (elap < 3000) requestAnimationFrame(updateLoader);
+            else {
+                setTimeout(() => {
+                    if(audioAllowed) document.getElementById('cashSound').play();
+                    document.getElementById('loader').style.opacity = '0';
+                    const main = document.getElementById('m');
+                    main.style.opacity = '1';
+                    main.classList.add('show');
+                    setTimeout(() => document.getElementById('loader').remove(), 1200);
+                }, 200);
+            }
+        };
         updateLoader();
 
-        // --- LIVE WIN TICKER ---
-        const names = ["Олександр", "Дмитро", "Vip_Player", "LuckyMan", "Анна", "Sergey", "Maks_777", "X-Bet", "Юрій"];
-        const sums = ["1200₴", "5400₴", "800₴", "12500₴", "3200₴", "15000₴", "450₴", "2100₴"];
-        const games = ["Book of Ra", "Gates of Olympus", "Sun of Egypt", "Aviator", "Sugar Rush"];
-        
+        // LIVE WINS
+        const wins = ["+2,800₴", "+14,200₴", "+4,150₴", "+21,000₴", "+750₴", "+35,000₴", "+6,200₴"];
+        const slots = ["AVIATOR", "BOOK OF RA", "GATES OF OLYMPUS", "SUGAR RUSH", "SWEET BONANZA"];
         setInterval(() => {
-            if(document.getElementById('m').style.opacity == "1") {
-                const n = names[Math.floor(Math.random()*names.length)];
-                const s = sums[Math.floor(Math.random()*sums.length)];
-                const g = games[Math.floor(Math.random()*games.length)];
-                document.getElementById('live-win').innerText = `${n} щойно виграв ${s} у ${g} ⚡`;
+            if(document.getElementById('m').classList.contains('show')) {
+                const s = wins[Math.floor(Math.random()*wins.length)];
+                const g = slots[Math.floor(Math.random()*slots.length)];
+                document.getElementById('live-win').innerText = `WIN: ${s} IN ${g} ⚡`;
             }
-        }, 4000);
+        }, 3500);
 
-        // --- LIVE COUNTER UPDATE ---
-        setInterval(() => {
-            const on = 1400 + Math.floor(Math.random()*200);
-            const pl = 700 + Math.floor(Math.random()*150);
-            document.getElementById('online-now').innerText = `ONLINE: ${on}`;
-            document.getElementById('playing-now').innerText = `PLAYING: ${pl}`;
-        }, 5000);
-
-        // --- CANVAS PARTICLES ---
+        // CANVAS DUST
         const canvas = document.getElementById('c'); const ctx = canvas.getContext('2d');
         let w, h, particles = [];
         function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
         window.addEventListener('resize', resize); resize();
-
-        class P {
+        class Particle {
             constructor() { this.init(); }
-            init() { this.x = Math.random()*w; this.y = Math.random()*h; this.s = Math.random()*1.5+0.2; this.v = Math.random()*0.4+0.1; this.o = Math.random()*0.5; }
-            draw() {
-                this.y -= this.v; if(this.y < -10) this.init();
-                ctx.fillStyle = `rgba(252, 246, 186, ${this.o})`;
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.s, 0, Math.PI*2); ctx.fill();
-            }
+            init() { this.x = Math.random()*w; this.y = Math.random()*h; this.s = Math.random()*2.5 + 0.5; this.v = Math.random()*0.5 + 0.15; this.o = Math.random()*0.6; }
+            draw() { this.y -= this.v; if(this.y < -10) this.init(); ctx.fillStyle = `rgba(252, 246, 186, ${this.o})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.s, 0, Math.PI*2); ctx.fill(); }
         }
-        for(let i=0; i<60; i++) particles.push(new P());
+        for(let i=0; i<100; i++) particles.push(new Particle());
         function anim() { ctx.clearRect(0,0,w,h); particles.forEach(p => p.draw()); requestAnimationFrame(anim); }
         anim();
     </script>
