@@ -17,7 +17,7 @@
 
         #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: 1s; }
         .l-cont { text-align: center; width: 85%; max-width: 400px; }
-        .l-logo { width: 160px; height: 160px; margin: 0 auto 30px; background: var(--img) center/cover no-repeat; border-radius: 35px; box-shadow: 0 0 50px rgba(191,149,63,0.4); animation: pulse 3s infinite; }
+        .l-logo { width: 150px; height: 150px; margin: 0 auto 30px; background: var(--img) center/cover no-repeat; border-radius: 35px; box-shadow: 0 0 50px rgba(191,149,63,0.4); animation: pulse 3s infinite; }
         .l-bar-wrapper { position: relative; width: 100%; height: 35px; background: rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden; border: 1px solid rgba(191,149,63,0.3); }
         #l-fill { position: absolute; top: 0; left: 0; width: 0%; height: 100%; background: var(--gold); }
         .l-perc { position: absolute; width: 100%; top: 0; left: 0; line-height: 35px; font-weight: 900; font-size: 16px; color: #fff; z-index: 2; text-align: center; text-shadow: 0 0 5px #000; }
@@ -25,16 +25,17 @@
         canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; }
 
         .main { opacity: 0; display: flex; flex-direction: column; align-items: center; padding: 70px 15px 40px; min-height: 100vh; transition: 2s; z-index: 2; position: relative; }
-        .s-logo { width: 90px; height: 90px; background: var(--img) center/cover no-repeat; border-radius: 20px; margin-bottom: 15px; border: 1px solid rgba(191, 149, 63, 0.5); }
-        .brand-name { font-family: 'Cinzel', serif; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 28px; letter-spacing: 5px; font-weight: 700; margin-bottom: 5px; }
+        .s-logo { width: 80px; height: 80px; background: var(--img) center/cover no-repeat; border-radius: 15px; margin-bottom: 10px; border: 1px solid rgba(191, 149, 63, 0.5); }
+        .brand-name { font-family: 'Cinzel', serif; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 26px; letter-spacing: 4px; font-weight: 700; margin-bottom: 5px; }
         .live-win { font-size: 12px; color: #00ff00; margin-bottom: 30px; font-weight: 800; text-transform: uppercase; height: 15px; letter-spacing: 1px; }
 
-        .steps { display: flex; justify-content: space-between; width: 100%; max-width: 360px; margin-bottom: 30px; }
-        .step { font-size: 10px; color: #777; text-align: center; text-transform: uppercase; }
-        .step span { display: block; color: #fcf6ba; font-weight: 900; font-size: 13px; margin-top: 5px; }
+        /* ВПРАВЛЕНА ЦЕНТРОВКА КРОКІВ */
+        .steps { display: grid; grid-template-columns: 1fr 1fr 1fr; width: 100%; max-width: 360px; margin-bottom: 30px; gap: 5px; }
+        .step { font-size: 9px; color: #777; text-align: center; text-transform: uppercase; }
+        .step span { display: block; color: #fcf6ba; font-weight: 900; font-size: 11px; margin-top: 5px; white-space: nowrap; }
 
         .btns { width: 100%; max-width: 360px; }
-        .btn { display: block; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); border: 1px solid rgba(191, 149, 63, 0.5); color: #fff; text-decoration: none; padding: 22px 15px; margin-bottom: 16px; border-radius: 14px; text-align: center; font-weight: 900; text-transform: uppercase; font-size: 14px; letter-spacing: 1px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.4); transition: 0.3s; }
+        .btn { display: block; position: relative; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); border: 1px solid rgba(191, 149, 63, 0.5); color: #fff; text-decoration: none; padding: 22px 15px; margin-bottom: 16px; border-radius: 14px; text-align: center; font-weight: 900; text-transform: uppercase; font-size: 13px; letter-spacing: 1px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
         .shimmer { animation: shimmerEffect 1.5s ease-in-out; }
         .btn-tg { background: rgba(0, 136, 204, 0.2); border: 1px solid #0088cc; margin-top: 15px; }
 
@@ -89,7 +90,7 @@
             <a href="https://play.mrbonusua.space" class="btn casino-link">GG BET • 1000 ФРІСПІНІВ 🔥</a>
             <a href="https://play.mrbonusua.spaceparik24.html" class="btn casino-link">PARIK 24 • 150 FS + 100% 🟧</a>
             
-            <a href="https://t.me/+c33timlTVpYyOGQ6" class="btn btn-tg">📢 ПРИЄДНАТИСЬ ДО TELEGRAM ✨</a>
+            <a href="https://t.me" class="btn btn-tg">📢 ПРИЄДНАТИСЬ ДО TELEGRAM ✨</a>
         </div>
 
         <div class="info-title">НАШІ ПРИНЦИПИ</div>
@@ -115,6 +116,7 @@
     </div>
 
     <script>
+        // ЛОГІКА ЗАВАНТАЖЕННЯ (3 СЕКУНДИ)
         let p = 0;
         const iv = setInterval(() => {
             p += 1;
@@ -145,29 +147,52 @@
             }, 2000);
         }
 
+        // МОНЕТИ (ПРАЦЮЮТЬ ЗАВЖДИ)
         const cv = document.getElementById('c'); const cx = cv.getContext('2d');
         let coins = [];
         function rs() { cv.width = window.innerWidth; cv.height = window.innerHeight; }
         window.addEventListener('resize', rs); rs();
+
         class Coin {
             constructor() { this.init(); }
             init() {
-                this.x = Math.random() * cv.width; this.y = -Math.random() * cv.height;
-                this.s = Math.random() * 15 + 10; this.vy = Math.random() * 2 + 1;
-                this.r = Math.random() * Math.PI * 2; this.rs = Math.random() * 0.1;
+                this.x = Math.random() * cv.width;
+                this.y = -Math.random() * cv.height;
+                this.s = Math.random() * 12 + 8; // Розмір
+                this.vy = Math.random() * 1.5 + 0.8; // Швидкість падіння
+                this.angle = Math.random() * Math.PI * 2; // Кут обертання
+                this.vAngle = Math.random() * 0.05 + 0.02; // Швидкість обертання
             }
-            u() { this.y += this.vy; this.r += this.rs; if (this.y > cv.height + 20) this.init(); }
+            u() {
+                this.y += this.vy;
+                this.angle += this.vAngle;
+                if (this.y > cv.height + 20) this.init();
+            }
             d() {
-                cx.save(); cx.translate(this.x, this.y); cx.rotate(this.r);
-                // 3D Монета (градієнт)
-                let g = cx.createLinearGradient(-this.s/2, -this.s/2, this.s/2, this.s/2);
+                cx.save();
+                cx.translate(this.x, this.y);
+                cx.rotate(this.angle);
+                // Малюємо 3D ефект монети через еліпс
+                let g = cx.createLinearGradient(-this.s, -this.s, this.s, this.s);
                 g.addColorStop(0, '#bf953f'); g.addColorStop(0.5, '#fcf6ba'); g.addColorStop(1, '#aa771c');
-                cx.fillStyle = g; cx.beginPath(); cx.ellipse(0, 0, this.s, this.s * Math.cos(this.r), 0, 0, Math.PI * 2);
-                cx.fill(); cx.strokeStyle = "rgba(255,255,255,0.4)"; cx.stroke(); cx.restore();
+                cx.fillStyle = g;
+                cx.beginPath();
+                // Змінюємо висоту еліпса для ефекту обертання
+                cx.ellipse(0, 0, this.s, this.s * Math.abs(Math.sin(this.angle)), 0, 0, Math.PI * 2);
+                cx.fill();
+                // Блік на ребрі
+                cx.strokeStyle = "rgba(255,255,255,0.3)";
+                cx.lineWidth = 1;
+                cx.stroke();
+                cx.restore();
             }
         }
-        for(let i=0; i<40; i++) coins.push(new Coin());
-        function an() { cx.clearRect(0,0,cv.width,cv.height); coins.forEach(c=>{c.u();c.d();}); requestAnimationFrame(an); }
+        for(let i=0; i<45; i++) coins.push(new Coin());
+        function an() { 
+            cx.clearRect(0, 0, cv.width, cv.height); 
+            coins.forEach(c => { c.u(); c.d(); }); 
+            requestAnimationFrame(an); 
+        }
         an();
     </script>
 </body>
