@@ -111,6 +111,7 @@
         /* MAIN CONTENT */
         /* Основний контейнер: додав плавності */
 /* Основний контейнер: додав плавності */
+/* Основний контейнер: додав плавності */
 .main { 
     opacity: 0; 
     display: flex; 
@@ -176,36 +177,6 @@
     letter-spacing: 3px; 
     text-shadow: 0 0 10px rgba(191,149,63,0.5);
 }
-
-
-/* Блік (перелив), який не закриває текст */
-.btn::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -150%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 100%);
-    transform: skewX(-25deg);
-    animation: shine 3s infinite;
-    z-index: -1; /* Блік буде ПІД текстом, але НАД фоном */
-}
-
-@keyframes goldFlow {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-@keyframes shine {
-    0% { left: -150%; }
-    100% { left: 150%; }
-}
-
-.main.show .btn { opacity: 1; transform: translateY(0); }
-
-.btn:active { transform: scale(0.95); filter: brightness(1.1); }
 
 /* Кнопка ТГ */
 .btn-tg { 
