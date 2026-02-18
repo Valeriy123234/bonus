@@ -3,36 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-    <title>MRBONUS-VIP</title>
+    <title>MRBONUS-VIP | ELITE ACCESS</title>
+    
+    <!-- Підключаємо елітні шрифти -->
     <link href="https://fonts.googleapis.com" rel="stylesheet">
+    
     <style>
     :root {
         --gold: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
         --img: url('./8C816B9D-90C0-4CD4-AA80-242F7BA3F77E.png');
     }
     
-    * { box-sizing: border-box; margin: 0; padding: 0; background-color: transparent; -webkit-tap-highlight-color: transparent; }
-    html, body { background: #000 !important; color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; padding: 0; overflow-x: hidden; min-height: 100vh; }
+    * { 
+        box-sizing: border-box; 
+        margin: 0; 
+        padding: 0; 
+        background-color: transparent; 
+        -webkit-tap-highlight-color: transparent; 
+    }
+
+    html, body { 
+        background: #000 !important; 
+        color: #fff; 
+        font-family: 'Montserrat', sans-serif; 
+        overflow-x: hidden; 
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+    }
 
     /* ЖИВІ ЛІЧИЛЬНИКИ */
     .live-counter { 
-        position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.9); 
-        border: 2px solid #bf953f; padding: 10px 18px; border-radius: 12px; 
-        font-size: 10px; z-index: 1000; font-weight: 900; color: #fcf6ba; 
-        backdrop-filter: blur(10px); box-shadow: 0 0 20px rgba(191,149,63,0.4); 
+        position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.85); 
+        border: 1px solid #bf953f; padding: 8px 15px; border-radius: 12px; 
+        font-size: 10px; z-index: 1000; font-weight: 700; color: #fcf6ba; 
+        backdrop-filter: blur(10px); box-shadow: 0 0 15px rgba(191,149,63,0.3); min-width: 125px; 
     }
-    .live-counter span { color: #fff; display: block; text-transform: uppercase; margin-bottom: 2px; }
+    .live-counter span { color: #fff; display: block; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
 
     /* ПРЕЛОАДЕР */
-    #loader { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: 1s ease-in-out; }
-    .l-cont { text-align: center; width: 100%; max-width: 320px; display: flex; flex-direction: column; align-items: center; }
+    #loader { 
+        position: fixed; inset: 0; background: #000; z-index: 10000; 
+        display: flex; justify-content: center; align-items: center; 
+        transition: 1s ease-in-out; 
+    }
+    .l-cont { text-align: center; width: 85%; max-width: 350px; display: flex; flex-direction: column; align-items: center; }
 
-    /* 3D ХРУСТАЛЬНИЙ КВАДРАТ (ЛОАДЕР) */
+    /* 3D ХРУСТАЛЬНИЙ ЛОГОТИП (ПРЕЛОАДЕР) */
     .l-logo { 
-        width: 180px; height: 180px; margin-bottom: 60px; 
+        width: 180px; height: 180px; margin-bottom: 50px; 
         background: var(--img) center/cover no-repeat; border-radius: 35px; 
-        position: relative; border: 1px solid rgba(255,255,255,0.3);
-        box-shadow: 0 30px 70px rgba(0,0,0,1), 
+        position: relative; border: 1px solid rgba(255, 255, 255, 0.3);
+        /* Ефект випуклого скла */
+        box-shadow: 0 35px 70px rgba(0,0,0,1), 
                     inset 15px 15px 30px rgba(255,255,255,0.2), 
                     inset -15px -15px 30px rgba(0,0,0,0.7);
     }
@@ -42,69 +65,50 @@
         z-index: 2;
     }
 
-    /* ЮВЕЛІРНА ЛІНІЯ ЗАВАНТАЖЕННЯ З ТОЧКОЮ */
-    .l-bar-wrapper { position: relative; width: 240px; height: 2px; background: rgba(191,149,63,0.1); border-radius: 4px; }
+    /* ЮВЕЛІРНА ЛІНІЯ З ДІАМАНТОВОЮ ТОЧКОЮ */
+    .l-bar-wrapper { position: relative; width: 240px; height: 2px; background: rgba(191,149,63,0.1); border-radius: 4px; overflow: visible; }
     #l-fill { 
         position: absolute; top: 0; left: 0; height: 100%; 
-        background: #bf953f; border-radius: 4px; box-shadow: 0 0 15px #bf953f;
-        transition: width 0.1s linear;
+        background: #bf953f; box-shadow: 0 0 15px #fcf6ba; 
+        transition: width 0.1s linear; 
     }
-    /* Сяюча точка (алмаз) на кінці */
+    /* Сяюча точка, що тягне золото */
     #l-fill::after {
         content: ''; position: absolute; right: 0; top: 50%; width: 10px; height: 10px; 
         background: #fff; border-radius: 50%; transform: translate(50%, -50%);
-        box-shadow: 0 0 20px #fff, 0 0 40px #fcf6ba; animation: spark 1.5s infinite;
+        box-shadow: 0 0 20px #fff, 0 0 40px #fcf6ba; 
+        animation: spark 1.5s infinite ease-in-out;
     }
-    @keyframes spark { 0%, 100% { transform: translate(50%, -50%) scale(1); opacity: 0.8; } 50% { transform: translate(50%, -50%) scale(1.3); opacity: 1; } }
+    @keyframes spark { 0%, 100% { transform: translate(50%, -50%) scale(1); opacity: 0.8; } 50% { transform: translate(50%, -50%) scale(1.4); opacity: 1; } }
 
-    .l-perc { margin-top: 30px; font-family: 'Cinzel', serif; font-size: 14px; color: #fcf6ba; letter-spacing: 10px; }
+    /* ЦИФРИ 0-100% */
+    .l-perc { margin-top: 25px; font-weight: 900; font-size: 16px; color: #fcf6ba; letter-spacing: 6px; font-family: 'Cinzel', serif; text-shadow: 0 0 10px rgba(191,149,63,0.5); }
 
-    /* ГОЛОВНИЙ ЕКРАН - НУЛЬ ПУСТОТИ */
+    canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; opacity: 0.8; }
+
+    /* ГОЛОВНИЙ ЕКРАН - БЕЗ ПУСТОТИ ЗВЕРХУ */
     .main { 
         opacity: 0; display: flex; flex-direction: column; align-items: center; 
-        padding: 10px 15px 40px !important; margin-top: 0 !important;
-        min-height: 100vh; transition: 1.5s ease-out; position: relative; z-index: 2;
+        padding: 10px 20px 50px !important; /* Мінімум зверху */
+        min-height: 100vh; transition: 1.5s ease-out; z-index: 2; position: relative; 
     }
 
-    /* 3D ХРУСТАЛЬНИЙ ЛОГОТИП (МЕНЮ) */
+    /* 3D ХРУСТАЛЬНИЙ ЛОГОТИП (ГОЛОВНИЙ) */
     .s-logo { 
-        width: 110px; height: 110px; margin-top: 0 !important; margin-bottom: 10px;
-        background: var(--img) center/cover no-repeat; border-radius: 22px; 
+        width: 110px; height: 110px; margin-top: 0 !important; margin-bottom: 15px; 
+        background: var(--img) center/cover no-repeat; border-radius: 24px; 
         position: relative; border: 2px solid #bf953f;
-        box-shadow: 0 15px 40px rgba(0,0,0,0.8), inset 5px 5px 15px rgba(255,255,255,0.2);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.8), inset 6px 6px 15px rgba(255,255,255,0.2);
     }
     .s-logo::after {
-        content: ''; position: absolute; inset: 0; border-radius: 22px;
+        content: ''; position: absolute; inset: 0; border-radius: 24px;
         background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
     }
 
-    .brand-name { font-family: 'Cinzel', serif; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px; letter-spacing: 4px; font-weight: 800; margin-bottom: 10px; text-align: center; }
-    .live-win { font-size: 14px; color: #00ff95; margin-bottom: 40px; font-weight: 900; text-transform: uppercase; text-shadow: 0 0 15px rgba(0,255,149,0.6); }
+    .brand-name { font-family: 'Cinzel', serif; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px; letter-spacing: 5px; font-weight: 800; margin-bottom: 10px; text-align: center; }
+    .live-win { font-size: 14px; color: #00ff95; margin-bottom: 40px; font-weight: 800; text-transform: uppercase; text-shadow: 0 0 15px rgba(0,255,149,0.5); }
 
-    </style>
-</head>
-<body onclick="enableAudio()" ontouchstart="enableAudio()">
-    <audio id="cash" src="https://www.soundjay.com" preload="auto"></audio>
 
-    <div class="live-counter">
-        <span id="on-val">ONLINE: 1582</span>
-        <span id="pl-val">PLAYING: 894</span>
-    </div>
-
-    <div id="loader">
-        <div class="l-cont">
-            <div class="l-logo"></div>
-            <div class="l-bar-wrapper"><div id="l-fill"></div></div>
-            <div class="l-perc" id="pc">0%</div>
-        </div>
-    </div>
-
-    <canvas id="c"></canvas>
-
-    <div class="main" id="m">
-        <div class="s-logo"></div>
-        <div class="brand-name">MRBONUS-VIP</div>
-        <div id="live-win" class="live-win">CONNECTING TO VIP SERVER...</div>
 
         <!-- ТУТ ПОЧИНАЄТЬСЯ ТВОЯ СЕКЦІЯ BTNS -->
 
