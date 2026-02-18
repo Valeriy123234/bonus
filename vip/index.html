@@ -2,71 +2,79 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>MRBONUS-VIP | ELITE ACCESS</title>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
         :root {
-            --gold-gradient: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
-            --gold-border: rgba(191, 149, 63, 0.4);
+            --gold: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
             --img: url('./8C816B9D-90C0-4CD4-AA80-242F7BA3F77E.png');
         }
         
-        body, html { 
-            margin: 0; padding: 0; background: #000;
-            color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; 
+        * { box-sizing: border-box; margin: 0; padding: 0; background-color: transparent; }
+        html, body { background-color: #000 !important; color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; min-height: 100vh; }
+
+        /* LIVE COUNTER */
+        .live-counter { 
+            position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.85); 
+            border: 1px solid #bf953f; padding: 8px 15px; border-radius: 12px; 
+            font-size: 10px; z-index: 1000; font-weight: 700; color: #fcf6ba; 
+            backdrop-filter: blur(10px); box-shadow: 0 0 15px rgba(191,149,63,0.3); min-width: 120px; 
         }
+        .live-counter span { color: #fff; display: block; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
 
-        #particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-        .aurora { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, rgba(191, 149, 63, 0.1) 0%, transparent 70%); z-index: 0; pointer-events: none; }
+        /* LOADER */
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: 1.2s cubic-bezier(0.65, 0, 0.35, 1); }
+        .l-cont { text-align: center; width: 80%; max-width: 350px; }
+        .l-logo { width: 120px; height: 120px; margin: 0 auto 40px; background: var(--img) center/cover no-repeat; border-radius: 30px; box-shadow: 0 0 45px rgba(191,149,63,0.5); animation: pulse 3s ease-in-out infinite; border: 1px solid rgba(191,149,63,0.3); }
+        .l-bar-wrapper { position: relative; width: 100%; height: 5px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; border: 1px solid rgba(191,149,63,0.2); }
+        #l-fill { position: absolute; top: 0; left: 0; width: 0%; height: 100%; background: var(--gold); box-shadow: 0 0 15px #fcf6ba; }
+        .l-perc { margin-top: 15px; font-weight: 900; font-size: 13px; color: #fcf6ba; letter-spacing: 3px; }
 
-        /* LOADER 3 SEC */
-        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease; }
-        .l-cont { text-align: center; width: 80%; max-width: 400px; }
-        .l-logo { width: 150px; height: 150px; margin: 0 auto 40px; background: var(--img) center/cover no-repeat; border-radius: 35px; border: 1px solid var(--gold-border); box-shadow: 0 0 50px rgba(191,149,63,0.4); }
-        .l-bar-wrapper { height: 4px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
-        #l-fill { width: 0%; height: 100%; background: var(--gold-gradient); }
-        .l-perc { margin-top: 15px; font-weight: 900; color: #fcf6ba; letter-spacing: 3px; font-size: 14px; }
+        /* CANVAS PARTICLES */
+        canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; }
 
-        /* CONTENT */
-        .main { opacity: 0; display: flex; flex-direction: column; align-items: center; padding: 60px 20px; min-height: 100vh; position: relative; z-index: 2; transition: opacity 1.5s ease; }
-        .brand-name { font-family: 'Cinzel', serif; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 28px; letter-spacing: 4px; font-weight: 700; margin: 20px 0; }
+        /* MAIN CONTENT */
+        .main { opacity: 0; display: flex; flex-direction: column; align-items: center; padding: 80px 20px 50px; min-height: 100vh; transition: 2s ease-out; z-index: 2; position: relative; }
+        .s-logo { width: 90px; height: 90px; background: var(--img) center/cover no-repeat; border-radius: 22px; margin-bottom: 15px; border: 1px solid rgba(191,149,63,0.5); box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+        .brand-name { font-family: 'Cinzel', serif; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 28px; letter-spacing: 5px; font-weight: 700; margin-bottom: 5px; }
+        .live-win { font-size: 11px; color: #00ff95; margin-bottom: 35px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; height: 15px; text-shadow: 0 0 10px rgba(0,255,149,0.4); }
 
-        .btns { width: 100%; max-width: 400px; }
-        .btn { display: block; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid var(--gold-border); color: #fff; text-decoration: none; padding: 18px; margin-bottom: 12px; border-radius: 15px; text-align: center; font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .btn:active { transform: scale(0.97); background: rgba(191, 149, 63, 0.2); }
-        .btn-tg { background: rgba(0, 136, 204, 0.15); border-color: #0088cc; margin-top: 10px; margin-bottom: 45px; }
+        /* BUTTONS */
+        .btns { width: 100%; max-width: 380px; }
+        .btn { display: block; background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(15px); border: 1px solid rgba(191, 149, 63, 0.3); color: #fff; text-decoration: none; padding: 20px 15px; margin-bottom: 15px; border-radius: 18px; text-align: center; font-weight: 800; text-transform: uppercase; font-size: 12px; letter-spacing: 1.5px; transition: 0.3s; box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+        .btn:active { transform: scale(0.96); background: rgba(191, 149, 63, 0.15); }
+        .btn-tg { background: rgba(0, 136, 204, 0.15); border-color: #0088cc; margin-top: 15px; margin-bottom: 50px; }
 
-        /* PRINCIPLES */
-        .principles-title { color: #fcf6ba; font-size: 18px; font-weight: 900; letter-spacing: 4px; margin-bottom: 25px; text-transform: uppercase; text-shadow: 0 0 15px rgba(191,149,63,0.3); }
-        .info-card { width: 100%; max-width: 400px; background: rgba(15, 15, 15, 0.8); border: 1px solid var(--gold-border); border-radius: 15px; padding: 22px; margin-bottom: 15px; box-sizing: border-box; box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
-        .info-card h3 { color: #fcf6ba; font-size: 13px; margin: 0 0 12px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; border-bottom: 1px solid rgba(191,149,63,0.2); padding-bottom: 8px; }
-        .info-card p { font-size: 11px; color: #ddd; line-height: 1.7; margin: 0; }
+        /* INFO CARDS */
+        .info-title { font-family: 'Cinzel', serif; color: #fcf6ba; font-size: 18px; margin-bottom: 25px; letter-spacing: 4px; text-align: center; }
+        .info-card { width: 100%; max-width: 380px; background: rgba(15, 15, 15, 0.8); border: 1px solid rgba(191, 149, 63, 0.3); border-radius: 20px; padding: 25px; margin-bottom: 15px; box-sizing: border-box; }
+        .info-card h3 { color: #fcf6ba; font-size: 13px; margin-bottom: 12px; border-bottom: 1px solid rgba(191, 149, 63, 0.15); padding-bottom: 8px; text-transform: uppercase; letter-spacing: 2px; }
+        .info-card p { font-size: 11px; color: #bbb; line-height: 1.7; text-align: left; }
         
-        /* FINAL WARNING RED */
-        .warning-red { border: 2px solid #ff0000 !important; background: rgba(255, 0, 0, 0.07); box-shadow: 0 0 20px rgba(255,0,0,0.2); margin-top: 25px; }
-        .warning-red p { color: #ff5555; font-weight: 900; font-size: 11px; text-align: center; text-transform: uppercase; }
+        .warning-red { border: 2px solid #ff0000 !important; background: rgba(255, 0, 0, 0.05); padding: 20px; text-align: center; margin-top: 20px; }
+        .warning-red p { color: #ff5555; font-weight: 800; font-size: 10px; text-transform: uppercase; }
+
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
     </style>
 </head>
 <body>
-    <canvas id="particle-canvas"></canvas>
-    <div class="aurora"></div>
-
-    <div id="loader">
-        <div class="l-cont">
-            <div class="l-logo"></div>
-            <div class="l-bar-wrapper"><div id="l-fill"></div></div>
-            <div class="l-perc" id="pc">0%</div>
-        </div>
+    <div class="live-counter">
+        <span id="online-now">ONLINE: 1422</span>
+        <span id="playing-now">PLAYING: 734</span>
     </div>
 
+    <div id="loader"><div class="l-cont"><div class="l-logo"></div><div class="l-bar-wrapper"><div id="l-fill"></div></div><div class="l-perc" id="pc">0%</div></div></div>
+    <canvas id="c"></canvas>
+
     <div class="main" id="m">
+        <div class="s-logo"></div>
         <div class="brand-name">MRBONUS-VIP</div>
-        
+        <div id="live-win" class="live-win">ПЕРЕВІРКА ПІДКЛЮЧЕННЯ...</div>
+
         <div class="btns">
             <a href="https://play.mrbonusua.space/bonus1.html" class="btn">FIRST CASINO • 1300 FS VIP 💎</a>
             <a href="https://play.mrbonusua.space/bonus2.html" class="btn">SLOTS CITY • 700 FS + 150% 🔥</a>
-            <a href="https://play.mrbonusua.space/championclub.html" class="btn">CHAMPION CLUB • 1000 FS 🏆</a>
             <a href="https://play.mrbonusua.space/pokerbet.html" class="btn">POKER-BET • 650 FS + 100% 🃏</a>
             <a href="https://play.mrbonusua.space/topmatch.html" class="btn">TOP MATCH • 200₴ + 100 FS ⚡</a>
             <a href="https://play.mrbonusua.space/beton.html" class="btn">BETON • 500 FS + 150% 🎰</a>
@@ -76,12 +84,12 @@
             <a href="https://play.mrbonusua.space/vegas.html" class="btn">VEGAS • 150 FS ЩОДНЯ 🌃</a>
             <a href="https://play.mrbonusua.space/" class="btn">GG BET • 1000 ФРІСПІНІВ 🔥</a>
             <a href="https://play.mrbonusua.space/parik24.html" class="btn">PARIK 24 • 150 FS + 100% 🟧</a>
+            <a href="https://play.mrbonusua.space/championclub.html" class="btn">CHAMPION CLUB • 1000 FS 🏆</a>
             
-            <!-- ПРЯМА ССИЛКА В ТЕЛЕГРАМ -->
-            <a href="tg://join?invite=c33timlTVpYyOGQ6" class="btn btn-tg">📢 ПРИЄДНАТИСЬ ДО TELEGRAM ✨</a>
+            <a href="https://t.me" class="btn btn-tg">📢 ЗАКРИТИЙ ТЕЛЕГРАМ КАНАЛ ✨</a>
         </div>
 
-        <div class="principles-title">НАШІ ПРИНЦИПИ</div>
+        <div class="info-title">НАШІ ПРИНЦИПИ</div>
 
         <div class="info-card">
             <h3>ЧЕСНА ГРА</h3>
@@ -90,7 +98,7 @@
 
         <div class="info-card">
             <h3>ВІДПОВІДАЛЬНИЙ ПІДХІД</h3>
-            <p>Ми підтримуємо принципи відповідальної гри та надаємо повну інформацію про ризики та інструменти самоконтролю для гравців.</p>
+            <p>МИ ПІДТРИМУЄМО ПРИНЦИПИ ВІДПОВІДАЛЬНОЇ ГРИ ТА НАДАЄМО ПОВНУ ІНФОРМАЦІЮ ПРО РИЗИКИ ТА ІНСТРУМЕНТИ САМОКОНТРОЛЮ ДЛЯ ГРАВЦІВ.</p>
         </div>
 
         <div class="info-card">
@@ -104,34 +112,65 @@
     </div>
 
     <script>
-        const duration = 3000; const startTime = Date.now();
-        const fill = document.getElementById('l-fill'); const perc = document.getElementById('pc');
+        // --- LOADER (3 SEC WITH EASE) ---
+        const duration = 3000; const start = Date.now();
+        const fill = document.getElementById('l-fill'); const pc = document.getElementById('pc');
+        
         function updateLoader() {
-            const elapsed = Date.now() - startTime;
-            let timePos = Math.min(elapsed / duration, 1);
-            let progress = Math.pow(timePos, 1.8) * 100; 
-            fill.style.width = progress + '%'; perc.innerText = Math.floor(progress) + '%';
-            if (elapsed < duration) { requestAnimationFrame(updateLoader); } 
+            const elapsed = Date.now() - start;
+            let prog = Math.min(Math.pow(elapsed / duration, 1.8) * 100, 100);
+            fill.style.width = prog + '%'; pc.innerText = Math.floor(prog) + '%';
+            if (elapsed < duration) requestAnimationFrame(updateLoader);
             else {
-                fill.style.width = '100%'; perc.innerText = '100%';
-                setTimeout(() => { document.getElementById('loader').style.opacity = '0'; document.getElementById('m').style.opacity = '1'; setTimeout(() => document.getElementById('loader').remove(), 800); }, 150);
+                setTimeout(() => {
+                    document.getElementById('loader').style.opacity = '0';
+                    document.getElementById('m').style.opacity = '1';
+                    setTimeout(() => document.getElementById('loader').remove(), 1000);
+                }, 200);
             }
         }
         updateLoader();
 
-        const canvas = document.getElementById('particle-canvas'); const ctx = canvas.getContext('2d');
-        let particles = [];
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        // --- LIVE WIN TICKER ---
+        const names = ["Олександр", "Дмитро", "Vip_Player", "LuckyMan", "Анна", "Sergey", "Maks_777", "X-Bet", "Юрій"];
+        const sums = ["1200₴", "5400₴", "800₴", "12500₴", "3200₴", "15000₴", "450₴", "2100₴"];
+        const games = ["Book of Ra", "Gates of Olympus", "Sun of Egypt", "Aviator", "Sugar Rush"];
+        
+        setInterval(() => {
+            if(document.getElementById('m').style.opacity == "1") {
+                const n = names[Math.floor(Math.random()*names.length)];
+                const s = sums[Math.floor(Math.random()*sums.length)];
+                const g = games[Math.floor(Math.random()*games.length)];
+                document.getElementById('live-win').innerText = `${n} щойно виграв ${s} у ${g} ⚡`;
+            }
+        }, 4000);
+
+        // --- LIVE COUNTER UPDATE ---
+        setInterval(() => {
+            const on = 1400 + Math.floor(Math.random()*200);
+            const pl = 700 + Math.floor(Math.random()*150);
+            document.getElementById('online-now').innerText = `ONLINE: ${on}`;
+            document.getElementById('playing-now').innerText = `PLAYING: ${pl}`;
+        }, 5000);
+
+        // --- CANVAS PARTICLES ---
+        const canvas = document.getElementById('c'); const ctx = canvas.getContext('2d');
+        let w, h, particles = [];
+        function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
         window.addEventListener('resize', resize); resize();
-        class Particle {
+
+        class P {
             constructor() { this.init(); }
-            init() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 1.6 + 0.3; this.speedY = Math.random() * 0.4 + 0.1; this.opacity = Math.random() * 0.4 + 0.1; }
-            update() { this.y -= this.speedY; if (this.y < -10) { this.y = canvas.height + 10; this.x = Math.random() * canvas.width; } }
-            draw() { ctx.fillStyle = `rgba(252, 246, 186, ${this.opacity})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+            init() { this.x = Math.random()*w; this.y = Math.random()*h; this.s = Math.random()*1.5+0.2; this.v = Math.random()*0.4+0.1; this.o = Math.random()*0.5; }
+            draw() {
+                this.y -= this.v; if(this.y < -10) this.init();
+                ctx.fillStyle = `rgba(252, 246, 186, ${this.o})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.s, 0, Math.PI*2); ctx.fill();
+            }
         }
-        for (let i = 0; i < 60; i++) particles.push(new Particle());
-        function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
-        animate();
+        for(let i=0; i<60; i++) particles.push(new P());
+        function anim() { ctx.clearRect(0,0,w,h); particles.forEach(p => p.draw()); requestAnimationFrame(anim); }
+        anim();
     </script>
 </body>
 </html>
