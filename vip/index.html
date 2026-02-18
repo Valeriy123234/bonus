@@ -10,44 +10,63 @@
             --gold: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
             --img: url('./8C816B9D-90C0-4CD4-AA80-242F7BA3F77E.png');
         }
-        body, html { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
+        body, html { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
         
-        /* ПРЕЛОАДЕР */
-        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: 1.2s; }
-        .l-cont { text-align: center; width: 85%; max-width: 400px; }
-        .l-logo { width: 150px; height: 150px; margin: 0 auto 30px; background: var(--img) center/cover no-repeat; border-radius: 30px; box-shadow: 0 0 40px rgba(191,149,63,0.3); animation: pulseShield 3s infinite; }
-        .l-bar-wrapper { position: relative; width: 100%; height: 30px; background: rgba(255,255,255,0.05); border-radius: 6px; overflow: hidden; border: 1px solid rgba(191,149,63,0.2); }
-        #l-fill { position: absolute; top: 0; left: 0; width: 0%; height: 100%; background: var(--gold); }
-        .l-perc { position: absolute; width: 100%; top: 0; left: 0; line-height: 30px; font-weight: 800; font-size: 14px; color: #fff; z-index: 2; text-align: center; }
+        .live-counter {
+            position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8);
+            border: 1px solid #bf953f; padding: 6px 12px; border-radius: 10px;
+            font-size: 10px; z-index: 1000; font-weight: 700; color: #fcf6ba;
+            backdrop-filter: blur(5px);
+        }
+        .live-counter span { color: #fff; display: block; letter-spacing: 1px; }
 
-        /* ФОН */
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: 1s; }
+        .l-cont { text-align: center; width: 85%; max-width: 400px; }
+        .l-logo { width: 160px; height: 160px; margin: 0 auto 30px; background: var(--img) center/cover no-repeat; border-radius: 35px; box-shadow: 0 0 50px rgba(191,149,63,0.4); animation: pulse 3s infinite; }
+        .l-bar-wrapper { position: relative; width: 100%; height: 35px; background: rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden; border: 1px solid rgba(191,149,63,0.3); }
+        #l-fill { position: absolute; top: 0; left: 0; width: 0%; height: 100%; background: var(--gold); }
+        .l-perc { position: absolute; width: 100%; top: 0; left: 0; line-height: 35px; font-weight: 900; font-size: 16px; color: #fff; z-index: 2; text-align: center; text-shadow: 0 0 5px #000; }
+
         canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; }
 
-        /* КОНТЕНТ */
-        .main { opacity: 0; display: flex; flex-direction: column; align-items: center; padding: 40px 15px; min-height: 100vh; transition: 2s; z-index: 2; position: relative; }
-        .s-logo { width: 80px; height: 80px; background: var(--img) center/cover no-repeat; border-radius: 15px; margin-bottom: 10px; border: 1px solid rgba(191,149,63,0.4); }
-        .brand-name { font-family: 'Cinzel', serif; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 24px; letter-spacing: 4px; font-weight: 700; margin-bottom: 30px; }
+        .main { opacity: 0; display: flex; flex-direction: column; align-items: center; padding: 70px 15px 40px; min-height: 100vh; transition: 2s; z-index: 2; position: relative; }
+        .s-logo { width: 90px; height: 90px; background: var(--img) center/cover no-repeat; border-radius: 20px; margin-bottom: 15px; border: 1px solid rgba(191,149,63,0.5); box-shadow: 0 0 30px rgba(191,149,63,0.2); }
+        .brand-name { font-family: 'Cinzel', serif; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 28px; letter-spacing: 5px; font-weight: 700; margin-bottom: 5px; }
+        
+        .live-win { font-size: 12px; color: #00ff00; margin-bottom: 30px; font-weight: 800; text-transform: uppercase; height: 15px; letter-spacing: 1px; text-shadow: 0 0 10px rgba(0,255,0,0.3); }
 
-        .btns { width: 100%; max-width: 350px; }
-        .btn { display: block; position: relative; background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); border: 1px solid rgba(191,149,63,0.3); color: #fcf6ba; text-decoration: none; padding: 18px; margin-bottom: 12px; border-radius: 12px; text-align: center; font-weight: 700; text-transform: uppercase; font-size: 13px; letter-spacing: 1px; overflow: hidden; transition: 0.3s; }
+        .steps { display: flex; justify-content: space-between; width: 100%; max-width: 360px; margin-bottom: 30px; }
+        .step { font-size: 10px; color: #777; text-align: center; text-transform: uppercase; }
+        .step span { display: block; color: #fcf6ba; font-weight: 900; font-size: 13px; margin-top: 5px; }
+
+        .btns { width: 100%; max-width: 360px; }
+        .btn { 
+            display: block; position: relative; background: rgba(255, 255, 255, 0.08); 
+            backdrop-filter: blur(15px); border: 1px solid rgba(191, 149, 63, 0.4); 
+            color: #fff; text-decoration: none; padding: 22px 15px; margin-bottom: 16px; 
+            border-radius: 14px; text-align: center; font-weight: 900; 
+            text-transform: uppercase; font-size: 14px; letter-spacing: 1px; overflow: hidden; 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4); transition: 0.3s;
+        }
         .shimmer { animation: shimmerEffect 1.5s ease-in-out; }
+        .btn-tg { background: rgba(0, 136, 204, 0.2); border: 1px solid #0088cc; margin-top: 15px; color: #fff; }
 
-        /* КНОПКА ТЕЛЕГРАМ */
-        .btn-tg { background: rgba(0, 136, 204, 0.1); border: 1px solid #0088cc; color: #fff; margin-top: 20px; box-shadow: 0 0 15px rgba(0, 136, 204, 0.3); }
+        .info-card { width: 100%; max-width: 360px; background: rgba(15, 15, 15, 0.85); border: 1px solid rgba(191, 149, 63, 0.2); border-radius: 18px; padding: 25px; margin-top: 25px; box-sizing: border-box; }
+        .info-card h3 { color: #fcf6ba; font-size: 16px; margin: 0 0 12px; font-family: 'Cinzel', serif; border-bottom: 1px solid rgba(191, 149, 63, 0.2); padding-bottom: 8px; }
+        .info-card p { font-size: 12px; color: #bbb; line-height: 1.6; margin: 0; text-align: justify; }
+        .warning { border-color: #ff4444; background: rgba(255, 68, 68, 0.03); margin-bottom: 50px; }
+        .warning p { color: #ff8888; text-align: center; font-weight: 800; font-size: 13px; }
 
-        /* ІНФО БЛОКИ */
-        .info-title { font-family: 'Cinzel', serif; color: #fcf6ba; font-size: 18px; margin: 40px 0 20px; letter-spacing: 3px; text-align: center; }
-        .info-card { width: 100%; max-width: 350px; background: rgba(10, 10, 10, 0.6); border: 1px solid rgba(191, 149, 63, 0.2); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-sizing: border-box; }
-        .info-card h3 { color: #fcf6ba; font-size: 14px; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid rgba(191, 149, 63, 0.2); padding-bottom: 10px; }
-        .info-card p { font-size: 12px; color: #ccc; line-height: 1.6; margin-bottom: 0; text-align: justify; }
-        .warning { border: 1px solid #ff4444; background: rgba(255, 68, 68, 0.05); }
-        .warning p { color: #ff8888; font-weight: 600; text-align: center; }
-
-        @keyframes shimmerEffect { 0% { background: rgba(255,255,255,0.03); } 50% { background: rgba(191, 149, 63, 0.25); } 100% { background: rgba(255,255,255,0.03); } }
-        @keyframes pulseShield { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        @keyframes shimmerEffect { 0% { background: rgba(255,255,255,0.08); } 50% { background: rgba(191, 149, 63, 0.35); } 100% { background: rgba(255,255,255,0.08); } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
     </style>
 </head>
 <body>
+    <div class="live-counter">
+        <span id="online-now">ONLINE: 1584</span>
+        <span id="playing-now">PLAYING: 912</span>
+    </div>
+
     <div id="loader">
         <div class="l-cont">
             <div class="l-logo"></div>
@@ -60,71 +79,30 @@
     <div class="main" id="m">
         <div class="s-logo"></div>
         <div class="brand-name">MRBONUS-VIP</div>
+        <div id="live-win" class="live-win">USER ID 842... WIN 14,200₴</div>
+
+        <div class="steps">
+            <div class="step">Крок 1<span>ОБЕРИ КАЗИНО</span></div>
+            <div class="step">Крок 2<span>РЕЄСТРУЙСЯ</span></div>
+            <div class="step">Крок 3<span>ВИГРАВАЙ</span></div>
+        </div>
 
         <div class="btns">
-    <!-- 1. SLOTS CITY -->
-    <a href="https://play.mrbonusua.space" class="btn casino-link">
-        SLOTS CITY • 700 FS + 150% 🔥
-    </a>
-
-    <!-- 2. FIRST CASINO -->
-    <a href="https://play.mrbonusua.space" class="btn casino-link">
-        FIRST CASINO • 1300 FS VIP 💎
-    </a>
-
-    <!-- 3. POKER-BET -->
-    <a href="https://play.mrbonusua.space" class="btn casino-link">
-        POKER-BET • 650 FS + 100% 🃏
-    </a>
-
-    <!-- 4. TOP MATCH -->
-    <a href="https://play.mrbonusua.space" class="btn casino-link">
-        TOP MATCH • 200₴ + 100 FS ⚡
-    </a>
-
-    <!-- 5. BETON -->
-    <a href="https://play.mrbonusua.space" class="btn casino-link">
-        BETON • 500 FS + 150% 🎰
-    </a>
-
-    <!-- 6. GORILLA -->
-    <a href="https://play.mrbonusua.space" class="btn casino-link">
-        GORILLA • 300 ФРІСПІНІВ 🦍
-    </a>
-
-    <!-- 7. BETKING -->
-    <a href="https://play.mrbonusua.space" class="btn casino-link">
-        BETKING • 200% + 200 FS 👑
-    </a>
-
-    <!-- 8. 777 CASINO -->
-    <a href="https://play.mrbonusua.space" class="btn casino-link">
-        777 CASINO • 1450 FS БЕЗДЕП 🎰
-    </a>
-
-    <!-- 9. VEGAS -->
-    <a href="https://play.mrbonusua.space" class="btn casino-link">
-        VEGAS • 150 FS ЩОДНЯ 🌃
-    </a>
-
-    <!-- 10. GG BET -->
-    <a href="https://play.mrbonusua.space" class="btn casino-link">
-        GG BET • 1000 ФРІСПІНІВ 🔥
-    </a>
-
-    <!-- 11. PARIK 24 -->
-    <a href="https://play.mrbonusua.spaceparik24.html" class="btn casino-link">
-        PARIK 24 • 150 FS + 100% 🟧
-    </a>
-
-    <!-- ТЕЛЕГРАМ КАНАЛ -->
-    <a href="https://t.me" class="btn btn-tg">
-        📢 ПРИЄДНАТИСЬ ДО ТЕЛЕГРАМ ✨
-    </a>
-</div>
-
-
-        <div class="info-title">НАШІ ПРИНЦИПИ</div>
+            <a href="https://play.mrbonusua.space/bonus2.html" class="btn casino-link">SLOTS CITY • 700 FS + 150% 🔥</a>
+            <a href="https://play.mrbonusua.space/bonus1.html" class="btn casino-link">FIRST CASINO • 1300 FS VIP 💎</a>
+            <a href="https://play.mrbonusua.space/championclub.html" class="btn casino-link">CHAMPION CLUB • 1000 FS 🏆</a>
+            <a href="https://play.mrbonusua.space/pokerbet.html" class="btn casino-link">POKER-BET • 650 FS + 100% 🃏</a>
+            <a href="https://play.mrbonusua.space/topmatch.html" class="btn casino-link">TOP MATCH • 200₴ + 100 FS ⚡</a>
+            <a href="https://play.mrbonusua.space/beton.html" class="btn casino-link">BETON • 500 FS + 150% 🎰</a>
+            <a href="https://play.mrbonusua.space/gorilla.html" class="btn casino-link">GORILLA • 300 ФРІСПІНІВ 🦍</a>
+            <a href="https://play.mrbonusua.space/betking.html" class="btn casino-link">BETKING • 200% + 200 FS 👑</a>
+            <a href="https://play.mrbonusua.space/777.html" class="btn casino-link">777 CASINO • 1450 FS БЕЗДЕП 🎰</a>
+            <a href="https://play.mrbonusua.space/vegas.html" class="btn casino-link">VEGAS • 150 FS ЩОДНЯ 🌃</a>
+            <a href="https://play.mrbonusua.space/" class="btn casino-link">GG BET • 1000 ФРІСПІНІВ 🔥</a>
+            <a href="https://play.mrbonusua.space/parik24.html" class="btn casino-link">PARIK 24 • 150 FS + 100% 🟧</a>
+            
+            <a href="https://t.me" class="btn btn-tg">📢 ПРИЄДНАТИСЬ ДО TELEGRAM ✨</a>
+        </div>
 
         <div class="info-card">
             <h3>ЧЕСНА ГРА</h3>
@@ -134,11 +112,6 @@
         <div class="info-card">
             <h3>ВІДПОВІДАЛЬНИЙ ПІДХІД</h3>
             <p>МИ ПІДТРИМУЄМО ПРИНЦИПИ ВІДПОВІДАЛЬНОЇ ГРИ ТА НАДАЄМО ПОВНУ ІНФОРМАЦІЮ ПРО РИЗИКИ ТА ІНСТРУМЕНТИ САМОКОНТРОЛЮ ДЛЯ ГРАВЦІВ.</p>
-        </div>
-
-        <div class="info-card">
-            <h3>НАДІЙНІСТЬ ТА БЕЗПЕКА</h3>
-            <p>МИ СПІВПРАЦЮЄМО ЛИШЕ З ПЛАТФОРМАМИ, ЩО ВИКОРИСТОВУЮТЬ СУЧАСНІ ТЕХНОЛОГІЇ ШИФРУВАННЯ (SSL) ДЛЯ ЗАХИСТУ ВАШИХ ДАНИХ ТА ФІНАНСОВИХ ТРАНЗАКЦІЙ.</p>
         </div>
 
         <div class="info-card warning">
@@ -155,17 +128,24 @@
                 setTimeout(() => {
                     document.getElementById('loader').style.opacity = '0';
                     document.getElementById('m').style.opacity = '1';
-                    setTimeout(() => {
-                        document.getElementById('loader').style.display = 'none';
-                        startShimmer();
-                    }, 1000);
+                    setTimeout(() => { document.getElementById('loader').style.display = 'none'; startLive(); }, 1200);
                 }, 400);
             }
             document.getElementById('pc').innerText = p + '%';
             document.getElementById('l-fill').style.width = p + '%';
         }, 30);
 
-        function startShimmer() {
+        function startLive() {
+            setInterval(() => {
+                document.getElementById('online-now').innerText = `ONLINE: ${1550 + Math.floor(Math.random() * 150)}`;
+                document.getElementById('playing-now').innerText = `PLAYING: ${850 + Math.floor(Math.random() * 100)}`;
+            }, 3000);
+
+            const wins = ["USER ID 512... WIN 9,600₴", "USER ID 218... WIN 31,000₴", "USER ID 774... WIN 18,450₴", "USER ID 901... WIN 12,000₴"];
+            setInterval(() => {
+                document.getElementById('live-win').innerText = wins[Math.floor(Math.random() * wins.length)];
+            }, 4000);
+
             const btns = document.querySelectorAll('.casino-link');
             setInterval(() => {
                 const rBtn = btns[Math.floor(Math.random() * btns.length)];
@@ -180,15 +160,11 @@
         window.addEventListener('resize', rs); rs();
         class Flake {
             constructor() { this.init(); }
-            init() {
-                this.x = Math.random() * cv.width; this.y = Math.random() * cv.height;
-                this.vx = (Math.random() - 0.5) * 0.2; this.vy = Math.random() * 0.4 + 0.2;
-                this.s = Math.random() * 4 + 2; this.o = Math.random() * 0.25; this.r = Math.random() * 360;
-            }
-            u() { this.x += this.vx; this.y += this.vy; if (this.y > cv.height) this.y = -10; }
+            init() { this.x = Math.random() * cv.width; this.y = Math.random() * cv.height; this.vy = Math.random() * 0.5 + 0.3; this.s = Math.random() * 4 + 2; this.o = Math.random() * 0.25; this.r = Math.random() * 360; }
+            u() { this.y += this.vy; if (this.y > cv.height) this.y = -10; }
             d() { cx.save(); cx.translate(this.x, this.y); cx.rotate(this.r * Math.PI / 180); cx.fillStyle = `rgba(191, 149, 63, ${this.o})`; cx.beginPath(); cx.ellipse(0, 0, this.s, this.s/2, 0, 0, Math.PI*2); cx.fill(); cx.restore(); }
         }
-        for(let i=0; i<50; i++) flakes.push(new Flake());
+        for(let i=0; i<60; i++) flakes.push(new Flake());
         function an() { cx.clearRect(0,0,cv.width,cv.height); flakes.forEach(f=>{f.u();f.d();}); requestAnimationFrame(an); }
         an();
     </script>
