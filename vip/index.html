@@ -3,72 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MrBonus Elite</title>
+    <title>MRBONUS-VIP | OFFICIAL</title>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
         :root {
             --gold: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
             --img: url('./8C816B9D-90C0-4CD4-AA80-242F7BA3F77E.png');
         }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; color: #fff; font-family: 'Montserrat', sans-serif; overflow: hidden; }
+        body, html { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
         
         /* ПРЕЛОАДЕР */
-        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: 1.2s ease-in-out; }
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: 1.2s; }
         .l-cont { text-align: center; width: 85%; max-width: 400px; }
-        
-        .l-logo { 
-            width: 180px; height: 180px; margin: 0 auto 40px; 
-            background: var(--img) center/cover no-repeat; 
-            border-radius: 35px; box-shadow: 0 0 50px rgba(191,149,63,0.3);
-            animation: pulseShield 3s infinite ease-in-out;
-        }
+        .l-logo { width: 150px; height: 150px; margin: 0 auto 30px; background: var(--img) center/cover no-repeat; border-radius: 30px; box-shadow: 0 0 40px rgba(191,149,63,0.3); animation: pulseShield 3s infinite; }
+        .l-bar-wrapper { position: relative; width: 100%; height: 30px; background: rgba(255,255,255,0.05); border-radius: 6px; overflow: hidden; border: 1px solid rgba(191,149,63,0.2); }
+        #l-fill { position: absolute; top: 0; left: 0; width: 0%; height: 100%; background: var(--gold); }
+        .l-perc { position: absolute; width: 100%; top: 0; left: 0; line-height: 30px; font-weight: 800; font-size: 14px; color: #fff; z-index: 2; text-align: center; }
 
-        /* ПОТОВЩЕНА ЛІНІЯ ЗАВАНТАЖЕННЯ З ЦИФРАМИ */
-        .l-bar-wrapper { position: relative; width: 100%; height: 35px; background: rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden; border: 1px solid rgba(191,149,63,0.2); }
-        #l-fill { position: absolute; top: 0; left: 0; width: 0%; height: 100%; background: var(--gold); transition: width 0.1s linear; }
-        .l-perc { 
-            position: absolute; width: 100%; top: 0; left: 0; line-height: 35px; 
-            font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 16px; 
-            color: #fff; text-shadow: 0 0 5px #000; z-index: 2; text-align: center;
-        }
+        /* ФОН */
+        canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; }
 
-        /* ФОН - ЗОЛОТІ ПЕЛЮСТКИ */
-        canvas { position: fixed; top: 0; left: 0; z-index: 1; }
+        /* КОНТЕНТ */
+        .main { opacity: 0; display: flex; flex-direction: column; align-items: center; padding: 40px 15px; min-height: 100vh; transition: 2s; z-index: 2; position: relative; }
+        .s-logo { width: 80px; height: 80px; background: var(--img) center/cover no-repeat; border-radius: 15px; margin-bottom: 10px; border: 1px solid rgba(191,149,63,0.4); }
+        .brand-name { font-family: 'Cinzel', serif; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 24px; letter-spacing: 4px; font-weight: 700; margin-bottom: 30px; }
 
-        .main { opacity: 0; display: flex; flex-direction: column; align-items: center; padding: 60px 20px; min-height: 100vh; transition: 2s; z-index: 2; position: relative; }
-        .s-logo { width: 80px; height: 80px; background: var(--img) center/cover no-repeat; border-radius: 15px; margin-bottom: 25px; border: 1px solid rgba(191,149,63,0.4); }
-        h1 { font-family: 'Cinzel', serif; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 28px; letter-spacing: 6px; }
-        
-        .btns { width: 100%; max-width: 340px; margin-top: 40px; }
-        .btn { display: block; background: rgba(255,255,255,0.03); backdrop-filter: blur(15px); border: 1px solid rgba(191,149,63,0.3); color: #fcf6ba; text-decoration: none; padding: 20px; margin-bottom: 15px; border-radius: 12px; text-align: center; font-weight: 700; text-transform: uppercase; font-size: 13px; letter-spacing: 2px; }
+        .btns { width: 100%; max-width: 350px; }
+        .btn { display: block; position: relative; background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); border: 1px solid rgba(191,149,63,0.3); color: #fcf6ba; text-decoration: none; padding: 18px; margin-bottom: 12px; border-radius: 12px; text-align: center; font-weight: 700; text-transform: uppercase; font-size: 13px; letter-spacing: 1px; overflow: hidden; transition: 0.3s; }
+        .shimmer { animation: shimmerEffect 1.5s ease-in-out; }
 
-        @keyframes pulseShield { 0%, 100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.04); filter: brightness(1.2); } }
+        /* КНОПКА ТЕЛЕГРАМ */
+        .btn-tg { background: rgba(0, 136, 204, 0.1); border: 1px solid #0088cc; color: #fff; margin-top: 20px; box-shadow: 0 0 15px rgba(0, 136, 204, 0.3); }
+
+        /* ІНФО БЛОКИ */
+        .info-title { font-family: 'Cinzel', serif; color: #fcf6ba; font-size: 18px; margin: 40px 0 20px; letter-spacing: 3px; text-align: center; }
+        .info-card { width: 100%; max-width: 350px; background: rgba(10, 10, 10, 0.6); border: 1px solid rgba(191, 149, 63, 0.2); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-sizing: border-box; }
+        .info-card h3 { color: #fcf6ba; font-size: 14px; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid rgba(191, 149, 63, 0.2); padding-bottom: 10px; }
+        .info-card p { font-size: 12px; color: #ccc; line-height: 1.6; margin-bottom: 0; text-align: justify; }
+        .warning { border: 1px solid #ff4444; background: rgba(255, 68, 68, 0.05); }
+        .warning p { color: #ff8888; font-weight: 600; text-align: center; }
+
+        @keyframes shimmerEffect { 0% { background: rgba(255,255,255,0.03); } 50% { background: rgba(191, 149, 63, 0.25); } 100% { background: rgba(255,255,255,0.03); } }
+        @keyframes pulseShield { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
     </style>
 </head>
 <body>
     <div id="loader">
         <div class="l-cont">
             <div class="l-logo"></div>
-            <div class="l-bar-wrapper">
-                <div id="l-fill"></div>
-                <div class="l-perc" id="pc">0%</div>
-            </div>
+            <div class="l-bar-wrapper"><div id="l-fill"></div><div class="l-perc" id="pc">0%</div></div>
         </div>
     </div>
+
     <canvas id="c"></canvas>
+
     <div class="main" id="m">
         <div class="s-logo"></div>
-        <h1>MR. BONUS VIP</h1>
+        <div class="brand-name">MRBONUS-VIP</div>
+
         <div class="btns">
-            <a href="#" class="btn">🎰 ГРАТИ ЗАРАЗ</a>
-            <a href="#" class="btn">💎 VIP БОНУСИ</a>
+            <!-- Твої казино -->
+            <a href="ТВОЄ_ПОСИЛАННЯ_1" class="btn casino-link">🎰 КАЗИНО VULKAN</a>
+            <a href="ТВОЄ_ПОСИЛАННЯ_2" class="btn casino-link">💎 VIP СЛОТИ</a>
+            
+            <!-- ТЕЛЕГРАМ -->
+            <a href="https://t.me" class="btn btn-tg">📢 ТЕЛЕГРАМ КАНАЛ ✨</a>
+        </div>
+
+        <div class="info-title">НАШІ ПРИНЦИПИ</div>
+
+        <div class="info-card">
+            <h3>ЧЕСНА ГРА</h3>
+            <p>УСІ ПРЕДСТАВЛЕНІ САЙТИ ПРАЦЮЮТЬ НА СЕРТИФІКОВАНИХ ГЕНЕРАТОРАХ ВИПАДКОВИХ ЧИСЕЛ (RNG), ЩО ГАРАНТУЄ ПРОЗОРІСТЬ ТА НЕПЕРЕДБАЧУВАНІСТЬ РЕЗУЛЬТАТІВ ГРИ.</p>
+        </div>
+
+        <div class="info-card">
+            <h3>ВІДПОВІДАЛЬНИЙ ПІДХІД</h3>
+            <p>МИ ПІДТРИМУЄМО ПРИНЦИПИ ВІДПОВІДАЛЬНОЇ ГРИ ТА НАДАЄМО ПОВНУ ІНФОРМАЦІЮ ПРО РИЗИКИ ТА ІНСТРУМЕНТИ САМОКОНТРОЛЮ ДЛЯ ГРАВЦІВ.</p>
+        </div>
+
+        <div class="info-card">
+            <h3>НАДІЙНІСТЬ ТА БЕЗПЕКА</h3>
+            <p>МИ СПІВПРАЦЮЄМО ЛИШЕ З ПЛАТФОРМАМИ, ЩО ВИКОРИСТОВУЮТЬ СУЧАСНІ ТЕХНОЛОГІЇ ШИФРУВАННЯ (SSL) ДЛЯ ЗАХИСТУ ВАШИХ ДАНИХ ТА ФІНАНСОВИХ ТРАНЗАКЦІЙ.</p>
+        </div>
+
+        <div class="info-card warning">
+            <p>УЧАСТЬ В АЗАРТНИХ ІГРАХ МОЖЕ ВИКЛИКАТИ ІГРОВУ ЗАЛЕЖНІСТЬ. ДОТРИМУЙТЕСЯ ПРИНЦИПІВ ВІДПОВІДАЛЬНОЇ ГРИ.</p>
         </div>
     </div>
+
     <script>
-        // ЛОГІКА ЗАВАНТАЖЕННЯ
         let p = 0;
-        const pc = document.getElementById('pc');
-        const fill = document.getElementById('l-fill');
         const iv = setInterval(() => {
             p += 1;
             if (p >= 100) {
@@ -76,14 +101,25 @@
                 setTimeout(() => {
                     document.getElementById('loader').style.opacity = '0';
                     document.getElementById('m').style.opacity = '1';
-                    setTimeout(() => document.getElementById('loader').style.display = 'none', 1200);
-                }, 500);
+                    setTimeout(() => {
+                        document.getElementById('loader').style.display = 'none';
+                        startShimmer();
+                    }, 1000);
+                }, 400);
             }
-            pc.innerText = p + '%';
-            fill.style.width = p + '%';
-        }, 35);
+            document.getElementById('pc').innerText = p + '%';
+            document.getElementById('l-fill').style.width = p + '%';
+        }, 30);
 
-        // ЗОЛОТІ ПЕЛЮСТКИ (Gold Flakes)
+        function startShimmer() {
+            const btns = document.querySelectorAll('.casino-link');
+            setInterval(() => {
+                const rBtn = btns[Math.floor(Math.random() * btns.length)];
+                rBtn.classList.add('shimmer');
+                setTimeout(() => rBtn.classList.remove('shimmer'), 1500);
+            }, 2000);
+        }
+
         const cv = document.getElementById('c'); const cx = cv.getContext('2d');
         let flakes = [];
         function rs() { cv.width = window.innerWidth; cv.height = window.innerHeight; }
@@ -92,26 +128,13 @@
             constructor() { this.init(); }
             init() {
                 this.x = Math.random() * cv.width; this.y = Math.random() * cv.height;
-                this.vx = (Math.random() - 0.5) * 0.3; this.vy = Math.random() * 0.5 + 0.2;
-                this.s = Math.random() * 5 + 2; // Більший розмір
-                this.o = Math.random() * 0.4 + 0.1;
-                this.r = Math.random() * 360;
+                this.vx = (Math.random() - 0.5) * 0.2; this.vy = Math.random() * 0.4 + 0.2;
+                this.s = Math.random() * 4 + 2; this.o = Math.random() * 0.25; this.r = Math.random() * 360;
             }
-            u() {
-                this.x += this.vx; this.y += this.vy; this.r += 0.5;
-                if (this.y > cv.height) this.y = -10;
-                if (this.x > cv.width || this.x < 0) this.vx *= -1;
-            }
-            d() {
-                cx.save(); cx.translate(this.x, this.y); cx.rotate(this.r * Math.PI / 180);
-                cx.fillStyle = `rgba(191, 149, 63, ${this.o})`;
-                cx.beginPath();
-                // Малюємо "пелюстку" замість точки
-                cx.ellipse(0, 0, this.s, this.s/2, 0, 0, Math.PI*2);
-                cx.fill(); cx.restore();
-            }
+            u() { this.x += this.vx; this.y += this.vy; if (this.y > cv.height) this.y = -10; }
+            d() { cx.save(); cx.translate(this.x, this.y); cx.rotate(this.r * Math.PI / 180); cx.fillStyle = `rgba(191, 149, 63, ${this.o})`; cx.beginPath(); cx.ellipse(0, 0, this.s, this.s/2, 0, 0, Math.PI*2); cx.fill(); cx.restore(); }
         }
-        for(let i=0; i<60; i++) flakes.push(new Flake());
+        for(let i=0; i<50; i++) flakes.push(new Flake());
         function an() { cx.clearRect(0,0,cv.width,cv.height); flakes.forEach(f=>{f.u();f.d();}); requestAnimationFrame(an); }
         an();
     </script>
