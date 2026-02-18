@@ -47,18 +47,70 @@
     .live-counter span { color: #fff; display: block; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
 
     /* LOADER */
-    #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; transition: 1.2s cubic-bezier(0.65, 0, 0.35, 1); }
-    .l-cont { text-align: center; width: 90%; max-width: 500px; }
-    .l-logo { 
-        width: 220px; height: 220px; margin: 0 auto 50px; background: var(--img) center/cover no-repeat; 
-        border-radius: 45px; box-shadow: 0 0 70px rgba(191,149,63,0.7); 
-        animation: pulseBig 3s ease-in-out infinite; border: 2.5px solid rgba(191,149,63,0.5); 
+       /* LOADER - Додано глибину фону */
+    #loader { 
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+        background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%); 
+        z-index: 10000; display: flex; justify-content: center; align-items: center; 
+        transition: 1.2s cubic-bezier(0.65, 0, 0.35, 1); 
     }
-    .l-bar-wrapper { position: relative; width: 100%; height: 10px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; border: 1.5px solid rgba(191,149,63,0.3); }
-    #l-fill { position: absolute; top: 0; left: 0; width: 0%; height: 100%; background: var(--gold); }
-    .l-perc { margin-top: 20px; font-weight: 900; font-size: 22px; color: #fcf6ba; letter-spacing: 5px; }
+    
+    .l-cont { text-align: center; width: 90%; max-width: 500px; }
+    
+    .l-logo { 
+        width: 220px; height: 220px; margin: 0 auto 50px; 
+        background: var(--img) center/cover no-repeat; 
+        border-radius: 45px; 
+        /* Ефект багатошарового золотого німба */
+        box-shadow: 0 0 50px rgba(191,149,63,0.3), inset 0 0 20px rgba(252, 246, 186, 0.2); 
+        animation: pulseBig 3s ease-in-out infinite; 
+        border: 2.5px solid rgba(191,149,63,0.5);
+        position: relative;
+    }
 
-    canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; opacity: 0.9; }
+    /* BAR WRAPPER - Тонка VIP рамка */
+    .l-bar-wrapper { 
+        position: relative; width: 100%; height: 8px; 
+        background: rgba(255,255,255,0.03); 
+        border-radius: 20px; overflow: hidden; 
+        border: 1px solid rgba(191,149,63,0.2); 
+    }
+
+    #l-fill { 
+        position: absolute; top: 0; left: 0; width: 0%; height: 100%; 
+        background: var(--gold); 
+        box-shadow: 0 0 15px rgba(252, 246, 186, 0.5);
+        transition: width 0.3s ease;
+    }
+
+    /* Ефект бігучої іскри по смужці завантаження */
+    #l-fill::after {
+        content: ''; position: absolute; top: 0; left: -100%; 
+        width: 60%; height: 100%; 
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        animation: barShimmer 1.5s infinite linear;
+    }
+
+    .l-perc { 
+        margin-top: 20px; font-family: 'Cinzel', serif; 
+        font-weight: 900; font-size: 22px; 
+        color: #fcf6ba; letter-spacing: 8px; 
+        text-shadow: 0 0 10px rgba(191,149,63,0.5);
+    }
+
+    canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; opacity: 0.8; }
+
+    /* Ключові кадри для іскри на барі */
+    @keyframes barShimmer {
+        0% { left: -150%; }
+        100% { left: 150%; }
+    }
+
+    @keyframes pulseBig { 
+        0%, 100% { transform: scale(1); box-shadow: 0 0 50px rgba(191,149,63,0.3); } 
+        50% { transform: scale(1.04); box-shadow: 0 0 80px rgba(191,149,63,0.6); } 
+    }
+
 
     /* MAIN CONTENT */
         /* MAIN CONTENT */
