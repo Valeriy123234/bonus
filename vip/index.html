@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MrBonus VIP Access</title>
+    <title>MrBonus VIP Portal</title>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
         :root {
-            --gold: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
-            --dark-bg: #000000;
-            /* ТВОЯ НАЗВА ФАЙЛУ НИЖЧЕ */
-            --logo-url: url('8C816B9D-90C0-4CD4-AA80-242F7BA3F77E.png');
+            --gold-grad: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            --dark-bg: #050505;
         }
 
         body, html {
@@ -20,72 +18,65 @@
             overflow: hidden;
         }
 
-        /* ПРЕЛОАДЕР */
+        /* ЕКРАН ЗАВАНТАЖЕННЯ */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 10000;
             display: flex; justify-content: center; align-items: center;
-            transition: opacity 0.8s ease-in-out;
+            transition: opacity 1s ease-in-out;
         }
         .loader-content { text-align: center; width: 100%; }
         
+        /* Твій щит Porsche */
         .loader-logo {
-            width: 60vw; max-width: 250px; height: 60vw; max-height: 250px;
-            margin: 0 auto 40px;
-            background: var(--logo-url) center/cover no-repeat;
-            border-radius: 30px;
-            box-shadow: 0 0 50px rgba(191, 149, 63, 0.3);
-            animation: pulse 2s infinite ease-in-out;
+            width: 200px; height: 200px; margin: 0 auto 40px;
+            background: url('logo.png') center/cover no-repeat;
+            border-radius: 25px;
+            box-shadow: 0 0 40px rgba(191, 149, 63, 0.4);
+            animation: pulse-shield 2s infinite ease-in-out;
         }
         
         .loader-text {
             font-family: 'Cinzel', serif; color: #fcf6ba;
-            font-size: 22px; letter-spacing: 5px; margin-bottom: 20px;
+            font-size: 20px; letter-spacing: 4px; margin-bottom: 20px;
         }
         
         .loader-bar-bg { 
-            width: 70%; max-width: 300px; height: 3px; 
-            background: rgba(255,255,255,0.05); 
-            margin: 0 auto; border-radius: 5px; 
+            width: 250px; height: 2px; background: rgba(255,255,255,0.1); 
+            margin: 0 auto; border-radius: 4px; overflow: hidden;
         }
         #loader-bar-fill { 
-            width: 0%; height: 100%; background: var(--gold); 
-            box-shadow: 0 0 15px #fcf6ba; border-radius: 5px;
+            width: 0%; height: 100%; background: var(--gold-grad); 
+            box-shadow: 0 0 15px #fcf6ba; transition: width 0.1s;
         }
 
-        /* КОНТЕНТ */
-        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; }
-        .main-container {
-            display: flex; flex-direction: column; align-items: center;
-            padding: 60px 20px; min-height: 100vh; opacity: 0;
-            transition: opacity 1s ease-in;
-        }
+        /* ОСНОВНИЙ ФОН */
+        #gold-canvas { position: fixed; top: 0; left: 0; z-index: -1; }
         
-        .shield-small {
-            width: 80px; height: 80px;
-            background: var(--logo-url) center/cover no-repeat;
-            border-radius: 15px; margin-bottom: 20px;
-            border: 1px solid rgba(191, 149, 63, 0.4);
+        .main-ui {
+            opacity: 0; display: flex; flex-direction: column; align-items: center;
+            padding: 40px 20px; min-height: 100vh; transition: opacity 1.5s;
         }
         
         h1 {
-            font-family: 'Cinzel', serif; background: var(--gold);
+            font-family: 'Cinzel', serif; background: var(--gold-grad);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            font-size: 28px; letter-spacing: 6px; text-align: center; margin: 10px 0;
+            font-size: 30px; letter-spacing: 6px; text-align: center;
         }
 
-        .btn-list { width: 100%; max-width: 340px; margin-top: 30px; }
+        .btn-list { width: 100%; max-width: 350px; margin-top: 40px; }
         .casino-btn {
-            display: block; background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(15px); border: 1px solid rgba(191, 149, 63, 0.2);
+            display: block; background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(15px); border: 1px solid rgba(191, 149, 63, 0.4);
             color: #fcf6ba; text-decoration: none; padding: 20px; margin-bottom: 15px;
-            border-radius: 15px; text-align: center; font-weight: 700;
-            text-transform: uppercase; transition: 0.3s;
+            border-radius: 12px; text-align: center; font-weight: 700;
+            text-transform: uppercase; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            transition: 0.3s;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.05); opacity: 1; }
+        @keyframes pulse-shield {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.08); filter: brightness(1.3); }
         }
     </style>
 </head>
@@ -94,62 +85,103 @@
 <div id="loader">
     <div class="loader-content">
         <div class="loader-logo"></div>
-        <div class="loader-text"><span id="percent">0</span>%</div>
+        <div class="loader-text"><span id="percent">0</span>% SECURE ACCESS</div>
         <div class="loader-bar-bg"><div id="loader-bar-fill"></div></div>
     </div>
 </div>
 
-<canvas id="bg-canvas"></canvas>
+<canvas id="gold-canvas"></canvas>
 
-<div class="main-container" id="main-content">
-    <div class="shield-small"></div>
+<div class="main-ui" id="main-ui">
     <h1>MR. BONUS VIP</h1>
     <div class="btn-list">
-        <a href="#" class="casino-btn">🎰 VULKAN • 500% BONUS</a>
-        <a href="#" class="casino-btn">🔥 PIN-UP • 250 FS</a>
-        <!-- Додай свої 11 посилань тут -->
+        <a href="#" class="casino-btn">🎰 ГРАТИ ЗАРАЗ</a>
+        <a href="#" class="casino-btn">🔥 ТОП БОНУСИ</a>
     </div>
 </div>
 
 <script>
-    let width = 0;
-    const loaderInterval = setInterval(() => {
-        width += 1;
-        if (width >= 100) {
-            width = 100;
-            clearInterval(loaderInterval);
+    // ЛОГІКА ПРЕЛОАДЕРА (3 секунди)
+    let p = 0;
+    const pLabel = document.getElementById('percent');
+    const pFill = document.getElementById('loader-bar-fill');
+    
+    const loadInt = setInterval(() => {
+        p += Math.floor(Math.random() * 3) + 1;
+        if (p >= 100) {
+            p = 100; clearInterval(loadInt);
             setTimeout(() => {
                 document.getElementById('loader').style.opacity = '0';
-                document.getElementById('main-content').style.opacity = '1';
-                setTimeout(() => { document.getElementById('loader').style.display = 'none'; }, 800);
-            }, 400);
+                document.getElementById('main-ui').style.opacity = '1';
+                setTimeout(() => document.getElementById('loader').style.display = 'none', 1000);
+            }, 500);
         }
-        document.getElementById('percent').innerText = width;
-        document.getElementById('loader-bar-fill').style.width = width + '%';
-    }, 30); // Рівно 3 секунди на завантаження
+        pLabel.innerText = p;
+        pFill.style.width = p + '%';
+    }, 40);
 
-    const canvas = document.getElementById('bg-canvas');
+    // СКРИПТ ПАДАЮЧИХ ЗОЛОТИХ ЗЛИТКІВ (Advanced Canvas)
+    const canvas = document.getElementById('gold-canvas');
     const ctx = canvas.getContext('2d');
-    let particles = [];
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    window.addEventListener('resize', resize); resize();
-    class Particle {
+    let bars = [];
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class GoldBar {
         constructor() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.speed = Math.random() * 0.6 + 0.2;
-            this.opacity = Math.random() * 0.5;
+            this.init();
         }
-        update() { this.y += this.speed; if (this.y > canvas.height) this.y = -10; }
+        init() {
+            this.x = Math.random() * canvas.width;
+            this.y = -Math.random() * canvas.height;
+            this.w = Math.random() * 15 + 10; // Ширина злитка
+            this.h = this.w * 0.6; // Висота
+            this.speed = Math.random() * 2 + 1;
+            this.rot = Math.random() * Math.PI * 2;
+            this.rotSpeed = (Math.random() - 0.5) * 0.05;
+            this.opacity = Math.random() * 0.5 + 0.3;
+        }
         draw() {
-            ctx.fillStyle = `rgba(191, 149, 63, ${this.opacity})`;
-            ctx.beginPath(); ctx.arc(this.x, this.y, 1.2, 0, Math.PI * 2); ctx.fill();
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.rot);
+            
+            // Малюємо злиток з золотим градієнтом
+            let grad = ctx.createLinearGradient(-this.w/2, -this.h/2, this.w/2, this.h/2);
+            grad.addColorStop(0, '#bf953f');
+            grad.addColorStop(0.5, '#fcf6ba');
+            grad.addColorStop(1, '#b38728');
+            
+            ctx.fillStyle = grad;
+            ctx.globalAlpha = this.opacity;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = "rgba(191, 149, 63, 0.5)";
+            
+            ctx.fillRect(-this.w/2, -this.h/2, this.w, this.h);
+            
+            // Додаємо металевий відблиск зверху
+            ctx.strokeStyle = "rgba(255,255,255,0.4)";
+            ctx.strokeRect(-this.w/2, -this.h/2, this.w, this.h);
+            
+            ctx.restore();
+        }
+        update() {
+            this.y += this.speed;
+            this.rot += this.rotSpeed;
+            if (this.y > canvas.height + 50) this.init();
         }
     }
-    for (let i = 0; i < 70; i++) particles.push(new Particle());
+
+    for (let i = 0; i < 40; i++) bars.push(new GoldBar());
+
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(p => { p.update(); p.draw(); });
+        bars.forEach(b => { b.update(); b.draw(); });
         requestAnimationFrame(animate);
     }
     animate();
