@@ -49,84 +49,94 @@
     /* LOADER */
        /* LOADER - Додано глибину фону */
        /* ПРЕМІУМ ЛОАДЕР */
+       /* ПРЕМІУМ ЛОАДЕР */
     #loader { 
         position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-        background: radial-gradient(circle at center, #151515 0%, #000 100%); 
+        background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%); 
         z-index: 10000; display: flex; justify-content: center; align-items: center; 
-        transition: 1.2s cubic-bezier(0.8, 0, 0.2, 1); 
+        transition: 1.5s cubic-bezier(0.8, 0, 0.2, 1); 
     }
 
     .l-cont { text-align: center; width: 90%; max-width: 500px; }
 
     /* ФАКТУРНИЙ СКЛЯНИЙ ЛОГОТИП */
     .l-logo { 
-        width: 200px; height: 200px; margin: 0 auto 50px; 
+        width: 210px; height: 210px; margin: 0 auto 50px; 
         background: var(--img) center/cover no-repeat; 
-        border-radius: 40px; position: relative;
-        border: 2px solid rgba(191, 149, 63, 0.5);
+        border-radius: 42px; position: relative;
+        border: 2.5px solid #bf953f;
         box-shadow: 
-            0 20px 60px rgba(0,0,0,1), 
-            0 0 30px rgba(191,149,63,0.2),
-            inset 0 0 40px rgba(255,255,255,0.1);
-        animation: pulseLogo 3s ease-in-out infinite;
+            0 30px 60px rgba(0,0,0,1), 
+            0 0 40px rgba(191,149,63,0.3),
+            inset 0 0 30px rgba(255,255,255,0.1);
+        animation: logoFloat 4s ease-in-out infinite;
     }
 
-    /* СКЛЯНА КОЛБА (WATER CONTAINER) */
+    /* СКЛЯНА КОЛБА (TUBUS) */
     .l-bar-wrapper { 
-        position: relative; width: 280px; height: 18px; 
+        position: relative; width: 280px; height: 20px; /* Трохи товстіша для хвиль */
         background: rgba(255, 255, 255, 0.05); 
         border-radius: 20px; margin: 0 auto;
-        border: 2px solid rgba(191, 149, 63, 0.4);
-        box-shadow: inset 0 4px 10px rgba(0,0,0,0.8);
-        overflow: hidden; /* Обрізає хвилю */
-    }
-
-    /* РІДКЕ ЗОЛОТО З ЕФЕКТОМ ХВИЛІ */
-    #l-fill { 
-        position: absolute; top: 0; left: 0; height: 100%; 
-        background: linear-gradient(to bottom, #fcf6ba 0%, #bf953f 50%, #aa771c 100%);
-        box-shadow: 0 0 20px rgba(252, 246, 186, 0.4);
-        transition: width 0.3s ease;
+        border: 2px solid rgba(191, 149, 63, 0.5);
+        box-shadow: inset 0 4px 10px rgba(0,0,0,0.8), 0 1px 2px rgba(255,255,255,0.1);
         overflow: hidden;
     }
 
-    /* ЕФЕКТ ПЕРЕТІКАННЯ (ХВИЛЯ) */
-    #l-fill::before {
+    /* ЗОЛОТА ВОДА (LIQUID) */
+    #l-fill { 
+        position: absolute; top: 0; left: 0; height: 100%; 
+        background: linear-gradient(to bottom, #fcf6ba 0%, #bf953f 100%);
+        box-shadow: 0 0 20px rgba(252, 246, 186, 0.4);
+        transition: width 0.4s ease;
+        overflow: hidden;
+    }
+
+    /* ЕФЕКТ ХВИЛІ (Wave Layer) */
+    #l-fill::before, #l-fill::after {
         content: "";
         position: absolute;
-        top: -50%;
-        left: 0;
         width: 200%;
         height: 200%;
-        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org" viewBox="0 0 1000 100"><path fill="rgba(255,255,255,0.3)" d="M0 50c150-50 350-50 500 0s350 50 500 0v50H0z"/></svg>');
+        top: -120%; /* Регулює рівень "води" */
+        left: 0;
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org" viewBox="0 0 1000 100"><path fill="rgba(255,255,255,0.4)" d="M0 50c150-50 350-50 500 0s350 50 500 0v50H0z"/></svg>');
         background-size: 50% 100%;
-        animation: waveFlow 2s linear infinite;
     }
 
-    /* ВІДСОТКИ (АКЦЕНТ НА 0-100%) */
+    /* Перша хвиля */
+    #l-fill::before {
+        animation: waveMove 2s linear infinite;
+        opacity: 0.6;
+    }
+
+    /* Друга хвиля для глибини */
+    #l-fill::after {
+        animation: waveMove 3s linear infinite;
+        opacity: 0.3;
+        top: -110%;
+        left: -25%;
+    }
+
+    /* ТЕКСТ 0-100% (ЗОЛОТИЙ ГРАДІЄНТ) */
     .l-perc { 
         margin-top: 25px; font-family: 'Cinzel', serif; 
-        font-weight: 900; font-size: 26px; /* Зробив більшими */
-        background: var(--gold);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        letter-spacing: 5px;
-        filter: drop-shadow(0 0 10px rgba(191,149,63,0.5));
+        font-weight: 900; font-size: 26px; 
+        background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        letter-spacing: 5px; filter: drop-shadow(0 0 10px rgba(191,149,63,0.5));
     }
 
-    /* КАНВАС ЧАСТИНКИ */
-    canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; opacity: 0.7; }
+    canvas { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; opacity: 0.8; }
 
     /* АНІМАЦІЇ */
-    @keyframes waveFlow {
-        from { transform: translateX(0); }
-        to { transform: translateX(-50%); }
+    @keyframes waveMove {
+        from { transform: translateX(0) rotate(0deg); }
+        to { transform: translateX(-50%) rotate(0deg); }
+    }
+    @keyframes logoFloat {
+        0%, 100% { transform: translateY(0); filter: brightness(1); }
+        50% { transform: translateY(-10px); filter: brightness(1.2); }
     }
 
-    @keyframes pulseLogo {
-        0%, 100% { transform: scale(1); filter: brightness(1); }
-        50% { transform: scale(1.04); filter: brightness(1.2); }
-    }
 
 
 
