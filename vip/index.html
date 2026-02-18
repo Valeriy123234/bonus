@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
     <title>MRBONUS-VIP | ELITE ACCESS 2026</title>
     
-    <!-- Підключаємо елітні шрифти: Cinzel для заголовків, Montserrat для кнопок -->
+    <!-- Шрифти -->
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     
     <style>
     :root {
-        /* Більш контрастне золото з ефектом металевого зрізу */
         --gold: linear-gradient(135deg, #bf953f 0%, #fcf6ba 45%, #b38728 50%, #fcf6ba 55%, #aa771c 100%);
         --img: url('./8C816B9D-90C0-4CD4-AA80-242F7BA3F77E.png');
         --bg-glow: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
@@ -25,152 +24,128 @@
     }
 
     html, body { 
-        /* Замість мертвого чорного — ефект дорогого вінілу з підсвіткою центру */
         background: var(--bg-glow) !important; 
         background-attachment: fixed !important;
         color: #fff; 
         font-family: 'Montserrat', sans-serif; 
         overflow-x: hidden; 
         min-height: 100vh;
-        /* Тонка золота рамка по периметру для статусу */
         border: 1px solid rgba(191, 149, 63, 0.1);
     }
 
-
-    /* LIVE COUNTER */
-    .live-counter { 
-        position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.9); 
-        border: 2.5px solid #bf953f; padding: 10px 18px; border-radius: 12px; 
-        font-size: 11px; z-index: 1000; font-weight: 900; color: #fcf6ba; 
-        backdrop-filter: blur(10px); box-shadow: 0 0 20px rgba(191,149,63,0.4); min-width: 150px; 
+    /* 1. ПРЕЛОАДЕР: ЕФЕКТ ВИПУКЛОГО ХРУСТАЛЬНОГО КВАДРАТА */
+    #loader { 
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+        background: #000; z-index: 10000; 
+        display: flex; justify-content: center; align-items: center; 
     }
-    .live-counter span { color: #fff; display: block; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
 
-    /* LOADER */
-       /* LOADER - Додано глибину фону */
-       /* ПРЕМІУМ ЛОАДЕР */
-       /* ПРЕМІУМ ЛОАДЕР */
-       /* КОНТЕЙНЕР ЛОАДЕРА */
-        /* LOADER - ГЛИБОКИЙ ЕФЕКТ ТЕМРЯВИ */
-       /* LOADER - ЕФЕКТ ПЕКЕЛЬНОГО АЗАРТУ */
-        /* ULTRA-LUXURY LOADER (BLACK & GOLD ONLY) */
-        /* ЗОЛОТІ РАМКИ ПО БОКАХ (VIP EFFECT) */
-        /* 1. ВИПРАВЛЕННЯ ВІДСТУПУ (ПРИБИРАЄМО КРІНЖОВУ ПУСТОТУ) */
-    /* 1. ЛОАДЕР ТА ЕФЕКТ ХРУСТАЛЬНОЇ КУЛІ */
-#loader { 
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-    background: #000; z-index: 10000; 
-    display: flex; justify-content: center; align-items: center; 
-}
+    .l-cont { 
+        text-align: center; width: 100%; max-width: 320px; 
+        display: flex; flex-direction: column; align-items: center;
+    }
 
-.l-cont { 
-    text-align: center; width: 100%; max-width: 320px; 
-    display: flex; flex-direction: column; align-items: center;
-}
+    .l-logo { 
+        width: 185px; height: 185px; margin-bottom: 55px; 
+        background: var(--img) center/cover no-repeat; 
+        border-radius: 38px; /* Форма квадрата */
+        position: relative;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        /* Ефект масивної скляної плитки */
+        box-shadow: 
+            0 45px 90px rgba(0,0,0,1), 
+            inset 15px 15px 35px rgba(255,255,255,0.2),  /* Відбиття грані зліва */
+            inset -15px -15px 35px rgba(0,0,0,0.7),      /* Тінь грані справа */
+            inset 0 0 50px rgba(255,255,255,0.05);
+        overflow: hidden;
+    }
 
-.l-logo { 
-    width: 190px; height: 190px; margin-bottom: 50px; 
-    background: var(--img) center/cover no-repeat; 
-    border-radius: 50%; /* Кругла форма для ефекту лінзи */
-    position: relative;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    /* Глибокий хрусталь */
-    box-shadow: 
-        0 40px 100px rgba(0,0,0,1), 
-        inset 0 0 60px rgba(0,0,0,0.8),               
-        inset 15px 15px 40px rgba(255,255,255,0.15),  
-        0 0 30px rgba(191,149,63,0.1);                
-    overflow: hidden;
-}
+    /* Світлова лінза над квадратом */
+    .l-logo::before {
+        content: ''; position: absolute; inset: 0;
+        background: 
+            radial-gradient(circle at 25% 25%, rgba(255,255,255,0.4) 0%, transparent 40%),
+            linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+        border-radius: 38px; z-index: 2;
+    }
 
-/* Ефект хрустальної лінзи (відблиск світла) */
-.l-logo::before {
-    content: ''; position: absolute; inset: 0; border-radius: 50%;
-    background: 
-        radial-gradient(circle at 30% 25%, rgba(255,255,255,0.5) 0%, transparent 30%),
-        radial-gradient(circle at 50% 50%, transparent 45%, rgba(255,255,255,0.1) 100%);
-    z-index: 2; pointer-events: none;
-}
+    /* Рухомий блік на склі */
+    .l-logo::after {
+        content: ''; position: absolute; 
+        top: -150%; left: -150%; width: 400%; height: 400%;
+        background: linear-gradient(45deg, transparent 45%, rgba(255,255,255,0.3) 50%, transparent 55%);
+        transform: rotate(30deg);
+        animation: glassGlow 5s infinite ease-in-out;
+        z-index: 3;
+    }
 
-/* ЮВЕЛІРНА ЛІНІЯ ЗАВАНТАЖЕННЯ */
-.l-bar-wrapper { 
-    position: relative; width: 240px; height: 2px; 
-    background: rgba(191, 149, 63, 0.15); border-radius: 2px;
-}
+    /* ЗАВАНТАЖУВАЧ (ЮВЕЛІРНА НИТКА) */
+    .l-bar-wrapper { 
+        position: relative; width: 240px; height: 2px; 
+        background: rgba(191, 149, 63, 0.15); border-radius: 2px;
+    }
 
-#l-fill { 
-    position: absolute; top: 0; left: 0; height: 100%; 
-    background: #bf953f; border-radius: 2px;
-    box-shadow: 0 0 25px #bf953f, 0 0 45px rgba(191,149,63,0.5);
-    transition: width 0.1s linear;
-}
+    #l-fill { 
+        position: absolute; top: 0; left: 0; height: 100%; 
+        background: #bf953f; border-radius: 2px;
+        box-shadow: 0 0 25px #bf953f;
+        transition: width 0.1s linear;
+    }
 
-/* Алмазна іскра на кінці лінії */
-#l-fill::after {
-    content: ''; position: absolute; right: 0; top: 50%;
-    width: 10px; height: 10px; background: #fff;
-    border-radius: 50%; transform: translate(50%, -50%);
-    box-shadow: 0 0 35px #fff, 0 0 55px #fcf6ba;
-    animation: diamondPulse 1.5s infinite ease-in-out;
-}
+    .l-perc { 
+        margin-top: 30px; font-family: 'Cinzel', serif; font-size: 13px; 
+        color: rgba(191, 149, 63, 0.8); letter-spacing: 12px; text-transform: uppercase; 
+    }
 
-/* 2. ОСНОВНИЙ КОНТЕНТ - ПОВНЕ ВИДАЛЕННЯ ПУСТОТИ ЗВЕРХУ */
-.main { 
-    opacity: 0; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    justify-content: flex-start !important; /* Тільки вгору */
-    padding: 0 !important; 
-    margin: 0 !important;
-    min-height: 100vh; 
-    transition: 1.5s ease-out; 
-    z-index: 2; 
-    position: relative; 
-}
+    /* 2. ОСНОВНИЙ КОНТЕНТ (БЕЗ ДІРОК) */
+    .main { 
+        opacity: 0; 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        justify-content: flex-start !important; 
+        padding: 15px 15px 40px !important; /* ІДЕАЛЬНИЙ ВІДСТУП 15PX */
+        margin: 0 !important;
+        min-height: 100vh; 
+        transition: 1.5s ease-out; 
+        z-index: 2; 
+        position: relative; 
+    }
 
-/* ЛОГОТИП ПІСЛЯ ЛОАДЕРА (ПРИТРУШЕНИЙ ДО ВЕРХУ) */
-.s-logo { 
-    width: 115px; height: 115px; 
-    margin-top: 0 !important; 
-    margin-bottom: 10px;
-    background: var(--img) center/cover no-repeat; 
-    border-radius: 28px; 
-    border: 2px solid #bf953f;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.9);
-    position: relative;
-}
+    .s-logo { 
+        width: 110px; height: 110px; 
+        margin-top: 0 !important; 
+        margin-bottom: 12px;
+        background: var(--img) center/cover no-repeat; 
+        border-radius: 25px; border: 2px solid #bf953f;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+    }
 
-/* ТЕКСТ БРЕНДУ ТА ЛАЙВ-ВІН */
-.brand-name { 
-    font-family: 'Cinzel', serif; 
-    background: var(--gold); 
-    -webkit-background-clip: text; 
-    -webkit-text-fill-color: transparent; 
-    font-size: 34px; 
-    letter-spacing: 4px; 
-    font-weight: 800; 
-    margin-bottom: 12px; 
-    text-align: center; 
-}
+    .brand-name { 
+        font-family: 'Cinzel', serif; background: var(--gold); 
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+        font-size: 34px; letter-spacing: 4px; font-weight: 800; 
+        margin-bottom: 12px; text-align: center; 
+    }
 
-.live-win { 
-    font-size: 15px; color: #00ff95; margin-bottom: 45px; 
-    font-weight: 900; text-transform: uppercase; letter-spacing: 2px; 
-    height: 18px; text-shadow: 0 0 15px rgba(0,255,149,0.6); 
-}
+    .live-win { 
+        font-size: 15px; color: #00ff95; margin-bottom: 45px; 
+        font-weight: 900; text-transform: uppercase; letter-spacing: 2px; 
+        height: 18px; text-shadow: 0 0 15px rgba(0,255,149,0.6); 
+    }
 
-/* АНІМАЦІЇ */
-@keyframes diamondPulse {
-    0%, 100% { filter: brightness(1); transform: translate(50%, -50%) scale(1); }
-    50% { filter: brightness(1.6); transform: translate(50%, -50%) scale(1.4); }
-}
+    /* АНІМАЦІЇ */
+    @keyframes glassGlow {
+        0% { transform: translate(-100%, -100%) rotate(30deg); }
+        15% { transform: translate(100%, 100%) rotate(30deg); }
+        100% { transform: translate(100%, 100%) rotate(30deg); }
+    }
 
-@keyframes crystalShine {
-    0% { transform: translate(-110%, -110%) rotate(30deg); }
-    20% { transform: translate(110%, 110%) rotate(30deg); }
-    100% { transform: translate(110%, 110%) rotate(30deg); }
-}
+    @keyframes diamondPulse {
+        0%, 100% { filter: brightness(1); transform: translate(50%, -50%) scale(1); }
+        50% { filter: brightness(1.6); transform: translate(50%, -50%) scale(1.3); }
+    }
+
 
 
     /* КНОПКИ З ВЕЛИКИМ ТЕКСТОМ */
