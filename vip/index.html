@@ -82,15 +82,27 @@
     }
 
     /* Анімації для логотипа */
-    @keyframes luxuryGlow {
-        0%, 100% { transform: translateY(0); box-shadow: 0 15px 40px rgba(0,0,0,0.8), 0 0 25px rgba(191,149,63,0.4); }
-        50% { transform: translateY(-12px); box-shadow: 0 25px 55px rgba(0,0,0,0.9), 0 0 45px rgba(252, 246, 186, 0.6); }
-    }
-    @keyframes logoShine {
-        0% { top: -150%; left: -150%; }
-        20% { top: 100%; left: 100%; }
-        100% { top: 100%; left: 100%; }
-    }
+    /* М'яка, майже непомітна левітація лого */
+@keyframes luxuryGlow {
+    0%, 100% { transform: translateY(0); box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+    50% { transform: translateY(-4px); box-shadow: 0 15px 40px rgba(191,149,63,0.3); }
+}
+
+/* Рідкісний блиск - раз на 8 секунд */
+.btn::before {
+    animation: lightSweep 8s infinite ease-in-out;
+}
+
+@keyframes lightSweep {
+    0% { left: -150%; }
+    10% { left: 150%; } /* Швидкий проліт */
+    100% { left: 150%; } /* Довга пауза */
+}
+
+/* Спокійний блік на логотипі - раз на 12 секунд */
+.s-logo::after {
+    animation: logoShine 12s infinite ease-in-out;
+}
 
 
     /* Анімований відблиск */
