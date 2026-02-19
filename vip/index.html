@@ -153,6 +153,7 @@
 /* ГОЛОВНА ПЛАШКА (Висота х2: 55px -> 110px) */
 /* ГОЛОВНА ПЛАШКА — ЕФЕКТ ДОРОГОГО СКЛА */
 /* ГОЛОВНА ПЛАШКА - СКЛО */
+/* ГОЛОВНА ПЛАШКА - ЕФЕКТ СКЛЯНОЇ ЛЕНТИ */
 .vip-ticker-wrap {
     position: relative;
     width: 100%;
@@ -161,63 +162,71 @@
     z-index: 100;
     overflow: hidden;
     display: flex;
-    align-items: center; /* Центрування по вертикалі */
+    align-items: center;
     backdrop-filter: blur(15px) brightness(1.2);
     -webkit-backdrop-filter: blur(15px) brightness(1.2);
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.2), 0 10px 30px rgba(0,0,0,0.5);
 }
 
-/* КОНТЕЙНЕР ДЛЯ СТРІЧКИ (Тут важливо align-items: center) */
+/* КОНТЕЙНЕР ДЛЯ СТРІЧКИ */
 .vip-ticker {
     display: flex;
-    flex-direction: row; /* Тільки в рядок */
-    flex-wrap: nowrap;   /* Заборона переносу */
+    flex-direction: row;
+    flex-wrap: nowrap;
     align-items: center; 
     width: max-content;
     animation: slideLoop 40s linear infinite;
 }
 
-/* ІКОНКИ-КВАДРАТИ */
+/* ІКОНКИ-КВАДРАТИ БЕЗ РАМОК */
 .v-item {
-    display: block !important; /* Робимо посилання блоком */
-    width: 60px !important; 
-    height: 60px !important;
-    min-width: 60px !important;
-    margin: 0 12px; 
+    display: block !important;
+    width: 65px; /* Трохи збільшив, бо без рамки можна більше */
+    height: 65px; 
+    min-width: 65px;
+    margin: 0 8px; 
     
     background-image: var(--i) !important;
-    background-size: 150% !important; /* Велике фото всередині */
+    background-size: cover !important; /* Фото заповнює весь квадрат */
     background-position: center !important;
     background-repeat: no-repeat !important;
     
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    flex-shrink: 0; /* Не дає іконкам стискатися */
+    border-radius: 8px;
+    border: none !important; /* ПРИБРАЛИ РАМКИ */
+    outline: none !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4); /* Залишив легку тінь для об'єму */
+    
+    flex-shrink: 0;
     
     /* Автоматична м'яка пульсація */
     animation: autoPulse 5s infinite ease-in-out;
-    transition: transform 0.3s ease, border-color 0.3s ease;
+    transition: transform 0.4s ease;
 }
 
-/* Щоб пульсували по черзі */
-.v-item:nth-child(odd) { animation-delay: 1s; }
-.v-item:nth-child(even) { animation-delay: 2.5s; }
+/* Черговість пульсації */
+.v-item:nth-child(odd) { animation-delay: 0.8s; }
+.v-item:nth-child(even) { animation-delay: 2.3s; }
 
 @keyframes autoPulse {
-    0%, 100% { transform: scale(1); border-color: rgba(255, 255, 255, 0.3); }
-    50% { transform: scale(1.1); border-color: #bf953f; }
+    0%, 100% { 
+        transform: scale(1); 
+        filter: brightness(1); 
+    }
+    50% { 
+        transform: scale(1.1); 
+        filter: brightness(1.2); /* Трохи підсвічується сама картинка замість рамки */
+    }
 }
 
-/* Рух стрічки */
+/* РУХ СТРІЧКИ */
 @keyframes slideLoop {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
 }
 
-/* Блік на склі */
+/* БЛІК ПО ВСЬОМУ СКЛУ */
 .vip-ticker-wrap::after {
     content: "";
     position: absolute;
@@ -227,6 +236,7 @@
     transform: skewX(-20deg);
     animation: glassShine 8s infinite linear;
     pointer-events: none;
+    z-index: 5;
 }
 
 @keyframes glassShine {
@@ -234,6 +244,7 @@
     30% { left: 150%; }
     100% { left: 150%; }
 }
+
 
         /* MAIN CONTENT */
         /* Основний контейнер: додав плавності */
