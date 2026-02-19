@@ -157,89 +157,44 @@
 @keyframes textPulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
 
 
-/* 1. СТРІЧКА (Х2) БЕЗ ЗАЙВОГО СВІТЛА */
-.vip-ticker-wrap {
+        /* MAIN CONTENT */
+        /* Основний контейнер: додав плавності */
+        
+/* ЧАСТИНКИ: на весь екран, під контентом, без розривів */
+canvas { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100vw; 
+    height: 100vh; 
+    z-index: 1; /* Під кнопками, але над фоном */
+    pointer-events: none; 
+    opacity: 0.8; 
+    display: block;
+}
+
+/* Прибираємо будь-які відступи у body, що могли давати білі смуги */
+html, body { 
+    margin: 0; 
+    padding: 0; 
+    width: 100%; 
+    height: 100%; 
+    background-color: #000 !important; 
+    overflow-x: hidden; 
+}
+
+.main { 
     position: relative;
-    width: 100%;
-    height: 110px; 
-    background: #000 !important;
-    border-bottom: 2px solid rgba(191, 149, 63, 0.3);
-    z-index: 100;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    box-shadow: none !important;
-    opacity: 0; /* Щоб не миготіло на старті */
+    z-index: 2; /* Контент НАД частинками */
+    opacity: 0; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    padding: 75px 15px 40px; /* Ті самі 2 см зверху */
+    min-height: 100vh; 
+    transition: 1s ease-out; 
+    background: transparent !important; /* Щоб не перекривати фон з частинками */
 }
-
-/* 2. ЛІЧИЛЬНИКИ: В РЯД ТА СУВОРО ПО ЦЕНТРУ */
-.live-counter {
-    position: relative !important;
-    margin: 15px auto !important; /* Центрування самого блоку */
-    display: flex !important;
-    flex-direction: row !important; /* В ОДИН РЯД */
-    justify-content: center !important; /* ЦЕНТРУВАННЯ ТЕКСТУ */
-    gap: 15px !important;
-    z-index: 99;
-    background: none !important;
-    border: none !important;
-    width: 100% !important;
-    opacity: 0; /* Щоб не миготіло на старті */
-}
-
-.live-counter span {
-    font-family: 'Cinzel', serif !important;
-    font-size: 11px !important;
-    color: #ffcc66 !important;
-    text-shadow: 0 0 8px #ffcc66 !important;
-    font-weight: 900 !important;
-    background: none !important;
-    border: 0.5px solid rgba(191, 149, 63, 0.4) !important;
-    padding: 4px 12px !important;
-    border-radius: 4px !important;
-}
-
-/* 3. ІКОНКИ: ЗБІЛЬШЕНІ ТА ВУЖЧІ */
-.v-item {
-    width: 75px; 
-    height: 85px;
-    min-width: 75px;
-    margin: 0 10px;
-    background-image: var(--i) !important;
-    background-size: cover !important;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    flex-shrink: 0;
-}
-
-/* 4. КОНТЕНТ (СЛОТИ ТА ЛОГОТИП): ЦЕНТРУЄМО ТА ПРИБИРАЄМО ДІРКУ */
-.main {
-    position: relative !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important; /* СТАВИТЬ ЛОГОТИП ПО ЦЕНТРУ */
-    padding-top: 10px !important; /* ПРИБИРАЄМО ПРІРВУ */
-    opacity: 0;
-}
-
-/* АНІМАЦІЯ */
-.vip-ticker {
-    display: flex;
-    width: max-content;
-    animation: slideLoop 50s linear infinite;
-}
-
-@keyframes slideLoop {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-}
-
-.vip-ticker-wrap::before, .vip-ticker-wrap::after {
-    content: ""; position: absolute; top: 0; width: 100px; height: 100%; z-index: 5;
-}
-.vip-ticker-wrap::before { left: 0; background: linear-gradient(to right, #000, transparent); }
-.vip-ticker-wrap::after { right: 0; background: linear-gradient(to left, #000, transparent); }
-
 
 
 /* КРИШТАЛЕВА ІКОНКА (Твоє фото в склі) */
@@ -472,65 +427,6 @@
     <div id="loader"><div class="l-cont"><div class="l-logo"></div><div class="l-bar-wrapper"><div id="l-fill"></div></div><div class="l-perc" id="pc">0%</div></div></div>
     <canvas id="c"></canvas>
 
-    <div class="vip-ticker-wrap">...</div>
-
-<div class="live-counter">
-    <span id="on-val">ONLINE: 1540</span>
-    <span id="pl-val">PLAYING: 720</span>
-</div>
-<div class="main" id="m">
-    <img src="logo.png" class="logo"> <!-- Твій логотип тепер буде в центрі -->
-
-    
-    <div class="vip-ticker-wrap">
-    <div class="vip-ticker">
-        <div class="v-item" style="--i: url('./8C816B9D-90C0-4CD4-AA80-242F7BA3F77E.png')"></div>
-        <div class="v-item" style="--i: url('./IMG_0699.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0700.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0701.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0702.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0703.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0704.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0705.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0706.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0707.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0708.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0709.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0710.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0711.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0712.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0713.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0714.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0715.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0716.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0718.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0719.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0720.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0721.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0722.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0723.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0724.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0725.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0726.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0727.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0728.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0729.jpeg')"></div>
-        <div class="v-item" style="--i: url('./IMG_0730.jpeg')"></div>
-
-        <!-- КЛОНИ ДЛЯ БЕЗШОВНОСТІ -->
-        <div class="v-item" aria-hidden="true" style="--i: url('./8C816B9D-90C0-4CD4-AA80-242F7BA3F77E.png')"></div>
-        <div class="v-item" aria-hidden="true" style="--i: url('./IMG_0699.jpeg')"></div>
-        <div class="v-item" aria-hidden="true" style="--i: url('./IMG_0700.jpeg')"></div>
-        <div class="v-item" aria-hidden="true" style="--i: url('./IMG_0701.jpeg')"></div>
-        <div class="v-item" aria-hidden="true" style="--i: url('./IMG_0702.jpeg')"></div>
-        <div class="v-item" aria-hidden="true" style="--i: url('./IMG_0703.jpeg')"></div>
-        <div class="v-item" aria-hidden="true" style="--i: url('./IMG_0704.jpeg')"></div>
-        <div class="v-item" aria-hidden="true" style="--i: url('./IMG_0705.jpeg')"></div>
-        <div class="v-item" aria-hidden="true" style="--i: url('./IMG_0706.jpeg')"></div>
-        <div class="v-item" aria-hidden="true" style="--i: url('./IMG_0707.jpeg')"></div>
-    </div>
-</div>
-    
     <div class="main" id="m">
         <div class="s-logo"></div>
         <div class="brand-name">MRBONUS-VIP</div>
@@ -576,84 +472,84 @@
         </div>
     </div>
 
-  <script>
-    let canS = false;
-    function enableAudio() { if(!canS) { const a = document.getElementById('cash'); if(a) a.play().then(() => { a.pause(); a.currentTime = 0; canS = true; }).catch(()=>{}); } }
+    <script>
+        let canS = false;
+        function enableAudio() { if(!canS) { const a = document.getElementById('cash'); a.play().then(() => { a.pause(); a.currentTime = 0; canS = true; }).catch(()=>{}); } }
 
-    // ПРИХОВУЄМО ВСЕ ПЕРЕД СТАРТОМ (щоб не миготіло)
-    const ticker = document.querySelector('.vip-ticker-wrap');
-    const counter = document.querySelector('.live-counter');
-    if(ticker) ticker.style.opacity = '0';
-    if(counter) counter.style.opacity = '0';
-
-    const start = Date.now();
-    const update = () => {
-        const elap = Date.now() - start;
-        let prog = Math.min(Math.pow(elap/3000, 1.8)*100, 100);
-        const lFill = document.getElementById('l-fill');
-        const pc = document.getElementById('pc');
-        
-        if(lFill) lFill.style.width = prog + '%';
-        if(pc) pc.innerText = Math.floor(prog) + '%';
-        
-        if (elap < 3000) requestAnimationFrame(update);
-        else {
-            setTimeout(() => {
-                if(canS) { const cash = document.getElementById('cash'); if(cash) cash.play(); }
-                const loader = document.getElementById('loader');
-                if(loader) loader.style.opacity = '0';
-                
-                const m = document.getElementById('m');
-                if(m) { m.style.opacity = '1'; m.classList.add('show'); }
-                
-                // ПЛАВНО ПРОЯВЛЯЄМО ТІКЕР ТА ЛІЧИЛЬНИКИ
-                if(ticker) { ticker.style.transition = 'opacity 1s'; ticker.style.opacity = '1'; }
-                if(counter) { counter.style.transition = 'opacity 1s'; counter.style.opacity = '1'; }
-                
-                setTimeout(() => { if(loader) loader.remove(); }, 1200);
-            }, 200);
-        }
-    };
-    update();
-
-    // LIVE COUNTER
-    setInterval(() => {
-        const onVal = document.getElementById('on-val');
-        const plVal = document.getElementById('pl-val');
-        if(onVal) onVal.innerText = `ONLINE: ${1600 + Math.floor(Math.random()*150)}`;
-        if(plVal) plVal.innerText = `PLAYING: ${900 + Math.floor(Math.random()*100)}`;
-    }, 4000);
-
-    // LIVE WINNER
-    setInterval(() => {
-        const winElem = document.getElementById('live-win');
-        const mainElem = document.getElementById('m');
-        
-        if (mainElem && mainElem.classList.contains('show') && winElem) {
-            const sums = ["+1,400₴", "+2,850₴", "+4,200₴", "+7,100₴", "+9,450₴", "+15,800₴", "+245,000₴"];
-            const slots = ["AVIATOR", "BOOK OF RA", "GATES OF OLYMPUS", "SUGAR RUSH", "SWEET BONANZA", "THE DOG HOUSE"];
-
-            winElem.style.opacity = "0";
-            winElem.style.transform = "translateY(-10px)";
-            
-            setTimeout(() => {
-                const randomSum = sums[Math.floor(Math.random() * sums.length)];
-                const randomSlot = slots[Math.floor(Math.random() * slots.length)];
-                winElem.innerText = `WIN: ${randomSum} IN ${randomSlot} ⚡`;
-                winElem.style.transform = "translateY(10px)";
-                
+        const start = Date.now();
+        const update = () => {
+            const elap = Date.now() - start;
+            let prog = Math.min(Math.pow(elap/3000, 1.8)*100, 100);
+            document.getElementById('l-fill').style.width = prog + '%';
+            document.getElementById('pc').innerText = Math.floor(prog) + '%';
+            if (elap < 3000) requestAnimationFrame(update);
+            else {
                 setTimeout(() => {
-                    winElem.style.opacity = "1";
-                    winElem.style.transform = "translateY(0)";
-                }, 50);
-            }, 600);
-        }
-    }, 4500);
+                    if(canS) document.getElementById('cash').play();
+                    document.getElementById('loader').style.opacity = '0';
+                    const m = document.getElementById('m');
+                    m.style.opacity = '1'; m.classList.add('show');
+                    setTimeout(() => document.getElementById('loader').remove(), 1200);
+                }, 200);
+            }
+        };
+        update();
 
-    // PARTICLES
-    const canvas = document.getElementById('c'); 
-    if(canvas) {
-        const ctx = canvas.getContext('2d');
+        // LIVE COUNTER (ОНОВЛЕННЯ ЧИСЕЛ)
+        setInterval(() => {
+            document.getElementById('on-val').innerText = `ONLINE: ${1600 + Math.floor(Math.random()*150)}`;
+            document.getElementById('pl-val').innerText = `PLAYING: ${900 + Math.floor(Math.random()*100)}`;
+        }, 4000);
+
+        setInterval(() => {
+    const winElem = document.getElementById('live-win');
+    const mainElem = document.getElementById('m');
+    
+    if (mainElem && mainElem.classList.contains('show') && winElem) {
+        
+        const sums = [
+            "+1,400₴", "+2,850₴", "+4,200₴", "+5,900₴", "+7,100₴", 
+            "+9,450₴", "+11,200₴", "+13,600₴", "+15,800₴", "+18,300₴", 
+            "+21,500₴", "+24,700₴", "+27,900₴", "+31,200₴", "+35,600₴", 
+            "+40,100₴", "+44,800₴", "+49,350₴", "+55,200₴", "+62,700₴", 
+            "+70,400₴", "+78,900₴", "+86,200₴", "+95,500₴", "+108,000₴", 
+            "+122,400₴", "+138,900₴", "+155,200₴", "+184,000₴", "+245,000₴"
+        ];
+
+        const slots = [
+            "AVIATOR", "BOOK OF RA", "GATES OF OLYMPUS", "SUGAR RUSH", "SWEET BONANZA",
+            "SUN OF EGYPT 4", "THE DOG HOUSE", "BIG BASS DAY AT THE RACES", "ULTIMATE HOT", "FRUIT PARTY",
+            "SHINING CROWN", "WOLF GOLD", "JOKER'S JEWELS", "BUFFALO KING", "MORE MAGIC APPLE", 
+            "HOT FRUITS 100", "AZTEC CLUSTERS", "ROYAL COINS 2", "COIN STRIKE", "3 HOT CHILLIES", 
+            "777 BURNING HOT", "EYE OF HORUS", "LEGACY OF DEAD", "FIRE IN THE HOLE", "SAN QUENTIN"
+        ];
+
+        // 1. Починаємо плавне зникнення з рухом вгору
+        winElem.style.opacity = "0";
+        winElem.style.transform = "translateY(-10px)";
+        
+        setTimeout(() => {
+            // 2. Міняємо текст, коли його не видно
+            const randomSum = sums[Math.floor(Math.random() * sums.length)];
+            const randomSlot = slots[Math.floor(Math.random() * slots.length)];
+            winElem.innerText = `WIN: ${randomSum} IN ${randomSlot} ⚡`;
+            
+            // 3. Скидаємо позицію вниз для ефекту появи знизу
+            winElem.style.transform = "translateY(10px)";
+            
+            // 4. Плавно проявляємо та повертаємо на місце
+            setTimeout(() => {
+                winElem.style.opacity = "1";
+                winElem.style.transform = "translateY(0)";
+            }, 50);
+            
+        }, 600); // Час має збігатися з CSS transition
+    }
+}, 4500); // 4.5 секунди - ідеальний темп, щоб встигнути прочитати
+
+
+
+        const canvas = document.getElementById('c'); const ctx = canvas.getContext('2d');
         let w, h, particles = [];
         function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
         window.addEventListener('resize', resize); resize();
@@ -672,5 +568,7 @@
             requestAnimationFrame(anim); 
         }
         anim();
-    }
-</script>
+    </script>
+</body>
+</html>
+
