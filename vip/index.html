@@ -162,6 +162,7 @@
 /* ВЕЛИКА СТРІЧКА (БЕЗ ЗМІН ВИСОТИ) */
 /* 1. СТРІЧКА З КАЗИНО (БЕЗ ЗАЙВОГО СВІТЛА) */
 /* 1. ВЕЛИКА СТРІЧКА (БЕЗ ЗАЙВОГО СВІТЛА) */
+/* 1. ВЕЛИКА СТРІЧКА (БЕЗ ЗАЙВОГО СВІТЛА) */
 .vip-ticker-wrap {
     position: relative;
     width: 100%;
@@ -172,46 +173,47 @@
     overflow: hidden;
     display: flex;
     align-items: center;
-    box-shadow: none !important; /* ПРИБРАЛИ СВІТЛО ЗВЕРХУ */
+    box-shadow: none !important; /* ГЕТЬ СВІТЛО */
 }
 
-/* 2. ЛІЧИЛЬНИКИ: ТЕПЕР СУВОРО ПО ЦЕНТРУ В РЯД */
+/* 2. ЛІЧИЛЬНИКИ: СУВОРО ПО ЦЕНТРУ В РЯД (БЕЗ СКРОЛУ) */
 .live-counter {
-    position: relative !important; 
-    margin: 15px auto !important; /* СУВОРИЙ ЦЕНТР */
+    position: absolute !important; 
+    top: 145px !important; /* Одразу під стрічкою */
+    left: 50% !important; /* Центрування по горизонталі */
+    transform: translateX(-50%) !important; /* Точне вирівнювання центру */
     display: flex !important;
-    flex-direction: row !important; /* У РЯД, ЯК ТИ ПРОСИВ */
+    flex-direction: row !important; /* В РЯД */
     justify-content: center !important; 
     align-items: center !important;
     gap: 15px !important; 
-    z-index: 99;
+    z-index: 999;
     background: none !important;
     border: none !important;
-    backdrop-filter: none !important;
+    width: auto !important;
     pointer-events: none;
-    width: 100% !important;
 }
 
 .live-counter span {
     font-family: 'Cinzel', serif !important;
-    font-size: 11px !important; /* Трохи менше (0.8 від минулого) */
+    font-size: 11px !important; /* Зменшено текст */
     font-weight: 900 !important;
     color: #fcf6ba !important; 
     background: #000 !important; 
     padding: 4px 10px !important; 
     border-radius: 4px !important; 
-    border: 1px solid rgba(191, 149, 63, 0.6) !important; /* Тонша рамка */
+    border: 1px solid rgba(191, 149, 63, 0.6) !important;
     white-space: nowrap !important;
     text-transform: uppercase !important;
     text-shadow: 0 0 8px rgba(191, 149, 63, 0.8) !important;
 }
 
-/* 3. ІКОНКИ: ЩЕ ТРОХИ МЕНШІ (ЗВУЖЕНІ ТА НИЖЧІ) */
+/* 3. ІКОНКИ: ВУЖЧІ ТА МЕНШІ */
 .v-item {
-    width: 75px;  /* Було 80px -> ще вужче */
-    height: 85px; /* Було 95px -> трохи нижче */
+    width: 75px;  /* Вужчі */
+    height: 85px; /* Нижчі */
     min-width: 75px;
-    margin: 0 10px; /* 0.5 мм візуально по боках */
+    margin: 0 12px; 
     background-image: var(--i) !important;
     background-size: cover !important;
     background-position: center !important;
@@ -223,7 +225,7 @@
 .vip-ticker {
     display: flex;
     width: max-content;
-    animation: slideLoop 40s linear infinite;
+    animation: slideLoop 45s linear infinite;
 }
 
 @keyframes slideLoop {
@@ -231,11 +233,12 @@
     100% { transform: translateX(-50%); }
 }
 
-/* 4. КОНТЕНТ (СЛОТИ КАЗИНО) - ЧОРНА ЛІНІЯ */
+/* 4. КОНТЕНТ (СЛОТИ КАЗИНО) */
 .main {
-    background: #000 !important; /* Тільки тут чорний фон */
-    padding-top: 20px !important; 
+    background: #000 !important;
+    padding-top: 55px !important; /* Відступ, щоб звільнити місце для лічильників */
 }
+
 
 
 
