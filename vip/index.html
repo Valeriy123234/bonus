@@ -180,26 +180,33 @@
 /* ЛІЧИЛЬНИКИ: МАЛЕНЬКІ, СПРАВА, ПІД СЛОТАМИ */
 /* ЛІЧИЛЬНИКИ: СТАТИЧНО ПРИ СКРОЛІ, ОДИН ПІД ОДНИМ */
 /* ЛІЧИЛЬНИКИ: ЧИСТИЙ ТЕКСТ, БЕЗ РАМОК, СТАТИЧНО ВГОРІ */
-/* ПОВНЕ ОНОВЛЕННЯ: БЕЗ РАМОК, БЕЗ СКРОЛУ */
+/* ПОВНЕ ОНОВЛЕННЯ: БЕЗ РАМОК, БЕЗ СКРОЛУ */* ПОВНЕ ВИДАЛЕННЯ ПЛАШКИ ТА СКРОЛУ */
 .live-counter {
-    position: absolute !important; 
-    top: 65px !important;
+    position: absolute !important; /* Саме це зупиняє рух при скролі */
+    top: 60px !important;
     right: 15px !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: flex-end !important;
-    z-index: 200 !important;
+    gap: 2px !important;
+    z-index: 999 !important;
+    background: transparent !important; /* Видаляє фон */
+    border: none !important;           /* Видаляє рамку */
+    box-shadow: none !important;       /* Видаляє тіні навколо */
 }
+
 .live-counter span {
-    background: transparent !important; /* Прибирає плашку */
-    border: none !important;           /* Прибирає рамку */
-    color: #ffcc66 !important;         /* Золотий текст */
-    text-shadow: 0 0 10px #ffcc66 !important;
+    background: transparent !important; /* Гарантовано без фону */
+    border: none !important;           /* Гарантовано без рамок */
+    color: #ffcc66 !important;         /* Яскраве золото */
+    font-family: 'Cinzel', serif !important;
+    font-size: 10px !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    text-shadow: 0 0 10px #ffcc66, 0 0 5px rgba(255, 204, 102, 0.8) !important;
+    padding: 0 !important;
+    margin: 0 !important;
 }
-
-
-
-
 
 
 /* СТРІЧКА ТА ІКОНКИ */
@@ -564,9 +571,10 @@ html, body {
 
 <!-- Лічильники мають стояти ПІСЛЯ стрічки, а не всередині неї -->
 <div class="live-counter">
-    <span id="on-val">ONLINE: 1582</span>
-    <span id="pl-val">PLAYING: 894</span>
+    <span id="on-val">ONLINE: 1540</span>
+    <span id="pl-val">PLAYING: 720</span>
 </div>
+
 
 
 
