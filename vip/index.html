@@ -185,34 +185,28 @@
 /* LIVE COUNTER: БЕЗ РАМОК, БЕЗ СКРОЛУ, ЯСКРАВИЙ ТЕКСТ */
 /* LIVE COUNTER: БЕЗ РАМОК, БЕЗ СКРОЛУ, ЯСКРАВИЙ ТЕКСТ */
 /* ПРАВИЛЬНІ ЛІЧИЛЬНИКИ: БЕЗ РАМОК, БЕЗ СКРОЛУ, ОДИН ПІД ОДНИМ */
-.live-counter { 
-    position: relative !important; 
-    margin-top: 10px !important; /* Відступ від стрічки іконок */
-    margin-right: 15px !important; 
+.live-counter {
+    position: relative !important; /* Не наповзає на слоти */
+    margin: 10px 15px 0 0 !important;
     display: flex !important;
-    flex-direction: column !important; 
-    align-items: flex-end !important; 
-    gap: 4px !important; 
-    z-index: 90 !important;
-    background: transparent !important; 
-    border: none !important;           
-    box-shadow: none !important;       
-    backdrop-filter: none !important;
-    min-width: auto !important; 
-    pointer-events: none;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    gap: 2px !important;
+    z-index: 100;
+    background: none !important;
+    border: none !important;
 }
 
-.live-counter span { 
-    color: #ffcc66 !important; 
+.live-counter span {
     font-family: 'Cinzel', serif !important;
     font-size: 10px !important;
+    color: #ffcc66 !important;
+    text-shadow: 0 0 8px #ffcc66 !important;
     font-weight: 900 !important;
-    text-transform: uppercase !important;
-    text-shadow: 0 0 10px #ffcc66, 0 0 5px rgba(255, 204, 102, 0.8) !important;
-    margin: 0 !important;
     background: none !important;
-    padding: 0 !important;
+    border: none !important;
 }
+
 
 
 /* СТРІЧКА ТА ІКОНКИ */
@@ -662,16 +656,10 @@ html, body {
         const on = document.getElementById('on-val');
         const pl = document.getElementById('pl-val');
         if(on && pl) {
-            on.style.opacity = "0.5";
-            pl.style.opacity = "0.5";
-            setTimeout(() => {
-                on.innerText = `ONLINE: ${Math.floor(Math.random() * 1001) + 1000}`;
-                pl.innerText = `PLAYING: ${Math.floor(Math.random() * 451) + 500}`;
-                on.style.opacity = "1";
-                pl.style.opacity = "1";
-            }, 500);
+            on.innerText = "ONLINE: " + (Math.floor(Math.random() * 500) + 1200);
+            pl.innerText = "PLAYING: " + (Math.floor(Math.random() * 300) + 600);
         }
-    }, 4000);
+    }, 3000);
 
     // ВИГРАШІ (УСІ ТВОЇ 30 СУМ ТА 25 СЛОТІВ)
     setInterval(() => {
