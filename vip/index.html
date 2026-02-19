@@ -202,21 +202,19 @@
 
 /* ІКОНКИ: ТЕПЕР ЇХ БУДЕ ВИДНО */
 .v-item {
-    width: 42px; /* Маленькі та строгі */
+    width: 42px;
     height: 42px;
+    min-width: 42px; /* Гарантує, що іконка не стиснеться в нуль */
     margin: 0 12px;
-    /* Жорстка прив'язка картинки */
     background-image: var(--i) !important;
     background-size: cover !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
-    
     border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    filter: brightness(0.9);
-    flex-shrink: 0; /* Забороняє стискати іконки */
-    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    display: inline-block;
 }
+
 
 .v-item:hover {
     filter: brightness(1.2);
@@ -500,9 +498,12 @@ html, body {
     <div id="loader"><div class="l-cont"><div class="l-logo"></div><div class="l-bar-wrapper"><div id="l-fill"></div></div><div class="l-perc" id="pc">0%</div></div></div>
     <canvas id="c"></canvas>
 
-   <div class="vip-ticker-wrap">
+  <div class="vip-ticker-wrap">
     <div class="vip-ticker">
-        <!-- Усі 31 слот з твоїми назвами -->
+        <!-- Твоє основне лого (якщо воно теж має бути в стрічці) -->
+        <div class="v-item" style="--i: url('./8C816B9D-90C0-4CD4-AA80-242F7BA3F77E.png')"></div>
+
+        <!-- Слот-машини з папки vip -->
         <div class="v-item" style="--i: url('./vip/IMG_0699.jpeg')"></div>
         <div class="v-item" style="--i: url('./vip/IMG_0700.jpeg')"></div>
         <div class="v-item" style="--i: url('./vip/IMG_0701.jpeg')"></div>
@@ -534,14 +535,13 @@ html, body {
         <div class="v-item" style="--i: url('./vip/IMG_0728.jpeg')"></div>
         <div class="v-item" style="--i: url('./vip/IMG_0729.jpeg')"></div>
         <div class="v-item" style="--i: url('./vip/IMG_0730.jpeg')"></div>
-        
-        <!-- Клони для нескінченного ковзання -->
+
+        <!-- Клони для безшовності -->
         <div class="v-item" aria-hidden="true" style="--i: url('./vip/IMG_0699.jpeg')"></div>
         <div class="v-item" aria-hidden="true" style="--i: url('./vip/IMG_0700.jpeg')"></div>
-        <div class="v-item" aria-hidden="true" style="--i: url('./vip/IMG_0701.jpeg')"></div>
-        <div class="v-item" aria-hidden="true" style="--i: url('./vip/IMG_0702.jpeg')"></div>
     </div>
 </div>
+
 
 
     
