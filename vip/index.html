@@ -177,33 +177,41 @@
     display: flex;
     flex-direction: column; 
     align-items: flex-end; 
-    gap: 5px; 
+    gap: 4px; 
     z-index: 90;
     pointer-events: none;
+    /* ГАРАНТОВАНО ПРИБИРАЄМО ЗОВНІШНЮ РАМКУ ТА ФОН */
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
 }
 
 .live-counter span {
     font-family: 'Cinzel', serif;
-    font-size: 9px; /* Оптимальний розмір для строгого дизайну */
+    font-size: 9px;
     font-weight: 900;
     color: #fcf6ba; 
-    background: linear-gradient(180deg, #121212 0%, #000000 100%) !important;
+    background: #000 !important; /* Чистий чорний фон для кожної плашки */
     
-    /* Рівні відступи для центрування тексту */
-    padding: 4px 8px; 
+    /* Компактні відступи, щоб плашка не була величезною */
+    padding: 3px 7px; 
     line-height: 1; 
-    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     
-    border-radius: 3px; 
-    /* Мінімалістична тонка рамка */
-    border: 0.3px solid rgba(191, 149, 63, 0.3);
+    border-radius: 2px; 
+    /* ОДИНАРНА ТОНКА РАМКА НАВКОЛО ТЕКСТУ */
+    border: 0.3px solid rgba(191, 149, 63, 0.5) !important;
     
     white-space: nowrap;
     text-transform: uppercase;
     text-shadow: 0 0 5px rgba(191, 149, 63, 0.7);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-    letter-spacing: 0.8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    letter-spacing: 0.5px;
 }
+
 
 
 
