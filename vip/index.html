@@ -141,18 +141,18 @@ html, body {
     overflow-x: hidden; 
 }
 
+/* Має бути так */
 .main { 
-    position: relative;
-    z-index: 2; /* Контент НАД частинками */
     opacity: 0; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    padding: 75px 15px 40px; /* Ті самі 2 см зверху */
-    min-height: 100vh; 
-    transition: 1s ease-out; 
-    background: transparent !important; /* Щоб не перекривати фон з частинками */
+    transition: opacity 1s ease; 
+    display: flex; /* НЕ none! */
+    flex-direction: column;
+    align-items: center;
 }
+.main.show { 
+    opacity: 1 !important; 
+}
+
 
 
 /* КРИШТАЛЕВА ІКОНКА (Твоє фото в склі) */
