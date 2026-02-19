@@ -178,17 +178,18 @@
 }
 
 .v-item {
-    width: 76px;
-    height: 76px;
-    min-width: 76px;
-    margin: 0 20px; /* Збільшено відступ між іконками для балансу */
+    width: 60px; /* Зменшена ширина для ефекту вузької іконки */
+    height: 76px; /* Висота залишається великою */
+    min-width: 60px;
+    margin: 0 15px; 
     background-image: var(--i) !important;
-    background-size: cover !important;
+    background-size: cover !important; /* Фото заповнює всю площу без виходу за межі */
     background-position: center !important;
-    border-radius: 12px; /* Збільшено радіус закруглення */
+    border-radius: 10px; 
     border: 2px solid rgba(255, 255, 255, 0.1);
     flex-shrink: 0;
 }
+
 
 @keyframes slideLoop {
     0% { transform: translateX(0); }
