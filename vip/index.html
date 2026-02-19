@@ -113,12 +113,24 @@
 }
 
 /* ВІДСОТКИ */
-.l-perc { 
-    margin-top: 35px; font-family: 'Cinzel', serif; font-weight: 900; font-size: 28px; 
-    background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-    letter-spacing: 12px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
+.l-perc {
+    display: block;        /* Робимо блоком для розрахунку ширини */
+    text-align: center;    /* Центруємо текст всередині */
+    text-indent: 12px;     /* ВАЖЛИВО: компенсуємо letter-spacing на ту ж величину */
+    
+    /* Твої існуючі стилі */
+    margin-top: 35px; 
+    font-family: 'Cinzel', serif; 
+    font-weight: 900; 
+    font-size: 28px; 
+    background: var(--gold); 
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent; 
+    letter-spacing: 12px; 
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
     animation: textPulse 3s ease-in-out infinite;
 }
+
 
 /* АНІМАЦІЇ */
 @keyframes dustChaos {
