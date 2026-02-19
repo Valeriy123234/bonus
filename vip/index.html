@@ -626,112 +626,73 @@ html, body {
         </div>
     </div>
 
- <script>
+<script>
     let canS = false;
-    function enableAudio() { 
-        if(!canS) { 
-            const a = document.getElementById('cash'); 
-            if(a) { a.play().then(() => { a.pause(); a.currentTime = 0; canS = true; }).catch(()=>{}); }
-        } 
-    }
+    function enableAudio() { if(!canS) { const a = document.getElementById('cash'); if(a) { a.play().then(() => { a.pause(); a.currentTime = 0; canS = true; }).catch(()=>{}); } } }
 
-    // 1. ЗАВАНТАЖУВАЧ (LOADER) - ПРАЦЮЄ ЧІТКО
+    // ЗАВАНТАЖУВАЧ
     const start = Date.now();
     const updateLoader = () => {
         const elap = Date.now() - start;
         let prog = Math.min(Math.pow(elap/3000, 1.8)*100, 100);
-        
-        const fill = document.getElementById('l-fill');
-        const perc = document.getElementById('pc');
-        
-        if(fill) fill.style.width = prog + '%';
-        if(perc) perc.innerText = Math.floor(prog) + '%';
-
-        if (elap < 3000) {
-            requestAnimationFrame(updateLoader);
-        } else {
+        if(document.getElementById('l-fill')) document.getElementById('l-fill').style.width = prog + '%';
+        if(document.getElementById('pc')) document.getElementById('pc').innerText = Math.floor(prog) + '%';
+        if (elap < 3000) requestAnimationFrame(updateLoader);
+        else {
             setTimeout(() => {
                 if(canS && document.getElementById('cash')) document.getElementById('cash').play();
-                const loader = document.getElementById('loader');
-                if(loader) loader.style.opacity = '0';
+                if(document.getElementById('loader')) document.getElementById('loader').style.opacity = '0';
                 const m = document.getElementById('m');
                 if(m) { m.style.opacity = '1'; m.classList.add('show'); }
-                setTimeout(() => { if(loader) loader.remove(); }, 1200);
+                setTimeout(() => { if(document.getElementById('loader')) document.getElementById('loader').remove(); }, 1200);
             }, 200);
         }
     };
     updateLoader();
 
-    // 2. LIVE COUNTER (ОНОВЛЕННЯ ЧИСЕЛ: 1000-2000 та 500-950)
+    // ЛІЧИЛЬНИК (ПЛАВНА ЗМІНА ЦИФР)
     setInterval(() => {
-        const onEl = document.getElementById('on-val');
-        const plEl = document.getElementById('pl-val');
-        if (onEl && plEl) {
-            onEl.style.opacity = "0.4";
-            plEl.style.opacity = "0.4";
+        const on = document.getElementById('on-val');
+        const pl = document.getElementById('pl-val');
+        if(on && pl) {
+            on.style.opacity = "0.5";
+            pl.style.opacity = "0.5";
             setTimeout(() => {
-                onEl.innerText = `ONLINE: ${Math.floor(Math.random() * (2000 - 1000 + 1)) + 1000}`;
-                plEl.innerText = `PLAYING: ${Math.floor(Math.random() * (950 - 500 + 1)) + 500}`;
-                onEl.style.opacity = "1";
-                plEl.style.opacity = "1";
+                on.innerText = `ONLINE: ${Math.floor(Math.random() * 1001) + 1000}`;
+                pl.innerText = `PLAYING: ${Math.floor(Math.random() * 451) + 500}`;
+                on.style.opacity = "1";
+                pl.style.opacity = "1";
             }, 500);
         }
     }, 4000);
 
-    // 3. LIVE WINNER (ПОВНИЙ СПИСОК: 30 СУМ ТА 25 СЛОТІВ)
+    // ВИГРАШІ (УСІ ТВОЇ 30 СУМ ТА 25 СЛОТІВ)
     setInterval(() => {
         const winElem = document.getElementById('live-win');
         const mainElem = document.getElementById('m');
-        
         if (mainElem && mainElem.classList.contains('show') && winElem) {
-            const sums = [
-                "+1,400₴", "+2,850₴", "+4,200₴", "+5,900₴", "+7,100₴", "+9,450₴", "+11,200₴", "+13,600₴", "+15,800₴", "+18,300₴", 
-                "+21,500₴", "+24,700₴", "+27,900₴", "+31,200₴", "+35,600₴", "+40,100₴", "+44,800₴", "+49,350₴", "+55,200₴", "+62,700₴", 
-                "+70,400₴", "+78,900₴", "+86,200₴", "+95,500₴", "+108,000₴", "+122,400₴", "+138,900₴", "+155,200₴", "+184,000₴", "+245,000₴"
-            ];
-            const slots = [
-                "AVIATOR", "BOOK OF RA", "GATES OF OLYMPUS", "SUGAR RUSH", "SWEET BONANZA", "SUN OF EGYPT 4", "THE DOG HOUSE", "BIG BASS DAY AT THE RACES", "ULTIMATE HOT", "FRUIT PARTY",
-                "SHINING CROWN", "WOLF GOLD", "JOKER'S JEWELS", "BUFFALO KING", "MORE MAGIC APPLE", "HOT FRUITS 100", "AZTEC CLUSTERS", "ROYAL COINS 2", "COIN STRIKE", "3 HOT CHILLIES", 
-                "777 BURNING HOT", "EYE OF HORUS", "LEGACY OF DEAD", "FIRE IN THE HOLE", "SAN QUENTIN"
-            ];
-
+            const sums = ["+1,400₴", "+2,850₴", "+4,200₴", "+5,900₴", "+7,100₴", "+9,450₴", "+11,200₴", "+13,600₴", "+15,800₴", "+18,300₴", "+21,500₴", "+24,700₴", "+27,900₴", "+31,200₴", "+35,600₴", "+40,100₴", "+44,800₴", "+49,350₴", "+55,200₴", "+62,700₴", "+70,400₴", "+78,900₴", "+86,200₴", "+95,500₴", "+108,000₴", "+122,400₴", "+138,900₴", "+155,200₴", "+184,000₴", "+245,000₴"];
+            const slots = ["AVIATOR", "BOOK OF RA", "GATES OF OLYMPUS", "SUGAR RUSH", "SWEET BONANZA", "SUN OF EGYPT 4", "THE DOG HOUSE", "BIG BASS DAY AT THE RACES", "ULTIMATE HOT", "FRUIT PARTY", "SHINING CROWN", "WOLF GOLD", "JOKER'S JEWELS", "BUFFALO KING", "MORE MAGIC APPLE", "HOT FRUITS 100", "AZTEC CLUSTERS", "ROYAL COINS 2", "COIN STRIKE", "3 HOT CHILLIES", "777 BURNING HOT", "EYE OF HORUS", "LEGACY OF DEAD", "FIRE IN THE HOLE", "SAN QUENTIN"];
             winElem.style.opacity = "0";
-            winElem.style.transform = "translateY(-10px)";
-            
             setTimeout(() => {
-                const rSum = sums[Math.floor(Math.random() * sums.length)];
-                const rSlot = slots[Math.floor(Math.random() * slots.length)];
-                winElem.innerText = `WIN: ${rSum} IN ${rSlot} ⚡`;
-                winElem.style.transform = "translateY(10px)";
-                setTimeout(() => {
-                    winElem.style.opacity = "1";
-                    winElem.style.transform = "translateY(0)";
-                }, 50);
+                winElem.innerText = `WIN: ${sums[Math.floor(Math.random()*sums.length)]} IN ${slots[Math.floor(Math.random()*slots.length)]} ⚡`;
+                winElem.style.opacity = "1";
             }, 600);
         }
     }, 4500);
 
-    // 4. ЕФЕКТ ЧАСТИНОК (BACKGROUND)
+    // ФОНОВІ ЧАСТИНКИ
     const canvas = document.getElementById('c'); 
     if(canvas) {
         const ctx = canvas.getContext('2d');
         let w, h, particles = [];
         function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
         window.addEventListener('resize', resize); resize();
-        class Particle {
-            constructor() { this.init(); }
-            init() { this.x = Math.random()*w; this.y = Math.random()*h; this.s = Math.random()*3.0 + 0.6; this.v = Math.random()*0.6 + 0.15; this.o = Math.random()*0.7; }
-        }
+        class Particle { constructor() { this.init(); } init() { this.x = Math.random()*w; this.y = Math.random()*h; this.s = Math.random()*3 + 0.6; this.v = Math.random()*0.6 + 0.15; this.o = Math.random()*0.7; } }
         for(let i=0; i<115; i++) particles.push(new Particle());
-        function anim() { 
-            ctx.clearRect(0,0,w,h); 
-            particles.forEach(p => {
-                p.y -= p.v; if(p.y < -10) { p.y = h + 10; p.x = Math.random()*w; }
-                ctx.fillStyle = `rgba(252, 246, 186, ${p.o})`;
-                ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill();
-            }); 
-            requestAnimationFrame(anim); 
-        }
+        function anim() { ctx.clearRect(0,0,w,h); particles.forEach(p => { p.y -= p.v; if(p.y < -10) { p.y = h + 10; p.x = Math.random()*w; } ctx.fillStyle = `rgba(252, 246, 186, ${p.o})`; ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill(); }); requestAnimationFrame(anim); }
         anim();
     }
 </script>
+</body>
+</html>
