@@ -304,9 +304,9 @@ html, body {
     overflow: hidden; 
     z-index: 1;
 
-    /* ПРЕМІАЛЬНЕ М'ЯКЕ ЗОЛОТО: прибрав різкі перепади */
+    /* М'ЯКЕ ЗОЛОТО (статичне) */
     background: linear-gradient(180deg, #fcf6ba 0%, #bf953f 100%);
-    /* Додав легкий внутрішній блік, щоб кнопка здавалася випуклою */
+    
     box-shadow: 
         0 8px 25px rgba(0,0,0,0.5), 
         inset 0 2px 5px rgba(255,255,255,0.5), 
@@ -319,21 +319,24 @@ html, body {
     text-align: center; 
     text-decoration: none;
     
-    /* ТЕКСТ: Максимально чіткий та масивний */
     color: #000 !important; 
     font-weight: 900; 
     text-transform: uppercase; 
-    font-size: 21px; /* Трішки збільшив */
+    font-size: 21px; 
     letter-spacing: -0.2px;
     line-height: 1.1;
 
-    will-change: transform, opacity;
-    opacity: 0; 
-    transform: translateY(30px); 
-    transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    /* ПРИБРАЛИ АНІМАЦІЮ ПОЯВИ */
+    opacity: 1 !important; 
+    transform: none !important; 
+    transition: none !important;
+
+    /* Оптимізація для миттєвого рендеру */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
 }
 
-/* Блік: зробив його ширшим та м'якшим (сріблястим) */
+/* Блік залишаємо для солідності */
 .btn::after {
     content: "";
     position: absolute;
@@ -352,13 +355,15 @@ html, body {
     30%, 100% { transform: translateX(450%) skewX(-25deg); }
 }
 
-.main.show .btn { opacity: 1; transform: translateY(0); }
+/* Видаляємо будь-які старі правила появи */
+.main.show .btn { 
+    opacity: 1 !important; 
+    transform: none !important; 
+}
 
-/* Ефект при натисканні: кнопка стає трішки яскравішою */
 .btn:active { 
-    transform: scale(0.96); 
+    transform: scale(0.96) translateZ(0) !important; 
     background: #fcf6ba; 
-    transition: 0.1s;
 }
 
 .btn-tg { 
@@ -368,6 +373,7 @@ html, body {
     margin-top: 25px; 
     margin-bottom: 60px;
 }
+
 
 
 
@@ -400,22 +406,22 @@ html, body {
         <div id="live-win" class="live-win">CONNECTING TO VIP SERVER...</div>
 
         <div class="btns">
-            <a href="https://play.mrbonusua.space/bonus1.html" class="btn" style="transition-delay: 0.1s">FIRST CASINO • 1300 FS VIP 💎</a>
-            <a href="https://play.mrbonusua.space/bonus2.html" class="btn" style="transition-delay: 0.2s">SLOT CITY • 700 FS + 150% 🔥</a>
-            <a href="https://play.mrbonusua.space/pokerbet.html" class="btn" style="transition-delay: 0.3s">POKER BET • 650 FS + 100% 🃏</a>
-            <a href="https://play.mrbonusua.space/topmatch.html" class="btn" style="transition-delay: 0.4s">TOP MATCH • 200₴ + 100 FS ⚡</a>
-            <a href="https://play.mrbonusua.space/beton.html" class="btn" style="transition-delay: 0.5s">BETON • 500 FS + 150% 🎰</a>
-            <a href="https://play.mrbonusua.space/gorilla.html" class="btn" style="transition-delay: 0.6s">GORILLA • 300 ФРІСПІНІВ 🦍</a>
-            <a href="https://play.mrbonusua.space/betking.html" class="btn" style="transition-delay: 0.7s">BETKING • 200% + 200 FS 👑</a>
-            <a href="https://play.mrbonusua.space/777.html" class="btn" style="transition-delay: 0.8s">777 CASINO • 1450 FS БЕЗДЕП 🎰</a>
-            <a href="https://play.mrbonusua.space/vegas.html" class="btn" style="transition-delay: 0.9s">VEGAS • 150 FS ЩОДНЯ 🌃</a>
-            <a href="https://play.mrbonusua.space/" class="btn" style="transition-delay: 1.0s">GG-BET • 1000 ФРІСПІНІВ 🔥</a>
-            <a href="https://play.mrbonusua.space/parik24.html" class="btn" style="transition-delay: 1.1s">PARIK 24 • 150 FS + 100% 🟧</a>
-            <a href="https://play.mrbonusua.space/championclub.html" class="btn" style="transition-delay: 1.2s">ЧЕМПІОН CLUB • 1000 FS 🏆</a>
-            
-            <!-- Пряме посилання на ТГ канал -->
-            <a href="https://t.me/+c33timlTVpYyOGQ6" class="btn btn-tg" style="transition-delay: 1.4s">📢 JOIN ELITE TELEGRAM ✨</a>
-        </div>
+    <a href="https://play.mrbonusua.space/bonus1.html" class="btn">FIRST CASINO • 1300 FS VIP 💎</a>
+    <a href="https://play.mrbonusua.space/bonus2.html" class="btn">SLOT CITY • 700 FS + 150% 🔥</a>
+    <a href="https://play.mrbonusua.space/pokerbet.html" class="btn">POKER BET • 650 FS + 100% 🃏</a>
+    <a href="https://play.mrbonusua.space/topmatch.html" class="btn">TOP MATCH • 200₴ + 100 FS ⚡</a>
+    <a href="https://play.mrbonusua.space/beton.html" class="btn">BETON • 500 FS + 150% 🎰</a>
+    <a href="https://play.mrbonusua.space/gorilla.html" class="btn">GORILLA • 300 ФРІСПІНІВ 🦍</a>
+    <a href="https://play.mrbonusua.space/betking.html" class="btn">BETKING • 200% + 200 FS 👑</a>
+    <a href="https://play.mrbonusua.space/777.html" class="btn">777 CASINO • 777 FS 🎰</a>
+    <a href="https://play.mrbonusua.space/vegas.html" class="btn">VEGAS • 150 FS ЩОДНЯ 🌃</a>
+    <a href="https://play.mrbonusua.space/" class="btn">GG-BET • 1000 ФРІСПІНІВ 🔥</a>
+    <a href="https://play.mrbonusua.space/parik24.html" class="btn">PARIK 24 • 150 FS + 100% 🟧</a>
+    <a href="https://play.mrbonusua.space/championclub.html" class="btn">ЧЕМПІОН CLUB • 1000 FS 🏆</a>
+    
+    <!-- Пряме посилання на ТГ канал без затримок -->
+    <a href="https://t.me/+c33timlTVpYyOGQ6" class="btn btn-tg">📢 JOIN ELITE TELEGRAM ✨</a>
+</div>
 
         <div class="info-title">НАШІ ПРИНЦИПИ</div>
 
