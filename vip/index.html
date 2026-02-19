@@ -166,7 +166,7 @@
 /* ПЛАШКА СЛОТІВ: СТАТИЧНА (ЙДЕ ВГОРУ ПРИ СКРОЛІ) */
 /* ОБГОРТКА СТРІЧКИ */
 .vip-ticker-wrap {
-    position: relative;
+    position: relative; /* Тепер вона не літає, а стоїть у черзі контенту */
     width: 100%;
     height: 55px; 
     background: #000 !important;
@@ -177,42 +177,51 @@
     align-items: center;
 }
 
-/* ЛІЧИЛЬНИКИ: СТАТИЧНІ ПРИ СКРОЛІ (ABSOLUTE) */
+/* ЛІЧИЛЬНИКИ: МАЛЕНЬКІ, СПРАВА, ПІД СЛОТАМИ */
+/* ЛІЧИЛЬНИКИ: СТАТИЧНО ПРИ СКРОЛІ, ОДИН ПІД ОДНИМ */
 .live-counter {
     position: absolute !important;
-    top: 60px; /* Відступ від верху, щоб бути під стрічкою */
+    top: 60px; 
     right: 15px; 
     display: flex;
-    flex-direction: column; /* Ставить один під одним */
-    align-items: flex-end; /* Притискає текст до правого краю */
+    flex-direction: column; 
+    align-items: flex-end; 
     gap: 4px; 
-    z-index: 110;
+    z-index: 90;
     pointer-events: none;
 }
 
 .live-counter span {
     font-family: 'Cinzel', serif;
-    font-size: 10px; 
-    color: #ffcc66; /* Яскраве золото */
-    background: rgba(0, 0, 0, 0.5); /* М'яка тінь без рамки */
+    font-size: 10px; /* Трохи збільшив для чіткості */
+    color: #ffcc66; /* Яскравий золотий */
+    background: rgba(0, 0, 0, 0.6); 
     padding: 2px 6px;
     white-space: nowrap;
     text-transform: uppercase;
-    text-shadow: 0 0 10px rgba(255, 204, 102, 0.8); /* Яскраве сяйво */
+    /* Ефект сяйва тексту */
+    text-shadow: 0 0 8px rgba(255, 204, 102, 0.6);
     transition: opacity 0.5s ease-in-out;
 }
 
-/* АНІМАЦІЯ СТРІЧКИ */
+
+
+/* СТРІЧКА ТА ІКОНКИ */
 .vip-ticker {
     display: flex;
     width: max-content;
     animation: slideLoop 50s linear infinite;
+    will-change: transform;
 }
 
 .v-item {
-    width: 38px; height: 38px; margin: 0 10px;
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    margin: 0 10px;
     background-image: var(--i) !important;
     background-size: cover !important;
+    background-position: center !important;
     border-radius: 6px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     flex-shrink: 0;
@@ -223,34 +232,17 @@
     100% { transform: translateX(-50%); }
 }
 
+/* ЕФЕКТ ТУМАНУ */
 .vip-ticker-wrap::before, .vip-ticker-wrap::after {
     content: ""; position: absolute; top: 0; width: 60px; height: 100%; z-index: 5;
 }
 .vip-ticker-wrap::before { left: 0; background: linear-gradient(to right, #000, transparent); }
 .vip-ticker-wrap::after { right: 0; background: linear-gradient(to left, #000, transparent); }
 
-.main { padding-top: 40px !important; }
-</style>
-
-<script>
-// Скрипт для м'якої зміни цифр (Online 1000-2000, Playing 500-950)
-function updateCounter(id, min, max, label) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    setInterval(() => {
-        const newVal = Math.floor(Math.random() * (max - min + 1) + min);
-        el.style.opacity = "0.5"; // Ефект мерехтіння при зміні
-        setTimeout(() => {
-            el.innerText = `${label}: ${newVal}`;
-            el.style.opacity = "1";
-        }, 500);
-    }, Math.random() * (5000 - 3000) + 3000);
+/* КОНТЕНТ */
+.main {
+    padding-top: 40px !important; /* Логотип тепер нижче лічильників */
 }
-
-updateCounter('online-val', 1000, 2000, 'ONLINE');
-updateCounter('playing-val', 500, 950, 'PLAYING');
-
-
 
 
         /* MAIN CONTENT */
