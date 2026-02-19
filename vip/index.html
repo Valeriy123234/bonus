@@ -151,77 +151,97 @@
 @keyframes textPulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
 
 /* ГОЛОВНА ПЛАШКА (Висота х2: 55px -> 110px) */
+/* ГОЛОВНА ПЛАШКА — ЕФЕКТ ДОРОГОГО СКЛА */
 .vip-ticker-wrap {
     position: relative;
     width: 100%;
-    height: 110px; 
-    background: #000 !important;
-    border-bottom: 2px solid rgba(191, 149, 63, 0.2);
+    height: 90px; /* Трохи зменшив висоту для кращого вигляду квадратів */
+    background: rgba(255, 255, 255, 0.03) !important; /* Прозорість для скла */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 100;
     overflow: hidden;
     display: flex;
     align-items: center;
+    
+    /* Ефект заломлення та розмиття */
+    backdrop-filter: blur(15px) saturate(150%);
+    -webkit-backdrop-filter: blur(15px) saturate(150%);
+    
+    /* Випуклість та відблиск зверху */
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* СТРІЧКА ТА ІКОНКИ (Розмір х2: 38px -> 76px) */
+/* Світловий "злом" (лінія відблиску зверху) */
+.vip-ticker-wrap::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.08), transparent);
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* ІКОНКИ-КВАДРАТИ */
 .vip-ticker {
     display: flex;
     width: max-content;
-    animation: slideLoop 50s linear infinite;
-    will-change: transform;
+    animation: slideLoop 40s linear infinite;
 }
 
 .v-item {
-    width: 60px; 
-    height: 76px;
-    min-width: 60px;
-    margin: 0 12px; 
+    /* Робимо ідеальний квадрат */
+    width: 70px; 
+    height: 70px;
+    min-width: 70px;
+    
+    margin: 0 10px; 
     background-image: var(--i) !important;
     background-size: cover !important;
     background-position: center !important;
-    border-radius: 8px; /* Більш гострі кути виглядають агресивніше/сучасніше */
+    border-radius: 12px; /* Округлість як у преміум додатків */
+    
+    /* Рамка та об'єм іконок всередині скла */
     border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Додає об'єму іконкам слотів */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    
     flex-shrink: 0;
-    transition: transform 0.2s ease;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Ефект при наведенні (якщо це десктоп) */
+/* Ефект при наведенні */
 .v-item:hover {
-    transform: scale(1.1);
-    border-color: #ffcc00; /* Золотава рамка при наведенні */
+    transform: scale(1.15) translateY(-5px);
+    border-color: #bf953f;
+    z-index: 10;
 }
 
-
+/* АНІМАЦІЯ */
 @keyframes slideLoop {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
 }
 
-/* ЕФЕКТ ТУМАНУ (Ширина градієнта х2: 60px -> 120px) */
-.vip-ticker-wrap::before, 
+/* ЗАТЕМНЕННЯ ПО БОКАХ (ТУМАН) */
 .vip-ticker-wrap::after {
     content: "";
     position: absolute;
     top: 0;
-    width: 120px; 
-    height: 100%;
-    z-index: 5;
-}
-
-.vip-ticker-wrap::before {
     left: 0;
-    background: linear-gradient(to right, #000, transparent);
-}
-
-.vip-ticker-wrap::after {
-    right: 0;
-    background: linear-gradient(to left, #000, transparent);
+    width: 100%;
+    height: 100%;
+    /* М'яке затінення з боків для фокусу в центрі */
+    background: linear-gradient(to right, #000 0%, transparent 15%, transparent 85%, #000 100%);
+    pointer-events: none;
+    z-index: 3;
 }
 
 /* КОНТЕНТ */
 .main {
-    padding-top: 40px !important;
+    padding-top: 20px !important;
 }
 
         /* MAIN CONTENT */
