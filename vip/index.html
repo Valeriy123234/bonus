@@ -642,7 +642,11 @@ html, body {
                     // 2. ВМИКАЄМО ТВОЮ ПЛАВНУ ПОЯВУ (БЕЗ МЕРЕХТІННЯ)
                     m.style.opacity = '1'; 
                     m.classList.add('show'); // <--- ЦЕЙ РЯДОК РОБОЧИЙ ✅
-                    
+
+                    // Після m.classList.add('show');
+                    window.scrollTo(0, 1); 
+                    window.scrollTo(0, 0);
+
                     // 3. Видаляємо лоадер повністю через 1.2 сек
                     setTimeout(() => document.getElementById('loader').remove(), 1200);
                 }, 200);
