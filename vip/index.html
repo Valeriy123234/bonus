@@ -182,34 +182,42 @@
 /* ЛІЧИЛЬНИКИ: ЧИСТИЙ ТЕКСТ, БЕЗ РАМОК, СТАТИЧНО ВГОРІ */
 /* ПОВНЕ ОНОВЛЕННЯ: БЕЗ РАМОК, БЕЗ СКРОЛУ */* ПОВНЕ ВИДАЛЕННЯ ПЛАШКИ ТА СКРОЛУ */
 /* ЛІЧИЛЬНИКИ: СТАТИЧНІ, БЕЗ НАПОЛЗАННЯ ТА ПЛАШОК */
-.live-counter {
-        position: absolute !important; /* Стоїть вгорі, НЕ їде за екраном */
-        top: 60px !important;
-        right: 15px !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: flex-end !important;
-        gap: 2px !important;
-        z-index: 999 !important;
-        background: none !important; /* ГЕТЬ ПЛАШКУ */
-        border: none !important;     /* ГЕТЬ РАМКИ */
-        box-shadow: none !important;
-        pointer-events: none !important;
-    }
+/* LIVE COUNTER: БЕЗ РАМОК, БЕЗ СКРОЛУ, ЯСКРАВИЙ ТЕКСТ */
+/* LIVE COUNTER: БЕЗ РАМОК, БЕЗ СКРОЛУ, ЯСКРАВИЙ ТЕКСТ */
+.live-counter { 
+    /* Змінено на absolute, щоб він не скролився за користувачем */
+    position: absolute !important; 
+    top: 65px !important; 
+    right: 15px !important; 
+    /* Скидаємо всі фони та рамки */
+    background: transparent !important; 
+    border: none !important; 
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    
+    display: flex !important;
+    flex-direction: column !important; /* Один під одним */
+    align-items: flex-end !important; 
+    gap: 2px !important; 
+    z-index: 1000; 
+    pointer-events: none;
+    min-width: auto !important; 
+}
 
-    .live-counter span {
-        background: none !important;
-        border: none !important;
-        box-shadow: none !important;
-        color: #ffcc66 !important; /* Яскраве золото */
-        text-shadow: 0 0 10px #ffcc66, 0 0 5px rgba(255, 204, 102, 0.8) !important;
-        font-family: 'Cinzel', serif !important;
-        font-size: 10px !important;
-        font-weight: 900 !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        opacity: 1 !important;
-    }
+.live-counter span { 
+    color: #ffcc66 !important; /* Над’яскраве золото */
+    font-size: 10px !important;
+    font-weight: 900 !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 !important;
+    /* Ефект неонового сяйва */
+    text-shadow: 0 0 10px #ffcc66, 0 0 5px rgba(255, 204, 102, 0.8) !important;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+}
+
+
 
 
 
