@@ -280,11 +280,12 @@ html, body {
     overflow-x: hidden; 
 }
 
+/* БЛОК ГОЛОВНОГО КОНТЕНТУ (З ФІКСОМ МЕРЕХТІННЯ) */
 .main { 
     position: relative;
     z-index: 2; 
     
-    /* ФІКС МЕРЕХТІННЯ: Спочатку повністю невидимий */
+    /* Спочатку повністю ховаємо, щоб не було мерехтіння слотів */
     opacity: 0; 
     visibility: hidden; 
     
@@ -296,16 +297,17 @@ html, body {
     
     /* Плавність Luxury рівня */
     transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.2s;
-    will-change: opacity, transform; /* Готує відеокарту смартфона */
+    will-change: opacity, transform; 
     
     background: transparent !important; 
 }
 
-/* Клас, який ми додамо через JS після лоадера */
-.main.loaded {
-    opacity: 1;
-    visibility: visible;
+/* КЛАС ПОЯВИ (Синхронізовано з твоїм JS класом .show) */
+.main.show {
+    opacity: 1 !important;
+    visibility: visible !important;
 }
+
 
 
 
