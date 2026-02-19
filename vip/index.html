@@ -157,12 +157,7 @@
 @keyframes textPulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
 
 
-        /* ГОЛОВНА ОБГОРТКА СТРІЧКИ */
-/* ЗБІЛЬШЕНА СТРІЧКА (У 2.5 РАЗА) */
-/* ВЕЛИКА СТРІЧКА (БЕЗ ЗМІН ВИСОТИ) */
-/* 1. СТРІЧКА З КАЗИНО (БЕЗ ЗАЙВОГО СВІТЛА) */
-/* 1. ВЕЛИКА СТРІЧКА (БЕЗ ЗАЙВОГО СВІТЛА) */
-/* 1. ВЕЛИКА СТРІЧКА (БЕЗ ЗАЙВОГО СВІТЛА) */
+/* 1. ВЕЛИКА СТРІЧКА (БЕЗ СВІТЛА) */
 .vip-ticker-wrap {
     position: relative;
     width: 100%;
@@ -173,25 +168,24 @@
     overflow: hidden;
     display: flex;
     align-items: center;
-    box-shadow: none !important; /* ГЕТЬ СВІТЛО */
+    box-shadow: none !important; /* ПРИБРАНО СВІТЛО ЗВЕРХУ */
 }
 
-/* 2. ЛІЧИЛЬНИКИ: СУВОРО ПО ЦЕНТРУ В РЯД (БЕЗ СКРОЛУ) */
+/* 2. ЛІЧИЛЬНИКИ: СТАТИЧНІ, СУВОРО ПО ЦЕНТРУ В РЯД */
 .live-counter {
-    position: absolute !important; 
-    top: 145px !important; /* Одразу під стрічкою */
-    left: 50% !important; /* Центрування по горизонталі */
-    transform: translateX(-50%) !important; /* Точне вирівнювання центру */
+    position: relative !important; 
+    margin: 15px auto !important; /* ЦЕНТРУВАННЯ ТА ВІДСТУП ВІД СТРІЧКИ */
     display: flex !important;
-    flex-direction: row !important; /* В РЯД */
-    justify-content: center !important; 
+    flex-direction: row !important; /* У РЯД */
+    justify-content: center !important; /* ЦЕНТРУВАННЯ ГОРІЗОНТАЛЬНО */
     align-items: center !important;
-    gap: 15px !important; 
-    z-index: 999;
+    gap: 12px !important; 
+    z-index: 99;
     background: none !important;
     border: none !important;
-    width: auto !important;
+    backdrop-filter: none !important;
     pointer-events: none;
+    width: 100% !important; /* Щоб центрування працювало по всій ширині */
 }
 
 .live-counter span {
@@ -202,30 +196,30 @@
     background: #000 !important; 
     padding: 4px 10px !important; 
     border-radius: 4px !important; 
-    border: 1px solid rgba(191, 149, 63, 0.6) !important;
+    border: 1px solid rgba(191, 149, 63, 0.6) !important; /* Тонша рамка */
     white-space: nowrap !important;
     text-transform: uppercase !important;
     text-shadow: 0 0 8px rgba(191, 149, 63, 0.8) !important;
 }
 
-/* 3. ІКОНКИ: ВУЖЧІ ТА МЕНШІ */
+/* 3. ІКОНКИ: ЩЕ МЕНШІ (ЗВУЖЕНІ ТА НИЖЧІ) */
 .v-item {
-    width: 75px;  /* Вужчі */
-    height: 85px; /* Нижчі */
+    width: 75px;  /* Було 80px -> ще вужче */
+    height: 85px; /* Було 95px -> трохи нижче */
     min-width: 75px;
-    margin: 0 12px; 
+    margin: 0 10px; /* Ті самі зазори */
     background-image: var(--i) !important;
     background-size: cover !important;
     background-position: center !important;
     border-radius: 10px;
-    border: 2px solid rgba(191, 149, 63, 0.2);
+    border: 1.5px solid rgba(191, 149, 63, 0.2);
     flex-shrink: 0;
 }
 
 .vip-ticker {
     display: flex;
     width: max-content;
-    animation: slideLoop 45s linear infinite;
+    animation: slideLoop 40s linear infinite;
 }
 
 @keyframes slideLoop {
@@ -235,12 +229,8 @@
 
 /* 4. КОНТЕНТ (СЛОТИ КАЗИНО) */
 .main {
-    background: #000 !important;
-    padding-top: 55px !important; /* Відступ, щоб звільнити місце для лічильників */
+    padding-top: 10px !important; /* Мінімальний відступ, бо лічильники вже посунули контент */
 }
-
-
-
 
 
 /* КРИШТАЛЕВА ІКОНКА (Твоє фото в склі) */
