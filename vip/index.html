@@ -183,31 +183,33 @@
 /* ПОВНЕ ОНОВЛЕННЯ: БЕЗ РАМОК, БЕЗ СКРОЛУ */* ПОВНЕ ВИДАЛЕННЯ ПЛАШКИ ТА СКРОЛУ */
 /* ЛІЧИЛЬНИКИ: СТАТИЧНІ, БЕЗ НАПОЛЗАННЯ ТА ПЛАШОК */
 .live-counter {
-    position: relative !important; /* Повертає в чергу контенту, щоб не заходити на слоти */
-    margin-top: 10px !important;   /* Відступ від стрічки */
-    margin-right: 15px !important; /* Відступ від правого краю */
-    display: flex !important;
-    flex-direction: column !important; 
-    align-items: flex-end !important; 
-    gap: 2px !important; 
-    z-index: 90 !important;
-    pointer-events: none !important;
-    background: transparent !important;
-    border: none !important;
-}
+        position: absolute !important; /* Стоїть вгорі, НЕ їде за екраном */
+        top: 60px !important;
+        right: 15px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-end !important;
+        gap: 2px !important;
+        z-index: 999 !important;
+        background: none !important; /* ГЕТЬ ПЛАШКУ */
+        border: none !important;     /* ГЕТЬ РАМКИ */
+        box-shadow: none !important;
+        pointer-events: none !important;
+    }
 
-.live-counter span {
-    font-family: 'Cinzel', serif !important;
-    font-size: 10px !important;
-    font-weight: 900 !important;
-    color: #ffcc66 !important; 
-    background: none !important; /* Жодних плашок */
-    border: none !important;     /* Жодних рамок */
-    text-transform: uppercase !important;
-    text-shadow: 0 0 8px #ffcc66 !important; /* Сяйво тексту */
-    padding: 0 !important;
-    white-space: nowrap !important;
-}
+    .live-counter span {
+        background: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: #ffcc66 !important; /* Яскраве золото */
+        text-shadow: 0 0 10px #ffcc66, 0 0 5px rgba(255, 204, 102, 0.8) !important;
+        font-family: 'Cinzel', serif !important;
+        font-size: 10px !important;
+        font-weight: 900 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        opacity: 1 !important;
+    }
 
 
 
@@ -653,6 +655,7 @@ html, body {
     updateLoader();
 
     // ЛІЧИЛЬНИК (ПЛАВНА ЗМІНА ЦИФР)
+        // ЛІЧИЛЬНИК (ПЛАВНА ЗМІНА ЦИФР)
     setInterval(() => {
         const on = document.getElementById('on-val');
         const pl = document.getElementById('pl-val');
@@ -675,10 +678,14 @@ html, body {
         if (mainElem && mainElem.classList.contains('show') && winElem) {
             const sums = ["+1,400₴", "+2,850₴", "+4,200₴", "+5,900₴", "+7,100₴", "+9,450₴", "+11,200₴", "+13,600₴", "+15,800₴", "+18,300₴", "+21,500₴", "+24,700₴", "+27,900₴", "+31,200₴", "+35,600₴", "+40,100₴", "+44,800₴", "+49,350₴", "+55,200₴", "+62,700₴", "+70,400₴", "+78,900₴", "+86,200₴", "+95,500₴", "+108,000₴", "+122,400₴", "+138,900₴", "+155,200₴", "+184,000₴", "+245,000₴"];
             const slots = ["AVIATOR", "BOOK OF RA", "GATES OF OLYMPUS", "SUGAR RUSH", "SWEET BONANZA", "SUN OF EGYPT 4", "THE DOG HOUSE", "BIG BASS DAY AT THE RACES", "ULTIMATE HOT", "FRUIT PARTY", "SHINING CROWN", "WOLF GOLD", "JOKER'S JEWELS", "BUFFALO KING", "MORE MAGIC APPLE", "HOT FRUITS 100", "AZTEC CLUSTERS", "ROYAL COINS 2", "COIN STRIKE", "3 HOT CHILLIES", "777 BURNING HOT", "EYE OF HORUS", "LEGACY OF DEAD", "FIRE IN THE HOLE", "SAN QUENTIN"];
+            
             winElem.style.opacity = "0";
+            winElem.style.transform = "translateY(-5px)";
+            
             setTimeout(() => {
                 winElem.innerText = `WIN: ${sums[Math.floor(Math.random()*sums.length)]} IN ${slots[Math.floor(Math.random()*slots.length)]} ⚡`;
                 winElem.style.opacity = "1";
+                winElem.style.transform = "translateY(0)";
             }, 600);
         }
     }, 4500);
@@ -692,9 +699,18 @@ html, body {
         window.addEventListener('resize', resize); resize();
         class Particle { constructor() { this.init(); } init() { this.x = Math.random()*w; this.y = Math.random()*h; this.s = Math.random()*3 + 0.6; this.v = Math.random()*0.6 + 0.15; this.o = Math.random()*0.7; } }
         for(let i=0; i<115; i++) particles.push(new Particle());
-        function anim() { ctx.clearRect(0,0,w,h); particles.forEach(p => { p.y -= p.v; if(p.y < -10) { p.y = h + 10; p.x = Math.random()*w; } ctx.fillStyle = `rgba(252, 246, 186, ${p.o})`; ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill(); }); requestAnimationFrame(anim); }
+        function anim() { 
+            ctx.clearRect(0,0,w,h); 
+            particles.forEach(p => { 
+                p.y -= p.v; if(p.y < -10) { p.y = h + 10; p.x = Math.random()*w; } 
+                ctx.fillStyle = `rgba(252, 246, 186, ${p.o})`; 
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill(); 
+            }); 
+            requestAnimationFrame(anim); 
+        }
         anim();
     }
 </script>
+
 </body>
 </html>
