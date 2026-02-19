@@ -24,99 +24,106 @@
         .live-counter span { color: #fff; display: block; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
 
         /* LOADER */
- #loader { 
+#loader { 
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-    background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%);
+    background: radial-gradient(circle at 50% 50%, #151515 0%, #000 100%);
     z-index: 10000; display: flex; 
     justify-content: center; align-items: center; 
     transition: 1.2s cubic-bezier(0.65, 0, 0.35, 1);
     overflow: hidden;
 }
 
-/* ФОНОВА АНІМАЦІЯ: Золоті "хмари" та сяйво */
+/* ХАОТИЧНИЙ ЗОЛОТИЙ ПИЛ (Анімований фон через градієнт) */
 #loader::before {
-    content: ""; position: absolute; width: 200%; height: 200%;
-    background: radial-gradient(circle, rgba(191,149,63,0.07) 0%, transparent 50%);
-    top: -50%; left: -50%;
-    animation: nebulaRotate 20s linear infinite;
-    pointer-events: none;
+    content: ""; position: absolute; inset: -100%;
+    /* Створюємо ілюзію хаотичних іскор різного розміру */
+    background-image: 
+        radial-gradient(rgba(191,149,63,0.3) 1px, transparent 1px),
+        radial-gradient(rgba(255,255,255,0.1) 1.5px, transparent 1.5px),
+        radial-gradient(rgba(191,149,63,0.1) 2px, transparent 2px);
+    background-size: 80px 80px, 150px 150px, 250px 250px;
+    background-position: 0 0, 30px 60px, 100px 150px;
+    animation: dustChaos 20s linear infinite;
+    opacity: 0.8;
 }
 
-/* ФОНОВА АНІМАЦІЯ: Ефект зоряного пилу через градієнтну сітку */
+/* ЕФЕКТ ГЛИБОКОГО ТУМАНУ */
 #loader::after {
     content: ""; position: absolute; inset: 0;
-    background-image: 
-        radial-gradient(rgba(191,149,63,0.15) 1px, transparent 1px),
-        radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
-    background-size: 60px 60px, 100px 100px;
-    animation: backgroundMove 30s linear infinite;
-    opacity: 0.5;
+    background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(0,0,0,0.4) 100%);
     pointer-events: none;
 }
 
+/* КОНТЕЙНЕР */
 .l-cont { text-align: center; width: 85%; max-width: 380px; position: relative; z-index: 5; }
 
-/* МЕДАЛЬЙОН (КРИШТАЛЬ) */
+/* ТОЙ САМИЙ ВИПУКЛИЙ КРИШТАЛЕВИЙ МЕДАЛЬЙОН */
 .l-logo { 
-    width: 175px; height: 175px; margin: 0 auto 50px; 
+    width: 175px; height: 175px; margin: 0 auto 60px; 
     background: var(--img) center/cover no-repeat; 
     border-radius: 45px; 
-    border-top: 2px solid rgba(255, 255, 255, 0.7);
-    border-left: 2px solid rgba(255, 255, 255, 0.3);
-    border-right: 1.5px solid rgba(191, 149, 63, 0.2);
-    border-bottom: 1.5px solid rgba(191, 149, 63, 0.4);
+    position: relative;
+    /* Золота оправа та грані */
+    border: 1.5px solid rgba(191, 149, 63, 0.7);
+    outline: 5px solid rgba(191, 149, 63, 0.05); 
+    
+    /* Об'ємна лінза */
     box-shadow: 
-        0 40px 80px rgba(0,0,0,0.9), 
-        inset 0 10px 20px rgba(255,255,255,0.2),
-        0 0 40px rgba(191, 149, 63, 0.2); 
+        0 40px 100px rgba(0,0,0,0.9),                
+        inset 0 18px 30px rgba(255, 255, 255, 0.4),   
+        inset 0 -15px 30px rgba(0, 0, 0, 0.8),        
+        0 0 40px rgba(191, 149, 63, 0.2);            
+    
     backdrop-filter: blur(15px);
-    animation: pulseMedal 4s ease-in-out infinite; 
+    /* 3D нахил як у минулого медальйона */
+    transform: perspective(1000px) rotateX(12deg);    
+    animation: pulseMedal 4s ease-in-out infinite;
 }
 
-/* ЛІНІЯ: Рідкий Золотий Промінь */
+/* Глянцевий відблиск зверху */
+.l-logo::after {
+    content: ""; position: absolute; top: 6%; left: 12%; width: 76%; height: 38%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
+    border-radius: 40px 40px 80px 80px; filter: blur(1.5px);
+}
+
+/* ЛІНІЯ ЗАВАНТАЖЕННЯ: Золота Магістраль */
 .l-bar-wrapper { 
-    position: relative; width: 100%; height: 5px; 
-    background: rgba(255, 255, 255, 0.05); 
-    border-radius: 20px; overflow: hidden; 
-    border: 1px solid rgba(191, 149, 63, 0.2); 
+    position: relative; width: 280px; height: 5px; margin: 0 auto;
+    background: rgba(255, 255, 255, 0.03); 
+    border-radius: 10px; overflow: hidden;
+    border: 1px solid rgba(191, 149, 63, 0.15); 
 }
 
 #l-fill { 
     position: absolute; top: 0; left: 0; width: 0%; height: 100%; 
     background: linear-gradient(90deg, #bf953f, #fcf6ba, #bf953f);
     background-size: 200% 100%;
-    animation: goldFlow 1.5s linear infinite;
-    border-radius: 20px;
+    animation: goldFlow 1.2s linear infinite;
+    border-radius: 10px;
     box-shadow: 0 0 15px rgba(191,149,63,0.8);
 }
 
-/* Ефект рухомого відблиску всередині лінії */
+/* Біжучий блік всередині лінії */
 #l-fill::before {
     content: ""; position: absolute; inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-    animation: scannerMove 1.2s infinite;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+    animation: scannerMove 0.8s infinite;
 }
 
-/* ТЕКСТ ВІДСОТКІВ (VIP СТИЛЬ) */
+/* ВІДСОТКИ */
 .l-perc { 
-    margin-top: 35px; font-family: 'Cinzel', serif; font-weight: 900; font-size: 30px; 
-    background: var(--gold); -webkit-background-clip: text; 
-    -webkit-text-fill-color: transparent; 
-    letter-spacing: 12px; /* Максимальна елітність */
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.8));
-    animation: textBreathe 3s infinite;
+    margin-top: 35px; font-family: 'Cinzel', serif; font-weight: 900; font-size: 28px; 
+    background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+    letter-spacing: 12px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
+    animation: textPulse 3s ease-in-out infinite;
 }
 
 /* АНІМАЦІЇ */
-@keyframes nebulaRotate {
-    0% { transform: rotate(0deg) scale(1); }
-    50% { transform: rotate(180deg) scale(1.2); }
-    100% { transform: rotate(360deg) scale(1); }
-}
-
-@keyframes backgroundMove {
-    from { background-position: 0 0; }
-    to { background-position: 500px 1000px; }
+@keyframes dustChaos {
+    0% { background-position: 0 0, 0 0, 0 0; transform: scale(1); }
+    50% { background-position: 100px 200px, -150px 300px, 200px -100px; transform: scale(1.1); }
+    100% { background-position: 200px 400px, -300px 600px, 400px -200px; transform: scale(1); }
 }
 
 @keyframes scannerMove {
@@ -129,15 +136,13 @@
     100% { background-position: 200% 0; }
 }
 
-@keyframes pulseMedal {
-    0%, 100% { transform: scale(1) translateY(0); }
-    50% { transform: scale(1.04) translateY(-5px); filter: brightness(1.2); }
+@keyframes pulseMedal { 
+    0%, 100% { transform: perspective(1000px) rotateX(12deg) scale(1); filter: brightness(1); }
+    50% { transform: perspective(1000px) rotateX(14deg) scale(1.03); filter: brightness(1.15); }
 }
 
-@keyframes textBreathe {
-    0%, 100% { opacity: 0.7; letter-spacing: 12px; }
-    50% { opacity: 1; letter-spacing: 14px; }
-}
+@keyframes textPulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+
 
 
 
