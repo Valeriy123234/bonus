@@ -161,71 +161,69 @@
 
 /* ПЛАШКА: тепер вужча (65px замість 85px) */
 /* ПЛАШКА: СТРОГО ВГОРІ (НЕ РУХАЄТЬСЯ ПРИ СКРОЛІ) */
+/* ПЛАШКА: СТРОГО ВГОРІ СТОРІНКИ, ПРИ СКРОЛІ ЙДЕ ВГОРУ */
 .vip-ticker-wrap {
-    position: absolute; /* Закріплена в початковій точці */
+    position: absolute; /* Прив'язка до верху сторінки */
     top: 0;
     left: 0;
     width: 100%;
-    height: 60px; /* Трохи вужча для стилю */
+    height: 60px;
     background: #000 !important;
-    border-bottom: 1px solid rgba(191, 149, 63, 0.25);
-    z-index: 998; 
+    border-bottom: 1px solid rgba(191, 149, 63, 0.3);
+    z-index: 1000; /* Вище за контент */
     overflow: hidden;
     display: flex;
     align-items: center;
 }
 
-/* ФІКС ЛІЧИЛЬНИКІВ */
+/* ФІКС ЛІЧИЛЬНИКІВ (Теж ідуть вгору при скролі) */
 .live-counter {
     z-index: 1001 !important;
-    position: absolute; /* Теж не їздять за екраном */
-    top: 10px;
+    position: absolute; 
+    top: 15px;
+    left: 15px; /* Або де вони у тебе стоять */
 }
 
-/* ЕФЕКТ ТУМАНУ */
-.vip-ticker-wrap::before, .vip-ticker-wrap::after {
-    content: "";
-    position: absolute;
-    top: 0; width: 100px; height: 100%;
-    z-index: 5; pointer-events: none;
-}
-.vip-ticker-wrap::before { left: 0; background: linear-gradient(to right, #000, transparent); }
-.vip-ticker-wrap::after { right: 0; background: linear-gradient(to left, #000, transparent); }
-
-/* СТРІЧКА: ПЛАВНЕ КОВЗАННЯ */
-.vip-ticker {
-    display: flex;
-    width: max-content;
-    animation: slideRight 60s linear infinite; /* Повільніше = дорожче */
-    will-change: transform;
-}
-
-/* ІКОНКИ: ТЕПЕР ЇХ БУДЕ ВИДНО */
+/* КАРТИНКИ (ФІКС ШЛЯХУ ТА ВІДОБРАЖЕННЯ) */
 .v-item {
-    width: 42px;
-    height: 42px;
-    min-width: 42px; /* Гарантує, що іконка не стиснеться в нуль */
+    width: 44px;
+    height: 44px;
+    min-width: 44px; 
     margin: 0 12px;
+    /* Важливо: додаємо властивість background явно */
     background-image: var(--i) !important;
     background-size: cover !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.15);
-    display: inline-block;
+    flex-shrink: 0; /* Щоб не стискалися */
 }
 
+/* ЕФЕКТ ТУМАНУ */
+.vip-ticker-wrap::before, .vip-ticker-wrap::after {
+    content: "";
+    position: absolute;
+    top: 0; width: 80px; height: 100%;
+    z-index: 5; pointer-events: none;
+}
+.vip-ticker-wrap::before { left: 0; background: linear-gradient(to right, #000, transparent); }
+.vip-ticker-wrap::after { right: 0; background: linear-gradient(to left, #000, transparent); }
 
-.v-item:hover {
-    filter: brightness(1.2);
-    transform: scale(1.15);
-    border-color: rgba(191, 149, 63, 0.8);
+/* АНІМАЦІЯ КОВЗАННЯ */
+.vip-ticker {
+    display: flex;
+    width: max-content;
+    animation: slideRight 60s linear infinite;
+    will-change: transform;
 }
 
 @keyframes slideRight {
     0% { transform: translateX(-50%); }
     100% { transform: translateX(0); }
 }
+
+
 
 
         /* MAIN CONTENT */
@@ -500,10 +498,7 @@ html, body {
 
   <div class="vip-ticker-wrap">
     <div class="vip-ticker">
-        <!-- Твоє основне лого (якщо воно теж має бути в стрічці) -->
-        <div class="v-item" style="--i: url('./8C816B9D-90C0-4CD4-AA80-242F7BA3F77E.png')"></div>
-
-        <!-- Слот-машини з папки vip -->
+        <!-- Твої файли з папки vip -->
         <div class="v-item" style="--i: url('./vip/IMG_0699.jpeg')"></div>
         <div class="v-item" style="--i: url('./vip/IMG_0700.jpeg')"></div>
         <div class="v-item" style="--i: url('./vip/IMG_0701.jpeg')"></div>
@@ -536,12 +531,13 @@ html, body {
         <div class="v-item" style="--i: url('./vip/IMG_0729.jpeg')"></div>
         <div class="v-item" style="--i: url('./vip/IMG_0730.jpeg')"></div>
 
-        <!-- Клони для безшовності -->
+        <!-- Клони для нескінченного циклу -->
         <div class="v-item" aria-hidden="true" style="--i: url('./vip/IMG_0699.jpeg')"></div>
         <div class="v-item" aria-hidden="true" style="--i: url('./vip/IMG_0700.jpeg')"></div>
+        <div class="v-item" aria-hidden="true" style="--i: url('./vip/IMG_0701.jpeg')"></div>
+        <div class="v-item" aria-hidden="true" style="--i: url('./vip/IMG_0702.jpeg')"></div>
     </div>
 </div>
-
 
 
     
