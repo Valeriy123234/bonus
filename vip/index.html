@@ -171,42 +171,35 @@
 }
 
 .live-counter {
-    /* position: absolute прикріплює до стрічки казино, при скролі уходить вгору */
+    /* position: absolute прив'язує до сторінки. При скролі вони уйдуть вгору */
     position: absolute !important; 
-    top: 60px !important; 
+    top: 65px !important; 
     right: 15px !important; 
     display: flex !important;
     flex-direction: column !important; 
     align-items: flex-end !important; 
-    gap: 4px !important; 
+    gap: 6px !important; 
     z-index: 999 !important;
-    
     background: none !important;
     border: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    box-shadow: none !important;
     padding: 0 !important;
     pointer-events: none;
 }
 
 .live-counter span {
     font-family: 'Cinzel', serif !important;
-    font-size: 9px !important;
+    font-size: 12px !important; /* Збільшено текст */
     font-weight: 900 !important;
     color: #fcf6ba !important; 
     background: #000 !important; 
-    padding: 3px 7px !important; 
-    border-radius: 2px !important; 
-    border: 0.3px solid rgba(191, 149, 63, 0.5) !important;
+    padding: 4px 10px !important; /* Збільшено плашку під текст */
+    border-radius: 3px !important; 
+    border: 0.5px solid rgba(191, 149, 63, 0.6) !important;
     white-space: nowrap !important;
     text-transform: uppercase !important;
-    text-shadow: 0 0 5px rgba(191, 149, 63, 0.7) !important;
-    opacity: 1 !important;
-    backdrop-filter: none !important;
+    text-shadow: 0 0 8px rgba(191, 149, 63, 0.8) !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.7) !important;
 }
-
-
 
 
 
@@ -246,7 +239,7 @@
 /* КОНТЕНТ (СЛОТИ КАЗИНО) */
 .main {
     /* Додаємо достатній відступ зверху, щоб лічильники не наповзали на іконки слотів */
-    padding-top: 80px !important; 
+    padding-top: 115px !important; 
 }
 
         /* MAIN CONTENT */
