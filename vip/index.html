@@ -156,6 +156,70 @@
 
 @keyframes textPulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
 
+/* ГОЛОВНА ПЛАШКА (Висота х2: 55px -> 110px) */
+.vip-ticker-wrap {
+    position: relative;
+    width: 100%;
+    height: 110px; 
+    background: #000 !important;
+    border-bottom: 2px solid rgba(191, 149, 63, 0.2);
+    z-index: 100;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+/* СТРІЧКА ТА ІКОНКИ (Розмір х2: 38px -> 76px) */
+.vip-ticker {
+    display: flex;
+    width: max-content;
+    animation: slideLoop 50s linear infinite;
+    will-change: transform;
+}
+
+.v-item {
+    width: 76px;
+    height: 76px;
+    min-width: 76px;
+    margin: 0 20px; /* Збільшено відступ між іконками для балансу */
+    background-image: var(--i) !important;
+    background-size: cover !important;
+    background-position: center !important;
+    border-radius: 12px; /* Збільшено радіус закруглення */
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+}
+
+@keyframes slideLoop {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* ЕФЕКТ ТУМАНУ (Ширина градієнта х2: 60px -> 120px) */
+.vip-ticker-wrap::before, 
+.vip-ticker-wrap::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 120px; 
+    height: 100%;
+    z-index: 5;
+}
+
+.vip-ticker-wrap::before {
+    left: 0;
+    background: linear-gradient(to right, #000, transparent);
+}
+
+.vip-ticker-wrap::after {
+    right: 0;
+    background: linear-gradient(to left, #000, transparent);
+}
+
+/* КОНТЕНТ */
+.main {
+    padding-top: 40px !important;
+}
 
         /* MAIN CONTENT */
         /* Основний контейнер: додав плавності */
