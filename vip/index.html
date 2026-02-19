@@ -19,29 +19,6 @@
 
         /* LOADER */
 /* ЕФЕКТ ЕНЕРГЕТИЧНОГО МАГНІТИЗМУ (ТЕ, ЧОГО НЕМАЄ У КОНКУРЕНТІВ) */
-#loader { 
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-    background: radial-gradient(circle at 50% 50%, #151515 0%, #000 100%);
-    z-index: 10000; display: flex; 
-    justify-content: center; align-items: center; 
-    transition: 1.2s cubic-bezier(0.65, 0, 0.35, 1);
-    overflow: hidden;
-}
-
-/* ХАОТИЧНИЙ ЗОЛОТИЙ ПИЛ (Анімований фон через градієнт) */
-#loader::before {
-    content: ""; position: absolute; inset: -100%;
-    /* Створюємо ілюзію хаотичних іскор різного розміру */
-    background-image: 
-        radial-gradient(rgba(191,149,63,0.3) 2px, transparent 2px),
-        radial-gradient(rgba(255,255,255,0.1) 3px, transparent 3px),
-        radial-gradient(rgba(191,149,63,0.1) 4px, transparent 4px);
-    background-size: 80px 80px, 150px 150px, 250px 250px;
-    background-position: 0 0, 30px 60px, 100px 150px;
-    animation: dustChaos 20s linear infinite;
-    opacity: 0.8;
-}
-
 /* ЕФЕКТ ГЛИБОКОГО ТУМАНУ */
 #loader::after {
     content: ""; position: absolute; inset: 0;
@@ -49,20 +26,22 @@
     pointer-events: none;
 }
 
-/* КОНТЕЙНЕР */
-.l-cont { text-align: center; width: 85%; max-width: 380px; position: relative; z-index: 5; }
+/* КОНТЕЙНЕР (Додав фіксацію висоти для стабільності) */
+.l-cont { 
+    text-align: center; width: 85%; max-width: 380px; 
+    position: relative; z-index: 5; 
+    min-height: 350px; /* Тримаємо місце під контент */
+}
 
-/* ТОЙ САМИЙ ВИПУКЛИЙ КРИШТАЛЕВИЙ МЕДАЛЬЙОН */
+/* КРИШТАЛЕВИЙ МЕДАЛЬЙОН - БЕЗ ГЛЮКІВ */
 .l-logo { 
     width: 175px; height: 175px; margin: 0 auto 60px; 
     background: var(--img) center/cover no-repeat; 
     border-radius: 45px; 
     position: relative;
-    /* Золота оправа та грані */
     border: 1.5px solid rgba(191, 149, 63, 0.7);
     outline: 5px solid rgba(191, 149, 63, 0.05); 
     
-    /* Об'ємна лінза */
     box-shadow: 
         0 40px 100px rgba(0,0,0,0.9),                
         inset 0 18px 30px rgba(255, 255, 255, 0.4),   
@@ -70,12 +49,16 @@
         0 0 40px rgba(191, 149, 63, 0.2);            
     
     backdrop-filter: blur(15px);
-    /* 3D нахил як у минулого медальйона */
-    transform: perspective(1000px) rotateX(12deg);    
-    animation: pulseMedal 4s ease-in-out infinite;
+    
+    /* ФІКС: Початковий стан прихований, щоб не "плигало" */
+    opacity: 0;
+    transform: perspective(1000px) rotateX(12deg) scale(0.95);
+    backface-visibility: hidden; /* Будить відеокарту */
+    will-change: transform, opacity;
+    
+    animation: pulseMedal 4s ease-in-out infinite, fadeInMedal 0.8s ease-out forwards;
 }
 
-/* Глянцевий відблиск зверху */
 .l-logo::after {
     content: ""; position: absolute; top: 6%; left: 12%; width: 76%; height: 38%;
     background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
@@ -99,25 +82,22 @@
     box-shadow: 0 0 15px rgba(191,149,63,0.8);
 }
 
-/* Біжучий блік всередині лінії */
 #l-fill::before {
     content: ""; position: absolute; inset: 0;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
     animation: scannerMove 0.8s infinite;
 }
 
-/* ВІДСОТКИ */
+/* ВІДСОТКИ - СУВОРИЙ ЦЕНТР */
 .l-perc {
-    display: block;        /* Робимо блоком для розрахунку ширини */
-    text-align: center;    /* Центруємо текст всередині */
-    text-indent: 12px;     /* ВАЖЛИВО: компенсуємо letter-spacing на ту ж величину */
-    
-    /* Твої існуючі стилі */
+    display: block;
+    text-align: center;
+    text-indent: 12px;
     margin-top: 35px; 
     font-family: 'Cinzel', serif; 
     font-weight: 900; 
     font-size: 28px; 
-    background: var(--gold); 
+    background: linear-gradient(135deg, #bf953f, #fcf6ba, #bf953f);
     -webkit-background-clip: text; 
     -webkit-text-fill-color: transparent; 
     letter-spacing: 12px; 
@@ -125,23 +105,13 @@
     animation: textPulse 3s ease-in-out infinite;
 }
 
-
-/* АНІМАЦІЇ */
-@keyframes dustChaos {
-    0% { background-position: 0 0, 0 0, 0 0; transform: scale(1); }
-    50% { background-position: 100px 200px, -150px 300px, 200px -100px; transform: scale(1.1); }
-    100% { background-position: 200px 400px, -300px 600px, 400px -200px; transform: scale(1); }
+/* НОВІ АНІМАЦІЇ ДЛЯ СТАБІЛЬНОСТІ */
+@keyframes fadeInMedal {
+    to { opacity: 1; transform: perspective(1000px) rotateX(12deg) scale(1); }
 }
 
-@keyframes scannerMove {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-}
-
-@keyframes goldFlow {
-    0% { background-position: 0% 0; }
-    100% { background-position: 200% 0; }
-}
+@keyframes scannerMove { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+@keyframes goldFlow { 0% { background-position: 0% 0; } 100% { background-position: 200% 0; } }
 
 @keyframes pulseMedal { 
     0%, 100% { transform: perspective(1000px) rotateX(12deg) scale(1); filter: brightness(1); }
@@ -149,6 +119,7 @@
 }
 
 @keyframes textPulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+
 
 /* ГОЛОВНА ПЛАШКА (Висота х2: 55px -> 110px) */
 /* ГОЛОВНА ПЛАШКА — ЕФЕКТ ДОРОГОГО СКЛА */
