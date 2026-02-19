@@ -177,20 +177,23 @@
 }
 
 /* ЛІЧИЛЬНИКИ: МАЛЕНЬКІ, СПРАВА, ПІД СЛОТАМИ */
+/* ЛІЧИЛЬНИКИ: СТАТИЧНО ПРИ СКРОЛІ, ОДИН ПІД ОДНИМ */
 .live-counter {
-    position: absolute !important;
-    top: 60px; /* Одразу під плашкою (55px + 5px зазору) */
-    right: 15px; /* Притиснуті вправо */
+    position: fixed !important; /* Тепер вони не рухаються при скролі */
+    top: 60px; 
+    right: 15px; 
     display: flex;
-    gap: 8px;
-    z-index: 90;
+    flex-direction: column; /* Вертикальне розташування */
+    align-items: flex-end; /* Вирівнювання по правому краю */
+    gap: 4px; 
+    z-index: 999; /* Піднімаємо шар, щоб був поверх всього */
     pointer-events: none;
-    width: auto !important; /* Прибираємо розтягування на весь екран */
+    width: auto !important;
 }
 
 .live-counter span {
     font-family: 'Cinzel', serif;
-    font-size: 8px; /* Дуже маленькі та строгі */
+    font-size: 8px;
     color: rgba(191, 149, 63, 0.8);
     background: rgba(10, 10, 10, 0.7);
     padding: 3px 8px;
@@ -200,6 +203,7 @@
     text-transform: uppercase;
     backdrop-filter: blur(4px);
 }
+
 
 /* СТРІЧКА ТА ІКОНКИ */
 .vip-ticker {
