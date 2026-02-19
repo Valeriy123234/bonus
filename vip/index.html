@@ -171,7 +171,7 @@
 }
 
 .live-counter {
-    /* ПРИВ'ЯЗКА ДО МІСЦЯ: ТЕПЕР ТОЧНО НЕ ПІДЕ ЗА СКРОЛОМ */
+    /* Змінюємо на absolute і додаємо жорстку прив'язку */
     position: absolute !important; 
     top: 60px !important; 
     right: 15px !important; 
@@ -181,10 +181,10 @@
     gap: 4px !important; 
     z-index: 999 !important;
     
-    /* ПРИБИРАЄМО БУДЬ-ЯКЕ РОЗМИТТЯ ТА ПЛАШКИ */
+    /* Повне очищення фону та блюру */
     background: none !important;
     border: none !important;
-    backdrop-filter: none !important; /* ПРИБИРАЄ РОЗМИТТЯ (ТУМАН) */
+    backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     box-shadow: none !important;
     padding: 0 !important;
@@ -196,25 +196,17 @@
     font-size: 9px !important;
     font-weight: 900 !important;
     color: #fcf6ba !important; 
-    background: #0a0a0a !important; /* Тільки чорний фон під текстом */
-    
-    /* МАЛЕНЬКА АКУРАТНА ПЛАШКА */
+    background: #000 !important; /* Чорний фон тільки під літерами */
     padding: 3px 7px !important; 
-    line-height: 1.1 !important; 
-    display: inline-flex !important;
-    
     border-radius: 2px !important; 
-    /* ОДИНАРНА ТОНКА РАМКА */
     border: 0.3px solid rgba(191, 149, 63, 0.5) !important;
-    
     white-space: nowrap !important;
     text-transform: uppercase !important;
     text-shadow: 0 0 5px rgba(191, 149, 63, 0.7) !important;
-    letter-spacing: 0.5px !important;
-    backdrop-filter: none !important; /* ГАРАНТОВАНО БЕЗ РОЗМИТТЯ ТУТ */
+    /* Гарантуємо відсутність прозорості та блюру */
+    opacity: 1 !important;
+    backdrop-filter: none !important;
 }
-
-
 
 
 
