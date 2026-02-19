@@ -170,7 +170,6 @@
     align-items: center;
 }
 
-/* ЛІЧИЛЬНИКИ: ОДИН ПІД ОДНИМ, СПРАВА, ПІД СТРІЧКОЮ */
 .live-counter {
     position: absolute !important; 
     top: 60px; 
@@ -178,30 +177,34 @@
     display: flex;
     flex-direction: column; 
     align-items: flex-end; 
-    gap: 6px; /* Трохи збільшив зазор для кращого вигляду */
+    gap: 5px; 
     z-index: 90;
     pointer-events: none;
 }
 
 .live-counter span {
     font-family: 'Cinzel', serif;
-    font-size: 10px; /* Трохи чіткіше */
+    font-size: 9px; /* Оптимальний розмір для строгого дизайну */
     font-weight: 900;
-    color: #fcf6ba; /* Світле благородне золото */
-    /* Глибокий градієнт: від темного до майже чорного */
-    background: linear-gradient(180deg, #1a1a1a 0%, #000000 100%) !important;
-    padding: 4px 10px;
-    border-radius: 2px; /* Більш гострі, "строгі" кути */
-    /* Тонка золота рамка з усіх боків для ефекту металу */
-    border: 0.5px solid rgba(191, 149, 63, 0.4);
+    color: #fcf6ba; 
+    background: linear-gradient(180deg, #121212 0%, #000000 100%) !important;
+    
+    /* Рівні відступи для центрування тексту */
+    padding: 4px 8px; 
+    line-height: 1; 
+    text-align: center;
+    
+    border-radius: 3px; 
+    /* Мінімалістична тонка рамка */
+    border: 0.3px solid rgba(191, 149, 63, 0.3);
+    
     white-space: nowrap;
     text-transform: uppercase;
-    /* Ефект розпеченого золота */
-    text-shadow: 0 0 5px #bf953f, 0 0 10px rgba(252, 246, 186, 0.5);
-    /* Тінь під самою кнопкою */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8), inset 0 0 5px rgba(191, 149, 63, 0.1);
-    letter-spacing: 0.5px;
+    text-shadow: 0 0 5px rgba(191, 149, 63, 0.7);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    letter-spacing: 0.8px;
 }
+
 
 
 /* СТРІЧКА ТА ІКОНКИ */
