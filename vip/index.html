@@ -413,6 +413,8 @@ html, body {
     /* Підняв z-index і додав ізоляцію, щоб кнопки не "провалилися" при скролі */
     z-index: 10;
     isolation: isolate;
+    min-height: 70px;
+    contain: content;
 
     /* М'ЯКЕ ВИТОЧЕНЕ ЗОЛОТО */
     background: linear-gradient(180deg, #fcf6ba 0%, #bf953f 100%) !important;
@@ -445,7 +447,8 @@ html, body {
 
     /* ФІКС ПРОГРУЗКИ: Змушуємо GPU тримати кнопки завжди видимими */
     -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0) !important;
+
     will-change: auto;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
@@ -471,8 +474,10 @@ html, body {
 
 @keyframes shine {
     0% { transform: translateX(0) skewX(-25deg); }
-    30%, 100% { transform: translateX(350%) skewX(-25deg); }
+    /* Зменшуємо розмах до 250% для стабільності */
+    30%, 100% { transform: translateX(250%) skewX(-25deg); }
 }
+
 
 /* Статичний стан для .main */
 .main.show .btn { 
