@@ -170,36 +170,45 @@
     align-items: center;
 }
 
+/* ПОВНЕ ВИДАЛЕННЯ БЛЮРУ ТА СКРОЛУ */
 .live-counter {
-    /* position: absolute прив'язує до сторінки. При скролі вони уйдуть вгору */
-    position: absolute !important; 
+    position: absolute !important; /* ПРИВ'ЯЗКА ДО СТОРІНКИ, НЕ ДО ЕКРАНУ */
     top: 65px !important; 
     right: 15px !important; 
     display: flex !important;
     flex-direction: column !important; 
     align-items: flex-end !important; 
     gap: 6px !important; 
-    z-index: 999 !important;
+    z-index: 9999 !important;
+    
+    /* ВИДАЛЯЄМО БЛЮР ТА ПЛАШКИ */
     background: none !important;
     border: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
     padding: 0 !important;
     pointer-events: none;
 }
 
 .live-counter span {
     font-family: 'Cinzel', serif !important;
-    font-size: 12px !important; /* Збільшено текст */
+    font-size: 13px !important; /* ВЕЛИКИЙ ТЕКСТ */
     font-weight: 900 !important;
     color: #fcf6ba !important; 
-    background: #000 !important; 
-    padding: 4px 10px !important; /* Збільшено плашку під текст */
+    background: #000 !important; /* ЧИСТИЙ ЧОРНИЙ ФОН БЕЗ БЛЮРУ */
+    padding: 4px 10px !important; 
     border-radius: 3px !important; 
-    border: 0.5px solid rgba(191, 149, 63, 0.6) !important;
+    border: 0.5px solid rgba(191, 149, 63, 0.8) !important;
     white-space: nowrap !important;
     text-transform: uppercase !important;
-    text-shadow: 0 0 8px rgba(191, 149, 63, 0.8) !important;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.7) !important;
+    text-shadow: 0 0 8px rgba(191, 149, 63, 0.9) !important;
+    opacity: 1 !important;
+    /* ГАРАНТІЯ ВІДСУТНОСТІ БЛЮРУ */
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
+
 
 
 
@@ -239,7 +248,7 @@
 /* КОНТЕНТ (СЛОТИ КАЗИНО) */
 .main {
     /* Додаємо достатній відступ зверху, щоб лічильники не наповзали на іконки слотів */
-    padding-top: 115px !important; 
+    padding-top: 130px !important; 
 }
 
         /* MAIN CONTENT */
