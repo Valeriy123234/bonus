@@ -172,31 +172,37 @@
 
 /* ЛІЧИЛЬНИКИ: ОДИН ПІД ОДНИМ, СПРАВА, ПІД СТРІЧКОЮ */
 .live-counter {
-    position: absolute !important; /* Фіксуємо під стрічкою, щоб не їздили при скролі */
-    top: 60px; /* Одразу під стрічкою (55px + 5px зазор) */
+    position: absolute !important; 
+    top: 60px; 
     right: 15px; 
     display: flex;
-    flex-direction: column; /* Ставимо ONLINE під PLAYING */
-    align-items: flex-end; /* Вирівнюємо по правому краю */
-    gap: 5px; 
+    flex-direction: column; 
+    align-items: flex-end; 
+    gap: 6px; /* Трохи збільшив зазор для кращого вигляду */
     z-index: 90;
     pointer-events: none;
 }
 
 .live-counter span {
     font-family: 'Cinzel', serif;
-    font-size: 9px;
+    font-size: 10px; /* Трохи чіткіше */
     font-weight: 900;
-    color: #ffcc66; /* Яскравий золотий */
-    background: rgba(15, 15, 15, 0.85); /* Елегантна темна плашка */
-    padding: 3px 8px;
-    border-radius: 4px;
-    border-right: 2px solid #bf953f; /* Стильна золота лінія тільки справа */
+    color: #fcf6ba; /* Світле благородне золото */
+    /* Глибокий градієнт: від темного до майже чорного */
+    background: linear-gradient(180deg, #1a1a1a 0%, #000000 100%) !important;
+    padding: 4px 10px;
+    border-radius: 2px; /* Більш гострі, "строгі" кути */
+    /* Тонка золота рамка з усіх боків для ефекту металу */
+    border: 0.5px solid rgba(191, 149, 63, 0.4);
     white-space: nowrap;
     text-transform: uppercase;
-    text-shadow: 0 0 8px rgba(255, 204, 102, 0.5);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    /* Ефект розпеченого золота */
+    text-shadow: 0 0 5px #bf953f, 0 0 10px rgba(252, 246, 186, 0.5);
+    /* Тінь під самою кнопкою */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8), inset 0 0 5px rgba(191, 149, 63, 0.1);
+    letter-spacing: 0.5px;
 }
+
 
 /* СТРІЧКА ТА ІКОНКИ */
 .vip-ticker {
