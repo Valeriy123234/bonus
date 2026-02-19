@@ -612,10 +612,6 @@ html, body {
         update();
 
         // LIVE COUNTER (ОНОВЛЕННЯ ЧИСЕЛ)
-        setInterval(() => {
-            document.getElementById('on-val').innerText = `ONLINE: ${1600 + Math.floor(Math.random()*150)}`;
-            document.getElementById('pl-val').innerText = `PLAYING: ${900 + Math.floor(Math.random()*100)}`;
-        }, 4000);
 
         setInterval(() => {
     const winElem = document.getElementById('live-win');
