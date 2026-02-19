@@ -171,22 +171,21 @@
 }
 
 .live-counter {
-    /* Змінюємо на absolute і додаємо жорстку прив'язку */
-    position: absolute !important; 
-    top: 60px !important; 
-    right: 15px !important; 
+    /* Змінюємо на relative, щоб він стояв у черзі і НЕ рухався за екраном */
+    position: relative !important; 
+    margin-top: 10px !important; /* Відступ від стрічки казино */
+    margin-right: 15px !important; 
     display: flex !important;
     flex-direction: column !important; 
     align-items: flex-end !important; 
     gap: 4px !important; 
-    z-index: 999 !important;
+    z-index: 90 !important;
     
-    /* Повне очищення фону та блюру */
-    background: none !important;
+    /* Очищення від залишків плашок та блюру */
+    background: transparent !important;
     border: none !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    box-shadow: none !important;
     padding: 0 !important;
     pointer-events: none;
 }
@@ -196,17 +195,16 @@
     font-size: 9px !important;
     font-weight: 900 !important;
     color: #fcf6ba !important; 
-    background: #000 !important; /* Чорний фон тільки під літерами */
+    background: #000 !important; /* Тільки чорний фон під літерами */
     padding: 3px 7px !important; 
     border-radius: 2px !important; 
     border: 0.3px solid rgba(191, 149, 63, 0.5) !important;
     white-space: nowrap !important;
     text-transform: uppercase !important;
     text-shadow: 0 0 5px rgba(191, 149, 63, 0.7) !important;
-    /* Гарантуємо відсутність прозорості та блюру */
-    opacity: 1 !important;
-    backdrop-filter: none !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5) !important;
 }
+
 
 
 
