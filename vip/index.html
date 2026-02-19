@@ -159,10 +159,11 @@
 
         /* ГОЛОВНА ОБГОРТКА СТРІЧКИ */
 /* ЗБІЛЬШЕНА СТРІЧКА (У 2.5 РАЗА) */
+/* ВЕЛИКА СТРІЧКА (БЕЗ ЗМІН ВИСОТИ) */
 .vip-ticker-wrap {
     position: relative;
     width: 100%;
-    height: 135px; /* Збільшено з 55px */
+    height: 135px; 
     background: #000 !important;
     border-bottom: 2px solid rgba(191, 149, 63, 0.3);
     z-index: 100;
@@ -171,56 +172,42 @@
     align-items: center;
 }
 
-/* ЛІЧИЛЬНИКИ: ПРИМУСОВА СТАТИКА ТА ВЕЛИКИЙ ТЕКСТ */
+/* ЛІЧИЛЬНИКИ: ТЕПЕР СТАТИЧНІ (RELATIVE), БЕЗ СКРОЛУ */
 .live-counter {
-    /* position: absolute відносно сторінки — вони ПОВИННІ йти вгору при скролі */
-    position: absolute !important; 
-    top: 145px !important; /* Одразу під великою стрічкою */
-    right: 20px !important; 
+    position: relative !important; /* ТЕПЕР ВОНИ ЧАСТИНА СТОРІНКИ, НЕ ХОДЯТЬ ЗА ВАМИ */
+    margin-top: 10px !important;   /* Відступ від стрічки */
+    margin-right: 20px !important; /* Відступ справа */
     display: flex !important;
     flex-direction: column !important; 
     align-items: flex-end !important; 
-    gap: 8px !important; 
-    z-index: 9999 !important;
-    
-    /* Очищення фону та блюру */
+    gap: 6px !important; 
+    z-index: 99;
     background: none !important;
     border: none !important;
     backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    padding: 0 !important;
     pointer-events: none;
-    /* Хай браузер рахує це окремим шаром для фіксації */
-    transform: translateZ(0); 
 }
 
 .live-counter span {
     font-family: 'Cinzel', serif !important;
-    font-size: 15px !important; /* Ще більший текст */
+    font-size: 12px !important; /* Зменшено у 0.8 разів (було 15px) */
     font-weight: 900 !important;
     color: #fcf6ba !important; 
     background: #000 !important; 
-    padding: 6px 12px !important; 
+    padding: 4px 10px !important; 
     border-radius: 4px !important; 
     border: 1px solid rgba(191, 149, 63, 0.8) !important;
     white-space: nowrap !important;
     text-transform: uppercase !important;
     text-shadow: 0 0 10px rgba(191, 149, 63, 1) !important;
-    backdrop-filter: none !important;
 }
 
-/* ЗБІЛЬШЕНІ ІКОНКИ (У 2.5 РАЗА) */
-.vip-ticker {
-    display: flex;
-    width: max-content;
-    animation: slideLoop 40s linear infinite; /* Трохи швидше, бо іконки великі */
-}
-
+/* ІКОНКИ: ЗВУЖЕНІ (МЕНША ШИРИНА) */
 .v-item {
-    width: 95px;  /* Було 38px -> х2.5 = 95px */
-    height: 95px; /* Було 38px -> х2.5 = 95px */
-    min-width: 95px;
-    margin: 0 15px;
+    width: 80px;  /* Було 95px -> звужено для акуратності */
+    height: 95px; 
+    min-width: 80px;
+    margin: 0 12px; /* 0.5 мм візуально по боках */
     background-image: var(--i) !important;
     background-size: cover !important;
     background-position: center !important;
@@ -229,23 +216,23 @@
     flex-shrink: 0;
 }
 
+.vip-ticker {
+    display: flex;
+    width: max-content;
+    animation: slideLoop 40s linear infinite;
+}
+
 @keyframes slideLoop {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
 }
 
-/* ТУМАН ДЛЯ ВЕЛИКОЇ СТРІЧКИ */
-.vip-ticker-wrap::before, .vip-ticker-wrap::after {
-    content: ""; position: absolute; top: 0; width: 150px; height: 100%; z-index: 5;
-}
-.vip-ticker-wrap::before { left: 0; background: linear-gradient(to right, #000, transparent); }
-.vip-ticker-wrap::after { right: 0; background: linear-gradient(to left, #000, transparent); }
-
 /* КОНТЕНТ (СЛОТИ КАЗИНО) */
 .main {
-    /* Збільшений відступ, щоб велика стрічка та лічильники нічого не закривали */
-    padding-top: 50px !important; 
+    /* Оскільки лічильники тепер штовхають контент самі, великий padding не потрібен */
+    padding-top: 20px !important; 
 }
+
 
 
         /* MAIN CONTENT */
