@@ -161,69 +161,74 @@
 /* 1. ВЕЛИКА СТРІЧКА (ПРИБРАНО ВЕРХНЄ СВІТЛО) */
 /* 1. СТРІЧКА */
 .vip-ticker-wrap {
-    position: relative;
+    position: relative; 
     width: 100%;
-    height: 135px; 
+    height: 55px; 
     background: #000 !important;
-    border-bottom: 2px solid rgba(191, 149, 63, 0.3);
+    border-bottom: 1px solid rgba(191, 149, 63, 0.2);
     z-index: 100;
     overflow: hidden;
     display: flex;
     align-items: center;
-    box-shadow: none !important;
 }
 
-/* 2. ЛІЧИЛЬНИКИ: В РЯД, БЕЗ ПУСТОТИ НИЖЧЕ */
+/* ЛІЧИЛЬНИКИ: ТЕПЕР ПРИВ'ЯЗАНІ ДО МІСЦЯ (ABSOLUTE) */
 .live-counter {
-    position: relative !important; 
-    margin: 10px 0 !important; /* Мінімальний відступ зверху і знизу */
+    /* absolute притисне їх до стрічки зверху, вони не будуть совати логотип */
+    position: absolute !important; 
+    top: 60px; /* Одразу під стрічкою */
+    right: 15px; 
     display: flex !important;
-    flex-direction: row !important; 
-    justify-content: center !important; 
-    align-items: center !important;
-    gap: 15px !important; 
-    z-index: 99;
-    width: 100% !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    gap: 2px !important;
+    z-index: 101;
+    background: none !important;
+    border: none !important;
 }
 
 .live-counter span {
     font-family: 'Cinzel', serif !important;
-    font-size: 11px !important;
+    font-size: 10px !important;
+    color: #ffcc66 !important;
+    text-shadow: 0 0 8px #ffcc66 !important;
     font-weight: 900 !important;
-    color: #fcf6ba !important; 
-    background: #000 !important; 
-    padding: 4px 10px !important; 
-    border-radius: 4px !important; 
-    border: 0.8px solid rgba(191, 149, 63, 0.5) !important;
-    text-shadow: 0 0 8px rgba(191, 149, 63, 0.8) !important;
+    background: none !important;
+    border: none !important;
 }
 
-/* 3. ІКОНКИ В СТРІЧЦІ */
+/* СТРІЧКА ТА ІКОНКИ (БЕЗ ЗМІН) */
+.vip-ticker {
+    display: flex;
+    width: max-content;
+    animation: slideLoop 50s linear infinite;
+    will-change: transform;
+}
+
 .v-item {
-    width: 75px; height: 85px; min-width: 75px;
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
     margin: 0 10px;
     background-image: var(--i) !important;
     background-size: cover !important;
-    border-radius: 10px;
-    border: 1.5px solid rgba(191, 149, 63, 0.2);
+    background-position: center !important;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
 }
 
-/* 4. КОНТЕНТ: ПОВЕРТАЄМО ЛОГО В ЦЕНТР ТА ПРИБИРАЄМО ДІРКУ */
-.main {
-    position: relative !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important; /* ЦЕ ПОВЕРТАЄ ЛОГО В ЦЕНТР */
-    justify-content: flex-start !important;
-    width: 100% !important;
-    padding-top: 10px !important; /* ПРИБРАНО ПРІРВУ */
-    background: #000 !important;
+@keyframes slideLoop {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
 }
 
-/* Якщо логотип всередині .main - переконайся, що він не має float:left */
-.main img, .logo { 
-    margin: 0 auto !important; 
+.vip-ticker-wrap::before, .vip-ticker-wrap::after {
+    content: ""; position: absolute; top: 0; width: 60px; height: 100%; z-index: 5;
 }
+.vip-ticker-wrap::before { left: 0; background: linear-gradient(to right, #000, transparent); }
+.vip-ticker-wrap::after { right: 0; background: linear-gradient(to left, #000, transparent); }
+
 
 
 
