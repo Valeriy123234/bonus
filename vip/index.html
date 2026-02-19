@@ -173,7 +173,7 @@
     /* ПРИХОВУЄМО ПРИ СТАРТІ */
     opacity: 0;
     animation: fadeInTicker 1s ease-out forwards;
-    animation-delay: 0.3s; /* Невелика затримка, щоб DOM встиг прогрузитися */
+    animation-delay: 0s, 0.8s; /* Невелика затримка, щоб DOM встиг прогрузитися */
 }
 
 /* КОНТЕЙНЕР ДЛЯ СТРІЧКИ */
@@ -244,7 +244,9 @@
     30% { left: 150%; }
     100% { left: 150%; }
 }
-
+@keyframes showContent {
+    to { visibility: visible; }
+}
 
 
         /* MAIN CONTENT */
