@@ -186,24 +186,25 @@
 /* LIVE COUNTER: БЕЗ РАМОК, БЕЗ СКРОЛУ, ЯСКРАВИЙ ТЕКСТ */
 /* ПРАВИЛЬНІ ЛІЧИЛЬНИКИ: БЕЗ РАМОК, БЕЗ СКРОЛУ, ОДИН ПІД ОДНИМ */
 .live-counter { 
-    position: relative !important; /* Стоїть вгорі сторінки, НЕ їздить при скролі */
-    top: 65px !important; 
-    right: 15px !important; 
+    position: relative !important; 
+    margin-top: 10px !important; /* Відступ від стрічки іконок */
+    margin-right: 15px !important; 
     display: flex !important;
-    flex-direction: column !important; /* Ставить Online під Playing */
+    flex-direction: column !important; 
     align-items: flex-end !important; 
     gap: 4px !important; 
-    z-index: 1000 !important;
-    background: transparent !important; /* Прибирає темну плашку */
-    border: none !important;           /* Прибирає золоту рамку */
-    box-shadow: none !important;       /* Прибирає тіні */
+    z-index: 90 !important;
+    background: transparent !important; 
+    border: none !important;           
+    box-shadow: none !important;       
     backdrop-filter: none !important;
     min-width: auto !important; 
     pointer-events: none;
 }
 
 .live-counter span { 
-    color: #ffcc66 !important; /* Яскравий золотий неон */
+    color: #ffcc66 !important; 
+    font-family: 'Cinzel', serif !important;
     font-size: 10px !important;
     font-weight: 900 !important;
     text-transform: uppercase !important;
@@ -212,10 +213,6 @@
     background: none !important;
     padding: 0 !important;
 }
-
-
-
-
 
 
 /* СТРІЧКА ТА ІКОНКИ */
