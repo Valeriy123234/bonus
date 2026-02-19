@@ -182,32 +182,21 @@
 /* ЛІЧИЛЬНИКИ: ЧИСТИЙ ТЕКСТ, БЕЗ РАМОК, СТАТИЧНО ВГОРІ */
 /* ПОВНЕ ОНОВЛЕННЯ: БЕЗ РАМОК, БЕЗ СКРОЛУ */
 .live-counter {
-    position: absolute !important; /* ЗАЛИШАЄТЬСЯ ВГОРІ СТОРІНКИ, НЕ СКРОЛИТЬСЯ */
-    top: 65px !important; 
-    right: 15px !important; 
+    position: absolute !important; 
+    top: 65px !important;
+    right: 15px !important;
     display: flex !important;
-    flex-direction: column !important; 
-    align-items: flex-end !important; 
-    gap: 4px !important; 
+    flex-direction: column !important;
+    align-items: flex-end !important;
     z-index: 200 !important;
-    pointer-events: none !important;
+}
+.live-counter span {
+    background: transparent !important; /* Прибирає плашку */
+    border: none !important;           /* Прибирає рамку */
+    color: #ffcc66 !important;         /* Золотий текст */
+    text-shadow: 0 0 10px #ffcc66 !important;
 }
 
-.live-counter span {
-    font-family: 'Cinzel', serif !important;
-    font-size: 10px !important;
-    font-weight: 900 !important;
-    color: #ffcc66 !important; /* Яскраве золото */
-    background: transparent !important; /* ПРИБИРАЄ ПЛАШКУ */
-    border: none !important; /* ПРИБИРАЄ ЗОЛОТУ РАМКУ */
-    box-shadow: none !important;
-    padding: 2px 0 !important;
-    white-space: nowrap !important;
-    text-transform: uppercase !important;
-    /* Яскравий текст, що світиться */
-    text-shadow: 0 0 10px #ffcc66, 0 0 5px rgba(255, 204, 102, 0.8) !important;
-    transition: opacity 0.5s ease-in-out !important;
-}
 
 
 
@@ -629,103 +618,95 @@ html, body {
         </div>
     </div>
 
-    <script>
-        let canS = false;
-        function enableAudio() { if(!canS) { const a = document.getElementById('cash'); a.play().then(() => { a.pause(); a.currentTime = 0; canS = true; }).catch(()=>{}); } }
-
-        const start = Date.now();
-        const update = () => {
-            const elap = Date.now() - start;
-            let prog = Math.min(Math.pow(elap/3000, 1.8)*100, 100);
-            document.getElementById('l-fill').style.width = prog + '%';
-            document.getElementById('pc').innerText = Math.floor(prog) + '%';
-            if (elap < 3000) requestAnimationFrame(update);
-            else {
-                setTimeout(() => {
-                    if(canS) document.getElementById('cash').play();
-                    document.getElementById('loader').style.opacity = '0';
-                    const m = document.getElementById('m');
-                    m.style.opacity = '1'; m.classList.add('show');
-                    setTimeout(() => document.getElementById('loader').remove(), 1200);
-                }, 200);
-            }
-        };
-        update();
-
-        // LIVE COUNTER (ОНОВЛЕННЯ ЧИСЕЛ)
-                // LIVE COUNTER (ПЛАВНЕ ОНОВЛЕННЯ ЧИСЕЛ)
-        setInterval(() => {
-            const onEl = document.getElementById('on-val');
-            const plEl = document.getElementById('pl-val');
-
-            if (onEl && plEl) {
-                // М'яке згасання тексту перед зміною
-                onEl.style.opacity = "0.4";
-                plEl.style.opacity = "0.4";
-
-                setTimeout(() => {
-                    // Нові значення: Online (1000-2000) та Playing (500-950)
-                    onEl.innerText = `ONLINE: ${Math.floor(Math.random() * (2000 - 1000 + 1)) + 1000}`;
-                    plEl.innerText = `PLAYING: ${Math.floor(Math.random() * (950 - 500 + 1)) + 500}`;
-                    
-                    // Повернення яскравості
-                    onEl.style.opacity = "1";
-                    plEl.style.opacity = "1";
-                }, 500); // Пауза на півсекунди для ефекту перемикання
-            }
-        }, 4000); // Оновлення кожні 4 секунди
-
-        // Далі йде твій код для виграшів (WIN: +1,400₴...)
-        setInterval(() => {
-            const winElem = document.getElementById('live-win');
-            const mainElem = document.getElementById('m');
-            // ... (решта твого коду без змін)
-
-    
-    if (mainElem && mainElem.classList.contains('show') && winElem) {
-        
-        const sums = [
-            "+1,400₴", "+2,850₴", "+4,200₴", "+5,900₴", "+7,100₴", 
-            "+9,450₴", "+11,200₴", "+13,600₴", "+15,800₴", "+18,300₴", 
-            "+21,500₴", "+24,700₴", "+27,900₴", "+31,200₴", "+35,600₴", 
-            "+40,100₴", "+44,800₴", "+49,350₴", "+55,200₴", "+62,700₴", 
-            "+70,400₴", "+78,900₴", "+86,200₴", "+95,500₴", "+108,000₴", 
-            "+122,400₴", "+138,900₴", "+155,200₴", "+184,000₴", "+245,000₴"
-        ];
-
-        const slots = [
-            "AVIATOR", "BOOK OF RA", "GATES OF OLYMPUS", "SUGAR RUSH", "SWEET BONANZA",
-            "SUN OF EGYPT 4", "THE DOG HOUSE", "BIG BASS DAY AT THE RACES", "ULTIMATE HOT", "FRUIT PARTY",
-            "SHINING CROWN", "WOLF GOLD", "JOKER'S JEWELS", "BUFFALO KING", "MORE MAGIC APPLE", 
-            "HOT FRUITS 100", "AZTEC CLUSTERS", "ROYAL COINS 2", "COIN STRIKE", "3 HOT CHILLIES", 
-            "777 BURNING HOT", "EYE OF HORUS", "LEGACY OF DEAD", "FIRE IN THE HOLE", "SAN QUENTIN"
-        ];
-
-        // 1. Починаємо плавне зникнення з рухом вгору
-        winElem.style.opacity = "0";
-        winElem.style.transform = "translateY(-10px)";
-        
-        // LIVE COUNTER (ОНОВЛЕННЯ ЧИСЕЛ)
-setInterval(() => {
-    const onElem = document.getElementById('on-val');
-    const plElem = document.getElementById('pl-val');
-
-    if (onElem && plElem) {
-        onElem.style.opacity = "0.4"; // М'яке мерехтіння
-        plElem.style.opacity = "0.4";
-
-        setTimeout(() => {
-            onElem.innerText = `ONLINE: ${Math.floor(Math.random() * (2000 - 1000 + 1)) + 1000}`;
-            plElem.innerText = `PLAYING: ${Math.floor(Math.random() * (950 - 500 + 1)) + 500}`;
-            onElem.style.opacity = "1";
-            plElem.style.opacity = "1";
-        }, 500);
+ <script>
+    let canS = false;
+    function enableAudio() { 
+        if(!canS) { 
+            const a = document.getElementById('cash'); 
+            if(a) { a.play().then(() => { a.pause(); a.currentTime = 0; canS = true; }).catch(()=>{}); }
+        } 
     }
-}, 4000);
 
+    // 1. ЗАВАНТАЖУВАЧ (LOADER) - ПРАЦЮЄ ЧІТКО
+    const start = Date.now();
+    const updateLoader = () => {
+        const elap = Date.now() - start;
+        let prog = Math.min(Math.pow(elap/3000, 1.8)*100, 100);
+        
+        const fill = document.getElementById('l-fill');
+        const perc = document.getElementById('pc');
+        
+        if(fill) fill.style.width = prog + '%';
+        if(perc) perc.innerText = Math.floor(prog) + '%';
 
+        if (elap < 3000) {
+            requestAnimationFrame(updateLoader);
+        } else {
+            setTimeout(() => {
+                if(canS && document.getElementById('cash')) document.getElementById('cash').play();
+                const loader = document.getElementById('loader');
+                if(loader) loader.style.opacity = '0';
+                const m = document.getElementById('m');
+                if(m) { m.style.opacity = '1'; m.classList.add('show'); }
+                setTimeout(() => { if(loader) loader.remove(); }, 1200);
+            }, 200);
+        }
+    };
+    updateLoader();
 
-        const canvas = document.getElementById('c'); const ctx = canvas.getContext('2d');
+    // 2. LIVE COUNTER (ОНОВЛЕННЯ ЧИСЕЛ: 1000-2000 та 500-950)
+    setInterval(() => {
+        const onEl = document.getElementById('on-val');
+        const plEl = document.getElementById('pl-val');
+        if (onEl && plEl) {
+            onEl.style.opacity = "0.4";
+            plEl.style.opacity = "0.4";
+            setTimeout(() => {
+                onEl.innerText = `ONLINE: ${Math.floor(Math.random() * (2000 - 1000 + 1)) + 1000}`;
+                plEl.innerText = `PLAYING: ${Math.floor(Math.random() * (950 - 500 + 1)) + 500}`;
+                onEl.style.opacity = "1";
+                plEl.style.opacity = "1";
+            }, 500);
+        }
+    }, 4000);
+
+    // 3. LIVE WINNER (ПОВНИЙ СПИСОК: 30 СУМ ТА 25 СЛОТІВ)
+    setInterval(() => {
+        const winElem = document.getElementById('live-win');
+        const mainElem = document.getElementById('m');
+        
+        if (mainElem && mainElem.classList.contains('show') && winElem) {
+            const sums = [
+                "+1,400₴", "+2,850₴", "+4,200₴", "+5,900₴", "+7,100₴", "+9,450₴", "+11,200₴", "+13,600₴", "+15,800₴", "+18,300₴", 
+                "+21,500₴", "+24,700₴", "+27,900₴", "+31,200₴", "+35,600₴", "+40,100₴", "+44,800₴", "+49,350₴", "+55,200₴", "+62,700₴", 
+                "+70,400₴", "+78,900₴", "+86,200₴", "+95,500₴", "+108,000₴", "+122,400₴", "+138,900₴", "+155,200₴", "+184,000₴", "+245,000₴"
+            ];
+            const slots = [
+                "AVIATOR", "BOOK OF RA", "GATES OF OLYMPUS", "SUGAR RUSH", "SWEET BONANZA", "SUN OF EGYPT 4", "THE DOG HOUSE", "BIG BASS DAY AT THE RACES", "ULTIMATE HOT", "FRUIT PARTY",
+                "SHINING CROWN", "WOLF GOLD", "JOKER'S JEWELS", "BUFFALO KING", "MORE MAGIC APPLE", "HOT FRUITS 100", "AZTEC CLUSTERS", "ROYAL COINS 2", "COIN STRIKE", "3 HOT CHILLIES", 
+                "777 BURNING HOT", "EYE OF HORUS", "LEGACY OF DEAD", "FIRE IN THE HOLE", "SAN QUENTIN"
+            ];
+
+            winElem.style.opacity = "0";
+            winElem.style.transform = "translateY(-10px)";
+            
+            setTimeout(() => {
+                const rSum = sums[Math.floor(Math.random() * sums.length)];
+                const rSlot = slots[Math.floor(Math.random() * slots.length)];
+                winElem.innerText = `WIN: ${rSum} IN ${rSlot} ⚡`;
+                winElem.style.transform = "translateY(10px)";
+                setTimeout(() => {
+                    winElem.style.opacity = "1";
+                    winElem.style.transform = "translateY(0)";
+                }, 50);
+            }, 600);
+        }
+    }, 4500);
+
+    // 4. ЕФЕКТ ЧАСТИНОК (BACKGROUND)
+    const canvas = document.getElementById('c'); 
+    if(canvas) {
+        const ctx = canvas.getContext('2d');
         let w, h, particles = [];
         function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
         window.addEventListener('resize', resize); resize();
@@ -744,6 +725,5 @@ setInterval(() => {
             requestAnimationFrame(anim); 
         }
         anim();
-    </script>
-</body>
-</html>
+    }
+</script>
