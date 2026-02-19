@@ -302,77 +302,93 @@ html, body {
     display: block; 
     position: relative; 
     overflow: hidden; 
-    z-index: 1;
+    /* Підняв z-index і додав ізоляцію, щоб кнопки не "провалилися" при скролі */
+    z-index: 10;
+    isolation: isolate;
 
-    /* М'ЯКЕ ЗОЛОТО (статичне) */
-    background: linear-gradient(180deg, #fcf6ba 0%, #bf953f 100%);
+    /* М'ЯКЕ ВИТОЧЕНЕ ЗОЛОТО */
+    background: linear-gradient(180deg, #fcf6ba 0%, #bf953f 100%) !important;
     
     box-shadow: 
-        0 8px 25px rgba(0,0,0,0.5), 
-        inset 0 2px 5px rgba(255,255,255,0.5), 
-        inset 0 -2px 5px rgba(0,0,0,0.2);
+        0 10px 25px rgba(0,0,0,0.6), 
+        inset 0 2px 3px rgba(255,255,255,0.8), 
+        inset 0 -3px 6px rgba(0,0,0,0.3);
     
-    border: 3px solid #bf953f; 
-    border-radius: 18px; 
-    margin-bottom: 18px; 
-    padding: 22px 10px; 
+    border: 3.5px solid #bf953f; 
+    border-radius: 20px; 
+    margin-bottom: 20px; 
+    padding: 24px 12px; 
     text-align: center; 
     text-decoration: none;
     
+    /* ТЕКСТ: МАКСИМАЛЬНО ГРУБИЙ */
     color: #000 !important; 
     font-weight: 900; 
     text-transform: uppercase; 
-    font-size: 21px; 
-    letter-spacing: -0.2px;
-    line-height: 1.1;
+    font-size: 22px; 
+    letter-spacing: -0.5px;
+    line-height: 1;
 
-    /* ПРИБРАЛИ АНІМАЦІЮ ПОЯВИ */
+    /* ПОВНЕ ПРИБИРАННЯ АНІМАЦІЇ ПОЯВИ */
     opacity: 1 !important; 
     transform: none !important; 
     transition: none !important;
+    visibility: visible !important;
 
-    /* Оптимізація для миттєвого рендеру */
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
+    /* ФІКС ПРОГРУЗКИ: Змушуємо GPU тримати кнопки завжди видимими */
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    will-change: auto;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
-/* Блік залишаємо для солідності */
+/* Елегантний широкій блік */
 .btn::after {
     content: "";
     position: absolute;
     top: 0;
     left: -150%;
-    width: 80%;
+    width: 100%;
     height: 100%;
-    background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+    background: linear-gradient(to right, 
+        rgba(255,255,255,0) 0%, 
+        rgba(255,255,255,0.5) 50%, 
+        rgba(255,255,255,0) 100%);
     transform: skewX(-25deg);
-    animation: shine 4.5s infinite ease-in-out;
+    /* Анімація через transform для плавності */
+    animation: shine 4s infinite ease-in-out;
     z-index: -1;
 }
 
 @keyframes shine {
     0% { transform: translateX(0) skewX(-25deg); }
-    30%, 100% { transform: translateX(450%) skewX(-25deg); }
+    30%, 100% { transform: translateX(350%) skewX(-25deg); }
 }
 
-/* Видаляємо будь-які старі правила появи */
+/* Статичний стан для .main */
 .main.show .btn { 
     opacity: 1 !important; 
-    transform: none !important; 
+    transform: translate3d(0, 0, 0) !important; 
+    display: block !important;
 }
 
+/* Відгук на дотик (без лагів) */
 .btn:active { 
-    transform: scale(0.96) translateZ(0) !important; 
-    background: #fcf6ba; 
+    transform: scale(0.96) translate3d(0, 0, 0) !important; 
+    background: #fcf6ba !important;
+    transition: 0.1s !important;
 }
 
 .btn-tg { 
     background: #0088cc !important; 
-    border: 3px solid #fff; 
+    border: 3.5px solid #fff !important; 
     color: #fff !important;
-    margin-top: 25px; 
-    margin-bottom: 60px;
+    margin-top: 30px; 
+    margin-bottom: 70px;
+    box-shadow: 0 10px 25px rgba(0, 136, 204, 0.4) !important;
 }
+
 
 
 
