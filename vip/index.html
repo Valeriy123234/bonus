@@ -461,12 +461,38 @@ html, body {
         }, 4000);
 
         setInterval(() => {
-            if(document.getElementById('m').classList.contains('show')) {
-                const sums = ["+5,400₴", "+14,200₴", "+1,900₴", "+38,000₴", "+6,700₴"];
-                const slots = ["AVIATOR", "BOOK OF RA", "GATES OF OLYMPUS", "SUGAR RUSH", "SWEET BONANZA"];
-                document.getElementById('live-win').innerText = `WIN: ${sums[Math.floor(Math.random()*sums.length)]} IN ${slots[Math.floor(Math.random()*slots.length)]} ⚡`;
-            }
-        }, 3500);
+    const winElem = document.getElementById('live-win');
+    if(document.getElementById('m').classList.contains('show') && winElem) {
+        
+        const sums = [
+            "+1,250₴", "+2,800₴", "+4,100₴", "+5,400₴", "+6,700₴", 
+            "+8,250₴", "+10,100₴", "+12,450₴", "+14,200₴", "+17,800₴", 
+            "+19,300₴", "+22,500₴", "+25,900₴", "+28,150₴", "+32,400₴", 
+            "+35,700₴", "+38,000₴", "+42,250₴", "+47,100₴", "+53,400₴", 
+            "+58,900₴", "+64,200₴", "+71,500₴", "+78,300₴", "+85,000₴", 
+            "+92,400₴", "+105,000₴", "+118,500₴", "+142,000₴", "+210,000₴"
+        ];
+
+        const slots = [
+            "AVIATOR", "BOOK OF RA", "GATES OF OLYMPUS", "SUGAR RUSH", "SWEET BONANZA",
+            "SUN OF EGYPT 3", "THE DOG HOUSE", "BIG BASS SPLASH", "ULTIMATE HOT", "FRUIT PARTY",
+            "STUBBORN COSSACKS", "SHINING CROWN", "WOLF GOLD", "JOKER'S JEWELS", "BUFFALO KING",
+            "MORE MAGIC APPLE", "HOT FRUITS 100", "AZTEC CLUSTER", "ROYAL COINS 2", "COIN STRIKE",
+            "3 HOT CHILLIES", "777 BURNING HOT", "EYE OF HORUS", "LEGACY OF DEAD", "FIRE IN THE HOLE",
+            "MENTAL", "SAN QUENTIN", "RAZOR SHARK", "WILD YIELD", "GREEK GODS"
+        ];
+
+        // Ефект плавного оновлення
+        winElem.style.opacity = "0";
+        setTimeout(() => {
+            const randomSum = sums[Math.floor(Math.random() * sums.length)];
+            const randomSlot = slots[Math.floor(Math.random() * slots.length)];
+            winElem.innerText = `WIN: ${randomSum} IN ${randomSlot} ⚡`;
+            winElem.style.opacity = "1";
+        }, 500);
+    }
+}, 3500);
+
 
         const canvas = document.getElementById('c'); const ctx = canvas.getContext('2d');
         let w, h, particles = [];
