@@ -180,32 +180,36 @@
 /* ЛІЧИЛЬНИКИ: МАЛЕНЬКІ, СПРАВА, ПІД СЛОТАМИ */
 /* ЛІЧИЛЬНИКИ: СТАТИЧНО ПРИ СКРОЛІ, ОДИН ПІД ОДНИМ */
 /* ЛІЧИЛЬНИКИ: ЧИСТИЙ ТЕКСТ, БЕЗ РАМОК, СТАТИЧНО ВГОРІ */
+/* ПОВНЕ ОНОВЛЕННЯ: БЕЗ РАМОК, БЕЗ СКРОЛУ */
 .live-counter {
-    position: absolute !important; /* ЗАЛИШАЄТЬСЯ ВГОРІ, НЕ СКРОЛИТЬСЯ ЗА ВАМИ */
-    top: 60px; 
-    right: 15px; 
-    display: flex;
-    flex-direction: column; 
-    align-items: flex-end; 
-    gap: 2px; /* Мінімальний відступ між рядками */
-    z-index: 150;
-    pointer-events: none;
+    position: absolute !important; /* Стоїть жорстко вгорі сайту, НЕ їздить за екраном */
+    top: 60px !important; 
+    right: 15px !important; 
+    display: flex !important;
+    flex-direction: column !important; 
+    align-items: flex-end !important; 
+    gap: 2px !important; 
+    z-index: 150 !important;
+    pointer-events: none !important;
+    background: none !important; /* Прибираємо фон у контейнера */
+    border: none !important;     /* Прибираємо рамку у контейнера */
 }
 
 .live-counter span {
-    font-family: 'Cinzel', serif;
-    font-size: 10px;
-    font-weight: 800;
-    color: #ffcc66; /* Яскраве золото */
-    background: transparent !important; /* ПОВНІСТЮ ПРИБРАВ ФОН */
-    border: none !important; /* ПОВНІСТЮ ПРИБРАВ РАМКИ */
-    padding: 0;
-    white-space: nowrap;
-    text-transform: uppercase;
-    /* ПОТУЖНЕ СЯЙВО, ЩОБ ТЕКСТ НЕ ГУБИВСЯ НА ФОНІ */
-    text-shadow: 0 0 10px #ffcc66, 0 0 5px rgba(255, 204, 102, 0.8);
-    transition: opacity 0.5s ease-in-out;
+    font-family: 'Cinzel', serif !important;
+    font-size: 10px !important;
+    font-weight: 900 !important;
+    color: #ffcc66 !important; /* Яскравий золотий */
+    background: transparent !important; /* Жодних плашок */
+    border: none !important;     /* Жодних рамок */
+    padding: 2px 0 !important;
+    white-space: nowrap !important;
+    text-transform: uppercase !important;
+    /* Потужне неонове світіння тексту */
+    text-shadow: 0 0 10px #ffcc66, 0 0 5px #ffcc66 !important;
+    transition: opacity 0.5s ease-in-out !important;
 }
+
 
 
 
@@ -568,11 +572,13 @@ html, body {
     </div>
 </div>
 
-<!-- ЛІЧИЛЬНИКИ: БЕЗ РАМОК, ЯСКРАВІ, ОДИН ПІД ОДНИМ -->
+
+<!-- Лічильники мають стояти ПІСЛЯ стрічки, а не всередині неї -->
 <div class="live-counter">
     <span id="on-val">ONLINE: 1582</span>
     <span id="pl-val">PLAYING: 894</span>
 </div>
+
 
 
 
