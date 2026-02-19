@@ -182,33 +182,33 @@
 /* ЛІЧИЛЬНИКИ: ЧИСТИЙ ТЕКСТ, БЕЗ РАМОК, СТАТИЧНО ВГОРІ */
 /* ПОВНЕ ОНОВЛЕННЯ: БЕЗ РАМОК, БЕЗ СКРОЛУ */
 .live-counter {
-    position: absolute !important; /* Стоїть жорстко вгорі сайту, НЕ їздить за екраном */
-    top: 60px !important; 
+    position: absolute !important; /* ЗАЛИШАЄТЬСЯ ВГОРІ СТОРІНКИ, НЕ СКРОЛИТЬСЯ */
+    top: 65px !important; 
     right: 15px !important; 
     display: flex !important;
     flex-direction: column !important; 
     align-items: flex-end !important; 
-    gap: 2px !important; 
-    z-index: 150 !important;
+    gap: 4px !important; 
+    z-index: 200 !important;
     pointer-events: none !important;
-    background: none !important; /* Прибираємо фон у контейнера */
-    border: none !important;     /* Прибираємо рамку у контейнера */
 }
 
 .live-counter span {
     font-family: 'Cinzel', serif !important;
     font-size: 10px !important;
     font-weight: 900 !important;
-    color: #ffcc66 !important; /* Яскравий золотий */
-    background: transparent !important; /* Жодних плашок */
-    border: none !important;     /* Жодних рамок */
+    color: #ffcc66 !important; /* Яскраве золото */
+    background: transparent !important; /* ПРИБИРАЄ ПЛАШКУ */
+    border: none !important; /* ПРИБИРАЄ ЗОЛОТУ РАМКУ */
+    box-shadow: none !important;
     padding: 2px 0 !important;
     white-space: nowrap !important;
     text-transform: uppercase !important;
-    /* Потужне неонове світіння тексту */
-    text-shadow: 0 0 10px #ffcc66, 0 0 5px #ffcc66 !important;
+    /* Яскравий текст, що світиться */
+    text-shadow: 0 0 10px #ffcc66, 0 0 5px rgba(255, 204, 102, 0.8) !important;
     transition: opacity 0.5s ease-in-out !important;
 }
+
 
 
 
@@ -582,6 +582,7 @@ html, body {
 
 
 
+
     
     <div class="main" id="m">
         <div class="s-logo"></div>
@@ -704,24 +705,23 @@ html, body {
         winElem.style.opacity = "0";
         winElem.style.transform = "translateY(-10px)";
         
+        // LIVE COUNTER (ОНОВЛЕННЯ ЧИСЕЛ)
+setInterval(() => {
+    const onElem = document.getElementById('on-val');
+    const plElem = document.getElementById('pl-val');
+
+    if (onElem && plElem) {
+        onElem.style.opacity = "0.4"; // М'яке мерехтіння
+        plElem.style.opacity = "0.4";
+
         setTimeout(() => {
-            // 2. Міняємо текст, коли його не видно
-            const randomSum = sums[Math.floor(Math.random() * sums.length)];
-            const randomSlot = slots[Math.floor(Math.random() * slots.length)];
-            winElem.innerText = `WIN: ${randomSum} IN ${randomSlot} ⚡`;
-            
-            // 3. Скидаємо позицію вниз для ефекту появи знизу
-            winElem.style.transform = "translateY(10px)";
-            
-            // 4. Плавно проявляємо та повертаємо на місце
-            setTimeout(() => {
-                winElem.style.opacity = "1";
-                winElem.style.transform = "translateY(0)";
-            }, 50);
-            
-        }, 600); // Час має збігатися з CSS transition
+            onElem.innerText = `ONLINE: ${Math.floor(Math.random() * (2000 - 1000 + 1)) + 1000}`;
+            plElem.innerText = `PLAYING: ${Math.floor(Math.random() * (950 - 500 + 1)) + 500}`;
+            onElem.style.opacity = "1";
+            plElem.style.opacity = "1";
+        }, 500);
     }
-}, 4500); // 4.5 секунди - ідеальний темп, щоб встигнути прочитати
+}, 4000);
 
 
 
