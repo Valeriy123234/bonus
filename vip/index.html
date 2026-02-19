@@ -163,57 +163,45 @@
 /* ПЛАШКА: СТРОГО ВГОРІ (НЕ РУХАЄТЬСЯ ПРИ СКРОЛІ) */
 /* ПЛАШКА: СТРОГО ВГОРІ СТОРІНКИ, ПРИ СКРОЛІ ЙДЕ ВГОРУ */
 /* ПЛАШКА: ТЕПЕР ВОНА ЧАСТИНА СТОРІНКИ, ПРИ СКРОЛІ ЙДЕ ВГОРУ */
+/* ПЛАШКА СЛОТІВ: СТАТИЧНА (ЙДЕ ВГОРУ ПРИ СКРОЛІ) */
 .vip-ticker-wrap {
-    position: relative; /* ЗМІНЕНО: тепер вона стоїть як звичайний блок у черзі */
+    position: relative; /* Тепер вона не літає, а стоїть у черзі контенту */
     width: 100%;
-    height: 55px; /* Ще вужча, щоб не заважати */
+    height: 55px; 
     background: #000 !important;
-    border-bottom: 1px solid rgba(191, 149, 63, 0.3);
-    z-index: 100; 
+    border-bottom: 1px solid rgba(191, 149, 63, 0.2);
+    z-index: 100;
     overflow: hidden;
     display: flex;
     align-items: center;
 }
 
-/* ЛІЧИЛЬНИКИ: РОБИМО МАЛЕНЬКИМИ ТА СТРОГИМИ */
+/* ЛІЧИЛЬНИКИ: МАЛЕНЬКІ, СПРАВА, ПІД СЛОТАМИ */
 .live-counter {
     position: absolute !important;
-    top: 50%; /* Центруємо вертикально по плашці */
-    transform: translateY(-50%);
-    left: 10px;
-    z-index: 1001 !important;
+    top: 60px; /* Одразу під плашкою (55px + 5px зазору) */
+    right: 15px; /* Притиснуті вправо */
     display: flex;
     gap: 8px;
+    z-index: 90;
     pointer-events: none;
+    width: auto !important; /* Прибираємо розтягування на весь екран */
 }
 
 .live-counter span {
     font-family: 'Cinzel', serif;
-    font-size: 9px; /* Дрібний шрифт */
+    font-size: 8px; /* Дуже маленькі та строгі */
     color: rgba(191, 149, 63, 0.8);
-    background: rgba(0, 0, 0, 0.6); /* Напівпрозора підкладка */
-    padding: 2px 6px;
-    border-radius: 3px;
-    border: 0.5px solid rgba(191, 149, 63, 0.3);
+    background: rgba(10, 10, 10, 0.7);
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 0.5px solid rgba(191, 149, 63, 0.2);
     white-space: nowrap;
+    text-transform: uppercase;
+    backdrop-filter: blur(4px);
 }
 
-/* КАРТИНКИ */
-.v-item {
-    width: 40px; /* Трохи менші, щоб вписалися у вузьку плашку */
-    height: 40px;
-    min-width: 40px; 
-    margin: 0 10px;
-    background-image: var(--i) !important;
-    background-size: cover !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    flex-shrink: 0;
-}
-
-/* АНІМАЦІЯ (Зациклена) */
+/* СТРІЧКА ТА ІКОНКИ */
 .vip-ticker {
     display: flex;
     width: max-content;
@@ -221,17 +209,35 @@
     will-change: transform;
 }
 
+.v-item {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    margin: 0 10px;
+    background-image: var(--i) !important;
+    background-size: cover !important;
+    background-position: center !important;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+}
+
 @keyframes slideLoop {
     0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); } /* Рух вліво для безшовності */
+    100% { transform: translateX(-50%); }
 }
 
-/* Прибираємо відступ зверху у main, бо плашка більше не нависає (вона штовхає контент вниз сама) */
+/* ЕФЕКТ ТУМАНУ */
+.vip-ticker-wrap::before, .vip-ticker-wrap::after {
+    content: ""; position: absolute; top: 0; width: 60px; height: 100%; z-index: 5;
+}
+.vip-ticker-wrap::before { left: 0; background: linear-gradient(to right, #000, transparent); }
+.vip-ticker-wrap::after { right: 0; background: linear-gradient(to left, #000, transparent); }
+
+/* КОНТЕНТ */
 .main {
-    padding-top: 20px !important; 
+    padding-top: 40px !important; /* Логотип тепер нижче лічильників */
 }
-
-
 
 
 
@@ -505,9 +511,9 @@ html, body {
     <div id="loader"><div class="l-cont"><div class="l-logo"></div><div class="l-bar-wrapper"><div id="l-fill"></div></div><div class="l-perc" id="pc">0%</div></div></div>
     <canvas id="c"></canvas>
 
-  <div class="vip-ticker-wrap">
+  <!-- ПЛАШКА З КАЗИНО (СТАТИЧНА) -->
+<div class="vip-ticker-wrap">
     <div class="vip-ticker">
-        <!-- ОСНОВНИЙ НАБІР (31 слот + лого) -->
         <div class="v-item" style="--i: url('./8C816B9D-90C0-4CD4-AA80-242F7BA3F77E.png')"></div>
         <div class="v-item" style="--i: url('./IMG_0699.jpeg')"></div>
         <div class="v-item" style="--i: url('./IMG_0700.jpeg')"></div>
@@ -541,7 +547,7 @@ html, body {
         <div class="v-item" style="--i: url('./IMG_0729.jpeg')"></div>
         <div class="v-item" style="--i: url('./IMG_0730.jpeg')"></div>
 
-        <!-- КЛОНИ ДЛЯ БЕЗШОВНОСТІ (повторюємо перші 10 штук) -->
+        <!-- КЛОНИ ДЛЯ БЕЗШОВНОСТІ -->
         <div class="v-item" aria-hidden="true" style="--i: url('./8C816B9D-90C0-4CD4-AA80-242F7BA3F77E.png')"></div>
         <div class="v-item" aria-hidden="true" style="--i: url('./IMG_0699.jpeg')"></div>
         <div class="v-item" aria-hidden="true" style="--i: url('./IMG_0700.jpeg')"></div>
@@ -554,6 +560,13 @@ html, body {
         <div class="v-item" aria-hidden="true" style="--i: url('./IMG_0707.jpeg')"></div>
     </div>
 </div>
+
+<!-- ЛІЧИЛЬНИКИ (АКУРАТНІ ПЛАШКИ СПРАВА) -->
+<div class="live-counter">
+    <span>ONLINE: 1582</span>
+    <span>PLAYING: 894</span>
+</div>
+
 
 
 
