@@ -281,13 +281,20 @@ html, body {
 /* Рядок виграшу під назвою */
 .live-win { 
     font-size: 14px; 
-    color: #fcf6ba; /* Золотистий колір замість зеленого для дорожчого вигляду */
+    color: #fcf6ba; 
     margin-bottom: 45px; 
     font-weight: 900; 
     text-transform: uppercase; 
     letter-spacing: 3px; 
     text-shadow: 0 0 10px rgba(191,149,63,0.5);
+    
+    /* ДОДАЙ ЦІ РЯДКИ ДЛЯ ПЛАВНОСТІ */
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    display: block;
+    width: 100%;
+    opacity: 1;
 }
+
 
 /* Кнопка ТГ */
 .btn { 
@@ -462,36 +469,50 @@ html, body {
 
         setInterval(() => {
     const winElem = document.getElementById('live-win');
-    if(document.getElementById('m').classList.contains('show') && winElem) {
+    const mainElem = document.getElementById('m');
+    
+    if (mainElem && mainElem.classList.contains('show') && winElem) {
         
         const sums = [
-            "+1,250₴", "+2,800₴", "+4,100₴", "+5,400₴", "+6,700₴", 
-            "+8,250₴", "+10,100₴", "+12,450₴", "+14,200₴", "+17,800₴", 
-            "+19,300₴", "+22,500₴", "+25,900₴", "+28,150₴", "+32,400₴", 
-            "+35,700₴", "+38,000₴", "+42,250₴", "+47,100₴", "+53,400₴", 
-            "+58,900₴", "+64,200₴", "+71,500₴", "+78,300₴", "+85,000₴", 
-            "+92,400₴", "+105,000₴", "+118,500₴", "+142,000₴", "+210,000₴"
+            "+1,400₴", "+2,850₴", "+4,200₴", "+5,900₴", "+7,100₴", 
+            "+9,450₴", "+11,200₴", "+13,600₴", "+15,800₴", "+18,300₴", 
+            "+21,500₴", "+24,700₴", "+27,900₴", "+31,200₴", "+35,600₴", 
+            "+40,100₴", "+44,800₴", "+49,350₴", "+55,200₴", "+62,700₴", 
+            "+70,400₴", "+78,900₴", "+86,200₴", "+95,500₴", "+108,000₴", 
+            "+122,400₴", "+138,900₴", "+155,200₴", "+184,000₴", "+245,000₴"
         ];
 
         const slots = [
             "AVIATOR", "BOOK OF RA", "GATES OF OLYMPUS", "SUGAR RUSH", "SWEET BONANZA",
-            "SUN OF EGYPT 3", "THE DOG HOUSE", "BIG BASS SPLASH", "ULTIMATE HOT", "FRUIT PARTY",
-            "STUBBORN COSSACKS", "SHINING CROWN", "WOLF GOLD", "JOKER'S JEWELS", "BUFFALO KING",
-            "MORE MAGIC APPLE", "HOT FRUITS 100", "AZTEC CLUSTER", "ROYAL COINS 2", "COIN STRIKE",
-            "3 HOT CHILLIES", "777 BURNING HOT", "EYE OF HORUS", "LEGACY OF DEAD", "FIRE IN THE HOLE",
-            "MENTAL", "SAN QUENTIN", "RAZOR SHARK", "WILD YIELD", "GREEK GODS"
+            "SUN OF EGYPT 4", "THE DOG HOUSE", "BIG BASS DAY AT THE RACES", "ULTIMATE HOT", "FRUIT PARTY",
+            "SHINING CROWN", "WOLF GOLD", "JOKER'S JEWELS", "BUFFALO KING", "MORE MAGIC APPLE", 
+            "HOT FRUITS 100", "AZTEC CLUSTERS", "ROYAL COINS 2", "COIN STRIKE", "3 HOT CHILLIES", 
+            "777 BURNING HOT", "EYE OF HORUS", "LEGACY OF DEAD", "FIRE IN THE HOLE", "SAN QUENTIN"
         ];
 
-        // Ефект плавного оновлення
+        // 1. Починаємо плавне зникнення з рухом вгору
         winElem.style.opacity = "0";
+        winElem.style.transform = "translateY(-10px)";
+        
         setTimeout(() => {
+            // 2. Міняємо текст, коли його не видно
             const randomSum = sums[Math.floor(Math.random() * sums.length)];
             const randomSlot = slots[Math.floor(Math.random() * slots.length)];
             winElem.innerText = `WIN: ${randomSum} IN ${randomSlot} ⚡`;
-            winElem.style.opacity = "1";
-        }, 500);
+            
+            // 3. Скидаємо позицію вниз для ефекту появи знизу
+            winElem.style.transform = "translateY(10px)";
+            
+            // 4. Плавно проявляємо та повертаємо на місце
+            setTimeout(() => {
+                winElem.style.opacity = "1";
+                winElem.style.transform = "translateY(0)";
+            }, 50);
+            
+        }, 600); // Час має збігатися з CSS transition
     }
-}, 3500);
+}, 4500); // 4.5 секунди - ідеальний темп, щоб встигнути прочитати
+
 
 
         const canvas = document.getElementById('c'); const ctx = canvas.getContext('2d');
