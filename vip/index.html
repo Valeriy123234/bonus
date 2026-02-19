@@ -414,7 +414,8 @@ html, body {
     z-index: 10;
     isolation: isolate;
     min-height: 70px;
-    contain: content;
+    contain: layout style paint; /* Повна ізоляція та примусова промальовка */
+    render-priority: high;
 
     /* М'ЯКЕ ВИТОЧЕНЕ ЗОЛОТО */
     background: linear-gradient(180deg, #fcf6ba 0%, #bf953f 100%) !important;
@@ -430,7 +431,8 @@ html, body {
     padding: 24px 12px; 
     text-align: center; 
     text-decoration: none;
-    
+    content-visibility: visible; /* Пряма заборона ховати контент */
+    contain-intrinsic-size: 1000px; 
     /* ТЕКСТ: МАКСИМАЛЬНО ГРУБИЙ */
     color: #000 !important; 
     font-weight: 900; 
