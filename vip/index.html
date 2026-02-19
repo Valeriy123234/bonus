@@ -181,32 +181,34 @@
 /* ЛІЧИЛЬНИКИ: СТАТИЧНО ПРИ СКРОЛІ, ОДИН ПІД ОДНИМ */
 /* ЛІЧИЛЬНИКИ: ЧИСТИЙ ТЕКСТ, БЕЗ РАМОК, СТАТИЧНО ВГОРІ */
 /* ПОВНЕ ОНОВЛЕННЯ: БЕЗ РАМОК, БЕЗ СКРОЛУ */* ПОВНЕ ВИДАЛЕННЯ ПЛАШКИ ТА СКРОЛУ */
+/* ЛІЧИЛЬНИКИ: СТАТИЧНІ, БЕЗ НАПОЛЗАННЯ ТА ПЛАШОК */
 .live-counter {
-    position: absolute !important; /* Саме це зупиняє рух при скролі */
-    top: 60px !important;
-    right: 15px !important;
+    position: relative !important; /* Повертає в чергу контенту, щоб не заходити на слоти */
+    margin-top: 10px !important;   /* Відступ від стрічки */
+    margin-right: 15px !important; /* Відступ від правого краю */
     display: flex !important;
-    flex-direction: column !important;
-    align-items: flex-end !important;
-    gap: 2px !important;
-    z-index: 999 !important;
-    background: transparent !important; /* Видаляє фон */
-    border: none !important;           /* Видаляє рамку */
-    box-shadow: none !important;       /* Видаляє тіні навколо */
+    flex-direction: column !important; 
+    align-items: flex-end !important; 
+    gap: 2px !important; 
+    z-index: 90 !important;
+    pointer-events: none !important;
+    background: transparent !important;
+    border: none !important;
 }
 
 .live-counter span {
-    background: transparent !important; /* Гарантовано без фону */
-    border: none !important;           /* Гарантовано без рамок */
-    color: #ffcc66 !important;         /* Яскраве золото */
     font-family: 'Cinzel', serif !important;
     font-size: 10px !important;
     font-weight: 900 !important;
+    color: #ffcc66 !important; 
+    background: none !important; /* Жодних плашок */
+    border: none !important;     /* Жодних рамок */
     text-transform: uppercase !important;
-    text-shadow: 0 0 10px #ffcc66, 0 0 5px rgba(255, 204, 102, 0.8) !important;
+    text-shadow: 0 0 8px #ffcc66 !important; /* Сяйво тексту */
     padding: 0 !important;
-    margin: 0 !important;
+    white-space: nowrap !important;
 }
+
 
 
 /* СТРІЧКА ТА ІКОНКИ */
