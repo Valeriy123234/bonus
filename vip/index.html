@@ -162,66 +162,75 @@
 /* ПЛАШКА: тепер вужча (65px замість 85px) */
 /* ПЛАШКА: СТРОГО ВГОРІ (НЕ РУХАЄТЬСЯ ПРИ СКРОЛІ) */
 /* ПЛАШКА: СТРОГО ВГОРІ СТОРІНКИ, ПРИ СКРОЛІ ЙДЕ ВГОРУ */
+/* ПЛАШКА: ТЕПЕР ВОНА ЧАСТИНА СТОРІНКИ, ПРИ СКРОЛІ ЙДЕ ВГОРУ */
 .vip-ticker-wrap {
-    position: absolute; /* Прив'язка до верху сторінки */
-    top: 0;
-    left: 0;
+    position: relative; /* ЗМІНЕНО: тепер вона стоїть як звичайний блок у черзі */
     width: 100%;
-    height: 60px;
+    height: 55px; /* Ще вужча, щоб не заважати */
     background: #000 !important;
     border-bottom: 1px solid rgba(191, 149, 63, 0.3);
-    z-index: 1000; /* Вище за контент */
+    z-index: 100; 
     overflow: hidden;
     display: flex;
     align-items: center;
 }
 
-/* ФІКС ЛІЧИЛЬНИКІВ (Теж ідуть вгору при скролі) */
+/* ЛІЧИЛЬНИКИ: РОБИМО МАЛЕНЬКИМИ ТА СТРОГИМИ */
 .live-counter {
+    position: absolute !important;
+    top: 50%; /* Центруємо вертикально по плашці */
+    transform: translateY(-50%);
+    left: 10px;
     z-index: 1001 !important;
-    position: absolute; 
-    top: 15px;
-    left: 15px; /* Або де вони у тебе стоять */
+    display: flex;
+    gap: 8px;
+    pointer-events: none;
 }
 
-/* КАРТИНКИ (ФІКС ШЛЯХУ ТА ВІДОБРАЖЕННЯ) */
+.live-counter span {
+    font-family: 'Cinzel', serif;
+    font-size: 9px; /* Дрібний шрифт */
+    color: rgba(191, 149, 63, 0.8);
+    background: rgba(0, 0, 0, 0.6); /* Напівпрозора підкладка */
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 0.5px solid rgba(191, 149, 63, 0.3);
+    white-space: nowrap;
+}
+
+/* КАРТИНКИ */
 .v-item {
-    width: 44px;
-    height: 44px;
-    min-width: 44px; 
-    margin: 0 12px;
-    /* Важливо: додаємо властивість background явно */
+    width: 40px; /* Трохи менші, щоб вписалися у вузьку плашку */
+    height: 40px;
+    min-width: 40px; 
+    margin: 0 10px;
     background-image: var(--i) !important;
     background-size: cover !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    flex-shrink: 0; /* Щоб не стискалися */
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
 }
 
-/* ЕФЕКТ ТУМАНУ */
-.vip-ticker-wrap::before, .vip-ticker-wrap::after {
-    content: "";
-    position: absolute;
-    top: 0; width: 80px; height: 100%;
-    z-index: 5; pointer-events: none;
-}
-.vip-ticker-wrap::before { left: 0; background: linear-gradient(to right, #000, transparent); }
-.vip-ticker-wrap::after { right: 0; background: linear-gradient(to left, #000, transparent); }
-
-/* АНІМАЦІЯ КОВЗАННЯ */
+/* АНІМАЦІЯ (Зациклена) */
 .vip-ticker {
     display: flex;
     width: max-content;
-    animation: slideRight 60s linear infinite;
+    animation: slideLoop 50s linear infinite;
     will-change: transform;
 }
 
-@keyframes slideRight {
-    0% { transform: translateX(-50%); }
-    100% { transform: translateX(0); }
+@keyframes slideLoop {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); } /* Рух вліво для безшовності */
 }
+
+/* Прибираємо відступ зверху у main, бо плашка більше не нависає (вона штовхає контент вниз сама) */
+.main {
+    padding-top: 20px !important; 
+}
+
 
 
 
@@ -498,46 +507,54 @@ html, body {
 
   <div class="vip-ticker-wrap">
     <div class="vip-ticker">
-        <!-- Твої файли з папки vip -->
-        <div class="v-item" style="--i: url('./vip/IMG_0699.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0700.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0701.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0702.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0703.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0704.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0705.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0706.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0707.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0708.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0709.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0710.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0711.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0712.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0713.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0714.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0715.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0716.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0718.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0719.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0720.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0721.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0722.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0723.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0724.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0725.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0726.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0727.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0728.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0729.jpeg')"></div>
-        <div class="v-item" style="--i: url('./vip/IMG_0730.jpeg')"></div>
+        <!-- ОСНОВНИЙ НАБІР (31 слот + лого) -->
+        <div class="v-item" style="--i: url('./8C816B9D-90C0-4CD4-AA80-242F7BA3F77E.png')"></div>
+        <div class="v-item" style="--i: url('./IMG_0699.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0700.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0701.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0702.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0703.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0704.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0705.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0706.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0707.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0708.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0709.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0710.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0711.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0712.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0713.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0714.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0715.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0716.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0718.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0719.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0720.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0721.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0722.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0723.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0724.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0725.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0726.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0727.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0728.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0729.jpeg')"></div>
+        <div class="v-item" style="--i: url('./IMG_0730.jpeg')"></div>
 
-        <!-- Клони для нескінченного циклу -->
-        <div class="v-item" aria-hidden="true" style="--i: url('./vip/IMG_0699.jpeg')"></div>
-        <div class="v-item" aria-hidden="true" style="--i: url('./vip/IMG_0700.jpeg')"></div>
-        <div class="v-item" aria-hidden="true" style="--i: url('./vip/IMG_0701.jpeg')"></div>
-        <div class="v-item" aria-hidden="true" style="--i: url('./vip/IMG_0702.jpeg')"></div>
+        <!-- КЛОНИ ДЛЯ БЕЗШОВНОСТІ (повторюємо перші 10 штук) -->
+        <div class="v-item" aria-hidden="true" style="--i: url('./8C816B9D-90C0-4CD4-AA80-242F7BA3F77E.png')"></div>
+        <div class="v-item" aria-hidden="true" style="--i: url('./IMG_0699.jpeg')"></div>
+        <div class="v-item" aria-hidden="true" style="--i: url('./IMG_0700.jpeg')"></div>
+        <div class="v-item" aria-hidden="true" style="--i: url('./IMG_0701.jpeg')"></div>
+        <div class="v-item" aria-hidden="true" style="--i: url('./IMG_0702.jpeg')"></div>
+        <div class="v-item" aria-hidden="true" style="--i: url('./IMG_0703.jpeg')"></div>
+        <div class="v-item" aria-hidden="true" style="--i: url('./IMG_0704.jpeg')"></div>
+        <div class="v-item" aria-hidden="true" style="--i: url('./IMG_0705.jpeg')"></div>
+        <div class="v-item" aria-hidden="true" style="--i: url('./IMG_0706.jpeg')"></div>
+        <div class="v-item" aria-hidden="true" style="--i: url('./IMG_0707.jpeg')"></div>
     </div>
 </div>
+
 
 
     
