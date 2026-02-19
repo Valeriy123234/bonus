@@ -158,78 +158,74 @@
 
 
         /* ГОЛОВНА ОБГОРТКА СТРІЧКИ */
+/* ЗБІЛЬШЕНА СТРІЧКА (У 2.5 РАЗА) */
 .vip-ticker-wrap {
     position: relative;
     width: 100%;
-    height: 55px; 
+    height: 135px; /* Збільшено з 55px */
     background: #000 !important;
-    border-bottom: 1px solid rgba(191, 149, 63, 0.2);
+    border-bottom: 2px solid rgba(191, 149, 63, 0.3);
     z-index: 100;
     overflow: hidden;
     display: flex;
     align-items: center;
 }
 
-/* ПОВНЕ ВИДАЛЕННЯ БЛЮРУ ТА СКРОЛУ */
+/* ЛІЧИЛЬНИКИ: ПРИМУСОВА СТАТИКА ТА ВЕЛИКИЙ ТЕКСТ */
 .live-counter {
-    position: absolute !important; /* ПРИВ'ЯЗКА ДО СТОРІНКИ, НЕ ДО ЕКРАНУ */
-    top: 65px !important; 
-    right: 15px !important; 
+    /* position: absolute відносно сторінки — вони ПОВИННІ йти вгору при скролі */
+    position: absolute !important; 
+    top: 145px !important; /* Одразу під великою стрічкою */
+    right: 20px !important; 
     display: flex !important;
     flex-direction: column !important; 
     align-items: flex-end !important; 
-    gap: 6px !important; 
+    gap: 8px !important; 
     z-index: 9999 !important;
     
-    /* ВИДАЛЯЄМО БЛЮР ТА ПЛАШКИ */
+    /* Очищення фону та блюру */
     background: none !important;
     border: none !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    box-shadow: none !important;
     padding: 0 !important;
     pointer-events: none;
+    /* Хай браузер рахує це окремим шаром для фіксації */
+    transform: translateZ(0); 
 }
 
 .live-counter span {
     font-family: 'Cinzel', serif !important;
-    font-size: 13px !important; /* ВЕЛИКИЙ ТЕКСТ */
+    font-size: 15px !important; /* Ще більший текст */
     font-weight: 900 !important;
     color: #fcf6ba !important; 
-    background: #000 !important; /* ЧИСТИЙ ЧОРНИЙ ФОН БЕЗ БЛЮРУ */
-    padding: 4px 10px !important; 
-    border-radius: 3px !important; 
-    border: 0.5px solid rgba(191, 149, 63, 0.8) !important;
+    background: #000 !important; 
+    padding: 6px 12px !important; 
+    border-radius: 4px !important; 
+    border: 1px solid rgba(191, 149, 63, 0.8) !important;
     white-space: nowrap !important;
     text-transform: uppercase !important;
-    text-shadow: 0 0 8px rgba(191, 149, 63, 0.9) !important;
-    opacity: 1 !important;
-    /* ГАРАНТІЯ ВІДСУТНОСТІ БЛЮРУ */
+    text-shadow: 0 0 10px rgba(191, 149, 63, 1) !important;
     backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
 }
 
-
-
-
-/* СТРІЧКА ТА ІКОНКИ */
+/* ЗБІЛЬШЕНІ ІКОНКИ (У 2.5 РАЗА) */
 .vip-ticker {
     display: flex;
     width: max-content;
-    animation: slideLoop 50s linear infinite;
-    will-change: transform;
+    animation: slideLoop 40s linear infinite; /* Трохи швидше, бо іконки великі */
 }
 
 .v-item {
-    width: 38px;
-    height: 38px;
-    min-width: 38px;
-    margin: 0 10px;
+    width: 95px;  /* Було 38px -> х2.5 = 95px */
+    height: 95px; /* Було 38px -> х2.5 = 95px */
+    min-width: 95px;
+    margin: 0 15px;
     background-image: var(--i) !important;
     background-size: cover !important;
     background-position: center !important;
-    border-radius: 6px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    border: 2px solid rgba(191, 149, 63, 0.3);
     flex-shrink: 0;
 }
 
@@ -238,18 +234,19 @@
     100% { transform: translateX(-50%); }
 }
 
-/* ЕФЕКТ ТУМАНУ */
+/* ТУМАН ДЛЯ ВЕЛИКОЇ СТРІЧКИ */
 .vip-ticker-wrap::before, .vip-ticker-wrap::after {
-    content: ""; position: absolute; top: 0; width: 60px; height: 100%; z-index: 5;
+    content: ""; position: absolute; top: 0; width: 150px; height: 100%; z-index: 5;
 }
 .vip-ticker-wrap::before { left: 0; background: linear-gradient(to right, #000, transparent); }
 .vip-ticker-wrap::after { right: 0; background: linear-gradient(to left, #000, transparent); }
 
 /* КОНТЕНТ (СЛОТИ КАЗИНО) */
 .main {
-    /* Додаємо достатній відступ зверху, щоб лічильники не наповзали на іконки слотів */
-    padding-top: 130px !important; 
+    /* Збільшений відступ, щоб велика стрічка та лічильники нічого не закривали */
+    padding-top: 220px !important; 
 }
+
 
         /* MAIN CONTENT */
         /* Основний контейнер: додав плавності */
