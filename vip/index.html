@@ -15,13 +15,7 @@
         html, body { background-color: #000 !important; color: #fff; font-family: 'Montserrat', sans-serif; overflow-x: hidden; min-height: 100vh; }
 
         /* LIVE COUNTER */
-        .live-counter { 
-            position: fixed; top: 15px; right: 15px; background: rgba(0,0,0,0.9); 
-            border: 2.5px solid #bf953f; padding: 8px 15px; border-radius: 12px; 
-            font-size: 10px; z-index: 1000; font-weight: 900; color: #fcf6ba; 
-            backdrop-filter: blur(10px); box-shadow: 0 0 20px rgba(191,149,63,0.4); min-width: 135px; 
-        }
-        .live-counter span { color: #fff; display: block; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
+        
 
         /* LOADER */
 /* ЕФЕКТ ЕНЕРГЕТИЧНОГО МАГНІТИЗМУ (ТЕ, ЧОГО НЕМАЄ У КОНКУРЕНТІВ) */
@@ -178,16 +172,24 @@
 }
 
 .v-item {
-    width: 60px; /* Зменшена ширина для ефекту вузької іконки */
-    height: 76px; /* Висота залишається великою */
+    width: 60px; 
+    height: 76px;
     min-width: 60px;
-    margin: 0 15px; 
+    margin: 0 12px; 
     background-image: var(--i) !important;
-    background-size: cover !important; /* Фото заповнює всю площу без виходу за межі */
+    background-size: cover !important;
     background-position: center !important;
-    border-radius: 10px; 
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px; /* Більш гострі кути виглядають агресивніше/сучасніше */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Додає об'єму іконкам слотів */
     flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+/* Ефект при наведенні (якщо це десктоп) */
+.v-item:hover {
+    transform: scale(1.1);
+    border-color: #ffcc00; /* Золотава рамка при наведенні */
 }
 
 
