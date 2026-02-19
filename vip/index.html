@@ -468,51 +468,69 @@ html, body {
         anim();
     <script>
     // Чекаємо повного завантаження сторінки
-    window.addEventListener('load', () => {
-        let count = 0;
+    let progress = 0;
         
-        // Знаходимо елементи за вашими ID
-        const fill = document.getElementById('l-fill');
-        const percent = document.getElementById('pc');
+        // Знаходимо елементи за допомогою різних способів (про всяк випадок)
+        const fill = document.getElementById('l-fill') || document.querySelector('#l-fill');
+        const percent = document.getElementById('pc') || document.querySelector('.l-perc');
         const loader = document.getElementById('loader');
-        const medal = document.querySelector('.l-logo');
-        const mainContent = document.getElementById('m');
+        const mainCont = document.getElementById('m') || document.querySelector('.main');
 
-        // Перевірка чи завантажилась анімація частинок
-        if (typeof anim === "function") anim();
+        // Якщо анімація фону є - запускаємо її
+        if (typeof anim === "function") {
+            try { anim(); } catch(e) { console.error("Помилка фону:", e); }
+        }
 
-        const loading = setInterval(() => {
-            // Випадковий крок для "живого" ефекту
-            count += Math.floor(Math.random() * 3) + 1;
+        // Головний таймер завантаження
+        const timer = setInterval(() => {
+            progress += Math.floor(Math.random() * 3) + 1; // Випадковий крок
             
-            if (count > 100) count = 100;
-            
-            // Оновлюємо ширину смуги та текст
-            if (fill) fill.style.width = count + '%';
-            if (percent) percent.innerText = count + '%';
-            
-            if (count >= 100) {
-                clearInterval(loading);
-                
-                // Ефект "Вибуху" на медальйоні
-                if (medal) {
-                    medal.style.filter = 'brightness(3) contrast(1.2)';
-                    medal.style.boxShadow = '0 0 100px 40px #fff, 0 0 150px 60px rgba(191, 149, 63, 0.4)';
-                }
-                
-                // Плавне зникнення лоадера
-                setTimeout(() => {
-                    if (loader) {
-                        loader.style.opacity = '0';
-                        setTimeout(() => {
-                            loader.style.display = 'none';
-                            // Показуємо основний контент
-                            if (mainContent) mainContent.classList.add('show');
-                        }, 800);
-                    }
-                }, 400); 
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(timer);
+                finishLoading();
             }
-        }, 40); // Швидкість оновлення (40ms — дуже плавно)
+
+            // Оновлюємо лінію
+            if (fill) {
+                fill.style.width = progress + "%";
+            } else {
+                console.warn("Елемент l-fill не знайдено!");
+            }
+
+            // Оновлюємо текст відсотків
+            if (percent) {
+                percent.innerText = progress + "%";
+            }
+        }, 40); // 40 мілісекунд між кроками
+
+        function finishLoading() {
+            console.log("Завантаження 100%!");
+            
+            // Ефект спалаху для медальйона (якщо він є)
+            const medal = document.querySelector('.l-logo');
+            if (medal) {
+                medal.style.filter = 'brightness(3) contrast(1.5)';
+                medal.style.boxShadow = '0 0 100px 50px #fff';
+            }
+
+            // Плавне зникнення лоадера
+            setTimeout(() => {
+                if (loader) {
+                    loader.style.opacity = '0';
+                    loader.style.pointerEvents = 'none'; // Щоб не заважав клікати
+                    
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                        // ПОКАЗУЄМО КНОПКИ
+                        if (mainCont) {
+                            mainCont.style.opacity = '1'; // Пряма зміна стилю
+                            mainCont.classList.add('show');
+                        }
+                    }, 800);
+                }
+            }, 500);
+        }
     });
 </script>
 </body>
