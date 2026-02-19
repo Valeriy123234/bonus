@@ -160,27 +160,29 @@
         /* --- СЮДИ ВСТАВЛЯЄМО ПЛАШКУ З СЛОТАМИ --- */
 
 /* ПЛАШКА: тепер вужча (65px замість 85px) */
+/* ПЛАШКА: СТРОГО ВГОРІ (НЕ РУХАЄТЬСЯ ПРИ СКРОЛІ) */
 .vip-ticker-wrap {
-    position: fixed;
+    position: absolute; /* Закріплена в початковій точці */
     top: 0;
     left: 0;
     width: 100%;
-    height: 65px; /* Вужчий розмір */
-    background: #000;
-    border-bottom: 1px solid rgba(191, 149, 63, 0.2);
-    z-index: 998; /* Нижче за лічильники */
+    height: 60px; /* Трохи вужча для стилю */
+    background: #000 !important;
+    border-bottom: 1px solid rgba(191, 149, 63, 0.25);
+    z-index: 998; 
     overflow: hidden;
     display: flex;
     align-items: center;
 }
 
-/* ФІКС ЛІЧИЛЬНИКІВ: щоб завжди були зверху */
+/* ФІКС ЛІЧИЛЬНИКІВ */
 .live-counter {
-    z-index: 1001 !important; /* Найвищий пріоритет */
-    position: fixed; /* Якщо раніше був інший тип позиціювання */
+    z-index: 1001 !important;
+    position: absolute; /* Теж не їздять за екраном */
+    top: 10px;
 }
 
-/* Ефект туману по краях */
+/* ЕФЕКТ ТУМАНУ */
 .vip-ticker-wrap::before, .vip-ticker-wrap::after {
     content: "";
     position: absolute;
@@ -190,39 +192,41 @@
 .vip-ticker-wrap::before { left: 0; background: linear-gradient(to right, #000, transparent); }
 .vip-ticker-wrap::after { right: 0; background: linear-gradient(to left, #000, transparent); }
 
-/* СТРІЧКА: м'яке ковзання */
+/* СТРІЧКА: ПЛАВНЕ КОВЗАННЯ */
 .vip-ticker {
     display: flex;
     width: max-content;
-    animation: slideRight 50s linear infinite;
+    animation: slideRight 60s linear infinite; /* Повільніше = дорожче */
     will-change: transform;
 }
 
+/* ІКОНКИ: ТЕПЕР ЇХ БУДЕ ВИДНО */
 .v-item {
-    width: 45px; /* Менші іконки для вузької плашки */
-    height: 45px;
-    margin: 0 10px;
-    background: var(--i) center/cover no-repeat;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    filter: brightness(0.8);
-    transition: 0.3s;
+    width: 42px; /* Маленькі та строгі */
+    height: 42px;
+    margin: 0 12px;
+    /* Жорстка прив'язка картинки */
+    background-image: var(--i) !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    filter: brightness(0.9);
+    flex-shrink: 0; /* Забороняє стискати іконки */
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .v-item:hover {
-    filter: brightness(1.1);
-    transform: scale(1.1);
-    border-color: #bf953f;
+    filter: brightness(1.2);
+    transform: scale(1.15);
+    border-color: rgba(191, 149, 63, 0.8);
 }
 
 @keyframes slideRight {
     0% { transform: translateX(-50%); }
     100% { transform: translateX(0); }
-}
-
-/* ПРАВИЛЬНИЙ ВІДСТУП КОНТЕНТУ */
-.main {
-    padding-top: 85px !important; /* Щоб плашка (65px) не затуляла логотип */
 }
 
 
@@ -498,8 +502,7 @@ html, body {
 
    <div class="vip-ticker-wrap">
     <div class="vip-ticker">
-        <!-- Додано ./ перед vip/ для стабільності на кастомних доменах -->
-        <div class="v-item" style="--i: url('./vip/8C816B9D-90C0-4CD4-AA80-242F7BA3F77E.png')"></div>
+        <!-- Усі 31 слот з твоїми назвами -->
         <div class="v-item" style="--i: url('./vip/IMG_0699.jpeg')"></div>
         <div class="v-item" style="--i: url('./vip/IMG_0700.jpeg')"></div>
         <div class="v-item" style="--i: url('./vip/IMG_0701.jpeg')"></div>
@@ -531,13 +534,15 @@ html, body {
         <div class="v-item" style="--i: url('./vip/IMG_0728.jpeg')"></div>
         <div class="v-item" style="--i: url('./vip/IMG_0729.jpeg')"></div>
         <div class="v-item" style="--i: url('./vip/IMG_0730.jpeg')"></div>
-
-        <!-- Клони для циклу -->
+        
+        <!-- Клони для нескінченного ковзання -->
         <div class="v-item" aria-hidden="true" style="--i: url('./vip/IMG_0699.jpeg')"></div>
         <div class="v-item" aria-hidden="true" style="--i: url('./vip/IMG_0700.jpeg')"></div>
         <div class="v-item" aria-hidden="true" style="--i: url('./vip/IMG_0701.jpeg')"></div>
+        <div class="v-item" aria-hidden="true" style="--i: url('./vip/IMG_0702.jpeg')"></div>
     </div>
 </div>
+
 
     
     <div class="main" id="m">
