@@ -161,12 +161,13 @@
 /* ЗБІЛЬШЕНА СТРІЧКА (У 2.5 РАЗА) */
 /* ВЕЛИКА СТРІЧКА (БЕЗ ЗМІН ВИСОТИ) */
 /* 1. СТРІЧКА З КАЗИНО (БЕЗ ЗАЙВОГО СВІТЛА) */
+/* 1. ВЕЛИКА СТРІЧКА (БЕЗ ЗАЙВОГО СВІТЛА) */
 .vip-ticker-wrap {
     position: relative;
     width: 100%;
-    height: 120px; 
+    height: 135px; 
     background: #000 !important;
-    border-bottom: 1px solid rgba(191, 149, 63, 0.2);
+    border-bottom: 2px solid rgba(191, 149, 63, 0.3);
     z-index: 100;
     overflow: hidden;
     display: flex;
@@ -174,99 +175,68 @@
     box-shadow: none !important; /* ПРИБРАЛИ СВІТЛО ЗВЕРХУ */
 }
 
-/* 2. ЛІЧИЛЬНИКИ: СУВОРО ПО ЦЕНТРУ, БЕЗ ФОНУ */
+/* 2. ЛІЧИЛЬНИКИ: ТЕПЕР СУВОРО ПО ЦЕНТРУ В РЯД */
 .live-counter {
-    position: relative !important;
+    position: relative !important; 
+    margin: 15px auto !important; /* СУВОРИЙ ЦЕНТР */
     display: flex !important;
-    flex-direction: row !important;
-    justify-content: center !important; /* СУВОРИЙ ЦЕНТР */
+    flex-direction: row !important; /* У РЯД, ЯК ТИ ПРОСИВ */
+    justify-content: center !important; 
     align-items: center !important;
-    gap: 15px !important;
-    padding: 20px 0 !important; /* Відступи зверху/знизу щоб не липло */
-    background: transparent !important; /* ЧИСТИЙ ФОН */
-    width: 100% !important;
+    gap: 15px !important; 
     z-index: 99;
+    background: none !important;
+    border: none !important;
+    backdrop-filter: none !important;
+    pointer-events: none;
+    width: 100% !important;
 }
 
 .live-counter span {
     font-family: 'Cinzel', serif !important;
-    font-size: 11px !important;
+    font-size: 11px !important; /* Трохи менше (0.8 від минулого) */
     font-weight: 900 !important;
-    color: #fcf6ba !important;
-    background: #000 !important;
-    padding: 4px 12px !important;
-    border-radius: 3px !important;
-    border: 0.5px solid rgba(191, 149, 63, 0.5) !important;
-    text-shadow: 0 0 5px rgba(191, 149, 63, 0.5) !important;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.5) !important;
+    color: #fcf6ba !important; 
+    background: #000 !important; 
+    padding: 4px 10px !important; 
+    border-radius: 4px !important; 
+    border: 1px solid rgba(191, 149, 63, 0.6) !important; /* Тонша рамка */
+    white-space: nowrap !important;
+    text-transform: uppercase !important;
+    text-shadow: 0 0 8px rgba(191, 149, 63, 0.8) !important;
 }
 
-/* 3. ІКОНКИ: ЩЕ МЕНШІ ТА ВУЖЧІ */
+/* 3. ІКОНКИ: ЩЕ ТРОХИ МЕНШІ (ЗВУЖЕНІ ТА НИЖЧІ) */
 .v-item {
-    width: 75px;  /* Зменшено ширину */
-    height: 85px; /* Зменшено висоту */
+    width: 75px;  /* Було 80px -> ще вужче */
+    height: 85px; /* Було 95px -> трохи нижче */
     min-width: 75px;
-    margin: 0 10px; /* 0.5 мм візуально */
+    margin: 0 10px; /* 0.5 мм візуально по боках */
     background-image: var(--i) !important;
     background-size: cover !important;
     background-position: center !important;
-    border-radius: 8px;
-    border: 1.5px solid rgba(191, 149, 63, 0.2);
+    border-radius: 10px;
+    border: 2px solid rgba(191, 149, 63, 0.2);
     flex-shrink: 0;
 }
 
-/* 4. БЛОК СЛОТІВ: ОКРЕМА ЧОРНА ЛІНІЯ */
+.vip-ticker {
+    display: flex;
+    width: max-content;
+    animation: slideLoop 40s linear infinite;
+}
+
+@keyframes slideLoop {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* 4. КОНТЕНТ (СЛОТИ КАЗИНО) - ЧОРНА ЛІНІЯ */
 .main {
-    position: relative !important;
-    background: #0a0a0a !important; /* ВЛАСНИЙ ТЕМНИЙ ФОН ТІЛЬКИ ДЛЯ СЛОТІВ */
-    padding: 30px 15px !important;
-    width: 100% !important;
-    border-top: 1px solid rgba(255,255,255,0.05); /* Ледь помітна межа */
-    opacity: 1 !important; /* Щоб не чекати лоадер якщо він завис */
+    background: #000 !important; /* Тільки тут чорний фон */
+    padding-top: 20px !important; 
 }
 
-
-
-
-        /* MAIN CONTENT */
-        /* Основний контейнер: додав плавності */
-        
-/* ЧАСТИНКИ: на весь екран, під контентом, без розривів */
-canvas { 
-    position: fixed; 
-    top: 0; 
-    left: 0; 
-    width: 100vw; 
-    height: 100vh; 
-    z-index: 1; /* Під кнопками, але над фоном */
-    pointer-events: none; 
-    opacity: 0.8; 
-    display: block;
-}
-
-/* Прибираємо будь-які відступи у body, що могли давати білі смуги */
-html, body { 
-    margin: 0; 
-    padding: 0; 
-    width: 100%; 
-    height: 100%; 
-    background-color: #000 !important; 
-    overflow-x: hidden; 
-}
-
-.main { 
-    position: relative;
-    z-index: 2; 
-    opacity: 0; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    /* Змінюємо 75px на 100px, щоб звільнити місце під лічильники */
-    padding: 100px 15px 40px; 
-    min-height: 100vh; 
-    transition: 1s ease-out; 
-    background: transparent !important; 
-}
 
 
 
