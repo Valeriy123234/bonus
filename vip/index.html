@@ -619,15 +619,23 @@ html, body {
             document.getElementById('l-fill').style.width = prog + '%';
             document.getElementById('pc').innerText = Math.floor(prog) + '%';
             if (elap < 3000) requestAnimationFrame(update);
-            else {
+                        else {
                 setTimeout(() => {
                     if(canS) document.getElementById('cash').play();
+                    
+                    // 1. Починаємо ховати лоадер
                     document.getElementById('loader').style.opacity = '0';
+                    
                     const m = document.getElementById('m');
-                    m.style.opacity = '1'; m.classList.add('show');
+                    // 2. ВМИКАЄМО ТВОЮ ПЛАВНУ ПОЯВУ (БЕЗ МЕРЕХТІННЯ)
+                    m.style.opacity = '1'; 
+                    m.classList.add('show'); // <--- ЦЕЙ РЯДОК РОБОЧИЙ ✅
+                    
+                    // 3. Видаляємо лоадер повністю через 1.2 сек
                     setTimeout(() => document.getElementById('loader').remove(), 1200);
                 }, 200);
             }
+
         };
         update();
 
