@@ -282,16 +282,31 @@ html, body {
 
 .main { 
     position: relative;
-    z-index: 2; /* Контент НАД частинками */
+    z-index: 2; 
+    
+    /* ФІКС МЕРЕХТІННЯ: Спочатку повністю невидимий */
     opacity: 0; 
+    visibility: hidden; 
+    
     display: flex; 
     flex-direction: column; 
     align-items: center; 
-    padding: 75px 15px 40px; /* Ті самі 2 см зверху */
+    padding: 75px 15px 40px; 
     min-height: 100vh; 
-    transition: 1s ease-out; 
-    background: transparent !important; /* Щоб не перекривати фон з частинками */
+    
+    /* Плавність Luxury рівня */
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.2s;
+    will-change: opacity, transform; /* Готує відеокарту смартфона */
+    
+    background: transparent !important; 
 }
+
+/* Клас, який ми додамо через JS після лоадера */
+.main.loaded {
+    opacity: 1;
+    visibility: visible;
+}
+
 
 
 /* КРИШТАЛЕВА ІКОНКА (Твоє фото в склі) */
