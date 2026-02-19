@@ -24,100 +24,91 @@
         .live-counter span { color: #fff; display: block; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
 
         /* LOADER */
-    #loader { 
+   #loader { 
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
     background: #000; z-index: 10000; display: flex; 
     justify-content: center; align-items: center; 
     transition: 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+    overflow: hidden;
 }
 
-/* КОНТЕЙНЕР */
-.l-cont { text-align: center; width: 85%; max-width: 380px; position: relative; }
+/* ФОНОВІ ЕЛЕМЕНТИ (ПЛАВАЮЧІ КРИСТАЛИ ТА ТУМАН) */
+.l-bg-element {
+    position: absolute;
+    background: linear-gradient(135deg, rgba(191,149,63,0.1), transparent);
+    border: 1px solid rgba(255,255,255,0.05);
+    backdrop-filter: blur(2px);
+    pointer-events: none;
+    animation: floatAround 15s infinite linear;
+}
 
-/* МЕДАЛЬЙОН (ВИПУКЛИЙ КРИШТАЛЬ) */
+/* Геометричні фігури на фоні */
+.l-bg-1 { width: 150px; height: 150px; top: 10%; left: -50px; border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+.l-bg-2 { width: 200px; height: 200px; bottom: 10%; right: -50px; border-radius: 50%; opacity: 0.5; }
+.l-bg-3 { width: 80px; height: 80px; top: 50%; left: 80%; transform: rotate(45deg); border: 1px solid rgba(191,149,63,0.2); }
+
+@keyframes floatAround {
+    0% { transform: translate(0, 0) rotate(0deg); opacity: 0.3; }
+    50% { transform: translate(40px, -60px) rotate(180deg); opacity: 0.6; }
+    100% { transform: translate(0, 0) rotate(360deg); opacity: 0.3; }
+}
+
+.l-cont { text-align: center; width: 85%; max-width: 380px; position: relative; z-index: 5; }
+
+/* МЕДАЛЬЙОН */
 .l-logo { 
     width: 170px; height: 170px; margin: 0 auto 55px; 
     background: var(--img) center/cover no-repeat; 
     border-radius: 42px; 
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    /* Ефект важкого скла */
-    box-shadow: 
-        0 25px 60px rgba(0,0,0,0.9), 
-        inset 0 15px 25px rgba(255,255,255,0.4),
-        0 0 30px rgba(191, 149, 63, 0.15); 
+    border: 1px solid rgba(191, 149, 63, 0.5);
+    box-shadow: 0 30px 70px rgba(0,0,0,0.9), inset 0 0 20px rgba(191,149,63,0.2); 
     animation: pulseMedal 4s ease-in-out infinite; 
-    position: relative;
-    backdrop-filter: blur(10px);
 }
 
-.l-logo::after {
-    content: ""; position: absolute; top: 5%; left: 12%; width: 76%; height: 35%;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
-    border-radius: 50% 50% 80% 80%; filter: blur(1px);
-}
-
-/* ЛІНІЯ ЗАВАНТАЖЕННЯ (ЕЛЕГАНТНИЙ ЖОЛОБ) */
+/* НОВА ЛІНІЯ: ЗОЛОТИЙ СКАНЕР */
 .l-bar-wrapper { 
     position: relative; width: 100%; height: 6px; 
     background: rgba(255, 255, 255, 0.05); 
-    border-radius: 20px; overflow: visible; 
-    border: 1px solid rgba(191, 149, 63, 0.2); 
+    border-radius: 20px; overflow: hidden; 
+    border: 1px solid rgba(191, 149, 63, 0.3); 
 }
 
 #l-fill { 
     position: absolute; top: 0; left: 0; width: 0%; height: 100%; 
-    /* Ефект розплавленого золота 24K */
-    background: linear-gradient(90deg, #bf953f, #fcf6ba, #bf953f);
-    background-size: 200% 100%;
-    animation: goldFlow 1.5s linear infinite;
-    border-radius: 20px;
-    box-shadow: 0 0 20px rgba(191, 149, 63, 0.6);
+    background: #bf953f;
+    box-shadow: 0 0 15px #bf953f;
+    transition: width 0.4s ease;
 }
 
-/* СВІТЛОВА ІСКРА (FLARE) */
+/* ЕФЕКТ ЕНЕРГІЇ НА ЛІНІЇ */
 #l-fill::after {
     content: "";
     position: absolute;
-    right: -10px; top: 50%;
-    transform: translateY(-50%);
-    width: 25px; height: 25px;
-    /* Ефект лінзи/спалаху */
-    background: radial-gradient(circle, #fff 10%, #fcf6ba 30%, transparent 70%);
-    border-radius: 50%;
-    box-shadow: 0 0 30px 10px rgba(252, 246, 186, 0.8), 0 0 10px #fff;
-    animation: sparkPulse 0.8s ease-in-out infinite alternate;
+    top: 0; right: 0;
+    width: 60px; height: 100%;
+    background: linear-gradient(90deg, transparent, #fff, transparent);
+    animation: scannerMove 1s infinite;
 }
 
-/* ЯСКРАВИЙ ТЕКСТ 0-100% */
+@keyframes scannerMove {
+    0% { transform: translateX(-100px); }
+    100% { transform: translateX(60px); }
+}
+
+/* ТЕКСТ ВІДСОТКІВ (СУЧАСНИЙ VIP) */
 .l-perc { 
-    margin-top: 30px; font-weight: 900; font-size: 28px; 
+    margin-top: 30px; font-weight: 900; font-size: 30px; 
     background: var(--gold); -webkit-background-clip: text; 
     -webkit-text-fill-color: transparent; 
-    letter-spacing: 7px; 
-    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.8));
-    animation: textBreathe 3s infinite;
-}
-
-/* АНІМАЦІЇ */
-@keyframes goldFlow {
-    0% { background-position: 0% 0; }
-    100% { background-position: 200% 0; }
-}
-
-@keyframes sparkPulse {
-    from { transform: translateY(-50%) scale(0.8); opacity: 0.7; }
-    to { transform: translateY(-50%) scale(1.3); opacity: 1; }
+    letter-spacing: 10px; 
+    filter: drop-shadow(0 0 10px rgba(191,149,63,0.5));
 }
 
 @keyframes pulseMedal {
     0%, 100% { transform: scale(1); filter: brightness(1); }
-    50% { transform: scale(1.03); filter: brightness(1.15); }
+    50% { transform: scale(1.05); filter: brightness(1.2) drop-shadow(0 0 30px rgba(191,149,63,0.4)); }
 }
 
-@keyframes textBreathe {
-    0%, 100% { opacity: 0.8; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.05); }
-}
 
         /* MAIN CONTENT */
         /* Основний контейнер: додав плавності */
@@ -349,6 +340,15 @@ html, body {
 </head>
 <body onclick="enableAudio()" ontouchstart="enableAudio()">
     <audio id="cash" src="https://www.soundjay.com" preload="auto"></audio>
+
+    <div id="loader">
+    <div class="l-bg-element l-bg-1"></div>
+    <div class="l-bg-element l-bg-2"></div>
+    <div class="l-bg-element l-bg-3"></div>
+    <div class="l-cont">
+        <!-- Твій існуючий контент (лого, смуга, %)... -->
+    </div>
+</div>
 
     <div class="live-counter">
         <span id="on-val">ONLINE: 1582</span>
