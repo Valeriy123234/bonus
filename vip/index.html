@@ -295,70 +295,70 @@ html, body {
     position: relative; 
     overflow: hidden; 
     z-index: 1;
+
+    /* ПРЕМІАЛЬНЕ М'ЯКЕ ЗОЛОТО: прибрав різкі перепади */
+    background: linear-gradient(180deg, #fcf6ba 0%, #bf953f 100%);
+    /* Додав легкий внутрішній блік, щоб кнопка здавалася випуклою */
+    box-shadow: 
+        0 8px 25px rgba(0,0,0,0.5), 
+        inset 0 2px 5px rgba(255,255,255,0.5), 
+        inset 0 -2px 5px rgba(0,0,0,0.2);
     
-    /* Змінив на статичний преміальний градієнт (прибрав важку анімацію background-size) */
-    background: linear-gradient(180deg, #bf953f 0%, #fcf6ba 45%, #b38728 55%, #bf953f 100%);
-    
-    border: 4px solid #bf953f; 
-    border-radius: 20px; 
-    margin-bottom: 22px; 
-    padding: 24px 10px; 
+    border: 3px solid #bf953f; 
+    border-radius: 18px; 
+    margin-bottom: 18px; 
+    padding: 22px 10px; 
     text-align: center; 
     text-decoration: none;
     
+    /* ТЕКСТ: Максимально чіткий та масивний */
     color: #000 !important; 
     font-weight: 900; 
     text-transform: uppercase; 
-    font-size: 20px; 
-    letter-spacing: -0.5px;
-    line-height: 1.2;
+    font-size: 21px; /* Трішки збільшив */
+    letter-spacing: -0.2px;
+    line-height: 1.1;
 
-    /* Оптимізація для плавного скролу */
     will-change: transform, opacity;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4); 
     opacity: 0; 
     transform: translateY(30px); 
-    /* Зробив появу трішки м'якшою */
-    transition: 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* Блік тепер рухається плавніше за допомогою translate3d */
+/* Блік: зробив його ширшим та м'якшим (сріблястим) */
 .btn::after {
     content: "";
     position: absolute;
     top: 0;
     left: -150%;
-    width: 60%;
+    width: 80%;
     height: 100%;
-    background: linear-gradient(to right, transparent, rgba(255,255,255,0.6), transparent);
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
     transform: skewX(-25deg);
-    animation: shine 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
+    animation: shine 4.5s infinite ease-in-out;
     z-index: -1;
 }
 
 @keyframes shine {
     0% { transform: translateX(0) skewX(-25deg); }
-    100% { transform: translateX(500%) skewX(-25deg); }
+    30%, 100% { transform: translateX(450%) skewX(-25deg); }
 }
 
 .main.show .btn { opacity: 1; transform: translateY(0); }
 
-/* Плавний відгук на дотик */
+/* Ефект при натисканні: кнопка стає трішки яскравішою */
 .btn:active { 
-    transform: scale(0.97); 
-    filter: brightness(1.1);
+    transform: scale(0.96); 
+    background: #fcf6ba; 
     transition: 0.1s;
 }
 
 .btn-tg { 
     background: #0088cc !important; 
-    border: 4px solid #fff; 
+    border: 3px solid #fff; 
     color: #fff !important;
-    margin-top: 30px; 
-    margin-bottom: 70px;
+    margin-top: 25px; 
+    margin-bottom: 60px;
 }
 
 
