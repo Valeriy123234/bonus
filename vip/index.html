@@ -154,6 +154,7 @@
 /* ГОЛОВНА ПЛАШКА — ЕФЕКТ ДОРОГОГО СКЛА */
 /* ГОЛОВНА ПЛАШКА - СКЛО */
 /* ГОЛОВНА ПЛАШКА - ЕФЕКТ СКЛЯНОЇ ЛЕНТИ */
+/* ГОЛОВНА ПЛАШКА - СКЛО */
 .vip-ticker-wrap {
     position: relative;
     width: 100%;
@@ -168,6 +169,11 @@
     border-top: 1px solid rgba(255, 255, 255, 0.15);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.2), 0 10px 30px rgba(0,0,0,0.5);
+    
+    /* ПРИХОВУЄМО ПРИ СТАРТІ */
+    opacity: 0;
+    animation: fadeInTicker 1s ease-out forwards;
+    animation-delay: 0.3s; /* Невелика затримка, щоб DOM встиг прогрузитися */
 }
 
 /* КОНТЕЙНЕР ДЛЯ СТРІЧКИ */
@@ -178,46 +184,39 @@
     align-items: center; 
     width: max-content;
     animation: slideLoop 40s linear infinite;
+    will-change: transform; /* Оптимізація для плавності */
 }
 
 /* ІКОНКИ-КВАДРАТИ БЕЗ РАМОК */
 .v-item {
     display: block !important;
-    width: 65px; /* Трохи збільшив, бо без рамки можна більше */
+    width: 65px; 
     height: 65px; 
     min-width: 65px;
     margin: 0 8px; 
-    
     background-image: var(--i) !important;
-    background-size: cover !important; /* Фото заповнює весь квадрат */
+    background-size: cover !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
-    
     border-radius: 8px;
-    border: none !important; /* ПРИБРАЛИ РАМКИ */
-    outline: none !important;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.4); /* Залишив легку тінь для об'єму */
-    
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     flex-shrink: 0;
     
-    /* Автоматична м'яка пульсація */
+    /* Автоматична пульсація */
     animation: autoPulse 5s infinite ease-in-out;
-    transition: transform 0.4s ease;
 }
 
-/* Черговість пульсації */
-.v-item:nth-child(odd) { animation-delay: 0.8s; }
-.v-item:nth-child(even) { animation-delay: 2.3s; }
+/* АНІМАЦІЯ ПОЯВИ ВСЬОГО ТІКЕРА */
+@keyframes fadeInTicker {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
+/* ПУЛЬСАЦІЯ (без рамок) */
 @keyframes autoPulse {
-    0%, 100% { 
-        transform: scale(1); 
-        filter: brightness(1); 
-    }
-    50% { 
-        transform: scale(1.1); 
-        filter: brightness(1.2); /* Трохи підсвічується сама картинка замість рамки */
-    }
+    0%, 100% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.1); filter: brightness(1.2); }
 }
 
 /* РУХ СТРІЧКИ */
@@ -226,7 +225,7 @@
     100% { transform: translateX(-50%); }
 }
 
-/* БЛІК ПО ВСЬОМУ СКЛУ */
+/* БЛІК ПО СКЛУ (також з'являється плавно) */
 .vip-ticker-wrap::after {
     content: "";
     position: absolute;
@@ -235,6 +234,7 @@
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
     transform: skewX(-20deg);
     animation: glassShine 8s infinite linear;
+    animation-delay: 1s; /* Починає бігати вже після появи плашки */
     pointer-events: none;
     z-index: 5;
 }
@@ -244,6 +244,7 @@
     30% { left: 150%; }
     100% { left: 150%; }
 }
+
 
 
         /* MAIN CONTENT */
