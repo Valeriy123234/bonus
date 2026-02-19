@@ -171,46 +171,49 @@
 }
 
 .live-counter {
+    /* ПРИВ'ЯЗКА ДО МІСЦЯ: ТЕПЕР ТОЧНО НЕ ПІДЕ ЗА СКРОЛОМ */
     position: absolute !important; 
-    top: 60px; 
-    right: 15px; 
-    display: flex;
-    flex-direction: column; 
-    align-items: flex-end; 
-    gap: 4px; 
-    z-index: 90;
-    pointer-events: none;
-    /* ГАРАНТОВАНО ПРИБИРАЄМО ЗОВНІШНЮ РАМКУ ТА ФОН */
+    top: 60px !important; 
+    right: 15px !important; 
+    display: flex !important;
+    flex-direction: column !important; 
+    align-items: flex-end !important; 
+    gap: 4px !important; 
+    z-index: 999 !important;
+    
+    /* ПРИБИРАЄМО БУДЬ-ЯКЕ РОЗМИТТЯ ТА ПЛАШКИ */
     background: none !important;
     border: none !important;
+    backdrop-filter: none !important; /* ПРИБИРАЄ РОЗМИТТЯ (ТУМАН) */
+    -webkit-backdrop-filter: none !important;
     box-shadow: none !important;
     padding: 0 !important;
+    pointer-events: none;
 }
 
 .live-counter span {
-    font-family: 'Cinzel', serif;
-    font-size: 9px;
-    font-weight: 900;
-    color: #fcf6ba; 
-    background: #000 !important; /* Чистий чорний фон для кожної плашки */
+    font-family: 'Cinzel', serif !important;
+    font-size: 9px !important;
+    font-weight: 900 !important;
+    color: #fcf6ba !important; 
+    background: #0a0a0a !important; /* Тільки чорний фон під текстом */
     
-    /* Компактні відступи, щоб плашка не була величезною */
-    padding: 3px 7px; 
-    line-height: 1; 
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    /* МАЛЕНЬКА АКУРАТНА ПЛАШКА */
+    padding: 3px 7px !important; 
+    line-height: 1.1 !important; 
+    display: inline-flex !important;
     
-    border-radius: 2px; 
-    /* ОДИНАРНА ТОНКА РАМКА НАВКОЛО ТЕКСТУ */
+    border-radius: 2px !important; 
+    /* ОДИНАРНА ТОНКА РАМКА */
     border: 0.3px solid rgba(191, 149, 63, 0.5) !important;
     
-    white-space: nowrap;
-    text-transform: uppercase;
-    text-shadow: 0 0 5px rgba(191, 149, 63, 0.7);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-    letter-spacing: 0.5px;
+    white-space: nowrap !important;
+    text-transform: uppercase !important;
+    text-shadow: 0 0 5px rgba(191, 149, 63, 0.7) !important;
+    letter-spacing: 0.5px !important;
+    backdrop-filter: none !important; /* ГАРАНТОВАНО БЕЗ РОЗМИТТЯ ТУТ */
 }
+
 
 
 
