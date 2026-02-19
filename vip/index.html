@@ -157,6 +157,74 @@
 @keyframes textPulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
 
 
+        /* --- СЮДИ ВСТАВЛЯЄМО ПЛАШКУ З СЛОТАМИ --- */
+
+.vip-ticker-wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 85px;
+    background: #000; /* Глибока чорна плашка */
+    border-bottom: 1px solid rgba(191, 149, 63, 0.3); /* Золота лінія знизу */
+    z-index: 1000; /* Має бути над усім, навіть над канвасом */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+}
+
+/* Ефект розмиття по краях */
+.vip-ticker-wrap::before, 
+.vip-ticker-wrap::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 120px;
+    height: 100%;
+    z-index: 5;
+    pointer-events: none;
+}
+.vip-ticker-wrap::before {
+    left: 0;
+    background: linear-gradient(to right, #000, transparent);
+}
+.vip-ticker-wrap::after {
+    right: 0;
+    background: linear-gradient(to left, #000, transparent);
+}
+
+/* Сама стрічка */
+.vip-ticker {
+    display: flex;
+    width: max-content;
+    animation: slideRight 60s linear infinite; /* Повільне ковзання */
+}
+
+.v-item {
+    width: 60px;
+    height: 60px;
+    margin: 0 12px;
+    background: var(--i) center/cover no-repeat;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    filter: brightness(0.85); /* Трохи приглушені, щоб не відволікати */
+    transition: 0.4s ease;
+}
+
+.v-item:hover {
+    filter: brightness(1.2);
+    transform: scale(1.1);
+    border-color: #bf953f;
+    box-shadow: 0 0 15px rgba(191, 149, 63, 0.5);
+}
+
+@keyframes slideRight {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+}
+
+
         /* MAIN CONTENT */
         /* Основний контейнер: додав плавності */
         
@@ -427,6 +495,18 @@ html, body {
     <div id="loader"><div class="l-cont"><div class="l-logo"></div><div class="l-bar-wrapper"><div id="l-fill"></div></div><div class="l-perc" id="pc">0%</div></div></div>
     <canvas id="c"></canvas>
 
+     <div class="vip-ticker-wrap">
+        <div class="vip-ticker">
+            <div class="v-item" style="--i: url('vip/IMG_0699.jpeg')"></div>
+            <!-- ... і так далі всі 31 слот ... -->
+            <div class="v-item" style="--i: url('vip/IMG_0730.jpeg')"></div>
+            
+            <!-- Не забудь продублювати перші 5-10 штук для безшовної анімації -->
+            <div class="v-item" aria-hidden="true" style="--i: url('vip/IMG_0699.jpeg')"></div>
+            <div class="v-item" aria-hidden="true" style="--i: url('vip/IMG_0700.jpeg')"></div>
+        </div>
+    </div>
+    
     <div class="main" id="m">
         <div class="s-logo"></div>
         <div class="brand-name">MRBONUS-VIP</div>
