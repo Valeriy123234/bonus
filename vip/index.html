@@ -180,30 +180,33 @@
 /* ЛІЧИЛЬНИКИ: МАЛЕНЬКІ, СПРАВА, ПІД СЛОТАМИ */
 /* ЛІЧИЛЬНИКИ: СТАТИЧНО ПРИ СКРОЛІ, ОДИН ПІД ОДНИМ */
 .live-counter {
-    position: absolute !important;
+    position: absolute !important; /* Стоять на місці, не їдуть при скролі */
     top: 60px; 
     right: 15px; 
     display: flex;
     flex-direction: column; 
     align-items: flex-end; 
-    gap: 4px; 
-    z-index: 90;
+    gap: 6px; 
+    z-index: 150;
     pointer-events: none;
 }
 
 .live-counter span {
     font-family: 'Cinzel', serif;
-    font-size: 10px; /* Трохи збільшив для чіткості */
-    color: #ffcc66; /* Яскравий золотий */
-    background: rgba(0, 0, 0, 0.6); 
-    padding: 2px 6px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #ffdb8e; /* Дуже світле яскраві золото */
+    background: rgba(15, 15, 15, 0.85); /* Глибокий темний фон як у кнопки */
+    padding: 4px 10px;
+    border-radius: 4px; /* Робимо вигляд кнопки */
     white-space: nowrap;
     text-transform: uppercase;
-    /* Ефект сяйва тексту */
-    text-shadow: 0 0 8px rgba(255, 204, 102, 0.6);
-    transition: opacity 0.5s ease-in-out;
+    /* Потужне неонове сяйво тексту */
+    text-shadow: 0 0 12px #ffcc66, 0 0 5px rgba(255, 204, 102, 1);
+    /* Ефект легкого світіння самої "кнопки" */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    transition: opacity 0.4s ease-in-out;
 }
-
 
 
 /* СТРІЧКА ТА ІКОНКИ */
@@ -642,14 +645,34 @@ html, body {
         update();
 
         // LIVE COUNTER (ОНОВЛЕННЯ ЧИСЕЛ)
+                // LIVE COUNTER (ПЛАВНЕ ОНОВЛЕННЯ ЧИСЕЛ)
         setInterval(() => {
-            document.getElementById('on-val').innerText = `ONLINE: ${1600 + Math.floor(Math.random()*150)}`;
-            document.getElementById('pl-val').innerText = `PLAYING: ${900 + Math.floor(Math.random()*100)}`;
-        }, 4000);
+            const onEl = document.getElementById('on-val');
+            const plEl = document.getElementById('pl-val');
 
+            if (onEl && plEl) {
+                // М'яке згасання тексту перед зміною
+                onEl.style.opacity = "0.4";
+                plEl.style.opacity = "0.4";
+
+                setTimeout(() => {
+                    // Нові значення: Online (1000-2000) та Playing (500-950)
+                    onEl.innerText = `ONLINE: ${Math.floor(Math.random() * (2000 - 1000 + 1)) + 1000}`;
+                    plEl.innerText = `PLAYING: ${Math.floor(Math.random() * (950 - 500 + 1)) + 500}`;
+                    
+                    // Повернення яскравості
+                    onEl.style.opacity = "1";
+                    plEl.style.opacity = "1";
+                }, 500); // Пауза на півсекунди для ефекту перемикання
+            }
+        }, 4000); // Оновлення кожні 4 секунди
+
+        // Далі йде твій код для виграшів (WIN: +1,400₴...)
         setInterval(() => {
-    const winElem = document.getElementById('live-win');
-    const mainElem = document.getElementById('m');
+            const winElem = document.getElementById('live-win');
+            const mainElem = document.getElementById('m');
+            // ... (решта твого коду без змін)
+
     
     if (mainElem && mainElem.classList.contains('show') && winElem) {
         
