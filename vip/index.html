@@ -179,14 +179,15 @@
 
 /* ЛІЧИЛЬНИКИ: МАЛЕНЬКІ, СПРАВА, ПІД СЛОТАМИ */
 /* ЛІЧИЛЬНИКИ: СТАТИЧНО ПРИ СКРОЛІ, ОДИН ПІД ОДНИМ */
+/* ЛІЧИЛЬНИКИ: ЧИСТИЙ ТЕКСТ, БЕЗ РАМОК, СТАТИЧНО ВГОРІ */
 .live-counter {
-    position: absolute !important; /* Стоять на місці, не їдуть при скролі */
+    position: absolute !important; /* ЗАЛИШАЄТЬСЯ ВГОРІ, НЕ СКРОЛИТЬСЯ ЗА ВАМИ */
     top: 60px; 
     right: 15px; 
     display: flex;
     flex-direction: column; 
     align-items: flex-end; 
-    gap: 6px; 
+    gap: 2px; /* Мінімальний відступ між рядками */
     z-index: 150;
     pointer-events: none;
 }
@@ -194,19 +195,18 @@
 .live-counter span {
     font-family: 'Cinzel', serif;
     font-size: 10px;
-    font-weight: 700;
-    color: #ffdb8e; /* Дуже світле яскраві золото */
-    background: rgba(15, 15, 15, 0.85); /* Глибокий темний фон як у кнопки */
-    padding: 4px 10px;
-    border-radius: 4px; /* Робимо вигляд кнопки */
+    font-weight: 800;
+    color: #ffcc66; /* Яскраве золото */
+    background: transparent !important; /* ПОВНІСТЮ ПРИБРАВ ФОН */
+    border: none !important; /* ПОВНІСТЮ ПРИБРАВ РАМКИ */
+    padding: 0;
     white-space: nowrap;
     text-transform: uppercase;
-    /* Потужне неонове сяйво тексту */
-    text-shadow: 0 0 12px #ffcc66, 0 0 5px rgba(255, 204, 102, 1);
-    /* Ефект легкого світіння самої "кнопки" */
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-    transition: opacity 0.4s ease-in-out;
+    /* ПОТУЖНЕ СЯЙВО, ЩОБ ТЕКСТ НЕ ГУБИВСЯ НА ФОНІ */
+    text-shadow: 0 0 10px #ffcc66, 0 0 5px rgba(255, 204, 102, 0.8);
+    transition: opacity 0.5s ease-in-out;
 }
+
 
 
 /* СТРІЧКА ТА ІКОНКИ */
@@ -570,9 +570,10 @@ html, body {
 
 <!-- ЛІЧИЛЬНИКИ: БЕЗ РАМОК, ЯСКРАВІ, ОДИН ПІД ОДНИМ -->
 <div class="live-counter">
-    <span id="online-val">ONLINE: 1582</span>
-    <span id="playing-val">PLAYING: 894</span>
+    <span id="on-val">ONLINE: 1582</span>
+    <span id="pl-val">PLAYING: 894</span>
 </div>
+
 
 
     
