@@ -157,32 +157,27 @@
 @keyframes textPulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
 
 
-/* 1. ВЕЛИКА СТРІЧКА (БЕЗ СВІТЛА) */
-/* 1. ВЕЛИКА СТРІЧКА (ПРИБРАНО ВЕРХНЄ СВІТЛО) */
-/* 1. СТРІЧКА */
 .vip-ticker-wrap {
-    position: relative; 
+    position: relative;
     width: 100%;
-    height: 55px; 
+    height: 110px; /* Збільшено у 2 рази (було 55px) */
     background: #000 !important;
-    border-bottom: 1px solid rgba(191, 149, 63, 0.2);
+    border-bottom: 2px solid rgba(191, 149, 63, 0.2);
     z-index: 100;
     overflow: hidden;
     display: flex;
     align-items: center;
 }
 
-/* ЛІЧИЛЬНИКИ: ТЕПЕР ПРИВ'ЯЗАНІ ДО МІСЦЯ (ABSOLUTE) */
+/* ЛІЧИЛЬНИКИ: БЕЗ ЗМІН ЛОГІКИ, ТІЛЬКИ ПІДПРАВЛЕНО ВІДСТУП */
 .live-counter {
-    /* absolute притисне їх до стрічки зверху, вони не будуть совати логотип */
-    position: absolute !important; 
-    top: 60px; /* Одразу під стрічкою */
-    right: 15px; 
+    position: relative !important; 
+    margin: 10px 15px 0 0 !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: flex-end !important;
     gap: 2px !important;
-    z-index: 101;
+    z-index: 100;
     background: none !important;
     border: none !important;
 }
@@ -197,7 +192,7 @@
     border: none !important;
 }
 
-/* СТРІЧКА ТА ІКОНКИ (БЕЗ ЗМІН) */
+/* СТРІЧКА ТА ІКОНКИ: ЗБІЛЬШЕНО У 2 РАЗИ */
 .vip-ticker {
     display: flex;
     width: max-content;
@@ -206,14 +201,14 @@
 }
 
 .v-item {
-    width: 38px;
-    height: 38px;
-    min-width: 38px;
-    margin: 0 10px;
+    width: 76px;  /* Збільшено у 2 рази (було 38px) */
+    height: 76px; /* Збільшено у 2 рази (було 38px) */
+    min-width: 76px;
+    margin: 0 15px; /* Трохи збільшено зазор для масштабу */
     background-image: var(--i) !important;
     background-size: cover !important;
     background-position: center !important;
-    border-radius: 6px;
+    border-radius: 10px; /* Трохи більше закруглення для великих іконок */
     border: 1px solid rgba(255, 255, 255, 0.1);
     flex-shrink: 0;
 }
@@ -223,13 +218,12 @@
     100% { transform: translateX(-50%); }
 }
 
+/* ЕФЕКТ ТУМАНУ: ПІДЛАШТОВАНО ПІД НОВИЙ РОЗМІР */
 .vip-ticker-wrap::before, .vip-ticker-wrap::after {
-    content: ""; position: absolute; top: 0; width: 60px; height: 100%; z-index: 5;
+    content: ""; position: absolute; top: 0; width: 100px; height: 100%; z-index: 5;
 }
 .vip-ticker-wrap::before { left: 0; background: linear-gradient(to right, #000, transparent); }
 .vip-ticker-wrap::after { right: 0; background: linear-gradient(to left, #000, transparent); }
-
-
 
 
 /* КРИШТАЛЕВА ІКОНКА (Твоє фото в склі) */
