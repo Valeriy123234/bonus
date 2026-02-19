@@ -33,40 +33,16 @@
     overflow: hidden;
 }
 
-/* ХАОТИЧНИЙ ЗОЛОТИЙ ПИЛ (Анімований фон через градієнт) */
-#loader::before {
-    content: ""; position: absolute; inset: -100%;
-    /* Створюємо ілюзію хаотичних іскор різного розміру */
-    background-image: 
-        radial-gradient(rgba(191,149,63,0.3) 1px, transparent 1px),
-        radial-gradient(rgba(255,255,255,0.1) 1.5px, transparent 1.5px),
-        radial-gradient(rgba(191,149,63,0.1) 2px, transparent 2px);
-    background-size: 80px 80px, 150px 150px, 250px 250px;
-    background-position: 0 0, 30px 60px, 100px 150px;
-    animation: dustChaos 20s linear infinite;
-    opacity: 1.2;
-}
-
-/* ЕФЕКТ ГЛИБОКОГО ТУМАНУ */
-#loader { 
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-    background: radial-gradient(circle at 50% 50%, #151515 0%, #000 100%);
-    z-index: 10000; display: flex; 
-    justify-content: center; align-items: center; 
-    transition: 1.2s cubic-bezier(0.65, 0, 0.35, 1);
-    overflow: hidden;
-}
-
-/* ХАОТИЧНИЙ ЗОЛОТИЙ ПИЛ */
+/* ХАОТИЧНИЙ ЗОЛОТИЙ ПИЛ (Зроблено в 3 рази видимішим) */
 #loader::before {
     content: ""; position: absolute; inset: -100%;
     background-image: 
-        radial-gradient(rgba(191,149,63,0.2) 1px, transparent 1px),
-        radial-gradient(rgba(255,255,255,0.05) 1.5px, transparent 1.5px),
-        radial-gradient(rgba(138,109,59,0.15) 2px, transparent 2px);
-    background-size: 85px 85px, 160px 160px, 280px 280px;
+        radial-gradient(rgba(191, 149, 63, 0.6) 2.5px, transparent 2.5px),
+        radial-gradient(rgba(255, 255, 255, 0.3) 1.8px, transparent 1.8px),
+        radial-gradient(rgba(138, 109, 59, 0.5) 3.5px, transparent 3.5px);
+    background-size: 90px 90px, 170px 170px, 300px 300px;
     animation: dustChaos 25s linear infinite;
-    opacity: 0.6;
+    opacity: 0.9; /* Підвищена видимість частинок */
 }
 
 #loader::after {
@@ -75,7 +51,11 @@
     pointer-events: none;
 }
 
-.l-cont { text-align: center; width: 85%; max-width: 380px; position: relative; z-index: 5; }
+.l-cont { 
+    text-align: center; width: 85%; max-width: 380px; 
+    position: relative; z-index: 5; 
+    display: flex; flex-direction: column; align-items: center; /* Центрування вмісту */
+}
 
 /* ВИПУКЛИЙ КРИШТАЛЕВИЙ МЕДАЛЬЙОН */
 .l-logo { 
@@ -124,26 +104,43 @@
     animation: scannerMove 1s infinite;
 }
 
-/* ВІДСОТКИ СУВОРО ПО ЦЕНТРУ (НАТУРАЛЬНЕ ЗОЛОТО) */
+/* ВІДСОТКИ СУВОРО ПО ЦЕНТРУ (ЖИВЕ ЗОЛОТО) */
 .l-perc { 
     margin-top: 35px; 
-    display: block;
+    display: inline-block;
     width: 100%;
     text-align: center;
     font-family: 'Cinzel', serif; 
     font-weight: 900; 
-    font-size: 34px; 
-    /* Колір шляхетного металу */
-    background: linear-gradient(180deg, #fcf6ba 0%, #bf953f 45%, #8a6d3b 55%, #bf953f 100%);
+    font-size: 36px; 
+    
+    /* Градієнт заломленого золота (з білим відблиском) */
+    background: linear-gradient(
+        -45deg, 
+        #8a6d3b 0%, 
+        #bf953f 25%, 
+        #ffffff 50%, 
+        #bf953f 75%, 
+        #8a6d3b 100%
+    );
+    background-size: 200% auto;
     -webkit-background-clip: text; 
     -webkit-text-fill-color: transparent; 
+    
+    /* ІДЕАЛЬНЕ ЦЕНТРУВАННЯ */
     letter-spacing: 12px; 
-    text-indent: 12px; /* Компенсація зсуву вправо */
+    text-indent: 12px; 
+    
     filter: drop-shadow(0 4px 10px rgba(0,0,0,0.7));
-    animation: textPulse 3s ease-in-out infinite;
+    animation: goldRefraction 4s linear infinite, textPulse 3s ease-in-out infinite;
 }
 
 /* АНІМАЦІЇ */
+@keyframes goldRefraction {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
 @keyframes dustChaos {
     0% { background-position: 0 0, 0 0, 0 0; }
     50% { background-position: 80px 160px, -100px 200px, 150px -80px; }
@@ -155,16 +152,13 @@
 
 @keyframes pulseMedal { 
     0%, 100% { transform: perspective(1000px) rotateX(12deg) scale(1); filter: brightness(1); }
-    50% { transform: perspective(1000px) rotateX(14deg) scale(1.03); filter: brightness(1.1); }
+    50% { transform: perspective(1000px) rotateX(14deg) scale(1.03); filter: brightness(1.15); }
 }
 
 @keyframes textPulse { 
-    0%, 100% { opacity: 0.8; transform: scale(1); } 
-    50% { opacity: 1; transform: scale(1.02); } 
+    0%, 100% { opacity: 0.9; transform: scale(1); } 
+    50% { opacity: 1; transform: scale(1.03); } 
 }
-
-
-
 
 
         /* MAIN CONTENT */
