@@ -171,21 +171,21 @@
 }
 
 .live-counter {
-    /* Змінюємо на relative, щоб він стояв у черзі і НЕ рухався за екраном */
-    position: relative !important; 
-    margin-top: 10px !important; /* Відступ від стрічки казино */
-    margin-right: 15px !important; 
+    /* position: absolute прикріплює до стрічки казино, при скролі уходить вгору */
+    position: absolute !important; 
+    top: 60px !important; 
+    right: 15px !important; 
     display: flex !important;
     flex-direction: column !important; 
     align-items: flex-end !important; 
     gap: 4px !important; 
-    z-index: 90 !important;
+    z-index: 999 !important;
     
-    /* Очищення від залишків плашок та блюру */
-    background: transparent !important;
+    background: none !important;
     border: none !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
     padding: 0 !important;
     pointer-events: none;
 }
@@ -195,15 +195,17 @@
     font-size: 9px !important;
     font-weight: 900 !important;
     color: #fcf6ba !important; 
-    background: #000 !important; /* Тільки чорний фон під літерами */
+    background: #000 !important; 
     padding: 3px 7px !important; 
     border-radius: 2px !important; 
     border: 0.3px solid rgba(191, 149, 63, 0.5) !important;
     white-space: nowrap !important;
     text-transform: uppercase !important;
     text-shadow: 0 0 5px rgba(191, 149, 63, 0.7) !important;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5) !important;
+    opacity: 1 !important;
+    backdrop-filter: none !important;
 }
+
 
 
 
@@ -275,16 +277,18 @@ html, body {
 
 .main { 
     position: relative;
-    z-index: 2; /* Контент НАД частинками */
+    z-index: 2; 
     opacity: 0; 
     display: flex; 
     flex-direction: column; 
     align-items: center; 
-    padding: 75px 15px 40px; /* Ті самі 2 см зверху */
+    /* Змінюємо 75px на 100px, щоб звільнити місце під лічильники */
+    padding: 100px 15px 40px; 
     min-height: 100vh; 
     transition: 1s ease-out; 
-    background: transparent !important; /* Щоб не перекривати фон з частинками */
+    background: transparent !important; 
 }
+
 
 
 /* КРИШТАЛЕВА ІКОНКА (Твоє фото в склі) */
