@@ -468,70 +468,59 @@ html, body {
         anim();
     <script>
     // Чекаємо повного завантаження сторінки
+    const backupLoader = document.getElementById('loader');
+    if (backupLoader && backupLoader.style.display !== 'none') {
+        console.warn("Аварійне відкриття сайту!");
+        backupLoader.style.display = 'none';
+        document.getElementById('m').style.opacity = '1';
+    }
+}, 6000); // 6 секунд максимум
+
+// 2. Основна логіка
+document.addEventListener("DOMContentLoaded", function() {
     let progress = 0;
+    const fill = document.getElementById('l-fill');
+    const percent = document.getElementById('pc');
+    const loader = document.getElementById('loader');
+    const mainCont = document.getElementById('m');
+
+    // Спроба запустити частинки (якщо функція існує)
+    try {
+        if (typeof anim === "function") anim();
+    } catch(e) { console.error("Помилка частинок:", e); }
+
+    const interval = setInterval(function() {
+        progress += Math.floor(Math.random() * 5) + 1;
         
-        // Знаходимо елементи за допомогою різних способів (про всяк випадок)
-        const fill = document.getElementById('l-fill') || document.querySelector('#l-fill');
-        const percent = document.getElementById('pc') || document.querySelector('.l-perc');
-        const loader = document.getElementById('loader');
-        const mainCont = document.getElementById('m') || document.querySelector('.main');
-
-        // Якщо анімація фону є - запускаємо її
-        if (typeof anim === "function") {
-            try { anim(); } catch(e) { console.error("Помилка фону:", e); }
-        }
-
-        // Головний таймер завантаження
-        const timer = setInterval(() => {
-            progress += Math.floor(Math.random() * 3) + 1; // Випадковий крок
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
             
-            if (progress >= 100) {
-                progress = 100;
-                clearInterval(timer);
-                finishLoading();
-            }
-
-            // Оновлюємо лінію
-            if (fill) {
-                fill.style.width = progress + "%";
-            } else {
-                console.warn("Елемент l-fill не знайдено!");
-            }
-
-            // Оновлюємо текст відсотків
-            if (percent) {
-                percent.innerText = progress + "%";
-            }
-        }, 40); // 40 мілісекунд між кроками
-
-        function finishLoading() {
-            console.log("Завантаження 100%!");
-            
-            // Ефект спалаху для медальйона (якщо він є)
+            // Ефект спалаху
             const medal = document.querySelector('.l-logo');
-            if (medal) {
-                medal.style.filter = 'brightness(3) contrast(1.5)';
-                medal.style.boxShadow = '0 0 100px 50px #fff';
-            }
+            if (medal) medal.style.filter = 'brightness(3)';
 
-            // Плавне зникнення лоадера
-            setTimeout(() => {
+            // Плавний перехід
+            setTimeout(function() {
                 if (loader) {
                     loader.style.opacity = '0';
-                    loader.style.pointerEvents = 'none'; // Щоб не заважав клікати
-                    
-                    setTimeout(() => {
+                    setTimeout(function() {
                         loader.style.display = 'none';
-                        // ПОКАЗУЄМО КНОПКИ
                         if (mainCont) {
-                            mainCont.style.opacity = '1'; // Пряма зміна стилю
                             mainCont.classList.add('show');
+                            mainCont.style.opacity = '1';
                         }
-                    }, 800);
+                    }, 600);
                 }
-            }, 500);
+            }, 300);
         }
-    });
+
+        // Оновлення візуалу
+        if (fill) fill.style.width = progress + "%";
+        if (percent) percent.innerHTML = progress + "%";
+        
+    }, 40);
+});
 </script>
 </body>
 </html>
