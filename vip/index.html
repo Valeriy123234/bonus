@@ -157,60 +157,76 @@
 @keyframes textPulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
 
 
+/* 1. СТРІЧКА (Х2) БЕЗ ЗАЙВОГО СВІТЛА */
 .vip-ticker-wrap {
     position: relative;
     width: 100%;
-    height: 110px; /* Збільшено у 2 рази (було 55px) */
+    height: 110px; 
     background: #000 !important;
-    border-bottom: 2px solid rgba(191, 149, 63, 0.2);
+    border-bottom: 2px solid rgba(191, 149, 63, 0.3);
     z-index: 100;
     overflow: hidden;
     display: flex;
     align-items: center;
+    box-shadow: none !important;
+    opacity: 0; /* Щоб не миготіло на старті */
 }
 
-/* ЛІЧИЛЬНИКИ: БЕЗ ЗМІН ЛОГІКИ, ТІЛЬКИ ПІДПРАВЛЕНО ВІДСТУП */
+/* 2. ЛІЧИЛЬНИКИ: В РЯД ТА СУВОРО ПО ЦЕНТРУ */
 .live-counter {
-    position: relative !important; 
-    margin: 10px 15px 0 0 !important;
+    position: relative !important;
+    margin: 15px auto !important; /* Центрування самого блоку */
     display: flex !important;
-    flex-direction: column !important;
-    align-items: flex-end !important;
-    gap: 2px !important;
-    z-index: 100;
+    flex-direction: row !important; /* В ОДИН РЯД */
+    justify-content: center !important; /* ЦЕНТРУВАННЯ ТЕКСТУ */
+    gap: 15px !important;
+    z-index: 99;
     background: none !important;
     border: none !important;
+    width: 100% !important;
+    opacity: 0; /* Щоб не миготіло на старті */
 }
 
 .live-counter span {
     font-family: 'Cinzel', serif !important;
-    font-size: 10px !important;
+    font-size: 11px !important;
     color: #ffcc66 !important;
     text-shadow: 0 0 8px #ffcc66 !important;
     font-weight: 900 !important;
     background: none !important;
-    border: none !important;
+    border: 0.5px solid rgba(191, 149, 63, 0.4) !important;
+    padding: 4px 12px !important;
+    border-radius: 4px !important;
 }
 
-/* СТРІЧКА ТА ІКОНКИ: ЗБІЛЬШЕНО У 2 РАЗИ */
+/* 3. ІКОНКИ: ЗБІЛЬШЕНІ ТА ВУЖЧІ */
+.v-item {
+    width: 75px; 
+    height: 85px;
+    min-width: 75px;
+    margin: 0 10px;
+    background-image: var(--i) !important;
+    background-size: cover !important;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+}
+
+/* 4. КОНТЕНТ (СЛОТИ ТА ЛОГОТИП): ЦЕНТРУЄМО ТА ПРИБИРАЄМО ДІРКУ */
+.main {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important; /* СТАВИТЬ ЛОГОТИП ПО ЦЕНТРУ */
+    padding-top: 10px !important; /* ПРИБИРАЄМО ПРІРВУ */
+    opacity: 0;
+}
+
+/* АНІМАЦІЯ */
 .vip-ticker {
     display: flex;
     width: max-content;
     animation: slideLoop 50s linear infinite;
-    will-change: transform;
-}
-
-.v-item {
-    width: 76px;  /* Збільшено у 2 рази (було 38px) */
-    height: 76px; /* Збільшено у 2 рази (було 38px) */
-    min-width: 76px;
-    margin: 0 15px; /* Трохи збільшено зазор для масштабу */
-    background-image: var(--i) !important;
-    background-size: cover !important;
-    background-position: center !important;
-    border-radius: 10px; /* Трохи більше закруглення для великих іконок */
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    flex-shrink: 0;
 }
 
 @keyframes slideLoop {
@@ -218,12 +234,12 @@
     100% { transform: translateX(-50%); }
 }
 
-/* ЕФЕКТ ТУМАНУ: ПІДЛАШТОВАНО ПІД НОВИЙ РОЗМІР */
 .vip-ticker-wrap::before, .vip-ticker-wrap::after {
     content: ""; position: absolute; top: 0; width: 100px; height: 100%; z-index: 5;
 }
 .vip-ticker-wrap::before { left: 0; background: linear-gradient(to right, #000, transparent); }
 .vip-ticker-wrap::after { right: 0; background: linear-gradient(to left, #000, transparent); }
+
 
 
 /* КРИШТАЛЕВА ІКОНКА (Твоє фото в склі) */
@@ -456,6 +472,16 @@
     <div id="loader"><div class="l-cont"><div class="l-logo"></div><div class="l-bar-wrapper"><div id="l-fill"></div></div><div class="l-perc" id="pc">0%</div></div></div>
     <canvas id="c"></canvas>
 
+    <div class="vip-ticker-wrap">...</div>
+
+<div class="live-counter">
+    <span id="on-val">ONLINE: 1540</span>
+    <span id="pl-val">PLAYING: 720</span>
+</div>
+<div class="main" id="m">
+    <img src="logo.png" class="logo"> <!-- Твій логотип тепер буде в центрі -->
+
+    
     <div class="vip-ticker-wrap">
     <div class="vip-ticker">
         <div class="v-item" style="--i: url('./8C816B9D-90C0-4CD4-AA80-242F7BA3F77E.png')"></div>
