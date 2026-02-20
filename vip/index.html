@@ -506,9 +506,17 @@ html, body {
 
 /* Відгук на дотик (без лагів) */
 .btn:active { 
-    transform: scale(0.96) translate3d(0, 0, 0) !important; 
-    background: #fcf6ba !important;
-    transition: 0.1s !important;
+    /* Ефект натискання (пружина) */
+    transform: scale(0.95) translate3d(0, 0, 0) !important; 
+    
+    /* Ефект "Спалаху" золота при дотику */
+    background: linear-gradient(180deg, #ffffff 0%, #fcf6ba 100%) !important;
+    
+    /* Миттєва реакція без лагів */
+    transition: 0.05s !important;
+    
+    /* Тінь втискається всередину */
+    box-shadow: inset 0 4px 8px rgba(0,0,0,0.4) !important;
 }
 
 .btn-tg { 
