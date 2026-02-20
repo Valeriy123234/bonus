@@ -301,13 +301,15 @@ html, body {
     position: relative;
     z-index: 2; 
     
-    /* Спочатку повністю ховаємо, щоб не було мерехтіння слотів */
+    /* ФІКС МЕРЕХТІННЯ: Повне вимкнення на старті */
+    display: none !important; 
     opacity: 0; 
     visibility: hidden; 
     
-    display: flex; 
     flex-direction: column; 
     align-items: center; 
+    
+    /* Твій підтягнутий відступ до слотів */
     padding: 20px 15px 40px; 
     min-height: 100vh; 
     
@@ -318,14 +320,15 @@ html, body {
     background: transparent !important; 
     backface-visibility: hidden;
     transform: translateZ(0);
-    
 }
 
-/* КЛАС ПОЯВИ (Синхронізовано з твоїм JS класом .show) */
+/* КЛАС ПОЯВИ (Коли лоадер закінчив роботу) */
 .main.show {
+    display: flex !important; /* Вмикаємо відображення */
     opacity: 1 !important;
     visibility: visible !important;
 }
+
 
 
 
