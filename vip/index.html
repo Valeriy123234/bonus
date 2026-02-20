@@ -433,7 +433,7 @@ html, body {
 
 /* Кнопка ТГ */
 .btn { 
-    display: flex !important; /* Міняємо block на flex для надійної центровки */
+    display: flex !important; 
     align-items: center;
     justify-content: center;
     position: relative; 
@@ -441,18 +441,17 @@ html, body {
     z-index: 10;
     
     min-height: 70px;
-    /* ФІКС: Залишаємо тільки те, що реально працює */
-    contain: content; 
+    /* ФІКС №1: Повна ізоляція для миттєвої промальовки */
+    contain: layout paint; 
     
     background: linear-gradient(180deg, #fcf6ba 0%, #bf953f 100%) !important;
-    box-shadow: 
-        0 10px 25px rgba(0,0,0,0.6), 
-        inset 0 2px 3px rgba(255,255,255,0.8), 
-        inset 0 -3px 6px rgba(0,0,0,0.3);
     
-    border: 3.5px solid #bf953f; 
-    border-radius: 20px; 
-    margin-bottom: 20px; 
+    /* Спростили тіні, щоб GPU не закипав */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.7);
+    
+    border: 3px solid #bf953f; 
+    border-radius: 18px; 
+    margin-bottom: 18px; 
     padding: 20px 12px; 
     text-align: center; 
     text-decoration: none;
@@ -460,57 +459,60 @@ html, body {
     color: #000 !important; 
     font-weight: 900; 
     text-transform: uppercase; 
-    font-size: 22px; 
+    font-size: 21px; 
     letter-spacing: -0.5px;
     line-height: 1;
 
-    /* ГЕРМЕТИЧНА ПОЯВА: Прибираємо конфлікт transform */
+    /* ФІКС №2: Прибираємо 3D-шари. Пряма команда GPU на легкий рендер */
     opacity: 1 !important; 
     visibility: visible !important;
-    transform: translate3d(0, 0, 0) !important;
+    transform: none !important; 
     
-    /* Оптимізація: не даємо GPU перенапружуватись */
-    will-change: transform, opacity;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
+    /* Оптимізація для 120Hz та слабких процесорів */
+    will-change: opacity; 
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* Блік — БЕЗ ЗМІН (він у тебе ідеальний) */
+/* Блік — Оптимізована швидкість */
 .btn::after {
     content: "";
     position: absolute;
-    top: 0;
-    left: -150%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to right, transparent, rgba(255,255,255,0.5), transparent);
+    top: 0; left: -150%;
+    width: 100%; height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
     transform: skewX(-25deg);
     animation: shine 4s infinite ease-in-out;
     z-index: -1;
 }
 
-/* КЛАС ПОЯВИ (Спрощуємо) */
+@keyframes shine {
+    0% { transform: translateX(0) skewX(-25deg); }
+    30%, 100% { transform: translateX(250%) skewX(-25deg); }
+}
+
+/* Стан появу — залізобетонна видимість */
 .main.show .btn { 
     opacity: 1 !important; 
     display: flex !important;
-    transform: translate3d(0, 0, 0) !important;
+    transform: none !important;
 }
 
-/* Твій ідеальний активний стан (Залишаємо) */
+/* АКТИВНИЙ СТАН: Миттєва реакція без перегріву */
 .btn:active { 
-    transform: scale(0.95) translate3d(0, 0, 0) !important; 
-    background: linear-gradient(180deg, #ffffff 0%, #fcf6ba 100%) !important;
-    transition: 0.05s !important;
-    box-shadow: inset 0 4px 8px rgba(0,0,0,0.4) !important;
+    transform: scale(0.96) !important; 
+    background: #fcf6ba !important;
+    transition: 0.1s !important;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.3) !important;
 }
 
 .btn-tg { 
     background: #0088cc !important; 
-    border: 3.5px solid #fff !important; 
+    border: 3px solid #fff !important; 
     color: #fff !important;
     margin-top: 30px; 
     margin-bottom: 70px;
 }
+
 
 
 
