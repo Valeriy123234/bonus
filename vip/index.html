@@ -56,14 +56,16 @@
 .l-cont { text-align: center; width: 85%; max-width: 380px; position: relative; z-index: 5; }
 
 /* ТОЙ САМИЙ ВИПУКЛИЙ КРИШТАЛЕВИЙ МЕДАЛЬЙОН */
+/* ТОЙ САМИЙ ВИПУКЛИЙ КРИШТАЛЕВИЙ МЕДАЛЬЙОН — ГЕРМЕТИЧНА ВЕРСІЯ */
 .l-logo { 
     width: 175px; height: 175px; margin: 0 auto 60px; 
     background: var(--img) center/cover no-repeat; 
     border-radius: 45px; 
     position: relative;
+    
+    /* Початкова невидимість для плавної появи */
     opacity: 0;
-    animation: bigPulse 3s ease-in-out infinite, fadeIn 0.8s ease-out forwards;
-
+    
     /* Золота оправа та грані */
     border: 1.5px solid rgba(191, 149, 63, 0.7);
     outline: 5px solid rgba(191, 149, 63, 0.05); 
@@ -76,9 +78,13 @@
         0 0 40px rgba(191, 149, 63, 0.2);            
     
     backdrop-filter: blur(15px);
-    /* 3D нахил як у минулого медальйона */
+    
+    /* 3D нахил */
     transform: perspective(1000px) rotateX(12deg);    
-    animation: pulseMedal 4s ease-in-out infinite;
+
+    /* АНІМАЦІЯ: спочатку fadeIn, потім pulseMedal через 1.2 секунди */
+    animation: fadeIn 1.2s ease-out forwards, pulseMedal 4s ease-in-out infinite 1.2s;
+    will-change: transform, opacity;
 }
 
 /* Глянцевий відблиск зверху */
@@ -95,7 +101,6 @@
     border-radius: 10px; overflow: hidden;
     border: 1px solid rgba(191, 149, 63, 0.15); 
     will-change: width;
-
 }
 
 #l-fill { 
@@ -108,7 +113,6 @@
     box-shadow: 0 0 15px rgba(191,149,63,0.8);
 }
 
-/* Біжучий блік всередині лінії */
 #l-fill::before {
     content: ""; position: absolute; inset: 0;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
@@ -117,11 +121,9 @@
 
 /* ВІДСОТКИ */
 .l-perc {
-    display: block;        /* Робимо блоком для розрахунку ширини */
-    text-align: center;    /* Центруємо текст всередині */
-    text-indent: 12px;     /* ВАЖЛИВО: компенсуємо letter-spacing на ту ж величину */
-    
-    /* Твої існуючі стилі */
+    display: block;
+    text-align: center;
+    text-indent: 12px;
     margin-top: 35px; 
     font-family: 'Cinzel', serif; 
     font-weight: 900; 
@@ -134,8 +136,17 @@
     animation: textPulse 3s ease-in-out infinite;
 }
 
-
 /* АНІМАЦІЇ */
+@keyframes fadeIn {
+    from { opacity: 0; transform: perspective(1000px) rotateX(12deg) scale(0.9); }
+    to { opacity: 1; transform: perspective(1000px) rotateX(12deg) scale(1); }
+}
+
+@keyframes pulseMedal { 
+    0%, 100% { transform: perspective(1000px) rotateX(12deg) scale(1); filter: brightness(1); }
+    50% { transform: perspective(1000px) rotateX(14deg) scale(1.03); filter: brightness(1.15); }
+}
+
 @keyframes dustChaos {
     0% { background-position: 0 0, 0 0, 0 0; transform: scale(1); }
     50% { background-position: 100px 200px, -150px 300px, 200px -100px; transform: scale(1.1); }
@@ -152,17 +163,11 @@
     100% { background-position: 200% 0; }
 }
 
-@keyframes pulseMedal { 
-    0%, 100% { transform: perspective(1000px) rotateX(12deg) scale(1); filter: brightness(1); }
-    50% { transform: perspective(1000px) rotateX(14deg) scale(1.03); filter: brightness(1.15); }
+@keyframes textPulse { 
+    0%, 100% { opacity: 0.7; } 
+    50% { opacity: 1; }
 }
 
-@keyframes textPulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; }
-}
-        
-@keyframes fadeIn {
-    to { opacity: 1; }
-}
 
 
 
