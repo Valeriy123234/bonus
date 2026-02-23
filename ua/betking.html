@@ -1,1 +1,114 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BETKING ROYAL ACCESS | MRBONUS</title>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --dark: #070707;
+        }
+        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+
+        #loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: 0.5s;
+        }
+        .crown-anim { font-size: 4rem; animation: float 2s infinite ease-in-out; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+        .container { max-width: 500px; width: 90%; padding: 40px 20px; text-align: center; display: none; opacity: 0; transition: 1s; }
+        
+        .promo-card { 
+            background: linear-gradient(180deg, #151515 0%, #0a0a0a 100%);
+            border: 2px solid #BF953F;
+            border-radius: 30px; 
+            padding: 50px 25px; 
+            box-shadow: 0 0 40px rgba(191,149,63,0.2);
+        }
+
+        .top-label {
+            font-family: 'Cinzel', serif;
+            color: #BF953F;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            margin-bottom: 5px;
+        }
+
+        h1 { font-family: 'Cinzel', serif; font-size: 2.5rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 5px 0; }
+        
+        .promo-value { font-size: 2.2rem; font-weight: 800; margin: 20px 0; color: #fff; line-height: 1.1; }
+
+        .btn-royal { 
+            display: block; 
+            background: var(--gold); 
+            color: #000; 
+            text-decoration: none; 
+            padding: 22px; 
+            border-radius: 15px; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            margin-top: 30px; 
+            font-size: 1.2rem;
+            box-shadow: 0 10px 30px rgba(191,149,63,0.5);
+            transition: 0.3s;
+        }
+        .btn-royal:hover { transform: scale(1.05); filter: brightness(1.1); }
+
+        .sub-text { color: #555; font-size: 0.8rem; margin-top: 30px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;}
+        
+        .btn-bot { display: block; margin-top: 25px; color: #BF953F; text-decoration: none; font-size: 0.8rem; font-weight: 800; }
+    </style>
+</head>
+<body>
+
+    <div id="loader">
+        <div class="crown-anim">🤴</div>
+        <h2 style="font-family:'Cinzel'; background: var(--gold); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:8px;">MRBONUS</h2>
+        <p style="color:#BF953F; font-size:0.6rem; letter-spacing:3px; margin-top:10px;">VIP SESSION STARTING...</p>
+    </div>
+
+    <div class="container" id="content">
+        <div class="promo-card">
+            <div class="top-label">CONFIRMED BY MRBONUS</div>
+            <h1>BETKING</h1>
+            <div class="promo-value">200% ДО ДЕПУ <br> + 200 ФРІСПІНІВ</div>
+            
+            <p style="color: #ddd; font-size: 0.95rem; line-height: 1.5; font-weight: 400;">
+                Твій королівський бонус активовано. <br> <b>Забирай свою частку</b> і починай гру прямо зараз.
+            </p>
+
+            <a href="http://play.mrbonusua.space/betking.html" target="_blank" class="btn-royal">ЗАБРАТИ КОРОНУ 🤴</a>
+            
+            <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="btn-bot">🤖 ПЕРЕВІРИТИ ІНШІ АКЦІЇ У TG</a>
+        </div>
+        
+        <p class="sub-text">21+ • VIP ACCESS ONLY • MRBONUS UA</p>
+    </div>
+
+    <script>
+        window.onload = function() {
+            setTimeout(function() {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(function() {
+                    document.getElementById('loader').style.display = 'none';
+                    let content = document.getElementById('content');
+                    content.style.display = 'block';
+                    setTimeout(() => content.style.opacity = '1', 50);
+                }, 500);
+            }, 1500);
+        };
+    </script>
+</body>
+</html>
 
