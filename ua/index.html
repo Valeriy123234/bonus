@@ -103,24 +103,31 @@
             position: relative;
         }
 
-      .slots-track {
+     .slots-track {
     display: flex;
     width: max-content;
-    animation: scroll-slots 25s linear infinite; /* Трохи повільніше = плавніше */
+    animation: scroll-slots 30s linear infinite; /* Збільш до 30s — чим повільніше, тим менше мерехтить */
     will-change: transform;
-    /* --- ДОДАЙ ЦЕ --- */
+    
+    /* ФІКС МЕРЕХТІННЯ: */
+    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    -webkit-perspective: 1000;
     perspective: 1000;
-    transform: translateZ(0); 
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    image-rendering: -webkit-optimize-contrast; /* Робить краї емодзі чіткішими */
 }
 
+      .slot-emoji {
+    font-size: 2rem;
+    padding: 0 25px;
+    display: inline-block;
+    flex-shrink: 0; /* Не дає іконкам стискатися */
+    -webkit-transform: translateZ(0); /* Окремий шар для кожної іконки */
+    transform: translateZ(0);
+}
 
-        .slot-emoji {
-            font-size: 2rem;
-            filter: drop-shadow(0 0 8px rgba(191, 149, 63, 0.4));
-            padding: 0 25px;
-            display: inline-block;
-        }
 
         @keyframes scroll-slots {
             0% { transform: translate3d(0, 0, 0); }
