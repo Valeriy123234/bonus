@@ -21,8 +21,32 @@
         .crown-anim { font-size: 4rem; animation: float 2s infinite ease-in-out; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        .container { max-width: 500px; width: 90%; padding: 40px 20px; text-align: center; display: none; opacity: 0; transition: 1s; }
+        /* Контейнер */
+        .container { max-width: 500px; width: 90%; padding: 20px 20px 40px; text-align: center; display: none; opacity: 0; transition: 1s; }
         
+        /* СТИЛЬНА НАВІГАЦІЯ (ПОВЕРНУТИСЯ ДО МЕНЮ) */
+        .nav-menu {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 25px;
+        }
+        .btn-menu {
+            text-decoration: none;
+            color: #444;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-menu:hover {
+            color: #BF953F;
+            transform: translateX(-5px);
+        }
+
         .promo-card { 
             background: linear-gradient(180deg, #151515 0%, #0a0a0a 100%);
             border: 2px solid #BF953F;
@@ -37,7 +61,6 @@
         
         .promo-value { font-size: 2.2rem; font-weight: 800; margin: 20px 0; color: #fff; line-height: 1.1; }
 
-        /* Кнопка Казино (Золота) */
         .btn-royal { 
             display: block; background: var(--gold); color: #000; 
             text-decoration: none; padding: 20px; border-radius: 15px; 
@@ -47,7 +70,6 @@
         }
         .btn-royal:hover { transform: scale(1.05); filter: brightness(1.1); }
 
-        /* Кнопка ТГ Бота (Срібна/Контурна) */
         .btn-bot-royal {
             display: block; border: 1px solid rgba(191, 149, 63, 0.6);
             color: #fff; text-decoration: none; padding: 16px;
@@ -74,6 +96,14 @@
     </div>
 
     <div class="container" id="content">
+        
+        <!-- КНОПКА ПОВЕРНЕННЯ -->
+        <div class="nav-menu">
+            <a href="index.html" class="btn-menu">
+                <span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ
+            </a>
+        </div>
+
         <div class="promo-card">
             <div class="top-label">CONFIRMED BY MRBONUS</div>
             <h1>BETKING</h1>
@@ -85,7 +115,6 @@
 
             <a href="http://play.mrbonusua.space/betking.html" target="_blank" class="btn-royal">ЗАБРАТИ КОРОНУ 🤴</a>
             
-            <!-- Повноцінна кнопка для Бота -->
             <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="btn-bot-royal">🤖 ПЕРЕВІРИТИ ІНШІ АКЦІЇ У TG</a>
         </div>
         
