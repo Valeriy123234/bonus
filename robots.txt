@@ -6,7 +6,7 @@ Allow: /ua/777.html
 Allow: /ua/betking.html
 Allow: /ua/beton.html
 Allow: /ua/championclub.html
-Allow: /ua/euro.htm!
+Allow: /ua/euro.html
 Allow: /ua/first.html
 Allow: /ua/ggbet.html
 Allow: /ua/gorilla.html
@@ -14,6 +14,6 @@ Allow: /ua/parik24.html
 Allow: /ua/pokerbet.html
 Allow: /ua/slotscity.html
 Allow: /ua/vegas.html
-Sitemap: https://play.mrbonusua.space/ua
+Sitemap: https://play.mrbonusua.space/ua/sitemap.xml
 
 
