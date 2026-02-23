@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CHAMPION CLUB VIP | MRBONUS</title>
+    <!-- Підключення Telegram WebApp SDK -->
+    <script src="https://telegram.org"></script>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
         :root {
@@ -28,9 +30,14 @@
 
         .container { max-width: 500px; width: 90%; padding: 20px 20px 40px; text-align: center; display: none; opacity: 0; transition: 1s ease; }
         
-        /* СТИЛЬНА НАВІГАЦІЯ */
+        /* НАВІГАЦІЯ */
         .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 25px; }
-        .btn-menu { text-decoration: none; color: #555; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+        .btn-menu { 
+            text-decoration: none; color: #555; font-size: 0.7rem; font-weight: 800; 
+            letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; 
+            display: flex; align-items: center; gap: 8px; cursor: pointer;
+            background: none; border: none; padding: 0;
+        }
         .btn-menu:hover { color: #BF953F; transform: translateX(-5px); }
 
         .promo-card { 
@@ -59,8 +66,9 @@
             display: block; background: var(--gold); color: #000; 
             text-decoration: none; padding: 20px; border-radius: 50px; 
             font-weight: 900; text-transform: uppercase; letter-spacing: 1px; 
-            margin-top: 35px; font-size: 1.1rem;
+            margin-top: 35px; font-size: 1.1rem; text-align: center;
             box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.3s;
+            cursor: pointer; border: none; width: 100%;
         }
         .btn-champion:hover { transform: translateY(-5px); box-shadow: 0 15px 45px rgba(191, 149, 63, 0.6); }
 
@@ -68,8 +76,8 @@
             display: block; border: 1px solid rgba(191, 149, 63, 0.6);
             color: #fff; text-decoration: none; padding: 16px;
             border-radius: 50px; font-size: 0.85rem; font-weight: 800;
-            text-transform: uppercase; letter-spacing: 1px;
-            margin-top: 15px; transition: 0.3s;
+            text-transform: uppercase; letter-spacing: 1px; text-align: center;
+            margin-top: 15px; transition: 0.3s; cursor: pointer;
             background: rgba(255, 255, 255, 0.02);
         }
         .btn-bot-champion:hover {
@@ -90,11 +98,10 @@
     </div>
 
     <div class="container" id="content">
-        <!-- КНОПКА ПОВЕРНЕННЯ -->
         <div class="nav-menu">
-            <a href="index.html" class="btn-menu">
+            <button onclick="goBack()" class="btn-menu">
                 <span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ
-            </a>
+            </button>
         </div>
 
         <div class="promo-card">
@@ -106,14 +113,39 @@
                 Вітаємо! Ваш статус у клубі підтверджено через <b>MRBONUS</b>. <br> <b>Забирайте свій кубок</b> і розпочинайте тріумфальну гру.
             </p>
 
-            <a href="https://play.mrbonusua.space/championclub.html" target="_blank" class="btn-champion">ЗАБРАТИ СВІЙ КУБОК 🏆</a>
-            <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="btn-bot-champion">🤖 ЗАБРАТИ В TG БОТІ</a>
+            <a href="https://play.mrbonusua.space/championclub.html" class="btn-champion js-link">ЗАБРАТИ СВІЙ КУБОК 🏆</a>
+            <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-champion js-link">🤖 ЗАБРАТИ В TG БОТІ</a>
         </div>
         
         <p class="tagline">Born to Win • 21+ • MRBONUS UA</p>
     </div>
 
     <script>
+        const tg = window.Telegram.WebApp;
+
+        if (tg.initData) {
+            tg.ready();
+            tg.expand();
+        }
+
+        function goBack() {
+            if (tg.initData) {
+                window.location.href = 'index.html';
+            } else {
+                window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
+            }
+        }
+
+        document.querySelectorAll('.js-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const url = this.getAttribute('href');
+                if (tg.initData && url.startsWith('http')) {
+                    e.preventDefault();
+                    tg.openLink(url);
+                }
+            });
+        });
+
         window.onload = function() {
             setTimeout(function() {
                 document.getElementById('loader').style.opacity = '0';
