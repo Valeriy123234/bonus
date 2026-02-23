@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GORILLA WILD ACCESS | VIP MRBONUS</title>
+    <!-- Підключення Telegram WebApp SDK -->
+    <script src="https://telegram.org"></script>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
         :root {
@@ -17,11 +19,12 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; display: flex; flex-direction: column;
             justify-content: center; align-items: center; z-index: 9999;
+            transition: 0.5s;
         }
         .gorilla-icon { font-size: 4.5rem; animation: shake 0.5s infinite; }
         @keyframes shake {
             0% { transform: translate(1px, 1px) rotate(0deg); }
-            10px { transform: translate(-1px, -2px) rotate(-1deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
             20% { transform: translate(-3px, 0px) rotate(1deg); }
             30% { transform: translate(3px, 2px) rotate(0deg); }
             40% { transform: translate(1px, -1px) rotate(1deg); }
@@ -30,9 +33,14 @@
 
         .container { max-width: 500px; width: 92%; padding: 20px 15px 40px; text-align: center; display: none; opacity: 0; transition: 0.5s ease-in; }
         
-        /* СТИЛЬНА НАВІГАЦІЯ */
+        /* НАВІГАЦІЯ */
         .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 25px; }
-        .btn-menu { text-decoration: none; color: #444; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+        .btn-menu { 
+            text-decoration: none; color: #444; font-size: 0.7rem; font-weight: 800; 
+            letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; 
+            display: flex; align-items: center; gap: 8px; cursor: pointer;
+            background: none; border: none; padding: 0;
+        }
         .btn-menu:hover { color: #BF953F; transform: translateX(-5px); }
 
         .promo-card { 
@@ -60,18 +68,18 @@
             display: block; background: var(--gold); color: #000; 
             text-decoration: none; padding: 22px; border-radius: 15px; 
             font-weight: 900; text-transform: uppercase; letter-spacing: 1px; 
-            margin-top: 30px; font-size: 1.2rem;
+            margin-top: 30px; font-size: 1.2rem; text-align: center;
             box-shadow: 0 10px 30px rgba(191,149,63,0.5); transition: 0.3s;
+            cursor: pointer; border: none; width: 100%;
         }
         .btn-gorilla:hover { transform: scale(1.05); filter: contrast(1.2); }
 
         .btn-bot-gorilla {
             display: block; border: 1px solid rgba(191, 149, 63, 0.5);
-            color: #fff; text-decoration: none; padding: 166px; /* Виправив padding з 166px на 16px */
-            padding: 16px;
+            color: #fff; text-decoration: none; padding: 16px;
             border-radius: 15px; font-size: 0.85rem; font-weight: 800;
-            text-transform: uppercase; letter-spacing: 2px;
-            margin-top: 15px; transition: 0.3s;
+            text-transform: uppercase; letter-spacing: 2px; text-align: center;
+            margin-top: 15px; transition: 0.3s; cursor: pointer;
             background: rgba(255, 255, 255, 0.02);
         }
         .btn-bot-gorilla:hover { background: rgba(191, 149, 63, 0.1); color: #BF953F; border-color: #BF953F; }
@@ -88,11 +96,10 @@
     </div>
 
     <div class="container" id="content">
-        <!-- КНОПКА ПОВЕРНЕННЯ -->
         <div class="nav-menu">
-            <a href="index.html" class="btn-menu">
+            <button onclick="goBack()" class="btn-menu">
                 <span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ
-            </a>
+            </button>
         </div>
 
         <div class="promo-card">
@@ -104,20 +111,48 @@
                 Твій пакет фріспінів активовано сервісом <b>MRBONUS</b>. <br> <b>Забирай свій куш</b> і починай гру вже зараз.
             </p>
 
-            <a href="http://play.mrbonusua.space/gorilla.html" target="_blank" class="btn-gorilla">ЗАБРАТИ 300 FS 🦍</a>
-            <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="btn-bot-gorilla">🤖 АКТИВУВАТИ У TG БОТІ</a>
+            <a href="http://play.mrbonusua.space/gorilla.html" class="btn-gorilla js-link">ЗАБРАТИ 300 FS 🦍</a>
+            <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-gorilla js-link">🤖 АКТИВУВАТИ У TG БОТІ</a>
         </div>
         
         <p class="sub-footer">WILD ACCESS • 21+ • MRBONUS UA</p>
     </div>
 
     <script>
+        const tg = window.Telegram.WebApp;
+
+        if (tg.initData) {
+            tg.ready();
+            tg.expand();
+        }
+
+        function goBack() {
+            if (tg.initData) {
+                window.location.href = 'index.html';
+            } else {
+                window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
+            }
+        }
+
+        document.querySelectorAll('.js-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const url = this.getAttribute('href');
+                if (tg.initData && url.startsWith('http')) {
+                    e.preventDefault();
+                    tg.openLink(url);
+                }
+            });
+        });
+
         window.onload = function() {
             setTimeout(function() {
-                document.getElementById('loader').style.display = 'none';
-                let content = document.getElementById('content');
-                content.style.display = 'block';
-                setTimeout(() => content.style.opacity = '1', 50);
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(function() {
+                    document.getElementById('loader').style.display = 'none';
+                    let content = document.getElementById('content');
+                    content.style.display = 'block';
+                    setTimeout(() => content.style.opacity = '1', 50);
+                }, 500);
             }, 1400);
         };
     </script>
