@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FIRST CASINO VIP | MRBONUS UA</title>
-    <!-- Підключення Telegram WebApp SDK -->
+    <!-- SDK Telegram -->
     <script src="https://telegram.org"></script>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
@@ -12,80 +12,74 @@
             --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
             --dark: #0a0a0a;
         }
-        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow: hidden; }
 
         /* VIP Diamond Loader */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; display: flex; flex-direction: column;
             justify-content: center; align-items: center; z-index: 9999;
-            transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); opacity: 1;
         }
-        .diamond { font-size: 4rem; animation: shine 2s infinite alternate; }
+        .diamond { font-size: 3.5rem; animation: shine 2s infinite alternate; }
         @keyframes shine { 
             0% { transform: scale(0.9); filter: drop-shadow(0 0 5px #fff); } 
             100% { transform: scale(1.1); filter: drop-shadow(0 0 20px #BF953F); } 
         }
 
-        .container { max-width: 500px; width: 92%; padding: 20px 15px 40px; text-align: center; display: none; opacity: 0; transition: 1.2s ease; }
+        .container { max-width: 450px; width: 92%; padding: 10px 15px 35px; text-align: center; display: none; opacity: 0; transition: 0.8s ease; box-sizing: border-box; }
         
-        /* СТИЛЬНА НАВІГАЦІЯ */
-        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 25px; }
+        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 15px; }
         .btn-menu { 
-            text-decoration: none; color: #444; font-size: 0.7rem; font-weight: 800; 
+            text-decoration: none; color: #444; font-size: 0.65rem; font-weight: 800; 
             letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; 
-            display: flex; align-items: center; gap: 8px; cursor: pointer;
-            background: none; border: none; padding: 0;
+            display: flex; align-items: center; gap: 6px; cursor: pointer;
+            background: none; border: none; padding: 10px 0;
         }
-        .btn-menu:hover { color: #BF953F; transform: translateX(-5px); }
+        .btn-menu:hover { color: #BF953F; }
 
         .promo-card { 
             background: linear-gradient(145deg, #111 0%, #050505 100%);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-top: 3px solid #BF953F;
-            border-radius: 20px; 
-            padding: 50px 25px; 
+            border-radius: 25px; 
+            padding: 35px 20px; 
             box-shadow: 0 25px 50px rgba(0,0,0,1);
         }
 
-        .label-top {
-            font-family: 'Cinzel', serif;
-            color: #BF953F;
-            font-size: 0.75rem;
-            letter-spacing: 4px;
-            margin-bottom: 15px;
-            font-weight: 700;
-        }
+        .label-top { font-family: 'Cinzel', serif; color: #BF953F; font-size: 0.7rem; letter-spacing: 4px; margin-bottom: 12px; font-weight: 700; }
+        h1 { font-family: 'Cinzel', serif; font-size: 2.2rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
+        .promo-value { font-size: 2.3rem; font-weight: 900; margin: 15px 0; color: #fff; letter-spacing: -1px; line-height: 1.1; }
 
-        h1 { font-family: 'Cinzel', serif; font-size: 2.5rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
-        
-        .promo-value { font-size: 2.6rem; font-weight: 900; margin: 20px 0; color: #fff; letter-spacing: -2px; }
-
+        /* ВЕЛИКА КНОПКА З ПУЛЬСАЦІЄЮ */
         .btn-first { 
             display: block; background: var(--gold); color: #000; 
-            text-decoration: none; padding: 22px; border-radius: 12px; 
-            font-weight: 900; text-transform: uppercase; letter-spacing: 1px; 
-            margin-top: 30px; font-size: 1.1rem; text-align: center;
-            box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.4s;
+            text-decoration: none; padding: 22px 10px; border-radius: 15px; 
+            font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; 
+            margin-top: 25px; font-size: 1.3rem; text-align: center;
+            box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.2s;
             cursor: pointer; border: none; width: 100%;
+            box-sizing: border-box;
+            animation: first-pulse 2s infinite;
         }
-        .btn-first:hover { transform: translateY(-4px); box-shadow: 0 15px 45px rgba(191,149,63,0.6); filter: brightness(1.2); }
+        @keyframes first-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); }
+            70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); }
+            100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); }
+        }
+        .btn-first:active { transform: scale(0.98); filter: brightness(0.9); }
 
         .btn-bot-first {
-            display: block; border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff; text-decoration: none; padding: 18px;
-            border-radius: 12px; font-size: 0.85rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 2px; text-align: center;
+            display: block; border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #777; text-decoration: none; padding: 16px;
+            border-radius: 15px; font-size: 0.8rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1px; text-align: center;
             margin-top: 15px; transition: 0.3s; cursor: pointer;
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.02);
         }
-        .btn-bot-first:hover {
-            background: rgba(191, 149, 63, 0.1);
-            color: #BF953F; border-color: #BF953F;
-            transform: translateY(-2px);
-        }
+        .btn-bot-first:hover { color: #fff; border-color: #BF953F; }
 
-        .footer-vip { color: #333; font-size: 0.65rem; margin-top: 40px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
+        .footer-vip { color: #222; font-size: 0.6rem; margin-top: 35px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -93,42 +87,39 @@
     <div id="loader">
         <div class="diamond">💎</div>
         <h2 style="font-family:'Cinzel'; background: var(--gold); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:10px; margin-top:20px;">MRBONUS</h2>
-        <p style="color:#555; font-size:0.6rem; letter-spacing:4px; margin-top:10px; font-weight:700;">SECURE VIP HANDSHAKE...</p>
+        <p style="color:#333; font-size:0.55rem; letter-spacing:3px; margin-top:10px; font-weight:bold;">SECURE VIP HANDSHAKE...</p>
     </div>
 
     <div class="container" id="content">
         <div class="nav-menu">
-            <button onclick="goBack()" class="btn-menu">
-                <span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ
-            </button>
+            <button onclick="goBack()" class="btn-menu"><span>←</span> НАЗАД</button>
         </div>
 
         <div class="promo-card">
             <div class="label-top">FIRST AMONG EQUALS</div>
             <h1>FIRST CASINO</h1>
-            <div class="promo-value">1300 FS <br> <span style="font-size: 0.9rem; color: #666; letter-spacing: 1px;">PREMIUM STARTER PACK</span></div>
+            <div class="promo-value">1300 FS <br> <span style="font-size: 1rem; color: #555; letter-spacing: 1px;">PREMIUM PACK</span></div>
             
-            <p style="color: #999; font-size: 0.95rem; line-height: 1.6; padding: 0 10px;">
-                Ваш пакет фріспінів підтверджено сервісом <b>MRBONUS</b>. <br> <b>Забирайте свою частку</b> і ставайте першим вже сьогодні.
+            <p style="color: #888; font-size: 0.9rem; line-height: 1.5; margin: 0;">
+                Твій пакет фріспінів підтверджено <b>MRBONUS</b>. <br> Забирай свою частку та ставай першим.
             </p>
 
             <a href="http://play.mrbonusua.space/bonus1.html" class="btn-first js-link">ЗАБРАТИ 1300 FS 🔥</a>
-            <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-first js-link">🤖 АКТИВУВАТИ ЧЕРЕЗ ТГ БОТ</a>
+            <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-first js-link">🤖 АКТИВУВАТИ ЧЕРЕЗ БОТ</a>
         </div>
         
         <p class="footer-vip">STATUS: VERIFIED • 21+ • MRBONUS UA</p>
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
+        const tg = window.Telegram ? window.Telegram.WebApp : null;
+        if (tg) { tg.ready(); tg.expand(); }
 
-        if (tg.initData) {
-            tg.ready();
-            tg.expand();
-        }
+        function isTg() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
 
         function goBack() {
-            if (tg.initData) {
+            if (isTg()) {
+                if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
                 window.location.href = 'index.html';
             } else {
                 window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
@@ -138,23 +129,25 @@
         document.querySelectorAll('.js-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 const url = this.getAttribute('href');
-                if (tg.initData && url.startsWith('http')) {
+                if (isTg()) {
                     e.preventDefault();
-                    tg.openLink(url);
+                    if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                    if (url.includes('t.me/')) { tg.openTelegramLink(url); } 
+                    else { tg.openLink(url); }
                 }
             });
         });
 
         window.onload = function() {
             setTimeout(function() {
-                document.getElementById('loader').style.opacity = '0';
+                const ld = document.getElementById('loader');
+                if (ld) ld.style.opacity = '0';
                 setTimeout(function() {
-                    document.getElementById('loader').style.display = 'none';
-                    let content = document.getElementById('content');
-                    content.style.display = 'block';
-                    setTimeout(() => content.style.opacity = '1', 50);
-                }, 600);
-            }, 1800);
+                    if (ld) ld.style.display = 'none';
+                    let ct = document.getElementById('content');
+                    if (ct) { ct.style.display = 'block'; setTimeout(() => ct.style.opacity = '1', 50); }
+                }, 500);
+            }, 1400);
         };
     </script>
 </body>
