@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BETKING ROYAL ACCESS | MRBONUS</title>
-    <!-- Підключення Telegram WebApp SDK -->
+    <!-- SDK Telegram -->
     <script src="https://telegram.org"></script>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
@@ -23,74 +23,64 @@
         .crown-anim { font-size: 4rem; animation: float 2s infinite ease-in-out; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        .container { max-width: 500px; width: 90%; padding: 20px 20px 40px; text-align: center; display: none; opacity: 0; transition: 1s; }
+        .container { max-width: 500px; width: 92%; padding: 20px 15px 40px; text-align: center; display: none; opacity: 0; transition: 1s; box-sizing: border-box; }
         
-        .nav-menu {
-            display: flex;
-            justify-content: flex-start;
-            margin-bottom: 25px;
-        }
-        .btn-menu {
-            text-decoration: none;
-            color: #444;
-            font-size: 0.7rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 0;
-        }
-        .btn-menu:hover {
-            color: #BF953F;
-            transform: translateX(-5px);
-        }
+        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 25px; }
+        .btn-menu { text-decoration: none; color: #444; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 8px; cursor: pointer; background: none; border: none; padding: 0; }
+        .btn-menu:hover { color: #BF953F; transform: translateX(-3px); }
 
         .promo-card { 
             background: linear-gradient(180deg, #151515 0%, #0a0a0a 100%);
             border: 2px solid #BF953F;
             border-radius: 30px; 
-            padding: 50px 25px; 
+            padding: 45px 20px; 
             box-shadow: 0 0 40px rgba(191,149,63,0.2);
         }
 
         .top-label { font-family: 'Cinzel', serif; color: #BF953F; font-size: 0.75rem; letter-spacing: 3px; margin-bottom: 5px; }
-
         h1 { font-family: 'Cinzel', serif; font-size: 2.5rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 5px 0; }
-        
         .promo-value { font-size: 2.2rem; font-weight: 800; margin: 20px 0; color: #fff; line-height: 1.1; }
 
+        /* ВЕЛИКА КНОПКА КАЗИНО */
         .btn-royal { 
-            display: block; background: var(--gold); color: #000; 
-            text-decoration: none; padding: 20px; border-radius: 15px; 
-            font-weight: 900; text-transform: uppercase; letter-spacing: 1px; 
-            margin-top: 30px; font-size: 1.2rem;
-            box-shadow: 0 10px 30px rgba(191,149,63,0.5); transition: 0.3s;
-            cursor: pointer; border: none; width: 100%; text-align: center;
+            display: block; 
+            background: var(--gold); 
+            color: #000; 
+            text-decoration: none; 
+            padding: 25px 10px; /* Збільшено відступи */
+            border-radius: 18px; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            margin-top: 30px; 
+            font-size: 1.4rem; /* Збільшено шрифт */
+            box-shadow: 0 12px 35px rgba(191,149,63,0.4); 
+            transition: 0.3s;
+            cursor: pointer; 
+            border: none; 
+            width: 100%; 
+            text-align: center;
+            box-sizing: border-box;
+            animation: pulse-gold 2s infinite; /* Ефект уваги */
         }
-        .btn-royal:hover { transform: scale(1.05); filter: brightness(1.1); }
+        @keyframes pulse-gold {
+            0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); }
+            70% { box-shadow: 0 0 0 15px rgba(191,149,63,0); }
+            100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); }
+        }
+        .btn-royal:active { transform: scale(0.98); }
 
         .btn-bot-royal {
-            display: block; border: 1px solid rgba(191, 149, 63, 0.6);
-            color: #fff; text-decoration: none; padding: 16px;
+            display: block; border: 1px solid rgba(191, 149, 63, 0.4);
+            color: #888; text-decoration: none; padding: 18px;
             border-radius: 15px; font-size: 0.85rem; font-weight: 800;
             text-transform: uppercase; letter-spacing: 1px;
-            margin-top: 15px; transition: 0.3s;
+            margin-top: 18px; transition: 0.3s;
             background: rgba(255, 255, 255, 0.02);
             cursor: pointer; text-align: center;
         }
-        .btn-bot-royal:hover {
-            background: rgba(191, 149, 63, 0.1);
-            color: #BF953F; border-color: #BF953F;
-            transform: translateY(-2px);
-        }
 
-        .sub-text { color: #555; font-size: 0.8rem; margin-top: 30px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;}
+        .sub-text { color: #444; font-size: 0.65rem; margin-top: 35px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;}
     </style>
 </head>
 <body>
@@ -102,86 +92,55 @@
     </div>
 
     <div class="container" id="content">
-        
         <div class="nav-menu">
-            <button onclick="goBack()" class="btn-menu">
-                <span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ
-            </button>
+            <button onclick="goBack()" class="btn-menu"><span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ</button>
         </div>
 
         <div class="promo-card">
             <div class="top-label">CONFIRMED BY MRBONUS</div>
             <h1>BETKING</h1>
             <div class="promo-value">200% ДО ДЕПУ <br> + 200 ФРІСПІНІВ</div>
-            
-            <p style="color: #ddd; font-size: 0.95rem; line-height: 1.5; font-weight: 400;">
-                Твій королівський бонус активовано. <br> <b>Забирай свою частку</b> і починай гру прямо зараз.
-            </p>
+            <p style="color: #ddd; font-size: 0.95rem; line-height: 1.5;">Твій королівський бонус активовано. <br> <b>Забирай свою частку</b> прямо зараз.</p>
 
-            <!-- Посилання на казино (через браузер/openLink) -->
             <a href="http://play.mrbonusua.space/betking.html" class="btn-royal js-link">ЗАБРАТИ КОРОНУ 🤴</a>
-            
-            <!-- Посилання на бота (тільки в ТГ) -->
-            <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-royal js-link">🤖 ПЕРЕВІРИТИ ІНШІ АКЦІЇ У TG</a>
+            <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-royal js-link">🤖 ПЕРЕВІРИТИ ІНШІ АКЦІЇ</a>
         </div>
         
-        <p class="sub-text">21+ • VIP ACCESS ONLY • MRBONUS UA</p>
+        <p class="sub-text">21+ • VIP ACCESS • MRBONUS UA</p>
     </div>
 
     <script>
         const tg = window.Telegram ? window.Telegram.WebApp : null;
+        if (tg) { tg.ready(); tg.expand(); }
 
-        // Ініціалізація
-        if (tg) {
-            tg.ready();
-            tg.expand();
-        }
-
-        // Перевірка чи ми в Telegram
-        function isTelegram() {
-            return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0;
-        }
+        function isTelegram() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
 
         function goBack() {
-            if (isTelegram()) {
-                window.location.href = 'index.html';
-            } else {
-                window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
-            }
+            if (isTelegram()) { window.location.href = 'index.html'; } 
+            else { window.history.length > 1 ? window.history.back() : window.location.href = 'index.html'; }
         }
 
         document.querySelectorAll('.js-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 const url = this.getAttribute('href');
-                
                 if (isTelegram()) {
                     e.preventDefault();
-                    
-                    // Якщо посилання на бота - відкриваємо всередині ТГ без браузера
-                    if (url.includes('t.me/')) {
-                        tg.openTelegramLink(url);
-                    } else {
-                        // Для зовнішніх сайтів
-                        tg.openLink(url);
-                    }
+                    if (url.includes('t.me/')) { tg.openTelegramLink(url); } 
+                    else { tg.openLink(url); }
                 }
             });
         });
 
         window.onload = function() {
             setTimeout(function() {
-                const loader = document.getElementById('loader');
-                if (loader) loader.style.opacity = '0';
-                
+                const ld = document.getElementById('loader');
+                if (ld) ld.style.opacity = '0';
                 setTimeout(function() {
-                    if (loader) loader.style.display = 'none';
-                    let content = document.getElementById('content');
-                    if (content) {
-                        content.style.display = 'block';
-                        setTimeout(() => content.style.opacity = '1', 50);
-                    }
+                    if (ld) ld.style.display = 'none';
+                    let ct = document.getElementById('content');
+                    if (ct) { ct.style.display = 'block'; setTimeout(() => ct.style.opacity = '1', 50); }
                 }, 500);
-            }, 1500);
+            }, 1200);
         };
     </script>
 </body>
