@@ -1,1 +1,127 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GG-BET CYBER ACCESS | MRBONUS UA</title>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --cyber-blue: #00f2ff;
+            --dark: #050505;
+        }
+        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+
+        /* Cyber Loading Animation */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 9999;
+            transition: 0.5s;
+        }
+        .cyber-logo { font-size: 3.5rem; filter: drop-shadow(0 0 10px #BF953F); animation: glitch 1s infinite; }
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        .container { max-width: 500px; width: 92%; padding: 40px 15px; text-align: center; display: none; opacity: 0; transition: 0.8s ease-out; }
+        
+        .promo-card { 
+            background: rgba(10, 10, 10, 0.95);
+            border: 1px solid rgba(191, 149, 63, 0.3);
+            border-radius: 15px; 
+            padding: 50px 25px; 
+            box-shadow: 0 0 30px rgba(191, 149, 63, 0.1), inset 0 0 15px rgba(255,255,255,0.02);
+            position: relative;
+        }
+
+        .cyber-label {
+            font-family: 'Cinzel', serif;
+            color: #BF953F;
+            font-size: 0.7rem;
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        h1 { font-family: 'Cinzel', serif; font-size: 2.5rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 5px 0; }
+        
+        .promo-value { font-size: 2.4rem; font-weight: 900; margin: 20px 0; color: #fff; letter-spacing: -1px; text-transform: uppercase; }
+
+        /* Кнопка Казино (Золота Неонова) */
+        .btn-gg { 
+            display: block; background: var(--gold); color: #000; 
+            text-decoration: none; padding: 20px; border-radius: 8px; 
+            font-weight: 900; text-transform: uppercase; letter-spacing: 2px; 
+            margin-top: 30px; font-size: 1.1rem;
+            box-shadow: 0 5px 20px rgba(191,149,63,0.4); transition: 0.3s;
+        }
+        .btn-gg:hover { transform: scale(1.03); box-shadow: 0 8px 30px rgba(191,149,63,0.6); filter: brightness(1.2); }
+
+        /* Кнопка ТГ Бота (Стильна) */
+        .btn-bot-gg {
+            display: block; border: 1px solid rgba(191, 149, 63, 0.5);
+            color: #fff; text-decoration: none; padding: 16px;
+            border-radius: 8px; font-size: 0.85rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 2px;
+            margin-top: 15px; transition: 0.3s;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .btn-bot-gg:hover {
+            background: rgba(191, 149, 63, 0.1);
+            color: #BF953F; border-color: #BF953F;
+            transform: translateY(-2px);
+        }
+
+        .cyber-footer { color: #333; font-size: 0.6rem; margin-top: 40px; font-weight: 800; letter-spacing: 4px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+    <div id="loader">
+        <div class="cyber-logo">🔥</div>
+        <h2 style="font-family:'Cinzel'; background: var(--gold); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:12px; margin-top:20px;">MRBONUS</h2>
+        <p style="color:#444; font-size:0.6rem; letter-spacing:5px; margin-top:10px; font-weight:700;">INITIALIZING CYBER LINK...</p>
+    </div>
+
+    <div class="container" id="content">
+        <div class="promo-card">
+            <div class="cyber-label">GGBET SYSTEM VERIFIED</div>
+            <h1>GG-BET</h1>
+            <div class="promo-value">1000 FS <br> <span style="font-size: 1rem; color: #666;">ACTIVE PACK TODAY</span></div>
+            
+            <p style="color: #999; font-size: 0.9rem; line-height: 1.6; padding: 0 10px;">
+                Ваш доступ до пакету фріспінів підтверджено протоколом <b>MRBONUS</b>. <br> <b>Забирай бонус</b> і починай гру вже зараз.
+            </p>
+
+            <a href="http://play.mrbonusua.space/" target="_blank" class="btn-gg">ЗАБРАТИ 1000 FS 🔥</a>
+            
+            <!-- Кнопка Бота -->
+            <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="btn-bot-gg">🤖 АКТИВУВАТИ У ТГ БОТІ</a>
+        </div>
+        
+        <p class="cyber-footer">LEVEL: ELITE • 21+ • MRBONUS UA</p>
+    </div>
+
+    <script>
+        window.onload = function() {
+            setTimeout(function() {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(function() {
+                    document.getElementById('loader').style.display = 'none';
+                    let content = document.getElementById('content');
+                    content.style.display = 'block';
+                    setTimeout(() => content.style.opacity = '1', 50);
+                }, 500);
+            }, 1600);
+        };
+    </script>
+</body>
+</html>
 
