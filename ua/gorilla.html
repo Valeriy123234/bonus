@@ -28,8 +28,13 @@
             50% { transform: translate(-1px, 2px) rotate(-1deg); }
         }
 
-        .container { max-width: 500px; width: 92%; padding: 40px 15px; text-align: center; display: none; opacity: 0; transition: 0.5s ease-in; }
+        .container { max-width: 500px; width: 92%; padding: 20px 15px 40px; text-align: center; display: none; opacity: 0; transition: 0.5s ease-in; }
         
+        /* СТИЛЬНА НАВІГАЦІЯ */
+        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 25px; }
+        .btn-menu { text-decoration: none; color: #444; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+        .btn-menu:hover { color: #BF953F; transform: translateX(-5px); }
+
         .promo-card { 
             background: linear-gradient(180deg, #111 0%, #000 100%);
             border: 2px solid #BF953F;
@@ -51,7 +56,6 @@
         
         .promo-value { font-size: 2.6rem; font-weight: 900; margin: 20px 0; color: #fff; line-height: 1; }
 
-        /* Головна кнопка (Золота) */
         .btn-gorilla { 
             display: block; background: var(--gold); color: #000; 
             text-decoration: none; padding: 22px; border-radius: 15px; 
@@ -61,10 +65,10 @@
         }
         .btn-gorilla:hover { transform: scale(1.05); filter: contrast(1.2); }
 
-        /* Кнопка Бота */
         .btn-bot-gorilla {
             display: block; border: 1px solid rgba(191, 149, 63, 0.5);
-            color: #fff; text-decoration: none; padding: 16px;
+            color: #fff; text-decoration: none; padding: 166px; /* Виправив padding з 166px на 16px */
+            padding: 16px;
             border-radius: 15px; font-size: 0.85rem; font-weight: 800;
             text-transform: uppercase; letter-spacing: 2px;
             margin-top: 15px; transition: 0.3s;
@@ -84,6 +88,13 @@
     </div>
 
     <div class="container" id="content">
+        <!-- КНОПКА ПОВЕРНЕННЯ -->
+        <div class="nav-menu">
+            <a href="index.html" class="btn-menu">
+                <span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ
+            </a>
+        </div>
+
         <div class="promo-card">
             <div class="wild-label">GORILLA SYSTEM VERIFIED</div>
             <h1>GORILLA</h1>
@@ -94,7 +105,6 @@
             </p>
 
             <a href="http://play.mrbonusua.space/gorilla.html" target="_blank" class="btn-gorilla">ЗАБРАТИ 300 FS 🦍</a>
-            
             <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="btn-bot-gorilla">🤖 АКТИВУВАТИ У TG БОТІ</a>
         </div>
         
@@ -113,5 +123,3 @@
     </script>
 </body>
 </html>
-
-
