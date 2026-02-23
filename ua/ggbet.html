@@ -30,8 +30,13 @@
             100% { transform: translate(0); }
         }
 
-        .container { max-width: 500px; width: 92%; padding: 40px 15px; text-align: center; display: none; opacity: 0; transition: 0.8s ease-out; }
+        .container { max-width: 500px; width: 92%; padding: 20px 15px 40px; text-align: center; display: none; opacity: 0; transition: 0.8s ease-out; }
         
+        /* СТИЛЬНА НАВІГАЦІЯ */
+        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 25px; }
+        .btn-menu { text-decoration: none; color: #444; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+        .btn-menu:hover { color: #BF953F; transform: translateX(-5px); }
+
         .promo-card { 
             background: rgba(10, 10, 10, 0.95);
             border: 1px solid rgba(191, 149, 63, 0.3);
@@ -54,7 +59,6 @@
         
         .promo-value { font-size: 2.4rem; font-weight: 900; margin: 20px 0; color: #fff; letter-spacing: -1px; text-transform: uppercase; }
 
-        /* Кнопка Казино (Золота Неонова) */
         .btn-gg { 
             display: block; background: var(--gold); color: #000; 
             text-decoration: none; padding: 20px; border-radius: 8px; 
@@ -64,7 +68,6 @@
         }
         .btn-gg:hover { transform: scale(1.03); box-shadow: 0 8px 30px rgba(191,149,63,0.6); filter: brightness(1.2); }
 
-        /* Кнопка ТГ Бота (Стильна) */
         .btn-bot-gg {
             display: block; border: 1px solid rgba(191, 149, 63, 0.5);
             color: #fff; text-decoration: none; padding: 16px;
@@ -91,6 +94,13 @@
     </div>
 
     <div class="container" id="content">
+        <!-- КНОПКА ПОВЕРНЕННЯ -->
+        <div class="nav-menu">
+            <a href="index.html" class="btn-menu">
+                <span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ
+            </a>
+        </div>
+
         <div class="promo-card">
             <div class="cyber-label">GGBET SYSTEM VERIFIED</div>
             <h1>GG-BET</h1>
@@ -101,8 +111,6 @@
             </p>
 
             <a href="http://play.mrbonusua.space/" target="_blank" class="btn-gg">ЗАБРАТИ 1000 FS 🔥</a>
-            
-            <!-- Кнопка Бота -->
             <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="btn-bot-gg">🤖 АКТИВУВАТИ У ТГ БОТІ</a>
         </div>
         
@@ -124,4 +132,3 @@
     </script>
 </body>
 </html>
-
