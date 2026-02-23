@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PARIK 24 VIP ACCESS | MRBONUS UA</title>
-    <!-- Підключення Telegram WebApp SDK -->
+    <!-- SDK Telegram -->
     <script src="https://telegram.org"></script>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
@@ -13,73 +13,71 @@
             --parik-yellow: #f5ff00;
             --dark: #080808;
         }
-        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow: hidden; }
 
         /* VIP Parik Loader */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; display: flex; flex-direction: column;
             justify-content: center; align-items: center; z-index: 9999;
-            transition: 0.6s;
+            transition: 0.6s; opacity: 1;
         }
         .parik-icon { font-size: 3.5rem; color: #f5ff00; filter: drop-shadow(0 0 15px rgba(245, 255, 0, 0.5)); animation: pulse-parik 1.5s infinite; }
         @keyframes pulse-parik { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
 
-        .container { max-width: 500px; width: 92%; padding: 20px 15px 40px; text-align: center; display: none; opacity: 0; transition: 1s ease-in-out; }
+        .container { max-width: 450px; width: 92%; padding: 10px 15px 35px; text-align: center; display: none; opacity: 0; transition: 0.8s ease; box-sizing: border-box; }
         
-        /* НАВІГАЦІЯ */
-        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 25px; }
+        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 15px; }
         .btn-menu { 
-            text-decoration: none; color: #444; font-size: 0.7rem; font-weight: 800; 
+            text-decoration: none; color: #444; font-size: 0.65rem; font-weight: 800; 
             letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; 
-            display: flex; align-items: center; gap: 8px; cursor: pointer;
-            background: none; border: none; padding: 0;
+            display: flex; align-items: center; gap: 6px; cursor: pointer;
+            background: none; border: none; padding: 10px 0;
         }
-        .btn-menu:hover { color: #BF953F; transform: translateX(-5px); }
+        .btn-menu:hover { color: #BF953F; }
 
         .promo-card { 
             background: rgba(15, 15, 15, 0.98);
             border: 2px solid #BF953F;
-            border-radius: 20px; 
-            padding: 55px 25px; 
+            border-radius: 25px; 
+            padding: 35px 20px; 
             box-shadow: 0 0 60px rgba(0,0,0,1);
             position: relative;
         }
 
-        .verified-badge {
-            font-family: 'Cinzel', serif;
-            color: #BF953F;
-            font-size: 0.7rem;
-            letter-spacing: 5px;
-            margin-bottom: 12px;
-            font-weight: 800;
-        }
+        .verified-badge { font-family: 'Cinzel', serif; color: #BF953F; font-size: 0.65rem; letter-spacing: 4px; margin-bottom: 10px; font-weight: 800; }
+        h1 { font-family: 'Cinzel', serif; font-size: 2.2rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
+        .promo-value { font-size: 2.2rem; font-weight: 900; margin: 15px 0; color: #fff; line-height: 1.1; }
 
-        h1 { font-family: 'Cinzel', serif; font-size: 2.6rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 5px 0; }
-        
-        .promo-value { font-size: 2.3rem; font-weight: 900; margin: 25px 0; color: #fff; line-height: 1.1; }
-
+        /* ВЕЛИКА КНОПКА З ПУЛЬСАЦІЄЮ */
         .btn-parik { 
             display: block; background: var(--gold); color: #000; 
-            text-decoration: none; padding: 22px; border-radius: 12px; 
-            font-weight: 900; text-transform: uppercase; letter-spacing: 1px; 
-            margin-top: 35px; font-size: 1.2rem; text-align: center;
-            box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.3s;
+            text-decoration: none; padding: 22px 10px; border-radius: 15px; 
+            font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; 
+            margin-top: 25px; font-size: 1.3rem; text-align: center;
+            box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.2s;
             cursor: pointer; border: none; width: 100%;
+            box-sizing: border-box;
+            animation: parik-pulse 2s infinite;
         }
-        .btn-parik:hover { transform: translateY(-4px); box-shadow: 0 15px 45px rgba(191,149,63,0.6); filter: brightness(1.2); }
+        @keyframes parik-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); }
+            70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); }
+            100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); }
+        }
+        .btn-parik:active { transform: scale(0.98); filter: brightness(0.9); }
 
         .btn-bot-parik {
-            display: block; border: 1px solid rgba(191, 149, 63, 0.6);
-            color: #fff; text-decoration: none; padding: 18px;
-            border-radius: 12px; font-size: 0.85rem; font-weight: 800;
-            text-transform: uppercase; letter-spacing: 2px; text-align: center;
+            display: block; border: 1px solid rgba(191, 149, 63, 0.4);
+            color: #777; text-decoration: none; padding: 16px;
+            border-radius: 15px; font-size: 0.85rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1px; text-align: center;
             margin-top: 15px; transition: 0.3s; cursor: pointer;
             background: rgba(255, 255, 255, 0.02);
         }
-        .btn-bot-parik:hover { background: rgba(191, 149, 63, 0.15); color: #BF953F; border-color: #BF953F; }
+        .btn-bot-parik:hover { color: #fff; border-color: #BF953F; }
 
-        .vip-footer { color: #222; font-size: 0.65rem; margin-top: 45px; font-weight: 900; letter-spacing: 4px; text-transform: uppercase; }
+        .vip-footer { color: #222; font-size: 0.6rem; margin-top: 35px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -87,23 +85,21 @@
     <div id="loader">
         <div class="parik-icon">🟧</div>
         <h2 style="font-family:'Cinzel'; background: var(--gold); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:12px; margin-top:20px;">MRBONUS</h2>
-        <p style="color:#BF953F; font-size:0.6rem; letter-spacing:5px; margin-top:10px;">ESTABLISHING PARIK CONNECTION...</p>
+        <p style="color:#BF953F; font-size:0.55rem; letter-spacing:3px; margin-top:10px; font-weight:bold;">ESTABLISHING PARIK CONNECTION...</p>
     </div>
 
     <div class="container" id="content">
         <div class="nav-menu">
-            <button onclick="goBack()" class="btn-menu">
-                <span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ
-            </button>
+            <button onclick="goBack()" class="btn-menu"><span>←</span> НАЗАД</button>
         </div>
 
         <div class="promo-card">
             <div class="verified-badge">SECURED BY VIP CONCIERGE</div>
             <h1>PARIK 24</h1>
-            <div class="promo-value">100% НА ДЕП <br> + 150 FS <span style="font-size: 0.9rem; display: block; color: #888; margin-top: 5px;">EXCLUSIVE PACK</span></div>
+            <div class="promo-value">100% НА ДЕП <br> + 150 FS <span style="font-size: 0.9rem; display: block; color: #555; margin-top: 5px;">EXCLUSIVE PACK</span></div>
             
-            <p style="color: #ddd; font-size: 0.9rem; line-height: 1.6; font-weight: 500; padding: 0 10px;">
-                Твій пакет привілеїв у Parik24 успішно активовано сервісом <b>MRBONUS</b>. <br> <b>Забирай своє</b> і починай гру вже зараз.
+            <p style="color: #888; font-size: 0.9rem; line-height: 1.5; margin: 0;">
+                Твій пакет привілеїв у Parik24 успішно активовано сервісом <b>MRBONUS</b>. <br> Забирай своє та починай гру вже зараз.
             </p>
 
             <a href="https://play.mrbonusua.space/parik24.html" class="btn-parik js-link">ЗАБРАТИ 150 FS 💎</a>
@@ -114,15 +110,14 @@
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
+        const tg = window.Telegram ? window.Telegram.WebApp : null;
+        if (tg) { tg.ready(); tg.expand(); }
 
-        if (tg.initData) {
-            tg.ready();
-            tg.expand();
-        }
+        function isTg() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
 
         function goBack() {
-            if (tg.initData) {
+            if (isTg()) {
+                if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
                 window.location.href = 'index.html';
             } else {
                 window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
@@ -132,23 +127,25 @@
         document.querySelectorAll('.js-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 const url = this.getAttribute('href');
-                if (tg.initData && url.startsWith('http')) {
+                if (isTg()) {
                     e.preventDefault();
-                    tg.openLink(url);
+                    if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                    if (url.includes('t.me/')) { tg.openTelegramLink(url); } 
+                    else { tg.openLink(url); }
                 }
             });
         });
 
         window.onload = function() {
             setTimeout(function() {
-                document.getElementById('loader').style.opacity = '0';
+                const ld = document.getElementById('loader');
+                if (ld) ld.style.opacity = '0';
                 setTimeout(function() {
-                    document.getElementById('loader').style.display = 'none';
-                    let content = document.getElementById('content');
-                    content.style.display = 'block';
-                    setTimeout(() => content.style.opacity = '1', 50);
+                    if (ld) ld.style.display = 'none';
+                    let ct = document.getElementById('content');
+                    if (ct) { ct.style.display = 'block'; setTimeout(() => ct.style.opacity = '1', 50); }
                 }, 500);
-            }, 1600);
+            }, 1400);
         };
     </script>
 </body>
