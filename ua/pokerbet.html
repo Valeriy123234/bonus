@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POKER-BET VIP ACCESS | MRBONUS UA</title>
-    <!-- Підключення Telegram WebApp SDK -->
+    <!-- SDK Telegram -->
     <script src="https://telegram.org"></script>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
@@ -12,78 +12,75 @@
             --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
             --dark: #050505;
         }
-        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow: hidden; }
 
         /* Poker Card Loader */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; display: flex; flex-direction: column;
             justify-content: center; align-items: center; z-index: 9999;
-            transition: 0.6s ease;
+            transition: 0.6s ease; opacity: 1;
         }
-        .ace-icon { font-size: 4rem; animation: flip-card 2s infinite; color: #BF953F; }
+        .ace-icon { font-size: 3.5rem; animation: flip-card 2s infinite; color: #BF953F; }
         @keyframes flip-card {
             0% { transform: rotateY(0); }
             50% { transform: rotateY(180deg); }
             100% { transform: rotateY(360deg); }
         }
 
-        .container { max-width: 500px; width: 92%; padding: 20px 15px 40px; text-align: center; display: none; opacity: 0; transition: 1s ease; }
+        .container { max-width: 450px; width: 92%; padding: 10px 15px 35px; text-align: center; display: none; opacity: 0; transition: 0.8s ease; box-sizing: border-box; }
         
-        /* НАВІГАЦІЯ */
-        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 25px; }
+        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 15px; }
         .btn-menu { 
-            text-decoration: none; color: #444; font-size: 0.7rem; font-weight: 800; 
+            text-decoration: none; color: #444; font-size: 0.65rem; font-weight: 800; 
             letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; 
-            display: flex; align-items: center; gap: 8px; cursor: pointer;
-            background: none; border: none; padding: 0;
+            display: flex; align-items: center; gap: 6px; cursor: pointer;
+            background: none; border: none; padding: 10px 0;
         }
-        .btn-menu:hover { color: #BF953F; transform: translateX(-5px); }
+        .btn-menu:hover { color: #BF953F; }
 
         .promo-card { 
             background: rgba(15, 15, 15, 0.95);
-            border: 1px solid rgba(191, 149, 63, 0.4);
+            border: 2px solid #BF953F;
             border-radius: 25px; 
-            padding: 50px 25px; 
+            padding: 35px 20px; 
             box-shadow: 0 0 50px rgba(0,0,0,1);
             position: relative;
-            background-image: radial-gradient(circle at top right, rgba(191,149,63,0.05) 0%, transparent 70%);
         }
 
-        .verified-label {
-            font-family: 'Cinzel', serif;
-            color: #BF953F;
-            font-size: 0.7rem;
-            letter-spacing: 5px;
-            margin-bottom: 12px;
-            font-weight: 800;
-        }
+        .verified-label { font-family: 'Cinzel', serif; color: #BF953F; font-size: 0.65rem; letter-spacing: 4px; margin-bottom: 10px; font-weight: 800; }
+        h1 { font-family: 'Cinzel', serif; font-size: 2.2rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
+        .promo-value { font-size: 2.1rem; font-weight: 900; margin: 15px 0; color: #fff; line-height: 1.1; }
 
-        h1 { font-family: 'Cinzel', serif; font-size: 2.4rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 5px 0; }
-        
-        .promo-value { font-size: 2.2rem; font-weight: 900; margin: 20px 0; color: #fff; line-height: 1.2; text-shadow: 0 0 15px rgba(191,149,63,0.3); }
-
+        /* ВЕЛИКА КНОПКА З ПУЛЬСАЦІЄЮ */
         .btn-poker { 
             display: block; background: var(--gold); color: #000; 
-            text-decoration: none; padding: 22px; border-radius: 12px; 
-            font-weight: 900; text-transform: uppercase; letter-spacing: 1px; 
-            margin-top: 30px; font-size: 1.1rem; text-align: center;
-            box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.4s;
+            text-decoration: none; padding: 22px 10px; border-radius: 15px; 
+            font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; 
+            margin-top: 25px; font-size: 1.3rem; text-align: center;
+            box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.2s;
             cursor: pointer; border: none; width: 100%;
+            box-sizing: border-box;
+            animation: poker-pulse 2s infinite;
         }
-        .btn-poker:hover { transform: translateY(-4px); box-shadow: 0 15px 45px rgba(191,149,63,0.6); filter: brightness(1.2); }
+        @keyframes poker-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); }
+            70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); }
+            100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); }
+        }
+        .btn-poker:active { transform: scale(0.98); filter: brightness(0.9); }
 
         .btn-bot-poker {
-            display: block; border: 1px solid rgba(191, 149, 63, 0.6);
-            color: #fff; text-decoration: none; padding: 18px;
-            border-radius: 12px; font-size: 0.85rem; font-weight: 800;
-            text-transform: uppercase; letter-spacing: 2px; text-align: center;
+            display: block; border: 1px solid rgba(191, 149, 63, 0.4);
+            color: #777; text-decoration: none; padding: 16px;
+            border-radius: 15px; font-size: 0.85rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1px; text-align: center;
             margin-top: 15px; transition: 0.3s; cursor: pointer;
             background: rgba(255, 255, 255, 0.02);
         }
-        .btn-bot-poker:hover { background: rgba(191, 149, 63, 0.15); color: #BF953F; border-color: #BF953F; transform: translateY(-2px); }
+        .btn-bot-poker:hover { color: #fff; border-color: #BF953F; }
 
-        .vip-footer { color: #333; font-size: 0.6rem; margin-top: 45px; font-weight: 900; letter-spacing: 4px; text-transform: uppercase; }
+        .vip-footer { color: #222; font-size: 0.6rem; margin-top: 35px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -91,23 +88,21 @@
     <div id="loader">
         <div class="ace-icon">🃏</div>
         <h2 style="font-family:'Cinzel'; background: var(--gold); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:12px; margin-top:20px;">MRBONUS</h2>
-        <p style="color:#BF953F; font-size:0.6rem; letter-spacing:5px; margin-top:10px;">DEALING YOUR VIP CARDS...</p>
+        <p style="color:#BF953F; font-size:0.55rem; letter-spacing:3px; margin-top:10px; font-weight:bold;">DEALING YOUR VIP CARDS...</p>
     </div>
 
     <div class="container" id="content">
         <div class="nav-menu">
-            <button onclick="goBack()" class="btn-menu">
-                <span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ
-            </button>
+            <button onclick="goBack()" class="btn-menu"><span>←</span> НАЗАД</button>
         </div>
 
         <div class="promo-card">
             <div class="verified-label">ELITE POKER STATUS</div>
             <h1>POKER-BET</h1>
-            <div class="promo-value">100% ДО ДЕПУ <br> + 650 FS <span style="font-size: 1rem; display: block; color: #888; margin-top: 5px;">EXCLUSIVE WELCOME PACK</span></div>
+            <div class="promo-value">100% ДО ДЕПУ <br> + 650 FS <span style="font-size: 1rem; display: block; color: #555; margin-top: 5px;">EXCLUSIVE WELCOME PACK</span></div>
             
-            <p style="color: #bbb; font-size: 0.9rem; line-height: 1.6; font-weight: 500; padding: 0 10px;">
-                Ваш стартовий пакет підтверджено сервісом <b>MRBONUS</b>. <br> <b>Забирайте свої карти</b> та розпочинайте гру вже зараз.
+            <p style="color: #888; font-size: 0.9rem; line-height: 1.5; margin: 0;">
+                Ваш стартовий пакет підтверджено сервісом <b>MRBONUS</b>. <br> Забирайте свої карти та розпочинайте гру вже зараз.
             </p>
 
             <a href="http://play.mrbonusua.space/pokerbet.html" class="btn-poker js-link">ЗАБРАТИ 650 FS 💎</a>
@@ -118,15 +113,14 @@
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
+        const tg = window.Telegram ? window.Telegram.WebApp : null;
+        if (tg) { tg.ready(); tg.expand(); }
 
-        if (tg.initData) {
-            tg.ready();
-            tg.expand();
-        }
+        function isTg() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
 
         function goBack() {
-            if (tg.initData) {
+            if (isTg()) {
+                if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
                 window.location.href = 'index.html';
             } else {
                 window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
@@ -136,23 +130,25 @@
         document.querySelectorAll('.js-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 const url = this.getAttribute('href');
-                if (tg.initData && url.startsWith('http')) {
+                if (isTg()) {
                     e.preventDefault();
-                    tg.openLink(url);
+                    if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                    if (url.includes('t.me/')) { tg.openTelegramLink(url); } 
+                    else { tg.openLink(url); }
                 }
             });
         });
 
         window.onload = function() {
             setTimeout(function() {
-                document.getElementById('loader').style.opacity = '0';
+                const ld = document.getElementById('loader');
+                if (ld) ld.style.opacity = '0';
                 setTimeout(function() {
-                    document.getElementById('loader').style.display = 'none';
-                    let content = document.getElementById('content');
-                    content.style.display = 'block';
-                    setTimeout(() => content.style.opacity = '1', 50);
+                    if (ld) ld.style.display = 'none';
+                    let ct = document.getElementById('content');
+                    if (ct) { ct.style.display = 'block'; setTimeout(() => ct.style.opacity = '1', 50); }
                 }, 500);
-            }, 1800);
+            }, 1400);
         };
     </script>
 </body>
