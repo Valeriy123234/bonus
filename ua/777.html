@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VIP MRBONUS | 777 CASINO</title>
-    <!-- ПІДКЛЮЧЕННЯ TELEGRAM SDK -->
+    <!-- SDK Telegram (не заважає браузеру) -->
     <script src="https://telegram.org"></script>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
@@ -14,112 +14,81 @@
         }
         body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
 
-        /* Анімація завантаження */
+        /* Лоадер - завжди на весь екран спочатку */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #0a0a0a; display: flex; flex-direction: column;
             justify-content: center; align-items: center; z-index: 9999;
-            transition: opacity 0.8s ease;
+            opacity: 1; transition: opacity 0.5s ease;
         }
         #loader h2 {
-            font-family: 'Cinzel', serif;
-            background: var(--gold);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 2.5rem;
-            letter-spacing: 8px;
-            animation: pulse 1.5s infinite;
+            font-family: 'Cinzel', serif; background: var(--gold);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-size: 2.5rem; letter-spacing: 8px; animation: pulse 1.5s infinite;
         }
-        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
-        /* Контейнер прихований через display: none */
-        .container { 
-            max-width: 500px; 
-            width: 90%; 
-            padding: 20px 20px 40px; 
-            text-align: center; 
-            display: none; 
-            opacity: 0; 
-            transform: translateY(20px); 
-            transition: opacity 0.8s ease, transform 0.8s ease; 
-        }
-
-        /* Клас для відображення */
-        .container.show { 
-            display: block !important; 
-            opacity: 1 !important; 
-            transform: translateY(0); 
+        /* Контейнер прихований через opacity та display */
+        #main-content { 
+            max-width: 500px; width: 90%; padding: 20px 20px 40px; 
+            text-align: center; display: none; opacity: 0; 
+            transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; 
         }
 
         .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 25px; }
-        .btn-menu {
-            text-decoration: none; color: #555; font-size: 0.7rem; font-weight: 800;
-            letter-spacing: 2px; text-transform: uppercase; transition: 0.3s;
-            display: flex; align-items: center; gap: 8px; cursor: pointer;
-            background: none; border: none; padding: 0;
-        }
-        .btn-menu:hover { color: #BF953F; transform: translateX(-5px); }
+        .btn-menu { text-decoration: none; color: #555; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; background: none; border: none; padding: 0; }
+        .btn-menu:hover { color: #BF953F; }
 
         .promo-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(191,149,63,0.2); border-radius: 25px; padding: 45px 25px; backdrop-filter: blur(15px); box-shadow: 0 30px 70px rgba(0,0,0,0.7); }
         .lucky-icons { font-size: 2rem; margin-bottom: 10px; letter-spacing: 10px; }
         h1 { font-family: 'Cinzel', serif; font-size: 2rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
-        .promo-value { font-size: 2.2rem; font-weight: 800; margin: 15px 0; color: #fff; text-shadow: 0 0 20px rgba(191, 149, 63, 0.4); }
-        .status-badge { display: inline-block; padding: 6px 18px; border-radius: 50px; background: rgba(191, 149, 63, 0.1); border: 1px solid #BF953F; color: #BF953F; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; margin-bottom: 25px; }
+        .promo-value { font-size: 2.2rem; font-weight: 800; margin: 15px 0; color: #fff; }
+        .status-badge { display: inline-block; padding: 6px 18px; border-radius: 50px; background: rgba(191, 149, 63, 0.1); border: 1px solid #BF953F; color: #BF953F; font-size: 0.7rem; font-weight: 700; margin-bottom: 25px; }
 
-        .btn-casino { display: block; background: var(--gold); color: #000; text-decoration: none; padding: 20px; border-radius: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 30px rgba(191, 149, 63, 0.4); transition: 0.3s; margin-top: 20px; font-size: 1.1rem; text-align: center; border: none; width: 100%; cursor: pointer; }
-        .btn-casino:hover { transform: scale(1.03); box-shadow: 0 15px 40px rgba(191, 149, 63, 0.6); }
-
-        .btn-bot { 
-            display: block; border: 1px solid rgba(191, 149, 63, 0.5); 
-            color: #fff; text-decoration: none; padding: 16px; 
-            border-radius: 12px; font-size: 0.85rem; font-weight: 700; 
-            text-transform: uppercase; letter-spacing: 1px; margin-top: 15px; 
-            transition: 0.3s; background: rgba(255, 255, 255, 0.03); cursor: pointer; text-align: center;
-        }
-        .btn-bot:hover { background: rgba(191, 149, 63, 0.1); border-color: #BF953F; color: #BF953F; transform: translateY(-2px); }
-        .footer-text { margin-top: 40px; font-size: 0.6rem; color: #333; text-transform: uppercase; letter-spacing: 2px; }
+        .btn-casino { display: block; background: var(--gold); color: #000; text-decoration: none; padding: 20px; border-radius: 12px; font-weight: 800; text-transform: uppercase; margin-top: 20px; font-size: 1.1rem; text-align: center; box-shadow: 0 10px 30px rgba(191,149,63,0.3); }
+        .btn-bot { display: block; border: 1px solid rgba(191, 149, 63, 0.5); color: #fff; text-decoration: none; padding: 16px; border-radius: 12px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; margin-top: 15px; text-align: center; background: rgba(255, 255, 255, 0.03); }
     </style>
 </head>
 <body>
 
     <div id="loader">
         <h2>MRBONUS</h2>
-        <p style="color: #444; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; margin-top: 15px;">Verifying VIP Access...</p>
+        <p style="color: #444; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; margin-top: 15px;">Verifying Access...</p>
     </div>
 
-    <div class="container" id="main-content">
+    <div id="main-content">
         <div class="nav-menu">
-            <button onclick="goBack()" class="btn-menu"><span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ</button>
+            <!-- Розумне повернення -->
+            <button onclick="goBack()" class="btn-menu">← ПОВЕРНУТИСЯ</button>
         </div>
-
         <div class="promo-card">
-            <div class="status-badge">АКТИВОВАНО ДЛЯ ВАС</div>
+            <div class="status-badge">АКТИВОВАНО</div>
             <div class="lucky-icons">🎰 🎰 🎰</div>
             <h1>777 CASINO</h1> 
             <div class="promo-value">777 ФРІСПІНІВ</div> 
-            
             <p style="color: #888; font-size: 0.85rem; line-height: 1.6; margin-bottom: 30px;">
                 Вітаємо! Ваш VIP-статус підтверджено. <br> Заберіть свій бонус від <b>MRBONUS</b> зараз.
             </p>
-
-            <a href="http://play.mrbonusua.space/777.html" class="btn-casino js-link">ЗАБРАТИ 777 FS 💎</a>
-            <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot js-link">🤖 АКТИВУВАТИ ЧЕРЕЗ ТГ БОТ</a>
+            <a href="http://play.mrbonusua.space" class="btn-casino js-link">ЗАБРАТИ 777 FS 💎</a>
+            <a href="https://t.me" class="btn-bot js-link">🤖 ТЕЛЕГРАМ БОТ</a>
         </div>
-        
-        <p class="footer-text">VIP MRBONUS UA 2026. 21+ Only.</p>
+        <p style="margin-top: 40px; font-size: 0.6rem; color: #333; letter-spacing: 2px; text-transform: uppercase;">VIP MRBONUS UA 2026. 21+</p>
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
+        // Ініціалізація Telegram
+        const tg = window.Telegram ? window.Telegram.WebApp : null;
 
-        // Ініціалізація
-        tg.ready();
-        tg.expand();
+        // Повідомляємо TG, що додаток готовий (якщо ми в TG)
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
 
+        // Функція повернення назад (працює всюди)
         function goBack() {
-            // Перевірка на Mini App: якщо є initData, значить ми в ТГ
             if (tg && tg.initData && tg.initData.length > 0) {
-                window.location.href = 'index.html';
+                window.location.href = 'index.html'; // В ТГ повертаємось на головну
             } else {
                 window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
             }
@@ -127,32 +96,37 @@
 
         // Універсальне відкриття посилань
         document.querySelectorAll('.js-link').forEach(link => {
-            link.addEventListener('click', function(e) {
+            link.onclick = function(e) {
                 const url = this.getAttribute('href');
-                if (tg && tg.initData && tg.initData.length > 0 && url.startsWith('http')) {
+                // Якщо ми в Telegram Mini App - відкриваємо внутрішнім методом
+                if (tg && tg.initData && tg.initData.length > 0) {
                     e.preventDefault();
                     tg.openLink(url);
-                }
-            });
+                } 
+                // В Гуглі просто спрацює звичайний перехід
+            };
         });
 
+        // ЛОГІКА ЛОАДЕРА (Примусова)
         window.onload = function() {
-            setTimeout(function() {
+            setTimeout(() => {
                 const loader = document.getElementById('loader');
                 const content = document.getElementById('main-content');
                 
                 if (loader) loader.style.opacity = '0';
                 
-                setTimeout(function() {
+                setTimeout(() => {
                     if (loader) loader.style.display = 'none';
                     if (content) {
-                        content.style.display = 'block'; // Примусово вмикаємо відображення
+                        content.style.display = 'block'; // Вмикаємо в DOM
+                        // Плавна поява
                         setTimeout(() => {
-                            content.classList.add('show');
+                            content.style.opacity = '1';
+                            content.style.transform = 'translateY(0)';
                         }, 50);
                     }
-                }, 800);
-            }, 1500);
+                }, 500);
+            }, 1000); // 1 секунда на лоадер
         };
     </script>
 </body>
