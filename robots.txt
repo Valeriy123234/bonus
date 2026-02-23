@@ -1,7 +1,6 @@
 User-agent: *
 Disallow: /
 Allow: /ua/
-
 Allow: /ua/index.html
 Allow: /ua/777.html
 Allow: /ua/betking.html
@@ -12,10 +11,9 @@ Allow: /ua/first.html
 Allow: /ua/ggbet.html
 Allow: /ua/gorilla.html
 Allow: /ua/parik24.html
-Allow:/ua/pokerbet.html
+Allow: /ua/pokerbet.html
 Allow: /ua/slotscity.html
 Allow: /ua/vegas.html
-
 Sitemap: https://play.mrbonusua.space/ua
 
 
