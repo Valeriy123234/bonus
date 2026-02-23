@@ -4,86 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VEGAS NIGHT ACCESS | VIP MRBONUS</title>
-    <!-- Підключення Telegram WebApp SDK -->
+    <!-- SDK Telegram -->
     <script src="https://telegram.org"></script>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
         :root {
             --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
-            --neon-pink: #ff00ff;
             --dark: #050505;
         }
-        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow: hidden; }
 
         /* Neon Vegas Loader */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; display: flex; flex-direction: column;
             justify-content: center; align-items: center; z-index: 9999;
-            transition: 0.7s ease-in-out;
+            transition: 0.7s ease-in-out; opacity: 1;
         }
         .neon-circle { 
-            width: 80px; height: 80px; border: 4px solid #BF953F; border-radius: 50%;
+            width: 70px; height: 70px; border: 4px solid #BF953F; border-radius: 50%;
             border-top-color: transparent; animation: spin 1s infinite linear;
             filter: drop-shadow(0 0 15px #BF953F);
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .container { max-width: 500px; width: 92%; padding: 20px 15px 40px; text-align: center; display: none; opacity: 0; transition: 1.2s; }
+        .container { max-width: 450px; width: 92%; padding: 10px 15px 35px; text-align: center; display: none; opacity: 0; transition: 0.8s ease; box-sizing: border-box; }
         
-        /* СТИЛЬНА НАВІГАЦІЯ */
-        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 25px; }
+        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 15px; }
         .btn-menu { 
-            text-decoration: none; color: #444; font-size: 0.7rem; font-weight: 800; 
+            text-decoration: none; color: #444; font-size: 0.65rem; font-weight: 800; 
             letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; 
-            display: flex; align-items: center; gap: 8px; cursor: pointer;
-            background: none; border: none; padding: 0;
+            display: flex; align-items: center; gap: 6px; cursor: pointer;
+            background: none; border: none; padding: 10px 0;
         }
-        .btn-menu:hover { color: #BF953F; transform: translateX(-5px); }
+        .btn-menu:hover { color: #BF953F; }
 
         .promo-card { 
             background: rgba(10, 10, 10, 0.98);
-            border: 1px solid rgba(191, 149, 63, 0.4);
-            border-radius: 30px; 
-            padding: 55px 25px; 
-            box-shadow: 0 0 70px rgba(0,0,0,1), inset 0 0 20px rgba(191,149,63,0.05);
+            border: 2px solid rgba(191, 149, 63, 0.4);
+            border-radius: 25px; 
+            padding: 35px 20px; 
+            box-shadow: 0 0 70px rgba(0,0,0,1);
             position: relative;
         }
 
-        .vegas-label {
-            font-family: 'Cinzel', serif;
-            color: #BF953F;
-            font-size: 0.7rem;
-            letter-spacing: 6px;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-        }
+        .vegas-label { font-family: 'Cinzel', serif; color: #BF953F; font-size: 0.65rem; letter-spacing: 4px; margin-bottom: 10px; text-transform: uppercase; }
+        h1 { font-family: 'Cinzel', serif; font-size: 2.2rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
+        .promo-value { font-size: 2.1rem; font-weight: 900; margin: 15px 0; color: #fff; line-height: 1.1; }
 
-        h1 { font-family: 'Cinzel', serif; font-size: 2.8rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 5px 0; }
-        
-        .promo-value { font-size: 2.4rem; font-weight: 900; margin: 25px 0; color: #fff; line-height: 1.1; }
-
+        /* ВЕЛИКА КНОПКА З ПУЛЬСАЦІЄЮ */
         .btn-vegas { 
             display: block; background: var(--gold); color: #000; 
-            text-decoration: none; padding: 22px; border-radius: 15px; 
-            font-weight: 900; text-transform: uppercase; letter-spacing: 2px; 
-            margin-top: 35px; font-size: 1.2rem; text-align: center;
-            box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.4s;
+            text-decoration: none; padding: 22px 10px; border-radius: 15px; 
+            font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; 
+            margin-top: 25px; font-size: 1.3rem; text-align: center;
+            box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.2s;
             cursor: pointer; border: none; width: 100%;
+            box-sizing: border-box;
+            animation: vegas-pulse 2s infinite;
         }
-        .btn-vegas:hover { transform: scale(1.05); filter: brightness(1.2); box-shadow: 0 15px 45px rgba(191,149,63,0.7); }
+        @keyframes vegas-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); }
+            70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); }
+            100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); }
+        }
+        .btn-vegas:active { transform: scale(0.98); filter: brightness(0.9); }
 
         .btn-bot-vegas {
-            display: block; border: 1px solid rgba(191, 149, 63, 0.6);
-            color: #fff; text-decoration: none; padding: 18px;
+            display: block; border: 1px solid rgba(191, 149, 63, 0.4);
+            color: #777; text-decoration: none; padding: 18px;
             border-radius: 15px; font-size: 0.85rem; font-weight: 800;
-            text-transform: uppercase; letter-spacing: 2px; text-align: center;
+            text-transform: uppercase; letter-spacing: 1px; text-align: center;
             margin-top: 15px; transition: 0.3s; cursor: pointer;
             background: rgba(255, 255, 255, 0.02);
         }
-        .btn-bot-vegas:hover { background: rgba(191, 149, 63, 0.15); color: #BF953F; border-color: #BF953F; }
+        .btn-bot-vegas:hover { color: #fff; border-color: #BF953F; }
 
-        .footer-vegas { color: #222; font-size: 0.6rem; margin-top: 50px; font-weight: 900; letter-spacing: 5px; text-transform: uppercase; }
+        .footer-vegas { color: #222; font-size: 0.6rem; margin-top: 35px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -91,23 +88,21 @@
     <div id="loader">
         <div class="neon-circle"></div>
         <h2 style="font-family:'Cinzel'; background: var(--gold); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:15px; margin-top:30px;">MRBONUS</h2>
-        <p style="color:#444; font-size:0.6rem; letter-spacing:5px; margin-top:10px; font-weight:700;">WELCOME TO THE CITY OF DREAMS...</p>
+        <p style="color:#333; font-size:0.55rem; letter-spacing:3px; margin-top:10px; font-weight:bold;">WELCOME TO THE CITY OF DREAMS...</p>
     </div>
 
     <div class="container" id="content">
         <div class="nav-menu">
-            <button onclick="goBack()" class="btn-menu">
-                <span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ
-            </button>
+            <button onclick="goBack()" class="btn-menu"><span>←</span> НАЗАД</button>
         </div>
 
         <div class="promo-card">
             <div class="vegas-label">VEGAS ACCESS GRANTED</div>
             <h1>VEGAS</h1>
-            <div class="promo-value">150 FS <br> <span style="font-size: 1rem; color: #888; font-weight: 400;">NIGHT SPECIAL PACK</span></div>
+            <div class="promo-value">150 FS <br> <span style="font-size: 1rem; color: #555; font-weight: 600;">NIGHT SPECIAL</span></div>
             
-            <p style="color: #ddd; font-size: 0.95rem; line-height: 1.6; font-weight: 500; padding: 0 10px;">
-                Твій пакет вечірніх фріспінів підтверджено консьєрж-сервісом <b>MRBONUS</b>. <br> <b>Забирай свій квиток</b> у гру прямо зараз.
+            <p style="color: #888; font-size: 0.9rem; line-height: 1.5; margin: 0;">
+                Твій пакет вечірніх фріспінів підтверджено сервісом <b>MRBONUS</b>. <br> Забирай свій квиток у гру прямо зараз.
             </p>
 
             <a href="http://play.mrbonusua.space/vegas.html" class="btn-vegas js-link">ВХІД У VEGAS 🌃</a>
@@ -118,44 +113,42 @@
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
+        const tg = window.Telegram ? window.Telegram.WebApp : null;
+        if (tg) { tg.ready(); tg.expand(); }
 
-        // Ініціалізація Telegram Mini App
-        if (tg.initData) {
-            tg.ready();
-            tg.expand();
-        }
+        function isTg() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
 
-        // Логіка повернення
         function goBack() {
-            if (tg.initData) {
+            if (isTg()) {
+                if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
                 window.location.href = 'index.html';
             } else {
                 window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
             }
         }
 
-        // Універсальне відкриття посилань
         document.querySelectorAll('.js-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 const url = this.getAttribute('href');
-                if (tg.initData && url.startsWith('http')) {
+                if (isTg()) {
                     e.preventDefault();
-                    tg.openLink(url);
+                    if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                    if (url.includes('t.me/')) { tg.openTelegramLink(url); } 
+                    else { tg.openLink(url); }
                 }
             });
         });
 
         window.onload = function() {
             setTimeout(function() {
-                document.getElementById('loader').style.opacity = '0';
+                const ld = document.getElementById('loader');
+                if (ld) ld.style.opacity = '0';
                 setTimeout(function() {
-                    document.getElementById('loader').style.display = 'none';
-                    let content = document.getElementById('content');
-                    content.style.display = 'block';
-                    setTimeout(() => content.style.opacity = '1', 50);
+                    if (ld) ld.style.display = 'none';
+                    let ct = document.getElementById('content');
+                    if (ct) { ct.style.display = 'block'; setTimeout(() => ct.style.opacity = '1', 50); }
                 }, 700);
-            }, 1800);
+            }, 1400);
         };
     </script>
 </body>
