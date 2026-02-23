@@ -22,8 +22,13 @@
         .euro-symbol { font-size: 4rem; color: #BF953F; animation: rotate-euro 2s infinite linear; }
         @keyframes rotate-euro { 0% { transform: rotateY(0); } 100% { transform: rotateY(360deg); } }
 
-        .container { max-width: 500px; width: 95%; padding: 40px 10px; text-align: center; display: none; opacity: 0; transition: 1s ease; }
+        .container { max-width: 500px; width: 95%; padding: 20px 10px 40px; text-align: center; display: none; opacity: 0; transition: 1s ease; }
         
+        /* СТИЛЬНА НАВІГАЦІЯ */
+        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 25px; padding-left: 10px; }
+        .btn-menu { text-decoration: none; color: #334; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+        .btn-menu:hover { color: #BF953F; transform: translateX(-5px); }
+
         .promo-card { 
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(191, 149, 63, 0.3);
@@ -46,7 +51,6 @@
         
         .promo-value { font-size: 2.5rem; font-weight: 700; margin: 20px 0; color: #fff; letter-spacing: -1px; }
 
-        /* Кнопка "Забрати бонус" (Золота) */
         .btn-euro { 
             display: block; background: var(--gold); color: #000; 
             text-decoration: none; padding: 20px; border-radius: 5px; 
@@ -56,7 +60,6 @@
         }
         .btn-euro:hover { transform: translateY(-3px); filter: brightness(1.1); box-shadow: 0 15px 40px rgba(191,149,63,0.5); }
 
-        /* Кнопка ТГ Бота (Елегантна) */
         .btn-bot-euro {
             display: block; border: 1px solid rgba(191, 149, 63, 0.5);
             color: #fff; text-decoration: none; padding: 16px;
@@ -83,6 +86,13 @@
     </div>
 
     <div class="container" id="content">
+        <!-- КНОПКА ПОВЕРНЕННЯ -->
+        <div class="nav-menu">
+            <a href="index.html" class="btn-menu">
+                <span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ
+            </a>
+        </div>
+
         <div class="promo-card">
             <div class="euro-label">CERTIFIED BY MRBONUS</div>
             <h1>EURO CASINO</h1>
@@ -93,11 +103,10 @@
             </p>
 
             <a href="https://play.mrbonusua.space/euro.html" target="_blank" class="btn-euro">ЗАБРАТИ 1000 FS 🇪🇺</a>
-            
             <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="btn-bot-euro">🤖 АКТИВУВАТИ ЧЕРЕЗ ТГ БОТ</a>
         </div>
         
-        <p class="disclaimer">21+ • EUROPEAN STANDARD • MRBONUS UA</p>
+        <p class="disclaimer">21+ • EUROPEAN STANDARD • MRBONUS UA 2026</p>
     </div>
 
     <script>
@@ -115,4 +124,3 @@
     </script>
 </body>
 </html>
-
