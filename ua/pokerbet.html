@@ -1,1 +1,120 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POKER-BET VIP ACCESS | MRBONUS UA</title>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --dark: #050505;
+        }
+        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+
+        /* Poker Card Loader */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 9999;
+            transition: 0.6s ease;
+        }
+        .ace-icon { font-size: 4rem; animation: flip-card 2s infinite; color: #BF953F; }
+        @keyframes flip-card {
+            0% { transform: rotateY(0); }
+            50% { transform: rotateY(180deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        .container { max-width: 500px; width: 92%; padding: 40px 15px; text-align: center; display: none; opacity: 0; transition: 1s ease; }
+        
+        .promo-card { 
+            background: rgba(15, 15, 15, 0.95);
+            border: 1px solid rgba(191, 149, 63, 0.4);
+            border-radius: 25px; 
+            padding: 50px 25px; 
+            box-shadow: 0 0 50px rgba(0,0,0,1);
+            position: relative;
+            background-image: radial-gradient(circle at top right, rgba(191,149,63,0.05) 0%, transparent 70%);
+        }
+
+        .verified-label {
+            font-family: 'Cinzel', serif;
+            color: #BF953F;
+            font-size: 0.7rem;
+            letter-spacing: 5px;
+            margin-bottom: 12px;
+            font-weight: 800;
+        }
+
+        h1 { font-family: 'Cinzel', serif; font-size: 2.4rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 5px 0; }
+        
+        .promo-value { font-size: 2.2rem; font-weight: 900; margin: 20px 0; color: #fff; line-height: 1.2; text-shadow: 0 0 15px rgba(191,149,63,0.3); }
+
+        /* Кнопка Казино (Золота) */
+        .btn-poker { 
+            display: block; background: var(--gold); color: #000; 
+            text-decoration: none; padding: 22px; border-radius: 12px; 
+            font-weight: 900; text-transform: uppercase; letter-spacing: 1px; 
+            margin-top: 30px; font-size: 1.1rem;
+            box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.4s;
+        }
+        .btn-poker:hover { transform: translateY(-4px); box-shadow: 0 15px 45px rgba(191,149,63,0.6); filter: brightness(1.2); }
+
+        /* Кнопка ТГ Бота (Стильна та Видима) */
+        .btn-bot-poker {
+            display: block; border: 1px solid rgba(191, 149, 63, 0.6);
+            color: #fff; text-decoration: none; padding: 18px;
+            border-radius: 12px; font-size: 0.85rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 2px;
+            margin-top: 15px; transition: 0.3s;
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .btn-bot-poker:hover { background: rgba(191, 149, 63, 0.15); color: #BF953F; border-color: #BF953F; transform: translateY(-2px); }
+
+        .vip-footer { color: #333; font-size: 0.6rem; margin-top: 45px; font-weight: 900; letter-spacing: 4px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+    <div id="loader">
+        <div class="ace-icon">🃏</div>
+        <h2 style="font-family:'Cinzel'; background: var(--gold); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:12px; margin-top:20px;">MRBONUS</h2>
+        <p style="color:#BF953F; font-size:0.6rem; letter-spacing:5px; margin-top:10px;">DEALING YOUR VIP CARDS...</p>
+    </div>
+
+    <div class="container" id="content">
+        <div class="promo-card">
+            <div class="verified-label">ELITE POKER STATUS</div>
+            <h1>POKER-BET</h1>
+            <div class="promo-value">100% ДО ДЕПУ <br> + 650 FS <span style="font-size: 1rem; display: block; color: #888; margin-top: 5px;">EXCLUSIVE WELCOME PACK</span></div>
+            
+            <p style="color: #bbb; font-size: 0.9rem; line-height: 1.6; font-weight: 500; padding: 0 10px;">
+                Ваш стартовий пакет підтверджено сервісом <b>MRBONUS</b>. <br> <b>Забирайте свої карти</b> та розпочинайте гру вже зараз.
+            </p>
+
+            <a href="http://play.mrbonusua.space/pokerbet.html" target="_blank" class="btn-poker">ЗАБРАТИ 650 FS 💎</a>
+            
+            <!-- Кнопка Бота -->
+            <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="btn-bot-poker">🤖 АКТИВУВАТИ У ТГ БОТІ</a>
+        </div>
+        
+        <p class="vip-footer">ALL-IN STATUS • 21+ • MRBONUS UA</p>
+    </div>
+
+    <script>
+        window.onload = function() {
+            setTimeout(function() {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(function() {
+                    document.getElementById('loader').style.display = 'none';
+                    let content = document.getElementById('content');
+                    content.style.display = 'block';
+                    setTimeout(() => content.style.opacity = '1', 50);
+                }, 500);
+            }, 1800);
+        };
+    </script>
+</body>
+</html>
 
