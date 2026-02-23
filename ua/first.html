@@ -25,8 +25,13 @@
             100% { transform: scale(1.1); filter: drop-shadow(0 0 20px #BF953F); } 
         }
 
-        .container { max-width: 500px; width: 92%; padding: 40px 15px; text-align: center; display: none; opacity: 0; transition: 1.2s ease; }
+        .container { max-width: 500px; width: 92%; padding: 20px 15px 40px; text-align: center; display: none; opacity: 0; transition: 1.2s ease; }
         
+        /* СТИЛЬНА НАВІГАЦІЯ */
+        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 25px; }
+        .btn-menu { text-decoration: none; color: #444; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+        .btn-menu:hover { color: #BF953F; transform: translateX(-5px); }
+
         .promo-card { 
             background: linear-gradient(145deg, #111 0%, #050505 100%);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -49,7 +54,6 @@
         
         .promo-value { font-size: 2.6rem; font-weight: 900; margin: 20px 0; color: #fff; letter-spacing: -2px; }
 
-        /* Кнопка Казино (Швидкий старт) */
         .btn-first { 
             display: block; background: var(--gold); color: #000; 
             text-decoration: none; padding: 22px; border-radius: 12px; 
@@ -59,7 +63,6 @@
         }
         .btn-first:hover { transform: translateY(-4px); box-shadow: 0 15px 45px rgba(191,149,63,0.6); filter: brightness(1.2); }
 
-        /* Кнопка ТГ Бота (Видима і стильна) */
         .btn-bot-first {
             display: block; border: 1px solid rgba(255, 255, 255, 0.2);
             color: #fff; text-decoration: none; padding: 18px;
@@ -86,6 +89,13 @@
     </div>
 
     <div class="container" id="content">
+        <!-- КНОПКА ПОВЕРНЕННЯ -->
+        <div class="nav-menu">
+            <a href="index.html" class="btn-menu">
+                <span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ
+            </a>
+        </div>
+
         <div class="promo-card">
             <div class="label-top">FIRST AMONG EQUALS</div>
             <h1>FIRST CASINO</h1>
@@ -96,8 +106,6 @@
             </p>
 
             <a href="http://play.mrbonusua.space/bonus1.html" target="_blank" class="btn-first">ЗАБРАТИ 1300 FS 🔥</a>
-            
-            <!-- Повноцінна кнопка для Бота -->
             <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="btn-bot-first">🤖 АКТИВУВАТИ ЧЕРЕЗ ТГ БОТ</a>
         </div>
         
@@ -119,5 +127,3 @@
     </script>
 </body>
 </html>
-
-
