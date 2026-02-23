@@ -4,23 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GG-BET CYBER ACCESS | MRBONUS UA</title>
-    <!-- Підключення Telegram WebApp SDK -->
+    <!-- SDK Telegram -->
     <script src="https://telegram.org"></script>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
         :root {
             --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
-            --cyber-blue: #00f2ff;
             --dark: #050505;
         }
-        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow: hidden; }
 
         /* Cyber Loading Animation */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; display: flex; flex-direction: column;
             justify-content: center; align-items: center; z-index: 9999;
-            transition: 0.5s;
+            transition: 0.5s; opacity: 1;
         }
         .cyber-logo { font-size: 3.5rem; filter: drop-shadow(0 0 10px #BF953F); animation: glitch 1s infinite; }
         @keyframes glitch {
@@ -32,89 +31,80 @@
             100% { transform: translate(0); }
         }
 
-        .container { max-width: 500px; width: 92%; padding: 20px 15px 40px; text-align: center; display: none; opacity: 0; transition: 0.8s ease-out; }
+        .container { max-width: 450px; width: 92%; padding: 10px 15px 35px; text-align: center; display: none; opacity: 0; transition: 0.8s ease; box-sizing: border-box; }
         
-        /* СТИЛЬНА НАВІГАЦІЯ */
-        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 25px; }
+        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 15px; }
         .btn-menu { 
-            text-decoration: none; color: #444; font-size: 0.7rem; font-weight: 800; 
+            text-decoration: none; color: #444; font-size: 0.65rem; font-weight: 800; 
             letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; 
-            display: flex; align-items: center; gap: 8px; cursor: pointer;
-            background: none; border: none; padding: 0;
+            display: flex; align-items: center; gap: 6px; cursor: pointer;
+            background: none; border: none; padding: 10px 0;
         }
-        .btn-menu:hover { color: #BF953F; transform: translateX(-5px); }
+        .btn-menu:hover { color: #BF953F; }
 
         .promo-card { 
             background: rgba(10, 10, 10, 0.95);
             border: 1px solid rgba(191, 149, 63, 0.3);
-            border-radius: 15px; 
-            padding: 50px 25px; 
-            box-shadow: 0 0 30px rgba(191, 149, 63, 0.1), inset 0 0 15px rgba(255,255,255,0.02);
-            position: relative;
+            border-radius: 20px; 
+            padding: 40px 20px; 
+            box-shadow: 0 0 30px rgba(191, 149, 63, 0.1);
         }
 
-        .cyber-label {
-            font-family: 'Cinzel', serif;
-            color: #BF953F;
-            font-size: 0.7rem;
-            letter-spacing: 5px;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
+        .cyber-label { font-family: 'Cinzel', serif; color: #BF953F; font-size: 0.65rem; letter-spacing: 4px; margin-bottom: 10px; }
+        h1 { font-family: 'Cinzel', serif; font-size: 2.2rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
+        .promo-value { font-size: 2.3rem; font-weight: 900; margin: 15px 0; color: #fff; letter-spacing: -1px; line-height: 1.1; }
 
-        h1 { font-family: 'Cinzel', serif; font-size: 2.5rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 5px 0; }
-        
-        .promo-value { font-size: 2.4rem; font-weight: 900; margin: 20px 0; color: #fff; letter-spacing: -1px; text-transform: uppercase; }
-
+        /* ВЕЛИКА КНОПКА З ПУЛЬСАЦІЄЮ */
         .btn-gg { 
             display: block; background: var(--gold); color: #000; 
-            text-decoration: none; padding: 20px; border-radius: 8px; 
-            font-weight: 900; text-transform: uppercase; letter-spacing: 2px; 
-            margin-top: 30px; font-size: 1.1rem; text-align: center;
-            box-shadow: 0 5px 20px rgba(191,149,63,0.4); transition: 0.3s;
+            text-decoration: none; padding: 22px 10px; border-radius: 12px; 
+            font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; 
+            margin-top: 25px; font-size: 1.3rem; text-align: center;
+            box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.2s;
             cursor: pointer; border: none; width: 100%;
+            box-sizing: border-box;
+            animation: gg-pulse 2s infinite;
         }
-        .btn-gg:hover { transform: scale(1.03); box-shadow: 0 8px 30px rgba(191,149,63,0.6); filter: brightness(1.2); }
+        @keyframes gg-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); }
+            70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); }
+            100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); }
+        }
+        .btn-gg:active { transform: scale(0.98); filter: brightness(0.9); }
 
         .btn-bot-gg {
-            display: block; border: 1px solid rgba(191, 149, 63, 0.5);
-            color: #fff; text-decoration: none; padding: 16px;
-            border-radius: 8px; font-size: 0.85rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 2px; text-align: center;
+            display: block; border: 1px solid rgba(191, 149, 63, 0.4);
+            color: #777; text-decoration: none; padding: 16px;
+            border-radius: 12px; font-size: 0.85rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1px; text-align: center;
             margin-top: 15px; transition: 0.3s; cursor: pointer;
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.02);
         }
-        .btn-bot-gg:hover {
-            background: rgba(191, 149, 63, 0.1);
-            color: #BF953F; border-color: #BF953F;
-            transform: translateY(-2px);
-        }
+        .btn-bot-gg:hover { color: #fff; border-color: #BF953F; }
 
-        .cyber-footer { color: #333; font-size: 0.6rem; margin-top: 40px; font-weight: 800; letter-spacing: 4px; text-transform: uppercase; }
+        .cyber-footer { color: #222; font-size: 0.6rem; margin-top: 35px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
     <div id="loader">
         <div class="cyber-logo">🔥</div>
-        <h2 style="font-family:'Cinzel'; background: var(--gold); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:12px; margin-top:20px;">MRBONUS</h2>
-        <p style="color:#444; font-size:0.6rem; letter-spacing:5px; margin-top:10px; font-weight:700;">INITIALIZING CYBER LINK...</p>
+        <h2 style="font-family:'Cinzel'; background: var(--gold); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:10px; margin-top:20px;">MRBONUS</h2>
+        <p style="color:#333; font-size:0.55rem; letter-spacing:3px; margin-top:10px; font-weight:bold;">INITIALIZING CYBER LINK...</p>
     </div>
 
     <div class="container" id="content">
         <div class="nav-menu">
-            <button onclick="goBack()" class="btn-menu">
-                <span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ
-            </button>
+            <button onclick="goBack()" class="btn-menu"><span>←</span> НАЗАД</button>
         </div>
 
         <div class="promo-card">
             <div class="cyber-label">GGBET SYSTEM VERIFIED</div>
             <h1>GG-BET</h1>
-            <div class="promo-value">1000 FS <br> <span style="font-size: 1rem; color: #666;">ACTIVE PACK TODAY</span></div>
+            <div class="promo-value">1000 FS <br> <span style="font-size: 1rem; color: #555;">ACTIVE PACK</span></div>
             
-            <p style="color: #999; font-size: 0.9rem; line-height: 1.6; padding: 0 10px;">
-                Ваш доступ до пакету фріспінів підтверджено протоколом <b>MRBONUS</b>. <br> <b>Забирай бонус</b> і починай гру вже зараз.
+            <p style="color: #888; font-size: 0.9rem; line-height: 1.5; margin: 0;">
+                Ваш пакет фріспінів підтверджено сервісом <b>MRBONUS</b>. <br> Забирай бонус і починай гру прямо зараз.
             </p>
 
             <a href="http://play.mrbonusua.space" class="btn-gg js-link">ЗАБРАТИ 1000 FS 🔥</a>
@@ -125,15 +115,14 @@
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
+        const tg = window.Telegram ? window.Telegram.WebApp : null;
+        if (tg) { tg.ready(); tg.expand(); }
 
-        if (tg.initData) {
-            tg.ready();
-            tg.expand();
-        }
+        function isTg() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
 
         function goBack() {
-            if (tg.initData) {
+            if (isTg()) {
+                if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
                 window.location.href = 'index.html';
             } else {
                 window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
@@ -143,23 +132,25 @@
         document.querySelectorAll('.js-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 const url = this.getAttribute('href');
-                if (tg.initData && url.startsWith('http')) {
+                if (isTg()) {
                     e.preventDefault();
-                    tg.openLink(url);
+                    if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                    if (url.includes('t.me/')) { tg.openTelegramLink(url); } 
+                    else { tg.openLink(url); }
                 }
             });
         });
 
         window.onload = function() {
             setTimeout(function() {
-                document.getElementById('loader').style.opacity = '0';
+                const ld = document.getElementById('loader');
+                if (ld) ld.style.opacity = '0';
                 setTimeout(function() {
-                    document.getElementById('loader').style.display = 'none';
-                    let content = document.getElementById('content');
-                    content.style.display = 'block';
-                    setTimeout(() => content.style.opacity = '1', 50);
+                    if (ld) ld.style.display = 'none';
+                    let ct = document.getElementById('content');
+                    if (ct) { ct.style.display = 'block'; setTimeout(() => ct.style.opacity = '1', 50); }
                 }, 500);
-            }, 1600);
+            }, 1400);
         };
     </script>
 </body>
