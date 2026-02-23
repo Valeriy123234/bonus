@@ -42,67 +42,43 @@
         }
 
         /* Контейнер */
-        .container { max-width: 500px; width: 90%; padding: 20px 20px 40px; text-align: center; display: none; opacity: 0; transition: 1s; }
+        .container { max-width: 500px; width: 92%; padding: 20px 15px 40px; text-align: center; display: none; opacity: 0; transition: 1s; box-sizing: border-box; }
         .container.show { display: block; opacity: 1; }
 
         /* НАВІГАЦІЯ */
-        .nav-menu {
-            display: flex;
-            justify-content: flex-start;
-            margin-bottom: 20px;
-        }
-        .btn-menu {
-            text-decoration: none;
-            color: #444;
-            font-size: 0.7rem;
-            font-weight: 900;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 0;
-        }
-        .btn-menu:hover {
-            color: #fff;
-            transform: translateX(-5px);
-        }
+        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 20px; }
+        .btn-menu { text-decoration: none; color: #444; font-size: 0.7rem; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 10px; cursor: pointer; background: none; border: none; padding: 0; }
+        .btn-menu:hover { color: #fff; transform: translateX(-5px); }
         
         .promo-card { 
-            background: #111;
-            border: 3px solid #333; border-radius: 5px; 
-            padding: 50px 25px; position: relative;
-            box-shadow: 0 0 60px rgba(0,0,0,1);
+            background: #111; border: 3px solid #333; border-radius: 5px; 
+            padding: 50px 20px; position: relative; box-shadow: 0 0 60px rgba(0,0,0,1); 
         }
 
         .verified-label { color: #555; font-size: 0.7rem; letter-spacing: 5px; margin-bottom: 10px; font-weight: 800; }
         h1 { font-family: 'Cinzel', serif; font-size: 2.5rem; color: #fff; margin: 5px 0; letter-spacing: 2px; }
         .promo-value { font-size: 2.2rem; font-weight: 900; margin: 20px 0; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; }
 
+        /* ВЕЛИКА КНОПКА BETON */
         .btn-beton { 
             display: block; background: var(--gold); color: #000; 
-            text-decoration: none; padding: 20px; border-radius: 4px; 
-            font-weight: 900; text-transform: uppercase; letter-spacing: 1px; 
-            margin-top: 30px; font-size: 1.2rem;
-            transition: 0.2s; border-bottom: 5px solid #8c6a1b;
-            cursor: pointer; text-align: center;
+            text-decoration: none; padding: 25px 10px; border-radius: 4px; 
+            font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; 
+            margin-top: 30px; font-size: 1.4rem;
+            transition: 0.2s; border-bottom: 6px solid #8c6a1b;
+            cursor: pointer; text-align: center; width: 100%; box-sizing: border-box;
         }
-        .btn-beton:active { transform: translateY(2px); border-bottom: 2px solid #8c6a1b; }
+        .btn-beton:active { transform: translateY(3px); border-bottom: 2px solid #8c6a1b; }
         .btn-beton:hover { filter: brightness(1.1); }
 
         .btn-bot-beton { 
-            display: block; border: 2px solid #333; color: #888; 
-            text-decoration: none; padding: 16px; border-radius: 4px; 
+            display: block; border: 2px solid #333; color: #666; 
+            text-decoration: none; padding: 18px; border-radius: 4px; 
             font-size: 0.85rem; font-weight: 800; text-transform: uppercase; 
             letter-spacing: 1px; margin-top: 15px; transition: 0.3s;
-            background: rgba(255, 255, 255, 0.02);
-            cursor: pointer; text-align: center;
+            background: rgba(255, 255, 255, 0.02); cursor: pointer; text-align: center;
         }
-        .btn-bot-beton:hover { color: #fff; border-color: #BF953F; background: rgba(191, 149, 63, 0.05); }
+        .btn-bot-beton:hover { color: #fff; border-color: #BF953F; }
 
         .legal { color: #222; font-size: 0.6rem; margin-top: 40px; font-weight: 900; letter-spacing: 3px; }
     </style>
@@ -117,11 +93,8 @@
     </div>
 
     <div class="container" id="content">
-        
         <div class="nav-menu">
-            <button onclick="goBack()" class="btn-menu">
-                <span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ
-            </button>
+            <button onclick="goBack()" class="btn-menu"><span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ</button>
         </div>
 
         <div class="promo-card">
@@ -129,29 +102,21 @@
             <h1>BETON</h1>
             <div class="promo-value">150% БОНУС <br> + 500 ФРІСПІНІВ</div>
             
-            <p style="color: #666; font-size: 0.9rem; line-height: 1.6; font-weight: 600;">
-                Твій залізобетонний бонус готовий. <br> <b>Забери свій куш</b> і починай тиснути прямо зараз.
+            <p style="color: #666; font-size: 0.95rem; line-height: 1.6; font-weight: 600;">
+                Твій залізобетонний бонус готовий. <br> <b>Забери свій куш</b> прямо зараз.
             </p>
 
             <a href="http://play.mrbonusua.space/beton.html" class="btn-beton js-link">ЗАБРАТИ КУШ 🎰</a>
             <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-beton js-link">🤖 ІНШІ ТЕМКИ У TG</a>
         </div>
-        
         <p class="legal">21+ • NO RISK • MRBONUS UA</p>
     </div>
 
     <script>
         const tg = window.Telegram ? window.Telegram.WebApp : null;
+        if (tg) { tg.ready(); tg.expand(); }
 
-        if (tg) {
-            tg.ready();
-            tg.expand();
-        }
-
-        // Перевірка на Mini App
-        function isTg() {
-            return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0;
-        }
+        function isTg() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
 
         function goBack() {
             if (isTg()) {
@@ -165,17 +130,11 @@
         document.querySelectorAll('.js-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 const url = this.getAttribute('href');
-                
                 if (isTg()) {
                     e.preventDefault();
                     if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-                    
-                    // Перехід до бота без браузера
-                    if (url.includes('t.me/')) {
-                        tg.openTelegramLink(url);
-                    } else {
-                        tg.openLink(url);
-                    }
+                    if (url.includes('t.me/')) { tg.openTelegramLink(url); } 
+                    else { tg.openLink(url); }
                 }
             });
         });
@@ -184,13 +143,12 @@
             setTimeout(function() {
                 const loader = document.getElementById('loader');
                 if (loader) loader.style.opacity = '0';
-                
                 setTimeout(function() {
                     if (loader) loader.style.display = 'none';
                     const content = document.getElementById('content');
                     if (content) content.classList.add('show');
                 }, 800);
-            }, 2000);
+            }, 1800);
         };
     </script>
 </body>
