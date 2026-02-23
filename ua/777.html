@@ -14,14 +14,9 @@
 
         /* Анімація завантаження */
         #loader {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #0a0a0a;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0a0a0a; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 9999;
             transition: opacity 0.8s ease;
         }
         #loader h2 {
@@ -35,8 +30,32 @@
         }
         @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
-        .container { max-width: 500px; width: 90%; padding: 40px 20px; text-align: center; opacity: 0; transform: translateY(20px); transition: all 1s ease; }
+        /* Контейнер */
+        .container { max-width: 500px; width: 90%; padding: 20px 20px 40px; text-align: center; opacity: 0; transform: translateY(20px); transition: all 1s ease; }
         .container.show { opacity: 1; transform: translateY(0); }
+
+        /* СТИЛЬНА НАВІГАЦІЯ (ПОВЕРНУТИСЯ ДО МЕНЮ) */
+        .nav-menu {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 25px;
+        }
+        .btn-menu {
+            text-decoration: none;
+            color: #555;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-menu:hover {
+            color: #BF953F;
+            transform: translateX(-5px);
+        }
 
         .promo-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(191,149,63,0.2); border-radius: 25px; padding: 45px 25px; backdrop-filter: blur(15px); box-shadow: 0 30px 70px rgba(0,0,0,0.7); }
         
@@ -46,32 +65,17 @@
         
         .status-badge { display: inline-block; padding: 6px 18px; border-radius: 50px; background: rgba(191, 149, 63, 0.1); border: 1px solid #BF953F; color: #BF953F; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; margin-bottom: 25px; }
 
-        /* Кнопка Казино */
         .btn-casino { display: block; background: var(--gold); color: #000; text-decoration: none; padding: 20px; border-radius: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 30px rgba(191, 149, 63, 0.4); transition: 0.3s; margin-top: 20px; font-size: 1.1rem; }
         .btn-casino:hover { transform: scale(1.03); box-shadow: 0 15px 40px rgba(191, 149, 63, 0.6); }
 
-        /* Оновлена Кнопка Бота */
         .btn-bot { 
-            display: block; 
-            border: 1px solid rgba(191, 149, 63, 0.5); 
-            color: #fff; 
-            text-decoration: none; 
-            padding: 16px; 
-            border-radius: 12px; 
-            font-size: 0.85rem; 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-            margin-top: 15px; 
-            transition: 0.3s; 
-            background: rgba(255, 255, 255, 0.03);
+            display: block; border: 1px solid rgba(191, 149, 63, 0.5); 
+            color: #fff; text-decoration: none; padding: 16px; 
+            border-radius: 12px; font-size: 0.85rem; font-weight: 700; 
+            text-transform: uppercase; letter-spacing: 1px; margin-top: 15px; 
+            transition: 0.3s; background: rgba(255, 255, 255, 0.03);
         }
-        .btn-bot:hover { 
-            background: rgba(191, 149, 63, 0.1); 
-            border-color: #BF953F; 
-            color: #BF953F;
-            transform: translateY(-2px);
-        }
+        .btn-bot:hover { background: rgba(191, 149, 63, 0.1); border-color: #BF953F; color: #BF953F; transform: translateY(-2px); }
 
         .footer-text { margin-top: 40px; font-size: 0.6rem; color: #333; text-transform: uppercase; letter-spacing: 2px; }
     </style>
@@ -84,6 +88,14 @@
     </div>
 
     <div class="container" id="main-content">
+        
+        <!-- КНОПКА ПОВЕРНЕННЯ -->
+        <div class="nav-menu">
+            <a href="index.html" class="btn-menu">
+                <span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ
+            </a>
+        </div>
+
         <div class="promo-card">
             <div class="status-badge">АКТИВОВАНО ДЛЯ ВАС</div>
             <div class="lucky-icons">🎰 🎰 🎰</div>
@@ -95,8 +107,6 @@
             </p>
 
             <a href="http://play.mrbonusua.space/777.html" target="_blank" class="btn-casino">ЗАБРАТИ 777 FS 💎</a>
-            
-            <!-- Повноцінна кнопка для Бота -->
             <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="btn-bot">🤖 АКТИВУВАТИ ЧЕРЕЗ ТГ БОТ</a>
         </div>
         
