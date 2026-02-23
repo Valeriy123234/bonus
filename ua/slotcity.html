@@ -25,8 +25,13 @@
             100% { opacity: 1; transform: scale(1.05); } 
         }
 
-        .container { max-width: 500px; width: 92%; padding: 40px 15px; text-align: center; display: none; opacity: 0; transition: 1s ease-in-out; }
+        .container { max-width: 500px; width: 92%; padding: 20px 15px 40px; text-align: center; display: none; opacity: 0; transition: 1s ease-in-out; }
         
+        /* СТИЛЬНА НАВІГАЦІЯ */
+        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 25px; }
+        .btn-menu { text-decoration: none; color: #444; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+        .btn-menu:hover { color: #BF953F; transform: translateX(-5px); }
+
         .promo-card { 
             background: rgba(15, 15, 15, 0.95);
             border: 2px solid #BF953F;
@@ -49,7 +54,6 @@
         
         .promo-value { font-size: 2.3rem; font-weight: 900; margin: 25px 0; color: #fff; line-height: 1.1; }
 
-        /* Кнопка Казино (Золота) */
         .btn-city { 
             display: block; background: var(--gold); color: #000; 
             text-decoration: none; padding: 22px; border-radius: 12px; 
@@ -59,7 +63,6 @@
         }
         .btn-city:hover { transform: translateY(-4px); box-shadow: 0 15px 45px rgba(191,149,63,0.6); filter: brightness(1.2); }
 
-        /* Кнопка ТГ Бота (Стильна) */
         .btn-bot-city {
             display: block; border: 1px solid rgba(191, 149, 63, 0.6);
             color: #fff; text-decoration: none; padding: 18px;
@@ -82,6 +85,13 @@
     </div>
 
     <div class="container" id="content">
+        <!-- КНОПКА ПОВЕРНЕННЯ -->
+        <div class="nav-menu">
+            <a href="index.html" class="btn-menu">
+                <span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ
+            </a>
+        </div>
+
         <div class="promo-card">
             <div class="city-label">APPROVED BY MRBONUS UA</div>
             <h1>SLOT CITY</h1>
@@ -92,8 +102,6 @@
             </p>
 
             <a href="http://play.mrbonusua.space/bonus2.html" target="_blank" class="btn-city">ЗАБРАТИ 700 FS 🎁</a>
-            
-            <!-- Повноцінна кнопка для Бота -->
             <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="btn-bot-city">🤖 АКТИВУВАТИ ЧЕРЕЗ ТГ БОТ</a>
         </div>
         
@@ -115,5 +123,3 @@
     </script>
 </body>
 </html>
-
-
