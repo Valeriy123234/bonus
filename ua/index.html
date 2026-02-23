@@ -103,12 +103,17 @@
             position: relative;
         }
 
-        .slots-track {
-            display: flex;
-            width: max-content;
-            animation: scroll-slots 20s linear infinite;
-            will-change: transform;
-        }
+      .slots-track {
+    display: flex;
+    width: max-content;
+    animation: scroll-slots 25s linear infinite; /* Трохи повільніше = плавніше */
+    will-change: transform;
+    /* --- ДОДАЙ ЦЕ --- */
+    backface-visibility: hidden;
+    perspective: 1000;
+    transform: translateZ(0); 
+}
+
 
         .slot-emoji {
             font-size: 2rem;
