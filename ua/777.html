@@ -12,7 +12,7 @@
             --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
             --dark: #0a0a0a;
         }
-        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow: hidden; }
 
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -23,28 +23,70 @@
         #loader h2 {
             font-family: 'Cinzel', serif; background: var(--gold);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            font-size: 2.5rem; letter-spacing: 8px; animation: pulse 1.5s infinite;
+            font-size: 2.5rem; letter-spacing: 8px; animation: pulse-text 1.5s infinite;
         }
-        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+        @keyframes pulse-text { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
         #main-content { 
-            max-width: 500px; width: 90%; padding: 20px 20px 40px; 
+            max-width: 450px; width: 92%; padding: 10px 15px 35px; 
             text-align: center; display: none; opacity: 0; 
-            transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; 
+            transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease;
+            box-sizing: border-box;
         }
 
-        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 25px; }
-        .btn-menu { text-decoration: none; color: #555; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; background: none; border: none; padding: 0; }
+        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 15px; }
+        .btn-menu { text-decoration: none; color: #555; font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; background: none; border: none; padding: 10px 0; }
         .btn-menu:hover { color: #BF953F; }
 
-        .promo-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(191,149,63,0.2); border-radius: 25px; padding: 45px 25px; backdrop-filter: blur(15px); box-shadow: 0 30px 70px rgba(0,0,0,0.7); }
+        .promo-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(191,149,63,0.2); border-radius: 25px; padding: 35px 20px; backdrop-filter: blur(15px); box-shadow: 0 30px 70px rgba(0,0,0,0.7); }
         .lucky-icons { font-size: 2rem; margin-bottom: 10px; letter-spacing: 10px; }
         h1 { font-family: 'Cinzel', serif; font-size: 2rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
-        .promo-value { font-size: 2.2rem; font-weight: 800; margin: 15px 0; color: #fff; }
-        .status-badge { display: inline-block; padding: 6px 18px; border-radius: 50px; background: rgba(191, 149, 63, 0.1); border: 1px solid #BF953F; color: #BF953F; font-size: 0.7rem; font-weight: 700; margin-bottom: 25px; }
+        .promo-value { font-size: 2.2rem; font-weight: 900; margin: 15px 0; color: #fff; line-height: 1.1; }
+        .status-badge { display: inline-block; padding: 6px 18px; border-radius: 50px; background: rgba(191, 149, 63, 0.1); border: 1px solid #BF953F; color: #BF953F; font-size: 0.7rem; font-weight: 700; margin-bottom: 20px; }
 
-        .btn-casino { display: block; background: var(--gold); color: #000; text-decoration: none; padding: 20px; border-radius: 12px; font-weight: 800; text-transform: uppercase; margin-top: 20px; font-size: 1.1rem; text-align: center; box-shadow: 0 10px 30px rgba(191,149,63,0.3); }
-        .btn-bot { display: block; border: 1px solid rgba(191, 149, 63, 0.5); color: #fff; text-decoration: none; padding: 16px; border-radius: 12px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; margin-top: 15px; text-align: center; background: rgba(255, 255, 255, 0.03); }
+        /* ВЕЛИКА КНОПКА З ПУЛЬСАЦІЄЮ */
+        .btn-casino { 
+            display: block; 
+            background: var(--gold); 
+            color: #000; 
+            text-decoration: none; 
+            padding: 22px 10px; 
+            border-radius: 15px; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            margin-top: 25px; 
+            font-size: 1.3rem; 
+            text-align: center; 
+            box-shadow: 0 10px 30px rgba(191,149,63,0.4); 
+            transition: 0.2s;
+            box-sizing: border-box;
+            animation: casino-pulse 2s infinite;
+        }
+        @keyframes casino-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); }
+            70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); }
+            100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); }
+        }
+        .btn-casino:active { transform: scale(0.98); filter: brightness(0.9); }
+
+        .btn-bot { 
+            display: block; 
+            border: 1px solid rgba(191, 149, 63, 0.4); 
+            color: #777; 
+            text-decoration: none; 
+            padding: 16px; 
+            border-radius: 15px; 
+            font-size: 0.85rem; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            margin-top: 15px; 
+            text-align: center; 
+            background: rgba(255, 255, 255, 0.02);
+            transition: 0.3s;
+        }
+        .btn-bot:hover { color: #fff; border-color: #BF953F; }
+
+        .footer-text { margin-top: 35px; font-size: 0.6rem; color: #222; letter-spacing: 2px; text-transform: uppercase; font-weight: 800; }
     </style>
 </head>
 <body>
@@ -56,22 +98,21 @@
 
     <div id="main-content">
         <div class="nav-menu">
-            <button onclick="goBack()" class="btn-menu">← ПОВЕРНУТИСЯ</button>
+            <button onclick="goBack()" class="btn-menu">← НАЗАД</button>
         </div>
         <div class="promo-card">
             <div class="status-badge">АКТИВОВАНО</div>
             <div class="lucky-icons">🎰 🎰 🎰</div>
             <h1>777 CASINO</h1> 
             <div class="promo-value">777 ФРІСПІНІВ</div> 
-            <p style="color: #888; font-size: 0.85rem; line-height: 1.6; margin-bottom: 30px;">
-                Вітаємо! Ваш VIP-статус підтверджено. <br> Заберіть свій бонус від <b>MRBONUS</b> зараз.
+            <p style="color: #888; font-size: 0.9rem; line-height: 1.5; margin: 0;">
+                Твій VIP-статус підтверджено. <br> Забирай свій бонус від <b>MRBONUS</b> прямо зараз.
             </p>
-            <!-- Посилання на казино -->
+            
             <a href="http://play.mrbonusua.space/777.html" class="btn-casino js-link">ЗАБРАТИ 777 FS 💎</a>
-            <!-- Посилання на бота (відкриється без браузера) -->
             <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot js-link">🤖 ТЕЛЕГРАМ БОТ</a>
         </div>
-        <p style="margin-top: 40px; font-size: 0.6rem; color: #333; letter-spacing: 2px; text-transform: uppercase;">VIP MRBONUS UA 2026. 21+</p>
+        <p class="footer-text">VIP MRBONUS UA 2026 • 21+</p>
     </div>
 
     <script>
@@ -82,8 +123,13 @@
             tg.expand();
         }
 
+        function isTg() {
+            return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0;
+        }
+
         function goBack() {
-            if (tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0) {
+            if (isTg()) {
+                if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
                 window.location.href = 'index.html';
             } else {
                 window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
@@ -94,14 +140,13 @@
             link.onclick = function(e) {
                 const url = this.getAttribute('href');
                 
-                if (tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0) {
+                if (isTg()) {
                     e.preventDefault();
+                    if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
                     
-                    // Якщо посилання веде на Telegram (бот) - використовуємо спеціальний метод
                     if (url.includes('t.me/')) {
                         tg.openTelegramLink(url);
                     } else {
-                        // Для зовнішніх сайтів використовуємо openLink
                         tg.openLink(url);
                     }
                 }
