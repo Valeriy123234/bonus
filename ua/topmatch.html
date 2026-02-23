@@ -22,8 +22,13 @@
         .scan-line { width: 150px; height: 2px; background: #BF953F; box-shadow: 0 0 15px #BF953F; animation: scan 1.5s infinite; }
         @keyframes scan { 0% { transform: translateY(-30px); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateY(30px); opacity: 0; } }
 
-        .container { max-width: 500px; width: 92%; padding: 40px 15px; text-align: center; display: none; opacity: 0; transition: 1s; }
+        .container { max-width: 500px; width: 92%; padding: 20px 15px 40px; text-align: center; display: none; opacity: 0; transition: 1s; }
         
+        /* СТИЛЬНА НАВІГАЦІЯ */
+        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 25px; }
+        .btn-menu { text-decoration: none; color: #444; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+        .btn-menu:hover { color: #BF953F; transform: translateX(-5px); }
+
         .promo-card { 
             background: rgba(10, 10, 10, 0.98);
             border: 1px solid #BF953F;
@@ -45,7 +50,6 @@
         
         .promo-value { font-size: 2.2rem; font-weight: 900; margin: 20px 0; color: #fff; line-height: 1.1; }
 
-        /* Кнопка Казино (Швидка) */
         .btn-top { 
             display: block; background: var(--gold); color: #000; 
             text-decoration: none; padding: 22px; border-radius: 8px; 
@@ -55,7 +59,6 @@
         }
         .btn-top:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(191,149,63,0.6); filter: brightness(1.2); }
 
-        /* Кнопка ТГ Бота (Стильна) */
         .btn-bot-top {
             display: block; border: 1px solid rgba(191, 149, 63, 0.5);
             color: #fff; text-decoration: none; padding: 18px;
@@ -78,6 +81,13 @@
     </div>
 
     <div class="container" id="content">
+        <!-- КНОПКА ПОВЕРНЕННЯ -->
+        <div class="nav-menu">
+            <a href="index.html" class="btn-menu">
+                <span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ
+            </a>
+        </div>
+
         <div class="promo-card">
             <div class="status-top">MATCH VERIFIED by MRBONUS</div>
             <h1>TOP MATCH</h1>
@@ -88,11 +98,10 @@
             </p>
 
             <a href="http://play.mrbonusua.space/topmatch.html" target="_blank" class="btn-top">ЗАБРАТИ 200₴ + 100 FS ⚡</a>
-            
             <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="btn-bot-top">🤖 АКТИВУВАТИ У ТГ БОТІ</a>
         </div>
         
-        <p class="footer-tag">TOP GEAR • 21+ • MRBONUS UA</p>
+        <p class="footer-tag">TOP GEAR • 21+ • MRBONUS UA 2026</p>
     </div>
 
     <script>
@@ -110,5 +119,3 @@
     </script>
 </body>
 </html>
-
-
