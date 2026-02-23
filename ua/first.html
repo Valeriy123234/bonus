@@ -1,1 +1,123 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIRST CASINO VIP | MRBONUS UA</title>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --dark: #0a0a0a;
+        }
+        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+
+        /* VIP Diamond Loader */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 9999;
+            transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .diamond { font-size: 4rem; animation: shine 2s infinite alternate; }
+        @keyframes shine { 
+            0% { transform: scale(0.9); filter: drop-shadow(0 0 5px #fff); } 
+            100% { transform: scale(1.1); filter: drop-shadow(0 0 20px #BF953F); } 
+        }
+
+        .container { max-width: 500px; width: 92%; padding: 40px 15px; text-align: center; display: none; opacity: 0; transition: 1.2s ease; }
+        
+        .promo-card { 
+            background: linear-gradient(145deg, #111 0%, #050505 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #BF953F;
+            border-radius: 20px; 
+            padding: 50px 25px; 
+            box-shadow: 0 25px 50px rgba(0,0,0,1);
+        }
+
+        .label-top {
+            font-family: 'Cinzel', serif;
+            color: #BF953F;
+            font-size: 0.75rem;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        h1 { font-family: 'Cinzel', serif; font-size: 2.5rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
+        
+        .promo-value { font-size: 2.6rem; font-weight: 900; margin: 20px 0; color: #fff; letter-spacing: -2px; }
+
+        /* Кнопка Казино (Швидкий старт) */
+        .btn-first { 
+            display: block; background: var(--gold); color: #000; 
+            text-decoration: none; padding: 22px; border-radius: 12px; 
+            font-weight: 900; text-transform: uppercase; letter-spacing: 1px; 
+            margin-top: 30px; font-size: 1.1rem;
+            box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.4s;
+        }
+        .btn-first:hover { transform: translateY(-4px); box-shadow: 0 15px 45px rgba(191,149,63,0.6); filter: brightness(1.2); }
+
+        /* Кнопка ТГ Бота (Видима і стильна) */
+        .btn-bot-first {
+            display: block; border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff; text-decoration: none; padding: 18px;
+            border-radius: 12px; font-size: 0.85rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 2px;
+            margin-top: 15px; transition: 0.3s;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .btn-bot-first:hover {
+            background: rgba(191, 149, 63, 0.1);
+            color: #BF953F; border-color: #BF953F;
+            transform: translateY(-2px);
+        }
+
+        .footer-vip { color: #333; font-size: 0.65rem; margin-top: 40px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+    <div id="loader">
+        <div class="diamond">💎</div>
+        <h2 style="font-family:'Cinzel'; background: var(--gold); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:10px; margin-top:20px;">MRBONUS</h2>
+        <p style="color:#555; font-size:0.6rem; letter-spacing:4px; margin-top:10px; font-weight:700;">SECURE VIP HANDSHAKE...</p>
+    </div>
+
+    <div class="container" id="content">
+        <div class="promo-card">
+            <div class="label-top">FIRST AMONG EQUALS</div>
+            <h1>FIRST CASINO</h1>
+            <div class="promo-value">1300 FS <br> <span style="font-size: 0.9rem; color: #666; letter-spacing: 1px;">PREMIUM STARTER PACK</span></div>
+            
+            <p style="color: #999; font-size: 0.95rem; line-height: 1.6; padding: 0 10px;">
+                Ваш пакет фріспінів підтверджено сервісом <b>MRBONUS</b>. <br> <b>Забирайте свою частку</b> і ставайте першим вже сьогодні.
+            </p>
+
+            <a href="http://play.mrbonusua.space/bonus1.html" target="_blank" class="btn-first">ЗАБРАТИ 1300 FS 🔥</a>
+            
+            <!-- Повноцінна кнопка для Бота -->
+            <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="btn-bot-first">🤖 АКТИВУВАТИ ЧЕРЕЗ ТГ БОТ</a>
+        </div>
+        
+        <p class="footer-vip">STATUS: VERIFIED • 21+ • MRBONUS UA</p>
+    </div>
+
+    <script>
+        window.onload = function() {
+            setTimeout(function() {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(function() {
+                    document.getElementById('loader').style.display = 'none';
+                    let content = document.getElementById('content');
+                    content.style.display = 'block';
+                    setTimeout(() => content.style.opacity = '1', 50);
+                }, 600);
+            }, 1800);
+        };
+    </script>
+</body>
+</html>
+
 
