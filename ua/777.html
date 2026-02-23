@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VIP MRBONUS | 777 CASINO</title>
-    <!-- SDK Telegram (не заважає браузеру) -->
+    <!-- SDK Telegram -->
     <script src="https://telegram.org"></script>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
@@ -14,7 +14,6 @@
         }
         body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
 
-        /* Лоадер - завжди на весь екран спочатку */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #0a0a0a; display: flex; flex-direction: column;
@@ -28,7 +27,6 @@
         }
         @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
-        /* Контейнер прихований через opacity та display */
         #main-content { 
             max-width: 500px; width: 90%; padding: 20px 20px 40px; 
             text-align: center; display: none; opacity: 0; 
@@ -58,7 +56,6 @@
 
     <div id="main-content">
         <div class="nav-menu">
-            <!-- Розумне повернення -->
             <button onclick="goBack()" class="btn-menu">← ПОВЕРНУТИСЯ</button>
         </div>
         <div class="promo-card">
@@ -69,64 +66,64 @@
             <p style="color: #888; font-size: 0.85rem; line-height: 1.6; margin-bottom: 30px;">
                 Вітаємо! Ваш VIP-статус підтверджено. <br> Заберіть свій бонус від <b>MRBONUS</b> зараз.
             </p>
+            <!-- Посилання на казино -->
             <a href="http://play.mrbonusua.space/777.html" class="btn-casino js-link">ЗАБРАТИ 777 FS 💎</a>
+            <!-- Посилання на бота (відкриється без браузера) -->
             <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot js-link">🤖 ТЕЛЕГРАМ БОТ</a>
         </div>
         <p style="margin-top: 40px; font-size: 0.6rem; color: #333; letter-spacing: 2px; text-transform: uppercase;">VIP MRBONUS UA 2026. 21+</p>
     </div>
 
     <script>
-        // Ініціалізація Telegram
         const tg = window.Telegram ? window.Telegram.WebApp : null;
 
-        // Повідомляємо TG, що додаток готовий (якщо ми в TG)
         if (tg) {
             tg.ready();
             tg.expand();
         }
 
-        // Функція повернення назад (працює всюди)
         function goBack() {
-            if (tg && tg.initData && tg.initData.length > 0) {
-                window.location.href = 'index.html'; // В ТГ повертаємось на головну
+            if (tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0) {
+                window.location.href = 'index.html';
             } else {
                 window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
             }
         }
 
-        // Універсальне відкриття посилань
         document.querySelectorAll('.js-link').forEach(link => {
             link.onclick = function(e) {
                 const url = this.getAttribute('href');
-                // Якщо ми в Telegram Mini App - відкриваємо внутрішнім методом
-                if (tg && tg.initData && tg.initData.length > 0) {
+                
+                if (tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0) {
                     e.preventDefault();
-                    tg.openLink(url);
-                } 
-                // В Гуглі просто спрацює звичайний перехід
+                    
+                    // Якщо посилання веде на Telegram (бот) - використовуємо спеціальний метод
+                    if (url.includes('t.me/')) {
+                        tg.openTelegramLink(url);
+                    } else {
+                        // Для зовнішніх сайтів використовуємо openLink
+                        tg.openLink(url);
+                    }
+                }
             };
         });
 
-        // ЛОГІКА ЛОАДЕРА (Примусова)
         window.onload = function() {
             setTimeout(() => {
                 const loader = document.getElementById('loader');
                 const content = document.getElementById('main-content');
-                
                 if (loader) loader.style.opacity = '0';
-                
                 setTimeout(() => {
                     if (loader) loader.style.display = 'none';
                     if (content) {
-                        content.style.display = 'block'; // Вмикаємо в DOM
-                        // Плавна поява
+                        content.style.display = 'block';
                         setTimeout(() => {
                             content.style.opacity = '1';
                             content.style.transform = 'translateY(0)';
                         }, 50);
                     }
                 }, 500);
-            }, 1000); // 1 секунда на лоадер
+            }, 1000);
         };
     </script>
 </body>
