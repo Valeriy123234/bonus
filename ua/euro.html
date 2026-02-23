@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EURO CASINO VIP | MRBONUS UA</title>
+    
+    <!-- SEO ТЕГИ ДЛЯ GOOGLE (EURO CASINO) -->
+    <title>Euro Casino VIP: 1000 FS за реєстрацію | Ексклюзив від MRBONUS UA</title>
+    <meta name="description" content="Отримай 1000 фріспінів у Euro Casino! Сертифікований VIP-доступ від MRBONUS UA. Європейські стандарти гри, швидкі виплати та найкращі бонуси 2026 року.">
+    <meta name="keywords" content="Euro Casino, євро казино, 1000 фріспінів, бездепозитний бонус, mrbonus ua, vip казино україна">
+
     <!-- SDK Telegram -->
     <script src="https://telegram.org"></script>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
@@ -79,74 +84,30 @@
             border: none;
             padding: 10px 0;
         }
-        .btn-menu:hover {
-            color: #BF953F;
+        .btn-menu:hover { color: #BF953F; }
+
+        /* КАРТКА З ЗОЛОТОЮ ОКАНТОВКОЮ 2PX */
+        .promo-card { 
+            background: rgba(255, 255, 255, 0.02); 
+            border: 2px solid #BF953F; 
+            border-radius: 20px; 
+            padding: 40px 20px; 
+            position: relative; 
+            backdrop-filter: blur(10px); 
+            box-shadow: 0 0 50px rgba(0,0,0,0.8); 
         }
 
-        /* ОНОВЛЕНА КАРТКА З ЗОЛОТОЮ РАМКОЮ 2PX */
-        .promo-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 2px solid; /* Товщина 2 пікселя */
-            border-image-source: var(--gold); /* Використання градієнта */
-            border-image-slice: 1;
-            border-radius: 20px; /* Примітка: border-image ігнорує border-radius у деяких браузерах */
-            padding: 40px 20px;
-            position: relative;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
-        }
+        .euro-label { font-family: 'Cinzel', serif; color: #BF953F; font-size: 0.65rem; letter-spacing: 4px; margin-bottom: 10px; }
+        h1 { font-family: 'Cinzel', serif; font-size: 2.1rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 5px 0; }
+        .promo-value { font-size: 2.2rem; font-weight: 700; margin: 15px 0; color: #fff; letter-spacing: -1px; line-height: 1.1; }
 
-        /* Альтернативний спосіб для заокруглених кутів з градієнтною рамкою */
-        .promo-card {
-            border: none;
-            background: linear-gradient(var(--dark-blue), var(--dark-blue)) padding-box,
-                        var(--gold) border-box;
-            border: 2px solid transparent;
-            border-radius: 20px;
-        }
-
-        .euro-label {
-            font-family: 'Cinzel', serif;
-            color: #BF953F;
-            font-size: 0.65rem;
-            letter-spacing: 4px;
-            margin-bottom: 10px;
-        }
-        h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 2.1rem;
-            background: var(--gold);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 5px 0;
-        }
-        .promo-value {
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin: 15px 0;
-            color: #fff;
-            letter-spacing: -1px;
-            line-height: 1.1;
-        }
         .btn-euro {
-            display: block;
-            background: var(--gold);
-            color: #000;
-            text-decoration: none;
-            padding: 22px 10px;
-            border-radius: 8px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-top: 25px;
-            font-size: 1.25rem;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(191,149,63,0.3);
-            transition: 0.2s;
-            cursor: pointer;
-            border: none;
-            width: 100%;
-            box-sizing: border-box;
+            display: block; background: var(--gold); color: #000;
+            text-decoration: none; padding: 22px 10px; border-radius: 8px;
+            font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px;
+            margin-top: 25px; font-size: 1.25rem; text-align: center;
+            box-shadow: 0 10px 30px rgba(191,149,63,0.3); transition: 0.2s;
+            cursor: pointer; border: none; width: 100%; box-sizing: border-box;
             animation: euro-pulse 2s infinite;
         }
         @keyframes euro-pulse {
@@ -154,39 +115,17 @@
             70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); }
             100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); }
         }
-        .btn-euro:active {
-            transform: scale(0.98);
-            filter: brightness(0.9);
-        }
+        .btn-euro:active { transform: scale(0.98); filter: brightness(0.9); }
+
         .btn-bot-euro {
-            display: block;
-            border: 1px solid rgba(191, 149, 63, 0.4);
-            color: #778;
-            text-decoration: none;
-            padding: 16px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-align: center;
-            margin-top: 15px;
-            transition: 0.3s;
-            cursor: pointer;
+            display: block; border: 1px solid rgba(191, 149, 63, 0.4);
+            color: #778; text-decoration: none; padding: 16px;
+            border-radius: 8px; font-size: 0.8rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1px; text-align: center;
+            margin-top: 15px; transition: 0.3s; cursor: pointer;
             background: rgba(255, 255, 255, 0.02);
         }
-        .btn-bot-euro:hover {
-            color: #fff;
-            border-color: #BF953F;
-        }
-        .disclaimer {
-            color: #223;
-            font-size: 0.6rem;
-            margin-top: 35px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 800;
-        }
+        .disclaimer { color: #334; font-size: 0.6rem; margin-top: 35px; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
     </style>
 </head>
 <body>
@@ -213,19 +152,14 @@
             <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-euro js-link">🤖 АКТИВУВАТИ ЧЕРЕЗ БОТ</a>
         </div>
 
-        <p class="disclaimer">21+ • EUROPEAN STANDARD • MRBONUS UA</p>
+        <p class="disclaimer">21+ • EUROPEAN STANDARD • MRBONUS UA • 2026</p>
     </div>
 
     <script>
         const tg = window.Telegram ? window.Telegram.WebApp : null;
-        if (tg) {
-            tg.ready();
-            tg.expand();
-        }
+        if (tg) { tg.ready(); tg.expand(); }
 
-        function isTg() {
-            return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0;
-        }
+        function isTg() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
 
         function goBack() {
             if (isTg()) {
@@ -242,11 +176,8 @@
                 if (isTg()) {
                     e.preventDefault();
                     if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-                    if (url.includes('t.me/')) {
-                        tg.openTelegramLink(url);
-                    } else {
-                        tg.openLink(url);
-                    }
+                    if (url.includes('t.me/')) { tg.openTelegramLink(url); } 
+                    else { tg.openLink(url); }
                 }
             });
         });
