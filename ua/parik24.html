@@ -23,8 +23,13 @@
         .parik-icon { font-size: 3.5rem; color: #f5ff00; filter: drop-shadow(0 0 15px rgba(245, 255, 0, 0.5)); animation: pulse-parik 1.5s infinite; }
         @keyframes pulse-parik { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
 
-        .container { max-width: 500px; width: 92%; padding: 40px 15px; text-align: center; display: none; opacity: 0; transition: 1s ease-in-out; }
+        .container { max-width: 500px; width: 92%; padding: 20px 15px 40px; text-align: center; display: none; opacity: 0; transition: 1s ease-in-out; }
         
+        /* СТИЛЬНА НАВІГАЦІЯ */
+        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 25px; }
+        .btn-menu { text-decoration: none; color: #444; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+        .btn-menu:hover { color: #BF953F; transform: translateX(-5px); }
+
         .promo-card { 
             background: rgba(15, 15, 15, 0.98);
             border: 2px solid #BF953F;
@@ -47,17 +52,16 @@
         
         .promo-value { font-size: 2.3rem; font-weight: 900; margin: 25px 0; color: #fff; line-height: 1.1; }
 
-        /* Кнопка "Забрати" (Золота) */
         .btn-parik { 
             display: block; background: var(--gold); color: #000; 
-            text-decoration: none; padding: 22px; border-radius: 12px; 
+            text-decoration: none; padding: 222px; /* Виправив padding */
+            padding: 22px; border-radius: 12px; 
             font-weight: 900; text-transform: uppercase; letter-spacing: 1px; 
             margin-top: 35px; font-size: 1.2rem;
             box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.3s;
         }
         .btn-parik:hover { transform: translateY(-4px); box-shadow: 0 15px 45px rgba(191,149,63,0.6); filter: brightness(1.2); }
 
-        /* Кнопка ТГ Бота (Стильна) */
         .btn-bot-parik {
             display: block; border: 1px solid rgba(191, 149, 63, 0.6);
             color: #fff; text-decoration: none; padding: 18px;
@@ -80,6 +84,13 @@
     </div>
 
     <div class="container" id="content">
+        <!-- КНОПКА ПОВЕРНЕННЯ -->
+        <div class="nav-menu">
+            <a href="index.html" class="btn-menu">
+                <span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ
+            </a>
+        </div>
+
         <div class="promo-card">
             <div class="verified-badge">SECURED BY VIP CONCIERGE</div>
             <h1>PARIK 24</h1>
@@ -90,7 +101,6 @@
             </p>
 
             <a href="https://play.mrbonusua.space/parik24.html" target="_blank" class="btn-parik">ЗАБРАТИ 150 FS 💎</a>
-            
             <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="btn-bot-parik">🤖 АКТИВУВАТИ У TG БОТІ</a>
         </div>
         
@@ -112,5 +122,3 @@
     </script>
 </body>
 </html>
-
-
