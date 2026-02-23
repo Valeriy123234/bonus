@@ -1,1 +1,114 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOP MATCH VIP | MRBONUS UA</title>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --dark: #050505;
+        }
+        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+
+        /* Tech Scanner Loader */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 9999;
+            transition: 0.6s ease-out;
+        }
+        .scan-line { width: 150px; height: 2px; background: #BF953F; box-shadow: 0 0 15px #BF953F; animation: scan 1.5s infinite; }
+        @keyframes scan { 0% { transform: translateY(-30px); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateY(30px); opacity: 0; } }
+
+        .container { max-width: 500px; width: 92%; padding: 40px 15px; text-align: center; display: none; opacity: 0; transition: 1s; }
+        
+        .promo-card { 
+            background: rgba(10, 10, 10, 0.98);
+            border: 1px solid #BF953F;
+            border-radius: 15px; 
+            padding: 50px 25px; 
+            box-shadow: 0 0 40px rgba(191,149,63,0.1);
+        }
+
+        .status-top {
+            font-family: 'Cinzel', serif;
+            color: #BF953F;
+            font-size: 0.7rem;
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        h1 { font-family: 'Cinzel', serif; font-size: 2.4rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
+        
+        .promo-value { font-size: 2.2rem; font-weight: 900; margin: 20px 0; color: #fff; line-height: 1.1; }
+
+        /* Кнопка Казино (Швидка) */
+        .btn-top { 
+            display: block; background: var(--gold); color: #000; 
+            text-decoration: none; padding: 22px; border-radius: 8px; 
+            font-weight: 900; text-transform: uppercase; letter-spacing: 1px; 
+            margin-top: 30px; font-size: 1.1rem;
+            box-shadow: 0 8px 25px rgba(191,149,63,0.4); transition: 0.3s;
+        }
+        .btn-top:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(191,149,63,0.6); filter: brightness(1.2); }
+
+        /* Кнопка ТГ Бота (Стильна) */
+        .btn-bot-top {
+            display: block; border: 1px solid rgba(191, 149, 63, 0.5);
+            color: #fff; text-decoration: none; padding: 18px;
+            border-radius: 8px; font-size: 0.85rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 2px;
+            margin-top: 15px; transition: 0.3s;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .btn-bot-top:hover { background: rgba(191, 149, 63, 0.1); color: #BF953F; border-color: #BF953F; }
+
+        .footer-tag { color: #222; font-size: 0.65rem; margin-top: 45px; font-weight: 900; letter-spacing: 4px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+    <div id="loader">
+        <div class="scan-line"></div>
+        <h2 style="font-family:'Cinzel'; background: var(--gold); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:10px; margin-top:30px;">MRBONUS</h2>
+        <p style="color:#444; font-size:0.6rem; letter-spacing:4px; margin-top:10px;">ANALYZING TOP MATCH OFFERS...</p>
+    </div>
+
+    <div class="container" id="content">
+        <div class="promo-card">
+            <div class="status-top">MATCH VERIFIED by MRBONUS</div>
+            <h1>TOP MATCH</h1>
+            <div class="promo-value">200₴ ГРОШИМА <br> + 100 FS <span style="font-size: 0.9rem; display: block; color: #888; margin-top: 5px;">INSTANT VIP PACK</span></div>
+            
+            <p style="color: #bbb; font-size: 0.95rem; line-height: 1.5; font-weight: 500; padding: 0 10px;">
+                Ваш бездепозитний бонус 200₴ успішно підтверджено сервісом <b>MRBONUS</b>. <br> <b>Забирайте свій кеш</b> прямо зараз.
+            </p>
+
+            <a href="http://play.mrbonusua.space/topmatch.html" target="_blank" class="btn-top">ЗАБРАТИ 200₴ + 100 FS ⚡</a>
+            
+            <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="btn-bot-top">🤖 АКТИВУВАТИ У ТГ БОТІ</a>
+        </div>
+        
+        <p class="footer-tag">TOP GEAR • 21+ • MRBONUS UA</p>
+    </div>
+
+    <script>
+        window.onload = function() {
+            setTimeout(function() {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(function() {
+                    document.getElementById('loader').style.display = 'none';
+                    let content = document.getElementById('content');
+                    content.style.display = 'block';
+                    setTimeout(() => content.style.opacity = '1', 50);
+                }, 500);
+            }, 1800);
+        };
+    </script>
+</body>
+</html>
+
 
