@@ -26,8 +26,13 @@
             100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(191,149,63,0.5)); }
         }
 
-        .container { max-width: 500px; width: 90%; padding: 40px 20px; text-align: center; display: none; opacity: 0; transition: 1s ease; }
+        .container { max-width: 500px; width: 90%; padding: 20px 20px 40px; text-align: center; display: none; opacity: 0; transition: 1s ease; }
         
+        /* СТИЛЬНА НАВІГАЦІЯ */
+        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 25px; }
+        .btn-menu { text-decoration: none; color: #555; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+        .btn-menu:hover { color: #BF953F; transform: translateX(-5px); }
+
         .promo-card { 
             background: linear-gradient(180deg, #111 0%, #000 100%);
             border: 2px solid #BF953F;
@@ -50,7 +55,6 @@
         
         .promo-value { font-size: 2.4rem; font-weight: 900; margin: 20px 0; color: #fff; line-height: 1; text-transform: uppercase; }
 
-        /* Кнопка Казино (Золота) */
         .btn-champion { 
             display: block; background: var(--gold); color: #000; 
             text-decoration: none; padding: 20px; border-radius: 50px; 
@@ -60,7 +64,6 @@
         }
         .btn-champion:hover { transform: translateY(-5px); box-shadow: 0 15px 45px rgba(191, 149, 63, 0.6); }
 
-        /* Кнопка ТГ Бота (Срібна/Контурна) */
         .btn-bot-champion {
             display: block; border: 1px solid rgba(191, 149, 63, 0.6);
             color: #fff; text-decoration: none; padding: 16px;
@@ -87,6 +90,13 @@
     </div>
 
     <div class="container" id="content">
+        <!-- КНОПКА ПОВЕРНЕННЯ -->
+        <div class="nav-menu">
+            <a href="index.html" class="btn-menu">
+                <span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ
+            </a>
+        </div>
+
         <div class="promo-card">
             <div class="vip-status">Verified Champion Status</div>
             <h1>CHAMPION CLUB</h1>
@@ -97,8 +107,6 @@
             </p>
 
             <a href="https://play.mrbonusua.space/championclub.html" target="_blank" class="btn-champion">ЗАБРАТИ СВІЙ КУБОК 🏆</a>
-            
-            <!-- Повноцінна кнопка для Бота -->
             <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="btn-bot-champion">🤖 ЗАБРАТИ В TG БОТІ</a>
         </div>
         
