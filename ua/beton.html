@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BETON EXCLUSIVE | VIP MRBONUS</title>
+    <!-- Підключення Telegram WebApp SDK -->
+    <script src="https://telegram.org"></script>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
         :root {
@@ -43,7 +45,7 @@
         .container { max-width: 500px; width: 90%; padding: 20px 20px 40px; text-align: center; display: none; opacity: 0; transition: 1s; }
         .container.show { display: block; opacity: 1; }
 
-        /* НАВІГАЦІЯ (БЕТОННИЙ СТИЛЬ) */
+        /* НАВІГАЦІЯ */
         .nav-menu {
             display: flex;
             justify-content: flex-start;
@@ -60,6 +62,10 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
         }
         .btn-menu:hover {
             color: #fff;
@@ -83,6 +89,7 @@
             font-weight: 900; text-transform: uppercase; letter-spacing: 1px; 
             margin-top: 30px; font-size: 1.2rem;
             transition: 0.2s; border-bottom: 5px solid #8c6a1b;
+            cursor: pointer; text-align: center;
         }
         .btn-beton:hover { transform: translateY(2px); border-bottom: 2px solid #8c6a1b; filter: brightness(1.1); }
 
@@ -92,6 +99,7 @@
             font-size: 0.85rem; font-weight: 800; text-transform: uppercase; 
             letter-spacing: 1px; margin-top: 15px; transition: 0.3s;
             background: rgba(255, 255, 255, 0.02);
+            cursor: pointer; text-align: center;
         }
         .btn-bot-beton:hover { color: #fff; border-color: #BF953F; background: rgba(191, 149, 63, 0.05); }
 
@@ -109,11 +117,10 @@
 
     <div class="container" id="content">
         
-        <!-- НАВІГАЦІЯ -->
         <div class="nav-menu">
-            <a href="index.html" class="btn-menu">
+            <button onclick="goBack()" class="btn-menu">
                 <span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ
-            </a>
+            </button>
         </div>
 
         <div class="promo-card">
@@ -125,14 +132,42 @@
                 Твій залізобетонний бонус готовий. <br> <b>Забери свій куш</b> і починай тиснути прямо зараз.
             </p>
 
-            <a href="http://play.mrbonusua.space/beton.html" target="_blank" class="btn-beton">ЗАБРАТИ КУШ 🎰</a>
-            <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="btn-bot-beton">🤖 ІНШІ ТЕМКИ У TG</a>
+            <a href="http://play.mrbonusua.space/beton.html" class="btn-beton js-link">ЗАБРАТИ КУШ 🎰</a>
+            <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-beton js-link">🤖 ІНШІ ТЕМКИ У TG</a>
         </div>
         
         <p class="legal">21+ • NO RISK • MRBONUS UA</p>
     </div>
 
     <script>
+        const tg = window.Telegram.WebApp;
+
+        // Ініціалізація Telegram Mini App
+        if (tg.initData) {
+            tg.ready();
+            tg.expand();
+        }
+
+        // Логіка повернення
+        function goBack() {
+            if (tg.initData) {
+                window.location.href = 'index.html';
+            } else {
+                window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
+            }
+        }
+
+        // Універсальне відкриття посилань
+        document.querySelectorAll('.js-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const url = this.getAttribute('href');
+                if (tg.initData && url.startsWith('http')) {
+                    e.preventDefault();
+                    tg.openLink(url);
+                }
+            });
+        });
+
         window.onload = function() {
             setTimeout(function() {
                 document.getElementById('loader').style.opacity = '0';
