@@ -91,7 +91,8 @@
             transition: 0.2s; border-bottom: 5px solid #8c6a1b;
             cursor: pointer; text-align: center;
         }
-        .btn-beton:hover { transform: translateY(2px); border-bottom: 2px solid #8c6a1b; filter: brightness(1.1); }
+        .btn-beton:active { transform: translateY(2px); border-bottom: 2px solid #8c6a1b; }
+        .btn-beton:hover { filter: brightness(1.1); }
 
         .btn-bot-beton { 
             display: block; border: 2px solid #333; color: #888; 
@@ -140,40 +141,54 @@
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
+        const tg = window.Telegram ? window.Telegram.WebApp : null;
 
-        // Ініціалізація Telegram Mini App
-        if (tg.initData) {
+        if (tg) {
             tg.ready();
             tg.expand();
         }
 
-        // Логіка повернення
+        // Перевірка на Mini App
+        function isTg() {
+            return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0;
+        }
+
         function goBack() {
-            if (tg.initData) {
+            if (isTg()) {
+                if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
                 window.location.href = 'index.html';
             } else {
                 window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
             }
         }
 
-        // Універсальне відкриття посилань
         document.querySelectorAll('.js-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 const url = this.getAttribute('href');
-                if (tg.initData && url.startsWith('http')) {
+                
+                if (isTg()) {
                     e.preventDefault();
-                    tg.openLink(url);
+                    if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                    
+                    // Перехід до бота без браузера
+                    if (url.includes('t.me/')) {
+                        tg.openTelegramLink(url);
+                    } else {
+                        tg.openLink(url);
+                    }
                 }
             });
         });
 
         window.onload = function() {
             setTimeout(function() {
-                document.getElementById('loader').style.opacity = '0';
+                const loader = document.getElementById('loader');
+                if (loader) loader.style.opacity = '0';
+                
                 setTimeout(function() {
-                    document.getElementById('loader').style.display = 'none';
-                    document.getElementById('content').classList.add('show');
+                    if (loader) loader.style.display = 'none';
+                    const content = document.getElementById('content');
+                    if (content) content.classList.add('show');
                 }, 800);
             }, 2000);
         };
