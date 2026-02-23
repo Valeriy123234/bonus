@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VIP MRBONUS | 777 CASINO</title>
-    <!-- Додаємо скрипт Telegram WebApp -->
+    <!-- ПРАВИЛЬНЕ ПІДКЛЮЧЕННЯ TELEGRAM SDK -->
     <script src="https://telegram.org"></script>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
@@ -32,14 +32,31 @@
         }
         @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
-        .container { max-width: 500px; width: 90%; padding: 20px 20px 40px; text-align: center; opacity: 0; transform: translateY(20px); transition: all 1s ease; }
-        .container.show { opacity: 1; transform: translateY(0); }
+        /* Контейнер тепер прихований через display: none */
+        .container { 
+            max-width: 500px; 
+            width: 90%; 
+            padding: 20px 20px 40px; 
+            text-align: center; 
+            display: none; 
+            opacity: 0; 
+            transform: translateY(20px); 
+            transition: opacity 0.8s ease, transform 0.8s ease; 
+        }
+
+        /* Клас для відображення */
+        .container.show { 
+            display: block !important; 
+            opacity: 1 !important; 
+            transform: translateY(0); 
+        }
 
         .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 25px; }
         .btn-menu {
             text-decoration: none; color: #555; font-size: 0.7rem; font-weight: 800;
             letter-spacing: 2px; text-transform: uppercase; transition: 0.3s;
             display: flex; align-items: center; gap: 8px; cursor: pointer;
+            background: none; border: none; padding: 0;
         }
         .btn-menu:hover { color: #BF953F; transform: translateX(-5px); }
 
@@ -49,7 +66,7 @@
         .promo-value { font-size: 2.2rem; font-weight: 800; margin: 15px 0; color: #fff; text-shadow: 0 0 20px rgba(191, 149, 63, 0.4); }
         .status-badge { display: inline-block; padding: 6px 18px; border-radius: 50px; background: rgba(191, 149, 63, 0.1); border: 1px solid #BF953F; color: #BF953F; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; margin-bottom: 25px; }
 
-        .btn-casino { display: block; background: var(--gold); color: #000; text-decoration: none; padding: 20px; border-radius: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 30px rgba(191, 149, 63, 0.4); transition: 0.3s; margin-top: 20px; font-size: 1.1rem; border: none; width: 100%; cursor: pointer; }
+        .btn-casino { display: block; background: var(--gold); color: #000; text-decoration: none; padding: 20px; border-radius: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 30px rgba(191, 149, 63, 0.4); transition: 0.3s; margin-top: 20px; font-size: 1.1rem; border: none; width: 100%; cursor: pointer; text-align: center; }
         .btn-casino:hover { transform: scale(1.03); box-shadow: 0 15px 40px rgba(191, 149, 63, 0.6); }
 
         .btn-bot { 
@@ -57,7 +74,7 @@
             color: #fff; text-decoration: none; padding: 16px; 
             border-radius: 12px; font-size: 0.85rem; font-weight: 700; 
             text-transform: uppercase; letter-spacing: 1px; margin-top: 15px; 
-            transition: 0.3s; background: rgba(255, 255, 255, 0.03); cursor: pointer;
+            transition: 0.3s; background: rgba(255, 255, 255, 0.03); cursor: pointer; text-align: center;
         }
         .btn-bot:hover { background: rgba(191, 149, 63, 0.1); border-color: #BF953F; color: #BF953F; transform: translateY(-2px); }
         .footer-text { margin-top: 40px; font-size: 0.6rem; color: #333; text-transform: uppercase; letter-spacing: 2px; }
@@ -72,8 +89,7 @@
 
     <div class="container" id="main-content">
         <div class="nav-menu">
-            <!-- Використовуємо JS для повернення -->
-            <a onclick="goBack()" class="btn-menu"><span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ</a>
+            <button onclick="goBack()" class="btn-menu"><span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ</button>
         </div>
 
         <div class="promo-card">
@@ -96,19 +112,16 @@
     <script>
         const tg = window.Telegram.WebApp;
 
-        // Налаштування Mini App
-        if (tg.initData) {
-            tg.ready();
-            tg.expand();
-        }
+        // Ініціалізація
+        tg.ready();
+        tg.expand();
 
         // Функція переходу назад
         function goBack() {
             if (tg.initData) {
-                // Якщо в ТГ - просто переходимо на index.html
                 window.location.href = 'index.html';
             } else {
-                window.history.back();
+                window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
             }
         }
 
@@ -116,21 +129,31 @@
         document.querySelectorAll('.js-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 const url = this.getAttribute('href');
-                if (tg.initData) {
+                if (tg.initData && url.startsWith('http')) {
                     e.preventDefault();
-                    tg.openLink(url); // Відкриває всередині ТГ
+                    tg.openLink(url);
                 }
             });
         });
 
+        // Логіка лоадера
         window.onload = function() {
             setTimeout(function() {
-                document.getElementById('loader').style.opacity = '0';
+                const loader = document.getElementById('loader');
+                const content = document.getElementById('main-content');
+                
+                if (loader) loader.style.opacity = '0';
+                
                 setTimeout(function() {
-                    document.getElementById('loader').style.display = 'none';
-                    document.getElementById('main-content').classList.add('show');
+                    if (loader) loader.style.display = 'none';
+                    if (content) {
+                        content.style.display = 'block'; // Вмикаємо блок у DOM
+                        setTimeout(() => {
+                            content.classList.add('show'); // Запускаємо анімацію
+                        }, 50);
+                    }
                 }, 800);
-            }, 1800);
+            }, 1500);
         };
     </script>
 </body>
