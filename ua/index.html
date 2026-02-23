@@ -26,7 +26,7 @@
         }
 
         header {
-            padding: 50px 20px 30px;
+            padding: 40px 20px 20px;
             text-align: center;
             max-width: 800px;
             width: 100%;
@@ -56,14 +56,14 @@
             font-size: 0.8rem;
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin: 15px 0 35px;
+            margin: 10px 0 25px;
         }
 
         .social-buttons {
             display: flex;
             gap: 15px;
             justify-content: center;
-            margin-bottom: 40px;
+            margin-bottom: 25px;
             flex-wrap: wrap;
         }
 
@@ -90,7 +90,7 @@
             transform: scale(1.05);
         }
 
-        /* --- СТИЛІ СТРІЧКИ СЛОТІВ --- */
+        /* --- БЕЗШОВНА СТРІЧКА --- */
         .slots-ticker {
             width: 100%;
             overflow: hidden;
@@ -98,25 +98,28 @@
             border-top: 1px solid rgba(191, 149, 63, 0.2);
             border-bottom: 1px solid rgba(191, 149, 63, 0.2);
             padding: 12px 0;
-            margin: 0 0 40px;
+            margin: 0 0 20px;
             white-space: nowrap;
             position: relative;
         }
 
         .slots-track {
-            display: inline-flex;
-            animation: scroll-slots 25s linear infinite;
-            gap: 50px;
+            display: flex;
+            width: max-content;
+            animation: scroll-slots 20s linear infinite;
+            will-change: transform;
         }
 
         .slot-emoji {
             font-size: 2rem;
             filter: drop-shadow(0 0 8px rgba(191, 149, 63, 0.4));
+            padding: 0 25px;
+            display: inline-block;
         }
 
         @keyframes scroll-slots {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
         }
 
         .slots-ticker::before, .slots-ticker::after {
@@ -127,15 +130,15 @@
         }
         .slots-ticker::before { left: 0; background: linear-gradient(to right, #0a0a0a, transparent); }
         .slots-ticker::after { right: 0; background: linear-gradient(to left, #0a0a0a, transparent); }
-        /* --------------------------- */
 
+        /* --- СІТКА КАЗИНО --- */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
+            gap: 25px;
             width: 95%;
             max-width: 1300px;
-            padding: 20px 0 80px;
+            padding: 10px 0 80px;
         }
 
         .card {
@@ -242,22 +245,16 @@
     <p class="subtitle">Ваш персональний гід у світ бонусів</p>
 
     <div class="social-buttons">
-        <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="social-btn">
-            🤖 ТГ БОТ (БОНУСИ)
-        </a>
-        <a href="https://t.me/+c33timlTVpYyOGQ6" target="_blank" class="social-btn">
-            📢 ТГ КАНАЛ (АКЦІЇ)
-        </a>
+        <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="social-btn">🤖 ТГ БОТ (БОНУСИ)</a>
+        <a href="https://t.me/+c33timlTVpYyOGQ6" target="_blank" class="social-btn">📢 ТГ КАНАЛ (АКЦІЇ)</a>
     </div>
 </header>
 
-<!-- РУХОМА СТРІЧКА СЛОТІВ -->
 <div class="slots-ticker">
     <div class="slots-track">
         <span class="slot-emoji">🎰</span><span class="slot-emoji">🍒</span><span class="slot-emoji">💎</span><span class="slot-emoji">🍋</span><span class="slot-emoji">7️⃣</span><span class="slot-emoji">🔔</span><span class="slot-emoji">💰</span><span class="slot-emoji">🍓</span><span class="slot-emoji">👑</span><!-- 
-        Копія без розриву рядка --><span class="slot-emoji">🎰</span><span class="slot-emoji">🍒</span><span class="slot-emoji">💎</span><span class="slot-emoji">🍋</span><span class="slot-emoji">7️⃣</span><span class="slot-emoji">🔔</span><span class="slot-emoji">💰</span><span class="slot-emoji">🍓</span><span class="slot-emoji">👑</span>
-</div>
-
+        --><span class="slot-emoji">🎰</span><span class="slot-emoji">🍒</span><span class="slot-emoji">💎</span><span class="slot-emoji">🍋</span><span class="slot-emoji">7️⃣</span><span class="slot-emoji">🔔</span><span class="slot-emoji">💰</span><span class="slot-emoji">🍓</span><span class="slot-emoji">👑</span>
+    </div>
 </div>
 
 <div class="grid">
@@ -298,7 +295,6 @@
         <a href="https://play.mrbonusua.space/ua/beton.html" class="btn-claim">BETON +500FS 🎰</a>
     </div>
 
-     <!-- 6. GORILLA -->
     <div class="card">
         <h2>GORILLA</h2>
         <span class="bonus-amount">300 FS</span>
@@ -306,7 +302,6 @@
         <a href="https://play.mrbonusua.space/ua/gorilla.html" class="btn-claim">GORILLA 300 🦍</a>
     </div>
 
-    <!-- 7. BETKING -->
     <div class="card">
         <h2>BETKING</h2>
         <span class="bonus-amount">200% + 200 FS</span>
@@ -314,7 +309,6 @@
         <a href="https://play.mrbonusua.space/ua/betking.html" class="btn-claim">BETKING 200 🤴</a>
     </div>
 
-    <!-- 8. 777 -->
     <div class="card">
         <span class="vip-tag">POPULAR</span>
         <h2>777 CASINO</h2>
@@ -323,7 +317,6 @@
         <a href="https://play.mrbonusua.space/ua/777.html" class="btn-claim">777FS 🎰</a>
     </div>
 
-    <!-- 9. VEGAS -->
     <div class="card">
         <h2>VEGAS</h2>
         <span class="bonus-amount">150 FS</span>
@@ -331,7 +324,6 @@
         <a href="https://play.mrbonusua.space/ua/vegas.html" class="btn-claim">VEGAS +150FS 🌃</a>
     </div>
 
-    <!-- 10. GG BET -->
     <div class="card">
         <h2>GG BET</h2>
         <span class="bonus-amount">1000 FS</span>
@@ -339,7 +331,6 @@
         <a href="https://play.mrbonusua.space/ua/ggbet.html" class="btn-claim">GG BET +1000FS 🔥</a>
     </div>
 
-    <!-- 11. PARIK 24 -->
     <div class="card">
         <h2>PARIK 24</h2>
         <span class="bonus-amount">100% + 150 FS</span>
@@ -347,7 +338,6 @@
         <a href="https://play.mrbonusua.space/ua/parik24.html" class="btn-claim">PARIK 24 +150FS 🟧</a>
     </div>
 
-    <!-- 12. CHAMPION CLUB -->
     <div class="card">
         <h2>CHAMPION CLUB</h2>
         <span class="bonus-amount">VIP ACCESS</span>
@@ -355,7 +345,6 @@
         <a href="https://play.mrbonusua.space/ua/championclub.html" class="btn-claim">ВІДКРИТИ 🏆</a>
     </div>
 
-    <!-- 13. EURO CASINO -->
     <div class="card">
         <h2>EURO CASINO</h2>
         <span class="bonus-amount">1000 FS</span>
@@ -363,10 +352,10 @@
         <a href="https://play.mrbonusua.space/ua/euro.html" class="btn-claim">EURO 1000FS 🇪🇺</a>
     </div>
 </div>
-</div>
 
 <footer>
-    <p>&copy; 2026 VIP MRBONUS UA. Усі права захищені. 21+</p>
+    <p>&copy; 2026 VIP MRBONUS. Всі права захищені.</p>
+    <p style="opacity: 0.4;">Тільки для осіб старше 21 року. Гра в казино може викликати залежність. <br> Будьте відповідальними та грайте з розумом.</p>
 </footer>
 
 </body>
