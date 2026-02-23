@@ -1,1 +1,98 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP MRBONUS | 777 CASINO</title>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --dark: #0a0a0a;
+        }
+        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+
+        /* Анімація завантаження VIP статусу */
+        #loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #0a0a0a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease;
+        }
+        #loader h2 {
+            font-family: 'Cinzel', serif;
+            background: var(--gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            letter-spacing: 8px;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+
+        .container { max-width: 500px; width: 90%; padding: 40px 20px; text-align: center; opacity: 0; transform: translateY(20px); transition: all 1s ease; }
+        .container.show { opacity: 1; transform: translateY(0); }
+
+        .promo-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(191,149,63,0.2); border-radius: 25px; padding: 45px 25px; backdrop-filter: blur(15px); box-shadow: 0 30px 70px rgba(0,0,0,0.7); }
+        
+        .lucky-icons { font-size: 2rem; margin-bottom: 10px; letter-spacing: 10px; }
+        h1 { font-family: 'Cinzel', serif; font-size: 2rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
+        .promo-value { font-size: 2.2rem; font-weight: 800; margin: 15px 0; color: #fff; text-shadow: 0 0 20px rgba(191, 149, 63, 0.4); }
+        
+        .status-badge { display: inline-block; padding: 6px 18px; border-radius: 50px; background: rgba(191, 149, 63, 0.1); border: 1px solid #BF953F; color: #BF953F; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; margin-bottom: 25px; }
+
+        .btn-casino { display: block; background: var(--gold); color: #000; text-decoration: none; padding: 22px; border-radius: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 30px rgba(191, 149, 63, 0.4); transition: 0.3s; margin-top: 20px; font-size: 1.1rem; }
+        .btn-casino:hover { transform: scale(1.03); box-shadow: 0 15px 40px rgba(191, 149, 63, 0.6); }
+
+        .btn-bot { display: block; color: #888; text-decoration: none; padding: 15px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-top: 20px; transition: 0.3s; }
+        .btn-bot:hover { color: #BF953F; }
+    </style>
+</head>
+<body>
+
+    <!-- Екран завантаження MRBONUS -->
+    <div id="loader">
+        <h2>MRBONUS</h2>
+        <p style="color: #444; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; margin-top: 15px;">Verifying VIP Access...</p>
+    </div>
+
+    <div class="container" id="main-content">
+        <div class="promo-card">
+            <div class="status-badge">АКТИВОВАНО ДЛЯ ВАС</div>
+            <div class="lucky-icons">🎰 🎰 🎰</div>
+            <h1>777 CASINO</h1> 
+            <div class="promo-value">1450 ФРІСПІНІВ</div> 
+            
+            <p style="color: #888; font-size: 0.85rem; line-height: 1.6; margin-bottom: 30px;">
+                Вітаємо! Ваш VIP-статус підтверджено. <br> Використайте привілей від <b>MRBONUS</b> прямо зараз.
+            </p>
+
+            <a href="http://play.mrbonusua.space/777.html" target="_blank" class="btn-casino">ЗАБРАТИ 1450 FS 💎</a>
+            <a href="https://t.me" target="_blank" class="btn-bot">🤖 АБО ЧЕРЕЗ ТЕЛЕГРАМ</a>
+        </div>
+        
+        <p style="margin-top: 40px; font-size: 0.6rem; color: #333; text-transform: uppercase; letter-spacing: 2px;">
+            VIP MRBONUS UA 2026. 21+ Only.
+        </p>
+    </div>
+
+    <script>
+        // Скрипт для прикольної появи
+        window.onload = function() {
+            setTimeout(function() {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(function() {
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('main-content').classList.add('show');
+                }, 800);
+            }, 1800); // 1.8 секунди показуємо напис MRBONUS
+        };
+    </script>
+</body>
+</html>
 
