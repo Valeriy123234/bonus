@@ -23,6 +23,7 @@
             flex-direction: column;
             align-items: center;
             background-image: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
+            overflow-x: hidden;
         }
 
         header {
@@ -89,6 +90,49 @@
             box-shadow: 0 0 25px rgba(191, 149, 63, 0.5);
             transform: scale(1.05);
         }
+
+        /* --- СТИЛІ ДЛЯ СТРІЧКИ СЛОТІВ --- */
+        .slots-ticker {
+            width: 100%;
+            overflow: hidden;
+            background: rgba(191, 149, 63, 0.03);
+            border-top: 1px solid rgba(191, 149, 63, 0.15);
+            border-bottom: 1px solid rgba(191, 149, 63, 0.15);
+            padding: 20px 0;
+            margin-bottom: 30px;
+            white-space: nowrap;
+        }
+
+        .ticker-wrapper {
+            display: inline-block;
+            animation: scroll 30s linear infinite;
+        }
+
+        .ticker-item {
+            display: inline-flex;
+            align-items: center;
+            padding: 0 40px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        .ticker-item img {
+            height: 45px;
+            width: 45px;
+            object-fit: contain;
+            margin-right: 15px;
+            filter: drop-shadow(0 0 8px rgba(191, 149, 63, 0.4));
+            border-radius: 8px;
+        }
+
+        @keyframes scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+        /* ------------------------------- */
 
         .grid {
             display: grid;
@@ -202,19 +246,33 @@
     <h1>VIP MRBONUS</h1>
     <p class="subtitle">Ваш персональний гід у світ бонусів</p>
 
-    <!-- Головні кнопки: Бот та Канал -->
     <div class="social-buttons">
-        <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="social-btn">
-            🤖 ТГ БОТ (БОНУСИ)
-        </a>
-        <a href="https://t.me/+c33timlTVpYyOGQ6" target="_blank" class="social-btn">
-            📢 ТГ КАНАЛ (АКЦІЇ)
-        </a>
+        <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="social-btn">🤖 ТГ БОТ (БОНУСИ)</a>
+        <a href="https://t.me/+c33timlTVpYyOGQ6" target="_blank" class="social-btn">📢 ТГ КАНАЛ (АКЦІЇ)</a>
     </div>
 </header>
 
+<!-- РЯДОК ЗІ СЛОТАМИ ТА ФОТО -->
+<div class="slots-ticker">
+    <div class="ticker-wrapper">
+        <div class="ticker-item"><img src="slot1.png" alt="">Gates of Olympus</div>
+        <div class="ticker-item"><img src="slot2.png" alt="">Sweet Bonanza</div>
+        <div class="ticker-item"><img src="slot3.png" alt="">Sugar Rush</div>
+        <div class="ticker-item"><img src="slot4.png" alt="">The Dog House</div>
+        <div class="ticker-item"><img src="slot5.png" alt="">Big Bass Bonanza</div>
+        <div class="ticker-item"><img src="slot6.png" alt="">Book of Ra</div>
+        <!-- Повтор для безперервності -->
+        <div class="ticker-item"><img src="slot1.png" alt="">Gates of Olympus</div>
+        <div class="ticker-item"><img src="slot2.png" alt="">Sweet Bonanza</div>
+        <div class="ticker-item"><img src="slot3.png" alt="">Sugar Rush</div>
+        <div class="ticker-item"><img src="slot4.png" alt="">The Dog House</div>
+        <div class="ticker-item"><img src="slot5.png" alt="">Big Bass Bonanza</div>
+        <div class="ticker-item"><img src="slot6.png" alt="">Book of Ra</div>
+    </div>
+</div>
+
 <div class="grid">
-    <!-- 1. SLOTS CITY -->
+    <!-- 1 -->
     <div class="card">
         <span class="vip-tag">TOP CHOICE</span>
         <h2>SLOT CITY</h2>
@@ -222,8 +280,7 @@
         <p class="bonus-details">Бонус дня від MRBONUS: 700 фриспінів та 200₴ до першого депу</p>
         <a href="https://play.mrbonusua.space/ua/slotcity.html" class="btn-claim">SLOTCITY 700 🎉</a>
     </div>
-
-    <!-- 2. FIRST CASINO -->
+    <!-- 2 -->
     <div class="card">
         <span class="vip-tag">EXCLUSIVE</span>
         <h2>FIRST CASINO</h2>
@@ -231,94 +288,76 @@
         <p class="bonus-details">VIP подарунок: до 1300FS (для нових користувачів)</p>
         <a href="https://play.mrbonusua.space/ua/first.html" class="btn-claim">FIRST 1300FS 🔥</a>
     </div>
-
-    <!-- 3. POKER-BET -->
+    <!-- 3 -->
     <div class="card">
         <h2>POKER-BET</h2>
         <span class="bonus-amount">100% + 650 FS</span>
         <p class="bonus-details">Стартовий пакет: 100% бонус + 650 фриспінів на рахунок</p>
         <a href="https://play.mrbonusua.space/ua/pokerbet.html" class="btn-claim">POKER-BET +650FS 🃏</a>
     </div>
-
-    <!-- 4. TOP MATCH -->
+    <!-- 4 -->
     <div class="card">
         <h2>TOP MATCH</h2>
         <span class="bonus-amount">200₴ + 100 FS</span>
         <p class="bonus-details">Акція MRBONUS: 200₴ реальними грошима + 100 фриспінів</p>
         <a href="https://play.mrbonusua.space/ua/topmatch.html" class="btn-claim">TOP MATCH 200₴ ⚡</a>
     </div>
-
-    <!-- 5. BETON -->
+    <!-- 5 -->
     <div class="card">
         <h2>BETON</h2>
         <span class="bonus-amount">150% + 500 FS</span>
         <p class="bonus-details">Бонус новачку: 150% нарахування та 500 фриспінів</p>
         <a href="https://play.mrbonusua.space/ua/beton.html" class="btn-claim">BETON +500FS 🎰</a>
     </div>
-
-    <!-- 6. GORILLA -->
+    <!-- 6 -->
     <div class="card">
         <h2>GORILLA</h2>
         <span class="bonus-amount">300 FS</span>
         <p class="bonus-details">Фріспіни для всіх гравців: забирай 300 FS без умов</p>
-        <a href="https://play.mrbonusua.space/ua/gorilla.html" class="btn-claim">GORILLA 300 🦍</a>
+        <a href="https://play.mrbonusua.space" class="btn-claim">GORILLA 300 🦍</a>
     </div>
-
-    <!-- 7. BETKING -->
+    <!-- 7 -->
     <div class="card">
         <h2>BETKING</h2>
         <span class="bonus-amount">200% + 200 FS</span>
         <p class="bonus-details">Королівський старт: 200% бонус та 200 фриспінів</p>
-        <a href="https://play.mrbonusua.space/ua/betking.html" class="btn-claim">BETKING 200 🤴</a>
+        <a href="https://play.mrbonusua.space" class="btn-claim">BETKING 200 🤴</a>
     </div>
-
-    <!-- 8. 777 -->
+    <!-- 8 -->
     <div class="card">
         <span class="vip-tag">POPULAR</span>
         <h2>777 CASINO</h2>
         <span class="bonus-amount">777 FS</span>
         <p class="bonus-details">Бездепозитний рекорд: 777 фриспінів для нових гравців</p>
-        <a href="https://play.mrbonusua.space/ua/777.html" class="btn-claim">777FS 🎰</a>
+        <a href="https://play.mrbonusua.space" class="btn-claim">777FS 🎰</a>
     </div>
-
-    <!-- 9. VEGAS -->
+    <!-- 9 -->
     <div class="card">
         <h2>VEGAS</h2>
         <span class="bonus-amount">150 FS</span>
         <p class="bonus-details">Вечірній бонус Vegas: 150 фріспінів на твій рахунок</p>
-        <a href="https://play.mrbonusua.space/ua/vegas.html" class="btn-claim">VEGAS +150FS 🌃</a>
+        <a href="https://play.mrbonusua.space" class="btn-claim">VEGAS +150FS 🌃</a>
     </div>
-
-    <!-- 10. GG BET -->
+    <!-- 10 -->
     <div class="card">
         <h2>GG BET</h2>
         <span class="bonus-amount">1000 FS</span>
         <p class="bonus-details">Фриспіни сьогодні: забирай пакет із 1000 фриспінів</p>
-        <a href="https://play.mrbonusua.space/ua/ggbet.html" class="btn-claim">GG BET +1000FS 🔥</a>
+        <a href="https://play.mrbonusua.space" class="btn-claim">GG BET +1000FS 🔥</a>
     </div>
-
-    <!-- 11. PARIK 24 -->
+    <!-- 11 -->
     <div class="card">
         <h2>PARIK 24</h2>
         <span class="bonus-amount">100% + 150 FS</span>
         <p class="bonus-details">Легендарний бонус: 100% до депу та 150 фриспінів</p>
-        <a href="https://play.mrbonusua.space/ua/parik24.html" class="btn-claim">PARIK 24 +150FS 🟧</a>
+        <a href="https://play.mrbonusua.space" class="btn-claim">PARIK 24 +150FS 🟧</a>
     </div>
-
-    <!-- 12. CHAMPION CLUB -->
+    <!-- 12 -->
     <div class="card">
         <h2>CHAMPION CLUB</h2>
         <span class="bonus-amount">VIP ACCESS</span>
         <p class="bonus-details">Ексклюзивні умови для учасників Champion Club</p>
-        <a href="https://play.mrbonusua.space/ua/championclub.html" class="btn-claim">ВІДКРИТИ 🏆</a>
-    </div>
-
-    <!-- 13. EURO CASINO -->
-    <div class="card">
-        <h2>EURO CASINO</h2>
-        <span class="bonus-amount">1000 FS</span>
-        <p class="bonus-details">Спеціальна пропозиція Євроказино: 1000 фриспінів</p>
-        <a href="https://play.mrbonusua.space/ua/euro.html" class="btn-claim">EURO 1000FS 🇪🇺</a>
+        <a href="https://play.mrbonusua.space" class="btn-claim">ВІДКРИТИ 🏆</a>
     </div>
 </div>
 
