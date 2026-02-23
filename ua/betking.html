@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BETKING ROYAL ACCESS | MRBONUS</title>
+    <!-- Підключення Telegram WebApp SDK -->
+    <script src="https://telegram.org"></script>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <style>
         :root {
@@ -21,10 +23,8 @@
         .crown-anim { font-size: 4rem; animation: float 2s infinite ease-in-out; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
-        /* Контейнер */
         .container { max-width: 500px; width: 90%; padding: 20px 20px 40px; text-align: center; display: none; opacity: 0; transition: 1s; }
         
-        /* СТИЛЬНА НАВІГАЦІЯ (ПОВЕРНУТИСЯ ДО МЕНЮ) */
         .nav-menu {
             display: flex;
             justify-content: flex-start;
@@ -41,6 +41,10 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
         }
         .btn-menu:hover {
             color: #BF953F;
@@ -67,6 +71,7 @@
             font-weight: 900; text-transform: uppercase; letter-spacing: 1px; 
             margin-top: 30px; font-size: 1.2rem;
             box-shadow: 0 10px 30px rgba(191,149,63,0.5); transition: 0.3s;
+            cursor: pointer; border: none; width: 100%; text-align: center;
         }
         .btn-royal:hover { transform: scale(1.05); filter: brightness(1.1); }
 
@@ -77,6 +82,7 @@
             text-transform: uppercase; letter-spacing: 1px;
             margin-top: 15px; transition: 0.3s;
             background: rgba(255, 255, 255, 0.02);
+            cursor: pointer; text-align: center;
         }
         .btn-bot-royal:hover {
             background: rgba(191, 149, 63, 0.1);
@@ -97,11 +103,10 @@
 
     <div class="container" id="content">
         
-        <!-- КНОПКА ПОВЕРНЕННЯ -->
         <div class="nav-menu">
-            <a href="index.html" class="btn-menu">
+            <button onclick="goBack()" class="btn-menu">
                 <span>←</span> ПОВЕРНУТИСЯ ДО МЕНЮ
-            </a>
+            </button>
         </div>
 
         <div class="promo-card">
@@ -113,15 +118,43 @@
                 Твій королівський бонус активовано. <br> <b>Забирай свою частку</b> і починай гру прямо зараз.
             </p>
 
-            <a href="http://play.mrbonusua.space/betking.html" target="_blank" class="btn-royal">ЗАБРАТИ КОРОНУ 🤴</a>
+            <a href="http://play.mrbonusua.space/betking.html" class="btn-royal js-link">ЗАБРАТИ КОРОНУ 🤴</a>
             
-            <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="btn-bot-royal">🤖 ПЕРЕВІРИТИ ІНШІ АКЦІЇ У TG</a>
+            <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-royal js-link">🤖 ПЕРЕВІРИТИ ІНШІ АКЦІЇ У TG</a>
         </div>
         
         <p class="sub-text">21+ • VIP ACCESS ONLY • MRBONUS UA</p>
     </div>
 
     <script>
+        const tg = window.Telegram.WebApp;
+
+        // Ініціалізація Telegram Mini App
+        if (tg.initData) {
+            tg.ready();
+            tg.expand();
+        }
+
+        // Розумне повернення назад
+        function goBack() {
+            if (tg.initData) {
+                window.location.href = 'index.html';
+            } else {
+                window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
+            }
+        }
+
+        // Універсальне відкриття посилань
+        document.querySelectorAll('.js-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const url = this.getAttribute('href');
+                if (tg.initData && url.startsWith('http')) {
+                    e.preventDefault();
+                    tg.openLink(url);
+                }
+            });
+        });
+
         window.onload = function() {
             setTimeout(function() {
                 document.getElementById('loader').style.opacity = '0';
