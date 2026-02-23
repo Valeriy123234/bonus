@@ -250,12 +250,28 @@
     </div>
 </header>
 
+<!-- РУХОМА СТРІЧКА СЛОТІВ -->
 <div class="slots-ticker">
     <div class="slots-track">
-        <span class="slot-emoji">🎰</span><span class="slot-emoji">🍒</span><span class="slot-emoji">💎</span><span class="slot-emoji">🍋</span><span class="slot-emoji">7️⃣</span><span class="slot-emoji">🔔</span><span class="slot-emoji">💰</span><span class="slot-emoji">🍓</span><span class="slot-emoji">👑</span><span class="slot-emoji">🎰</span><span class="slot-emoji">🍒</span><span class="slot-emoji">💎</span><span class="slot-emoji">🍋</span><span class="slot-emoji">7️⃣</span><span class="slot-emoji">🔔</span><span class="slot-emoji">💰</span><span class="slot-emoji">🍓</span><span class="slot-emoji">👑</span><!-- 
-        --><span class="slot-emoji">🎰</span><span class="slot-emoji">🍒</span><span class="slot-emoji">💎</span><span class="slot-emoji">🍋</span><span class="slot-emoji">7️⃣</span><span class="slot-emoji">🔔</span><span class="slot-emoji">💰</span><span class="slot-emoji">🍓</span><span class="slot-emoji">👑</span>
+        <!-- Набір 1 -->
+        <span class="slot-emoji">🎰</span><span class="slot-emoji">🍒</span><span class="slot-emoji">💎</span><span class="slot-emoji">🍋</span><span class="slot-emoji">7️⃣</span><span class="slot-emoji">🔔</span><span class="slot-emoji">💰</span><span class="slot-emoji">🍓</span><span class="slot-emoji">👑</span><!-- 
+        Набір 2 (Копія) --><span class="slot-emoji">🎰</span><span class="slot-emoji">🍒</span><span class="slot-emoji">💎</span><span class="slot-emoji">🍋</span><span class="slot-emoji">7️⃣</span><span class="slot-emoji">🔔</span><span class="slot-emoji">💰</span><span class="slot-emoji">🍓</span><span class="slot-emoji">👑</span>
     </div>
 </div>
+
+<style>
+.slots-track {
+    display: flex; /* Обов'язково flex для точності */
+    width: max-content;
+    animation: scroll-slots 20s linear infinite;
+}
+
+@keyframes scroll-slots {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); } /* Рівно половина треку */
+}
+</style>
+
 
 <div class="grid">
     <div class="card">
