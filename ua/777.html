@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- СЮДИ ВСТАВЛЕНО SEO-ТЕГИ ДЛЯ GOOGLE -->
+    <!-- SEO-ТЕГИ ДЛЯ GOOGLE -->
     <title>777 Casino: 777 Фріспінів за реєстрацію | VIP Бонус MRBONUS</title>
     <meta name="description" content="Отримуй ексклюзивні 777 фріспінів у казино 777. Твій VIP-статус підтверджено сервісом MRBONUS UA. Забирай бонус та починай гру!">
     <meta name="keywords" content="777 казино, 777 фріспінів, бездепозитний бонус, mrbonus ua, онлайн казино україна">
@@ -17,7 +17,8 @@
             --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
             --dark: #0a0a0a;
         }
-        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow: hidden; }
+        /* ЗМІНЕНО: overflow-y: auto дозволяє прокрутку тексту */
+        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; overflow-y: auto; }
 
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -99,6 +100,31 @@
         .btn-bot:hover { color: #fff; border-color: #BF953F; }
 
         .footer-text { margin-top: 35px; font-size: 0.6rem; color: #222; letter-spacing: 2px; text-transform: uppercase; font-weight: 800; }
+
+        /* СТИЛІ ДЛЯ НОВОГО SEO-БЛОКУ */
+        .seo-section {
+            margin-top: 40px;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(191, 149, 63, 0.1);
+        }
+        .seo-section h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            color: #BF953F;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        .seo-section p, .seo-section li {
+            font-size: 0.8rem;
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        .seo-section ul { padding-left: 20px; margin-bottom: 20px; }
+        .seo-section strong { color: #FCF6BA; }
     </style>
 </head>
 <body>
@@ -124,7 +150,26 @@
             <a href="http://play.mrbonusua.space/777.html" class="btn-casino js-link">ЗАБРАТИ 777 FS 💎</a>
             <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot js-link">🤖 ТЕЛЕГРАМ БОТ</a>
         </div>
+        
         <p class="footer-text">VIP MRBONUS UA 2026 • 21+</p>
+
+        <!-- НОВИЙ SEO-БЛОК ДЛЯ ПРОСУВАННЯ В GOOGLE -->
+        <div class="seo-section">
+            <h2>Казино 777: Як активувати 777 фріспінів без депозиту</h2>
+            <p>Бренд <strong>777 Казино</strong> став справжнім відкриттям 2026 року в Україні, пропонуючи один із найщедріших пакетів для нових гравців. Завдяки партнерству з <strong>MRBONUS UA</strong>, кожен користувач може розраховувати на ексклюзивні умови активації.</p>
+            
+            <p>Головною фішкою є <strong>бездепозитний бонус</strong> у розмірі 777 фріспінів, який дозволяє протестувати топові слоти без ризику для власного бюджету. Це ліцензійне онлайн-казино гарантує чесність гри та миттєві виплати на картки українських банків.</p>
+
+            <p><strong>Чому обирають 777:</strong></p>
+            <ul>
+                <li>Швидка реєстрація через телефон або пошту;</li>
+                <li>Ліцензія КРАІЛ — повний захист прав гравця;</li>
+                <li>Мінімальний вейджер на бонусні кошти;</li>
+                <li>Цілодобова підтримка VIP-клієнтів.</li>
+            </ul>
+
+            <p>Для активації бонусу натисніть на кнопку <strong>"ЗАБРАТИ 777 FS"</strong> вище. Система автоматично перенаправить вас на офіційне дзеркало з уже активованим VIP-кодом від нашого сервісу. Пам'ятайте, що азартні ігри призначені лише для розваги особам від 21 року.</p>
+        </div>
     </div>
 
     <script>
