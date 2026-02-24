@@ -15,16 +15,16 @@
     <style>
         :root {
             --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
-            --dark: #050505;
+            --dark: #0a0a0a;
         }
-        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow: hidden; }
+        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; overflow-y: auto; }
 
         /* City Lights Loader */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; display: flex; flex-direction: column;
             justify-content: center; align-items: center; z-index: 9999;
-            transition: 0.6s ease; opacity: 1;
+            transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); opacity: 1;
         }
         .city-icon { font-size: 3.5rem; filter: drop-shadow(0 0 15px #BF953F); animation: neon-glow 1.5s infinite alternate; }
         @keyframes neon-glow { 
@@ -35,54 +35,30 @@
         .container { max-width: 450px; width: 92%; padding: 10px 15px 35px; text-align: center; display: none; opacity: 0; transition: 0.8s ease; box-sizing: border-box; }
         
         .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 15px; }
-        .btn-menu { 
-            text-decoration: none; color: #444; font-size: 0.65rem; font-weight: 800; 
-            letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; 
-            display: flex; align-items: center; gap: 6px; cursor: pointer;
-            background: none; border: none; padding: 10px 0;
-        }
+        .btn-menu { text-decoration: none; color: #444; font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 6px; cursor: pointer; background: none; border: none; padding: 10px 0; }
         .btn-menu:hover { color: #BF953F; }
 
-        /* ЗОЛОТА ОКАНТОВКА 2PX */
-        .promo-card { 
-            background: rgba(15, 15, 15, 0.95);
-            border: 2px solid #BF953F; /* Чітка золота рамка */
-            border-radius: 25px; 
-            padding: 35px 20px; 
-            box-shadow: 0 0 60px rgba(191,149,63,0.1);
-            position: relative;
-        }
-
-        .city-label { font-family: 'Cinzel', serif; color: #BF953F; font-size: 0.65rem; letter-spacing: 4px; margin-bottom: 10px; font-weight: 800; }
+        .promo-card { background: linear-gradient(145deg, #111 0%, #050505 100%); border: 2px solid #BF953F; border-radius: 25px; padding: 35px 20px; box-shadow: 0 0 40px rgba(191, 149, 63, 0.15); position: relative; }
+        .city-label { font-family: 'Cinzel', serif; color: #BF953F; font-size: 0.7rem; letter-spacing: 4px; margin-bottom: 12px; font-weight: 700; }
+        
         h1 { font-family: 'Cinzel', serif; font-size: 2.2rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
-        .promo-value { font-size: 2.1rem; font-weight: 900; margin: 15px 0; color: #fff; line-height: 1.1; }
+        .promo-value { font-size: 2.3rem; font-weight: 900; margin: 15px 0; color: #fff; letter-spacing: -1px; line-height: 1.1; }
 
         .btn-city { 
-            display: block; background: var(--gold); color: #000; 
-            text-decoration: none; padding: 22px 10px; border-radius: 15px; 
-            font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; 
-            margin-top: 25px; font-size: 1.3rem; text-align: center;
-            box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.2s;
-            cursor: pointer; border: none; width: 100%;
-            box-sizing: border-box;
-            animation: city-pulse 2s infinite;
+            display: block; background: var(--gold); color: #000; text-decoration: none; padding: 22px 10px; border-radius: 15px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 25px; font-size: 1.3rem; text-align: center; box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.2s; cursor: pointer; border: none; width: 100%; box-sizing: border-box; animation: city-pulse 2s infinite;
         }
-        @keyframes city-pulse {
-            0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); }
-            70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); }
-            100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); }
-        }
-        .btn-city:active { transform: scale(0.98); filter: brightness(0.9); }
+        @keyframes city-pulse { 0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); } 70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); } 100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); } }
 
-        .btn-bot-city {
-            display: block; border: 1px solid rgba(191, 149, 63, 0.4);
-            color: #777; text-decoration: none; padding: 16px;
-            border-radius: 15px; font-size: 0.85rem; font-weight: 800;
-            text-transform: uppercase; letter-spacing: 1px; text-align: center;
-            margin-top: 15px; transition: 0.3s; cursor: pointer;
-            background: rgba(255, 255, 255, 0.02);
-        }
-        .btn-bot-city:hover { color: #fff; border-color: #BF953F; }
+        .btn-bot-city { display: block; border: 1px solid rgba(255, 255, 255, 0.15); color: #777; text-decoration: none; padding: 16px; border-radius: 15px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-align: center; margin-top: 15px; transition: 0.3s; cursor: pointer; background: rgba(255, 255, 255, 0.02); }
+
+        /* VIP SEO BLOCK */
+        .vip-review-container { margin-top: 40px; text-align: left; background: rgba(255, 255, 255, 0.01); border: 1px solid #BF953F; border-radius: 20px; padding: 25px; position: relative; box-shadow: inset 0 0 20px rgba(191, 149, 63, 0.05); }
+        .vip-review-container::before { content: "CITY ELITE REVIEW"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #0a0a0a; padding: 0 15px; color: #BF953F; font-size: 0.6rem; font-weight: 900; letter-spacing: 3px; border: 1px solid #BF953F; border-radius: 50px; }
+        .vip-review-container h2 { font-family: 'Cinzel', serif; font-size: 1rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; text-transform: uppercase; }
+        .vip-review-container p, .vip-review-container li { font-size: 0.75rem; color: #888; line-height: 1.6; margin-bottom: 10px; }
+        .vip-review-container strong { color: #FCF6BA; }
+        .vip-review-container ul { padding-left: 15px; list-style: none; }
+        .vip-review-container ul li::before { content: "✦"; color: #BF953F; margin-right: 8px; font-size: 0.65rem; }
 
         .vip-footer { color: #222; font-size: 0.6rem; margin-top: 35px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
     </style>
@@ -102,15 +78,26 @@
 
         <div class="promo-card">
             <div class="city-label">APPROVED BY MRBONUS UA</div>
-            <h1>SLOT CITY</h1>
-            <div class="promo-value">700 FS + 200₴ <br> <span style="font-size: 1rem; display: block; color: #555; margin-top: 5px;">EXCLUSIVE WELCOME</span></div>
-            
+            <h1>SLOTS CITY</h1>
+            <div class="promo-value">700 FS + 200₴ <br> <span style="font-size: 1rem; color: #555; letter-spacing: 1px;">EXCLUSIVE WELCOME</span></div>
             <p style="color: #888; font-size: 0.9rem; line-height: 1.5; margin: 0;">
-                Твій пакет фріспінів та бонус на депозит активовано сервісом <b>MRBONUS</b>. <br> Забирай свій куш у Slot City прямо зараз.
+                Твій пакет фріспінів та бонус підтверджено <b>MRBONUS</b>. <br> Забирай свій куш у Slots City прямо зараз.
             </p>
-
             <a href="http://play.mrbonusua.space/bonus2.html" class="btn-city js-link">ЗАБРАТИ 700 FS 🎁</a>
             <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-city js-link">🤖 АКТИВУВАТИ У ТГ БОТІ</a>
+        </div>
+
+        <div class="vip-review-container">
+            <h2>Slots City: Твій квиток до мегаполісу азарту</h2>
+            <p><strong>Slots City</strong> (Слотс Сіті) — це один із найяскравіших ліцензійних брендів України. Разом із <strong>MRBONUS UA</strong> ми відкриваємо двері до закритих бонусів: 700 фріспінів та додаткові 200₴ для старту.</p>
+            <p>Прозорість, швидкість виплат та величезний вибір сертифікованих ігор роблять цей проект ідеальним вибором як для новачків, так і для досвідчених хайролерів.</p>
+            <ul>
+                <li>Швидка верифікація через застосунок Дія;</li>
+                <li>Регулярні турніри з призовими фондами понад 1 000 000₴;</li>
+                <li>Миттєве зарахування депозитів та бонусних коштів;</li>
+                <li><strong>Ліцензія КРАІЛ</strong> — гарантія виплати кожного виграшу.</li>
+            </ul>
+            <p>Тисни <strong>"ЗАБРАТИ 700 FS"</strong> та відчуй атмосферу справжнього City Elite. Грайте відповідально 21+.</p>
         </div>
         
         <p class="vip-footer">CITY ELITE STATUS • 21+ • MRBONUS UA • 2026</p>
