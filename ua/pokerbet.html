@@ -12,12 +12,13 @@
     <!-- SDK Telegram -->
     <script src="https://telegram.org"></script>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
+    
     <style>
         :root {
             --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
             --dark: #050505;
         }
-        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow: hidden; }
+        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
 
         /* Poker Card Loader */
         #loader {
@@ -44,15 +45,41 @@
         }
         .btn-menu:hover { color: #BF953F; }
 
-        /* ЗОЛОТА ОКАНТОВКА 2PX */
         .promo-card { 
             background: rgba(15, 15, 15, 0.95);
-            border: 2px solid #BF953F; /* Чітка золота рамка */
+            border: 2px solid #BF953F;
             border-radius: 25px; 
             padding: 35px 20px; 
             box-shadow: 0 0 50px rgba(0,0,0,1);
             position: relative;
+            z-index: 2;
         }
+
+        /* SEO БЛОК З ОКОНТОВКОЮ */
+        .seo-box {
+            margin-top: 25px;
+            background: rgba(10, 10, 10, 0.8);
+            border: 1px solid #BF953F;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: left;
+            position: relative;
+        }
+        .seo-box h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            color: #BF953F;
+            margin-top: 0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .seo-box p {
+            font-size: 0.75rem;
+            color: #777;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        .seo-box b { color: #BF953F; font-weight: 700; }
 
         .verified-label { font-family: 'Cinzel', serif; color: #BF953F; font-size: 0.65rem; letter-spacing: 4px; margin-bottom: 10px; font-weight: 800; }
         h1 { font-family: 'Cinzel', serif; font-size: 2.2rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
@@ -101,6 +128,7 @@
             <button onclick="goBack()" class="btn-menu"><span>←</span> НАЗАД</button>
         </div>
 
+        <!-- MAIN CARD -->
         <div class="promo-card">
             <div class="verified-label">ELITE POKER STATUS</div>
             <h1>POKER-BET</h1>
@@ -112,6 +140,14 @@
 
             <a href="http://play.mrbonusua.space/pokerbet.html" class="btn-poker js-link">ЗАБРАТИ 650 FS 💎</a>
             <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-poker js-link">🤖 АКТИВУВАТИ У ТГ БОТІ</a>
+        </div>
+
+        <!-- SEO INFO BOX -->
+        <div class="seo-box">
+            <h2>Про Pokerbet Україна</h2>
+            <p><b>Pokerbet (Покербет)</b> — це сучасна платформа для поціновувачів азарту, що пропонує кращий досвід онлайн-покеру та казино в Україні. Завдяки партнерству з <b>MRBONUS UA</b>, нові гравці отримують привілейований доступ до стартового пакету.</p>
+            <p>Система <b>650 фріспінів</b> та 100% бонус на депозит роблять вхід у гру максимально вигідним. Платформа гарантує швидкі виплати, ліцензійні слоти та турніри з великими призовими фондами.</p>
+            <p style="margin-bottom:0;">Приєднуйтесь до еліти Pokerbet сьогодні та використовуйте свій шанс на <b>Royal Flush</b>!</p>
         </div>
         
         <p class="vip-footer">ALL-IN STATUS • 21+ • MRBONUS UA • 2026</p>
@@ -151,7 +187,13 @@
                 setTimeout(function() {
                     if (ld) ld.style.display = 'none';
                     let ct = document.getElementById('content');
-                    if (ct) { ct.style.display = 'block'; setTimeout(() => ct.style.opacity = '1', 50); }
+                    if (ct) { 
+                        ct.style.display = 'block'; 
+                        setTimeout(() => {
+                            ct.style.opacity = '1';
+                            document.body.style.overflowY = 'auto'; // Вмикаємо прокрутку для тексту
+                        }, 50); 
+                    }
                 }, 500);
             }, 1400);
         };
