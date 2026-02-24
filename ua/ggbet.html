@@ -17,9 +17,9 @@
             --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
             --dark: #050505;
         }
-        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow: hidden; }
+        /* Увімкнено вертикальний скрол для SEO тексту */
+        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; overflow-y: auto; }
 
-        /* Cyber Loading Animation */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; display: flex; flex-direction: column;
@@ -47,10 +47,9 @@
         }
         .btn-menu:hover { color: #BF953F; }
 
-        /* ЗОЛОТА ОКАНТОВКА 2PX */
         .promo-card { 
             background: rgba(10, 10, 10, 0.95);
-            border: 2px solid #BF953F; /* Чітка золота рамка */
+            border: 2px solid #BF953F; 
             border-radius: 20px; 
             padding: 40px 20px; 
             box-shadow: 0 0 40px rgba(191, 149, 63, 0.15); 
@@ -61,31 +60,33 @@
         .promo-value { font-size: 2.3rem; font-weight: 900; margin: 15px 0; color: #fff; letter-spacing: -1px; line-height: 1.1; }
 
         .btn-gg { 
-            display: block; background: var(--gold); color: #000; 
-            text-decoration: none; padding: 22px 10px; border-radius: 12px; 
-            font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; 
-            margin-top: 25px; font-size: 1.3rem; text-align: center;
-            box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.2s;
-            cursor: pointer; border: none; width: 100%;
-            box-sizing: border-box;
-            animation: gg-pulse 2s infinite;
+            display: block; background: var(--gold); color: #000; text-decoration: none; padding: 22px 10px; border-radius: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 25px; font-size: 1.3rem; text-align: center; box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.2s; cursor: pointer; border: none; width: 100%; box-sizing: border-box; animation: gg-pulse 2s infinite;
         }
         @keyframes gg-pulse {
             0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); }
             70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); }
             100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); }
         }
-        .btn-gg:active { transform: scale(0.98); filter: brightness(0.9); }
 
-        .btn-bot-gg {
-            display: block; border: 1px solid rgba(191, 149, 63, 0.4);
-            color: #777; text-decoration: none; padding: 16px;
-            border-radius: 12px; font-size: 0.85rem; font-weight: 800;
-            text-transform: uppercase; letter-spacing: 1px; text-align: center;
-            margin-top: 15px; transition: 0.3s; cursor: pointer;
-            background: rgba(255, 255, 255, 0.02);
+        .btn-bot-gg { display: block; border: 1px solid rgba(191, 149, 63, 0.4); color: #777; text-decoration: none; padding: 16px; border-radius: 12px; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-align: center; margin-top: 15px; transition: 0.3s; cursor: pointer; background: rgba(255, 255, 255, 0.02); }
+
+        /* VIP SEO BLOCK */
+        .vip-review-container {
+            margin-top: 40px; text-align: left; background: rgba(255, 255, 255, 0.01);
+            border: 1px solid #BF953F; border-radius: 15px; padding: 25px;
+            position: relative; box-shadow: inset 0 0 20px rgba(191, 149, 63, 0.05);
         }
-        .btn-bot-gg:hover { color: #fff; border-color: #BF953F; }
+        .vip-review-container::before {
+            content: "CYBER VIP REVIEW"; position: absolute; top: -12px; left: 50%;
+            transform: translateX(-50%); background: #050505; padding: 0 15px;
+            color: #BF953F; font-size: 0.6rem; font-weight: 900; letter-spacing: 3px;
+            border: 1px solid #BF953F; border-radius: 50px;
+        }
+        .vip-review-container h2 { font-family: 'Cinzel', serif; font-size: 1rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; text-transform: uppercase; }
+        .vip-review-container p, .vip-review-container li { font-size: 0.75rem; color: #888; line-height: 1.6; margin-bottom: 10px; }
+        .vip-review-container strong { color: #FCF6BA; }
+        .vip-review-container ul { padding-left: 15px; list-style: none; }
+        .vip-review-container ul li::before { content: "✦"; color: #BF953F; margin-right: 8px; font-size: 0.65rem; }
 
         .cyber-footer { color: #222; font-size: 0.6rem; margin-top: 35px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
     </style>
@@ -115,6 +116,19 @@
             <a href="http://play.mrbonusua.space" class="btn-gg js-link">ЗАБРАТИ 1000 FS 🔥</a>
             <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-gg js-link">🤖 АКТИВУВАТИ У ТГ БОТІ</a>
         </div>
+
+        <div class="vip-review-container">
+            <h2>GGBET: Твій кіберспортивний та гральний епіцентр</h2>
+            <p><strong>GGBET</strong> — це світовий лідер, що поєднує в собі потужну платформу для ставок та сучасне онлайн-казино. У 2026 році, через ексклюзивний канал <strong>MRBONUS UA</strong>, нові гравці отримують доступ до кібер-пакету на 1000 фріспінів.</p>
+            <p>Цей бренд обирають за технологічність, миттєві виплати та кращу лінію на кіберспортивні події. ГГБЕТ гарантує чесний ігровий процес та надає преміальні бонуси як для фанатів слотів, так і для бетторів.</p>
+            <ul>
+                <li>Блискавичні виплати на всі популярні платіжні системи;</li>
+                <li>Величезний вибір ігрових автоматів з ліцензійним софтом;</li>
+                <li>Найкращі коефіцієнти на CS2, Dota 2 та інші дисципліни;</li>
+                <li><strong>Офіційна ліцензія</strong> — твій надійний фундамент для гри.</li>
+            </ul>
+            <p>Тисни <strong>"ЗАБРАТИ 1000 FS"</strong> для миттєвої активації оферу. Грай відповідально. Доступно 21+.</p>
+        </div>
         
         <p class="cyber-footer">LEVEL: ELITE • 21+ • MRBONUS UA • 2026</p>
     </div>
@@ -122,30 +136,21 @@
     <script>
         const tg = window.Telegram ? window.Telegram.WebApp : null;
         if (tg) { tg.ready(); tg.expand(); }
-
         function isTg() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
-
         function goBack() {
-            if (isTg()) {
-                if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-                window.location.href = 'index.html';
-            } else {
-                window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
-            }
+            if (isTg()) { window.location.href = 'index.html'; } 
+            else { window.history.length > 1 ? window.history.back() : window.location.href = 'index.html'; }
         }
-
         document.querySelectorAll('.js-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 const url = this.getAttribute('href');
                 if (isTg()) {
                     e.preventDefault();
-                    if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
                     if (url.includes('t.me/')) { tg.openTelegramLink(url); } 
                     else { tg.openLink(url); }
                 }
             });
         });
-
         window.onload = function() {
             setTimeout(function() {
                 const ld = document.getElementById('loader');
