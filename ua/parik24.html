@@ -18,9 +18,9 @@
             --parik-yellow: #f5ff00;
             --dark: #080808;
         }
-        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow: hidden; }
+        /* Увімкнено вертикальний скрол для SEO тексту */
+        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; overflow-y: auto; }
 
-        /* VIP Parik Loader */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; display: flex; flex-direction: column;
@@ -33,18 +33,12 @@
         .container { max-width: 450px; width: 92%; padding: 10px 15px 35px; text-align: center; display: none; opacity: 0; transition: 0.8s ease; box-sizing: border-box; }
         
         .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 15px; }
-        .btn-menu { 
-            text-decoration: none; color: #444; font-size: 0.65rem; font-weight: 800; 
-            letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; 
-            display: flex; align-items: center; gap: 6px; cursor: pointer;
-            background: none; border: none; padding: 10px 0;
-        }
+        .btn-menu { text-decoration: none; color: #444; font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 6px; cursor: pointer; background: none; border: none; padding: 10px 0; }
         .btn-menu:hover { color: #BF953F; }
 
-        /* ЗОЛОТА ОКАНТОВКА 2PX */
         .promo-card { 
             background: rgba(15, 15, 15, 0.98);
-            border: 2px solid #BF953F; /* Чітка золота рамка */
+            border: 2px solid #BF953F; 
             border-radius: 25px; 
             padding: 35px 20px; 
             box-shadow: 0 0 60px rgba(0,0,0,1);
@@ -56,31 +50,33 @@
         .promo-value { font-size: 2.2rem; font-weight: 900; margin: 15px 0; color: #fff; line-height: 1.1; }
 
         .btn-parik { 
-            display: block; background: var(--gold); color: #000; 
-            text-decoration: none; padding: 22px 10px; border-radius: 15px; 
-            font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; 
-            margin-top: 25px; font-size: 1.3rem; text-align: center;
-            box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.2s;
-            cursor: pointer; border: none; width: 100%;
-            box-sizing: border-box;
-            animation: parik-pulse 2s infinite;
+            display: block; background: var(--gold); color: #000; text-decoration: none; padding: 22px 10px; border-radius: 15px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 25px; font-size: 1.3rem; text-align: center; box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.2s; cursor: pointer; border: none; width: 100%; box-sizing: border-box; animation: parik-pulse 2s infinite;
         }
         @keyframes parik-pulse {
             0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); }
             70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); }
             100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); }
         }
-        .btn-parik:active { transform: scale(0.98); filter: brightness(0.9); }
 
-        .btn-bot-parik {
-            display: block; border: 1px solid rgba(191, 149, 63, 0.4);
-            color: #777; text-decoration: none; padding: 16px;
-            border-radius: 15px; font-size: 0.85rem; font-weight: 800;
-            text-transform: uppercase; letter-spacing: 1px; text-align: center;
-            margin-top: 15px; transition: 0.3s; cursor: pointer;
-            background: rgba(255, 255, 255, 0.02);
+        .btn-bot-parik { display: block; border: 1px solid rgba(191, 149, 63, 0.4); color: #777; text-decoration: none; padding: 16px; border-radius: 15px; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-align: center; margin-top: 15px; transition: 0.3s; cursor: pointer; background: rgba(255, 255, 255, 0.02); }
+
+        /* VIP SEO BLOCK */
+        .vip-review-container {
+            margin-top: 40px; text-align: left; background: rgba(255, 255, 255, 0.01);
+            border: 1px solid #BF953F; border-radius: 15px; padding: 25px;
+            position: relative; box-shadow: inset 0 0 20px rgba(191, 149, 63, 0.05);
         }
-        .btn-bot-parik:hover { color: #fff; border-color: #BF953F; }
+        .vip-review-container::before {
+            content: "PARIK LEGEND REVIEW"; position: absolute; top: -12px; left: 50%;
+            transform: translateX(-50%); background: #080808; padding: 0 15px;
+            color: #BF953F; font-size: 0.6rem; font-weight: 900; letter-spacing: 3px;
+            border: 1px solid #BF953F; border-radius: 50px;
+        }
+        .vip-review-container h2 { font-family: 'Cinzel', serif; font-size: 1rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; text-transform: uppercase; }
+        .vip-review-container p, .vip-review-container li { font-size: 0.75rem; color: #888; line-height: 1.6; margin-bottom: 10px; }
+        .vip-review-container strong { color: #FCF6BA; }
+        .vip-review-container ul { padding-left: 15px; list-style: none; }
+        .vip-review-container ul li::before { content: "✦"; color: #BF953F; margin-right: 8px; font-size: 0.65rem; }
 
         .vip-footer { color: #222; font-size: 0.6rem; margin-top: 35px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
     </style>
@@ -110,6 +106,19 @@
             <a href="https://play.mrbonusua.space/parik24.html" class="btn-parik js-link">ЗАБРАТИ 150 FS 💎</a>
             <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-parik js-link">🤖 АКТИВУВАТИ У TG БОТІ</a>
         </div>
+
+        <div class="vip-review-container">
+            <h2>Parik 24: Легендарний бренд з новими можливостями</h2>
+            <p><strong>Parik 24</strong> — це сучасне втілення азартного досвіду, що відповідає запитам найвибагливіших гравців України. Завдяки преміальному статусу від <strong>MRBONUS UA</strong>, ви отримуєте гарантований 100% бонус на перший депозит та пакет зі 150 фріспінів.</p>
+            <p>Бренд Парік 24 цінується за свою надійність, блискавичну роботу технічної підтримки та величезну бібліотеку слотів. Це майданчик для тих, хто звик грати за високими ставками та отримувати відповідний сервіс.</p>
+            <ul>
+                <li>Швидкі виплати на будь-які банківські карти;</li>
+                <li>Найактуальніші ігрові автомати від світових провайдерів;</li>
+                <li>Щотижневі персональні офери для VIP-спільноти;</li>
+                <li><strong>Повна ліцензія</strong> та гарантія безпеки ваших транзакцій.</li>
+            </ul>
+            <p>Тисни <strong>"ЗАБРАТИ 150 FS"</strong> і ставай частиною легенди. Пам'ятай: грай відповідально. Доступно 21+.</p>
+        </div>
         
         <p class="vip-footer">LEGENDARY STATUS • 21+ • MRBONUS UA • 2026</p>
     </div>
@@ -117,30 +126,21 @@
     <script>
         const tg = window.Telegram ? window.Telegram.WebApp : null;
         if (tg) { tg.ready(); tg.expand(); }
-
         function isTg() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
-
         function goBack() {
-            if (isTg()) {
-                if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-                window.location.href = 'index.html';
-            } else {
-                window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
-            }
+            if (isTg()) { window.location.href = 'index.html'; } 
+            else { window.history.length > 1 ? window.history.back() : window.location.href = 'index.html'; }
         }
-
         document.querySelectorAll('.js-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 const url = this.getAttribute('href');
                 if (isTg()) {
                     e.preventDefault();
-                    if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
                     if (url.includes('t.me/')) { tg.openTelegramLink(url); } 
                     else { tg.openLink(url); }
                 }
             });
         });
-
         window.onload = function() {
             setTimeout(function() {
                 const ld = document.getElementById('loader');
