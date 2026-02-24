@@ -17,9 +17,9 @@
             --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
             --dark: #0a0a0a;
         }
-        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow: hidden; }
+        /* Увімкнено вертикальний скрол для SEO тексту */
+        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; overflow-y: auto; }
 
-        /* VIP Diamond Loader */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; display: flex; flex-direction: column;
@@ -35,15 +35,9 @@
         .container { max-width: 450px; width: 92%; padding: 10px 15px 35px; text-align: center; display: none; opacity: 0; transition: 0.8s ease; box-sizing: border-box; }
         
         .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 15px; }
-        .btn-menu { 
-            text-decoration: none; color: #444; font-size: 0.65rem; font-weight: 800; 
-            letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; 
-            display: flex; align-items: center; gap: 6px; cursor: pointer;
-            background: none; border: none; padding: 10px 0;
-        }
+        .btn-menu { text-decoration: none; color: #444; font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 6px; cursor: pointer; background: none; border: none; padding: 10px 0; }
         .btn-menu:hover { color: #BF953F; }
 
-        /* ЗОЛОТА ОКАНТОВКА 2PX */
         .promo-card { 
             background: linear-gradient(145deg, #111 0%, #050505 100%);
             border: 2px solid #BF953F; 
@@ -57,33 +51,35 @@
         .promo-value { font-size: 2.3rem; font-weight: 900; margin: 15px 0; color: #fff; letter-spacing: -1px; line-height: 1.1; }
 
         .btn-first { 
-            display: block; background: var(--gold); color: #000; 
-            text-decoration: none; padding: 22px 10px; border-radius: 15px; 
-            font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; 
-            margin-top: 25px; font-size: 1.3rem; text-align: center;
-            box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.2s;
-            cursor: pointer; border: none; width: 100%;
-            box-sizing: border-box;
-            animation: first-pulse 2s infinite;
+            display: block; background: var(--gold); color: #000; text-decoration: none; padding: 22px 10px; border-radius: 15px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 25px; font-size: 1.3rem; text-align: center; box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.2s; cursor: pointer; border: none; width: 100%; box-sizing: border-box; animation: first-pulse 2s infinite;
         }
         @keyframes first-pulse {
             0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); }
             70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); }
             100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); }
         }
-        .btn-first:active { transform: scale(0.98); filter: brightness(0.9); }
 
-        .btn-bot-first {
-            display: block; border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #777; text-decoration: none; padding: 16px;
-            border-radius: 15px; font-size: 0.8rem; font-weight: 800;
-            text-transform: uppercase; letter-spacing: 1px; text-align: center;
-            margin-top: 15px; transition: 0.3s; cursor: pointer;
-            background: rgba(255, 255, 255, 0.02);
-        }
-        .btn-bot-first:hover { color: #fff; border-color: #BF953F; }
+        .btn-bot-first { display: block; border: 1px solid rgba(255, 255, 255, 0.15); color: #777; text-decoration: none; padding: 16px; border-radius: 15px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-align: center; margin-top: 15px; transition: 0.3s; cursor: pointer; background: rgba(255, 255, 255, 0.02); }
 
         .footer-vip { color: #222; font-size: 0.6rem; margin-top: 35px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
+
+        /* VIP SEO BLOCK */
+        .vip-review-container {
+            margin-top: 40px; text-align: left; background: rgba(255, 255, 255, 0.01);
+            border: 1px solid #BF953F; border-radius: 20px; padding: 25px;
+            position: relative; box-shadow: inset 0 0 20px rgba(191, 149, 63, 0.05);
+        }
+        .vip-review-container::before {
+            content: "DIAMOND VIP REVIEW"; position: absolute; top: -12px; left: 50%;
+            transform: translateX(-50%); background: #0a0a0a; padding: 0 15px;
+            color: #BF953F; font-size: 0.6rem; font-weight: 900; letter-spacing: 3px;
+            border: 1px solid #BF953F; border-radius: 50px;
+        }
+        .vip-review-container h2 { font-family: 'Cinzel', serif; font-size: 1rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; text-transform: uppercase; }
+        .vip-review-container p, .vip-review-container li { font-size: 0.75rem; color: #888; line-height: 1.6; margin-bottom: 10px; }
+        .vip-review-container strong { color: #FCF6BA; }
+        .vip-review-container ul { padding-left: 15px; list-style: none; }
+        .vip-review-container ul li::before { content: "✦"; color: #BF953F; margin-right: 8px; font-size: 0.65rem; }
     </style>
 </head>
 <body>
@@ -111,6 +107,19 @@
             <a href="http://play.mrbonusua.space/bonus1.html" class="btn-first js-link">ЗАБРАТИ 1300 FS 🔥</a>
             <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-first js-link">🤖 АКТИВУВАТИ ЧЕРЕЗ БОТ</a>
         </div>
+
+        <div class="vip-review-container">
+            <h2>First Casino: Лідер індустрії та твій Premium досвід</h2>
+            <p><strong>First Casino</strong> (Ферст) заслужено вважається одним із найнадійніших брендів на ринку України. У 2026 році компанія разом із сервісом <strong>MRBONUS UA</strong> пропонує безпрецедентний вітальний пакет — 1300 фріспінів для нових VIP-клієнтів.</p>
+            <p>Це онлайн-казино виділяється преміальним підходом до кожного гравця, пропонуючи ліцензійні слоти з найвищим показником віддачі (RTP) та миттєве виведення коштів. Бути першим — означає обирати найкращі умови для гри.</p>
+            <ul>
+                <li>Швидка реєстрація та верифікація за лічені хвилини;</li>
+                <li>Ексклюзивна система лояльності для постійних гравців;</li>
+                <li>Найбільші джекпоти та регулярні Premium-турніри;</li>
+                <li><strong>Повна ліцензія КРАІЛ</strong> — гарантована безпека твого банку.</li>
+            </ul>
+            <p>Тисни <strong>"ЗАБРАТИ 1300 FS"</strong>, щоб отримати доступ до закритих привілеїв. Пам'ятай про правила відповідальної гри. Доступно 21+.</p>
+        </div>
         
         <p class="footer-vip">STATUS: VERIFIED • 21+ • MRBONUS UA • 2026</p>
     </div>
@@ -118,30 +127,21 @@
     <script>
         const tg = window.Telegram ? window.Telegram.WebApp : null;
         if (tg) { tg.ready(); tg.expand(); }
-
         function isTg() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
-
         function goBack() {
-            if (isTg()) {
-                if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-                window.location.href = 'index.html';
-            } else {
-                window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
-            }
+            if (isTg()) { window.location.href = 'index.html'; } 
+            else { window.history.length > 1 ? window.history.back() : window.location.href = 'index.html'; }
         }
-
         document.querySelectorAll('.js-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 const url = this.getAttribute('href');
                 if (isTg()) {
                     e.preventDefault();
-                    if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
                     if (url.includes('t.me/')) { tg.openTelegramLink(url); } 
                     else { tg.openLink(url); }
                 }
             });
         });
-
         window.onload = function() {
             setTimeout(function() {
                 const ld = document.getElementById('loader');
