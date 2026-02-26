@@ -3,141 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- SEO ТЕГИ ДЛЯ GOOGLE (777 CASINO) -->
-    <title>777 Casino: 777 Фріспінів за реєстрацію | VIP Бонус MRBONUS</title>
-    <meta name="description" content="Отримуй ексклюзивні 777 фріспінів у казино 777. Твій VIP-статус підтверджено сервісом MRBONUS UA. Забирай бонус та починай гру!">
-    <meta name="keywords" content="777 казино, 777 фріспінів, бездепозитний бонус, mrbonus ua, онлайн казино україна">
-
-    <!-- SDK Telegram -->
-    <script src="https://telegram.org"></script>
+    <title>777 Casino: Отримати 777 Фріспінів через Бот | MRBONUS UA</title>
+    <meta name="description" content="Офіційний гайд по активації бонусу 777 фріспінів. Дізнайтесь як отримати VIP-статус та бездепозитні бонуси через чат-бота MRBONUS в Telegram.">
+    
     <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <script src="https://telegram.org"></script>
+    
     <style>
         :root {
             --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
             --dark: #0a0a0a;
         }
-        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; overflow-y: auto; }
-
-        /* Твій оригінальний лоудер */
-        #loader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 9999;
-            transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); opacity: 1;
+        body {
+            background: var(--dark);
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
         }
-        #loader h2 { font-family: 'Cinzel', serif; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.5rem; letter-spacing: 8px; animation: pulse-text 1.5s infinite; }
-        @keyframes pulse-text { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
-
-        .container { max-width: 450px; width: 92%; padding: 10px 15px 35px; text-align: center; display: none; opacity: 0; transition: 0.8s ease; box-sizing: border-box; }
-
-        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 15px; }
-        .btn-menu { text-decoration: none; color: #444; font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 6px; cursor: pointer; background: none; border: none; padding: 10px 0; }
-        .btn-menu:hover { color: #BF953F; }
-
-        .promo-card { background: linear-gradient(145deg, #111 0%, #050505 100%); border: 2px solid #BF953F; border-radius: 25px; padding: 35px 20px; box-shadow: 0 0 40px rgba(191, 149, 63, 0.15); position: relative; }
-        .label-top { font-family: 'Cinzel', serif; color: #BF953F; font-size: 0.7rem; letter-spacing: 4px; margin-bottom: 12px; font-weight: 700; }
-        
-        h1 { font-family: 'Cinzel', serif; font-size: 2.2rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
-        .promo-value { font-size: 2.3rem; font-weight: 900; margin: 15px 0; color: #fff; letter-spacing: -1px; line-height: 1.1; }
-
-        /* Кнопки за стандартом */
-        .btn-main {
-            display: block; background: var(--gold); color: #000; text-decoration: none;
-            padding: 22px 10px; border-radius: 15px; font-weight: 900; text-transform: uppercase;
-            letter-spacing: 1.5px; margin-top: 25px; font-size: 1.3rem; text-align: center;
-            box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.2s; cursor: pointer; border: none; width: 100%; box-sizing: border-box; animation: casino-pulse 2s infinite;
+        .container {
+            max-width: 550px;
+            width: 92%;
+            padding: 40px 15px;
+            text-align: center;
         }
-        @keyframes casino-pulse { 0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); } 70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); } 100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); } }
+        /* Картка оферу */
+        .promo-card {
+            background: linear-gradient(145deg, #111 0%, #050505 100%);
+            border: 2px solid #BF953F;
+            border-radius: 25px;
+            padding: 45px 25px;
+            box-shadow: 0 10px 50px rgba(191, 149, 63, 0.2);
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.4rem;
+            background: var(--gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0 0 15px;
+        }
+        .promo-value {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        /* Кнопка на БОТА */
+        .btn-telegram {
+            display: block;
+            background: var(--gold);
+            color: #000;
+            text-decoration: none;
+            padding: 22px;
+            border-radius: 18px;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            box-shadow: 0 15px 35px rgba(191, 149, 63, 0.4);
+            animation: pulse-btn 2s infinite;
+        }
+        @keyframes pulse-btn {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
 
-        .btn-secondary { display: block; border: 1px solid rgba(255, 255, 255, 0.15); color: #777; text-decoration: none; padding: 16px; border-radius: 15px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-align: center; margin-top: 15px; transition: 0.3s; cursor: pointer; background: rgba(255, 255, 255, 0.02); }
+        /* Блок FAQ для SEO */
+        .faq-section {
+            text-align: left;
+            margin-top: 40px;
+            background: rgba(255,255,255,0.03);
+            padding: 25px;
+            border-radius: 20px;
+            border-left: 4px solid #BF953F;
+        }
+        .faq-item { margin-bottom: 25px; }
+        .faq-item h3 {
+            color: #FCF6BA;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        .faq-item p {
+            color: #999;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
 
-        /* VIP SEO BLOCK */
-        .vip-review-container { margin-top: 40px; text-align: left; background: rgba(255, 255, 255, 0.01); border: 1px solid #BF953F; border-radius: 20px; padding: 25px; position: relative; box-shadow: inset 0 0 20px rgba(191, 149, 63, 0.05); }
-        .vip-review-container::before { content: "LUCKY 777 REVIEW"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #0a0a0a; padding: 0 15px; color: #BF953F; font-size: 0.6rem; font-weight: 900; letter-spacing: 3px; border: 1px solid #BF953F; border-radius: 50px; }
-        .vip-review-container h2 { font-family: 'Cinzel', serif; font-size: 1rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; text-transform: uppercase; }
-        .vip-review-container p, .vip-review-container li { font-size: 0.75rem; color: #888; line-height: 1.6; margin-bottom: 10px; }
-        .vip-review-container strong { color: #FCF6BA; }
-        .vip-review-container ul { padding-left: 15px; list-style: none; }
-        .vip-review-container ul li::before { content: "✦"; color: #BF953F; margin-right: 8px; font-size: 0.65rem; }
+        /* Контакти менеджера */
+        .manager-contact {
+            margin-top: 30px;
+            padding: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            font-size: 0.85rem;
+        }
+        .manager-contact a {
+            color: #BF953F;
+            text-decoration: none;
+            font-weight: 700;
+        }
 
-        .footer-tag { color: #222; font-size: 0.6rem; margin-top: 35px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
+        .footer {
+            margin-top: 40px;
+            color: #444;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <h2>MRBONUS</h2>
-        <p style="color: #444; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; margin-top: 15px;">Verifying Access...</p>
-    </div>
-
-    <div class="container" id="content">
-        <div class="nav-menu">
-            <button onclick="goBack()" class="btn-menu"><span>←</span> НАЗАД</button>
-        </div>
-
+    <div class="container">
+        <!-- ГОЛОВНИЙ БЛОК -->
         <div class="promo-card">
-            <div class="label-top">АКТИВОВАНО MRBONUS</div>
-            <div style="font-size: 1.5rem; margin-bottom: 10px;">🎰 🎰 🎰</div>
+            <div style="color: #BF953F; font-size: 0.75rem; letter-spacing: 4px; font-weight: 700; margin-bottom: 15px;">MRBONUS UA СЕРВІС</div>
             <h1>777 CASINO</h1>
-            <div class="promo-value">777 ФРІСПІНІВ <br> <span style="font-size: 1rem; color: #555; letter-spacing: 1px;">VIP WELCOME PACK</span></div>
-            <p style="color: #888; font-size: 0.9rem; line-height: 1.5; margin: 0;">
-                Твій VIP-статус підтверджено. <br> Заберіть бонус від <b>MRBONUS</b> прямо зараз.
+            <div class="promo-value">БОНУС: 777 ФРІСПІНІВ</div>
+            <p style="color: #bbb; line-height: 1.5; margin-bottom: 30px;">
+                Щоб активувати пакет безкоштовних обертів та отримати актуальне дзеркало 777 Казино, скористайтесь нашим офіційним ботом.
             </p>
-            <a href="https://play.mrbonusua.space/777.html" class="btn-main js-link" rel="sponsored nofollow">ЗАБРАТИ 777 FS 💎</a>
-
-            <a href="https://t.me/MRBONUS_UA_bot" class="btn-secondary js-link">🤖 ТЕЛЕГРАМ БОТ</a>
+            
+            <a href="https://t.me/MRBONUS_UA_bot" class="btn-telegram js-link">🤖 ПЕРЕЙТИ В БОТ</a>
         </div>
 
-        <div class="vip-review-container">
-            <h2>Казино 777: Як активувати 777 фріспінів</h2>
-            <p>Бренд <strong>777 Казино</strong> став справжнім відкриттям 2026 року в Україні. Завдяки партнерству з <strong>MRBONUS UA</strong>, кожен користувач отримує ексклюзивні умови активації.</p>
-            <p>Головною фішкою є <strong>бездепозитний бонус</strong> у розмірі 777 фріспінів, який дозволяє протестувати слоти без ризику. Це ліцензійне казино гарантує чесність та миттєві виплати.</p>
-            <ul>
-                <li>Швидка реєстрація через Дія або телефон;</li>
-                <li>Ліцензія КРАІЛ — повний захист прав гравця;</li>
-                <li>Мінімальний вейджер на бонусні кошти;</li>
-                <li>Цілодобова підтримка VIP-клієнтів 24/7.</li>
-            </ul>
-            <p>Для активації натисніть <strong>"ЗАБРАТИ 777 FS"</strong>. Система перенаправить вас на офіційний сайт з уже активованим VIP-кодом. Грай відповідально 21+.</p>
+        <!-- FAQ БЛОК -->
+        <div class="faq-section">
+            <h2 style="font-family: 'Cinzel', serif; color: #fff; font-size: 1.3rem; margin-top: 0;">Питання та відповіді (FAQ)</h2>
+            
+            <div class="faq-item">
+                <h3>Як отримати 777 фріспінів у казино 777?</h3>
+                <p>Бонус активується автоматично при переході через нашого бота. Після реєстрації та верифікації облікового запису (через Дія або BankID), фріспіни будуть нараховані на ваш бонусний баланс.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Чи обов'язково використовувати бот MRBONUS?</h3>
+                <p>Так, оскільки бот видає унікальне посилання з уже вбудованим VIP-промокодом, який гарантує нарахування саме 777 FS замість стандартних пакетів.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Які умови відіграшу бонусу?</h3>
+                <p>Всі умови вейджера та терміни дії акції вказані безпосередньо в описі бонусу всередині особистого кабінету казино після активації через бота.</p>
+            </div>
         </div>
-        
-        <p class="footer-tag">VIP MRBONUS UA 2026 • 21+</p>
+
+        <!-- ЗВ'ЯЗОК З МЕНЕДЖЕРОМ -->
+        <div class="manager-contact">
+            Виникли технічні проблеми? <br>
+            Напишіть нашому менеджеру: <a href="https://t.me" class="js-link">@MRBONUS_support</a>
+        </div>
+
+        <p class="footer">© 2026 MRBONUS UA • INFO PORTAL • 21+</p>
     </div>
 
     <script>
         const tg = window.Telegram ? window.Telegram.WebApp : null;
-        if (tg) { tg.ready(); tg.expand(); }
-
-        function isTg() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
-
-        function goBack() {
-            if (isTg()) { window.location.href = 'index.html'; }
-            else { window.history.length > 1 ? window.history.back() : window.location.href = 'index.html'; }
+        if (tg) {
+            tg.ready();
+            tg.expand();
         }
 
+        // Клік-трекінг
         document.querySelectorAll('.js-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 const url = this.getAttribute('href');
-                if (isTg()) {
+                if (tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0) {
                     e.preventDefault();
                     if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-                    if (url.includes('t.me/')) tg.openTelegramLink(url);
-                    else tg.openLink(url);
+                    tg.openTelegramLink(url);
                 }
             });
         });
-
-        window.onload = function() {
-            setTimeout(function() {
-                const ld = document.getElementById('loader');
-                if (ld) ld.style.opacity = '0';
-                setTimeout(function() {
-                    if (ld) ld.style.display = 'none';
-                    let ct = document.getElementById('content');
-                    if (ct) { ct.style.display = 'block'; setTimeout(() => ct.style.opacity = '1', 50); }
-                }, 500);
-            }, 1200);
-        };
     </script>
 </body>
 </html>
