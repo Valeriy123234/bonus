@@ -3,137 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- УНІКАЛЬНІ МЕТАТЕГИ ДЛЯ EURO CASINO (ПІД ПОШУК 2026) -->
-    <title>Euro Casino UA: 1000 FS за реєстрацію | VIP Пакет від MRBONUS</title>
-    <meta name="description" content="Отримуй ексклюзивні 1000 фріспінів у Euro Casino. Твій статус європейського гравця підтверджено сервісом MRBONUS UA. Забирай бонус у боті та починай гру!">
+    <title>Euro Casino: VIP Активація 1000 FS | Офіційний сервіс MRBONUS</title>
+    <meta name="description" content="Ексклюзивний доступ до 1000 фріспінів у Euro Casino через систему MRBONUS UA. Преміальні умови для нових гравців. Активуйте статус у боті.">
     
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <script src="https://telegram.org"></script>
     
     <style>
         :root {
-            /* Палітра Euro: Смарагд, Золото та Антрацит */
-            --euro-green: #064e3b;
-            --euro-gold: #d4af37;
-            --euro-bg: #020617;
-            --euro-grad: linear-gradient(145deg, #064e3b 0%, #022c22 100%);
+            --bg: #050505;
+            --card-bg: #0d0d0d;
+            --accent: #ffffff;
+            --muted: #666;
+            --border: rgba(255, 255, 255, 0.08);
         }
         body {
-            background: var(--euro-bg);
-            color: #f1f5f9;
-            font-family: 'Jost', sans-serif;
+            background: var(--bg);
+            color: var(--accent);
+            font-family: 'Inter', sans-serif;
             margin: 0;
             display: flex;
             justify-content: center;
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
-        .euro-wrapper {
-            max-width: 480px;
-            width: 92%;
-            padding: 50px 10px;
+        .luxury-container {
+            max-width: 440px;
+            width: 90%;
+            padding: 60px 10px;
             text-align: center;
         }
-        /* Преміальна картка в стилі Continental */
-        .euro-card {
-            background: var(--euro-grad);
-            border: 1px solid var(--euro-gold);
-            border-radius: 0; /* Гострі кути для строгого стилю */
+        /* Стиль "Тиха розкіш" */
+        .vip-panel {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
             padding: 50px 30px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 0 40px rgba(212, 175, 55, 0.1);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
             margin-bottom: 40px;
-            position: relative;
         }
-        .euro-card::after {
-            content: "";
-            position: absolute;
-            top: 10px; left: 10px; right: 10px; bottom: 10px;
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            pointer-events: none;
+        .badge {
+            font-size: 0.65rem;
+            letter-spacing: 4px;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            font-weight: 600;
         }
         h1 {
-            font-family: 'Bodoni Moda', serif;
-            font-size: 2.2rem;
-            color: var(--euro-gold);
-            margin: 0;
-            text-transform: uppercase;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
             font-style: italic;
+            margin: 0;
+            font-weight: 600;
+            letter-spacing: -1px;
         }
-        .euro-value {
-            font-size: 3.5rem;
-            font-weight: 800;
-            color: #fff;
-            margin: 25px 0;
-            letter-spacing: -2px;
+        .main-value {
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: -3px;
+            margin: 20px 0;
+            line-height: 1;
         }
-        /* Кнопка "Executive" */
-        .btn-euro {
+        /* Кнопка: Мінімалізм */
+        .btn-luxury {
             display: block;
-            background: var(--euro-gold);
+            background: var(--accent);
             color: #000;
             text-decoration: none;
-            padding: 22px;
-            font-weight: 800;
+            padding: 24px;
+            border-radius: 100px; /* Повністю овальна */
+            font-weight: 900;
             text-transform: uppercase;
-            font-size: 1.1rem;
-            letter-spacing: 3px;
-            transition: 0.4s;
-            border: none;
-            cursor: pointer;
-        }
-        .btn-euro:hover {
-            background: #fff;
-            color: #064e3b;
-        }
-
-        /* SEO Блок: Європейські стандарти */
-        .euro-faq {
-            text-align: left;
-            border-left: 1px solid var(--euro-gold);
-            padding-left: 25px;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             margin-top: 30px;
         }
-        .euro-faq h2 { font-size: 1.1rem; color: var(--euro-gold); text-transform: uppercase; margin-bottom: 15px; }
-        .euro-faq p { font-size: 0.85rem; color: #94a3b8; line-height: 1.8; margin-bottom: 15px; }
-        
-        .status-bar {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.6rem;
-            color: #475569;
-            margin-top: 40px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+        .btn-luxury:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(255,255,255,0.2);
         }
+
+        /* Блок Сапорту - інтегрований */
+        .support-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .support-card:hover { background: rgba(255, 255, 255, 0.05); }
+        .support-text { text-align: left; }
+        .support-text span { display: block; font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+        .support-text b { font-size: 0.9rem; color: var(--accent); }
+        .support-icon { width: 32px; height: 32px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent); }
+
+        .seo-minimal {
+            text-align: left;
+            margin-top: 40px;
+            padding: 0 10px;
+        }
+        .seo-minimal h2 { font-size: 0.8rem; text-transform: uppercase; color: var(--muted); letter-spacing: 2px; margin-bottom: 15px; }
+        .seo-minimal p { font-size: 0.85rem; color: #444; line-height: 1.7; }
+        
+        .footer-minimal { margin-top: 50px; font-size: 0.6rem; color: #222; letter-spacing: 3px; font-weight: 900; }
     </style>
 </head>
 <body>
 
-<div class="euro-wrapper">
-    <div class="euro-card">
-        <div style="font-size: 0.65rem; color: var(--euro-gold); letter-spacing: 5px; margin-bottom: 15px; font-weight: 800;">CONTINENTAL PRIVILEGE</div>
-        <h1>EURO CASINO</h1>
-        <div class="euro-value">1000 FS</div>
-        <p style="color: #cbd5e1; font-size: 0.9rem; font-weight: 300; line-height: 1.6;">
-            Ваш запит на отримання 1000 фріспінів схвалено. <br> Активація через шлюз <b>MRBONUS UA</b>.
-        </p>
+<div class="luxury-container">
+    <div class="vip-panel">
+        <div class="badge">Privé Selection</div>
+        <h1>Euro Casino</h1>
+        <div class="main-value">1000 FS</div>
+        <p style="color: var(--muted); font-size: 0.9rem; font-weight: 300; margin: 0;">Ваш персональний доступ до преміум-пакета активовано сервісом <b>MRBONUS</b>.</p>
         
-        <!-- Параметр start=euro для aiogram -->
-        <a href="https://t.me/MRBONUS_UA_bot" class="btn-euro js-link">ОТРИМАТИ ДОСТУП</a>
+        <a href="https://t.me/MRBONUS_UA_bot" class="btn-luxury js-link">Почати активацію</a>
     </div>
 
-    <div class="euro-faq">
-        <h2>Програма Euro Casino 2026</h2>
-        <p><strong>Euro Casino</strong> — це вибір гравців, які цінують надійність європейських ліцензій та високі ліміти виплат. У 2026 році бренд пропонує безпрецедентний пакет для нових учасників: <strong>1000 безкоштовних обертів</strong> у преміальних слотах.</p>
-        
-        <p>Для безпечної активації бонусу ми використовуємо асинхронний метод через Telegram. Це дозволяє миттєво підтвердити ваш VIP-статус та уникнути затримок при реєстрації.</p>
-        
-        <p style="font-size: 0.75rem; font-style: italic; opacity: 0.6;">*Тільки для осіб 21+. Грай відповідально.</p>
+    <!-- САПОРТ МЕНЕДЖЕР -->
+    <a href="https://t.me" class="support-card js-link">
+        <div class="support-text">
+            <span>VIP Support Manager</span>
+            <b>@MRBONUS_support</b>
+        </div>
+        <div class="support-icon">→</div>
+    </a>
+
+    <div class="seo-minimal">
+        <h2>Executive Summary</h2>
+        <p><strong>Euro Casino</strong> представляє оновлену програму лояльності 2026. Замість стандартних бонусів, ми пропонуємо <strong>1000 безкоштовних обертів</strong> у високоволатильних слотах. Активація відбувається миттєво через зашифрований Telegram-шлюз для забезпечення максимальної конфіденційності.</p>
     </div>
 
-    <div class="status-bar">
-        <span>● Verified by MRBONUS</span>
-        <span>● 2026 Edition</span>
-    </div>
+    <div class="footer-minimal">MRBONUS UA • EST. 2026 • 21+</div>
 </div>
 
 <script>
