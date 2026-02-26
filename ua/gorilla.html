@@ -4,166 +4,186 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO ТЕГИ ДЛЯ GOOGLE (GORILLA) -->
-    <title>Gorilla Casino: 300 Фріспінів для кожного | Wild Bonus MRBONUS UA</title>
-    <meta name="description" content="Розблокуй дикі виграші у Gorilla Casino! Забирай 300 фріспінів за реєстрацію. Ексклюзивний пакет Wild Bonus активовано сервісом MRBONUS UA. Час великої гри!">
-    <meta name="keywords" content="Gorilla casino, горила казино, 300 фріспінів, дикий бонус, mrbonus ua, грати онлайн україна">
-
-    <!-- SDK Telegram -->
-    <script src="https://telegram.org"></script>
+    <!-- АГРЕСИВНЕ SEO ДЛЯ ПОШУКУ (GORILLA CASINO) -->
+    <title>Gorilla Реєстрація: Робоче Дзеркало Горила Казино 300 FS 2026</title>
+    <meta name="description" content="Шукаєте вхід у Gorilla Casino? Отримайте 300 фріспінів без депозиту за реєстрацію через офіційний бот MRBONUS UA. Робоче дзеркало Горила, швидкий вивід на карту та ліцензія.">
+    <meta name="keywords" content="gorilla реєстрація, горила казино вхід, робоче дзеркало gorilla, 300 фріспінів бездеп, скачати gorilla на телефон, онлайн казино україна 2026">
+    
     <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <script src="https://telegram.org"></script>
+    
     <style>
         :root {
-            --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
-            --dark: #050505;
+            --gorilla-green: #39ff14;
+            --gorilla-dark: #0a0a0a;
+            --gorilla-grad: linear-gradient(135deg, #39ff14 0%, #1db954 100%);
         }
-        /* Увімкнено вертикальний скрол для SEO тексту */
-        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; overflow-y: auto; }
+        body {
+            background: var(--gorilla-dark);
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            background-image: radial-gradient(circle at 50% 0%, #1a2e1a 0%, #0a0a0a 80%);
+        }
+        .gorilla-layout {
+            max-width: 480px;
+            width: 92%;
+            padding: 50px 0;
+            text-align: center;
+        }
 
-        #loader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 9999;
-            transition: 0.5s; opacity: 1;
-        }
-        .gorilla-icon { font-size: 4rem; animation: shake 0.5s infinite; }
-        @keyframes shake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            10% { transform: translate(-1px, -2px) rotate(-1deg); }
-            20% { transform: translate(-3px, 0px) rotate(1deg); }
-            30% { transform: translate(3px, 2px) rotate(0deg); }
-            40% { transform: translate(1px, -1px) rotate(1deg); }
-            50% { transform: translate(-1px, 2px) rotate(-1deg); }
-        }
-
-        .container { max-width: 450px; width: 92%; padding: 10px 15px 35px; text-align: center; display: none; opacity: 0; transition: 0.8s ease; box-sizing: border-box; }
-        
-        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 15px; }
-        .btn-menu { 
-            text-decoration: none; color: #444; font-size: 0.65rem; font-weight: 800; 
-            letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; 
-            display: flex; align-items: center; gap: 6px; cursor: pointer;
-            background: none; border: none; padding: 10px 0;
-        }
-        .btn-menu:hover { color: #BF953F; }
-
-        .promo-card { 
-            background: linear-gradient(180deg, #111 0%, #000 100%);
-            border: 2px solid #BF953F;
-            border-radius: 25px; 
-            padding: 35px 20px; 
-            box-shadow: 0 0 50px rgba(191,149,63,0.2);
+        /* BRUTALIST HERO CARD */
+        .jungle-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px solid var(--gorilla-green);
+            border-radius: 15px;
+            padding: 50px 25px;
+            box-shadow: 0 0 40px rgba(57, 255, 20, 0.1);
+            margin-bottom: 35px;
             position: relative;
         }
-
-        .wild-label { font-family: 'Cinzel', serif; color: #BF953F; font-size: 0.65rem; letter-spacing: 4px; margin-bottom: 10px; }
-        h1 { font-family: 'Cinzel', serif; font-size: 2.2rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
-        .promo-value { font-size: 2.3rem; font-weight: 900; margin: 15px 0; color: #fff; line-height: 1.1; }
-
-        .btn-gorilla { 
-            display: block; background: var(--gold); color: #000; text-decoration: none; padding: 22px 10px; border-radius: 15px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 25px; font-size: 1.3rem; text-align: center; box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.2s; cursor: pointer; border: none; width: 100%; box-sizing: border-box; animation: gorilla-pulse 2s infinite;
+        .jungle-card::before {
+            content: "GORILLA POWER";
+            position: absolute;
+            top: -12px; left: 50%; transform: translateX(-50%);
+            background: var(--gorilla-green);
+            color: #000;
+            padding: 4px 15px;
+            border-radius: 2px;
+            font-size: 0.7rem;
+            font-weight: 900;
+            letter-spacing: 2px;
         }
-        @keyframes gorilla-pulse {
-            0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); }
-            70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); }
-            100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); }
+
+        h1 {
+            font-family: 'Black Ops One', cursive;
+            font-size: 2.5rem;
+            margin: 0;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+        .gorilla-value {
+            font-size: 4.5rem;
+            font-weight: 900;
+            color: var(--gorilla-green);
+            margin: 15px 0;
+            text-shadow: 0 0 30px rgba(57, 255, 20, 0.4);
+            letter-spacing: -2px;
+            line-height: 1;
         }
 
-        .btn-bot-gorilla { display: block; border: 1px solid rgba(191, 149, 63, 0.4); color: #777; text-decoration: none; padding: 16px; border-radius: 15px; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-align: center; margin-top: 15px; transition: 0.3s; cursor: pointer; background: rgba(255, 255, 255, 0.02); }
-
-        /* ПРЕМІАЛЬНИЙ SEO БЛОК */
-        .vip-review-container {
-            margin-top: 40px; text-align: left; background: rgba(255, 255, 255, 0.01);
-            border: 1px solid #BF953F; border-radius: 15px; padding: 25px;
-            position: relative; box-shadow: inset 0 0 20px rgba(191, 149, 63, 0.05);
+        /* ЄДИНА КНОПКА НА БОТА */
+        .btn-gorilla-bot {
+            display: block;
+            background: var(--gorilla-grad);
+            color: #000;
+            text-decoration: none;
+            padding: 24px;
+            border-radius: 5px;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 1.3rem;
+            box-shadow: 0 10px 40px rgba(57, 255, 20, 0.3);
+            transition: 0.3s;
+            margin-top: 30px;
+            border: none;
         }
-        .vip-review-container::before {
-            content: "WILD VIP REVIEW"; position: absolute; top: -12px; left: 50%;
-            transform: translateX(-50%); background: #050505; padding: 0 15px;
-            color: #BF953F; font-size: 0.6rem; font-weight: 900; letter-spacing: 3px;
-            border: 1px solid #BF953F; border-radius: 50px;
-        }
-        .vip-review-container h2 { font-family: 'Cinzel', serif; font-size: 1rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; text-transform: uppercase; }
-        .vip-review-container p, .vip-review-container li { font-size: 0.75rem; color: #888; line-height: 1.6; margin-bottom: 10px; }
-        .vip-review-container strong { color: #FCF6BA; }
-        .vip-review-container ul { padding-left: 15px; list-style: none; }
-        .vip-review-container ul li::before { content: "✦"; color: #BF953F; margin-right: 8px; font-size: 0.65rem; }
+        .btn-gorilla-bot:hover { transform: translateY(-3px); box-shadow: 0 15px 50px rgba(57, 255, 20, 0.5); }
 
-        .sub-footer { color: #222; font-size: 0.6rem; margin-top: 35px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
+        /* SEO SECTION */
+        .seo-jungle {
+            text-align: left;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .seo-jungle h2 {
+            font-size: 1.1rem;
+            color: var(--gorilla-green);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            border-left: 4px solid var(--gorilla-green);
+            padding-left: 10px;
+        }
+        .seo-jungle p {
+            font-size: 0.85rem;
+            color: #999;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        /* SUPPORT WIDGET */
+        .support-gorilla {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(57, 255, 20, 0.05);
+            border: 1px solid rgba(57, 255, 20, 0.1);
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-decoration: none;
+        }
+        .support-gorilla span { font-size: 0.65rem; color: #555; text-transform: uppercase; }
+        .support-gorilla b { color: #fff; font-size: 0.95rem; }
+
+        .footer { margin-top: 40px; color: #222; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="gorilla-icon">🦍</div>
-        <h2 style="font-family:'Cinzel'; background: var(--gold); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:10px; margin-top:20px;">MRBONUS</h2>
-        <p style="color:#333; font-size:0.55rem; letter-spacing:3px; margin-top:10px; font-weight:bold;">UNLEASHING WILD BONUS...</p>
-    </div>
-
-    <div class="container" id="content">
-        <div class="nav-menu">
-            <button onclick="goBack()" class="btn-menu"><span>←</span> НАЗАД</button>
-        </div>
-
-        <div class="promo-card">
-            <div class="wild-label">GORILLA SYSTEM VERIFIED</div>
-            <h1>GORILLA</h1>
-            <div class="promo-value">300 FS <br> <span style="font-size: 1rem; color: #555;">ALL PLAYERS</span></div>
-            
-            <p style="color: #888; font-size: 0.9rem; line-height: 1.5; margin: 0;">
-                Твій пакет фріспінів активовано сервісом <b>MRBONUS</b>. <br> Забирай свій куш і починай гру прямо зараз.
-            </p>
-
-            <a href="https://play.mrbonusua.space/gorilla.html" class="btn-gorilla js-link" rel="sponsored nofollow">ЗАБРАТИ 300 FS 🦍</a>
-
-            <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-gorilla js-link">🤖 АКТИВУВАТИ У ТГ БОТІ</a>
-        </div>
-
-        <div class="vip-review-container">
-            <h2>Gorilla Casino: Дика енергія азарту та шалені бонуси</h2>
-            <p><strong>Gorilla Casino</strong> — це вибір для тих, хто не боїться великої гри та шукає максимальних привілеїв. У співпраці з <strong>MRBONUS UA</strong>, бренд представляє ексклюзивний вітальний пакет, що включає 300 фріспінів для швидкого старту.</p>
-            <p>Горила Казино відоме своїм агресивним підходом до бонусів, пропонуючи одні з найкращих умов відіграшу на ринку України в 2026 році. Це майданчик, де кожен клік може призвести до дикого заносу.</p>
-            <ul>
-                <li>Швидка реєстрація та моментальне поповнення рахунку;</li>
-                <li>Ексклюзивна лінійка "диких" слотів з високою волатильністю;</li>
-                <li>Щотижневі турніри з призовим фондом для VIP-гравців;</li>
-                <li><strong>Сертифікований софт</strong> та гарантія виплат на будь-яку картку.</li>
-            </ul>
-            <p>Тисни <strong>"ЗАБРАТИ 300 FS"</strong>, щоб розбудити в собі переможця. Грай відповідально. 21+.</p>
-        </div>
+<div class="gorilla-layout">
+    <div class="jungle-card">
+        <div style="font-size: 0.7rem; color: #666; letter-spacing: 4px; margin-bottom: 15px;">POWERED BY MRBONUS UA</div>
+        <h1>GORILLA</h1>
+        <div class="gorilla-value">300 FS</div>
+        <p style="color: #888; font-size: 0.95rem;">Твій VIP-пакет <b>300 фріспінів</b> активовано. <br> Отримай код через Telegram-бот.</p>
         
-        <p class="sub-footer">WILD ACCESS • 21+ • MRBONUS UA • 2026</p>
+        <a href="https://t.me/MRBONUS_UA_bot" class="btn-gorilla-bot js-link">🦍 ЗАБРАТИ В TELEGRAM</a>
     </div>
 
-    <script>
-        const tg = window.Telegram ? window.Telegram.WebApp : null;
-        if (tg) { tg.ready(); tg.expand(); }
-        function isTg() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
-        function goBack() {
-            if (isTg()) { window.location.href = 'index.html'; } 
-            else { window.history.length > 1 ? window.history.back() : window.location.href = 'index.html'; }
-        }
-        document.querySelectorAll('.js-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                const url = this.getAttribute('href');
-                if (isTg()) {
-                    e.preventDefault();
-                    if (url.includes('t.me/')) { tg.openTelegramLink(url); } 
-                    else { tg.openLink(url); }
-                }
-            });
+    <div class="seo-jungle">
+        <h2>Як отримати бонус у Горила Казино (Gorilla)?</h2>
+        <p>Для активації <strong>300 фріспінів бездепозитного бонусу</strong> у <strong>Gorilla Casino</strong>, скористайтеся офіційним Telegram-ботом <strong>MRBONUS UA</strong>. Наш сервіс надає <strong>робоче дзеркало Горила</strong> та гарантує нарахування бонусу на ваш баланс у 2026 році.</p>
+        
+        <p><strong>Переваги Gorilla UA:</strong><br>
+        • Найшвидша реєстрація через <strong>Дія</strong>;<br>
+        • Ліцензійні слоти з високим RTP;<br>
+        • Вивід виграшів на картки України за 10 хвилин;<br>
+        • Ексклюзивні акції для VIP-клієнтів через бот.</p>
+        
+        <p>Натисніть кнопку вище, щоб зайти в бот та активувати <strong>бонус за реєстрацію</strong>. Система автоматично згенерує посилання для входу на офіційний сайт.</p>
+    </div>
+
+    <!-- МЕНЕДЖЕР САППОРТ -->
+    <a href="https://t.me" class="support-gorilla js-link">
+        <div style="text-align: left;">
+            <span>Support Manager</span> <br>
+            <b>@MRBONUS_support</b>
+        </div>
+        <div style="color: var(--gorilla-green); font-weight: 900;">→</div>
+    </a>
+
+    <p class="footer">GORILLA PARTNER • 21+ • MRBONUS UA 2026</p>
+</div>
+
+<script>
+    const tg = window.Telegram ? window.Telegram.WebApp : null;
+    if (tg) { tg.ready(); tg.expand(); }
+    document.querySelectorAll('.js-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            if (tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0) {
+                e.preventDefault();
+                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                tg.openTelegramLink(this.getAttribute('href'));
+            }
         });
-        window.onload = function() {
-            setTimeout(function() {
-                const ld = document.getElementById('loader');
-                if (ld) ld.style.opacity = '0';
-                setTimeout(function() {
-                    if (ld) ld.style.display = 'none';
-                    let ct = document.getElementById('content');
-                    if (ct) { ct.style.display = 'block'; setTimeout(() => ct.style.opacity = '1', 50); }
-                }, 500);
-            }, 1400);
-        };
-    </script>
+    });
+</script>
+
 </body>
 </html>
