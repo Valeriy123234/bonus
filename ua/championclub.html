@@ -3,162 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- УНІКАЛЬНІ МЕТАТЕГИ ПІД ПОШУКОВИЙ ЗАПИТ CHAMPION -->
+    <title>Champion Club: 1000 FS за реєстрацію | VIP Акція MRBONUS UA</title>
+    <meta name="description" content="Активуй 1000 фріспінів у Champion Club (Чемпіон Казино). Твій персональний бонус активовано сервісом MRBONUS. Переходь у бот та забирай подарунок прямо зараз!">
     
-    <!-- SEO ТЕГИ ДЛЯ GOOGLE (CHAMPION CLUB) -->
-    <title>Champion Club: VIP Бонуси та Фріспіни | Офіційний доступ MRBONUS</title>
-    <meta name="description" content="Ставай чемпіоном з ексклюзивним доступом від MRBONUS UA! Отримуй VIP-бонуси у Champion Club. Твій кубок переможця та фріспіни вже чекають. Грай зараз!">
-    <meta name="keywords" content="Champion Club, чемпіон клуб, бонуси чемпіон, фріспіни за реєстрацію, mrbonus ua, онлайн казино україна">
-
-    <!-- SDK Telegram -->
-    <script src="https://telegram.org"></script>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <script src="https://telegram.org"></script>
+    
     <style>
         :root {
-            --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
-            --dark: #050505;
+            /* Фірмові кольори Champion: Глибокий синій, яскравий жовтий та сталь */
+            --champ-blue: #0046ad;
+            --champ-yellow: #ffcc00;
+            --champ-grad: linear-gradient(180deg, #0052cc 0%, #002e73 100%);
         }
-        /* ЗМІНЕНО: Додано scroll для SEO-тексту */
-        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; overflow-y: auto; }
+        body {
+            background: #000b1a;
+            color: #fff;
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .champion-container {
+            max-width: 480px;
+            width: 94%;
+            padding: 40px 10px;
+            text-align: center;
+        }
+        /* Нова форма картки (Champion Style - Rounded & Glossy) */
+        .champ-card {
+            background: var(--champ-grad);
+            border: 3px solid var(--champ-yellow);
+            border-radius: 50px 15px 50px 15px;
+            padding: 45px 25px;
+            box-shadow: 0 15px 40px rgba(0, 70, 173, 0.4), inset 0 0 20px rgba(255, 204, 0, 0.2);
+            margin-bottom: 35px;
+        }
+        h1 {
+            font-family: 'Exo 2', sans-serif;
+            font-size: 2.2rem;
+            color: var(--champ-yellow);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .mega-bonus {
+            font-family: 'Exo 2', sans-serif;
+            font-size: 3.2rem;
+            font-weight: 900;
+            color: #fff;
+            margin: 20px 0;
+            line-height: 1;
+            text-shadow: 2px 2px 0px var(--champ-blue);
+        }
+        .btn-champion {
+            display: block;
+            background: var(--champ-yellow);
+            color: #000;
+            text-decoration: none;
+            padding: 22px;
+            border-radius: 50px;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            box-shadow: 0 8px 0 #cca300;
+        }
+        .btn-champion:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #cca300;
+        }
 
-        #loader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 9999;
-            transition: 0.6s ease; opacity: 1;
+        /* Унікальний блок контенту */
+        .champion-details {
+            text-align: left;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 204, 0, 0.1);
         }
-        .trophy { font-size: 3.5rem; margin-bottom: 15px; animation: trophy-glow 2s infinite ease-in-out; }
-        @keyframes trophy-glow {
-            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(191,149,63,0.5)); }
-            50% { transform: scale(1.05); filter: drop-shadow(0 0 20px rgba(191,149,63,0.8)); }
+        .champion-details h2 {
+            font-family: 'Exo 2', sans-serif;
+            font-size: 1.3rem;
+            color: var(--champ-yellow);
+            margin-bottom: 15px;
         }
-
-        .container { max-width: 450px; width: 92%; padding: 10px 15px 30px; text-align: center; display: none; opacity: 0; transition: 0.8s ease; box-sizing: border-box; }
-        
-        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 10px; }
-        .btn-menu { 
-            text-decoration: none; color: #444; font-size: 0.65rem; font-weight: 800; 
-            letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; 
-            display: flex; align-items: center; gap: 6px; cursor: pointer;
-            background: none; border: none; padding: 10px 0;
+        .champion-details p {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            line-height: 1.7;
         }
-        .btn-menu:hover { color: #BF953F; }
-
-        .promo-card { 
-            background: linear-gradient(180deg, #111 0%, #000 100%);
-            border: 2px solid #BF953F;
-            border-radius: 35px; 
-            padding: 30px 20px; 
-            box-shadow: 0 0 30px rgba(191,149,63,0.1);
+        .check-list {
+            margin: 15px 0;
+            padding: 0;
+            list-style: none;
         }
-
-        .vip-status { font-family: 'Cinzel', serif; color: #BF953F; font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; }
-        h1 { font-family: 'Cinzel', serif; font-size: 1.8rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 5px 0; }
-        .promo-value { font-size: 2rem; font-weight: 900; margin: 12px 0; color: #fff; line-height: 1.1; text-transform: uppercase; }
-
-        .btn-champion { 
-            display: block; background: var(--gold); color: #000; text-decoration: none; padding: 22px 10px; border-radius: 50px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; margin-top: 25px; font-size: 1.2rem; text-align: center; box-shadow: 0 8px 25px rgba(191,149,63,0.3); transition: 0.2s; cursor: pointer; border: none; width: 100%; box-sizing: border-box; animation: champion-pulse 2s infinite;
+        .check-list li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            color: #fff;
         }
-        @keyframes champion-pulse {
-            0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); }
-            70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); }
-            100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); }
+        .check-list li::before {
+            content: "✔";
+            position: absolute;
+            left: 0;
+            color: var(--champ-yellow);
+            font-weight: 900;
         }
 
-        .btn-bot-champion { display: block; border: 1px solid rgba(191, 149, 63, 0.3); color: #777; text-decoration: none; padding: 15px; border-radius: 50px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-align: center; margin-top: 15px; transition: 0.3s; cursor: pointer; background: rgba(255, 255, 255, 0.01); }
-
-        .tagline { color: #222; font-size: 0.55rem; margin-top: 25px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
-
-        /* ПРЕМІАЛЬНИЙ SEO БЛОК */
-        .vip-review-container {
-            margin-top: 40px; text-align: left; background: rgba(255, 255, 255, 0.01);
-            border: 1px solid #BF953F; border-radius: 20px; padding: 25px;
-            position: relative; box-shadow: inset 0 0 20px rgba(191, 149, 63, 0.05);
-        }
-        .vip-review-container::before {
-            content: "CHAMPION VIP"; position: absolute; top: -12px; left: 50%;
-            transform: translateX(-50%); background: #050505; padding: 0 15px;
-            color: #BF953F; font-size: 0.6rem; font-weight: 900; letter-spacing: 3px;
-            border: 1px solid #BF953F; border-radius: 50px;
-        }
-        .vip-review-container h2 { font-family: 'Cinzel', serif; font-size: 1rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; text-transform: uppercase; }
-        .vip-review-container p, .vip-review-container li { font-size: 0.75rem; color: #888; line-height: 1.6; margin-bottom: 10px; }
-        .vip-review-container strong { color: #FCF6BA; }
-        .vip-review-container ul { padding-left: 15px; list-style: none; }
-        .vip-review-container ul li::before { content: "✦"; color: #BF953F; margin-right: 8px; font-size: 0.65rem; }
+        .footer-tag { margin-top: 30px; font-size: 0.7rem; color: #334155; font-weight: 700; }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="trophy">🏆</div>
-        <h2 style="font-family:'Cinzel'; background: var(--gold); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:6px; margin:0;">CHAMPION</h2>
-        <p style="color:#BF953F; font-size:0.55rem; letter-spacing:3px; margin-top:8px; font-weight:bold;">GRANTING VIP ACCESS...</p>
-    </div>
-
-    <div class="container" id="content">
-        <div class="nav-menu">
-            <button onclick="goBack()" class="btn-menu"><span>←</span> НАЗАД</button>
-        </div>
-
-        <div class="promo-card">
-            <div class="vip-status">Verified Champion</div>
-            <h1>CHAMPION CLUB</h1>
-            <div class="promo-value">VIP ACCESS <br> <span style="font-size: 1rem; color: #666;">EXCLUSIVE BONUS</span></div>
-            
-            <p style="color: #999; font-size: 0.9rem; line-height: 1.5; margin: 0;">
-                Твій статус підтверджено через <b>MRBONUS</b>. <br> Забирай кубок та починай гру.
-            </p>
-
-            <a href="https://play.mrbonusua.space/championclub.html" class="btn-champion js-link" rel="sponsored nofollow">ЗАБРАТИ КУБОК 🏆</a>
-
-            <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-champion js-link">🤖 БОНУСИ В TG</a>
-        </div>
+<div class="champion-container">
+    <div class="champ-card">
+        <div style="font-size: 0.75rem; font-weight: 900; color: #fff; letter-spacing: 3px; margin-bottom: 15px;">TOP RANKED UA</div>
+        <h1>CHAMPION CLUB</h1>
+        <div class="mega-bonus">1000 FS</div>
+        <p style="color: #e2e8f0; font-size: 0.95rem; margin-bottom: 30px;">
+            Твій статус <b>CHAMPION</b> підтверджено сервісом <b>MRBONUS UA</b>. <br>
+            Активуй 1000 фріспінів у нашому чат-боті.
+        </p>
         
-        <div class="vip-review-container">
-            <h2>Champion Club: Де народжуються легенди азарту</h2>
-            <p><strong>Champion Club</strong> — це закрита екосистема для справжніх переможців. У 2026 році клуб оновив свою бонусну програму, зробивши її доступною лише через авторизованих партнерів, таких як <strong>MRBONUS UA</strong>.</p>
-            <p>Кожен новий учасник отримує <strong>VIP-статус</strong>, що відкриває доступ до приватних турнірів та щотижневого кешбеку без прихованих умов. Чемпіон Клуб цінують за автентичну атмосферу та бездоганну репутацію у виплатах.</p>
-            <ul>
-                <li>Швидка активація через Telegram або e-mail;</li>
-                <li>Ексклюзивні слоти, недоступні в інших казино;</li>
-                <li>Персональний менеджер для кожного VIP-гравця;</li>
-                <li><strong>Ліцензійний софт</strong> з високою волатильністю.</li>
-            </ul>
-            <p>Тисни <strong>"ЗАБРАТИ КУБОК"</strong> та підтвердь своє право на перемогу. Пам'ятай: грай розумно, грай як чемпіон. 21+.</p>
-        </div>
-
-        <p class="tagline">Born to Win • 21+ • MRBONUS UA</p>
+        <!-- Параметр start=champion для aiogram -->
+        <a href="https://t.me/MRBONUS_UA_bot" class="btn-champion js-link">🏆 СТАТИ ЧЕМПІОНОМ</a>
     </div>
 
-    <script>
-        const tg = window.Telegram ? window.Telegram.WebApp : null;
-        if (tg) { tg.ready(); tg.expand(); }
-        function isTg() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
-        function goBack() {
-            if (isTg()) { window.location.href = 'index.html'; } 
-            else { window.history.length > 1 ? window.history.back() : window.location.href = 'index.html'; }
-        }
-        document.querySelectorAll('.js-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                const url = this.getAttribute('href');
-                if (isTg()) {
-                    e.preventDefault();
-                    if (url.includes('t.me/')) { tg.openTelegramLink(url); } 
-                    else { tg.openLink(url); }
-                }
-            });
+    <div class="champion-details">
+        <h2>Як забрати 1000 фріспінів у Champion?</h2>
+        <p>Легендарний <strong>Champion Club</strong> відкриває двері для нових гравців з України з рекордною пропозицією. Замість стандартних бонусів, через наш сервіс ви отримуєте доступ до пакету на <strong>1000 безкоштовних обертів</strong>.</p>
+        
+        <ul class="check-list">
+            <li>Миттєва реєстрація без зайвих анкет;</li>
+            <li>Унікальні слоти власної розробки Champion;</li>
+            <li>Виплата виграшів на будь-які українські картки;</li>
+            <li>Доступ до розіграшів у прямому ефірі радіо.</li>
+        </ul>
+
+        <p style="font-size: 0.8rem; border-top: 1px solid rgba(255,204,0,0.2); pt-15px; margin-top: 15px; opacity: 0.7;">
+            Для активації перейдіть у Telegram та натисніть "START". Система автоматично згенерує ваш персональний бонус-код.
+        </p>
+    </div>
+
+    <div class="footer-tag">
+        SUPPORT: <a href="https://t.me" style="color: #475569;" class="js-link">@MRBONUS_SUPPORT</a> <br><br>
+        21+ • ГРАЙ ВІДПОВІДАЛЬНО • 2026
+    </div>
+</div>
+
+<script>
+    const tg = window.Telegram ? window.Telegram.WebApp : null;
+    if (tg) { tg.ready(); tg.expand(); }
+
+    document.querySelectorAll('.js-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            if (tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0) {
+                e.preventDefault();
+                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                tg.openTelegramLink(this.getAttribute('href'));
+            }
         });
-        window.onload = function() {
-            setTimeout(function() {
-                const ld = document.getElementById('loader');
-                if (ld) ld.style.opacity = '0';
-                setTimeout(function() {
-                    if (ld) ld.style.display = 'none';
-                    let ct = document.getElementById('content');
-                    if (ct) { ct.style.display = 'block'; setTimeout(() => ct.style.opacity = '1', 50); }
-                }, 500);
-            }, 1200);
-        };
-    </script>
+    });
+</script>
+
 </body>
 </html>
