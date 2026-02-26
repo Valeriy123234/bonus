@@ -3,151 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Betking UA 2026: Отримати 200% Бонус та 200 FS | MRBONUS</title>
+    <meta name="description" content="Ексклюзивна активація привітального пакета Betking: 200% на перший депозит та 200 фріспінів. Офіційний сервіс MRBONUS UA для швидкої реєстрації.">
     
-    <!-- SEO ТЕГИ ДЛЯ GOOGLE (BETKING) -->
-    <title>Betking Casino: Бонус 200% + 200 Фріспінів | Королівський доступ MRBONUS</title>
-    <meta name="description" content="Отримай королівський бонус у Betking Casino: 200% на депозит та 200 фріспінів. Ексклюзивна пропозиція для VIP-клієнтів MRBONUS UA. Забирай свій виграш!">
-    <meta name="keywords" content="Betking, казино беткінг, фріспіни за реєстрацію, бонус на депозит, mrbonus ua">
-
-    <!-- SDK Telegram -->
-    <script src="https://telegram.org"></script>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <script src="https://telegram.org"></script>
+    
     <style>
         :root {
-            --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
-            --dark: #070707;
+            /* Нова палітра: Глибокий синій та яскравий аквамарин */
+            --king-gradient: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            --accent-neon: #00f2ff;
+            --white: #ffffff;
         }
-        /* ЗМІНЕНО: Додано scroll для тексту */
-        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; overflow-y: auto; }
-
-        #loader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 9999;
-            transition: 0.5s; opacity: 1;
+        body {
+            background: #020617;
+            color: var(--white);
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
         }
-        .crown-anim { font-size: 4rem; animation: float 2s infinite ease-in-out; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-
-        .container { max-width: 500px; width: 92%; padding: 20px 15px 40px; text-align: center; display: none; opacity: 0; transition: 1s; box-sizing: border-box; }
-        
-        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 25px; }
-        .btn-menu { text-decoration: none; color: #444; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 8px; cursor: pointer; background: none; border: none; padding: 0; }
-        .btn-menu:hover { color: #BF953F; transform: translateX(-3px); }
-
-        .promo-card { 
-            background: linear-gradient(180deg, #151515 0%, #0a0a0a 100%);
-            border: 2px solid #BF953F; 
-            border-radius: 30px; 
-            padding: 45px 20px; 
-            box-shadow: 0 0 40px rgba(191,149,63,0.2);
+        .king-layout {
+            max-width: 480px;
+            width: 94%;
+            padding: 40px 10px;
+            text-align: center;
+        }
+        /* Унікальна форма картки (Hexagon-style vibe) */
+        .premium-offer {
+            background: var(--king-gradient);
+            border: 2px solid var(--accent-neon);
+            border-radius: 40px 10px 40px 10px;
+            padding: 45px 20px;
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.15);
+            position: relative;
+            margin-bottom: 40px;
+        }
+        h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.5rem;
+            color: var(--white);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .bonus-value-display {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--accent-neon);
+            margin: 15px 0;
+            text-shadow: 0 0 15px rgba(0, 242, 255, 0.5);
+        }
+        .btn-betking {
+            display: block;
+            background: var(--accent-neon);
+            color: #000;
+            text-decoration: none;
+            padding: 22px;
+            border-radius: 12px;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 25px rgba(0, 242, 255, 0.3);
+        }
+        .btn-betking:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 35px rgba(0, 242, 255, 0.5);
         }
 
-        .top-label { font-family: 'Cinzel', serif; color: #BF953F; font-size: 0.75rem; letter-spacing: 3px; margin-bottom: 5px; }
-        h1 { font-family: 'Cinzel', serif; font-size: 2.5rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 5px 0; }
-        .promo-value { font-size: 2.2rem; font-weight: 800; margin: 20px 0; color: #fff; line-height: 1.1; }
-
-        .btn-royal { 
-            display: block; background: var(--gold); color: #000; text-decoration: none; padding: 25px 10px; border-radius: 18px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 30px; font-size: 1.4rem; box-shadow: 0 12px 35px rgba(191,149,63,0.4); transition: 0.3s; cursor: pointer; border: none; width: 100%; text-align: center; box-sizing: border-box; animation: pulse-gold 2s infinite;
+        /* SEO блок з іншою структурою тегів */
+        .king-faq-box {
+            text-align: left;
+            background: rgba(30, 58, 138, 0.2);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        @keyframes pulse-gold {
-            0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); }
-            70% { box-shadow: 0 0 0 15px rgba(191,149,63,0); }
-            100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); }
+        .king-faq-box h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.3rem;
+            color: var(--accent-neon);
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 242, 255, 0.2);
+            padding-bottom: 10px;
         }
-
-        .btn-bot-royal { display: block; border: 1px solid rgba(191, 149, 63, 0.4); color: #888; text-decoration: none; padding: 18px; border-radius: 15px; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-top: 18px; transition: 0.3s; background: rgba(255, 255, 255, 0.02); cursor: pointer; text-align: center; }
-
-        .sub-text { color: #444; font-size: 0.65rem; margin-top: 35px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;}
-
-        /* ПРЕМІАЛЬНИЙ SEO БЛОК */
-        .vip-review-container {
-            margin-top: 50px; text-align: left; background: rgba(255, 255, 255, 0.01);
-            border: 1px solid #BF953F; border-radius: 20px; padding: 30px;
-            position: relative; box-shadow: inset 0 0 20px rgba(191, 149, 63, 0.05);
+        .king-faq-box p {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            line-height: 1.7;
+            margin-bottom: 15px;
         }
-        .vip-review-container::before {
-            content: "ROYAL VIP REVIEW"; position: absolute; top: -12px; left: 50%;
-            transform: translateX(-50%); background: #070707; padding: 0 15px;
-            color: #BF953F; font-size: 0.6rem; font-weight: 900; letter-spacing: 3px;
-            border: 1px solid #BF953F; border-radius: 50px;
+        .support-info {
+            margin-top: 30px;
+            font-size: 0.75rem;
+            color: #475569;
+            font-weight: 700;
         }
-        .vip-review-container h2 { font-family: 'Cinzel', serif; font-size: 1.1rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px; text-transform: uppercase; }
-        .vip-review-container p, .vip-review-container li { font-size: 0.8rem; color: #888; line-height: 1.7; margin-bottom: 12px; }
-        .vip-review-container strong { color: #FCF6BA; }
-        .vip-review-container ul { padding-left: 18px; list-style: none; }
-        .vip-review-container ul li::before { content: "✦"; color: #BF953F; margin-right: 10px; font-size: 0.7rem; }
+        .support-info a { color: var(--accent-neon); text-decoration: none; }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="crown-anim">🤴</div>
-        <h2 style="font-family:'Cinzel'; background: var(--gold); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:8px;">MRBONUS</h2>
-        <p style="color:#BF953F; font-size:0.6rem; letter-spacing:3px; margin-top:10px;">VIP SESSION STARTING...</p>
-    </div>
-
-    <div class="container" id="content">
-        <div class="nav-menu">
-            <button onclick="goBack()" class="btn-menu"><span>←</span> НАЗАД</button>
+    <div class="king-layout">
+        <!-- ГОЛОВНА КАРТКА -->
+        <div class="premium-offer">
+            <div style="color: #60a5fa; font-size: 0.7rem; letter-spacing: 5px; margin-bottom: 15px; font-weight: 900;">👑 BETKING OFFICIAL 2026</div>
+            <h1>BETKING UA</h1>
+            <div class="bonus-value-display">200% + 200 FS</div>
+            <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 30px;">
+                Ваш привітальний пакет активовано сервісом <b>MRBONUS</b>. <br>
+                Отримайте доступ до VIP-умов у Telegram.
+            </p>
+            
+            <!-- Параметр start=betking для твого бота -->
+            <a href="https://t.me/MRBONUS_UA_bot" class="btn-betking js-link">💎 ЗАБРАТИ В БОТІ</a>
         </div>
 
-        <div class="promo-card">
-            <div class="top-label">CONFIRMED BY MRBONUS</div>
-            <h1>BETKING</h1>
-            <div class="promo-value">200% ДО ДЕПУ <br> + 200 ФРІСПІНІВ</div>
-            <p style="color: #ddd; font-size: 0.95rem; line-height: 1.5;">Твій королівський бонус активовано. <br> <b>Забирай свою частку</b> прямо зараз.</p>
-
-            <a href="https://play.mrbonusua.space/betking.html" class="btn-royal js-link" rel="sponsored nofollow">ЗАБРАТИ КОРОНУ 🤴</a>
-
-            <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-royal js-link">🤖 ПЕРЕВІРИТИ ІНШІ АКЦІЇ</a>
-        </div>
-        
-        <div class="vip-review-container">
-            <h2>Betking Casino: Королівський стандарт азарту 2026</h2>
-            <p>Онлайн-казино <strong>Betking</strong> впевнено посідає місце в преміальному сегменті гральних закладів України. Завдяки партнерській програмі від <strong>MRBONUS UA</strong>, нові гравці отримують привілеї, недоступні для звичайних користувачів.</p>
-            <p>Головною перевагою є масштабний <strong>вітальний пакет</strong>, що включає 200% бонус на перший депозит та 200 фріспінів у топових слотах. Betking відомий своєю лояльністю до VIP-клієнтів та стабільними виплатами великих виграшів.</p>
-            <ul>
-                <li>Миттєве поповнення та швидке виведення коштів;</li>
-                <li>Ексклюзивна лінійка ігор з високим RTP;</li>
-                <li>Королівські турніри з призовим фондом у мільйони;</li>
-                <li><strong>Ліцензія КРАІЛ</strong> — гарантія вашої безпеки.</li>
-            </ul>
-            <p>Щоб активувати свій статус, натисніть <strong>"ЗАБРАТИ КОРОНУ"</strong>. Пам'ятайте, що відповідальна гра — це запорука задоволення. Доступно лише для осіб 21+.</p>
+        <!-- SEO ТЕКСТ / FAQ -->
+        <div class="king-faq-box">
+            <h2>Активація бонусу Betking: Повний гайд</h2>
+            <p>Бренд <strong>Betking</strong> у 2026 році пропонує одну з найвигідніших програм лояльності в Україні. На відміну від стандартних пропозицій, через сервіс <strong>MRBONUS UA</strong> ви отримуєте підвищений відсоток на перший депозит — <strong>200%</strong> замість базових 100%.</p>
+            
+            <p><strong>Як отримати 200 фріспінів?</strong><br>
+            Після переходу в Telegram-бот та реєстрації на офіційній платформі, фріспіни нараховуються частинами протягом 4-х днів. Це дозволяє стабільно вивчати нові слоти без ризику для основного балансу.</p>
+            
+            <p><strong>Чому Betking?</strong><br>
+            • Миттєве виведення коштів на Mono/Privat;<br>
+            • Офіційна ліцензія — ваші права захищені;<br>
+            • Найнижчий вейджер на бонусні кошти у 2026 році.</p>
         </div>
 
-        <p class="sub-text">21+ • VIP ACCESS • MRBONUS UA</p>
+        <div class="support-info">
+            З ПИТАНЬ VIP-СТАТУСУ: <a href="https://t.me" class="js-link">@MRBONUS_SUPPORT</a>
+        </div>
+
+        <p style="margin-top: 40px; color: #1e293b; font-size: 0.6rem; letter-spacing: 2px;">© 2026 MRBONUS UA • BETKING PARTNER • 21+</p>
     </div>
 
     <script>
         const tg = window.Telegram ? window.Telegram.WebApp : null;
         if (tg) { tg.ready(); tg.expand(); }
-        function isTelegram() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
-        function goBack() {
-            if (isTelegram()) { window.location.href = 'index.html'; } 
-            else { window.history.length > 1 ? window.history.back() : window.location.href = 'index.html'; }
-        }
+
         document.querySelectorAll('.js-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 const url = this.getAttribute('href');
-                if (isTelegram()) {
+                if (tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0) {
                     e.preventDefault();
-                    if (url.includes('t.me/')) { tg.openTelegramLink(url); } 
-                    else { tg.openLink(url); }
+                    if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                    tg.openTelegramLink(url);
                 }
             });
         });
-        window.onload = function() {
-            setTimeout(function() {
-                const ld = document.getElementById('loader');
-                if (ld) ld.style.opacity = '0';
-                setTimeout(function() {
-                    if (ld) ld.style.display = 'none';
-                    let ct = document.getElementById('content');
-                    if (ct) { ct.style.display = 'block'; setTimeout(() => ct.style.opacity = '1', 50); }
-                }, 500);
-            }, 1200);
-        };
     </script>
 </body>
 </html>
