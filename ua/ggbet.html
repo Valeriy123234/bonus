@@ -4,165 +4,181 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO ТЕГИ ДЛЯ GOOGLE (GG-BET) -->
-    <title>GGBET: 1000 FS та Кіберспортивні Бонуси | Cyber Access MRBONUS</title>
-    <meta name="description" content="Активуй свій пакет на 1000 фріспінів у GGBET! Ексклюзивний кіберспортивний бонус від MRBONUS UA. Швидка реєстрація, фріспіни та найкращі коефіцієнти вже чекають.">
-    <meta name="keywords" content="GGBET, ггбет бонус, 1000 фріспінів, кіберспорт бонуси, mrbonus ua, фріспіни україна">
-
-    <!-- SDK Telegram -->
-    <script src="https://telegram.org"></script>
+    <!-- АГРЕСИВНЕ SEO ДЛЯ ПОШУКУ (GG BET) -->
+    <title>GG BET Реєстрація: Робоче Дзеркало ГГ БЕТ 100 FS Бездеп 2026</title>
+    <meta name="description" content="Шукаєте вхід у GG BET? Отримайте 100 фріспінів без депозиту за реєстрацію через офіційний бот MRBONUS UA. Робоче дзеркало ГГ БЕТ, швидкий вивід на карту та ліцензія КРАІЛ.">
+    <meta name="keywords" content="gg bet реєстрація, гг бет вхід, робоче дзеркало гг бет, 100 фріспінів бездеп, скачати gg bet на телефон, онлайн казино україна 2026">
+    
     <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <script src="https://telegram.org"></script>
+    
     <style>
         :root {
-            --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
-            --dark: #050505;
+            --gg-orange: #ff4500;
+            --gg-dark: #0f1115;
+            --gg-grad: linear-gradient(135deg, #ff4500 0%, #ff8c00 100%);
         }
-        /* Увімкнено вертикальний скрол для SEO тексту */
-        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; overflow-y: auto; }
-
-        #loader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 9999;
-            transition: 0.5s; opacity: 1;
+        body {
+            background: var(--gg-dark);
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
         }
-        .cyber-logo { font-size: 3.5rem; filter: drop-shadow(0 0 10px #BF953F); animation: glitch 1s infinite; }
-        @keyframes glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
+        .gg-layout {
+            max-width: 480px;
+            width: 92%;
+            padding: 50px 0;
+            text-align: center;
         }
 
-        .container { max-width: 450px; width: 92%; padding: 10px 15px 35px; text-align: center; display: none; opacity: 0; transition: 0.8s ease; box-sizing: border-box; }
-        
-        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 15px; }
-        .btn-menu { 
-            text-decoration: none; color: #444; font-size: 0.65rem; font-weight: 800; 
-            letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; 
-            display: flex; align-items: center; gap: 6px; cursor: pointer;
-            background: none; border: none; padding: 10px 0;
+        /* CYBERPUNK HERO CARD */
+        .cyber-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 69, 0, 0.3);
+            border-radius: 20px;
+            padding: 50px 25px;
+            box-shadow: 0 0 40px rgba(255, 69, 0, 0.15);
+            margin-bottom: 35px;
+            position: relative;
         }
-        .btn-menu:hover { color: #BF953F; }
-
-        .promo-card { 
-            background: rgba(10, 10, 10, 0.95);
-            border: 2px solid #BF953F; 
-            border-radius: 20px; 
-            padding: 40px 20px; 
-            box-shadow: 0 0 40px rgba(191, 149, 63, 0.15); 
-        }
-
-        .cyber-label { font-family: 'Cinzel', serif; color: #BF953F; font-size: 0.65rem; letter-spacing: 4px; margin-bottom: 10px; }
-        h1 { font-family: 'Cinzel', serif; font-size: 2.2rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
-        .promo-value { font-size: 2.3rem; font-weight: 900; margin: 15px 0; color: #fff; letter-spacing: -1px; line-height: 1.1; }
-
-        .btn-gg { 
-            display: block; background: var(--gold); color: #000; text-decoration: none; padding: 22px 10px; border-radius: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 25px; font-size: 1.3rem; text-align: center; box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.2s; cursor: pointer; border: none; width: 100%; box-sizing: border-box; animation: gg-pulse 2s infinite;
-        }
-        @keyframes gg-pulse {
-            0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); }
-            70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); }
-            100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); }
+        .cyber-card::before {
+            content: "CYBER BONUS";
+            position: absolute;
+            top: -12px; left: 50%; transform: translateX(-50%);
+            background: var(--gg-orange);
+            padding: 4px 15px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 900;
+            letter-spacing: 2px;
         }
 
-        .btn-bot-gg { display: block; border: 1px solid rgba(191, 149, 63, 0.4); color: #777; text-decoration: none; padding: 16px; border-radius: 12px; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-align: center; margin-top: 15px; transition: 0.3s; cursor: pointer; background: rgba(255, 255, 255, 0.02); }
-
-        /* VIP SEO BLOCK */
-        .vip-review-container {
-            margin-top: 40px; text-align: left; background: rgba(255, 255, 255, 0.01);
-            border: 1px solid #BF953F; border-radius: 15px; padding: 25px;
-            position: relative; box-shadow: inset 0 0 20px rgba(191, 149, 63, 0.05);
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            margin: 0;
+            color: #fff;
         }
-        .vip-review-container::before {
-            content: "CYBER VIP REVIEW"; position: absolute; top: -12px; left: 50%;
-            transform: translateX(-50%); background: #050505; padding: 0 15px;
-            color: #BF953F; font-size: 0.6rem; font-weight: 900; letter-spacing: 3px;
-            border: 1px solid #BF953F; border-radius: 50px;
+        .gg-value {
+            font-size: 4.5rem;
+            font-weight: 900;
+            color: var(--gg-orange);
+            margin: 15px 0;
+            text-shadow: 0 0 25px rgba(255, 69, 0, 0.5);
+            letter-spacing: -2px;
         }
-        .vip-review-container h2 { font-family: 'Cinzel', serif; font-size: 1rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; text-transform: uppercase; }
-        .vip-review-container p, .vip-review-container li { font-size: 0.75rem; color: #888; line-height: 1.6; margin-bottom: 10px; }
-        .vip-review-container strong { color: #FCF6BA; }
-        .vip-review-container ul { padding-left: 15px; list-style: none; }
-        .vip-review-container ul li::before { content: "✦"; color: #BF953F; margin-right: 8px; font-size: 0.65rem; }
 
-        .cyber-footer { color: #222; font-size: 0.6rem; margin-top: 35px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
+        /* ЄДИНА КНОПКА НА БОТА */
+        .btn-gg-bot {
+            display: block;
+            background: var(--gg-grad);
+            color: #fff;
+            text-decoration: none;
+            padding: 24px;
+            border-radius: 8px;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 1.2rem;
+            box-shadow: 0 10px 40px rgba(255, 69, 0, 0.3);
+            transition: 0.3s;
+            margin-top: 30px;
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); /* Кіберпанк форма */
+        }
+        .btn-gg-bot:hover { transform: scale(1.05); }
+
+        /* SEO SECTION */
+        .seo-panel {
+            text-align: left;
+            background: rgba(255,255,255,0.03);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .seo-panel h2 {
+            font-size: 1.1rem;
+            color: var(--gg-orange);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        .seo-panel p {
+            font-size: 0.85rem;
+            color: #999;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+        .seo-panel strong { color: #fff; }
+
+        /* SUPPORT WIDGET */
+        .support-card {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 69, 0, 0.05);
+            border: 1px solid rgba(255, 69, 0, 0.1);
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-decoration: none;
+        }
+        .support-card span { font-size: 0.65rem; color: #555; text-transform: uppercase; }
+        .support-card b { color: #fff; font-size: 0.95rem; }
+
+        .footer { margin-top: 40px; color: #333; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="cyber-logo">🔥</div>
-        <h2 style="font-family:'Cinzel'; background: var(--gold); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:10px; margin-top:20px;">MRBONUS</h2>
-        <p style="color:#333; font-size:0.55rem; letter-spacing:3px; margin-top:10px; font-weight:bold;">INITIALIZING CYBER LINK...</p>
-    </div>
-
-    <div class="container" id="content">
-        <div class="nav-menu">
-            <button onclick="goBack()" class="btn-menu"><span>←</span> НАЗАД</button>
-        </div>
-
-        <div class="promo-card">
-            <div class="cyber-label">GGBET SYSTEM VERIFIED</div>
-            <h1>GG-BET</h1>
-            <div class="promo-value">1000 FS <br> <span style="font-size: 1rem; color: #555;">ACTIVE PACK</span></div>
-            
-            <p style="color: #888; font-size: 0.9rem; line-height: 1.5; margin: 0;">
-                Ваш пакет фріспінів підтверджено сервісом <b>MRBONUS</b>. <br> Забирай бонус і починай гру прямо зараз.
-            </p>
-
-            <a href="https://play.mrbonusua.space" class="btn-gg js-link" rel="sponsored nofollow">ЗАБРАТИ 1000 FS 🔥</a>
-
-            <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-gg js-link">🤖 АКТИВУВАТИ У ТГ БОТІ</a>
-        </div>
-
-        <div class="vip-review-container">
-            <h2>GGBET: Твій кіберспортивний та гральний епіцентр</h2>
-            <p><strong>GGBET</strong> — це світовий лідер, що поєднує в собі потужну платформу для ставок та сучасне онлайн-казино. У 2026 році, через ексклюзивний канал <strong>MRBONUS UA</strong>, нові гравці отримують доступ до кібер-пакету на 1000 фріспінів.</p>
-            <p>Цей бренд обирають за технологічність, миттєві виплати та кращу лінію на кіберспортивні події. ГГБЕТ гарантує чесний ігровий процес та надає преміальні бонуси як для фанатів слотів, так і для бетторів.</p>
-            <ul>
-                <li>Блискавичні виплати на всі популярні платіжні системи;</li>
-                <li>Величезний вибір ігрових автоматів з ліцензійним софтом;</li>
-                <li>Найкращі коефіцієнти на CS2, Dota 2 та інші дисципліни;</li>
-                <li><strong>Офіційна ліцензія</strong> — твій надійний фундамент для гри.</li>
-            </ul>
-            <p>Тисни <strong>"ЗАБРАТИ 1000 FS"</strong> для миттєвої активації оферу. Грай відповідально. Доступно 21+.</p>
-        </div>
+<div class="gg-layout">
+    <div class="cyber-card">
+        <div style="font-size: 0.7rem; color: #666; letter-spacing: 4px; margin-bottom: 15px;">AUTHORIZED BY MRBONUS UA</div>
+        <h1>GG BET</h1>
+        <div class="gg-value">100 FS</div>
+        <p style="color: #888; font-size: 0.95rem;">Твій пакет <b>100 фріспінів</b> готовий. <br> Активація посилання відбувається через бота.</p>
         
-        <p class="cyber-footer">LEVEL: ELITE • 21+ • MRBONUS UA • 2026</p>
+        <a href="https://t.me/MRBONUS_UA_bot" class="btn-gg-bot js-link">⚡ АКТИВУВАТИ В TELEGRAM</a>
     </div>
 
-    <script>
-        const tg = window.Telegram ? window.Telegram.WebApp : null;
-        if (tg) { tg.ready(); tg.expand(); }
-        function isTg() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
-        function goBack() {
-            if (isTg()) { window.location.href = 'index.html'; } 
-            else { window.history.length > 1 ? window.history.back() : window.location.href = 'index.html'; }
-        }
-        document.querySelectorAll('.js-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                const url = this.getAttribute('href');
-                if (isTg()) {
-                    e.preventDefault();
-                    if (url.includes('t.me/')) { tg.openTelegramLink(url); } 
-                    else { tg.openLink(url); }
-                }
-            });
+    <div class="seo-panel">
+        <h2>Як отримати бонус у ГГ БЕТ (GG BET)?</h2>
+        <p>Для отримання <strong>100 фріспінів бездепозитного бонусу</strong> у <strong>GG BET</strong>, скористайтеся офіційним Telegram-ботом <strong>MRBONUS UA</strong>. Це гарантує доступ до <strong>робочого дзеркала ГГ БЕТ</strong> та миттєву активацію промокоду 2026 року.</p>
+        
+        <p><strong>Чому обирають GG BET?</strong><br>
+        • Найкращі коефіцієнти на кіберспорт та слоти;<br>
+        • Ліцензія КРАІЛ — легальна гра в Україні;<br>
+        • Вивід грошей на будь-яку карту Mono/Privat за 15 хвилин;<br>
+        • Верифікація профілю через <strong>Дія</strong> за 1 хвилину.</p>
+        
+        <p>Натисніть кнопку вище, щоб зайти в бот та активувати <strong>VIP-бонус за реєстрацію</strong>. Наш сервіс автоматично підбере актуальну адресу сайту для входу.</p>
+    </div>
+
+    <!-- МЕНЕДЖЕР САППОРТ -->
+    <a href="https://t.me" class="support-card js-link">
+        <div style="text-align: left;">
+            <span>Support Manager</span> <br>
+            <b>@MRBONUS_support</b>
+        </div>
+        <div style="color: var(--gg-orange); font-weight: 900;">→</div>
+    </a>
+
+    <p class="footer">GG BET PARTNER • 21+ • MRBONUS UA 2026</p>
+</div>
+
+<script>
+    const tg = window.Telegram ? window.Telegram.WebApp : null;
+    if (tg) { tg.ready(); tg.expand(); }
+    document.querySelectorAll('.js-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            if (tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0) {
+                e.preventDefault();
+                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                tg.openTelegramLink(this.getAttribute('href'));
+            }
         });
-        window.onload = function() {
-            setTimeout(function() {
-                const ld = document.getElementById('loader');
-                if (ld) ld.style.opacity = '0';
-                setTimeout(function() {
-                    if (ld) ld.style.display = 'none';
-                    let ct = document.getElementById('content');
-                    if (ct) { ct.style.display = 'block'; setTimeout(() => ct.style.opacity = '1', 50); }
-                }, 500);
-            }, 1400);
-        };
-    </script>
+    });
+</script>
+
 </body>
 </html>
