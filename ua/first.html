@@ -4,156 +4,211 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO ТЕГИ ДЛЯ GOOGLE (FIRST CASINO) -->
-    <title>First Casino VIP: 1300 FS та Premium Бонуси | MRBONUS UA</title>
-    <meta name="description" content="Забирай свій Premium Pack у First Casino: 1300 фріспінів для нових гравців. Ексклюзивний доступ активовано через сервіс MRBONUS UA. Будь першим серед рівних!">
-    <meta name="keywords" content="First Casino, ферст казино, 1300 фріспінів, бонус за реєстрацію, mrbonus ua, vip гемблінг">
+    <!-- SEO МОДЕРНІЗАЦІЯ (FIRST CASINO) -->
+    <title>First Casino Реєстрація: 1300 Фріспінів та Бонус 100 000₴ 2026</title>
+    <meta name="description" content="Офіційна активація 1300 FS у First Casino через MRBONUS UA. Отримай бездепозитний бонус за реєстрацію, робоче дзеркало Ферст та миттєвий вивід на карту.">
+    <link rel="canonical" href="https://first.mrbonusua.space" />
 
-    <!-- SDK Telegram -->
-    <script src="https://telegram.org"></script>
+    <!-- JSON-LD ДЛЯ ГУГЛА (ДЛЯ ШВИДКОЇ ІНДЕКСАЦІЇ) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "First Casino Bonus Bot",
+      "operatingSystem": "Telegram",
+      "applicationCategory": "FinanceApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "UAH"
+      }
+    }
+    </script>
+
     <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <script src="https://telegram.org"></script>
+    
     <style>
         :root {
-            --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
-            --dark: #0a0a0a;
+            --first-blue: #0066ff;
+            --first-neon: #00f2ff;
+            --dark-bg: #030712;
+            --glass-border: rgba(0, 242, 255, 0.2);
         }
-        /* Увімкнено вертикальний скрол для SEO тексту */
-        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; overflow-y: auto; }
-
-        #loader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 9999;
-            transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); opacity: 1;
+        body {
+            background: var(--dark-bg);
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            background-image: radial-gradient(circle at 50% 0%, #001a4d 0%, #030712 70%);
         }
-        .diamond { font-size: 3.5rem; animation: shine 2s infinite alternate; }
-        @keyframes shine { 
-            0% { transform: scale(0.9); filter: drop-shadow(0 0 5px #fff); } 
-            100% { transform: scale(1.1); filter: drop-shadow(0 0 20px #BF953F); } 
-        }
-
-        .container { max-width: 450px; width: 92%; padding: 10px 15px 35px; text-align: center; display: none; opacity: 0; transition: 0.8s ease; box-sizing: border-box; }
-        
-        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 15px; }
-        .btn-menu { text-decoration: none; color: #444; font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 6px; cursor: pointer; background: none; border: none; padding: 10px 0; }
-        .btn-menu:hover { color: #BF953F; }
-
-        .promo-card { 
-            background: linear-gradient(145deg, #111 0%, #050505 100%);
-            border: 2px solid #BF953F; 
-            border-radius: 25px; 
-            padding: 35px 20px; 
-            box-shadow: 0 0 40px rgba(191, 149, 63, 0.15); 
+        .layout-first {
+            max-width: 480px;
+            width: 92%;
+            padding: 50px 0;
+            text-align: center;
         }
 
-        .label-top { font-family: 'Cinzel', serif; color: #BF953F; font-size: 0.7rem; letter-spacing: 4px; margin-bottom: 12px; font-weight: 700; }
-        h1 { font-family: 'Cinzel', serif; font-size: 2.2rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
-        .promo-value { font-size: 2.3rem; font-weight: 900; margin: 15px 0; color: #fff; letter-spacing: -1px; line-height: 1.1; }
-
-        .btn-first { 
-            display: block; background: var(--gold); color: #000; text-decoration: none; padding: 22px 10px; border-radius: 15px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 25px; font-size: 1.3rem; text-align: center; box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.2s; cursor: pointer; border: none; width: 100%; box-sizing: border-box; animation: first-pulse 2s infinite;
+        /* PREMIUM HERO CARD */
+        .hero-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            padding: 50px 25px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            margin-bottom: 35px;
+            position: relative;
         }
-        @keyframes first-pulse {
-            0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); }
-            70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); }
-            100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); }
+        .hero-card::before {
+            content: "TOP OFFER";
+            position: absolute;
+            top: -12px; left: 50%; transform: translateX(-50%);
+            background: var(--first-blue);
+            padding: 4px 15px;
+            border-radius: 50px;
+            font-size: 0.6rem;
+            font-weight: 900;
+            letter-spacing: 2px;
         }
 
-        .btn-bot-first { display: block; border: 1px solid rgba(255, 255, 255, 0.15); color: #777; text-decoration: none; padding: 16px; border-radius: 15px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-align: center; margin-top: 15px; transition: 0.3s; cursor: pointer; background: rgba(255, 255, 255, 0.02); }
-
-        .footer-vip { color: #222; font-size: 0.6rem; margin-top: 35px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
-
-        /* VIP SEO BLOCK */
-        .vip-review-container {
-            margin-top: 40px; text-align: left; background: rgba(255, 255, 255, 0.01);
-            border: 1px solid #BF953F; border-radius: 20px; padding: 25px;
-            position: relative; box-shadow: inset 0 0 20px rgba(191, 149, 63, 0.05);
+        h1 {
+            font-family: 'Exo 2', sans-serif;
+            font-size: 2.2rem;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
         }
-        .vip-review-container::before {
-            content: "FIRST VIP "; position: absolute; top: -12px; left: 50%;
-            transform: translateX(-50%); background: #0a0a0a; padding: 0 15px;
-            color: #BF953F; font-size: 0.6rem; font-weight: 900; letter-spacing: 3px;
-            border: 1px solid #BF953F; border-radius: 50px;
+        .fs-value {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--first-neon);
+            text-shadow: 0 0 30px rgba(0, 242, 255, 0.4);
+            margin: 10px 0;
         }
-        .vip-review-container h2 { font-family: 'Cinzel', serif; font-size: 1rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; text-transform: uppercase; }
-        .vip-review-container p, .vip-review-container li { font-size: 0.75rem; color: #888; line-height: 1.6; margin-bottom: 10px; }
-        .vip-review-container strong { color: #FCF6BA; }
-        .vip-review-container ul { padding-left: 15px; list-style: none; }
-        .vip-review-container ul li::before { content: "✦"; color: #BF953F; margin-right: 8px; font-size: 0.65rem; }
+
+        /* КНОПКА МАГНІТ */
+        .btn-first {
+            display: block;
+            background: linear-gradient(90deg, var(--first-blue), var(--first-neon));
+            color: #fff;
+            text-decoration: none;
+            padding: 24px;
+            border-radius: 20px;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 1.2rem;
+            box-shadow: 0 10px 40px rgba(0, 102, 255, 0.4);
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-top: 30px;
+        }
+        .btn-first:hover { transform: scale(1.02); box-shadow: 0 15px 50px rgba(0, 242, 255, 0.6); }
+
+        /* SEO SECTION */
+        .seo-block {
+            text-align: left;
+            background: rgba(255,255,255,0.03);
+            border-radius: 25px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .seo-block h2 {
+            font-size: 1.2rem;
+            color: var(--first-neon);
+            margin-bottom: 15px;
+        }
+        .seo-block p {
+            font-size: 0.9rem;
+            color: #9ca3af;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+        .feature-list {
+            margin: 0; padding: 0; list-style: none;
+        }
+        .feature-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .feature-list li::before { content: "✦"; color: var(--first-neon); }
+
+        /* SUPPORT WIDGET */
+        .support-widget {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(0, 242, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-decoration: none;
+        }
+        .support-widget b { color: #fff; }
+        .support-widget span { color: var(--first-neon); font-size: 0.65rem; font-weight: 800; text-transform: uppercase; }
+
+        .footer { margin-top: 50px; color: #1f2937; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="diamond">💎</div>
-        <h2 style="font-family:'Cinzel'; background: var(--gold); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:10px; margin-top:20px;">MRBONUS</h2>
-        <p style="color:#333; font-size:0.55rem; letter-spacing:3px; margin-top:10px; font-weight:bold;">SECURE VIP HANDSHAKE...</p>
-    </div>
-
-    <div class="container" id="content">
-        <div class="nav-menu">
-            <button onclick="goBack()" class="btn-menu"><span>←</span> НАЗАД</button>
-        </div>
-
-        <div class="promo-card">
-            <div class="label-top">FIRST AMONG EQUALS</div>
-            <h1>FIRST CASINO</h1>
-            <div class="promo-value">1300 FS <br> <span style="font-size: 1rem; color: #555; letter-spacing: 1px;">PREMIUM PACK</span></div>
-            
-            <p style="color: #888; font-size: 0.9rem; line-height: 1.5; margin: 0;">
-                Твій пакет фріспінів підтверджено <b>MRBONUS</b>. <br> Забирай свою частку та ставай першим.
-            </p>
-
-            <a href="https://play.mrbonusua.space/bonus1.html" class="btn-first js-link" rel="sponsored nofollow">ЗАБРАТИ 1300 FS 🔥</a>
-
-            <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-first js-link">🤖 АКТИВУВАТИ ЧЕРЕЗ БОТ</a>
-        </div>
-
-        <div class="vip-review-container">
-            <h2>First Casino: Лідер індустрії та твій Premium досвід</h2>
-            <p><strong>First Casino</strong> (Ферст) заслужено вважається одним із найнадійніших брендів на ринку України. У 2026 році компанія разом із сервісом <strong>MRBONUS UA</strong> пропонує безпрецедентний вітальний пакет — 1300 фріспінів для нових VIP-клієнтів.</p>
-            <p>Це онлайн-казино виділяється преміальним підходом до кожного гравця, пропонуючи ліцензійні слоти з найвищим показником віддачі (RTP) та миттєве виведення коштів. Бути першим — означає обирати найкращі умови для гри.</p>
-            <ul>
-                <li>Швидка реєстрація та верифікація за лічені хвилини;</li>
-                <li>Ексклюзивна система лояльності для постійних гравців;</li>
-                <li>Найбільші джекпоти та регулярні Premium-турніри;</li>
-                <li><strong>Повна ліцензія КРАІЛ</strong> — гарантована безпека твого банку.</li>
-            </ul>
-            <p>Тисни <strong>"ЗАБРАТИ 1300 FS"</strong>, щоб отримати доступ до закритих привілеїв. Пам'ятай про правила відповідальної гри. Доступно 21+.</p>
-        </div>
+<div class="layout-first">
+    <div class="hero-card">
+        <div style="font-size: 0.75rem; color: #60a5fa; letter-spacing: 4px; margin-bottom: 10px; font-weight: 800;">VERIFIED BY MRBONUS</div>
+        <h1>FIRST CASINO</h1>
+        <div class="fs-value">1300 FS</div>
+        <p style="color: #94a3b8; font-size: 0.9rem;">Ваш статус <b>VIP-гравця</b> підтверджено. <br> Активація пакета фріспінів доступна в боті.</p>
         
-        <p class="footer-vip">STATUS: VERIFIED • 21+ • MRBONUS UA • 2026</p>
+        <a href="https://t.me/MRBONUS_UA_bot" class="btn-first js-link">💎 ЗАБРАТИ В ТЕЛЕГРАМ</a>
     </div>
 
-    <script>
-        const tg = window.Telegram ? window.Telegram.WebApp : null;
-        if (tg) { tg.ready(); tg.expand(); }
-        function isTg() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
-        function goBack() {
-            if (isTg()) { window.location.href = 'index.html'; } 
-            else { window.history.length > 1 ? window.history.back() : window.location.href = 'index.html'; }
-        }
-        document.querySelectorAll('.js-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                const url = this.getAttribute('href');
-                if (isTg()) {
-                    e.preventDefault();
-                    if (url.includes('t.me/')) { tg.openTelegramLink(url); } 
-                    else { tg.openLink(url); }
-                }
-            });
+    <div class="seo-block">
+        <h2>Реєстрація у First Casino 2026</h2>
+        <p><strong>First Casino (Ферст)</strong> — це вибір професіоналів. У 2026 році бренд представив оновлену систему лояльності, де кожен новий гравець через сервіс <strong>MRBONUS UA</strong> отримує до <strong>1300 фріспінів</strong> та бонус на перший депозит.</p>
+        
+        <ul class="feature-list">
+            <li>Миттєва верифікація через Дія або BankID;</li>
+            <li>Вивід виграшів на картки України за 15 хвилин;</li>
+            <li>Ліцензія КРАІЛ — 100% гарантія виплат;</li>
+            <li>Цілодобовий доступ через робоче дзеркало.</li>
+        </ul>
+
+        <p style="margin-top: 20px; font-size: 0.8rem;">
+            Щоб отримати <strong>бездепозитний бонус</strong> та актуальне посилання, запустіть наш Telegram-бот та натисніть "START".
+        </p>
+    </div>
+
+    <!-- САПОРТ -->
+    <a href="https://t.me" class="support-widget js-link">
+        <div style="text-align: left;">
+            <span>Support Manager</span><br>
+            <b>@MRBONUS_support</b>
+        </div>
+        <div style="color: var(--first-neon); font-weight: 900;">→</div>
+    </a>
+
+    <p class="footer">FIRST PARTNER • 21+ • MRBONUS UA 2026</p>
+</div>
+
+<script>
+    const tg = window.Telegram ? window.Telegram.WebApp : null;
+    if (tg) { tg.ready(); tg.expand(); }
+    document.querySelectorAll('.js-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            if (tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0) {
+                e.preventDefault();
+                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                tg.openTelegramLink(this.getAttribute('href'));
+            }
         });
-        window.onload = function() {
-            setTimeout(function() {
-                const ld = document.getElementById('loader');
-                if (ld) ld.style.opacity = '0';
-                setTimeout(function() {
-                    if (ld) ld.style.display = 'none';
-                    let ct = document.getElementById('content');
-                    if (ct) { ct.style.display = 'block'; setTimeout(() => ct.style.opacity = '1', 50); }
-                }, 500);
-            }, 1400);
-        };
-    </script>
+    });
+</script>
+
 </body>
 </html>
