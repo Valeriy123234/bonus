@@ -4,154 +4,187 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO ТЕГИ ДЛЯ GOOGLE (PARIK 24) -->
-    <title>Parik 24: Бонус 100% на депозит + 150 FS | VIP Доступ MRBONUS UA</title>
-    <meta name="description" content="Отримуй ексклюзивний пакет привілеїв у Parik 24: 100% бонус на перший депозит та 150 фріспінів. Твій статус підтверджено VIP-сервісом MRBONUS UA. Забирай бонус зараз!">
-    <meta name="keywords" content="Parik 24, парік 24 бонус, 150 фріспінів, бонус на депозит, mrbonus ua, онлайн казино україна">
+    <!-- АГРЕСИВНЕ SEO ДЛЯ ПОШУКУ (PARIK24 200 FS) -->
+    <title>Parik24 Реєстрація: Робоче Дзеркало Парік24 та 200 FS 2026</title>
+    <meta name="description" content="Офіційний вхід у Parik24 (Парік24) в Україні. Отримайте 200 фріспінів за реєстрацію через верифікований бот MRBONUS UA. Робоче дзеркало, швидкі виплати та ліцензія КРАІЛ.">
+    
+    <!-- АВТОМАТИЧНИЙ CANONICAL ДЛЯ ГУГЛА -->
+    <link rel="canonical" id="canonical-link" href="" />
 
-    <!-- SDK Telegram -->
-    <script src="https://telegram.org"></script>
+    <!-- ПРЕМІАЛЬНІ ШРИФТИ -->
     <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <script src="https://telegram.org"></script>
+    
     <style>
         :root {
-            --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
-            --parik-yellow: #f5ff00;
-            --dark: #080808;
+            --p-yellow: #f5ff00; /* Фірмовий колір Parik24 */
+            --bg: #050505;
+            --card-bg: #0d0d0d;
         }
-        /* Увімкнено вертикальний скрол для SEO тексту */
-        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; overflow-y: auto; }
-
-        #loader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 9999;
-            transition: 0.6s; opacity: 1;
+        body {
+            background: var(--bg);
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
-        .parik-icon { font-size: 3.5rem; color: #f5ff00; filter: drop-shadow(0 0 15px rgba(245, 255, 0, 0.5)); animation: pulse-parik 1.5s infinite; }
-        @keyframes pulse-parik { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
+        .vip-container {
+            max-width: 480px;
+            width: 92%;
+            padding: 60px 0;
+            text-align: center;
+        }
 
-        .container { max-width: 450px; width: 92%; padding: 10px 15px 35px; text-align: center; display: none; opacity: 0; transition: 0.8s ease; box-sizing: border-box; }
+        /* PREMIUM VIP CARD */
+        .premium-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(245, 255, 0, 0.15);
+            border-radius: 40px;
+            padding: 60px 30px;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.9);
+            margin-bottom: 40px;
+        }
         
-        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 15px; }
-        .btn-menu { text-decoration: none; color: #444; font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 6px; cursor: pointer; background: none; border: none; padding: 10px 0; }
-        .btn-menu:hover { color: #BF953F; }
-
-        .promo-card { 
-            background: rgba(15, 15, 15, 0.98);
-            border: 2px solid #BF953F; 
-            border-radius: 25px; 
-            padding: 35px 20px; 
-            box-shadow: 0 0 60px rgba(0,0,0,1);
-            position: relative;
+        .label-vip {
+            font-size: 0.65rem;
+            letter-spacing: 6px;
+            color: #444;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 25px;
         }
 
-        .verified-badge { font-family: 'Cinzel', serif; color: #BF953F; font-size: 0.65rem; letter-spacing: 4px; margin-bottom: 10px; font-weight: 800; }
-        h1 { font-family: 'Cinzel', serif; font-size: 2.2rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
-        .promo-value { font-size: 2.2rem; font-weight: 900; margin: 15px 0; color: #fff; line-height: 1.1; }
-
-        .btn-parik { 
-            display: block; background: var(--gold); color: #000; text-decoration: none; padding: 22px 10px; border-radius: 15px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 25px; font-size: 1.3rem; text-align: center; box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.2s; cursor: pointer; border: none; width: 100%; box-sizing: border-box; animation: parik-pulse 2s infinite;
+        /* СТАТУСНИЙ НАПИС PARIK24 */
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2rem;
+            font-weight: 600;
+            font-style: italic;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin: 0;
+            background: linear-gradient(to bottom, #ffffff 0%, #888888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
         }
-        @keyframes parik-pulse {
-            0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); }
-            70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); }
-            100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); }
+        
+        .bonus-amount {
+            font-size: 4.8rem;
+            font-weight: 800;
+            color: var(--p-yellow);
+            margin: 20px 0 10px;
+            letter-spacing: -4px;
+            line-height: 1;
         }
 
-        .btn-bot-parik { display: block; border: 1px solid rgba(191, 149, 63, 0.4); color: #777; text-decoration: none; padding: 16px; border-radius: 15px; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-align: center; margin-top: 15px; transition: 0.3s; cursor: pointer; background: rgba(255, 255, 255, 0.02); }
-
-        /* VIP SEO BLOCK */
-        .vip-review-container {
-            margin-top: 40px; text-align: left; background: rgba(255, 255, 255, 0.01);
-            border: 1px solid #BF953F; border-radius: 15px; padding: 25px;
-            position: relative; box-shadow: inset 0 0 20px rgba(191, 149, 63, 0.05);
+        /* ГОЛОВНА КНОПКА НА БОТА */
+        .btn-action {
+            display: block;
+            background: var(--p-yellow);
+            color: #000;
+            text-decoration: none;
+            padding: 24px;
+            border-radius: 100px;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            margin-top: 40px;
+            transition: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 15px 40px rgba(245, 255, 0, 0.15);
         }
-        .vip-review-container::before {
-            content: "PARIK LEGEND"; position: absolute; top: -12px; left: 50%;
-            transform: translateX(-50%); background: #080808; padding: 0 15px;
-            color: #BF953F; font-size: 0.6rem; font-weight: 900; letter-spacing: 3px;
-            border: 1px solid #BF953F; border-radius: 50px;
-        }
-        .vip-review-container h2 { font-family: 'Cinzel', serif; font-size: 1rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; text-transform: uppercase; }
-        .vip-review-container p, .vip-review-container li { font-size: 0.75rem; color: #888; line-height: 1.6; margin-bottom: 10px; }
-        .vip-review-container strong { color: #FCF6BA; }
-        .vip-review-container ul { padding-left: 15px; list-style: none; }
-        .vip-review-container ul li::before { content: "✦"; color: #BF953F; margin-right: 8px; font-size: 0.65rem; }
+        .btn-action:hover { transform: translateY(-3px); box-shadow: 0 20px 50px rgba(245, 255, 0, 0.3); }
 
-        .vip-footer { color: #222; font-size: 0.6rem; margin-top: 35px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
+        /* SEO SECTION */
+        .seo-section { text-align: left; margin-top: 20px; padding: 0 15px; }
+        .seo-section h2 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-style: italic; color: var(--p-yellow); margin-bottom: 20px; }
+        .seo-section p { font-size: 0.85rem; color: #777; line-height: 1.8; margin-bottom: 20px; }
+
+        .trust-box {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 24px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .trust-box h3 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: #fff; margin-bottom: 15px; }
+        .trust-box li { font-size: 0.8rem; color: #555; margin-bottom: 10px; list-style: none; padding-left: 15px; position: relative; }
+        .trust-box li::before { content: "•"; position: absolute; left: 0; color: var(--p-yellow); }
+
+        .support-link {
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 22px;
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 20px;
+            text-decoration: none;
+        }
+
+        .footer-tag { margin-top: 50px; font-size: 0.65rem; color: #1a1a1a; letter-spacing: 5px; font-weight: 800; }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="parik-icon">🟧</div>
-        <h2 style="font-family:'Cinzel'; background: var(--gold); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:12px; margin-top:20px;">MRBONUS</h2>
-        <p style="color:#BF953F; font-size:0.55rem; letter-spacing:3px; margin-top:10px; font-weight:bold;">ESTABLISHING PARIK CONNECTION...</p>
+<div class="vip-container">
+    <div class="premium-card">
+        <div class="label-vip">Verified Privilege 2026</div>
+        <h1>Parik24</h1>
+        <div class="bonus-amount">200 FS</div>
+        <p style="color: #555; font-size: 0.95rem; font-weight: 300; margin: 15px 0 0; line-height: 1.6;">
+            Ваш привітальний пакет <b>200 фріспінів</b> готовий. <br> Активація доступу відбувається через Telegram-шлюз <b>MRBONUS UA</b>.
+        </p>
+        
+        <a href="https://t.me/MRBONUS_UA_bot" class="btn-action js-link">🏆 АКТИВУВАТИ ПАКЕТ</a>
     </div>
 
-    <div class="container" id="content">
-        <div class="nav-menu">
-            <button onclick="goBack()" class="btn-menu"><span>←</span> НАЗАД</button>
-        </div>
-
-        <div class="promo-card">
-            <div class="verified-badge">SECURED BY VIP CONCIERGE</div>
-            <h1>PARIK 24</h1>
-            <div class="promo-value">100% НА ДЕП <br> + 150 FS <span style="font-size: 0.9rem; display: block; color: #555; margin-top: 5px;">EXCLUSIVE PACK</span></div>
-            
-            <p style="color: #888; font-size: 0.9rem; line-height: 1.5; margin: 0;">
-                Твій пакет привілеїв у Parik24 успішно активовано сервісом <b>MRBONUS</b>. <br> Забирай своє та починай гру вже зараз.
-            </p>
-
-            <a href="https://play.mrbonusua.space/parik24.html" class="btn-parik js-link" rel="sponsored nofollow">ЗАБРАТИ 150 FS 💎</a>
-            <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-parik js-link">🤖 АКТИВУВАТИ У TG БОТІ</a>
-        </div>
-
-        <div class="vip-review-container">
-            <h2>Parik 24: Легендарний бренд з новими можливостями</h2>
-            <p><strong>Parik 24</strong> — це сучасне втілення азартного досвіду, що відповідає запитам найвибагливіших гравців України. Завдяки преміальному статусу від <strong>MRBONUS UA</strong>, ви отримуєте гарантований 100% бонус на перший депозит та пакет зі 150 фріспінів.</p>
-            <p>Бренд Парік 24 цінується за свою надійність, блискавичну роботу технічної підтримки та величезну бібліотеку слотів. Це майданчик для тих, хто звик грати за високими ставками та отримувати відповідний сервіс.</p>
+    <div class="seo-section">
+        <h2>Офіційна реєстрація Parik24 (Парік24)</h2>
+        <p>Шукаєте <strong>робоче дзеркало Parik24</strong>? Наш сервіс <strong>MRBONUS UA</strong> забезпечує стабільний вхід на платформу та гарантує нарахування <strong>200 фріспінів без депозиту</strong> для нових гравців. Завдяки ліцензії <strong>КРАІЛ</strong>, ви можете бути впевнені у безпеці своїх даних та швидкості виплат.</p>
+        
+        <div class="trust-box">
+            <h3>Правила безпечної гри</h3>
             <ul>
-                <li>Швидкі виплати на будь-які банківські карти;</li>
-                <li>Найактуальніші ігрові автомати від світових провайдерів;</li>
-                <li>Щотижневі персональні офери для VIP-спільноти;</li>
-                <li><strong>Повна ліцензія</strong> та гарантія безпеки ваших транзакцій.</li>
+                <li>Участь дозволена виключно особам від 21 року.</li>
+                <li>Миттєва верифікація через <strong>Дія</strong> або BankID.</li>
+                <li>Виведення коштів на картки України (Mono/Privat) до 15 хвилин.</li>
+                <li>Цілодобовий супровід клієнтів через наш Telegram-бот.</li>
             </ul>
-            <p>Тисни <strong>"ЗАБРАТИ 150 FS"</strong> і ставай частиною легенди. Пам'ятай: грай відповідально. Доступно 21+.</p>
         </div>
         
-        <p class="vip-footer">LEGENDARY STATUS • 21+ • MRBONUS UA • 2026</p>
+        <p style="margin-top: 20px;">Натискаючи кнопку активації, ви автоматично підтверджуєте свій статус та отримуєте доступ до найвищих коефіцієнтів та сертифікованих слотів <strong>Парік24</strong>.</p>
     </div>
 
-    <script>
-        const tg = window.Telegram ? window.Telegram.WebApp : null;
-        if (tg) { tg.ready(); tg.expand(); }
-        function isTg() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
-        function goBack() {
-            if (isTg()) { window.location.href = 'index.html'; } 
-            else { window.history.length > 1 ? window.history.back() : window.location.href = 'index.html'; }
-        }
-        document.querySelectorAll('.js-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                const url = this.getAttribute('href');
-                if (isTg()) {
-                    e.preventDefault();
-                    if (url.includes('t.me/')) { tg.openTelegramLink(url); } 
-                    else { tg.openLink(url); }
-                }
-            });
+    <a href="https://t.me" class="support-link js-link">
+        <div style="text-align: left;">
+            <span style="font-size: 0.6rem; color: #444; text-transform: uppercase;">Executive Support</span>
+            <b style="display: block; color: #fff;">@MRBONUS_support</b>
+        </div>
+        <div style="color: var(--p-yellow); font-weight: 900;">→</div>
+    </a>
+    <p class="footer-tag">PARIK24 • 2026 • 21+</p>
+</div>
+
+<script>
+    // АВТОМАТИЧНИЙ CANONICAL
+    document.getElementById('canonical-link').href = window.location.href;
+
+    const tg = window.Telegram ? window.Telegram.WebApp : null;
+    if (tg) { tg.ready(); tg.expand(); }
+    document.querySelectorAll('.js-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            if (tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0) {
+                e.preventDefault();
+                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                tg.openTelegramLink(this.getAttribute('href'));
+            }
         });
-        window.onload = function() {
-            setTimeout(function() {
-                const ld = document.getElementById('loader');
-                if (ld) ld.style.opacity = '0';
-                setTimeout(function() {
-                    if (ld) ld.style.display = 'none';
-                    let ct = document.getElementById('content');
-                    if (ct) { ct.style.display = 'block'; setTimeout(() => ct.style.opacity = '1', 50); }
-                }, 500);
-            }, 1400);
-        };
-    </script>
+    });
+</script>
 </body>
 </html>
