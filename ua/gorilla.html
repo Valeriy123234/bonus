@@ -8,6 +8,28 @@
     <title>Gorilla Casino Реєстрація: Робоче Дзеркало Горила Казино 300 FS 2026</title>
     <meta name="description" content="Офіційний вхід у Gorilla Casino (Горила) в Україні. Отримайте 300 фріспінів за реєстрацію через верифікований бот MRBONUS UA. Правила безпечної гри, швидкі виплати та ліцензія КРАІЛ.">
     
+    <!-- ТЕХНІЧНА РОЗМІТКА ДЛЯ ПОШУКУ (BRAND NAME & LOGO) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Gorilla Casino",
+      "url": "https://play.mrbonusua.space",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Gorilla Casino",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://play.mrbonusua.space" 
+        }
+      }
+    }
+    </script>
+
+    <!-- ІКОНКИ ДЛЯ ПОШУКУ ТА ВКЛАДКИ -->
+    <link rel="icon" href="https://play.mrbonusua.space" type="image/png">
+    <link rel="apple-touch-icon" href="https://play.mrbonusua.space">
+
     <!-- ЦЕЙ РЯДОК ДЛЯ ГУГЛА (АВТОМАТИЧНИЙ CANONICAL) -->
     <link rel="canonical" id="canonical-link" href="" />
 
@@ -93,6 +115,13 @@
             margin-top: 40px;
             transition: 0.4s;
             box-shadow: 0 15px 40px rgba(209, 255, 0, 0.15);
+            animation: pulse-gorilla 2s infinite;
+        }
+
+        @keyframes pulse-gorilla {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
         }
 
         .seo-section { text-align: left; margin-top: 20px; padding: 0 15px; }
@@ -161,16 +190,17 @@
 </div>
 
 <script>
-    // АВТОМАТИЧНИЙ CANONICAL ДЛЯ ГУГЛА
     document.getElementById('canonical-link').href = window.location.href;
 
     const tg = window.Telegram ? window.Telegram.WebApp : null;
     if (tg) { tg.ready(); tg.expand(); }
     document.querySelectorAll('.js-link').forEach(link => {
         link.addEventListener('click', function(e) {
+            const url = this.getAttribute('href');
             if (tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0) {
                 e.preventDefault();
-                tg.openTelegramLink(this.getAttribute('href'));
+                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                tg.openTelegramLink(url);
             }
         });
     });
