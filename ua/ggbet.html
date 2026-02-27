@@ -9,6 +9,28 @@
     <meta name="description" content="Шукаєте вхід у GG BET? Отримайте 100 фріспінів без депозиту за реєстрацію через офіційний бот MRBONUS UA. Робоче дзеркало ГГ БЕТ, швидкий вивід на карту та ліцензія КРАІЛ.">
     <meta name="keywords" content="gg bet реєстрація, гг бет вхід, робоче дзеркало гг бет, 100 фріспінів бездеп, скачати gg bet на телефон, онлайн казино україна 2026">
     
+    <!-- ТЕХНІЧНА РОЗМІТКА ДЛЯ ПОШУКУ (BRAND NAME & LOGO) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "GG BET",
+      "url": "https://play.mrbonusua.space",
+      "publisher": {
+        "@type": "Organization",
+        "name": "GG BET",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://play.mrbonusua.space" 
+        }
+      }
+    }
+    </script>
+
+    <!-- ІКОНКИ ДЛЯ ПОШУКУ ТА ВКЛАДКИ -->
+    <link rel="icon" href="https://play.mrbonusua.space" type="image/png">
+    <link rel="apple-touch-icon" href="https://play.mrbonusua.space">
+
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <script src="https://telegram.org"></script>
     
@@ -85,7 +107,13 @@
             box-shadow: 0 10px 40px rgba(255, 69, 0, 0.3);
             transition: 0.3s;
             margin-top: 30px;
-            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); /* Кіберпанк форма */
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+            animation: pulse-gg 2s infinite;
+        }
+        @keyframes pulse-gg {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
         }
         .btn-gg-bot:hover { transform: scale(1.05); }
 
@@ -171,10 +199,11 @@
     if (tg) { tg.ready(); tg.expand(); }
     document.querySelectorAll('.js-link').forEach(link => {
         link.addEventListener('click', function(e) {
+            const url = this.getAttribute('href');
             if (tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0) {
                 e.preventDefault();
                 if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-                tg.openTelegramLink(this.getAttribute('href'));
+                tg.openTelegramLink(url);
             }
         });
     });
