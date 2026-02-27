@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- SEO VIP SETUP -->
     <title>Pokerbet VIP: 100% Бонус та 650 FS | Офіційний Бот MRBONUS UA</title>
     <meta name="description" content="Отримайте доступ до преміальних бонусів Pokerbet. Відповідальна гра, підтримка 24/7 та ексклюзивні умови від MRBONUS UA.">
-    
-    <!-- ТЕХНІЧНА РОЗМІТКА ДЛЯ ПОШУКУ (POKERBET BRAND & LOGO) -->
+
+    <!-- ТЕХНІЧНА РОЗМІТКА ДЛЯ ПОШУКУ -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -20,18 +18,25 @@
         "name": "Pokerbet",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://play.mrbonusua.space/ua/IMG_1154.jpeg" 
+          "url": "https://play.mrbonusua.space/ua/IMG_1154.jpeg"
         }
       }
     }
     </script>
 
-    <!-- ІКОНКИ ДЛЯ ПОШУКУ ТА ВКЛАДКИ -->
     <link rel="icon" href="https://play.mrbonusua.space/ua/IMG_1154.jpeg" type="image/jpeg">
     <link rel="apple-touch-icon" href="https://play.mrbonusua.space/ua/IMG_1154.jpeg">
-
+    
+    <!-- ПІДКЛЮЧЕННЯ ШРИФТІВ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
-    <script src="https://telegram.org"></script>
+
+    <style>
+        :root {
+            --dark-bg: #0a0a0a;
+            --gold: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            --accent-gold: #d4af37;
         }
 
         body {
@@ -87,20 +92,30 @@
             letter-spacing: 1px;
             margin-top: 25px;
             box-shadow: 0 15px 40px rgba(179, 135, 40, 0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .btn-tg-vip:active {
+            transform: scale(0.98);
         }
 
         .btn-tg-vip::after {
             content: '';
             position: absolute;
-            top: -50%; left: -100%; width: 50%; height: 200%;
+            top: -50%;
+            left: -100%;
+            width: 50%;
+            height: 200%;
             background: rgba(255, 255, 255, 0.4);
             transform: rotate(30deg);
             animation: shimmer 3s infinite;
         }
 
-        @keyframes shimmer { 0% { left: -100%; } 100% { left: 200%; } }
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 200%; }
+        }
 
-        /* ІНФОРМАЦІЙНИЙ БЛОК */
         .info-section {
             background: rgba(255,255,255,0.02);
             border-radius: 25px;
@@ -127,7 +142,7 @@
         }
 
         .info-section p, .info-section li {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: #999;
             margin-bottom: 15px;
         }
@@ -137,19 +152,8 @@
             margin: 0;
         }
 
-        .info-list li {
-            margin-bottom: 10px;
-        }
-
         .info-list li::marker {
             color: var(--accent-gold);
-        }
-
-        .support-footer {
-            text-align: center;
-            padding: 20px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            margin-top: 20px;
         }
 
         .support-link {
@@ -157,70 +161,59 @@
             text-decoration: none;
             font-weight: 600;
             font-size: 0.9rem;
+            border: 1px solid var(--accent-gold);
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: inline-block;
         }
 
         .footer-logo {
             text-align: center;
-            font-size: 0.6rem;
+            font-size: 0.7rem;
             letter-spacing: 5px;
-            color: #333;
+            color: #444;
             margin: 40px 0;
+            text-transform: uppercase;
         }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <!-- ГОЛОВНИЙ ОФЕР -->
         <div class="promo-card">
             <div style="color: var(--accent-gold); font-size: 0.65rem; letter-spacing: 4px; margin-bottom: 10px;">ROYAL ALLIANCE</div>
             <h1>POKERBET</h1>
             <div style="font-size: 2.1rem; font-weight: 900; margin: 20px 0; line-height: 1.1;">
                 100% БОНУС<br>
-                <span style="font-size: 1.2rem; color: #555;">+ 650 ФРІСПІНІВ</span>
+                <span style="font-size: 1.2rem; color: #888;">+ 650 ФРІСПІНІВ</span>
             </div>
             <a href="https://t.me/MRBONUS_UA_bot" class="btn-tg-vip">АКТИВУВАТИ ЧЕРЕЗ БОТА 🤖</a>
         </div>
 
-        <!-- РОЗДІЛ: ЯК ПРАВИЛЬНО ГРАТИ -->
         <div class="info-section">
             <h2>💎 ЯК ПОЧАТИ ГРУ ПРАВИЛЬНО?</h2>
-            <p>Щоб ваш ігровий досвід у <strong>Pokerbet</strong> був максимально прибутковим та безпечним, ми рекомендуємо дотримуватися простого алгоритму через систему <strong>MRBONUS UA</strong>:</p>
+            <p>Щоб ваш досвід у <strong>Pokerbet</strong> був прибутковим, використовуйте систему <strong>MRBONUS UA</strong>:</p>
             <ul class="info-list">
-                <li><strong>Верифікація в один клік:</strong> Використовуйте BankID для миттєвого підтвердження особи. Це знімає всі обмеження на виведення коштів.</li>
-                <li><strong>Активація бонусу:</strong> Перший депозит автоматично подвоюється. Пам'ятайте, що 650 фріспінів нараховуються частинами для вашої зручності.</li>
-                <li><strong>Вибір слотів:</strong> Звертайте увагу на ігри з позначкою "HOT" — вони мають підвищений поточний RTP.</li>
+                <li><strong>Верифікація:</strong> Через BankID для швидких виплат.</li>
+                <li><strong>Бонуси:</strong> 650 фріспінів нараховуються після активації.</li>
+                <li><strong>Гарячі ігри:</strong> Обирайте слоти з позначкою "HOT".</li>
             </ul>
         </div>
 
-        <!-- РОЗДІЛ: ВІДПОВІДАЛЬНА ГРА -->
         <div class="info-section">
             <h2>🛡️ ВІДПОВІДАЛЬНА ГРА (21+)</h2>
-            <p>Ми виступаємо за етичний гемблінг. Гра в казино та покер має бути розвагою, а не засобом заробітку. Важливі правила:</p>
             <h3>1. Контроль бюджету</h3>
-            <p>Визначайте суму, яку ви готові витратити, до початку гри. Ніколи не грайте в борг або на останні кошти.</p>
-            <h3>2. Часові межі</h3>
-            <p>Робіть перерви кожні 30-45 хвилин. Це допомагає зберігати тверезий погляд на стратегію гри.</p>
-            <h3>3. Самообмеження</h3>
-            <p>Якщо ви відчуваєте, що гра перестає приносити радість — скористайтеся функцією самовиключення в особистому кабінеті Pokerbet.</p>
+            <p>Визначайте ліміт до початку гри. Грайте тільки на вільні кошти.</p>
+            <h3>2. Самообмеження</h3>
+            <p>Використовуйте інструменти самовиключення, якщо гра перестає бути розвагою.</p>
         </div>
 
-        <!-- РОЗДІЛ: ПІДТРИМКА -->
-        <div class="info-section">
+        <div class="info-section" style="text-align: center;">
             <h2>🚀 ПІДТРИМКА 24/7</h2>
-            <p>Наша VIP-команда супроводу завжди на зв'язку. Ми допоможемо вам у таких питаннях:</p>
-            <ul class="info-list">
-                <li>Технічні труднощі з реєстрацією;</li>
-                <li>Уточнення умов відіграшу бонусів;</li>
-                <li>Статус ваших транзакцій.</li>
-            </ul>
-            <div style="margin-top: 20px; text-align: center;">
-                <a href="https://t.me" class="support-link">ЗВ'ЯЗАТИСЯ З @MRBONUS_UA</a>
-            </div>
+            <p>Наша VIP-команда допоможе з реєстрацією та бонусами.</p>
+            <a href="https://t.me/MRBONUS_UA_bot" class="support-link">ЗВ'ЯЗАТИСЯ З ПІДТРИМКОЮ</a>
         </div>
 
         <p class="footer-logo">MRBONUS UA • LICENSE KRAIL #84 • 2026</p>
     </div>
-
 </body>
 </html>
