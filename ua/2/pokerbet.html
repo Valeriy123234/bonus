@@ -1,1 +1,150 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- SEO ТЕГИ ДЛЯ GOOGLE (POKERBET) -->
+    <title>Pokerbet VIP: 100% Бонус та 650 FS | MRBONUS UA</title>
+    <meta name="description" content="Ексклюзивний пакет Pokerbet: 100% на депозит та 650 фріспінів. VIP статус активовано через MRBONUS UA. Офіційна ліцензія КРАІЛ.">
+    <meta name="keywords" content="Pokerbet, покербет, 650 фріспінів, бонус за реєстрацію, mrbonus ua, vip гемблінг">
 
+    <!-- SDK Telegram -->
+    <script src="https://telegram.org"></script>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --dark: #0a0a0a;
+        }
+        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; overflow-y: auto; }
+
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 9999;
+            transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); opacity: 1;
+        }
+        .diamond { font-size: 3.5rem; animation: shine 2s infinite alternate; }
+        @keyframes shine { 0% { transform: scale(0.9); filter: drop-shadow(0 0 5px #fff); } 100% { transform: scale(1.1); filter: drop-shadow(0 0 20px #BF953F); } }
+
+        .container { max-width: 450px; width: 92%; padding: 10px 15px 35px; text-align: center; display: none; opacity: 0; transition: 0.8s ease; box-sizing: border-box; }
+
+        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 15px; }
+        .btn-menu { text-decoration: none; color: #444; font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 6px; cursor: pointer; background: none; border: none; padding: 10px 0; }
+        .btn-menu:hover { color: #BF953F; }
+
+        .promo-card { background: linear-gradient(145deg, #111 0%, #050505 100%); border: 2px solid #BF953F; border-radius: 25px; padding: 35px 20px; box-shadow: 0 0 40px rgba(191, 149, 63, 0.15); }
+        .label-top { font-family: 'Cinzel', serif; color: #BF953F; font-size: 0.7rem; letter-spacing: 4px; margin-bottom: 12px; font-weight: 700; }
+
+        h1 { font-family: 'Cinzel', serif; font-size: 2.2rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
+        .promo-value { font-size: 2.3rem; font-weight: 900; margin: 15px 0; color: #fff; letter-spacing: -1px; line-height: 1.1; }
+
+        /* ВИПРАВЛЕНО: класи кнопок тепер відповідають HTML */
+        .btn-vegas {
+            display: block; background: var(--gold); color: #000; text-decoration: none;
+            padding: 22px 10px; border-radius: 15px; font-weight: 900; text-transform: uppercase;
+            letter-spacing: 1.5px; margin-top: 25px; font-size: 1.3rem; text-align: center;
+            box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.2s; cursor: pointer; border: none; width: 100%; box-sizing: border-box; animation: poker-pulse 2s infinite;
+        }
+        @keyframes poker-pulse { 0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); } 70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); } 100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); } }
+
+        .btn-bot-vegas { display: block; border: 1px solid rgba(255, 255, 255, 0.15); color: #777; text-decoration: none; padding: 16px; border-radius: 15px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-align: center; margin-top: 15px; transition: 0.3s; cursor: pointer; background: rgba(255, 255, 255, 0.02); }
+
+        .footer-vip { color: #222; font-size: 0.6rem; margin-top: 35px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
+
+        /* VIP SEO BLOCK */
+        .vip-review-container { margin-top: 40px; text-align: left; background: rgba(255, 255, 255, 0.01); border: 1px solid #BF953F; border-radius: 20px; padding: 25px; position: relative; box-shadow: inset 0 0 20px rgba(191, 149, 63, 0.05); }
+        .vip-review-container::before { content: "DIAMOND VIP"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #0a0a0a; padding: 0 15px; color: #BF953F; font-size: 0.6rem; font-weight: 900; letter-spacing: 3px; border: 1px solid #BF953F; border-radius: 50px; }
+        .vip-review-container h2 { font-family: 'Cinzel', serif; font-size: 1rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; text-transform: uppercase; }
+        .vip-review-container p, .vip-review-container li { font-size: 0.75rem; color: #888; line-height: 1.6; margin-bottom: 10px; }
+        .vip-review-container strong { color: #FCF6BA; }
+        .vip-review-container ul { padding-left: 15px; list-style: none; }
+        .vip-review-container ul li::before { content: "✦"; color: #BF953F; margin-right: 8px; font-size: 0.65rem; }
+    </style>
+</head>
+<body>
+    <div id="loader">
+        <div class="diamond">🃏</div>
+        <h2 style="font-family:'Cinzel'; background: var(--gold); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:10px; margin-top:20px;">MRBONUS</h2>
+        <p style="color:#333; font-size:0.55rem; letter-spacing:3px; margin-top:10px; font-weight:bold;">SECURE VIP HANDSHAKE...</p>
+    </div>
+
+    <div class="container" id="content">
+        <div class="nav-menu">
+            <button onclick="goBack()" class="btn-menu"><span>←</span> НАЗАД</button>
+        </div>
+
+        <div class="promo-card">
+            <div class="label-top">ROYAL PARTNER</div>
+            <h1>POKERBET</h1>
+            <div class="promo-value">100% БОНУС <br> <span style="font-size: 1.2rem; color: #555; letter-spacing: 1px;">+ 650 ФРІСПІНІВ</span></div>
+            <p style="color: #888; font-size: 0.9rem; line-height: 1.5; margin: 0;">
+                Твій Premium-статус підтверджено сервісом <b>MRBONUS UA</b>. <br>
+                Отримуй привілеї королівського гемблінгу.
+            </p>
+            <a href="https://play.mrbonusua.space/pokerbet.html" class="btn-vegas js-link" rel="sponsored nofollow">ВХІД У POKER-BET 🃏</a>
+            <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-vegas js-link">🤖 АКТИВУВАТИ У ТГ БОТІ</a>
+        </div>
+
+        <div class="vip-review-container">
+            <h2>Pokerbet: Еталон надійності та VIP сервісу</h2>
+            <p><strong>Pokerbet</strong> (Покербет) — це бренд, який задає стандарти якості на ринку України. У 2026 році у колаборації з <strong>MRBONUS UA</strong> гравці отримують Diamond-доступ: 100% на депозит та 650 фріспінів.</p>
+            <p>Ця платформа поєднує в собі азарт покерних турнірів та динаміку сучасних відео-слотів з високим RTP. Офіційна ліцензія КРАІЛ гарантує чесність кожного спіну та безпеку ваших фінансових операцій.</p>
+            <ul>
+                <li>Миттєве виведення коштів (до 15 хвилин) на популярні платіжні системи;</li>
+                <li>Ексклюзивні акції для VIP-спільноти та персональні бонуси;</li>
+                <li>Ліцензія КРАІЛ №84 — ваш надійний захист та повна прозорість;</li>
+                <li>Найкращий мобільний додаток для преміальної гри з будь-якого пристрою.</li>
+            </ul>
+            <p>Тисни <strong>"ВХІД У POKER-BET"</strong> та приєднуйся до еліти українського гемблінгу прямо зараз. Грай відповідально. Доступно тільки для осіб 21+.</p>
+        </div>
+
+        <p class="footer-vip">STATUS: VERIFIED • 21+ • MRBONUS UA • 2026</p>
+    </div>
+
+    <script>
+        const tg = window.Telegram ? window.Telegram.WebApp : null;
+        if (tg) { tg.ready(); tg.expand(); }
+
+        function isTg() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
+
+        function goBack() {
+            if (isTg()) { 
+                window.location.href = 'index.html'; 
+            } else { 
+                window.history.length > 1 ? window.history.back() : window.location.href = 'index.html'; 
+            }
+        }
+
+        document.querySelectorAll('.js-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const url = this.getAttribute('href');
+                if (isTg()) {
+                    e.preventDefault();
+                    if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                    if (url.includes('t.me/')) { 
+                        tg.openTelegramLink(url); 
+                    } else { 
+                        tg.openLink(url); 
+                    }
+                }
+            });
+        });
+
+        window.onload = function() {
+            setTimeout(function() {
+                const ld = document.getElementById('loader');
+                if (ld) ld.style.opacity = '0';
+                setTimeout(function() {
+                    if (ld) ld.style.display = 'none';
+                    let ct = document.getElementById('content');
+                    if (ct) { 
+                        ct.style.display = 'block'; 
+                        setTimeout(() => ct.style.opacity = '1', 50); 
+                    }
+                }, 500);
+            }, 1400);
+        };
+    </script>
+</body>
+</html>
