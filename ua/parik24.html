@@ -8,6 +8,28 @@
     <title>Parik24 Реєстрація: Робоче Дзеркало Парік24 та 200 FS 2026</title>
     <meta name="description" content="Офіційний вхід у Parik24 (Парік24) в Україні. Отримайте 200 фріспінів за реєстрацію через верифікований бот MRBONUS UA. Робоче дзеркало, швидкі виплати та ліцензія КРАІЛ.">
     
+    <!-- ТЕХНІЧНА РОЗМІТКА ДЛЯ ПОШУКУ (BRAND NAME & LOGO) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Parik24",
+      "url": "https://play.mrbonusua.space",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Parik24",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://play.mrbonusua.space" 
+        }
+      }
+    }
+    </script>
+
+    <!-- ІКОНКИ ДЛЯ ПОШУКУ ТА ВКЛАДКИ -->
+    <link rel="icon" href="https://play.mrbonusua.space" type="image/png">
+    <link rel="apple-touch-icon" href="https://play.mrbonusua.space">
+
     <!-- АВТОМАТИЧНИЙ CANONICAL ДЛЯ ГУГЛА -->
     <link rel="canonical" id="canonical-link" href="" />
 
@@ -96,7 +118,15 @@
             margin-top: 40px;
             transition: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
             box-shadow: 0 15px 40px rgba(245, 255, 0, 0.15);
+            animation: pulse-parik 2s infinite;
         }
+
+        @keyframes pulse-parik {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
         .btn-action:hover { transform: translateY(-3px); box-shadow: 0 20px 50px rgba(245, 255, 0, 0.3); }
 
         /* SEO SECTION */
@@ -171,17 +201,17 @@
 </div>
 
 <script>
-    // АВТОМАТИЧНИЙ CANONICAL
     document.getElementById('canonical-link').href = window.location.href;
 
     const tg = window.Telegram ? window.Telegram.WebApp : null;
     if (tg) { tg.ready(); tg.expand(); }
     document.querySelectorAll('.js-link').forEach(link => {
         link.addEventListener('click', function(e) {
+            const url = this.getAttribute('href');
             if (tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0) {
                 e.preventDefault();
                 if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-                tg.openTelegramLink(this.getAttribute('href'));
+                tg.openTelegramLink(url);
             }
         });
     });
