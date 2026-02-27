@@ -4,143 +4,205 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO ТЕГИ ДЛЯ GOOGLE (SLOTS CITY) -->
-    <title>Slot City: 700 FS + 200₴ Бонус | VIP Доступ від MRBONUS UA</title>
-    <meta name="description" content="Отримуй ексклюзивний Welcome Pack у Slot City: 700 фріспінів та бонус 200₴. Твій статус City Elite підтверджено сервісом MRBONUS UA. Забирай куш прямо зараз!">
-    <meta name="keywords" content="Slot City, слотс сіті бонус, 700 фріспінів, бездепозитний бонус, mrbonus ua, онлайн казино україна 2026">
-
-    <!-- SDK Telegram -->
-    <script src="https://telegram.org"></script>
+    <!-- SEO SLOT CITY (MRBONUS UA) -->
+    <title>Slot City VIP: 200 ГРН БЕЗДЕП + 700 FS | Офіційний Бот MRBONUS</title>
+    <meta name="description" content="Ексклюзив від Slot City та MRBONUS UA: забирай 200 грн бонусних коштів та 700 фріспінів. Твій VIP-статус у ліцензійному казино №1 в Україні.">
+    <meta name="keywords" content="Slot City, Слот Сіті, 200 грн за реєстрацію, 700 фріспінів, mrbonus ua, бездепозитний бонус 2026">
+    
     <link href="https://fonts.googleapis.com" rel="stylesheet">
+    
     <style>
         :root {
-            --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
-            --dark: #0a0a0a;
-        }
-        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; overflow-y: auto; }
-
-        /* City Lights Loader */
-        #loader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 9999;
-            transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); opacity: 1;
-        }
-        .city-icon { font-size: 3.5rem; filter: drop-shadow(0 0 15px #BF953F); animation: neon-glow 1.5s infinite alternate; }
-        @keyframes neon-glow { 
-            0% { opacity: 0.6; transform: scale(0.95); } 
-            100% { opacity: 1; transform: scale(1.05); } 
+            /* Фірмовий градієнт Slot City: Смарагд + Золото */
+            --emerald-gold: linear-gradient(135deg, #004d40 0%, #d4af37 50%, #002d20 100%);
+            --gold-text: #f1c40f;
+            --dark-bg: #030a08;
         }
 
-        .container { max-width: 450px; width: 92%; padding: 10px 15px 35px; text-align: center; display: none; opacity: 0; transition: 0.8s ease; box-sizing: border-box; }
-        
-        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 15px; }
-        .btn-menu { text-decoration: none; color: #444; font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 6px; cursor: pointer; background: none; border: none; padding: 10px 0; }
-        .btn-menu:hover { color: #BF953F; }
-
-        .promo-card { background: linear-gradient(145deg, #111 0%, #050505 100%); border: 2px solid #BF953F; border-radius: 25px; padding: 35px 20px; box-shadow: 0 0 40px rgba(191, 149, 63, 0.15); position: relative; }
-        .city-label { font-family: 'Cinzel', serif; color: #BF953F; font-size: 0.7rem; letter-spacing: 4px; margin-bottom: 12px; font-weight: 700; }
-        
-        h1 { font-family: 'Cinzel', serif; font-size: 2.2rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
-        .promo-value { font-size: 2.3rem; font-weight: 900; margin: 15px 0; color: #fff; letter-spacing: -1px; line-height: 1.1; }
-
-        .btn-city { 
-            display: block; background: var(--gold); color: #000; text-decoration: none; padding: 22px 10px; border-radius: 15px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 25px; font-size: 1.3rem; text-align: center; box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.2s; cursor: pointer; border: none; width: 100%; box-sizing: border-box; animation: city-pulse 2s infinite;
+        body {
+            background: var(--dark-bg);
+            color: #e0e0e0;
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            line-height: 1.6;
         }
-        @keyframes city-pulse { 0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); } 70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); } 100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); } }
 
-        .btn-bot-city { display: block; border: 1px solid rgba(255, 255, 255, 0.15); color: #777; text-decoration: none; padding: 16px; border-radius: 15px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-align: center; margin-top: 15px; transition: 0.3s; cursor: pointer; background: rgba(255, 255, 255, 0.02); }
+        .container {
+            max-width: 500px;
+            width: 100%;
+            padding: 40px 15px;
+            display: flex;
+            flex-direction: column;
+        }
 
-        /* VIP SEO BLOCK */
-        .vip-review-container { margin-top: 40px; text-align: left; background: rgba(255, 255, 255, 0.01); border: 1px solid #BF953F; border-radius: 20px; padding: 25px; position: relative; box-shadow: inset 0 0 20px rgba(191, 149, 63, 0.05); }
-        .vip-review-container::before { content: "CITY ELITE REVIEW"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #0a0a0a; padding: 0 15px; color: #BF953F; font-size: 0.6rem; font-weight: 900; letter-spacing: 3px; border: 1px solid #BF953F; border-radius: 50px; }
-        .vip-review-container h2 { font-family: 'Cinzel', serif; font-size: 1rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; text-transform: uppercase; }
-        .vip-review-container p, .vip-review-container li { font-size: 0.75rem; color: #888; line-height: 1.6; margin-bottom: 10px; }
-        .vip-review-container strong { color: #FCF6BA; }
-        .vip-review-container ul { padding-left: 15px; list-style: none; }
-        .vip-review-container ul li::before { content: "✦"; color: #BF953F; margin-right: 8px; font-size: 0.65rem; }
+        /* КАРТКА SLOT CITY */
+        .promo-card {
+            background: radial-gradient(circle at top left, #0a1f1a, #030a08);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 35px;
+            padding: 50px 30px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(0, 77, 64, 0.4);
+            margin-bottom: 30px;
+            position: relative;
+        }
 
-        .vip-footer { color: #222; font-size: 0.6rem; margin-top: 35px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
+        .promo-card::before {
+            content: 'CITY OF LUCK • VIP';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #d4af37;
+            color: #000;
+            padding: 4px 20px;
+            font-size: 0.6rem;
+            font-weight: 900;
+            border-radius: 50px;
+            letter-spacing: 3px;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.4rem;
+            color: var(--gold-text);
+            margin: 0;
+            text-shadow: 0 0 15px rgba(241, 196, 15, 0.3);
+        }
+
+        .promo-value {
+            font-size: 2.3rem;
+            font-weight: 900;
+            margin: 25px 0;
+            line-height: 1.1;
+            color: #fff;
+        }
+
+        .btn-tg-vip {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--emerald-gold);
+            color: #fff;
+            text-decoration: none;
+            padding: 22px;
+            border-radius: 18px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 25px;
+            box-shadow: 0 15px 40px rgba(0, 77, 64, 0.5);
+        }
+
+        .btn-tg-vip::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -100%; width: 50%; height: 200%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(30deg);
+            animation: shimmer 3.5s infinite;
+        }
+
+        @keyframes shimmer { 0% { left: -100%; } 100% { left: 250%; } }
+
+        .info-section {
+            background: rgba(0, 77, 64, 0.05);
+            border-radius: 25px;
+            padding: 30px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .info-section h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            color: var(--gold-text);
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding-bottom: 10px;
+        }
+
+        .info-list {
+            padding-left: 18px;
+            margin: 0;
+            font-size: 0.8rem;
+            color: #bbb;
+        }
+
+        .info-list li { margin-bottom: 12px; }
+
+        .support-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.85rem;
+        }
+
+        .support-footer a {
+            color: var(--gold-text);
+            text-decoration: none;
+            font-weight: 900;
+        }
+
+        .footer-legal {
+            text-align: center;
+            font-size: 0.55rem;
+            color: #334440;
+            margin: 40px 0;
+            letter-spacing: 2px;
+        }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="city-icon">🎰</div>
-        <h2 style="font-family:'Cinzel'; background: var(--gold); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:12px; margin-top:20px;">MRBONUS</h2>
-        <p style="color:#BF953F; font-size:0.55rem; letter-spacing:3px; margin-top:10px; font-weight:bold;">ENTER THE CITY OF BONUSES...</p>
-    </div>
-
-    <div class="container" id="content">
-        <div class="nav-menu">
-            <button onclick="goBack()" class="btn-menu"><span>←</span> НАЗАД</button>
-        </div>
-
+    <div class="container">
         <div class="promo-card">
-            <div class="city-label">APPROVED BY MRBONUS UA</div>
+            <div style="color: #d4af37; font-size: 0.6rem; letter-spacing: 5px; margin-bottom: 15px;">AUTHENTIC PARTNER</div>
             <h1>SLOT CITY</h1>
-            <div class="promo-value">700 FS + 200₴ <br> <span style="font-size: 1rem; color: #555; letter-spacing: 1px;">EXCLUSIVE WELCOME</span></div>
-            <p style="color: #888; font-size: 0.9rem; line-height: 1.5; margin: 0;">
-                Твій пакет фріспінів та бонус підтверджено <b>MRBONUS</b>. <br> Забирай свій куш у Slot City прямо зараз.
+            
+            <div class="promo-value">
+                200 ГРН БОНУС<br>
+                <span style="font-size: 1.4rem; color: #00c853;">+ 700 FREE SPINS</span>
+            </div>
+            
+            <p style="font-size: 0.85rem; color: #888; margin-bottom: 20px;">
+                Твій ексклюзивний пакет привілеїв готовий до активації в один клік.
             </p>
-            <a href="https://play.mrbonusua.space/bonus2.html" class="btn-city js-link" rel="sponsored nofollow">ЗАБРАТИ 700 FS 🎁</a>
-            <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-city js-link">🤖 АКТИВУВАТИ У ТГ БОТІ</a>
+
+            <a href="https://t.me/MRBONUS_UA_bot" class="btn-tg-vip">ЗАБРАТИ У ТЕЛЕГРАМ 💎</a>
         </div>
 
-        <div class="vip-review-container">
-            <h2>Slot City: Твій квиток до мегаполісу азарту</h2>
-            <p><strong>Slot City</strong> (Слотс Сіті) — це один із найяскравіших ліцензійних брендів України. Разом із <strong>MRBONUS UA</strong> ми відкриваємо двері до закритих бонусів: 700 фріспінів та додаткові 200₴ для старту.</p>
-            <p>Прозорість, швидкість виплат та величезний вибір сертифікованих ігор роблять цей проект ідеальним вибором як для новачків, так і для досвідчених хайролерів.</p>
-            <ul>
-                <li>Швидка верифікація через застосунок Дія;</li>
-                <li>Регулярні турніри з призовими фондами понад 1 000 000₴;</li>
-                <li>Миттєве зарахування депозитів та бонусних коштів;</li>
-                <li><strong>Ліцензія КРАІЛ</strong> — гарантія виплати кожного виграшу.</li>
+        <div class="info-section">
+            <h2>🎰 ПЕРЕВАГИ SLOT CITY VIP</h2>
+            <ul class="info-list">
+                <li><strong>Швидкий старт:</strong> Отримуйте 200 грн на бонусний рахунок одразу після верифікації через Дія.</li>
+                <li><strong>Марафон спінів:</strong> 700 FS розподіляються на кращі ігри від Pragmatic Play та NetEnt.</li>
+                <li><strong>Миттєві виплати:</strong> Виведення виграшів на картки будь-яких українських банків до 20 хвилин.</li>
             </ul>
-            <p>Тисни <strong>"ЗАБРАТИ 700 FS"</strong> та відчуй атмосферу справжнього City Elite. Грайте відповідально 21+.</p>
         </div>
-        
-        <p class="vip-footer">CITY ELITE STATUS • 21+ • MRBONUS UA • 2026</p>
+
+        <div class="info-section">
+            <h2>🛡️ ПРАВИЛА ТА ВІДПОВІДАЛЬНІСТЬ</h2>
+            <p style="font-size: 0.75rem; color: #777;">
+                <strong>Slot City</strong> працює за ліцензією КРАІЛ №126. Ми підтримуємо відповідальну гру та нагадуємо:
+            </p>
+            <ul class="info-list">
+                <li>Гра дозволена тільки особам, що досягли 21 року.</li>
+                <li>Встановлюйте ліміти на депозити у налаштуваннях профілю.</li>
+                <li>Азартні ігри — це лише дозвілля, а не джерело доходу.</li>
+            </ul>
+        </div>
+
+        <div class="support-footer">
+            Цілодобова підтримка: <a href="https://t.me">@MRBONUS_UA</a>
+        </div>
+
+        <p class="footer-legal">SLOT CITY • MRBONUS UA • 21+ • ЛІЦЕНЗІЯ КРАІЛ 2026</p>
     </div>
 
-    <script>
-        const tg = window.Telegram ? window.Telegram.WebApp : null;
-        if (tg) { tg.ready(); tg.expand(); }
-
-        function isTg() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
-
-        function goBack() {
-            if (isTg()) {
-                if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-                window.location.href = 'index.html';
-            } else {
-                window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
-            }
-        }
-
-        document.querySelectorAll('.js-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                const url = this.getAttribute('href');
-                if (isTg()) {
-                    e.preventDefault();
-                    if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-                    if (url.includes('t.me/')) { tg.openTelegramLink(url); } 
-                    else { tg.openLink(url); }
-                }
-            });
-        });
-
-        window.onload = function() {
-            setTimeout(function() {
-                const ld = document.getElementById('loader');
-                if (ld) ld.style.opacity = '0';
-                setTimeout(function() {
-                    if (ld) ld.style.display = 'none';
-                    let ct = document.getElementById('content');
-                    if (ct) { ct.style.display = 'block'; setTimeout(() => ct.style.opacity = '1', 50); }
-                }, 500);
-            }, 1400);
-        };
-    </script>
 </body>
 </html>
