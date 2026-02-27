@@ -3,16 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- УНІКАЛЬНІ МЕТАТЕГИ ДЛЯ BETON -->
     <title>Beton Casino UA: 150% Бонус та 500 FS | Активація MRBONUS</title>
-    <meta name="description" content="Забирай мега-пакет від Beton: 150% на перший депозит та 500 фріспінів. Твій доступ підтверджено сервісом MRBONUS UA. Переходь у бот для миттєвої активації.">
+    <meta name="description" content="Забирай мега-пакет від Beton: 150% на перший депозит та 500 фріспінів. Твій доступ підтверджено сервісом MRBONUS UA.">
     
+    <!-- ТЕХНІЧНА РОЗМІТКА ДЛЯ ПОШУКУ (BETON BRAND & LOGO) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Beton Casino",
+      "url": "https://play.mrbonusua.space",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Beton Casino",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://play.mrbonusua.space" 
+        }
+      }
+    }
+    </script>
+
+    <!-- ІКОНКА ДЛЯ ПОШУКУ ТА ВКЛАДКИ (WEB P) -->
+    <link rel="icon" href="https://play.mrbonusua.space" type="image/webp">
+    <link rel="apple-touch-icon" href="https://play.mrbonusua.space">
+
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <script src="https://telegram.org"></script>
     
     <style>
         :root {
-            /* Палітра BETON: Вогняний помаранчевий та Вугільний */
             --beton-orange: #ff4e00;
             --beton-gradient: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
             --glow: 0 0 20px rgba(255, 78, 0, 0.4);
@@ -32,7 +52,6 @@
             padding: 40px 10px;
             text-align: center;
         }
-        /* Нова форма картки (Industrial cut) */
         .offer-panel {
             background: var(--beton-gradient);
             border-bottom: 5px solid var(--beton-orange);
@@ -68,14 +87,19 @@
             font-size: 1.3rem;
             letter-spacing: 2px;
             transition: 0.2s;
-            box-shadow: 0 4px 0 #b33600; /* Ефект фізичної кнопки */
+            box-shadow: 0 4px 0 #b33600;
+            animation: pulse-beton 2s infinite;
+        }
+        @keyframes pulse-beton {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
         }
         .btn-beton:active {
             transform: translateY(3px);
             box-shadow: 0 1px 0 #b33600;
         }
 
-        /* Унікальна структура FAQ */
         .info-grid {
             text-align: left;
             background: #1a1a1a;
@@ -115,27 +139,18 @@
         <div style="font-size: 0.8rem; font-weight: 700; color: #666; margin-bottom: 10px;">BETON EXCLUSIVE PARTNER</div>
         <h1>BETON UA</h1>
         <div class="highlight-text">150% + 500 FS</div>
-        <p style="color: #888; font-size: 0.95rem; margin-bottom: 30px;">
-            Твій залізобетонний бонус активовано сервісом <b>MRBONUS</b>. <br>
-            Забери 500 фріспінів у чат-боті.
+        <p style="color: #888; font-size: 1rem; line-height: 1.4; margin-bottom: 30px;">
+            Заробіток повʼязаний з отриманням бонусів з казино від мене, якщо зацікавило то напиши, розкажу детальніше😉👇
         </p>
         
-        <!-- Параметр start=beton для бота -->
         <a href="https://t.me/MRBONUS_UA_bot" class="btn-beton js-link">🔥 ЗАБРАТИ В БОТІ</a>
     </div>
 
     <div class="info-grid">
         <h2>Як працює акція від Beton?</h2>
-        <p>Казино <strong>Beton</strong> у 2026 році пропонує безпрецедентний пакет для нових клієнтів. Ви отримуєте не тільки грошовий бонус, а й можливість зробити 500 безкоштовних запусків у топових слотах.</p>
-        
         <div class="step"><span>01</span> Бот генерує прямий лінк на реєстрацію.</div>
         <div class="step"><span>02</span> Ви реєструєтесь та підтверджуєте особу (Дія/BankID).</div>
-        <div class="step"><span>03</span> Бонус 150% та перша пачка FS прилітають на баланс миттєво.</div>
-
-        <p style="border-top: 1px solid #333; pt-15px; margin-top: 15px;">
-            <strong>Чому Beton?</strong> <br>
-            Це ліцензійне онлайн-казино з найшвидшим виведенням коштів (до 10 хв) та великим вибором LIVE-ігор.
-        </p>
+        <div class="step"><span>03</span> Бонус 150% та фріспіни прилітають миттєво.</div>
     </div>
 
     <div class="footer-info">
@@ -150,9 +165,11 @@
 
     document.querySelectorAll('.js-link').forEach(link => {
         link.addEventListener('click', function(e) {
+            const url = this.getAttribute('href');
             if (tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0) {
                 e.preventDefault();
-                tg.openTelegramLink(this.getAttribute('href'));
+                if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                tg.openTelegramLink(url);
             }
         });
     });
