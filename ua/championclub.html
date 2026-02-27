@@ -3,16 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- УНІКАЛЬНІ МЕТАТЕГИ ПІД ПОШУКОВИЙ ЗАПИТ CHAMPION -->
     <title>Champion Club: 1000 FS за реєстрацію | VIP Акція MRBONUS UA</title>
-    <meta name="description" content="Активуй 1000 фріспінів у Champion Club (Чемпіон Казино). Твій персональний бонус активовано сервісом MRBONUS. Переходь у бот та забирай подарунок прямо зараз!">
+    <meta name="description" content="Активуй 1000 фріспінів у Champion Club (Чемпіон Казино). Твій персональний бонус активовано сервісом MRBONUS.">
     
+    <!-- ТЕХНІЧНА РОЗМІТКА ДЛЯ ПОШУКУ (CHAMPION BRAND & LOGO) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Champion Club",
+      "url": "https://play.mrbonusua.space",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Champion Club",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://play.mrbonusua.space" 
+        }
+      }
+    }
+    </script>
+
+    <!-- ІКОНКА ДЛЯ ПОШУКУ ТА ВКЛАДКИ -->
+    <link rel="icon" href="https://play.mrbonusua.space" type="image/webp">
+    <link rel="apple-touch-icon" href="https://play.mrbonusua.space">
+
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <script src="https://telegram.org"></script>
     
     <style>
         :root {
-            /* Фірмові кольори Champion: Глибокий синій, яскравий жовтий та сталь */
             --champ-blue: #0046ad;
             --champ-yellow: #ffcc00;
             --champ-grad: linear-gradient(180deg, #0052cc 0%, #002e73 100%);
@@ -32,7 +52,6 @@
             padding: 40px 10px;
             text-align: center;
         }
-        /* Нова форма картки (Champion Style - Rounded & Glossy) */
         .champ-card {
             background: var(--champ-grad);
             border: 3px solid var(--champ-yellow);
@@ -71,13 +90,18 @@
             letter-spacing: 1px;
             transition: 0.3s;
             box-shadow: 0 8px 0 #cca300;
+            animation: pulse-champ 2s infinite;
+        }
+        @keyframes pulse-champ {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
         }
         .btn-champion:active {
             transform: translateY(4px);
             box-shadow: 0 2px 0 #cca300;
         }
 
-        /* Унікальний блок контенту */
         .champion-details {
             text-align: left;
             background: rgba(255, 255, 255, 0.05);
@@ -126,26 +150,20 @@
         <div style="font-size: 0.75rem; font-weight: 900; color: #fff; letter-spacing: 3px; margin-bottom: 15px;">TOP RANKED UA</div>
         <h1>CHAMPION CLUB</h1>
         <div class="mega-bonus">1000 FS</div>
-        <p style="color: #e2e8f0; font-size: 0.95rem; margin-bottom: 30px;">
-            Твій статус <b>CHAMPION</b> підтверджено сервісом <b>MRBONUS UA</b>. <br>
-            Активуй 1000 фріспінів у нашому чат-боті.
+        <p style="color: #e2e8f0; font-size: 1rem; line-height: 1.4; margin-bottom: 30px;">
+            Заробіток повʼязаний з отриманням бонусів з казино від мене, якщо зацікавило то напиши, розкажу детальніше😉👇
         </p>
         
-        <!-- Параметр start=champion для aiogram -->
         <a href="https://t.me/MRBONUS_UA_bot" class="btn-champion js-link">🏆 СТАТИ ЧЕМПІОНОМ</a>
     </div>
 
     <div class="champion-details">
         <h2>Як забрати 1000 фріспінів у Champion?</h2>
-        <p>Легендарний <strong>Champion Club</strong> відкриває двері для нових гравців з України з рекордною пропозицією. Замість стандартних бонусів, через наш сервіс ви отримуєте доступ до пакету на <strong>1000 безкоштовних обертів</strong>.</p>
-        
         <ul class="check-list">
             <li>Миттєва реєстрація без зайвих анкет;</li>
             <li>Унікальні слоти власної розробки Champion;</li>
             <li>Виплата виграшів на будь-які українські картки;</li>
-            <li>Доступ до розіграшів у прямому ефірі радіо.</li>
         </ul>
-
         <p style="font-size: 0.8rem; border-top: 1px solid rgba(255,204,0,0.2); pt-15px; margin-top: 15px; opacity: 0.7;">
             Для активації перейдіть у Telegram та натисніть "START". Система автоматично згенерує ваш персональний бонус-код.
         </p>
@@ -163,10 +181,11 @@
 
     document.querySelectorAll('.js-link').forEach(link => {
         link.addEventListener('click', function(e) {
+            const url = this.getAttribute('href');
             if (tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0) {
                 e.preventDefault();
                 if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-                tg.openTelegramLink(this.getAttribute('href'));
+                tg.openTelegramLink(url);
             }
         });
     });
