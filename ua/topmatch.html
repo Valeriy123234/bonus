@@ -4,140 +4,212 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO ТЕГИ ДЛЯ GOOGLE (TOP MATCH) -->
-    <title>Top Match: 200₴ Бездепозитний Бонус + 100 FS | VIP MRBONUS UA</title>
-    <meta name="description" content="Активуй бездепозитний бонус у Top Match: 200₴ грошима та 100 фріспінів. Аналіз пропозицій підтверджено сервісом MRBONUS UA. Забирай свій кеш прямо зараз!">
-    <meta name="keywords" content="Top Match, топ матч бонус, 200 грн бездепозитний бонус, фріспіни за реєстрацію, mrbonus ua, казино україна 2026">
+    <!-- ПОСИЛЕНИЙ SEO-ПАКЕТ ДЛЯ GOOGLE SEARCH -->
+    <title>Top Match VIP: 100 Фріспінів | Аналітичний огляд та Бонуси 2026</title>
+    <meta name="description" content="Детальний розбір бонусних умов Top Match. Активація 100 FS через верифікований шлюз MRBONUS UA. Правила відіграшу, ліцензія КРАІЛ та принципи відповідальної гри.">
+    <meta name="keywords" content="Top Match, Топ Матч, 100 фріспінів, бездепозитний бонус, mrbonus ua, vip гемблінг, бонуси казино 2026, ліцензія КРАІЛ">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="MRBONUS UA">
 
-    <!-- SDK Telegram -->
-    <script src="https://telegram.org"></script>
+    <!-- OPEN GRAPH (Для прев'ю у месенджерах Telegram/Viber) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Top Match VIP: 100 FS активовано!">
+    <meta property="og:description" content="Твій VIP-статус у Top Match підтверджено. Забирай 100 бездепозитних спінів через MRBONUS UA.">
+
+    <!-- MICRODATA JSON-LD (Для "зірочок" у видачі Google) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Review",
+      "itemReviewed": {
+        "@type": "Game",
+        "name": "Top Match Casino"
+      },
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "5",
+        "bestRating": "5"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "MRBONUS UA"
+      }
+    }
+    </script>
+
     <link href="https://fonts.googleapis.com" rel="stylesheet">
+    
     <style>
         :root {
-            --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
-            --dark: #0a0a0a;
+            --tm-yellow: #f5ff00;
+            --tm-dark: #080808;
+            --tm-border: rgba(245, 255, 0, 0.2);
+            --text-muted: #8a8a8a;
         }
-        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; overflow-y: auto; }
 
-        /* Tech Scanner Loader */
-        #loader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 9999;
-            transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); opacity: 1;
+        body {
+            background: var(--tm-dark);
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
         }
-        .scan-line { width: 150px; height: 2px; background: #BF953F; box-shadow: 0 0 15px #BF953F; animation: scan 1.5s infinite; }
-        @keyframes scan { 0% { transform: translateY(-30px); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateY(30px); opacity: 0; } }
 
-        .container { max-width: 450px; width: 92%; padding: 10px 15px 35px; text-align: center; display: none; opacity: 0; transition: 0.8s ease; box-sizing: border-box; }
-        
-        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 15px; }
-        .btn-menu { text-decoration: none; color: #444; font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 6px; cursor: pointer; background: none; border: none; padding: 10px 0; }
-        .btn-menu:hover { color: #BF953F; }
-
-        .promo-card { background: linear-gradient(145deg, #111 0%, #050505 100%); border: 2px solid #BF953F; border-radius: 25px; padding: 35px 20px; box-shadow: 0 0 40px rgba(191, 149, 63, 0.15); position: relative; }
-        .status-top { font-family: 'Cinzel', serif; color: #BF953F; font-size: 0.7rem; letter-spacing: 4px; margin-bottom: 12px; font-weight: 700; }
-        
-        h1 { font-family: 'Cinzel', serif; font-size: 2.2rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
-        .promo-value { font-size: 2.3rem; font-weight: 900; margin: 15px 0; color: #fff; letter-spacing: -1px; line-height: 1.1; }
-
-        .btn-top { 
-            display: block; background: var(--gold); color: #000; text-decoration: none; padding: 22px 10px; border-radius: 15px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 25px; font-size: 1.3rem; text-align: center; box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.2s; cursor: pointer; border: none; width: 100%; box-sizing: border-box; animation: top-pulse 2s infinite;
+        .wrapper {
+            max-width: 520px;
+            width: 100%;
+            padding: 30px 15px;
         }
-        @keyframes top-pulse { 0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); } 70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); } 100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); } }
 
-        .btn-bot-top { display: block; border: 1px solid rgba(255, 255, 255, 0.15); color: #777; text-decoration: none; padding: 16px; border-radius: 15px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-align: center; margin-top: 15px; transition: 0.3s; cursor: pointer; background: rgba(255, 255, 255, 0.02); }
+        .hero-card {
+            background: linear-gradient(180deg, #111 0%, #000 100%);
+            border: 1px solid var(--tm-border);
+            border-radius: 24px;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            margin-bottom: 25px;
+        }
 
-        /* VIP SEO BLOCK */
-        .vip-review-container { margin-top: 40px; text-align: left; background: rgba(255, 255, 255, 0.01); border: 1px solid #BF953F; border-radius: 20px; padding: 25px; position: relative; box-shadow: inset 0 0 20px rgba(191, 149, 63, 0.05); }
-        .vip-review-container::before { content: "MATCH VERIFIED"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #0a0a0a; padding: 0 15px; color: #BF953F; font-size: 0.6rem; font-weight: 900; letter-spacing: 3px; border: 1px solid #BF953F; border-radius: 50px; }
-        .vip-review-container h2 { font-family: 'Cinzel', serif; font-size: 1rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; text-transform: uppercase; }
-        .vip-review-container p, .vip-review-container li { font-size: 0.75rem; color: #888; line-height: 1.6; margin-bottom: 10px; }
-        .vip-review-container strong { color: #FCF6BA; }
-        .vip-review-container ul { padding-left: 15px; list-style: none; }
-        .vip-review-container ul li::before { content: "✦"; color: #BF953F; margin-right: 8px; font-size: 0.65rem; }
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            margin: 10px 0;
+            color: #fff;
+        }
 
-        .footer-tag { color: #222; font-size: 0.6rem; margin-top: 35px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
+        .bonus-badge {
+            font-size: 3.8rem;
+            font-weight: 900;
+            color: var(--tm-yellow);
+            margin: 10px 0;
+            line-height: 1;
+            text-shadow: 0 0 20px rgba(245, 255, 0, 0.3);
+        }
+
+        .btn-activate {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--tm-yellow);
+            color: #000;
+            text-decoration: none;
+            padding: 22px;
+            border-radius: 12px;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-top: 25px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(245, 255, 0, 0.2);
+            transition: 0.3s;
+        }
+
+        .btn-activate:hover { transform: scale(1.02); }
+
+        .btn-activate::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -100%; width: 50%; height: 200%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: rotate(30deg);
+            animation: move 3s infinite;
+        }
+
+        @keyframes move { 0% { left: -100%; } 100% { left: 200%; } }
+
+        .article-section {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .article-section h2 {
+            font-size: 0.95rem;
+            color: var(--tm-yellow);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            border-left: 3px solid var(--tm-yellow);
+            padding-left: 12px;
+        }
+
+        .article-section p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .specs-list {
+            padding-left: 15px;
+            margin: 15px 0;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            list-style-type: square;
+        }
+
+        .specs-list li::marker { color: var(--tm-yellow); }
+
+        .support-box {
+            text-align: center;
+            padding: 20px;
+            border: 1px dashed rgba(255,255,255,0.1);
+            border-radius: 15px;
+            margin-top: 10px;
+        }
+
+        .footer-legal {
+            text-align: center;
+            font-size: 0.6rem;
+            color: #333;
+            padding: 30px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="scan-line"></div>
-        <h2 style="font-family:'Cinzel'; background: var(--gold); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:10px; margin-top:30px;">MRBONUS</h2>
-        <p style="color:#333; font-size:0.55rem; letter-spacing:3px; margin-top:10px; font-weight:bold;">ANALYZING TOP MATCH OFFERS...</p>
-    </div>
-
-    <div class="container" id="content">
-        <div class="nav-menu">
-            <button onclick="goBack()" class="btn-menu"><span>←</span> НАЗАД</button>
-        </div>
-
-        <div class="promo-card">
-            <div class="status-top">MATCH VERIFIED BY MRBONUS</div>
+    <div class="wrapper">
+        <header class="hero-card">
+            <div style="font-size: 0.6rem; letter-spacing: 6px; color: var(--text-muted);">TOP MATCH PREMIUM ACCESS</div>
             <h1>TOP MATCH</h1>
-            <div class="promo-value">200₴ ГРОШИМА <br> <span style="font-size: 1.2rem; color: #555; letter-spacing: 1px;">+ 100 FS</span></div>
-            <p style="color: #888; font-size: 0.9rem; line-height: 1.5; margin: 0;">
-                Бездепозитний бонус підтверджено сервісом <b>MRBONUS</b>. <br> Забирайте свій кеш прямо зараз.
-            </p>
-            <a href="https://play.mrbonusua.space/topmatch.html" class="btn-top js-link" rel="sponsored nofollow">ЗАБРАТИ БОНУС ⚡</a>
-            <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-top js-link">🤖 АКТИВУВАТИ У ТГ</a>
-        </div>
+            <div class="bonus-badge">100 FS</div>
+            <p style="font-size: 0.9rem; color: #fff; font-weight: 500;">БЕЗДЕПОЗИТНИЙ VIP-ПАКЕТ</p>
+            
+            <a href="https://t.me/MRBONUS_UA_bot" class="btn-activate">АКТИВУВАТИ У ТЕЛЕГРАМ ⚡</a>
+        </header>
 
-        <div class="vip-review-container">
-            <h2>Top Match: Новий рівень бездепозитних привілеїв</h2>
-            <p><strong>Top Match</strong> (Топ Матч) стрімко увірвався в топ рейтингів завдяки своїй лояльності до нових гравців. Експерти <strong>MRBONUS UA</strong> виділяють цю платформу як одну з найбільш вигідних для старту без вкладень у 2026 році.</p>
-            <p>Крім грошового бонусу, гравці отримують доступ до преміальних слотів з високою волатильністю, що дає реальний шанс на великий занос з перших хвилин гри.</p>
-            <ul>
-                <li>Бездепозитні 200₴ одразу після верифікації;</li>
-                <li>Ексклюзивні 100 FS для VIP-партнерів MRBONUS;</li>
-                <li>Сучасний інтерфейс та відсутність затримок при виплатах;</li>
-                <li>Найкраща служба підтримки 24/7 для кожного клієнта.</li>
+        <section class="article-section">
+            <h2>📊 ТЕХНІЧНА АНАЛІТИКА ПЛАТФОРМИ</h2>
+            <p><strong>Top Match</strong> впроваджує передові iGaming стандарти в Україні. Використання сертифікованого <strong>RNG (Random Number Generator)</strong> гарантує прозорість ігрового процесу, що підтверджено міжнародними аудитами.</p>
+            <ul class="specs-list">
+                <li><b>Протоколи безпеки:</b> 256-бітне SSL шифрування фінансових транзакцій.</li>
+                <li><b>Швидкість виплат:</b> Інтегровані шлюзи для миттєвого зарахування коштів на баланс користувача.</li>
+                <li><b>KYC Верифікація:</b> Спрощена процедура підтвердження особи через державні сервіси.</li>
             </ul>
-            <p>Тисни <strong>"ЗАБРАТИ БОНУС"</strong> та забирай свій стартовий капітал. Грай розумно. 21+.</p>
-        </div>
-        
-        <p class="footer-tag">TOP GEAR • 21+ • MRBONUS UA 2026</p>
+        </section>
+
+        <section class="article-section">
+            <h2>🛡️ ПРИНЦИПИ ВІДПОВІДАЛЬНОЇ ГРИ</h2>
+            <p>Партнерство з <strong>MRBONUS UA</strong> базується на політиці <strong>Responsible Gambling</strong>. Ми наголошуємо: гемблінг — це розвага для дорослих осіб.</p>
+            <p>Згідно з нормами КРАІЛ, доступ до платформи дозволено громадянам, які досягли <strong>21 року</strong>. Платформа надає інструменти самообмеження та встановлення лімітів на ігрові сесії.</p>
+            
+            <div class="support-box">
+                <p style="margin: 0 0 10px; color: #fff; font-size: 0.75rem;">Потрібна консультація фахівця?</p>
+                <a href="https://t.me" style="color: var(--tm-yellow); text-decoration: none; font-weight: 700; font-size: 0.85rem;">SUPPORT: @MRBONUS_UA</a>
+            </div>
+        </section>
+
+        <footer class="footer-legal">
+            TOP MATCH UA • REGULATION 2026 • 21+ • SECURED BY MRBONUS
+        </footer>
     </div>
 
-    <script>
-        const tg = window.Telegram ? window.Telegram.WebApp : null;
-        if (tg) { tg.ready(); tg.expand(); }
-
-        function isTg() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
-
-        function goBack() {
-            if (isTg()) {
-                if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-                window.location.href = 'index.html';
-            } else {
-                window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
-            }
-        }
-
-        document.querySelectorAll('.js-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                const url = this.getAttribute('href');
-                if (isTg()) {
-                    e.preventDefault();
-                    if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-                    if (url.includes('t.me/')) { tg.openTelegramLink(url); } 
-                    else { tg.openLink(url); }
-                }
-            });
-        });
-
-        window.onload = function() {
-            setTimeout(function() {
-                const ld = document.getElementById('loader');
-                if (ld) ld.style.opacity = '0';
-                setTimeout(function() {
-                    if (ld) ld.style.display = 'none';
-                    let ct = document.getElementById('content');
-                    if (ct) { ct.style.display = 'block'; setTimeout(() => ct.style.opacity = '1', 50); }
-                }, 500);
-            }, 1400);
-        };
-    </script>
 </body>
 </html>
