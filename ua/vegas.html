@@ -4,144 +4,221 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO ТЕГИ ДЛЯ GOOGLE (VEGAS) -->
-    <title>Vegas Casino: 150 FS Night Special | VIP Доступ MRBONUS UA</title>
-    <meta name="description" content="Відчуй атмосферу справжнього Вегаса! Забирай 150 фріспінів Night Special. Ексклюзивний доступ активовано через VIP-сервіс MRBONUS UA. Твій квиток у місто розваг чекає!">
-    <meta name="keywords" content="Vegas casino, вегас казино бонус, 150 фріспінів, нічний бонус, mrbonus ua, грати онлайн україна 2026">
+    <!-- SEO VEGAS VIP (MRBONUS UA) -->
+    <title>Vegas VIP Бонус: 150 Фріспінів за Реєстрацію | Огляд MRBONUS UA 2026</title>
+    <meta name="description" content="Отримайте ексклюзивні 150 FS у Vegas через сертифікований шлюз MRBONUS UA. Детальний огляд ліцензійного казино, умови відіграшу та безпечний вхід через VIP-бота.">
+    <meta name="keywords" content="Vegas, Вегас казино, 150 фріспінів, бонус Vegas 2026, mrbonus ua, бездепозитний бонус, КРАІЛ">
+    <meta name="robots" content="index, follow">
 
-    <!-- SDK Telegram -->
-    <script src="https://telegram.org"></script>
+    <!-- MICRODATA JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Review",
+      "itemReviewed": {
+        "@type": "Game",
+        "name": "Vegas Online Casino"
+      },
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "4.9",
+        "bestRating": "5"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "MRBONUS UA"
+      }
+    }
+    </script>
+
     <link href="https://fonts.googleapis.com" rel="stylesheet">
+    
     <style>
         :root {
-            --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
-            --dark: #0a0a0a;
+            --vegas-gold: linear-gradient(135deg, #d4af37 0%, #fcf6ba 45%, #b38728 70%, #fbf5b7 100%);
+            --vegas-wine: #2d0a0a;
+            --dark-bg: #0a0505;
+            --border-gold: rgba(191, 149, 63, 0.3);
         }
-        body { background: var(--dark); color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; overflow-y: auto; }
 
-        /* Neon Vegas Loader */
-        #loader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 9999;
-            transition: 0.7s cubic-bezier(0.4, 0, 0.2, 1); opacity: 1;
+        body {
+            background: var(--dark-bg);
+            color: #e0e0e0;
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            line-height: 1.6;
         }
-        .neon-circle { 
-            width: 70px; height: 70px; border: 4px solid #BF953F; border-radius: 50%;
-            border-top-color: transparent; animation: spin 1s infinite linear;
-            filter: drop-shadow(0 0 15px #BF953F);
+
+        .wrapper {
+            max-width: 520px;
+            width: 100%;
+            padding: 30px 15px;
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .container { max-width: 450px; width: 92%; padding: 10px 15px 35px; text-align: center; display: none; opacity: 0; transition: 0.8s ease; box-sizing: border-box; }
-        
-        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 15px; }
-        .btn-menu { text-decoration: none; color: #444; font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 6px; cursor: pointer; background: none; border: none; padding: 10px 0; }
-        .btn-menu:hover { color: #BF953F; }
-
-        .promo-card { background: linear-gradient(145deg, #111 0%, #050505 100%); border: 2px solid #BF953F; border-radius: 25px; padding: 35px 20px; box-shadow: 0 0 40px rgba(191, 149, 63, 0.15); position: relative; }
-        .vegas-label { font-family: 'Cinzel', serif; color: #BF953F; font-size: 0.7rem; letter-spacing: 4px; margin-bottom: 12px; font-weight: 700; }
-        
-        h1 { font-family: 'Cinzel', serif; font-size: 2.2rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
-        .promo-value { font-size: 2.3rem; font-weight: 900; margin: 15px 0; color: #fff; letter-spacing: -1px; line-height: 1.1; }
-
-        .btn-vegas { 
-            display: block; background: var(--gold); color: #000; text-decoration: none; padding: 22px 10px; border-radius: 15px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 25px; font-size: 1.3rem; text-align: center; box-shadow: 0 10px 30px rgba(191,149,63,0.4); transition: 0.2s; cursor: pointer; border: none; width: 100%; box-sizing: border-box; animation: vegas-pulse 2s infinite;
+        /* ROYAL CARD */
+        .hero-card {
+            background: linear-gradient(145deg, #1a0a0a 0%, #0a0505 100%);
+            border: 1px solid var(--border-gold);
+            border-radius: 30px;
+            padding: 45px 25px;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+            margin-bottom: 30px;
+            position: relative;
         }
-        @keyframes vegas-pulse { 0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.6); } 70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); } 100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); } }
 
-        .btn-bot-vegas { display: block; border: 1px solid rgba(255, 255, 255, 0.15); color: #777; text-decoration: none; padding: 16px; border-radius: 15px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; text-align: center; margin-top: 15px; transition: 0.3s; cursor: pointer; background: rgba(255, 255, 255, 0.02); }
+        .hero-card::before {
+            content: 'ROYAL PARTNER';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--vegas-gold);
+            color: #000;
+            padding: 3px 20px;
+            font-size: 0.65rem;
+            font-weight: 900;
+            border-radius: 50px;
+            letter-spacing: 3px;
+        }
 
-        /* VIP SEO BLOCK */
-        .vip-review-container { margin-top: 40px; text-align: left; background: rgba(255, 255, 255, 0.01); border: 1px solid #BF953F; border-radius: 20px; padding: 25px; position: relative; box-shadow: inset 0 0 20px rgba(191, 149, 63, 0.05); }
-        .vip-review-container::before { content: "VEGAS ELITE"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #0a0a0a; padding: 0 15px; color: #BF953F; font-size: 0.6rem; font-weight: 900; letter-spacing: 3px; border: 1px solid #BF953F; border-radius: 50px; }
-        .vip-review-container h2 { font-family: 'Cinzel', serif; font-size: 1rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; text-transform: uppercase; }
-        .vip-review-container p, .vip-review-container li { font-size: 0.75rem; color: #888; line-height: 1.6; margin-bottom: 10px; }
-        .vip-review-container strong { color: #FCF6BA; }
-        .vip-review-container ul { padding-left: 15px; list-style: none; }
-        .vip-review-container ul li::before { content: "✦"; color: #BF953F; margin-right: 8px; font-size: 0.65rem; }
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.8rem;
+            background: var(--vegas-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 10px 0;
+        }
 
-        .footer-vegas { color: #222; font-size: 0.6rem; margin-top: 35px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
+        .bonus-value {
+            font-size: 3.2rem;
+            font-weight: 900;
+            margin: 15px 0;
+            color: #fff;
+            letter-spacing: -1px;
+        }
+
+        /* VIP BUTTON WITH SHIMMER */
+        .btn-vip {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--vegas-gold);
+            color: #000;
+            text-decoration: none;
+            padding: 22px;
+            border-radius: 15px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 30px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(179, 135, 40, 0.3);
+            transition: 0.3s;
+        }
+
+        .btn-vip::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -100%; width: 50%; height: 200%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: rotate(30deg);
+            animation: move 4s infinite;
+        }
+
+        @keyframes move { 0% { left: -100%; } 100% { left: 250%; } }
+
+        /* ANALYTICAL CONTENT */
+        .info-block {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .info-block h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            color: #d4af37;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding-bottom: 10px;
+        }
+
+        .info-block p, .info-block li {
+            font-size: 0.8rem;
+            color: #999;
+            margin-bottom: 12px;
+        }
+
+        .specs-list {
+            padding-left: 15px;
+            list-style-type: gold;
+        }
+
+        .support-btn {
+            display: block;
+            text-align: center;
+            color: #d4af37;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 15px;
+            border: 1px solid rgba(212,175,55,0.2);
+            border-radius: 12px;
+            margin-top: 10px;
+        }
+
+        .footer-legal {
+            text-align: center;
+            font-size: 0.55rem;
+            color: #444;
+            padding: 30px 0;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="neon-circle"></div>
-        <h2 style="font-family:'Cinzel'; background: var(--gold); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:15px; margin-top:30px;">MRBONUS</h2>
-        <p style="color:#333; font-size:0.55rem; letter-spacing:3px; margin-top:10px; font-weight:bold;">WELCOME TO THE CITY OF DREAMS...</p>
-    </div>
-
-    <div class="container" id="content">
-        <div class="nav-menu">
-            <button onclick="goBack()" class="btn-menu"><span>←</span> НАЗАД</button>
-        </div>
-
-        <div class="promo-card">
-            <div class="vegas-label">VEGAS ACCESS GRANTED</div>
+    <div class="wrapper">
+        <header class="hero-card">
+            <div style="font-size: 0.6rem; letter-spacing: 5px; color: #666;">CERTIFIED BY MRBONUS UA</div>
             <h1>VEGAS</h1>
-            <div class="promo-value">150 FS <br> <span style="font-size: 1rem; color: #555; letter-spacing: 1px;">NIGHT SPECIAL</span></div>
-            <p style="color: #888; font-size: 0.9rem; line-height: 1.5; margin: 0;">
-                Твій пакет вечірніх фріспінів підтверджено сервісом <b>MRBONUS</b>. <br> Забирай свій квиток у гру прямо зараз.
-            </p>
-            <a href="https://play.mrbonusua.space/vegas.html" class="btn-vegas js-link" rel="sponsored nofollow">ВХІД У VEGAS 🌃</a>
-            <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-vegas js-link">🤖 АКТИВУВАТИ У ТГ БОТІ</a>
-        </div>
+            <div class="bonus-value">150 FS</div>
+            <p style="font-weight: 600; color: #fff; margin: 0;">PREMIUM WELCOME PACKAGE</p>
+            <p style="font-size: 0.8rem; color: #555;">Активація через захищений Telegram-канал</p>
+            
+            <a href="https://t.me/MRBONUS_UA_bot" class="btn-vip">ЗАБРАТИ У ТЕЛЕГРАМ 🃏</a>
+        </header>
 
-        <div class="vip-review-container">
-            <h2>Vegas Casino: Твоя особиста подорож у світ азарту</h2>
-            <p><strong>Vegas Casino</strong> (Вегас) переносить атмосферу головної гемблінг-столиці світу прямо у твій смартфон. За підтримки <strong>MRBONUS UA</strong> гравцям стає доступний Night Special Pack — 150 фріспінів у найбільш захоплюючих слотах сезону.</p>
-            <p>Це онлайн-казино відоме своєю увагою до деталей та преміальною графікою ігор, що створює повне занурення. Тільки сертифікований софт та гарантія безпеки транзакцій.</p>
-            <ul>
-                <li>Ексклюзивні нічні бонуси для VIP-клієнтів;</li>
-                <li>Найвищий RTP на популярних "книжкових" слотах;</li>
-                <li>Швидка підтримка клієнтів у режимі Live;</li>
-                <li><strong>Повна конфіденційність</strong> та надійний захист даних.</li>
+        <section class="info-block">
+            <h2>💎 ЕКСПЕРТНИЙ ОГЛЯД ПЛАТФОРМИ</h2>
+            <p><strong>Vegas</strong> — це еталон преміального гемблінгу, що поєднує класичну атмосферу Лас-Вегаса з передовими технологіями онлайн-казино. У 2026 році бренд пропонує <strong>150 фріспінів</strong> для нових резидентів, активованих через мережу <strong>MRBONUS UA</strong>.</p>
+            <ul class="specs-list">
+                <li><strong>Сертифікація:</strong> Софт від топових провайдерів (Amatic, Pragmatic Play) з ліцензійним RTP до 97.4%.</li>
+                <li><strong>Фінансова безпека:</strong> Миттєві транзакції через захищені шлюзи з протоколами 3D-Secure.</li>
+                <li><strong>VIP-підтримка:</strong> Персональний менеджер для активних гравців спільноти.</li>
             </ul>
-            <p>Тисни <strong>"ВХІД У VEGAS"</strong>, щоб активувати свої привілеї. Пам'ятай про правила гри. 21+.</p>
-        </div>
-        
-        <p class="footer-vegas">VEGAS ELITE • 21+ • MRBONUS UA • 2026</p>
+        </section>
+
+        <section class="info-block">
+            <h2>🛡️ ВІДПОВІДАЛЬНА ГРА ТА ПРАВИЛА</h2>
+            <p>Адміністрація <strong>Vegas</strong> суворо дотримується стандартів відповідальної гри. Ми нагадуємо, що доступ до платформи дозволено лише особам, які досягли <strong>21 року</strong>.</p>
+            <p>Використання VIP-бота гарантує вам отримання актуального дзеркала сайту та захист від фішингових ресурсів. Грай відповідально — встановлюй власні ліміти в особистому кабінеті.</p>
+            
+            <a href="https://t.me" class="support-btn">SUPPORT: @MRBONUS_UA</a>
+        </section>
+
+        <footer class="footer-legal">
+            VEGAS UA • LICENSED OPERATOR • 2026 • 21+ • MRBONUS
+        </footer>
     </div>
 
-    <script>
-        const tg = window.Telegram ? window.Telegram.WebApp : null;
-        if (tg) { tg.ready(); tg.expand(); }
-
-        function isTg() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
-
-        function goBack() {
-            if (isTg()) {
-                if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-                window.location.href = 'index.html';
-            } else {
-                window.history.length > 1 ? window.history.back() : window.location.href = 'index.html';
-            }
-        }
-
-        document.querySelectorAll('.js-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                const url = this.getAttribute('href');
-                if (isTg()) {
-                    e.preventDefault();
-                    if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-                    if (url.includes('t.me/')) { tg.openTelegramLink(url); } 
-                    else { tg.openLink(url); }
-                }
-            });
-        });
-
-        window.onload = function() {
-            setTimeout(function() {
-                const ld = document.getElementById('loader');
-                if (ld) ld.style.opacity = '0';
-                setTimeout(function() {
-                    if (ld) ld.style.display = 'none';
-                    let ct = document.getElementById('content');
-                    if (ct) { ct.style.display = 'block'; setTimeout(() => ct.style.opacity = '1', 50); }
-                }, 500);
-            }, 1400);
-        };
-    </script>
 </body>
 </html>
