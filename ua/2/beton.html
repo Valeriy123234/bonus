@@ -1,1 +1,179 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO ТЕГИ ДЛЯ GOOGLE (BETON) -->
+    <title>Beton Casino: 150% Бонус та 500 Фріспінів | Залізобетонний Бонус MRBONUS</title>
+    <meta name="description" content="Отримуй залізобетонний прибуток у Beton Casino! 150% бонус на депозит та пакет з 500 фріспінів вже активовано для користувачів MRBONUS UA. Грай та перемагай!">
+    <meta name="keywords" content="Beton казино, бетон казино бонус, 500 фріспінів, бездепозитний бонус, mrbonus ua, гемблінг україна">
+
+    <!-- SDK Telegram -->
+    <script src="https://telegram.org"></script>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <style>
+        :root {
+            --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --concrete: #222;
+        }
+        /* ЗМІНЕНО: Додано scroll для тексту */
+        body { background: #050505; color: #fff; font-family: 'Montserrat', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; overflow-y: auto; }
+
+        /* ІНДУСТРІАЛЬНИЙ ЛОАДЕР */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 9999;
+            transition: 0.8s cubic-bezier(0.9, 0, 0.1, 1); opacity: 1;
+        }
+        .concrete-block {
+            border: 4px solid #333; padding: 40px; background: #111;
+            position: relative; animation: lift 2s infinite ease-in-out;
+            box-shadow: 0 0 50px rgba(0,0,0,1);
+        }
+        @keyframes lift {
+            0% { transform: translateY(0); border-color: #333; }
+            50% { transform: translateY(-20px); border-color: #BF953F; }
+            100% { transform: translateY(0); border-color: #333; }
+        }
+        .beton-text { 
+            font-family: 'Cinzel', serif; font-size: 3.2rem; 
+            background: var(--gold); -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; letter-spacing: 12px; margin: 0;
+        }
+        .loader-status {
+            color: #BF953F; font-size: 0.6rem; letter-spacing: 5px;
+            margin-top: 20px; font-weight: 900; text-transform: uppercase;
+        }
+
+        .container { max-width: 420px; width: 92%; padding: 10px 15px 35px; text-align: center; display: none; opacity: 0; transition: 0.8s ease; box-sizing: border-box; }
+        .container.show { display: block; opacity: 1; }
+
+        .nav-menu { display: flex; justify-content: flex-start; margin-bottom: 15px; }
+        .btn-menu { text-decoration: none; color: #444; font-size: 0.65rem; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; transition: 0.3s; display: flex; align-items: center; gap: 10px; cursor: pointer; background: none; border: none; padding: 10px 0; }
+        .btn-menu:hover { color: #fff; transform: translateX(-5px); }
+        
+        .promo-card { 
+            background: #111; 
+            border: 2px solid #BF953F; 
+            border-radius: 20px; 
+            padding: 35px 20px; 
+            position: relative; 
+            box-shadow: 0 0 40px rgba(191, 149, 63, 0.15); 
+        }
+
+        .verified-label { color: #555; font-size: 0.65rem; letter-spacing: 4px; margin-bottom: 10px; font-weight: 800; }
+        h1 { font-family: 'Cinzel', serif; font-size: 2.2rem; color: #fff; margin: 5px 0; letter-spacing: 2px; }
+        .promo-value { font-size: 2.1rem; font-weight: 900; margin: 15px 0; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; }
+
+        .btn-beton { 
+            display: block; background: var(--gold); color: #000; text-decoration: none; padding: 22px 10px; border-radius: 8px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 25px; font-size: 1.3rem; transition: 0.2s; border-bottom: 5px solid #8c6a1b; cursor: pointer; text-align: center; width: 100%; box-sizing: border-box; animation: beton-pulse 2s infinite;
+        }
+        @keyframes beton-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(191,149,63,0.5); }
+            70% { box-shadow: 0 0 0 12px rgba(191,149,63,0); }
+            100% { box-shadow: 0 0 0 0 rgba(191,149,63,0); }
+        }
+        .btn-beton:active { transform: translateY(3px); border-bottom: 2px solid #8c6a1b; }
+
+        .btn-bot-beton { display: block; border: 1px solid rgba(191, 149, 63, 0.4); color: #777; text-decoration: none; padding: 16px; border-radius: 8px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-top: 15px; transition: 0.3s; background: rgba(255, 255, 255, 0.02); cursor: pointer; text-align: center; }
+
+        .legal { color: #222; font-size: 0.6rem; margin-top: 35px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; }
+
+        /* ПРЕМІАЛЬНИЙ SEO БЛОК */
+        .vip-review-container {
+            margin-top: 50px; text-align: left; background: rgba(255, 255, 255, 0.01);
+            border: 1px solid #BF953F; border-radius: 15px; padding: 30px;
+            position: relative; box-shadow: inset 0 0 20px rgba(191, 149, 63, 0.05);
+        }
+        .vip-review-container::before {
+            content: "CONCRETE VIP"; position: absolute; top: -12px; left: 50%;
+            transform: translateX(-50%); background: #050505; padding: 0 15px;
+            color: #BF953F; font-size: 0.6rem; font-weight: 900; letter-spacing: 3px;
+            border: 1px solid #BF953F; border-radius: 50px;
+        }
+        .vip-review-container h2 { font-family: 'Cinzel', serif; font-size: 1.1rem; background: var(--gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px; text-transform: uppercase; }
+        .vip-review-container p, .vip-review-container li { font-size: 0.8rem; color: #888; line-height: 1.7; margin-bottom: 12px; }
+        .vip-review-container strong { color: #FCF6BA; }
+        .vip-review-container ul { padding-left: 18px; list-style: none; }
+        .vip-review-container ul li::before { content: "✦"; color: #BF953F; margin-right: 10px; font-size: 0.7rem; }
+    </style>
+</head>
+<body>
+
+    <div id="loader">
+        <div class="concrete-block">
+            <h2 class="beton-text">BETON</h2>
+        </div>
+        <p class="loader-status">Hard Verification...</p>
+    </div>
+
+    <div class="container" id="content">
+        <div class="nav-menu">
+            <button onclick="goBack()" class="btn-menu"><span>←</span> НАЗАД </button>
+        </div>
+
+        <div class="promo-card">
+            <div class="verified-label">MRBONUS SECURED</div>
+            <h1>BETON</h1>
+            <div class="promo-value">150% БОНУС <br> + 500 ФРІСПІНІВ</div>
+            
+            <p style="color: #888; font-size: 0.9rem; line-height: 1.5; margin: 0; font-weight: 600;">
+                Твій залізобетонний бонус готовий. <br> Забери свій куш прямо зараз.
+            </p>
+
+           <a href="https://play.mrbonusua.space/beton.html" class="btn-beton js-link" rel="sponsored nofollow">ЗАБРАТИ КУШ 🎰</a>
+
+            <a href="https://t.me/MRBONUS_UA_bot" class="btn-bot-beton js-link">🤖 ІНШІ БОНУСИ У TG</a>
+        </div>
+
+        <div class="vip-review-container">
+            <h2>Beton Casino: Надійний фундамент для твоїх перемог</h2>
+            <p><strong>Beton Casino</strong> — це гральний майданчик, що поєднує індустріальну надійність та преміальний сервіс. У співпраці з <strong>MRBONUS UA</strong> ми надаємо користувачам доступ до унікального залізобетонного бонусу.</p>
+            <p>Нові гравці можуть активувати потужний пакет: 150% до першого поповнення та рекордні 500 фріспінів. <strong>Бетон Казино</strong> цінується за стабільність, чесні алгоритми та найвищу швидкість обробки заявок на виведення коштів.</p>
+            <ul>
+                <li>Фундаментальна безпека даних гравців;</li>
+                <li>Найбільша кількість слотів від провідних провайдерів;</li>
+                <li>Щотижневий кешбек для активних учасників;</li>
+                <li><strong>Повна ліцензія КРАІЛ</strong> — гарантований захист.</li>
+            </ul>
+            <p>Натискай <strong>"ЗАБРАТИ КУШ"</strong>, щоб закріпити свій бонус. Пам'ятай, азартні ігри — це лише розвага. Доступно для осіб 21+.</p>
+        </div>
+
+        <p class="legal">21+ • NO RISK • MRBONUS UA</p>
+    </div>
+
+    <script>
+        const tg = window.Telegram ? window.Telegram.WebApp : null;
+        if (tg) { tg.ready(); tg.expand(); }
+        function isTg() { return tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0; }
+        function goBack() {
+            if (isTg()) { window.location.href = 'index.html'; } 
+            else { window.history.length > 1 ? window.history.back() : window.location.href = 'index.html'; }
+        }
+        document.querySelectorAll('.js-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const url = this.getAttribute('href');
+                if (isTg()) {
+                    e.preventDefault();
+                    if (url.includes('t.me/')) { tg.openTelegramLink(url); } 
+                    else { tg.openLink(url); }
+                }
+            });
+        });
+        window.onload = function() {
+            setTimeout(function() {
+                const loader = document.getElementById('loader');
+                if (loader) loader.style.opacity = '0';
+                setTimeout(function() {
+                    if (loader) loader.style.display = 'none';
+                    const content = document.getElementById('content');
+                    if (content) content.classList.add('show');
+                }, 800);
+            }, 1800);
+        };
+    </script>
+</body>
+</html>
 
