@@ -4,220 +4,160 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- АГРЕСИВНЕ SEO: ПРЯМІ ЗАПИТИ В GOOGLE (POKER-BET) -->
-    <title>Poker-Bet Реєстрація: Робоче Дзеркало Покербет 100% та 650 FS 2026</title>
-    <meta name="description" content="Офіційний вхід у Poker-Bet (Покербет) в Україні. Отримайте 100% бонус та 650 фріспінів за реєстрацію через бот MRBONUS UA. Правила безпечної гри, швидкі виплати та ліцензія.">
+    <!-- SEO VIP SETUP -->
+    <title>Pokerbet VIP Support & Bonus | MRBONUS UA</title>
+    <meta name="description" content="Офіційна підтримка та активація бонусів Pokerbet через бота MRBONUS UA. Отримайте 650 фріспінів та 100% до депу.">
     
-    <link rel="canonical" id="canonical-link" href="" />
-
-    <!-- ШРИФТИ ВИЩОГО ЕШЕЛОНУ -->
     <link href="https://fonts.googleapis.com" rel="stylesheet">
-    <script src="https://telegram.org"></script>
     
     <style>
         :root {
+            --gold: linear-gradient(135deg, #d4af37 0%, #fcf6ba 45%, #b38728 70%, #fbf5b7 100%);
             --dark-bg: #050505;
-            --card-bg: #0d0d0d;
-            --accent-silver: #e2e8f0;
-            --deep-blue: #0f172a; /* Глибокий сапфір для акцентів */
-            --muted: #444;
         }
+
         body {
             background: var(--dark-bg);
-            color: var(--accent-silver);
-            font-family: 'Inter', sans-serif;
+            color: #e0e0e0;
+            font-family: 'Montserrat', sans-serif;
             margin: 0;
             display: flex;
             justify-content: center;
             min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
-        }
-        .luxury-wrapper {
-            max-width: 480px;
-            width: 92%;
-            padding: 70px 0;
-            text-align: center;
         }
 
-        /* VIP PANEL */
-        .vip-panel {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            border-radius: 4px; /* Гострі кути - ознака преміум-архітектури */
-            padding: 60px 35px;
-            box-shadow: 0 50px 100px rgba(0,0,0,1);
-            margin-bottom: 45px;
+        .container {
+            max-width: 480px;
+            width: 100%;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .promo-card {
+            background: radial-gradient(circle at top left, #1a1a1a, #0a0a0a);
+            border: 1px solid rgba(191, 149, 63, 0.3);
+            border-radius: 35px;
+            padding: 50px 30px;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
             position: relative;
         }
-        .vip-panel::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 2px;
-            background: linear-gradient(90deg, transparent, #334155, transparent);
-        }
-        
-        .label-top {
-            font-size: 0.6rem;
-            letter-spacing: 5px;
-            color: var(--muted);
-            text-transform: uppercase;
-            font-weight: 800;
-            margin-bottom: 30px;
-        }
 
-        /* НОВИЙ ШРИФТ ДЛЯ POKER-BET */
         h1 {
-            font-family: 'Bodoni Moda', serif;
-            font-size: 2.8rem;
-            font-weight: 900;
-            font-style: italic;
-            letter-spacing: 2px;
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            background: var(--gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin: 0;
-            color: #fff;
-            line-height: 1;
-        }
-        
-        .bonus-value {
-            font-size: 3.8rem;
-            font-weight: 800;
-            margin: 30px 0 10px;
-            letter-spacing: -2px;
-            color: #fff;
-            line-height: 0.9;
-        }
-        .bonus-sub {
-            font-size: 0.8rem;
-            color: var(--muted);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            font-weight: 700;
         }
 
-        /* КНОПКА: СТРИМАНИЙ ПРЕМІУМ */
-        .btn-luxury {
-            display: block;
-            background: #fff;
-            color: #000;
-            text-decoration: none;
-            padding: 24px;
-            font-weight: 900;
-            text-transform: uppercase;
-            font-size: 0.95rem;
-            letter-spacing: 2px;
-            margin-top: 45px;
-            transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid #fff;
-        }
-        .btn-luxury:hover {
-            background: transparent;
-            color: #fff;
-        }
-
-        /* SEO & TRUST SECTION */
-        .info-section {
-            text-align: left;
-            margin-top: 20px;
-            padding: 0 10px;
-        }
-        .info-section h2 {
-            font-family: 'Bodoni Moda', serif;
-            font-size: 1.4rem;
-            font-style: italic;
-            color: #fff;
-            margin-bottom: 25px;
-        }
-        .info-section p {
-            font-size: 0.9rem;
-            color: #666;
-            line-height: 1.9;
-            font-weight: 300;
-            margin-bottom: 25px;
-        }
-
-        .trust-list {
-            background: rgba(255,255,255,0.02);
-            padding: 30px;
-            border-left: 1px solid #222;
-        }
-        .trust-list h3 { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: #aaa; margin-bottom: 20px; }
-        .trust-list li { font-size: 0.85rem; color: #555; margin-bottom: 15px; list-style: none; position: relative; padding-left: 20px; }
-        .trust-list li::before { content: "—"; position: absolute; left: 0; color: #333; }
-
-        /* SUPPORT */
-        .support-card {
-            margin-top: 40px;
+        /* ЕФЕКТ ВІДБЛИСКУ ДЛЯ КНОПКИ */
+        .btn-tg-vip {
+            position: relative;
+            overflow: hidden;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 25px;
-            background: #0a0a0a;
-            border: 1px solid #111;
+            justify-content: center;
+            gap: 15px;
+            background: var(--gold);
+            color: #000;
             text-decoration: none;
+            padding: 22px;
+            border-radius: 18px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 25px;
+            box-shadow: 0 15px 40px rgba(179, 135, 40, 0.4);
         }
-        .support-card b { display: block; font-size: 0.9rem; color: #fff; margin-top: 5px; font-weight: 800; }
-        .support-card span { font-size: 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; }
 
-        .footer { margin-top: 60px; font-size: 0.6rem; color: #1a1a1a; letter-spacing: 6px; font-weight: 900; }
+        .btn-tg-vip::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -100%;
+            width: 50%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: rotate(30deg);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 200%; }
+        }
+
+        /* САПОРТ КНОПКА (FLOATING) */
+        .support-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 25px;
+            color: #d4af37;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: 0.3s;
+            opacity: 0.7;
+        }
+
+        .support-link:hover {
+            opacity: 1;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        .vip-review-container {
+            margin-top: 35px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 25px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .footer-vip {
+            text-align: center;
+            margin-top: auto;
+            padding: 40px 0;
+            color: #333;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+        }
     </style>
 </head>
 <body>
 
-<div class="luxury-wrapper">
-    <div class="vip-panel">
-        <div class="label-top">Executive Selection 2026</div>
-        <h1>Poker-Bet</h1>
-        <div class="bonus-value">100% + 650 FS</div>
-        <div class="bonus-sub">Welcome Privilege</div>
-        
-        <p style="color: #444; font-size: 0.9rem; margin-top: 25px; line-height: 1.6; font-weight: 300;">
-            Ваш доступ до преміальної програми <b>Poker-Bet</b> підтверджено сервісом <b>MRBONUS UA</b>. 
-            Активація відбувається через зашифрований Telegram-шлюз.
-        </p>
-        
-        <a href="https://t.me/MRBONUS_UA_bot" class="btn-luxury js-link">Почати активацію</a>
-    </div>
+    <div class="container">
+        <div class="promo-card">
+            <div style="color: #d4af37; font-size: 0.65rem; letter-spacing: 4px; margin-bottom: 10px;">VERIFIED BY MRBONUS</div>
+            <h1>POKERBET</h1>
+            
+            <div style="font-size: 2.2rem; font-weight: 900; margin: 20px 0; line-height: 1.1;">
+                100% БОНУС<br>
+                <span style="font-size: 1.2rem; color: #555;">+ 650 FREE SPINS</span>
+            </div>
+            
+            <a href="https://t.me" class="btn-tg-vip">
+                ЗАПУСТИТИ БОТА 🤖
+            </a>
 
-    <div class="info-section">
-        <h2>Реєстрація та безпека Poker-Bet (Покербет)</h2>
-        <p>Сьогодні <strong>Poker-Bet</strong> — це не просто платформа, а професійний стандарт ігрової індустрії. Для нових резидентів з України ми підготували унікальний пакет: <strong>650 безкоштовних обертів</strong> та подвоєння першого депозиту. Використання <strong>робочого дзеркала Покербет</strong> через наш сервіс гарантує захищене з'єднання та миттєву верифікацію через <strong>Дія</strong>.</p>
-        
-        <div class="trust-list">
-            <h3>Стандарти відповідальної гри</h3>
-            <ul>
-                <li>Допуск до системи лише для осіб 21+.</li>
-                <li>Обов'язкова верифікація згідно з регламентом КРАІЛ.</li>
-                <li>Персональні ліміти на депозити та ігровий час.</li>
-                <li>Виплати на картки України (Mono/Privat) до 15 хвилин.</li>
-            </ul>
+            <a href="https://t.me" class="support-link">
+                <span>💬</span> SUPPORT: @mrbonus_ua
+            </a>
         </div>
-        
-        <p style="margin-top: 30px;">Процес активації повністю автоматизований. Натисніть кнопку "Почати активацію", щоб перейти до Telegram-бота та отримати свій VIP-код.</p>
-    </div>
 
-    <a href="https://t.me" class="support-card js-link">
-        <div style="text-align: left;">
-            <span>VIP Support Concierge</span>
-            <b>@MRBONUS_support</b>
+        <div class="vip-review-container">
+            <h2 style="font-family: 'Cinzel'; font-size: 0.9rem; color: #d4af37; margin-bottom: 10px;">VIP ПРИВІЛЕЇ</h2>
+            <p style="font-size: 0.75rem; color: #777; line-height: 1.6; margin: 0;">
+                Використовуйте офіційну підтримку <strong>@mrbonusua</strong> для вирішення питань щодо нарахування бонусів або верифікації акаунту. Ми працюємо 24/7 для вашого комфорту.
+            </p>
         </div>
-        <div style="color: #fff; font-weight: 300; font-size: 1.5rem;">→</div>
-    </a>
 
-    <p class="footer">POKERBET • 2026 • 21+</p>
-</div>
-
-<script>
-    document.getElementById('canonical-link').href = window.location.href;
-    const tg = window.Telegram ? window.Telegram.WebApp : null;
-    if (tg) { tg.ready(); tg.expand(); }
-    document.querySelectorAll('.js-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            if (tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0) {
-                e.preventDefault();
-                tg.openTelegramLink(this.getAttribute('href'));
-            }
-        });
-    });
-</script>
+        <p class="footer-vip">SECURE ACCESS • 2026 • 21+ • SUPPORT @MRBONUS_UA</p>
+    </div>
 
 </body>
 </html>
+
