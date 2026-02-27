@@ -9,21 +9,27 @@
     <meta name="description" content="Офіційна активація 1300 FS у First Casino через MRBONUS UA. Отримай бездепозитний бонус за реєстрацію, робоче дзеркало Ферст та миттєвий вивід на карту.">
     <link rel="canonical" href="https://first.mrbonusua.space" />
 
-    <!-- JSON-LD ДЛЯ ГУГЛА (ДЛЯ ШВИДКОЇ ІНДЕКСАЦІЇ) -->
+    <!-- JSON-LD ДЛЯ ГУГЛА (НАЗВА ТА ЛОГОТИП) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "First Casino Bonus Bot",
-      "operatingSystem": "Telegram",
-      "applicationCategory": "FinanceApplication",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "UAH"
+      "@type": "WebSite",
+      "name": "First Casino",
+      "url": "https://play.mrbonusua.space",
+      "publisher": {
+        "@type": "Organization",
+        "name": "First Casino",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://play.mrbonusua.space" 
+        }
       }
     }
     </script>
+
+    <!-- ІКОНКИ ДЛЯ ПОШУКУ -->
+    <link rel="icon" href="https://play.mrbonusua.space" type="image/png">
+    <link rel="apple-touch-icon" href="https://play.mrbonusua.space">
 
     <link href="https://fonts.googleapis.com" rel="stylesheet">
     <script src="https://telegram.org"></script>
@@ -160,7 +166,7 @@
 
 <div class="layout-first">
     <div class="hero-card">
-        <div style="font-size: 0.75rem; color: #60a5fa; letter-spacing: 4px; margin-bottom: 10px; font-weight: 800;">VERIFIED BY MRBONUS</div>
+        <div style="font-size: 0.75rem; color: #60a5fa; letter-spacing: 4px; margin-bottom: 15px; font-weight: 800;">VERIFIED BY MRBONUS</div>
         <h1>FIRST CASINO</h1>
         <div class="fs-value">1300 FS</div>
         <p style="color: #94a3b8; font-size: 0.9rem;">Ваш статус <b>VIP-гравця</b> підтверджено. <br> Активація пакета фріспінів доступна в боті.</p>
@@ -185,7 +191,7 @@
     </div>
 
     <!-- САПОРТ -->
-    <a href="https://t.me" class="support-widget js-link">
+    <a href="https://t.me/MRBONUS_UA_bot" class="support-widget js-link">
         <div style="text-align: left;">
             <span>Support Manager</span><br>
             <b>@MRBONUS_support</b>
@@ -201,10 +207,11 @@
     if (tg) { tg.ready(); tg.expand(); }
     document.querySelectorAll('.js-link').forEach(link => {
         link.addEventListener('click', function(e) {
+            const url = this.getAttribute('href');
             if (tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0) {
                 e.preventDefault();
                 if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-                tg.openTelegramLink(this.getAttribute('href'));
+                tg.openTelegramLink(url);
             }
         });
     });
