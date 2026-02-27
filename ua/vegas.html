@@ -10,6 +10,28 @@
     <meta name="keywords" content="Vegas, Вегас казино, 150 фріспінів, бонус Vegas 2026, mrbonus ua, бездепозитний бонус, КРАІЛ">
     <meta name="robots" content="index, follow">
 
+    <!-- ТЕХНІЧНА РОЗМІТКА ДЛЯ ПОШУКУ (BRAND NAME & LOGO) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Vegas Casino",
+      "url": "https://play.mrbonusua.space/ua/vegas.html",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Vegas Casino",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://play.mrbonusua.space" 
+        }
+      }
+    }
+    </script>
+
+    <!-- ІКОНКИ ДЛЯ ПОШУКУ ТА ВКЛАДКИ -->
+    <link rel="icon" href="https://play.mrbonusua.space" type="image/jpeg">
+    <link rel="apple-touch-icon" href="https://play.mrbonusua.space">
+
     <!-- MICRODATA JSON-LD -->
     <script type="application/ld+json">
     {
@@ -31,7 +53,11 @@
     }
     </script>
 
+    <!-- ПРАВИЛЬНЕ ПІДКЛЮЧЕННЯ ШРИФТІВ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <script src="https://telegram.org"></script>
     
     <style>
         :root {
@@ -57,7 +83,6 @@
             padding: 30px 15px;
         }
 
-        /* ROYAL CARD */
         .hero-card {
             background: linear-gradient(145deg, #1a0a0a 0%, #0a0505 100%);
             border: 1px solid var(--border-gold);
@@ -101,7 +126,6 @@
             letter-spacing: -1px;
         }
 
-        /* VIP BUTTON WITH SHIMMER */
         .btn-vip {
             position: relative;
             display: flex;
@@ -132,7 +156,6 @@
 
         @keyframes move { 0% { left: -100%; } 100% { left: 250%; } }
 
-        /* ANALYTICAL CONTENT */
         .info-block {
             background: rgba(255,255,255,0.02);
             border: 1px solid rgba(255,255,255,0.05);
@@ -158,8 +181,9 @@
 
         .specs-list {
             padding-left: 15px;
-            list-style-type: gold;
+            list-style-type: none;
         }
+        .specs-list li::before { content: "✦ "; color: #d4af37; }
 
         .support-btn {
             display: block;
@@ -194,25 +218,23 @@
             <p style="font-weight: 600; color: #fff; margin: 0;">PREMIUM WELCOME PACKAGE</p>
             <p style="font-size: 0.8rem; color: #555;">Активація через захищений Telegram-канал</p>
             
-            <a href="https://t.me/MRBONUS_UA_bot" class="btn-vip">ЗАБРАТИ У ТЕЛЕГРАМ 🃏</a>
+            <a href="https://t.me/MRBONUS_UA_bot" class="btn-vip js-link">ЗАБРАТИ У ТЕЛЕГРАМ 🃏</a>
         </header>
 
         <section class="info-block">
             <h2>💎 ЕКСПЕРТНИЙ ОГЛЯД ПЛАТФОРМИ</h2>
-            <p><strong>Vegas</strong> — це еталон преміального гемблінгу, що поєднує класичну атмосферу Лас-Вегаса з передовими технологіями онлайн-казино. У 2026 році бренд пропонує <strong>150 фріспінів</strong> для нових резидентів, активованих через мережу <strong>MRBONUS UA</strong>.</p>
+            <p><strong>Vegas</strong> — це еталон преміального гемблінгу. У 2026 році бренд пропонує <strong>150 фріспінів</strong> для нових резидентів, активованих через мережу <strong>MRBONUS UA</strong>.</p>
             <ul class="specs-list">
-                <li><strong>Сертифікація:</strong> Софт від топових провайдерів (Amatic, Pragmatic Play) з ліцензійним RTP до 97.4%.</li>
-                <li><strong>Фінансова безпека:</strong> Миттєві транзакції через захищені шлюзи з протоколами 3D-Secure.</li>
+                <li><strong>Сертифікація:</strong> Софт від топових провайдерів з RTP до 97.4%.</li>
+                <li><strong>Фінансова безпека:</strong> Миттєві транзакції через захищені шлюзи.</li>
                 <li><strong>VIP-підтримка:</strong> Персональний менеджер для активних гравців спільноти.</li>
             </ul>
         </section>
 
         <section class="info-block">
             <h2>🛡️ ВІДПОВІДАЛЬНА ГРА ТА ПРАВИЛА</h2>
-            <p>Адміністрація <strong>Vegas</strong> суворо дотримується стандартів відповідальної гри. Ми нагадуємо, що доступ до платформи дозволено лише особам, які досягли <strong>21 року</strong>.</p>
-            <p>Використання VIP-бота гарантує вам отримання актуального дзеркала сайту та захист від фішингових ресурсів. Грай відповідально — встановлюй власні ліміти в особистому кабінеті.</p>
-            
-            <a href="https://t.me" class="support-btn">SUPPORT: @MRBONUS_UA</a>
+            <p>Адміністрація <strong>Vegas</strong> суворо дотримується стандартів відповідальної гри. Доступ дозволено лише особам від <strong>21 року</strong>.</p>
+            <a href="https://t.me" class="support-btn js-link">SUPPORT: @MRBONUS_support</a>
         </section>
 
         <footer class="footer-legal">
@@ -220,5 +242,20 @@
         </footer>
     </div>
 
+    <script>
+        const tg = window.Telegram ? window.Telegram.WebApp : null;
+        if (tg) { tg.ready(); tg.expand(); }
+        
+        document.querySelectorAll('.js-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const url = this.getAttribute('href');
+                if (tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0) {
+                    e.preventDefault();
+                    if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+                    tg.openTelegramLink(url);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
