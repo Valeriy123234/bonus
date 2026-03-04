@@ -173,6 +173,8 @@
         border-radius: 10px;
         pointer-events: none;
         z-index: 100;
+        overflow: hidden !important; /* ПРИХОВУЄ символи поза квадратом */
+        height: 100px;
         /* Застосовуємо магію фільтра */
         filter: url(#lightning-filter) drop-shadow(0 0 10px #00f2ff);
         animation: spark 0.1s infinite alternate;
@@ -189,7 +191,10 @@
         filter: url(#lightning-filter) drop-shadow(0 0 15px #ffcc00);
     }
 
-    .symbols-track { position: relative; width: 100%; }
+   .symbols-track {
+    display: flex;
+    flex-direction: column;      /* Вишиковує смайли в колону всередині */
+}
     .symbol { font-size: 50px; height: 100px; display: flex; align-items: center; justify-content: center; }
 </style>
 <script>
