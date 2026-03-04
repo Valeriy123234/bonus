@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MR. BONUS VIP | PRESTIGE CLUB</title>
+    <title>MR. BONUS VIP | ULTRA WINNER</title>
     <style>
         body {
             margin: 0; padding: 0; background: #050505;
@@ -42,15 +42,15 @@
             z-index: 100; pointer-events: none; text-transform: uppercase;
         }
         #winMessage.show { 
-            animation: winPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, 
-                       winPulse 0.8s ease-in-out infinite 0.5s; 
+            animation: winPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, 
+                       winPulse 0.7s ease-in-out infinite 0.4s; 
         }
 
         @keyframes winPop { 0% { transform: translate(-50%, -50%) scale(0); } 100% { transform: translate(-50%, -50%) scale(1.2); } }
         @keyframes winPulse { 0%, 100% { transform: translate(-50%, -50%) scale(1.2); } 50% { transform: translate(-50%, -50%) scale(1.4); opacity: 0.8; } }
 
-        .slot-container { display: flex; gap: 12px; z-index: 2; position: relative; transition: opacity 0.5s, filter 0.5s; }
-        .slot-container.fade-out { opacity: 0.1; filter: blur(4px); }
+        .slot-container { display: flex; gap: 12px; z-index: 2; position: relative; transition: opacity 0.4s, filter 0.4s; }
+        .slot-container.fade-out { opacity: 0.1; filter: blur(5px); }
 
         .reel {
             width: 90px; height: 100px; background: #111;
@@ -106,7 +106,6 @@
         </div>
     </div>
 
-    <!-- ЗАМІНИ ТВІЙ_БОТ НА СВОЄ (MrBonus_VIP_bot) -->
     <a href="https://t.me" 
        onclick="window.location.href='tg://resolve?domain=MrBonus_VIP_bot'; setTimeout(function(){ window.location.href='https://t.me'; }, 500); return false;" 
        class="btn">Забрати Бонус 🎁</a>
@@ -114,25 +113,21 @@
     <div class="prestige-content">
         <div class="prestige-card">
             <b>👑 ПРИВІЛЕЇ КЛУБУ</b>
-            <p>Ваш статус активовано. Учасникам MR. BONUS VIP доступні ексклюзивні бездепозитні фріспіни та підвищені ліміти на виплати.</p>
+            <p>Учасникам MR. BONUS VIP доступні ексклюзивні бездепозитні фріспіни та підвищені ліміти на виплати.</p>
         </div>
         <div class="prestige-card">
             <b>🛡️ ГАРАНТІЯ БЕЗПЕКИ</b>
-            <p>Ми працюємо за протоколами конфіденційності VIP-рівня. Ваші дані захищені, а доступ надається лише після верифікації віку.</p>
+            <p>Ми працюємо за протоколами конфіденційності VIP-рівня. Ваші дані захищені.</p>
         </div>
         <div class="prestige-card">
             <b>⚖️ ВІДПОВІДАЛЬНА ГРА</b>
-            <p>Ми суворо дотримуємось принципів Responsible Gambling. Гра повинна залишатися розвагою. Встановлюйте ліміти та грайте з розумом.</p>
+            <p>Ми суворо дотримуємось принципів Responsible Gambling. Грайте з розумом.</p>
         </div>
     </div>
 
     <div class="luxury-footer">
         <div class="age-container">21+</div>
-        <div class="responsible-text">
-            ГРАЙТЕ ВІДПОВІДАЛЬНО! <br>
-            Участь в азартних іграх може викликати ігрову залежність. <br>
-            Ми підтримуємо лише сертифікований гемблінг.
-        </div>
+        <div class="responsible-text">ГРАЙТЕ ВІДПОВІДАЛЬНО! Участь в азартних іграх може викликати залежність.</div>
     </div>
 
     <script>
@@ -158,20 +153,22 @@
             const isWin = (spinCount % 3 === 0);
 
             if (isWin) {
-                // ГАРАНТОВАНО 3 ОДНАКОВИХ СИМВОЛИ
-                let s = symbolsList[winIdx % symbolsList.length];
+                // ТУТ ЖОРСТКА ПЕРЕВІРКА: 3 ідентичні символи
+                const s = symbolsList[winIdx % symbolsList.length];
                 finalRes = [s, s, s]; 
                 winIdx++;
             } else {
-                // ГАРАНТОВАНО 3 РІЗНИХ СИМВОЛИ
+                // ТУТ ЖОРСТКА ПЕРЕВІРКА: 3 різні символи
                 let pool = [...symbolsList].sort(() => Math.random() - 0.5);
                 finalRes = [pool[0], pool[1], pool[2]];
             }
 
-            [1, 2, 3].forEach(i => {
+            // Запускаємо барабани
+            for (let i = 1; i <= 3; i++) {
                 const track = document.getElementById('reel' + i);
                 track.innerHTML = '';
                 
+                // "Хвіст"
                 for (let s = 0; s < 30; s++) {
                     const d = document.createElement('div');
                     d.className = 'symbol';
@@ -179,6 +176,7 @@
                     track.appendChild(d);
                 }
                 
+                // РЕЗУЛЬТАТ
                 const f = document.createElement('div');
                 f.className = 'symbol';
                 f.innerText = finalRes[i-1];
@@ -186,8 +184,8 @@
 
                 track.style.animation = 'none';
                 track.offsetHeight; 
-                track.style.animation = `spinDown ${1.1 + i*0.3}s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards`;
-            });
+                track.style.animation = `spinDown ${1.0 + i*0.2}s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards`;
+            }
 
             setTimeout(() => {
                 if (isWin) {
@@ -196,11 +194,11 @@
                     winMsg.classList.add('show');
                 }
                 isSpinActive = false;
-            }, 2500);
+            }, 2000);
         }
 
-        // ПЕРЕРВА 2 СЕКУНДИ (після зупинки барабанів)
-        setInterval(startSpin, 4500); 
+        // ШВИДКА ПЕРЕРВА 1.5 СЕКУНДИ ПІСЛЯ ЗУПИНКИ
+        setInterval(startSpin, 4000); 
         startSpin();
     </script>
 </body>
