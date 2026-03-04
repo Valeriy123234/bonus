@@ -131,67 +131,76 @@
         <div class="responsible-text">ГРАЙТЕ ВІДПОВІДАЛЬНО! Участь в азартних іграх може викликати залежність.</div>
     </div>
 
-    <script>
-        const symbolsList = ['💎', '🎰', '🔥', '❤️', '🍀', '7️⃣'];
-        let spinCount = 0;
-        let winIdx = 0;
-        let isSpinActive = false;
+<script>
+    const symbolsList = ['💎', '🎰', '🔥', '❤️', '🍀', '7️⃣'];
+    let spinCount = 0;
+    let winIdx = 0;
+    let isSpinActive = false;
 
-        function startSpin() {
-            if (isSpinActive) return;
-            isSpinActive = true;
-            
-            spinCount++;
-            const frame = document.getElementById('mainFrame');
-            const container = document.getElementById('slotContainer');
-            const winMsg = document.getElementById('winMessage');
-            
-            frame.classList.remove('win-glow');
-            container.classList.remove('fade-out');
-            winMsg.classList.remove('show');
+    function startSpin() {
+        if (isSpinActive) return;
+        isSpinActive = true;
+        
+        spinCount++;
+        const frame = document.getElementById('mainFrame');
+        const container = document.getElementById('slotContainer');
+        const winMsg = document.getElementById('winMessage');
+        
+        // Скидання візуальних ефектів
+        frame.classList.remove('win-glow');
+        container.classList.remove('fade-out');
+        winMsg.classList.remove('show');
 
-            let finalRes = [];
-            const isWin = (spinCount % 3 === 0);
+        // ГЕНЕРУЄМО РЕЗУЛЬТАТ (2 програші, 1 виграш)
+        let finalRes = [];
+        const isWin = (spinCount % 3 === 0);
 
-            if (isWin) {
-                // ПРИМУСОВО 3 ОДНАКОВИХ
-                const winSym = symbolsList[winIdx % symbolsList.length];
-                finalRes = [winSym, winSym, winSym];
-                winIdx++;
-            } else {
-                // ПРИМУСОВО 3 РІЗНИХ
-                let pool = [...symbolsList].sort(() => Math.random() - 0.5);
-                finalRes = [pool[0], pool[1], pool[2]];
-            }
-
-            for (let i = 1; i <= 3; i++) {
-                const track = document.getElementById('reel' + i).querySelector('.symbols-track');
-                let trackHTML = '';
-                // "Хвіст"
-                for (let s = 0; s < 30; s++) {
-                    trackHTML += `<div class="symbol">${symbolsList[Math.floor(Math.random() * symbolsList.length)]}</div>`;
-                }
-                // РЕЗУЛЬТАТ (чітко за індексом i-1)
-                trackHTML += `<div class="symbol">${finalRes[i-1]}</div>`;
-                track.innerHTML = trackHTML;
-
-                track.style.animation = 'none';
-                track.offsetHeight; 
-                track.style.animation = `spinDown ${1.0 + (i*0.2)}s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards`;
-            }
-
-            setTimeout(() => {
-                if (isWin) {
-                    frame.classList.add('win-glow');
-                    container.classList.add('fade-out');
-                    winMsg.classList.add('show');
-                }
-                isSpinActive = false;
-            }, 2000);
+        if (isWin) {
+            // СУВОРО 3 ОДНАКОВИХ
+            const s = symbolsList[winIdx % symbolsList.length];
+            finalRes = [s, s, s];
+            winIdx++;
+        } else {
+            // СУВОРО 3 РІЗНИХ (перемішуємо копію списку)
+            let pool = [...symbolsList].sort(() => Math.random() - 0.5);
+            finalRes = [pool[0], pool[1], pool[2]];
         }
 
-        setInterval(startSpin, 4000); 
-        startSpin();
-    </script>
+        // ЗАПУСК КОЖНОГО БАРАБАНА
+        for (let i = 1; i <= 3; i++) {
+            const track = document.getElementById('reel' + i).querySelector('.symbols-track');
+            
+            // Створюємо стрічку: 1 початковий + 29 "хвіст" + 1 результат (всього 31)
+            let trackHTML = '';
+            for (let s = 0; s < 30; s++) {
+                trackHTML += `<div class="symbol">${symbolsList[Math.floor(Math.random() * symbolsList.length)]}</div>`;
+            }
+            // ВСТАВЛЯЄМО РЕЗУЛЬТАТ В САМИЙ КІНЕЦЬ (31-й символ)
+            trackHTML += `<div class="symbol">${finalRes[i-1]}</div>`;
+            
+            track.innerHTML = trackHTML;
+
+            // СКИДАННЯ ТА ЗАПУСК АНІМАЦІЇ (зупинка на -3000px для 31 символу)
+            track.style.animation = 'none';
+            track.offsetHeight; // Force reflow
+            track.style.animation = `spinDown ${1.2 + (i * 0.4)}s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards`;
+        }
+
+        // ВКЛЮЧАЄМО ЕФЕКТИ ПІСЛЯ ЗУПИНКИ ОСТАННЬОГО БАРАБАНА
+        setTimeout(() => {
+            if (isWin) {
+                frame.classList.add('win-glow');
+                container.classList.add('fade-out');
+                winMsg.classList.add('show');
+            }
+            isSpinActive = false;
+        }, 2500); 
+    }
+
+    // ІНТЕРВАЛ ЗАПУСКУ (4.5 секунди - дає час подивитися на WIN)
+    setInterval(startSpin, 4500); 
+    startSpin(); // Перший запуск одразу
+</script>
+
 </body>
 </html>
