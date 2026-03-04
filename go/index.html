@@ -175,30 +175,31 @@
             const track = document.getElementById('reel' + i).querySelector('.symbols-track');
             track.innerHTML = '';
             
-            // Створюємо стрічку: 40 символів для швидкості + фінальний
-            for (let s = 0; s < 40; s++) {
-                const div = document.createElement('div');
-                div.className = 'symbol';
-                div.innerText = symbolsList[Math.floor(Math.random() * symbolsList.length)];
-                track.appendChild(div);
-            }
-            
+            // Фінальний символ тепер додаємо ПЕРШИМ, щоб він опинився знизу при падінні
             const resDiv = document.createElement('div');
             resDiv.className = 'symbol';
             resDiv.innerText = finalRes[index];
             track.appendChild(resDiv);
 
-            // Обчислюємо точну відстань прокрутки
-            const symbolHeight = track.firstChild.offsetHeight || 100;
+            // Додаємо 30 символів зверху для ефекту прокрутки
+            for (let s = 0; s < 30; s++) {
+                const div = document.createElement('div');
+                div.className = 'symbol';
+                div.innerText = symbolsList[Math.floor(Math.random() * symbolsList.length)];
+                track.insertBefore(div, track.firstChild);
+            }
+            
+            const symbolHeight = 100; // Висота символу (підкоригуй під свій CSS)
             const travelDistance = (track.children.length - 1) * symbolHeight;
 
-            // Запускаємо анімацію через JS (Web Animations API)
+            // Анімація зверху вниз (-travel до 0) з ефектом пружини
             const animation = track.animate([
-                { transform: 'translateY(0)' },
-                { transform: `translateY(-${travelDistance}px)` }
+                { transform: `translateY(-${travelDistance}px)` },
+                { transform: 'translateY(0)' }
             ], {
-                duration: 1500 + (index * 400),
-                easing: 'cubic-bezier(0.45, 0.05, 0.55, 0.95)',
+                duration: 1200 + (index * 400),
+                // "Пружинний" кубік Безьє
+                easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)', 
                 fill: 'forwards'
             });
 
@@ -216,10 +217,10 @@
         });
     }
 
-    // Автозапуск кожні 5 секунд
     setInterval(startSpin, 5000); 
     startSpin();
 </script>
+
 
 
 
