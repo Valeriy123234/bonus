@@ -154,12 +154,12 @@
         let finalRes = [];
 
         if (isWin) {
-            // ГАРАНТОВАНО 3 ОДНАКОВИХ
+            // ЖОРСТКО: Один символ на всі три слоти
             const s = symbolsList[winIdx % symbolsList.length];
             finalRes = [s, s, s];
             winIdx++;
         } else {
-            // ГАРАНТОВАНО 3 РІЗНИХ
+            // ЖОРСТКО: Три різні символи
             let pool = [...symbolsList].sort(() => Math.random() - 0.5);
             finalRes = [pool[0], pool[1], pool[2]];
         }
@@ -171,32 +171,33 @@
             const track = document.getElementById('reel' + i).querySelector('.symbols-track');
             track.innerHTML = '';
             
-            // 1. СТВОРЮЄМО РЕЗУЛЬТАТ (ВІН БУДЕ ВНИЗУ, ТУТ ЗУПИНКА)
+            // 1. Результат ставимо ПЕРШИМ (це точка 0)
             const resDiv = document.createElement('div');
             resDiv.className = 'symbol';
             resDiv.innerText = finalRes[index];
             track.appendChild(resDiv);
 
-            // 2. ДОДАЄМО 40 СИМВОЛІВ "ВГОРУ" (ВОНИ БУДУТЬ ПАДАТИ ВНИЗ)
+            // 2. Додаємо 40 символів ВГОРУ (вони будуть падати)
             for (let s = 0; s < 40; s++) {
                 const div = document.createElement('div');
                 div.className = 'symbol';
                 div.innerText = symbolsList[Math.floor(Math.random() * symbolsList.length)];
-                track.insertBefore(div, track.firstChild); // Додаємо на початок списку
+                track.insertBefore(div, track.firstChild);
             }
 
-            const symbolHeight = 100; // Фіксована висота для точності
+            // 3. ФІКСОВАНА ВИСОТА (уникаємо помилок браузера)
+            const symbolHeight = 100; 
             const travelDistance = (track.children.length - 1) * symbolHeight;
 
-            // 3. АНІМАЦІЯ: З МІНУСА В НУЛЬ (ПАДІННЯ ВНИЗ) + М'ЯКИЙ ВІДСКОК
+            // 4. АНІМАЦІЯ: З МІНУСА В НУЛЬ (ПАДІННЯ ВНИЗ)
             const animation = track.animate([
-                { transform: `translateY(-${travelDistance}px)` }, // Початок (високо в небі)
-                { transform: 'translateY(15px)', offset: 0.85 },    // Проліт нижче (амплітуда)
-                { transform: 'translateY(-5px)', offset: 0.95 },    // Легкий відскок назад
-                { transform: 'translateY(0)' }                      // Фінальна точка
+                { transform: `translateY(-${travelDistance}px)` },
+                { transform: 'translateY(15px)', offset: 0.85 }, // М'яке приземлення
+                { transform: 'translateY(-5px)', offset: 0.95 }, 
+                { transform: 'translateY(0)' } 
             ], {
-                duration: 2000 + (index * 500), // Поступова зупинка барабанів
-                easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
+                duration: 2000 + (index * 500),
+                easing: 'cubic-bezier(0.2, 0, 0.2, 1)',
                 fill: 'forwards'
             });
 
@@ -207,10 +208,8 @@
                         frame.classList.add('win-glow');
                         container.classList.add('fade-out');
                         winMsg.classList.add('show');
-                        // Пауза 3.5 сек на виграш
                         setTimeout(() => { isSpinActive = false; }, 3500);
                     } else {
-                        // Пауза 1.5 сек на програш
                         setTimeout(() => { isSpinActive = false; }, 1500);
                     }
                 }
@@ -218,14 +217,11 @@
         });
     }
 
-    // Постійна перевірка готовності до нового спіну
-    setInterval(() => {
-        if (!isSpinActive) startSpin();
-    }, 100);
-
-    // Перший запуск
+    // Цикл перевірки
+    setInterval(() => { if (!isSpinActive) startSpin(); }, 100);
     startSpin();
 </script>
+
 
 </body>
 </html>
