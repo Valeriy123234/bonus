@@ -131,8 +131,8 @@
         <div class="responsible-text">ГРАЙТЕ ВІДПОВІДАЛЬНО! Участь в азартних іграх може викликати залежність.</div>
     </div>
 
-<script>
-    /* Додай це у свій <style> */
+<style>
+/* 1. СТИЛІ (БЕЗ НИХ СИМВОЛИ НЕ СТАНУТЬ В РЯД) */
 .symbols-track {
     display: flex;
     flex-direction: column;
@@ -151,100 +151,99 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 55px; /* Переконайся, що шрифт не розпирає блок */
+    font-size: 55px;
 }
 
 .reel {
-    height: 100px !important; /* Рівно один символ у видимій зоні */
+    height: 100px !important; 
     overflow: hidden;
     position: relative;
 }
+</style>
 
-    const symbolsList = ['💎', '🎰', '🔥', '❤️', '🍀', '7️⃣'];
-    let spinCount = 0;
-    let winIdx = 0;
-    let isSpinActive = false;
+<script>
+/* 2. ЛОГІКА (БЕЗ НЕЇ НЕ БУДЕ 3 В РЯД) */
+const symbolsList = ['💎', '🎰', '🔥', '❤️', '🍀', '7️⃣'];
+let spinCount = 0;
+let winIdx = 0;
+let isSpinActive = false;
 
-    function startSpin() {
-        if (isSpinActive) return;
-        isSpinActive = true;
-        
-        spinCount++;
-        const frame = document.getElementById('mainFrame');
-        const container = document.getElementById('slotContainer');
-        const winMsg = document.getElementById('winMessage');
-        
-        frame.classList.remove('win-glow');
-        container.classList.remove('fade-out');
-        winMsg.classList.remove('show');
+function startSpin() {
+    if (isSpinActive) return;
+    isSpinActive = true;
+    
+    spinCount++;
+    const frame = document.getElementById('mainFrame');
+    const container = document.getElementById('slotContainer');
+    const winMsg = document.getElementById('winMessage');
+    
+    frame.classList.remove('win-glow');
+    container.classList.remove('fade-out');
+    winMsg.classList.remove('show');
 
-        const isWin = (spinCount % 3 === 0);
-        let finalRes = [];
+    const isWin = (spinCount % 3 === 0);
+    let finalRes = [];
 
-        if (isWin) {
-            // ЖОРСТКО: Один символ на всі три слоти
-            const s = symbolsList[winIdx % symbolsList.length];
-            finalRes = [s, s, s];
-            winIdx++;
-        } else {
-            // ЖОРСТКО: Три гарантовано різні символи
-            let pool = [...symbolsList].sort(() => Math.random() - 0.5);
-            finalRes = [pool[0], pool[1], pool[2]];
-        }
-
-        const reels = [1, 2, 3];
-        let completed = 0;
-
-        reels.forEach((i, index) => {
-            const track = document.getElementById('reel' + i).querySelector('.symbols-track');
-            track.innerHTML = '';
-            
-            // 1. Формуємо масив з 41 символу
-            let reelSymbols = [];
-            // Додаємо 40 рандомних (хвіст)
-            for (let s = 0; s < 40; s++) {
-                reelSymbols.push(symbolsList[Math.floor(Math.random() * symbolsList.length)]);
-            }
-            // 41-й символ — це наш РЕЗУЛЬТАТ (він буде в самому низу)
-            reelSymbols.push(finalRes[index]);
-
-            // 2. Вставляємо в HTML (тепер порядок залізний)
-            track.innerHTML = reelSymbols.map(s => `<div class="symbol">${s}</div>`).join('');
-
-            const symbolHeight = 100; // Фіксована висота
-            const travelDistance = (reelSymbols.length - 1) * symbolHeight;
-
-            // 3. АНІМАЦІЯ ПАДІННЯ ВНИЗ (з мінуса в нуль)
-            const animation = track.animate([
-                { transform: `translateY(-${travelDistance}px)` }, // Початок зверху
-                { transform: 'translateY(15px)', offset: 0.85 },    // М'який проліт нижче
-                { transform: 'translateY(-5px)', offset: 0.95 },    // Відскок
-                { transform: 'translateY(0)' }                      // ФІНІШ
-            ], {
-                duration: 2000 + (index * 500),
-                easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
-                fill: 'forwards'
-            });
-
-            animation.onfinish = () => {
-                completed++;
-                if (completed === 3) {
-                    if (isWin) {
-                        frame.classList.add('win-glow');
-                        container.classList.add('fade-out');
-                        winMsg.classList.add('show');
-                        setTimeout(() => { isSpinActive = false; }, 3500);
-                    } else {
-                        setTimeout(() => { isSpinActive = false; }, 1500);
-                    }
-                }
-            };
-        });
+    if (isWin) {
+        // ЖОРСТКО: Один символ на всі три слоти
+        const s = symbolsList[winIdx % symbolsList.length];
+        finalRes = [s, s, s];
+        winIdx++;
+    } else {
+        // ЖОРСТКО: Три гарантовано різні символи
+        let pool = [...symbolsList].sort(() => Math.random() - 0.5);
+        finalRes = [pool[0], pool[1], pool[2]];
     }
 
-    setInterval(() => { if (!isSpinActive) startSpin(); }, 200);
-    startSpin();
+    const reels = [1, 2, 3];
+    let completed = 0;
+
+    reels.forEach((i, index) => {
+        const track = document.getElementById('reel' + i).querySelector('.symbols-track');
+        track.innerHTML = '';
+        
+        let reelSymbols = [];
+        for (let s = 0; s < 40; s++) {
+            reelSymbols.push(symbolsList[Math.floor(Math.random() * symbolsList.length)]);
+        }
+        reelSymbols.push(finalRes[index]);
+
+        track.innerHTML = reelSymbols.map(s => `<div class="symbol">${s}</div>`).join('');
+
+        const symbolHeight = 100; 
+        const travelDistance = (reelSymbols.length - 1) * symbolHeight;
+
+        const animation = track.animate([
+            { transform: `translateY(-${travelDistance}px)` },
+            { transform: 'translateY(15px)', offset: 0.85 },
+            { transform: 'translateY(-5px)', offset: 0.95 },
+            { transform: 'translateY(0)' }
+        ], {
+            duration: 2000 + (index * 500),
+            easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
+            fill: 'forwards'
+        });
+
+        animation.onfinish = () => {
+            completed++;
+            if (completed === 3) {
+                if (isWin) {
+                    frame.classList.add('win-glow');
+                    container.classList.add('fade-out');
+                    winMsg.classList.add('show');
+                    setTimeout(() => { isSpinActive = false; }, 3500);
+                } else {
+                    setTimeout(() => { isSpinActive = false; }, 1500);
+                }
+            }
+        };
+    });
+}
+
+setInterval(() => { if (!isSpinActive) startSpin(); }, 200);
+startSpin();
 </script>
+
 
 
 </body>
