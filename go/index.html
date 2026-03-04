@@ -140,7 +140,58 @@
     
 </div>
 
+<svg style="position: absolute; width: 0; height: 0;">
+  <filter id="lightning-filter">
+    <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" seed="1" result="noise">
+      <animate attributeName="seed" from="1" to="100" dur="0.8s" repeatCount="indefinite" />
+    </feTurbulence>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="12" />
+  </filter>
+</svg>
 
+<style>
+    /* 2. Стилі для квадратів з блискавками */
+    .reel {
+        position: relative;
+        width: 100px;  /* Підстав свою ширину */
+        height: 100px; /* Підстав свою висоту */
+        border: 2px solid #222;
+        background: #000;
+        overflow: visible !important; /* ВАЖЛИВО: щоб блискавки вилазили за межі */
+        margin: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Сама електрична дуга */
+    .reel::after {
+        content: '';
+        position: absolute;
+        top: -8px; left: -8px; right: -8px; bottom: -8px; /* Вихід блискавок назовні */
+        border: 3px solid #00f2ff;
+        border-radius: 10px;
+        pointer-events: none;
+        z-index: 100;
+        /* Застосовуємо магію фільтра */
+        filter: url(#lightning-filter) drop-shadow(0 0 10px #00f2ff);
+        animation: spark 0.1s infinite alternate;
+    }
+
+    @keyframes spark {
+        from { opacity: 0.7; filter: url(#lightning-filter) drop-shadow(0 0 5px #00f2ff) brightness(1.2); }
+        to { opacity: 1; filter: url(#lightning-filter) drop-shadow(0 0 15px #00f2ff) brightness(2); }
+    }
+
+    /* Ефект при виграші (стає золотим) */
+    .win-glow .reel::after {
+        border-color: #ffcc00;
+        filter: url(#lightning-filter) drop-shadow(0 0 15px #ffcc00);
+    }
+
+    .symbols-track { position: relative; width: 100%; }
+    .symbol { font-size: 50px; height: 100px; display: flex; align-items: center; justify-content: center; }
+</style>
 <script>
     const symbolsList = ['💎', '🎰', '🔥', '❤️', '🍀', '7️⃣'];
     let spinCount = 0;
