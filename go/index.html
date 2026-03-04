@@ -3,131 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MR. BONUS VIP | RANDOM SLOT</title>
+    <title>MR. BONUS VIP | PRESTIGE SLOT</title>
     <style>
         body {
             margin: 0; padding: 0;
-            background: radial-gradient(circle, #1a1a1a 0%, #050505 100%);
+            background: #050505;
             font-family: 'Segoe UI', sans-serif;
             color: #fff;
             display: flex; flex-direction: column; align-items: center;
             min-height: 100vh; overflow-x: hidden;
-            padding-top: 30px;
+            padding-top: 40px;
         }
 
         .brand-header {
-            font-size: clamp(30px, 8vw, 42px);
+            font-size: clamp(34px, 10vw, 48px);
             font-weight: 900;
-            color: #d4af37;
+            background: linear-gradient(to bottom, #fff, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             text-transform: uppercase;
-            letter-spacing: 4px;
-            text-shadow: 0 0 25px rgba(212, 175, 55, 0.7), 3px 3px 0px #000;
+            letter-spacing: 5px;
+            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.5));
             margin-bottom: 5px;
-            text-align: center;
         }
 
-        .sub-header { font-size: 13px; color: #888; letter-spacing: 5px; margin-bottom: 25px; font-weight: bold; }
+        .sub-header { font-size: 11px; color: #666; letter-spacing: 6px; margin-bottom: 30px; text-transform: uppercase; }
 
-        /* РАНДОМНИЙ СЛОТ-МАШИНА */
-        .slot-machine {
-            background: #000; padding: 15px; border-radius: 25px;
+        /* КАСТОМНИЙ 3D БАРАБАН */
+        .slot-frame {
+            background: linear-gradient(145deg, #222, #000);
+            padding: 20px; border-radius: 35px;
             border: 4px solid #d4af37;
-            box-shadow: 0 0 60px rgba(212, 175, 55, 0.3);
-            margin-bottom: 35px; display: flex; gap: 10px;
+            box-shadow: 0 0 80px rgba(212, 175, 55, 0.2), inset 0 0 20px #000;
+            margin-bottom: 40px; position: relative;
         }
+
+        /* Ефект скла поверх барабанів */
+        .slot-frame::after {
+            content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.05) 100%);
+            pointer-events: none; border-radius: 30px;
+        }
+
+        .slot-container { display: flex; gap: 15px; position: relative; z-index: 1; }
 
         .reel {
-            width: 85px; height: 85px;
-            background: linear-gradient(180deg, #000 0%, #1a1a1a 50%, #000 100%);
-            border-radius: 15px; overflow: hidden; border: 1px solid #333;
+            width: 90px; height: 100px;
+            background: #111; border-radius: 15px;
+            overflow: hidden; border: 2px solid #333;
+            box-shadow: inset 0 0 25px #000;
         }
 
-        .symbols {
-            display: flex; flex-direction: column; align-items: center;
+        .symbols { display: flex; flex-direction: column; align-items: center; }
+
+        /* УЛЬТРА-РАНДОМНІ ТА М'ЯКІ АНІМАЦІЇ */
+        .r1 { animation: spinR1 5s cubic-bezier(.4,0,.2,1) infinite; }
+        .r2 { animation: spinR2 5.3s cubic-bezier(.4,0,.2,1) infinite; }
+        .r3 { animation: spinR3 5.7s cubic-bezier(.4,0,.2,1) infinite; }
+
+        .symbol { 
+            font-size: 55px; height: 100px; 
+            display: flex; align-items: center; justify-content: center;
+            text-shadow: 0 0 15px rgba(255,255,255,0.3);
         }
 
-        /* УНІКАЛЬНІ АНІМАЦІЇ ДЛЯ КОЖНОГО БАРАБАНА */
-        .reel-1 .symbols { animation: spin1 4s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite; }
-        .reel-2 .symbols { animation: spin2 4.3s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite; }
-        .reel-3 .symbols { animation: spin3 4.7s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite; }
+        @keyframes spinR1 { 0%, 5% {transform: translateY(0);} 50% {transform: translateY(-2400px);} 70%, 100% {transform: translateY(-2900px);} }
+        @keyframes spinR2 { 0%, 8% {transform: translateY(0);} 52% {transform: translateY(-2600px);} 72%, 100% {transform: translateY(-3100px);} }
+        @keyframes spinR3 { 0%, 12% {transform: translateY(0);} 54% {transform: translateY(-2800px);} 74%, 100% {transform: translateY(-3300px);} }
 
-        .symbol { font-size: 50px; height: 85px; display: flex; align-items: center; justify-content: center; }
-
-        /* РІЗНІ ТОЧКИ ЗУПИНКИ (РАНДОМ) */
-        @keyframes spin1 { 0% {transform: translateY(0);} 50% {transform: translateY(-2000px);} 70% {transform: translateY(-2550px);} 75% {transform: translateY(-2540px);} 100% {transform: translateY(-2550px);} }
-        @keyframes spin2 { 0% {transform: translateY(0);} 50% {transform: translateY(-2200px);} 70% {transform: translateY(-2720px);} 75% {transform: translateY(-2710px);} 100% {transform: translateY(-2720px);} }
-        @keyframes spin3 { 0% {transform: translateY(0);} 50% {transform: translateY(-2400px);} 70% {transform: translateY(-2890px);} 75% {transform: translateY(-2880px);} 100% {transform: translateY(-2890px);} }
-
-        /* КНОПКА */
+        /* ЛАКШЕРІ КНОПКА */
         .btn {
-            display: block; width: 300px; text-align: center;
-            background: linear-gradient(45deg, #d4af37, #fff2ac, #d4af37);
-            background-size: 200% auto;
-            color: #000; padding: 22px 0;
-            font-size: 22px; font-weight: 900;
-            border-radius: 70px; text-decoration: none;
+            display: block; width: 320px; text-align: center;
+            background: linear-gradient(135deg, #d4af37 0%, #fff2ac 50%, #d4af37 100%);
+            background-size: 200% 200%;
+            color: #000; padding: 24px 0;
+            font-size: 26px; font-weight: 900;
+            border-radius: 80px; text-decoration: none;
             text-transform: uppercase;
-            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.5);
-            animation: pulse 2s infinite, shine 3s infinite;
+            box-shadow: 0 15px 50px rgba(212, 175, 55, 0.6);
+            animation: glow 3s linear infinite, pulse 2s ease-in-out infinite;
+            margin-bottom: 50px;
         }
 
-        @keyframes shine { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        @keyframes glow { 0% {background-position: 0% 50%;} 100% {background-position: 200% 50%;} }
+        @keyframes pulse { 0%, 100% {transform: scale(1);} 50% {transform: scale(1.05);} }
 
-        /* КАРТКИ */
-        .rules { width: 90%; max-width: 380px; margin-top: 30px; margin-bottom: 40px; }
-        .card { background: rgba(255,255,255,0.04); border-left: 5px solid #d4af37; padding: 15px; border-radius: 0 15px 15px 0; margin-bottom: 12px; }
-        .card b { color: #d4af37; font-size: 15px; display: block; margin-bottom: 4px; }
-        .card p { margin: 0; font-size: 13px; color: #bbb; }
+        /* ПРЕСТИЖ КАРТКИ */
+        .content { width: 90%; max-width: 420px; margin-bottom: 50px; }
+        .card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 22px; border-radius: 25px; margin-bottom: 15px;
+        }
+        .card b { color: #d4af37; font-size: 17px; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 10px; }
+        .card p { margin: 0; font-size: 14px; color: #aaa; line-height: 1.6; }
 
-        .footer { width: 100%; background: #000; padding: 30px 0; border-top: 1px solid #222; text-align: center; }
-        .age { display: inline-block; border: 2px solid #d4af37; padding: 4px 14px; border-radius: 10px; font-weight: bold; color: #d4af37; margin-bottom: 15px; font-size: 18px; }
-        .warn { font-size: 10px; color: #666; padding: 0 30px; text-transform: uppercase; letter-spacing: 1px; line-height: 1.5; }
+        /* ФУТЕР 21+ */
+        .footer { width: 100%; background: #000; padding: 40px 0; border-top: 1px solid #222; text-align: center; }
+        .age { border: 3px solid #d4af37; width: 60px; height: 60px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; color: #d4af37; font-weight: 900; font-size: 22px; margin-bottom: 20px; }
+        .warn { font-size: 10px; color: #444; letter-spacing: 2px; padding: 0 40px; line-height: 1.8; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div class="brand-header">MR BONUS VIP</div>
-    <div class="sub-header">EXCLUSIVE PARTNER</div>
+    <div class="sub-header">PREMIUM PARTNER CLUB</div>
 
-    <div class="slot-machine">
-        <div class="reel reel-1"><div class="symbols">
-            <div class="symbol">💎</div><div class="symbol">🎰</div><div class="symbol">🔥</div><div class="symbol">❤️</div><div class="symbol">🍀</div>
-            <div class="symbol">💎</div><div class="symbol">🎰</div><div class="symbol">🔥</div><div class="symbol">❤️</div><div class="symbol">🍀</div>
-            <div class="symbol">🎰</div><div class="symbol">🔥</div><div class="symbol">❤️</div><div class="symbol">💎</div><div class="symbol">7️⃣</div>
-            <div class="symbol">💎</div><div class="symbol">🎰</div><div class="symbol">🔥</div><div class="symbol">❤️</div><div class="symbol">🍀</div>
-            <div class="symbol">💎</div><div class="symbol">🎰</div><div class="symbol">🔥</div><div class="symbol">❤️</div><div class="symbol">💎</div>
-        </div></div>
-        <div class="reel reel-2"><div class="symbols">
-            <div class="symbol">🎰</div><div class="symbol">🔥</div><div class="symbol">💎</div><div class="symbol">🍀</div><div class="symbol">❤️</div>
-            <div class="symbol">🎰</div><div class="symbol">🔥</div><div class="symbol">💎</div><div class="symbol">🍀</div><div class="symbol">❤️</div>
-            <div class="symbol">🔥</div><div class="symbol">💎</div><div class="symbol">🍀</div><div class="symbol">❤️</div><div class="symbol">🎰</div>
-            <div class="symbol">🎰</div><div class="symbol">🔥</div><div class="symbol">💎</div><div class="symbol">🍀</div><div class="symbol">❤️</div>
-            <div class="symbol">🎰</div><div class="symbol">🔥</div><div class="symbol">💎</div><div class="symbol">🍀</div><div class="symbol">🎰</div>
-        </div></div>
-        <div class="reel reel-3"><div class="symbols">
-            <div class="symbol">🔥</div><div class="symbol">💎</div><div class="symbol">🎰</div><div class="symbol">❤️</div><div class="symbol">🍀</div>
-            <div class="symbol">🔥</div><div class="symbol">💎</div><div class="symbol">🎰</div><div class="symbol">❤️</div><div class="symbol">🍀</div>
-            <div class="symbol">💎</div><div class="symbol">🎰</div><div class="symbol">❤️</div><div class="symbol">🍀</div><div class="symbol">🔥</div>
-            <div class="symbol">🔥</div><div class="symbol">💎</div><div class="symbol">🎰</div><div class="symbol">❤️</div><div class="symbol">🍀</div>
-            <div class="symbol">🔥</div><div class="symbol">💎</div><div class="symbol">🎰</div><div class="symbol">❤️</div><div class="symbol">🔥</div>
-        </div></div>
+    <!-- АНІМОВАНИЙ 3D СЛОТ -->
+    <div class="slot-frame">
+        <div class="slot-container">
+            <div class="reel"><div class="symbols r1">
+                <div class="symbol">💎</div><div class="symbol">🎰</div><div class="symbol">🔥</div><div class="symbol">7️⃣</div><div class="symbol">❤️</div>
+                <div class="symbol">💎</div><div class="symbol">🎰</div><div class="symbol">🔥</div><div class="symbol">7️⃣</div><div class="symbol">❤️</div>
+                <div class="symbol">💎</div><div class="symbol">🎰</div><div class="symbol">🔥</div><div class="symbol">7️⃣</div><div class="symbol">❤️</div>
+                <!-- Рандомні символи для прокрутки -->
+                <div class="symbol">💎</div><div class="symbol">🎰</div><div class="symbol">🔥</div><div class="symbol">7️⃣</div><div class="symbol">❤️</div>
+                <div class="symbol">💎</div><div class="symbol">🎰</div><div class="symbol">🔥</div><div class="symbol">7️⃣</div><div class="symbol">💎</div>
+            </div></div>
+            <div class="reel"><div class="symbols r2">
+                <div class="symbol">🎰</div><div class="symbol">🔥</div><div class="symbol">❤️</div><div class="symbol">💎</div><div class="symbol">7️⃣</div>
+                <div class="symbol">🎰</div><div class="symbol">🔥</div><div class="symbol">❤️</div><div class="symbol">💎</div><div class="symbol">7️⃣</div>
+                <div class="symbol">🎰</div><div class="symbol">🔥</div><div class="symbol">❤️</div><div class="symbol">💎</div><div class="symbol">7️⃣</div>
+                <div class="symbol">🎰</div><div class="symbol">🔥</div><div class="symbol">❤️</div><div class="symbol">💎</div><div class="symbol">🎰</div>
+                <div class="symbol">🎰</div><div class="symbol">🔥</div><div class="symbol">❤️</div><div class="symbol">💎</div><div class="symbol">7️⃣</div>
+            </div></div>
+            <div class="reel"><div class="symbols r3">
+                <div class="symbol">🔥</div><div class="symbol">7️⃣</div><div class="symbol">💎</div><div class="symbol">🎰</div><div class="symbol">❤️</div>
+                <div class="symbol">🔥</div><div class="symbol">7️⃣</div><div class="symbol">💎</div><div class="symbol">🎰</div><div class="symbol">❤️</div>
+                <div class="symbol">🔥</div><div class="symbol">7️⃣</div><div class="symbol">💎</div><div class="symbol">🎰</div><div class="symbol">❤️</div>
+                <div class="symbol">🔥</div><div class="symbol">7️⃣</div><div class="symbol">💎</div><div class="symbol">🎰</div><div class="symbol">🔥</div>
+                <div class="symbol">🔥</div><div class="symbol">7️⃣</div><div class="symbol">💎</div><div class="symbol">🎰</div><div class="symbol">7️⃣</div>
+            </div></div>
+        </div>
     </div>
 
-    <!-- ТУТ ЗАМІНИ MrBonus_VIP_bot НА СВОЄ -->
+    <!-- КНОПКА З ТГ-РЕДІРЕКТОМ -->
     <a href="https://t.me" 
        onclick="window.location.href='tg://resolve?domain=MrBonus_VIP_bot'; setTimeout(function(){ window.location.href='https://t.me'; }, 500); return false;" 
        class="btn">Забрати Бонус 🎁</a>
 
-    <div class="rules">
-        <div class="card"><b>🛡️ VIP ВЕРИФІКАЦІЯ</b><p>Отримайте доступ до персональних пропозицій клубу.</p></div>
-        <div class="card"><b>⚖️ ВІДПОВІДАЛЬНА ГРА</b><p>Співпраця тільки з офіційними ліцензіатами України.</p></div>
-        <div class="card"><b>💎 МОМЕНТАЛЬНА ВИПЛАТА</b><p>Бонуси активуються автоматично після старту бота.</p></div>
+    <div class="content">
+        <div class="card">
+            <b>👑 ПРИВІЛЕЇ КЛУБУ</b>
+            <p>Доступ до закритих VIP-пропозицій, які оновлюються кожні 24 години. Тільки для верифікованих гравців.</p>
+        </div>
+        <div class="card">
+            <b>🛡️ ПОВНА БЕЗПЕКА</b>
+            <p>Ваша конфіденційність — наш пріоритет. Надійне шифрування даних та миттєва активація бонусів через бот.</p>
+        </div>
     </div>
 
     <div class="footer">
         <div class="age">21+</div>
-        <div class="warn">ГРАЙТЕ ВІДПОВІДАЛЬНО! АЗАРТНІ ІГРИ МОЖУТЬ ВИКЛИКАТИ ЗАЛЕЖНІСТЬ.</div>
+        <div class="warn">
+            ГРАЙТЕ ВІДПОВІДАЛЬНО! <br>
+            Участь в азартних іграх може викликати ігрову залежність. <br>
+            Ми підтримуємо лише ліцензований гемблінг України.
+        </div>
     </div>
 
 </body>
