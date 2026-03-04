@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MR. BONUS VIP | ELITE ACCESS</title>
+    <title>MR. BONUS VIP | PRESTIGE CLUB</title>
     <style>
         body {
             margin: 0; padding: 0; background: #050505;
@@ -33,7 +33,6 @@
             transition: all 0.4s ease; margin-bottom: 40px;
         }
 
-        /* Сяйво ТІЛЬКИ ПРИ ВИГРАШІ */
         .slot-frame.win-glow {
             box-shadow: 0 0 80px #d4af37, inset 0 0 40px #d4af37;
             border-color: #fff; transform: scale(1.05);
@@ -110,6 +109,10 @@
             <p>Учасникам доступні ексклюзивні бездепозитні фріспіни та підвищені ліміти, недоступні для загального загалу.</p>
         </div>
         <div class="card">
+            <b>💎 ПЕРСОНАЛЬНИЙ ПІДБІР</b>
+            <p>Наш бот автоматично надає доступ лише до сертифікованих бонусів від ліцензійних партнерів України.</p>
+        </div>
+        <div class="card">
             <b>🛡️ ВІДПОВІДАЛЬНА ГРА</b>
             <p>Ми суворо дотримуємось принципів Responsible Gambling. Гра повинна залишатися розвагою. Встановлюйте ліміти.</p>
         </div>
@@ -121,75 +124,66 @@
     </div>
 
     <script>
-        const symbols = ['💎', '🎰', '🔥', '❤️', '🍀', '7️⃣'];
-        let spinCounter = 0; // Лічильник спінів
-        let winIndex = 0;    // Індекс для перебору виграшних символів
-        let isSpinning = false;
+        const symbolsList = ['💎', '🎰', '🔥', '❤️', '🍀', '7️⃣'];
+        let spinCount = 0;
+        let winSymbolIdx = 0;
+        let isSpinActive = false;
 
         function startSpin() {
-            if (isSpinning) return;
-            isSpinning = true;
-
-            spinCounter++;
+            if (isSpinActive) return;
+            isSpinActive = true;
+            
+            spinCount++;
             const frame = document.getElementById('mainFrame');
             frame.classList.remove('win-glow');
 
-            let finalResults = [];
+            let results = [];
             let isWin = false;
 
-            // СУВОРА ЛОГІКА: 1 і 2 — програш, 3 — виграш
-            if (spinCounter % 3 === 0) {
+            // Логіка 2 програші + 1 виграш
+            if (spinCount % 3 === 0) {
                 isWin = true;
-                // Кожного разу вибираємо наступний символ для джекпоту
-                const winSymbol = symbols[winIndex % symbols.length];
-                finalResults = [winSymbol, winSymbol, winSymbol];
-                winIndex++;
+                let s = symbolsList[winSymbolIdx % symbolsList.length];
+                results = [s, s, s];
+                winSymbolIdx++;
             } else {
                 isWin = false;
-                // ГАРАНТОВАНИЙ ПРОГРАШ (різні символи)
-                finalResults = [symbols[0], symbols[1], symbols[2]];
-                // Трохи рандомізуємо програшні символи, щоб не були однаковими завжди
-                finalResults = finalResults.sort(() => Math.random() - 0.5);
+                // Гарантовано різні
+                let temp = [...symbolsList].sort(() => Math.random() - 0.5);
+                results = [temp[0], temp[1], temp[2]];
             }
 
-           .forEach(i => {
+            [1, 2, 3].forEach(i => {
                 const track = document.getElementById('reel' + i);
                 track.innerHTML = '';
                 
-                // Довга стрічка для ефекту (30 символів)
+                // Стрічка падіння
                 for (let s = 0; s < 30; s++) {
-                    const div = document.createElement('div');
-                    div.className = 'symbol';
-                    div.innerText = symbols[Math.floor(Math.random() * symbols.length)];
-                    track.appendChild(div);
+                    const d = document.createElement('div');
+                    d.className = 'symbol';
+                    d.innerText = symbolsList[Math.floor(Math.random() * symbolsList.length)];
+                    track.appendChild(d);
                 }
                 
-                // Останній символ
-                const resDiv = document.createElement('div');
-                resDiv.className = 'symbol';
-                resDiv.innerText = finalResults[i-1];
-                track.appendChild(resDiv);
+                // Фінал
+                const f = document.createElement('div');
+                f.className = 'symbol';
+                f.innerText = results[i-1];
+                track.appendChild(f);
 
                 track.style.animation = 'none';
                 track.offsetHeight; 
-                track.style.animation = `spinDown ${1.0 + i*0.3}s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards`;
+                track.style.animation = `spinDown ${1.2 + i*0.3}s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards`;
             });
 
             setTimeout(() => {
-                if (isWin) {
-                    frame.classList.add('win-glow');
-                }
-                isSpinning = false;
-            }, 2300);
+                if (isWin) frame.classList.add('win-glow');
+                isSpinActive = false;
+            }, 2500);
         }
 
-        function autoPlay() {
-            startSpin();
-            // Швидка пауза 3-4 сек
-            setTimeout(autoPlay, 4000);
-        }
-
-        autoPlay();
+        setInterval(startSpin, 5500);
+        startSpin();
     </script>
 </body>
 </html>
