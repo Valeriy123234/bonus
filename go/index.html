@@ -132,82 +132,70 @@
 
   <script>
     const symbolsList = ['💎', '🎰', '🔥', '❤️', '🍀', '7️⃣'];
-    let spinCount = 0;
-    let winIdx = 0;
-    let isSpinActive = false;
+let spinCount = 0;
+let winIdx = 0;
+let isSpinActive = false;
 
-    function startSpin() {
-        if (isSpinActive) return;
-        isSpinActive = true;
-        
-        spinCount++;
-        const frame = document.getElementById('mainFrame');
-        const container = document.getElementById('slotContainer');
-        const winMsg = document.getElementById('winMessage');
-        
-        frame.classList.remove('win-glow');
-        container.classList.remove('fade-out');
-        winMsg.classList.remove('show');
+function startSpin() {
+    if (isSpinActive) return;
+    isSpinActive = true;
+    spinCount++;
 
-        // СТВОРЮЄМО ТРИ ОКРЕМІ ЗМІННІ ДЛЯ РЕЗУЛЬТАТУ
-        let res1, res2, res3;
-        const isWin = (spinCount % 3 === 0);
+    const frame = document.getElementById('mainFrame');
+    const container = document.getElementById('slotContainer');
+    const winMsg = document.getElementById('winMessage');
 
-        if (isWin) {
-            // ВИГРАШ: ВСІ ТРИ ОДНАКОВІ
-            let winSymbol = symbolsList[winIdx % symbolsList.length];
-            res1 = winSymbol;
-            res2 = winSymbol;
-            res3 = winSymbol;
-            winIdx++;
-        } else {
-            // ПРОГРАШ: ГАРАНТОВАНО РІЗНІ
-            let shuffled = [...symbolsList].sort(() => Math.random() - 0.5);
-            res1 = shuffled[0];
-            res2 = shuffled[1];
-            res3 = shuffled[2];
-        }
+    frame.classList.remove('win-glow');
+    winMsg.classList.remove('show');
 
-        const finalArray = [res1, res2, res3];
+    // Логіка: кожен 3-й прокрут — виграш
+    const isWin = (spinCount % 3 === 0);
+    let finalArray = [];
 
-        // ЦИКЛ ЗАПУСКУ БАРАБАНІВ
-        for (let i = 1; i <= 3; i++) {
-            const track = document.getElementById('reel' + i);
-            track.innerHTML = '';
-            
-            // Створюємо "хвіст" для прокрутки
-            for (let s = 0; s < 30; s++) {
-                const d = document.createElement('div');
-                d.className = 'symbol';
-                d.innerText = symbolsList[Math.floor(Math.random() * symbolsList.length)];
-                track.appendChild(d);
-            }
-            
-            // СТАВИМО НАШ РЕЗУЛЬТАТ В КІНЕЦЬ
-            const f = document.createElement('div');
-            f.className = 'symbol';
-            f.innerText = finalArray[i-1];
-            track.appendChild(f);
-
-            // АНІМАЦІЯ
-            track.style.animation = 'none';
-            track.offsetHeight; 
-            track.style.animation = `spinDown ${1.0 + i*0.2}s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards`;
-        }
-
-        setTimeout(() => {
-            if (isWin) {
-                frame.classList.add('win-glow');
-                container.classList.add('fade-out');
-                winMsg.classList.add('show');
-            }
-            isSpinActive = false;
-        }, 1800); // Час зупинки останнього барабана
+    if (isWin) {
+        let winSymbol = symbolsList[winIdx % symbolsList.length];
+        finalArray = [winSymbol, winSymbol, winSymbol];
+        winIdx++;
+    } else {
+        let shuffled = [...symbolsList].sort(() => Math.random() - 0.5);
+        finalArray = [shuffled[0], shuffled[1], shuffled[2]];
     }
 
-    // ДИНАМІЧНА ПЕРЕРВА 1.5 СЕКУНДИ (4000мс цикл - 2500мс анімація = 1.5с спокою)
-    setInterval(startSpin, 4000); 
-    startSpin();
+    for (let i = 1; i <= 3; i++) {
+        const track = document.getElementById('reel' + i);
+        track.innerHTML = ''; 
+
+        // Додаємо 30 символів (30 * 100px = 3000px для анімації)
+        for (let s = 0; s < 30; s++) {
+            const d = document.createElement('div');
+            d.className = 'symbol';
+            d.innerText = symbolsList[Math.floor(Math.random() * symbolsList.length)];
+            track.appendChild(d);
+        }
+
+        // 31-й символ — той, на якому зупиниться анімація
+        const f = document.createElement('div');
+        f.className = 'symbol';
+        f.innerText = finalArray[i-1];
+        track.appendChild(f);
+
+        track.style.animation = 'none';
+        track.offsetHeight; 
+        track.style.animation = `spinDown ${1.0 + i*0.2}s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards`;
+    }
+
+    setTimeout(() => {
+        if (isWin) {
+            frame.classList.add('win-glow');
+            winMsg.classList.add('show');
+        }
+        isSpinActive = false;
+    }, 1800);
+}
+
+setInterval(startSpin, 4000);
+startSpin();
+
 </script>
 
 </body>
