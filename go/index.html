@@ -106,6 +106,7 @@
         </div>
     </div>
 
+    <!-- ЗАМІНИ MrBonus_VIP_bot НА СВІЙ ЮЗЕРНЕЙМ -->
     <a href="https://t.me" 
        onclick="window.location.href='tg://resolve?domain=MrBonus_VIP_bot'; setTimeout(function(){ window.location.href='https://t.me'; }, 500); return false;" 
        class="btn">Забрати Бонус 🎁</a>
@@ -113,7 +114,7 @@
     <div class="prestige-content">
         <div class="prestige-card">
             <b>👑 ПРИВІЛЕЇ КЛУБУ</b>
-            <p>Учасникам MR. BONUS VIP доступні ексклюзивні бездепозитні фріспіни та підвищені ліміти на виплати.</p>
+            <p>Ваш статус активовано. Учасникам MR. BONUS VIP доступні ексклюзивні бездепозитні фріспіни та підвищені ліміти на виплати.</p>
         </div>
         <div class="prestige-card">
             <b>🛡️ ГАРАНТІЯ БЕЗПЕКИ</b>
@@ -125,7 +126,7 @@
         </div>
     </div>
 
-    <div class="luxury-footer">
+    <div class="footer">
         <div class="age-container">21+</div>
         <div class="responsible-text">ГРАЙТЕ ВІДПОВІДАЛЬНО! Участь в азартних іграх може викликати залежність.</div>
     </div>
@@ -153,22 +154,22 @@
             const isWin = (spinCount % 3 === 0);
 
             if (isWin) {
-                // ТУТ ЖОРСТКА ПЕРЕВІРКА: 3 ідентичні символи
-                const s = symbolsList[winIdx % symbolsList.length];
+                // ПРИМУСОВО ОДНАКОВІ:
+                let s = symbolsList[winIdx % symbolsList.length];
                 finalRes = [s, s, s]; 
                 winIdx++;
             } else {
-                // ТУТ ЖОРСТКА ПЕРЕВІРКА: 3 різні символи
+                // ПРИМУСОВО РІЗНІ:
                 let pool = [...symbolsList].sort(() => Math.random() - 0.5);
-                finalRes = [pool[0], pool[1], pool[2]];
+                finalRes = [pool[0], pool[1], pool[2]]; // Беремо 3 гарантовано різних
             }
 
-            // Запускаємо барабани
+            // Окремо для кожного барабана
             for (let i = 1; i <= 3; i++) {
                 const track = document.getElementById('reel' + i);
                 track.innerHTML = '';
                 
-                // "Хвіст"
+                // Хвіст для масовки
                 for (let s = 0; s < 30; s++) {
                     const d = document.createElement('div');
                     d.className = 'symbol';
@@ -176,7 +177,7 @@
                     track.appendChild(d);
                 }
                 
-                // РЕЗУЛЬТАТ
+                // РЕЗУЛЬТАТ (чітко за індексом)
                 const f = document.createElement('div');
                 f.className = 'symbol';
                 f.innerText = finalRes[i-1];
@@ -197,7 +198,7 @@
             }, 2000);
         }
 
-        // ШВИДКА ПЕРЕРВА 1.5 СЕКУНДИ ПІСЛЯ ЗУПИНКИ
+        // ШВИДКА ПЕРЕРВА 1.5 СЕКУНДИ
         setInterval(startSpin, 4000); 
         startSpin();
     </script>
