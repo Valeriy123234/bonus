@@ -3,388 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIP MRBONUS | Ексклюзивні Бонуси 2026</title>
-    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <title>MR. BONUS VIP | PREMIUM ACCESS</title>
     <style>
-        :root {
-            --gold: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
-            --dark: #0a0a0a;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --gold-text: #d4af37;
-        }
-
         body {
-            background-color: var(--dark);
+            margin: 0; padding: 0;
+            background: radial-gradient(circle, #1a1a1a 0%, #050505 100%);
+            font-family: 'Segoe UI', sans-serif;
             color: #fff;
-            font-family: 'Montserrat', sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-image: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+            min-height: 100vh; overflow-x: hidden;
+            padding-top: 40px;
         }
 
-        header {
-            padding: 40px 20px 20px;
-            text-align: center;
-            max-width: 800px;
-            width: 100%;
-        }
+        .vip-tag { font-size: 12px; color: #d4af37; letter-spacing: 5px; margin-bottom: 10px; opacity: 0.8; }
+        h1 { font-size: 26px; color: #fff; margin-bottom: 30px; text-transform: uppercase; text-align: center; font-weight: 900; }
+        .gold { color: #d4af37; }
 
-        .brand-badge {
-            font-size: 0.65rem;
-            color: #BF953F;
-            letter-spacing: 5px;
-            margin-bottom: 10px;
-            text-transform: uppercase;
+        /* Слот-машина 3х3 */
+        .slot-machine {
+            background: #000; padding: 15px; border-radius: 20px;
+            border: 2px solid #d4af37;
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.2);
+            margin-bottom: 35px; display: flex; gap: 12px;
         }
-
-        h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 3rem;
-            background: var(--gold);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            margin: 0;
-        }
-
-        .subtitle {
-            color: #888;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin: 10px 0 25px;
-        }
-
-        .social-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
-
-        .social-btn {
-            text-decoration: none;
-            color: #fff;
-            border: 1px solid #BF953F;
-            padding: 14px 28px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(191, 149, 63, 0.05);
-            letter-spacing: 1px;
-        }
-
-        .social-btn:hover {
-            background: var(--gold);
-            color: #000;
-            box-shadow: 0 0 25px rgba(191, 149, 63, 0.5);
-            transform: scale(1.05);
-        }
-
-        /* --- БЕЗШОВНА СТРІЧКА --- */
-        .slots-ticker {
-            width: 100%;
-            overflow: hidden;
-            background: rgba(191, 149, 63, 0.05);
-            border-top: 1px solid rgba(191, 149, 63, 0.2);
-            border-bottom: 1px solid rgba(191, 149, 63, 0.2);
-            padding: 12px 0;
-            margin: 0 0 20px;
-            white-space: nowrap;
+        .reel {
+            width: 80px; height: 80px;
+            background: #111; border-radius: 12px;
+            overflow: hidden; border: 1px solid #333;
             position: relative;
         }
+        .symbols { display: flex; flex-direction: column; align-items: center; animation: scroll 3s linear infinite; }
+        .symbol { font-size: 45px; height: 80px; display: flex; align-items: center; justify-content: center; }
 
-     .slots-track {
-    display: flex;
-    width: max-content;
-    animation: scroll-slots 30s linear infinite; /* Збільш до 30s — чим повільніше, тим менше мерехтить */
-    will-change: transform;
-    
-    /* ФІКС МЕРЕХТІННЯ: */
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -webkit-perspective: 1000;
-    perspective: 1000;
-    -webkit-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-    image-rendering: -webkit-optimize-contrast; /* Робить краї емодзі чіткішими */
-}
-
-      .slot-emoji {
-    font-size: 2rem;
-    padding: 0 25px;
-    display: inline-block;
-    flex-shrink: 0; /* Не дає іконкам стискатися */
-    -webkit-transform: translateZ(0); /* Окремий шар для кожної іконки */
-    transform: translateZ(0);
-}
-
-
-        @keyframes scroll-slots {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-50%, 0, 0); }
+        @keyframes scroll {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-320px); }
         }
+        .reel:nth-child(2) .symbols { animation-duration: 2.2s; }
+        .reel:nth-child(3) .symbols { animation-duration: 3.5s; }
 
-        .slots-ticker::before, .slots-ticker::after {
-            content: "";
-            position: absolute;
-            top: 0; width: 15%; height: 100%;
-            z-index: 2;
-        }
-        .slots-ticker::before { left: 0; background: linear-gradient(to right, #0a0a0a, transparent); }
-        .slots-ticker::after { right: 0; background: linear-gradient(to left, #0a0a0a, transparent); }
-
-        /* --- СІТКА КАЗИНО --- */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
-            width: 95%;
-            max-width: 1300px;
-            padding: 10px 0 80px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid rgba(191, 149, 63, 0.15);
-            border-radius: 20px;
-            padding: 40px 25px;
-            text-align: center;
-            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
-            backdrop-filter: blur(15px);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .card:hover {
-            border: 1px solid rgba(252, 246, 186, 0.8);
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.06);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-        }
-
-        .card h2 {
-            font-family: 'Cinzel', serif;
-            font-size: 1.6rem;
-            color: #fff;
-            margin: 10px 0;
-            letter-spacing: 1px;
-        }
-
-        .bonus-amount {
-            background: var(--gold);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 800;
-            font-size: 1.8rem;
-            margin: 15px 0;
-            display: block;
-        }
-
-        .bonus-details {
-            color: #aaa;
-            font-size: 0.9rem;
-            margin-bottom: 30px;
-            min-height: 45px;
-            line-height: 1.4;
-        }
-
-        .btn-claim {
-            display: block;
-            text-decoration: none;
-            color: #000;
-            background: var(--gold);
-            padding: 16px;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            font-weight: 700;
+        /* Сяюча кнопка */
+        .btn {
+            display: block; width: 280px; text-align: center;
+            background: linear-gradient(45deg, #d4af37, #f9e29c, #d4af37);
+            background-size: 200% auto;
+            color: #000; padding: 22px 0;
+            font-size: 20px; font-weight: 900;
+            border-radius: 50px; text-decoration: none;
             text-transform: uppercase;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(191, 149, 63, 0.3);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5);
+            animation: pulse 2s infinite, shine 3s infinite;
+            margin-bottom: 40px;
         }
+        @keyframes shine { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 
-        .btn-claim:hover {
-            filter: brightness(1.2);
-            transform: scale(1.02);
-            box-shadow: 0 6px 25px rgba(191, 149, 63, 0.5);
+        /* Блок правил */
+        .rules-container {
+            display: flex; flex-direction: column; gap: 15px;
+            width: 90%; max-width: 350px; margin-bottom: 40px;
         }
-
-        .vip-tag {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 0.65rem;
-            color: var(--gold-text);
-            border: 1px solid var(--gold-text);
-            padding: 3px 10px;
-            border-radius: 12px;
-            text-transform: uppercase;
-            font-weight: 600;
+        .rule-card {
+            background: rgba(255,255,255,0.05);
+            border-left: 3px solid #d4af37;
+            padding: 12px 15px; border-radius: 0 10px 10px 0;
+            text-align: left;
         }
+        .rule-card b { color: #d4af37; display: block; font-size: 14px; margin-bottom: 4px; }
+        .rule-card p { margin: 0; font-size: 13px; color: #ccc; line-height: 1.4; }
 
-        footer {
-            padding: 60px 20px;
-            color: #444;
-            font-size: 0.75rem;
-            text-align: center;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            width: 100%;
+        /* Футер 21+ */
+        .responsible-footer {
+            width: 100%; background: #000; padding: 25px 0;
+            border-top: 1px solid #333; text-align: center;
         }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 2.2rem; }
-            .social-buttons { flex-direction: column; align-items: center; }
-            .social-btn { width: 85%; justify-content: center; }
+        .warning-text { font-size: 11px; color: #888; letter-spacing: 1px; padding: 0 20px; line-height: 1.6; }
+        .age-badge {
+            display: inline-block; border: 2px solid #888;
+            padding: 5px 10px; border-radius: 50%;
+            font-weight: bold; margin-bottom: 10px; color: #888;
         }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="brand-badge">Official VIP Source 2026</div>
-    <h1>VIP MRBONUS</h1>
-    <p class="subtitle">Ваш персональний гід у світ бонусів</p>
+    <div class="vip-tag">MR. BONUS UA</div>
+    <h1>АКТИВУЙ СВІЙ <br><span class="gold">VIP СТАТУС</span> 💎</h1>
 
-    <div class="social-buttons">
-        <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="social-btn">🤖 ТГ БОТ (БОНУСИ)</a>
-        <a href="https://t.me/+c33timlTVpYyOGQ6" target="_blank" class="social-btn">📢 ТГ КАНАЛ (АКЦІЇ)</a>
-    </div>
-</header>
-
-<!-- РУХОМА СТРІЧКА СЛОТІВ -->
-<div class="slots-ticker">
-    <div class="slots-track">
-        <!-- Набір 1 -->
-        <span class="slot-emoji">🎰</span><span class="slot-emoji">🍒</span><span class="slot-emoji">💎</span><span class="slot-emoji">🍋</span><span class="slot-emoji">♦️</span><span class="slot-emoji">🔔</span><span class="slot-emoji">💰</span><span class="slot-emoji">🍓</span><span class="slot-emoji">👑</span><!-- 
-        Набір 2 (Копія) --><span class="slot-emoji">🎰</span><span class="slot-emoji">🍒</span><span class="slot-emoji">💎</span><span class="slot-emoji">🍋</span><span class="slot-emoji">♦️</span><span class="slot-emoji">🔔</span><span class="slot-emoji">💰</span><span class="slot-emoji">🍓</span><span class="slot-emoji">👑</span>
-    </div>
-</div>
-
-<style>
-.slots-track {
-    display: flex; /* Обов'язково flex для точності */
-    width: max-content;
-    animation: scroll-slots 20s linear infinite;
-}
-
-@keyframes scroll-slots {
-    0% { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(-50%, 0, 0); } /* Рівно половина треку */
-}
-</style>
-
-
-<div class="grid">
-    <div class="card">
-        <span class="vip-tag">TOP CHOICE</span>
-        <h2>SLOT CITY</h2>
-        <span class="bonus-amount">700 FS + 200₴</span>
-        <p class="bonus-details">Бонус дня від MRBONUS: 700 фриспінів та 200₴ до першого депу</p>
-        <a href="https://play.mrbonusua.space/ua/slotcity.html" class="btn-claim">SLOTCITY 700 🎉</a>
+    <!-- Анімований слот -->
+    <div class="slot-machine">
+        <div class="reel"><div class="symbols">
+            <div class="symbol">❤️</div><div class="symbol">🍀</div><div class="symbol">💎</div><div class="symbol">🎰</div>
+            <div class="symbol">❤️</div><div class="symbol">🍀</div><div class="symbol">💎</div><div class="symbol">🎰</div>
+        </div></div>
+        <div class="reel"><div class="symbols">
+            <div class="symbol">🎰</div><div class="symbol">💎</div><div class="symbol">❤️</div><div class="symbol">🔥</div>
+            <div class="symbol">🎰</div><div class="symbol">💎</div><div class="symbol">❤️</div><div class="symbol">🔥</div>
+        </div></div>
+        <div class="reel"><div class="symbols">
+            <div class="symbol">💎</div><div class="symbol">🔥</div><div class="symbol">🎰</div><div class="symbol">🍀</div>
+            <div class="symbol">💎</div><div class="symbol">🔥</div><div class="symbol">🎰</div><div class="symbol">🍀</div>
+        </div></div>
     </div>
 
-    <div class="card">
-        <span class="vip-tag">EXCLUSIVE</span>
-        <h2>FIRST CASINO</h2>
-        <span class="bonus-amount">до 1300 FS</span>
-        <p class="bonus-details">VIP подарунок: до 1300FS (для нових користувачів)</p>
-        <a href="https://play.mrbonusua.space/ua/first.html" class="btn-claim">FIRST 1300FS 🔥</a>
+    <!-- Кнопка -->
+    <a href="https://t.me" class="btn">ЗАБРАТИ БОНУС 🎁</a>
+
+    <!-- Блок з 3 правилами -->
+    <div class="rules-container">
+        <div class="rule-card">
+            <b>🛡️ БЕЗПЕЧНА ГРА</b>
+            <p>Використовуємо наскрізне шифрування для захисту ваших даних у боті.</p>
+        </div>
+        <div class="rule-card">
+            <b>⚖️ ВІДПОВІДАЛЬНІСТЬ</b>
+            <p>Ми підтримуємо принципи чесної гри та надаємо доступ лише верифікованим партнерам.</p>
+        </div>
+        <div class="rule-card">
+            <b>⚡ МИТТЄВИЙ ДОСТУП</b>
+            <p>Активація фріспінів та бонусів відбувається автоматично після реєстрації.</p>
+        </div>
     </div>
 
-    <div class="card">
-        <h2>POKER-BET</h2>
-        <span class="bonus-amount">100% + 650 FS</span>
-        <p class="bonus-details">Стартовий пакет: 100% бонус + 650 фриспінів на рахунок</p>
-        <a href="https://play.mrbonusua.space/ua/pokerbet.html" class="btn-claim">POKER-BET +650FS 🃏</a>
+    <!-- Підвал казино-стиль -->
+    <div class="responsible-footer">
+        <div class="age-badge">21+</div>
+        <div class="warning-text">
+            ГРАЙТЕ ВІДПОВІДАЛЬНО! УЧАСТЬ В АЗАРТНИХ ІГРАХ МОЖЕ ВИКЛИКАТИ ІГРОВУ ЗАЛЕЖНІСТЬ. <br>
+            ДОТРИМУЙТЕСЬ ПРАВИЛ ТА ВСТАНОВЛЮЙТЕ ЛІМІТИ НА ГРУ.
+        </div>
     </div>
-
-    <div class="card">
-        <h2>TOP MATCH</h2>
-        <span class="bonus-amount">200₴ + 100 FS</span>
-        <p class="bonus-details">Акція MRBONUS: 200₴ реальними грошима + 100 фриспінів</p>
-        <a href="https://play.mrbonusua.space/ua/topmatch.html" class="btn-claim">TOP MATCH 200₴ ⚡</a>
-    </div>
-
-    <div class="card">
-        <h2>BETON</h2>
-        <span class="bonus-amount">150% + 500 FS</span>
-        <p class="bonus-details">Бонус новачку: 150% нарахування та 500 фриспінів</p>
-        <a href="https://play.mrbonusua.space/ua/beton.html" class="btn-claim">BETON +500FS 🎰</a>
-    </div>
-
-    <div class="card">
-        <h2>GORILLA</h2>
-        <span class="bonus-amount">300 FS</span>
-        <p class="bonus-details">Фріспіни для всіх гравців: забирай 300 FS без умов</p>
-        <a href="https://play.mrbonusua.space/ua/gorilla.html" class="btn-claim">GORILLA 300 🦍</a>
-    </div>
-
-    <div class="card">
-        <h2>BETKING</h2>
-        <span class="bonus-amount">200% + 200 FS</span>
-        <p class="bonus-details">Королівський старт: 200% бонус та 200 фриспінів</p>
-        <a href="https://play.mrbonusua.space/ua/betking.html" class="btn-claim">BETKING 200 🤴</a>
-    </div>
-
-    <div class="card">
-        <span class="vip-tag">POPULAR</span>
-        <h2>777 CASINO</h2>
-        <span class="bonus-amount">777 FS</span>
-        <p class="bonus-details">Бездепозитний рекорд: 777 фриспінів для нових гравців</p>
-        <a href="https://play.mrbonusua.space/ua/777.html" class="btn-claim">777FS 🎰</a>
-    </div>
-
-    <div class="card">
-        <h2>VEGAS</h2>
-        <span class="bonus-amount">150 FS</span>
-        <p class="bonus-details">Вечірній бонус Vegas: 150 фріспінів на твій рахунок</p>
-        <a href="https://play.mrbonusua.space/ua/vegas.html" class="btn-claim">VEGAS +150FS 🌃</a>
-    </div>
-
-    <div class="card">
-        <h2>GG BET</h2>
-        <span class="bonus-amount">1000 FS</span>
-        <p class="bonus-details">Фриспіни сьогодні: забирай пакет із 1000 фриспінів</p>
-        <a href="https://play.mrbonusua.space/ua/ggbet.html" class="btn-claim">GG BET +1000FS 🔥</a>
-    </div>
-
-    <div class="card">
-        <h2>PARIK 24</h2>
-        <span class="bonus-amount">100% + 150 FS</span>
-        <p class="bonus-details">Легендарний бонус: 100% до депу та 150 фриспінів</p>
-        <a href="https://play.mrbonusua.space/ua/parik24.html" class="btn-claim">PARIK 24 +150FS 🟧</a>
-    </div>
-
-    <div class="card">
-        <h2>CHAMPION CLUB</h2>
-        <span class="bonus-amount">VIP ACCESS</span>
-        <p class="bonus-details">Ексклюзивні умови для учасників Champion Club</p>
-        <a href="https://play.mrbonusua.space/ua/championclub.html" class="btn-claim">ВІДКРИТИ 🏆</a>
-    </div>
-
-    <div class="card">
-        <h2>EURO CASINO</h2>
-        <span class="bonus-amount">1000 FS</span>
-        <p class="bonus-details">Спеціальна пропозиція Євроказино: 1000 фриспінів</p>
-        <a href="https://play.mrbonusua.space/ua/euro.html" class="btn-claim">EURO 1000FS 🇪🇺</a>
-    </div>
-</div>
-
-<footer>
-    <p>&copy; 2026 VIP MRBONUS. Всі права захищені.</p>
-    <p style="opacity: 0.4;">Тільки для осіб старше 21 року. Гра в казино може викликати залежність. <br> Будьте відповідальними та грайте з розумом.</p>
-</footer>
 
 </body>
 </html>
