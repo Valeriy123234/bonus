@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MR. BONUS VIP | PRESTIGE CLUB</title>
+    <title>MR. BONUS VIP | ELITE ACCESS</title>
     <style>
         body {
             margin: 0; padding: 0; background: #050505;
@@ -12,36 +12,33 @@
             min-height: 100vh; overflow-x: hidden; padding-top: 30px;
         }
 
-        /* ВЕЛИКИЙ ПРЕМІАЛЬНИЙ ЗАГОЛОВОК */
         .brand-header {
-            font-size: clamp(38px, 11vw, 54px);
-            font-weight: 900;
+            font-size: clamp(38px, 11vw, 54px); font-weight: 900;
             background: linear-gradient(to bottom, #ffffff 0%, #d4af37 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            letter-spacing: 5px;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-transform: uppercase; letter-spacing: 5px;
             filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.6));
-            margin-bottom: 5px;
-            text-align: center;
+            margin-bottom: 5px; text-align: center;
         }
+
         .sub-header {
             font-size: 13px; color: #666; letter-spacing: 6px;
             margin-bottom: 30px; text-transform: uppercase; font-weight: bold;
         }
 
-        /* 3D СЛОТ-МАШИНА */
         .slot-frame {
             background: linear-gradient(145deg, #1a1a1a, #000);
             padding: 20px; border-radius: 35px;
             border: 4px solid #d4af37; position: relative;
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            margin-bottom: 40px;
+            transition: all 0.4s ease; margin-bottom: 40px;
         }
+
+        /* Сяйво ТІЛЬКИ при виграші */
         .slot-frame.win-glow {
-            box-shadow: 0 0 100px #d4af37, inset 0 0 40px #d4af37;
+            box-shadow: 0 0 80px #d4af37, inset 0 0 40px #d4af37;
             border-color: #fff; transform: scale(1.05);
         }
+
         .slot-container { display: flex; gap: 12px; z-index: 2; position: relative; }
 
         .reel {
@@ -49,21 +46,21 @@
             border-radius: 15px; overflow: hidden; border: 1px solid #222;
             box-shadow: inset 0 10px 20px #000, inset 0 -10px 20px #000;
         }
+
         .symbols-track { display: flex; flex-direction: column; align-items: center; }
+
         .symbol { 
             font-size: 55px; height: 100px; min-height: 100px;
             display: flex; align-items: center; justify-content: center;
         }
 
-        /* АНІМАЦІЯ ПАДІННЯ ВНИЗ */
         @keyframes spinDown {
             0% { transform: translateY(-2800px); }
-            70% { transform: translateY(10px); }
-            85% { transform: translateY(-5px); }
+            75% { transform: translateY(10px); }
+            90% { transform: translateY(-5px); }
             100% { transform: translateY(0); }
         }
 
-        /* КНОПКА-МАГНІТ */
         .btn {
             display: block; width: 320px; text-align: center;
             background: linear-gradient(135deg, #d4af37 0%, #fff2ac 50%, #d4af37 100%);
@@ -76,23 +73,17 @@
         @keyframes shine { 0% {background-position: 0% 50%;} 100% {background-position: 200% 50%;} }
         @keyframes pulse { 0%, 100% {transform: scale(1);} 50% {transform: scale(1.05);} }
 
-        /* РОЗШИРЕНИЙ ТЕКСТОВИЙ БЛОК */
         .content { width: 92%; max-width: 440px; margin-bottom: 50px; }
         .card {
             background: rgba(255,255,255,0.03); border: 1px solid rgba(212,175,55,0.15);
-            padding: 22px; border-radius: 25px; margin-bottom: 15px; backdrop-filter: blur(10px);
+            padding: 22px; border-radius: 25px; margin-bottom: 15px;
         }
-        .card b { color: #d4af37; font-size: 17px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; margin-bottom: 10px; letter-spacing: 1px; }
+        .card b { color: #d4af37; font-size: 17px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
         .card p { margin: 0; font-size: 14px; color: #aaa; line-height: 1.6; }
 
-        /* ЛАКШЕРІ ФУТЕР 21+ */
         .footer { width: 100%; background: #000; padding: 45px 0; text-align: center; border-top: 1px solid #1a1a1a; }
-        .age-limit { 
-            border: 2px solid #d4af37; width: 60px; height: 60px; 
-            display: inline-flex; align-items: center; justify-content: center; 
-            border-radius: 50%; color: #d4af37; font-weight: 900; font-size: 22px; margin-bottom: 20px; 
-        }
-        .warn-text { font-size: 11px; color: #555; padding: 0 40px; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; line-height: 1.8; }
+        .age-limit { border: 2px solid #d4af37; width: 60px; height: 60px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; color: #d4af37; font-weight: 900; font-size: 22px; margin-bottom: 20px; }
+        .warn-text { font-size: 11px; color: #555; padding: 0 40px; text-transform: uppercase; font-weight: bold; line-height: 1.8; }
     </style>
 </head>
 <body>
@@ -108,7 +99,7 @@
         </div>
     </div>
 
-    <!-- ЗАМІНИ MrBonus_VIP_bot НА СВОГО БОТА -->
+    <!-- ЗАМІНИ MrBonus_VIP_bot НА СВІЙ ЮЗЕРНЕЙМ -->
     <a href="https://t.me" 
        onclick="window.location.href='tg://resolve?domain=MrBonus_VIP_bot'; setTimeout(function(){ window.location.href='https://t.me'; }, 500); return false;" 
        class="btn">Забрати Бонус 🎁</a>
@@ -116,24 +107,17 @@
     <div class="content">
         <div class="card">
             <b>👑 ПРИВІЛЕЇ VIP-КЛУБУ</b>
-            <p>Ваш статус активовано. Учасникам MR. BONUS VIP доступні ексклюзивні бездепозитні фріспіни та підвищені ліміти на виплати, недоступні для загального загалу.</p>
-        </div>
-        <div class="card">
-            <b>💎 ПЕРСОНАЛЬНИЙ ПІДБІР</b>
-            <p>Наш інтелектуальний бот аналізує пропозиції 2026 року та надає прямий доступ лише до сертифікованих бонусів від ліцензійних партнерів України.</p>
+            <p>Учасникам доступні ексклюзивні бездепозитні фріспіни та підвищені ліміти, недоступні для загального загалу.</p>
         </div>
         <div class="card">
             <b>🛡️ ВІДПОВІДАЛЬНА ГРА</b>
-            <p>Ми суворо дотримуємось принципів Responsible Gambling. Гра повинна залишатися розвагою. Встановлюйте ліміти та грайте з розумом.</p>
+            <p>Ми суворо дотримуємось принципів Responsible Gambling. Гра повинна залишатися розвагою. Встановлюйте ліміти.</p>
         </div>
     </div>
 
     <div class="footer">
         <div class="age-limit">21+</div>
-        <div class="warn-text">
-            ГРАЙТЕ ВІДПОВІДАЛЬНО! УЧАСТЬ В АЗАРТНИХ ІГРАХ МОЖЕ ВИКЛИКАТИ ІГРОВУ ЗАЛЕЖНІСТЬ. <br>
-            ДОТРИМУЙТЕСЬ ПРАВИЛ ТА САМООБМЕЖЕНЬ.
-        </div>
+        <div class="warn-text">ГРАЙТЕ ВІДПОВІДАЛЬНО! АЗАРТНІ ІГРИ МОЖУТЬ ВИКЛИКАТИ ЗАЛЕЖНІСТЬ.</div>
     </div>
 
     <script>
@@ -147,32 +131,35 @@
             const frame = document.getElementById('mainFrame');
             frame.classList.remove('win-glow');
 
-            // РАНДОМНИЙ ШАНС ВИГРАШУ (30%)
-            const isWin = Math.random() < 0.3; 
-            let finalResults = isWin ? ['7️⃣', '7️⃣', '7️⃣'] : [
-                symbols[Math.floor(Math.random() * 5)],
-                symbols[Math.floor(Math.random() * 5)],
-                symbols[Math.floor(Math.random() * 5)]
-            ];
+            // 35% шанс виграшу
+            const isWin = Math.random() < 0.35; 
+            let finalResults = [];
 
-            // Захист від випадкового виграшу при програші
-            if (!isWin && finalResults[0] === finalResults[1] && finalResults[1] === finalResults[2]) {
-                finalResults[2] = finalResults[2] === '💎' ? '🔥' : '💎';
+            if (isWin) {
+                // Виграш: 3 однакових символи (рандомно які саме)
+                const winSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+                finalResults = [winSymbol, winSymbol, winSymbol];
+            } else {
+                // Програш: Гарантовано різні
+                finalResults = [
+                    symbols[Math.floor(Math.random() * 5)],
+                    symbols[Math.floor(Math.random() * 5)],
+                    symbols[Math.floor(Math.random() * 5)]
+                ];
+                if (finalResults[0] === finalResults[1] && finalResults[1] === finalResults[2]) {
+                    finalResults[2] = finalResults[2] === '💎' ? '🔥' : '💎';
+                }
             }
 
             [1, 2, 3].forEach(i => {
                 const track = document.getElementById('reel' + i);
                 track.innerHTML = '';
-                
-                // Створюємо довгу стрічку для ефекту падіння (30 символів)
                 for (let s = 0; s < 30; s++) {
                     const div = document.createElement('div');
                     div.className = 'symbol';
                     div.innerText = symbols[Math.floor(Math.random() * symbols.length)];
                     track.appendChild(div);
                 }
-                
-                // Останній символ - результат
                 const resDiv = document.createElement('div');
                 resDiv.className = 'symbol';
                 resDiv.innerText = finalResults[i-1];
@@ -180,19 +167,22 @@
 
                 track.style.animation = 'none';
                 track.offsetHeight; 
-                track.style.animation = `spinDown ${1.2 + i*0.4}s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards`;
+                track.style.animation = `spinDown ${1.0 + i*0.3}s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards`;
             });
 
             setTimeout(() => {
-                if (isWin) frame.classList.add('win-glow');
+                // Перевірка на збіг 3-х в ряд для увімкнення сяйва
+                if (finalResults[0] === finalResults[1] && finalResults[1] === finalResults[2]) {
+                    frame.classList.add('win-glow');
+                }
                 isSpinning = false;
-            }, 2500);
+            }, 2200);
         }
 
-        // Автозапуск з рандомною паузою
         function autoPlay() {
             startSpin();
-            setTimeout(autoPlay, Math.floor(Math.random() * 3000) + 5000);
+            // Швидка пауза між спінами: від 3 до 5 секунд
+            setTimeout(autoPlay, Math.floor(Math.random() * 2000) + 3000);
         }
 
         autoPlay();
