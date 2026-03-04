@@ -1,136 +1,3 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MR. BONUS VIP | PRESTIGE CLUB</title>
-    <style>
-        body {
-            margin: 0; padding: 0; background: #050505;
-            font-family: 'Segoe UI', sans-serif; color: #fff;
-            display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh; overflow-x: hidden; padding-top: 30px;
-        }
-
-        .brand-header {
-            font-size: clamp(38px, 11vw, 54px); font-weight: 900;
-            background: linear-gradient(to bottom, #ffffff 0%, #d4af37 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-transform: uppercase; letter-spacing: 5px;
-            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.6));
-            margin-bottom: 5px; text-align: center;
-        }
-
-        .sub-header { font-size: 13px; color: #666; letter-spacing: 6px; margin-bottom: 30px; text-transform: uppercase; font-weight: bold; }
-
-        .slot-frame {
-            background: linear-gradient(145deg, #1a1a1a, #000);
-            padding: 20px; border-radius: 35px;
-            border: 4px solid #d4af37; position: relative;
-            transition: all 0.4s ease; margin-bottom: 40px;
-        }
-
-        .slot-frame.win-glow {
-            box-shadow: 0 0 80px #2ecc71, inset 0 0 40px #2ecc71;
-            border-color: #2ecc71; transform: scale(1.05);
-        }
-
-        #winMessage {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
-            font-size: 90px; font-weight: 900; color: #2ecc71;
-            text-shadow: 0 0 20px #000, 0 0 50px #2ecc71;
-            z-index: 100; pointer-events: none; text-transform: uppercase;
-        }
-        #winMessage.show { 
-            animation: winPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, 
-                       winPulse 0.7s ease-in-out infinite 0.4s; 
-        }
-
-        @keyframes winPop { 0% { transform: translate(-50%, -50%) scale(0); } 100% { transform: translate(-50%, -50%) scale(1.2); } }
-        @keyframes winPulse { 0%, 100% { transform: translate(-50%, -50%) scale(1.2); } 50% { transform: translate(-50%, -50%) scale(1.4); opacity: 0.8; } }
-
-        .slot-container { display: flex; gap: 12px; z-index: 2; position: relative; transition: opacity 0.4s, filter 0.4s; }
-        .slot-container.fade-out { opacity: 0.1; filter: blur(5px); }
-
-        .reel {
-            width: 90px; height: 100px; background: #111;
-            border-radius: 15px; overflow: hidden; border: 1px solid #222;
-            box-shadow: inset 0 10px 20px #000, inset 0 -10px 20px #000;
-        }
-        
-        .symbols-track { display: flex; flex-direction: column; align-items: center; }
-        .symbol { font-size: 55px; height: 100px; min-height: 100px; display: flex; align-items: center; justify-content: center; }
-
-        @keyframes spinDown {
-            0% { transform: translateY(-3000px); }
-            75% { transform: translateY(10px); }
-            90% { transform: translateY(-5px); }
-            100% { transform: translateY(0); }
-        }
-
-        .btn {
-            display: block; width: 320px; text-align: center;
-            background: linear-gradient(135deg, #d4af37 0%, #fff2ac 50%, #d4af37 100%);
-            background-size: 200% auto; color: #000; padding: 24px 0;
-            font-size: 26px; font-weight: 900; border-radius: 80px;
-            text-decoration: none; text-transform: uppercase;
-            box-shadow: 0 15px 50px rgba(212, 175, 55, 0.6);
-            animation: pulse 2s infinite, shine 3s infinite; margin-bottom: 50px;
-        }
-        @keyframes shine { 0% {background-position: 0% 50%;} 100% {background-position: 200% 50%;} }
-        @keyframes pulse { 0%, 100% {transform: scale(1);} 50% {transform: scale(1.05);} }
-
-        .prestige-content { width: 92%; max-width: 440px; margin-bottom: 50px; }
-        .prestige-card {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(212, 175, 55, 0.15);
-            padding: 20px; border-radius: 20px; margin-bottom: 15px; text-align: left;
-        }
-        .prestige-card b { color: #d4af37; font-size: 16px; display: flex; align-items: center; gap: 10px; margin-bottom: 8px; text-transform: uppercase; }
-        .prestige-card p { margin: 0; font-size: 14px; color: #aaa; line-height: 1.6; }
-
-        .footer { width: 100%; background: #000; padding: 40px 0; text-align: center; border-top: 1px solid #222; }
-        .age-container { border: 2px solid #d4af37; width: 55px; height: 55px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #d4af37; font-weight: 900; margin-bottom: 20px; font-size: 20px; }
-        .responsible-text { font-size: 10px; color: #555; padding: 0 40px; text-transform: uppercase; font-weight: bold; line-height: 1.8; }
-    </style>
-</head>
-<body>
-
-    <div class="brand-header">MR BONUS VIP</div>
-    <div class="sub-header">ESTABLISHED 2020</div>
-
-    <div class="slot-frame" id="mainFrame">
-        <div id="winMessage">WIN</div>
-        <div class="slot-container" id="slotContainer">
-            <div class="reel" id="reel1"><div class="symbols-track"></div></div>
-            <div class="reel" id="reel2"><div class="symbols-track"></div></div>
-            <div class="reel" id="reel3"><div class="symbols-track"></div></div>
-        </div>
-    </div>
-
-    <a href="https://t.me" 
-       onclick="window.location.href='tg://resolve?domain=MrBonus_VIP_bot'; setTimeout(function(){ window.location.href='https://t.me'; }, 500); return false;" 
-       class="btn">Забрати Бонус 🎁</a>
-
-    <div class="prestige-content">
-        <div class="prestige-card">
-            <b>👑 ПРИВІЛЕЇ КЛУБУ</b>
-            <p>Ваш статус активовано. Учасникам MR. BONUS VIP доступні ексклюзивні бездепозитні фріспіни та підвищені ліміти на виплати.</p>
-        </div>
-        <div class="prestige-card">
-            <b>🛡️ ГАРАНТІЯ БЕЗПЕКИ</b>
-            <p>Ми працюємо за протоколами конфіденційності VIP-рівня. Ваші дані захищені.</p>
-        </div>
-        <div class="prestige-card">
-            <b>⚖️ ВІДПОВІДАЛЬНА ГРА</b>
-            <p>Ми суворо дотримуємось принципів Responsible Gambling. Грайте з розумом.</p>
-        </div>
-    </div>
-
-    <div class="luxury-footer">
-        <div class="age-container">21+</div>
-        <div class="responsible-text">ГРАЙТЕ ВІДПОВІДАЛЬНО! Участь в азартних іграх може викликати залежність.</div>
-    </div>
-
 <script>
     const symbolsList = ['💎', '🎰', '🔥', '❤️', '🍀', '7️⃣'];
     let spinCount = 0;
@@ -154,58 +21,75 @@
         let finalRes = [];
 
         if (isWin) {
+            // ГАРАНТОВАНО 3 ОДНАКОВИХ
             const s = symbolsList[winIdx % symbolsList.length];
             finalRes = [s, s, s];
             winIdx++;
         } else {
+            // ГАРАНТОВАНО 3 РІЗНИХ
             let pool = [...symbolsList].sort(() => Math.random() - 0.5);
             finalRes = [pool[0], pool[1], pool[2]];
         }
 
-        // Заповнюємо барабани ПЕРЕД стартом
-        for (let i = 1; i <= 3; i++) {
+        const reels = [1, 2, 3];
+        let completed = 0;
+
+        reels.forEach((i, index) => {
             const track = document.getElementById('reel' + i).querySelector('.symbols-track');
+            track.innerHTML = '';
             
-            // Створюємо стрічку: 40 рандомних + 1 фінальний результат
-            let html = '';
+            // 1. СТВОРЮЄМО РЕЗУЛЬТАТ (ВІН БУДЕ ВНИЗУ, ТУТ ЗУПИНКА)
+            const resDiv = document.createElement('div');
+            resDiv.className = 'symbol';
+            resDiv.innerText = finalRes[index];
+            track.appendChild(resDiv);
+
+            // 2. ДОДАЄМО 40 СИМВОЛІВ "ВГОРУ" (ВОНИ БУДУТЬ ПАДАТИ ВНИЗ)
             for (let s = 0; s < 40; s++) {
-                html += `<div class="symbol">${symbolsList[Math.floor(Math.random() * symbolsList.length)]}</div>`;
+                const div = document.createElement('div');
+                div.className = 'symbol';
+                div.innerText = symbolsList[Math.floor(Math.random() * symbolsList.length)];
+                track.insertBefore(div, track.firstChild); // Додаємо на початок списку
             }
-            html += `<div class="symbol">${finalRes[i-1]}</div>`;
-            track.innerHTML = html;
 
-            // Скидаємо позицію в самий верх (мінус висота всієї стрічки крім останнього символу)
-            track.style.transition = 'none';
-            track.style.transform = `translateY(-4000px)`; 
+            const symbolHeight = 100; // Фіксована висота для точності
+            const travelDistance = (track.children.length - 1) * symbolHeight;
 
-            // Запускаємо падіння вниз до нуля через невеликий таймаут
-            setTimeout(() => {
-                track.style.transition = `transform ${1.5 + (i * 0.5)}s cubic-bezier(0.17, 0.67, 0.1, 1.15)`; // Ефект пружини в кінці
-                track.style.transform = 'translateY(0)';
-            }, 50);
-        }
+            // 3. АНІМАЦІЯ: З МІНУСА В НУЛЬ (ПАДІННЯ ВНИЗ) + М'ЯКИЙ ВІДСКОК
+            const animation = track.animate([
+                { transform: `translateY(-${travelDistance}px)` }, // Початок (високо в небі)
+                { transform: 'translateY(15px)', offset: 0.85 },    // Проліт нижче (амплітуда)
+                { transform: 'translateY(-5px)', offset: 0.95 },    // Легкий відскок назад
+                { transform: 'translateY(0)' }                      // Фінальна точка
+            ], {
+                duration: 2000 + (index * 500), // Поступова зупинка барабанів
+                easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
+                fill: 'forwards'
+            });
 
-        // Чекаємо зупинки останнього барабана (3-й барабан зупиниться через 1.5 + 1.5 = 3с)
-        setTimeout(() => {
-            if (isWin) {
-                frame.classList.add('win-glow');
-                container.classList.add('fade-out');
-                winMsg.classList.add('show');
-                setTimeout(() => { isSpinActive = false; }, 3500); // Пауза на перемогу
-            } else {
-                setTimeout(() => { isSpinActive = false; }, 1500); // Пауза на програш
-            }
-        }, 3000);
+            animation.onfinish = () => {
+                completed++;
+                if (completed === 3) {
+                    if (isWin) {
+                        frame.classList.add('win-glow');
+                        container.classList.add('fade-out');
+                        winMsg.classList.add('show');
+                        // Пауза 3.5 сек на виграш
+                        setTimeout(() => { isSpinActive = false; }, 3500);
+                    } else {
+                        // Пауза 1.5 сек на програш
+                        setTimeout(() => { isSpinActive = false; }, 1500);
+                    }
+                }
+            };
+        });
     }
 
-    // Постійний цикл
+    // Постійна перевірка готовності до нового спіну
     setInterval(() => {
         if (!isSpinActive) startSpin();
-    }, 500);
+    }, 100);
 
+    // Перший запуск
     startSpin();
 </script>
-
-
-</body>
-</html>
