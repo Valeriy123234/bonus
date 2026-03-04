@@ -169,30 +169,32 @@
             const track = document.getElementById('reel' + i).querySelector('.symbols-track');
             track.innerHTML = '';
             
-            // Створюємо стрічку: 40 символів для швидкості + фінальний
-            for (let s = 0; s < 40; s++) {
-                const div = document.createElement('div');
-                div.className = 'symbol';
-                div.innerText = symbolsList[Math.floor(Math.random() * symbolsList.length)];
-                track.appendChild(div);
-            }
-            
+            // Фінальний результат ставимо ПЕРШИМ (внизу стрічки)
             const resDiv = document.createElement('div');
             resDiv.className = 'symbol';
             resDiv.innerText = finalRes[index];
             track.appendChild(resDiv);
 
-            // Обчислюємо точну відстань прокрутки
-            const symbolHeight = track.firstChild.offsetHeight || 100;
+            // Створюємо "хвіст" із 40 символів зверху
+            for (let s = 0; s < 40; s++) {
+                const div = document.createElement('div');
+                div.className = 'symbol';
+                div.innerText = symbolsList[Math.floor(Math.random() * symbolsList.length)];
+                track.insertBefore(div, track.firstChild);
+            }
+
+            const symbolHeight = 100; // Фіксована висота
             const travelDistance = (track.children.length - 1) * symbolHeight;
 
-            // Запускаємо анімацію через JS (Web Animations API)
+            // Анімація: Падіння зверху вниз з амплітудою (відскоком)
             const animation = track.animate([
-                { transform: 'translateY(0)' },
-                { transform: `translateY(-${travelDistance}px)` }
+                { transform: `translateY(-${travelDistance}px)` }, // Початок зверху
+                { transform: 'translateY(15px)' },  // Проліт трохи нижче (амплітуда)
+                { transform: 'translateY(-5px)' },  // Повернення трохи вище
+                { transform: 'translateY(0)' }      // Фінальна зупинка
             ], {
-                duration: 1500 + (index * 400),
-                easing: 'cubic-bezier(0.45, 0.05, 0.55, 0.95)',
+                duration: 1800 + (index * 400),
+                easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
                 fill: 'forwards'
             });
 
@@ -203,18 +205,31 @@
                         frame.classList.add('win-glow');
                         container.classList.add('fade-out');
                         winMsg.classList.add('show');
+                        // Пауза 3.5 секунди на виграш
+                        setTimeout(() => {
+                            isSpinActive = false;
+                        }, 3500);
+                    } else {
+                        // Пауза 1.5 секунди на програш
+                        setTimeout(() => {
+                            isSpinActive = false;
+                        }, 1500);
                     }
-                    isSpinActive = false;
                 }
             };
         });
     }
 
-    // Автозапуск кожні 5 секунд
-    setInterval(startSpin, 5000); 
-    startSpin();
-</script>
+    // Запуск ігрового циклу
+    function gameLoop() {
+        if (!isSpinActive) {
+            startSpin();
+        }
+        setTimeout(gameLoop, 500); // Перевірка готовності кожні 0.5с
+    }
 
+    gameLoop();
+</script>
 
 </body>
 </html>
