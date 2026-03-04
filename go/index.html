@@ -169,31 +169,32 @@
             const track = document.getElementById('reel' + i).querySelector('.symbols-track');
             track.innerHTML = '';
             
-            // Фінальний результат тепер у самому НИЗУ (це 0 пікселів)
+            // 1. Створюємо стрічку: ФІНАЛЬНИЙ СИМВОЛ ставимо ОСТАННІМ
+            // Але зверху над ним додаємо 40 рандомних символів
+            for (let s = 0; s < 40; s++) {
+                const div = document.createElement('div');
+                div.className = 'symbol';
+                div.innerText = symbolsList[Math.floor(Math.random() * symbolsList.length)];
+                track.appendChild(div);
+            }
+            
             const resDiv = document.createElement('div');
             resDiv.className = 'symbol';
             resDiv.innerText = finalRes[index];
             track.appendChild(resDiv);
 
-            // Додаємо 40 символів ВГОРУ (вони будуть пролітати вниз)
-            for (let s = 0; s < 40; s++) {
-                const div = document.createElement('div');
-                div.className = 'symbol';
-                div.innerText = symbolsList[Math.floor(Math.random() * symbolsList.length)];
-                track.insertBefore(div, track.firstChild);
-            }
-
-            const symbolHeight = 100; 
+            const symbolHeight = 100; // Фіксована висота для точності
             const travelDistance = (track.children.length - 1) * symbolHeight;
 
-            // Анімація: ПАДІННЯ ВНИЗ (з мінуса в нуль) + ПРУЖИНА
+            // 2. АНІМАЦІЯ ПАДІННЯ ВНИЗ
+            // Ми стартуємо з -travelDistance (високо вгорі) і їдемо до 0 (видима зона)
             const animation = track.animate([
-                { transform: `translateY(-${travelDistance}px)` }, // Початок зверху
-                { transform: 'translateY(15px)', offset: 0.85 },    // Переліт вниз (амплітуда)
+                { transform: `translateY(-${travelDistance}px)` }, // Початок (небо)
+                { transform: 'translateY(15px)', offset: 0.85 },    // Проліт нижче (амплітуда)
                 { transform: 'translateY(-8px)', offset: 0.92 },    // Відскок вгору
-                { transform: 'translateY(0)' }                      // Фіксація
+                { transform: 'translateY(0)' }                      // Стоп
             ], {
-                duration: 2500 + (index * 600), // Збільшив час для плавності
+                duration: 2200 + (index * 500), // Повільніше і солідніше
                 easing: 'cubic-bezier(0.2, 0, 0.2, 1)',
                 fill: 'forwards'
             });
@@ -205,10 +206,10 @@
                         frame.classList.add('win-glow');
                         container.classList.add('fade-out');
                         winMsg.classList.add('show');
-                        // Пауза після виграшу 3.5 секунди
+                        // Пауза 3.5 сек після джекпоту
                         setTimeout(() => { isSpinActive = false; }, 3500);
                     } else {
-                        // Пауза після програшу 1.5 секунди
+                        // Пауза 1.5 сек після програшу
                         setTimeout(() => { isSpinActive = false; }, 1500);
                     }
                 }
@@ -216,15 +217,13 @@
         });
     }
 
-    // Розумний запуск: перевіряє кожні 200мс, чи можна крутити
+    // Цикл автоматичного запуску
     setInterval(() => {
         if (!isSpinActive) startSpin();
     }, 200);
 
-    // Перший запуск
-    startSpin();
+    startSpin(); // Перший старт
 </script>
-
 
 </body>
 </html>
