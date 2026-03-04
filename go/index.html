@@ -132,6 +132,34 @@
     </div>
 
 <script>
+    /* Додай це у свій <style> */
+.symbols-track {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.symbol {
+    height: 100px !important;
+    min-height: 100px !important;
+    max-height: 100px !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 55px; /* Переконайся, що шрифт не розпирає блок */
+}
+
+.reel {
+    height: 100px !important; /* Рівно один символ у видимій зоні */
+    overflow: hidden;
+    position: relative;
+}
+
     const symbolsList = ['💎', '🎰', '🔥', '❤️', '🍀', '7️⃣'];
     let spinCount = 0;
     let winIdx = 0;
