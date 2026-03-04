@@ -140,24 +140,26 @@
             let results = [];
             let isWin = false;
 
-            // Логіка 2 програші + 1 виграш
+            // СУВОРА ЛОГІКА 2+1
             if (spinCount % 3 === 0) {
                 isWin = true;
+                // Беремо один і той самий символ для всіх барабанів
                 let s = symbolsList[winSymbolIdx % symbolsList.length];
                 results = [s, s, s];
                 winSymbolIdx++;
             } else {
                 isWin = false;
-                // Гарантовано різні
-                let temp = [...symbolsList].sort(() => Math.random() - 0.5);
-                results = [temp[0], temp[1], temp[2]];
+                // ГАРАНТОВАНО РІЗНІ СИМВОЛИ
+                // Перемішуємо копію списку і беремо перші 3 унікальні елементи
+                let shuffled = [...symbolsList].sort(() => Math.random() - 0.5);
+                results = [shuffled[0], shuffled[1], shuffled[2]];
             }
 
             [1, 2, 3].forEach(i => {
                 const track = document.getElementById('reel' + i);
                 track.innerHTML = '';
                 
-                // Стрічка падіння
+                // Створюємо стрічку для анімації (30 символів для швидкості)
                 for (let s = 0; s < 30; s++) {
                     const d = document.createElement('div');
                     d.className = 'symbol';
@@ -165,7 +167,7 @@
                     track.appendChild(d);
                 }
                 
-                // Фінал
+                // СИМВОЛ РЕЗУЛЬТАТУ (ЗУПИНЯЄТЬСЯ В ЦЕНТРІ)
                 const f = document.createElement('div');
                 f.className = 'symbol';
                 f.innerText = results[i-1];
@@ -177,13 +179,16 @@
             });
 
             setTimeout(() => {
-                if (isWin) frame.classList.add('win-glow');
+                if (isWin) {
+                    frame.classList.add('win-glow');
+                }
                 isSpinActive = false;
             }, 2500);
         }
 
+        // Автозапуск кожні 5.5 сек
         setInterval(startSpin, 5500);
-        startSpin();
+        startSpin(); // Перший запуск одразу
     </script>
 </body>
 </html>
