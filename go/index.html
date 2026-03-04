@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MR. BONUS VIP | PRESTIGE CLUB</title>
+    <title>MR. BONUS VIP | ELITE CLUB</title>
     <style>
         body {
             margin: 0; padding: 0; background: #050505;
@@ -26,7 +26,7 @@
             margin-bottom: 30px; text-transform: uppercase; font-weight: bold;
         }
 
-        /* СЛОТ-БОКС З ЕФЕКТАМИ */
+        /* КОНТЕЙНЕР СЛОТА */
         .slot-frame {
             background: linear-gradient(145deg, #1a1a1a, #000);
             padding: 20px; border-radius: 35px;
@@ -78,12 +78,11 @@
         @keyframes shine { 0% {background-position: 0% 50%;} 100% {background-position: 200% 50%;} }
         @keyframes pulse { 0%, 100% {transform: scale(1);} 50% {transform: scale(1.05);} }
 
-        /* ТЕКСТОВІ БЛОКИ ПІД КНОПКОЮ */
+        /* ТЕКСТОВІ КАРТКИ */
         .prestige-content { width: 92%; max-width: 440px; margin-bottom: 50px; }
         .prestige-card {
             background: rgba(212, 175, 55, 0.03); border: 1px solid rgba(212, 175, 55, 0.15);
             padding: 20px; border-radius: 20px; margin-bottom: 15px; text-align: left;
-            backdrop-filter: blur(5px);
         }
         .prestige-card b {
             color: #d4af37; font-size: 16px; display: flex; 
@@ -171,21 +170,24 @@
             frame.classList.remove('win-glow');
             winMsg.classList.remove('show');
 
-            let results = [];
+            let finalRes = [];
             const isWin = (spinCount % 3 === 0);
 
             if (isWin) {
-                // Виграш: 3 в ряд
+                // ПЕРЕМОГА: 3 однакових символи
                 const s = symbolsList[winIdx % symbolsList.length];
-                results = [s, s, s];
+                finalRes = [s, s, s];
                 winIdx++;
             } else {
-                // Програш: гарантовано різні
-                let pool = [...symbolsList].sort(() => Math.random() - 0.5);
-                results = [pool[0], pool[1], pool[2]];
+                // ПРОГРАШ: Гарантовано 3 РІЗНИХ символи
+                let pool = [...symbolsList];
+                let s1 = pool.splice(Math.floor(Math.random() * pool.length), 1)[0];
+                let s2 = pool.splice(Math.floor(Math.random() * pool.length), 1)[0];
+                let s3 = pool.splice(Math.floor(Math.random() * pool.length), 1)[0];
+                finalRes = [s1, s2, s3];
             }
 
-           [1, 2, 3].forEach(i => {
+            [1, 2, 3].forEach(i => {
                 const track = document.getElementById('reel' + i);
                 track.innerHTML = '';
                 for (let s = 0; s < 30; s++) {
@@ -196,7 +198,7 @@
                 }
                 const f = document.createElement('div');
                 f.className = 'symbol';
-                f.innerText = results[i-1];
+                f.innerText = finalRes[i-1];
                 track.appendChild(f);
 
                 track.style.animation = 'none';
