@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MR. BONUS VIP | ELITE CLUB</title>
+    <title>MR. BONUS VIP | PRESTIGE CLUB</title>
     <style>
         body {
             margin: 0; padding: 0; background: #050505;
@@ -12,7 +12,6 @@
             min-height: 100vh; overflow-x: hidden; padding-top: 30px;
         }
 
-        /* ПРЕМІАЛЬНИЙ ЗАГОЛОВОК */
         .brand-header {
             font-size: clamp(38px, 11vw, 54px); font-weight: 900;
             background: linear-gradient(to bottom, #ffffff 0%, #d4af37 100%);
@@ -21,12 +20,9 @@
             filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.6));
             margin-bottom: 5px; text-align: center;
         }
-        .sub-header {
-            font-size: 13px; color: #666; letter-spacing: 6px;
-            margin-bottom: 30px; text-transform: uppercase; font-weight: bold;
-        }
 
-        /* КОНТЕЙНЕР СЛОТА */
+        .sub-header { font-size: 13px; color: #666; letter-spacing: 6px; margin-bottom: 30px; text-transform: uppercase; font-weight: bold; }
+
         .slot-frame {
             background: linear-gradient(145deg, #1a1a1a, #000);
             padding: 20px; border-radius: 35px;
@@ -34,7 +30,6 @@
             transition: all 0.4s ease; margin-bottom: 40px;
         }
 
-        /* ЗЕЛЕНЕ СЯЙВО ПРИ WIN */
         .slot-frame.win-glow {
             box-shadow: 0 0 80px #2ecc71, inset 0 0 40px #2ecc71;
             border-color: #2ecc71; transform: scale(1.05);
@@ -42,14 +37,21 @@
 
         #winMessage {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
-            font-size: 85px; font-weight: 900; color: #2ecc71;
-            text-shadow: 0 0 20px #000, 0 0 40px #2ecc71;
-            z-index: 100; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: none;
+            font-size: 90px; font-weight: 900; color: #2ecc71;
+            text-shadow: 0 0 20px #000, 0 0 50px #2ecc71;
+            z-index: 100; pointer-events: none; text-transform: uppercase;
         }
-        #winMessage.show { transform: translate(-50%, -50%) scale(1.2); }
+        #winMessage.show { 
+            animation: winPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, 
+                       winPulse 0.8s ease-in-out infinite 0.5s; 
+        }
 
-        .slot-container { display: flex; gap: 12px; z-index: 2; position: relative; }
+        @keyframes winPop { 0% { transform: translate(-50%, -50%) scale(0); } 100% { transform: translate(-50%, -50%) scale(1.2); } }
+        @keyframes winPulse { 0%, 100% { transform: translate(-50%, -50%) scale(1.2); } 50% { transform: translate(-50%, -50%) scale(1.4); opacity: 0.8; } }
+
+        .slot-container { display: flex; gap: 12px; z-index: 2; position: relative; transition: opacity 0.5s, filter 0.5s; }
+        .slot-container.fade-out { opacity: 0.1; filter: blur(4px); }
+
         .reel {
             width: 90px; height: 100px; background: #111;
             border-radius: 15px; overflow: hidden; border: 1px solid #222;
@@ -65,7 +67,6 @@
             100% { transform: translateY(0); }
         }
 
-        /* КНОПКА */
         .btn {
             display: block; width: 320px; text-align: center;
             background: linear-gradient(135deg, #d4af37 0%, #fff2ac 50%, #d4af37 100%);
@@ -78,35 +79,17 @@
         @keyframes shine { 0% {background-position: 0% 50%;} 100% {background-position: 200% 50%;} }
         @keyframes pulse { 0%, 100% {transform: scale(1);} 50% {transform: scale(1.05);} }
 
-        /* ТЕКСТОВІ КАРТКИ */
         .prestige-content { width: 92%; max-width: 440px; margin-bottom: 50px; }
         .prestige-card {
-            background: rgba(212, 175, 55, 0.03); border: 1px solid rgba(212, 175, 55, 0.15);
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(212, 175, 55, 0.15);
             padding: 20px; border-radius: 20px; margin-bottom: 15px; text-align: left;
         }
-        .prestige-card b {
-            color: #d4af37; font-size: 16px; display: flex; 
-            align-items: center; gap: 10px; margin-bottom: 8px;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
+        .prestige-card b { color: #d4af37; font-size: 16px; display: flex; align-items: center; gap: 10px; margin-bottom: 8px; text-transform: uppercase; }
         .prestige-card p { margin: 0; font-size: 14px; color: #aaa; line-height: 1.6; }
 
-        /* ЛАКШЕРІ ФУТЕР 21+ */
-        .luxury-footer {
-            width: 100%; background: #000; padding: 40px 0;
-            border-top: 1px solid #222; text-align: center;
-        }
-        .age-container {
-            display: inline-flex; align-items: center; justify-content: center;
-            border: 2px solid #d4af37; width: 55px; height: 55px;
-            border-radius: 50%; color: #d4af37; font-weight: 900;
-            font-size: 20px; margin-bottom: 20px;
-        }
-        .responsible-text {
-            font-size: 10px; color: #555; padding: 0 40px;
-            text-transform: uppercase; letter-spacing: 2px;
-            line-height: 1.8; font-weight: bold;
-        }
+        .footer { width: 100%; background: #000; padding: 40px 0; text-align: center; border-top: 1px solid #222; }
+        .age-container { border: 2px solid #d4af37; width: 55px; height: 55px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #d4af37; font-weight: 900; margin-bottom: 20px; font-size: 20px; }
+        .responsible-text { font-size: 10px; color: #555; padding: 0 40px; text-transform: uppercase; font-weight: bold; line-height: 1.8; }
     </style>
 </head>
 <body>
@@ -116,14 +99,14 @@
 
     <div class="slot-frame" id="mainFrame">
         <div id="winMessage">WIN</div>
-        <div class="slot-container">
+        <div class="slot-container" id="slotContainer">
             <div class="reel"><div class="symbols-track" id="reel1"></div></div>
             <div class="reel"><div class="symbols-track" id="reel2"></div></div>
             <div class="reel"><div class="symbols-track" id="reel3"></div></div>
         </div>
     </div>
 
-    <!-- ЗАМІНИ MrBonus_VIP_bot НА СВІЙ ЮЗЕРНЕЙМ -->
+    <!-- ЗАМІНИ ТВІЙ_БОТ НА СВОЄ (MrBonus_VIP_bot) -->
     <a href="https://t.me" 
        onclick="window.location.href='tg://resolve?domain=MrBonus_VIP_bot'; setTimeout(function(){ window.location.href='https://t.me'; }, 500); return false;" 
        class="btn">Забрати Бонус 🎁</a>
@@ -131,7 +114,7 @@
     <div class="prestige-content">
         <div class="prestige-card">
             <b>👑 ПРИВІЛЕЇ КЛУБУ</b>
-            <p>Ваш статус активовано. Учасникам MR. BONUS VIP доступні ексклюзивні бездепозитні фріспіни та підвищені ліміти, недоступні для загального загалу.</p>
+            <p>Ваш статус активовано. Учасникам MR. BONUS VIP доступні ексклюзивні бездепозитні фріспіни та підвищені ліміти на виплати.</p>
         </div>
         <div class="prestige-card">
             <b>🛡️ ГАРАНТІЯ БЕЗПЕКИ</b>
@@ -148,7 +131,6 @@
         <div class="responsible-text">
             ГРАЙТЕ ВІДПОВІДАЛЬНО! <br>
             Участь в азартних іграх може викликати ігрову залежність. <br>
-            Дотримуйтесь правил та лімітів самообмеження. <br>
             Ми підтримуємо лише сертифікований гемблінг.
         </div>
     </div>
@@ -165,37 +147,38 @@
             
             spinCount++;
             const frame = document.getElementById('mainFrame');
+            const container = document.getElementById('slotContainer');
             const winMsg = document.getElementById('winMessage');
             
             frame.classList.remove('win-glow');
+            container.classList.remove('fade-out');
             winMsg.classList.remove('show');
 
             let finalRes = [];
             const isWin = (spinCount % 3 === 0);
 
             if (isWin) {
-                // ПЕРЕМОГА: 3 однакових символи
-                const s = symbolsList[winIdx % symbolsList.length];
-                finalRes = [s, s, s];
+                // ГАРАНТОВАНО 3 ОДНАКОВИХ СИМВОЛИ
+                let s = symbolsList[winIdx % symbolsList.length];
+                finalRes = [s, s, s]; 
                 winIdx++;
             } else {
-                // ПРОГРАШ: Гарантовано 3 РІЗНИХ символи
-                let pool = [...symbolsList];
-                let s1 = pool.splice(Math.floor(Math.random() * pool.length), 1)[0];
-                let s2 = pool.splice(Math.floor(Math.random() * pool.length), 1)[0];
-                let s3 = pool.splice(Math.floor(Math.random() * pool.length), 1)[0];
-                finalRes = [s1, s2, s3];
+                // ГАРАНТОВАНО 3 РІЗНИХ СИМВОЛИ
+                let pool = [...symbolsList].sort(() => Math.random() - 0.5);
+                finalRes = [pool[0], pool[1], pool[2]];
             }
 
             [1, 2, 3].forEach(i => {
                 const track = document.getElementById('reel' + i);
                 track.innerHTML = '';
+                
                 for (let s = 0; s < 30; s++) {
                     const d = document.createElement('div');
                     d.className = 'symbol';
                     d.innerText = symbolsList[Math.floor(Math.random() * symbolsList.length)];
                     track.appendChild(d);
                 }
+                
                 const f = document.createElement('div');
                 f.className = 'symbol';
                 f.innerText = finalRes[i-1];
@@ -203,19 +186,21 @@
 
                 track.style.animation = 'none';
                 track.offsetHeight; 
-                track.style.animation = `spinDown ${1.2 + i*0.4}s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards`;
+                track.style.animation = `spinDown ${1.1 + i*0.3}s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards`;
             });
 
             setTimeout(() => {
                 if (isWin) {
                     frame.classList.add('win-glow');
+                    container.classList.add('fade-out');
                     winMsg.classList.add('show');
                 }
                 isSpinActive = false;
-            }, 2600);
+            }, 2500);
         }
 
-        setInterval(startSpin, 6500);
+        // ПЕРЕРВА 2 СЕКУНДИ (після зупинки барабанів)
+        setInterval(startSpin, 4500); 
         startSpin();
     </script>
 </body>
