@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MR. BONUS VIP | ULTRA WINNER</title>
+    <title>MR. BONUS VIP | PRESTIGE CLUB</title>
     <style>
         body {
             margin: 0; padding: 0; background: #050505;
@@ -106,7 +106,6 @@
         </div>
     </div>
 
-    <!-- ЗАМІНИ MrBonus_VIP_bot НА СВІЙ ЮЗЕРНЕЙМ -->
     <a href="https://t.me" 
        onclick="window.location.href='tg://resolve?domain=MrBonus_VIP_bot'; setTimeout(function(){ window.location.href='https://t.me'; }, 500); return false;" 
        class="btn">Забрати Бонус 🎁</a>
@@ -154,22 +153,20 @@
             const isWin = (spinCount % 3 === 0);
 
             if (isWin) {
-                // ПРИМУСОВО ОДНАКОВІ:
+                // ПРИМУСОВО 3 ОДНАКОВИХ
                 let s = symbolsList[winIdx % symbolsList.length];
                 finalRes = [s, s, s]; 
                 winIdx++;
             } else {
-                // ПРИМУСОВО РІЗНІ:
+                // ПРИМУСОВО 3 РІЗНИХ
                 let pool = [...symbolsList].sort(() => Math.random() - 0.5);
-                finalRes = [pool[0], pool[1], pool[2]]; // Беремо 3 гарантовано різних
+                finalRes = [pool[0], pool[1], pool[2]]; // Беремо різні елементи
             }
 
-            // Окремо для кожного барабана
             for (let i = 1; i <= 3; i++) {
                 const track = document.getElementById('reel' + i);
                 track.innerHTML = '';
                 
-                // Хвіст для масовки
                 for (let s = 0; s < 30; s++) {
                     const d = document.createElement('div');
                     d.className = 'symbol';
@@ -177,7 +174,6 @@
                     track.appendChild(d);
                 }
                 
-                // РЕЗУЛЬТАТ (чітко за індексом)
                 const f = document.createElement('div');
                 f.className = 'symbol';
                 f.innerText = finalRes[i-1];
@@ -198,7 +194,6 @@
             }, 2000);
         }
 
-        // ШВИДКА ПЕРЕРВА 1.5 СЕКУНДИ
         setInterval(startSpin, 4000); 
         startSpin();
     </script>
