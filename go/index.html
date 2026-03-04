@@ -33,7 +33,7 @@
             transition: all 0.4s ease; margin-bottom: 40px;
         }
 
-        /* Сяйво ТІЛЬКИ при виграші */
+        /* Сяйво ТІЛЬКИ ПРИ ВИГРАШІ */
         .slot-frame.win-glow {
             box-shadow: 0 0 80px #d4af37, inset 0 0 40px #d4af37;
             border-color: #fff; transform: scale(1.05);
@@ -122,44 +122,49 @@
 
     <script>
         const symbols = ['💎', '🎰', '🔥', '❤️', '🍀', '7️⃣'];
+        let spinCounter = 0; // Лічильник спінів
+        let winIndex = 0;    // Індекс для перебору виграшних символів
         let isSpinning = false;
 
         function startSpin() {
             if (isSpinning) return;
             isSpinning = true;
 
+            spinCounter++;
             const frame = document.getElementById('mainFrame');
             frame.classList.remove('win-glow');
 
-            // 35% шанс виграшу
-            const isWin = Math.random() < 0.35; 
             let finalResults = [];
+            let isWin = false;
 
-            if (isWin) {
-                // Виграш: 3 однакових символи (рандомно які саме)
-                const winSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+            // СУВОРА ЛОГІКА: 1 і 2 — програш, 3 — виграш
+            if (spinCounter % 3 === 0) {
+                isWin = true;
+                // Кожного разу вибираємо наступний символ для джекпоту
+                const winSymbol = symbols[winIndex % symbols.length];
                 finalResults = [winSymbol, winSymbol, winSymbol];
+                winIndex++;
             } else {
-                // Програш: Гарантовано різні
-                finalResults = [
-                    symbols[Math.floor(Math.random() * 5)],
-                    symbols[Math.floor(Math.random() * 5)],
-                    symbols[Math.floor(Math.random() * 5)]
-                ];
-                if (finalResults[0] === finalResults[1] && finalResults[1] === finalResults[2]) {
-                    finalResults[2] = finalResults[2] === '💎' ? '🔥' : '💎';
-                }
+                isWin = false;
+                // ГАРАНТОВАНИЙ ПРОГРАШ (різні символи)
+                finalResults = [symbols[0], symbols[1], symbols[2]];
+                // Трохи рандомізуємо програшні символи, щоб не були однаковими завжди
+                finalResults = finalResults.sort(() => Math.random() - 0.5);
             }
 
-            [1, 2, 3].forEach(i => {
+           .forEach(i => {
                 const track = document.getElementById('reel' + i);
                 track.innerHTML = '';
+                
+                // Довга стрічка для ефекту (30 символів)
                 for (let s = 0; s < 30; s++) {
                     const div = document.createElement('div');
                     div.className = 'symbol';
                     div.innerText = symbols[Math.floor(Math.random() * symbols.length)];
                     track.appendChild(div);
                 }
+                
+                // Останній символ
                 const resDiv = document.createElement('div');
                 resDiv.className = 'symbol';
                 resDiv.innerText = finalResults[i-1];
@@ -171,18 +176,17 @@
             });
 
             setTimeout(() => {
-                // Перевірка на збіг 3-х в ряд для увімкнення сяйва
-                if (finalResults[0] === finalResults[1] && finalResults[1] === finalResults[2]) {
+                if (isWin) {
                     frame.classList.add('win-glow');
                 }
                 isSpinning = false;
-            }, 2200);
+            }, 2300);
         }
 
         function autoPlay() {
             startSpin();
-            // Швидка пауза між спінами: від 3 до 5 секунд
-            setTimeout(autoPlay, Math.floor(Math.random() * 2000) + 3000);
+            // Швидка пауза 3-4 сек
+            setTimeout(autoPlay, 4000);
         }
 
         autoPlay();
