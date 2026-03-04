@@ -154,12 +154,12 @@
         let finalRes = [];
 
         if (isWin) {
-            // ПРИМУСОВО 3 ОДНАКОВИХ
+            // ЖОРСТКО: Один символ на всі три слоти
             const s = symbolsList[winIdx % symbolsList.length];
             finalRes = [s, s, s];
             winIdx++;
         } else {
-            // ПРИМУСОВО 3 РІЗНИХ
+            // ЖОРСТКО: Три гарантовано різні символи
             let pool = [...symbolsList].sort(() => Math.random() - 0.5);
             finalRes = [pool[0], pool[1], pool[2]];
         }
@@ -171,31 +171,29 @@
             const track = document.getElementById('reel' + i).querySelector('.symbols-track');
             track.innerHTML = '';
             
-            // Створюємо стрічку: Фінальний символ ставимо ПЕРШИМ (внизу)
-            const resDiv = document.createElement('div');
-            resDiv.className = 'symbol';
-            resDiv.innerText = finalRes[index];
-            track.appendChild(resDiv);
-
-            // Додаємо 40 символів ВГОРУ (щоб вони падали вниз)
+            // 1. Формуємо масив з 41 символу
+            let reelSymbols = [];
+            // Додаємо 40 рандомних (хвіст)
             for (let s = 0; s < 40; s++) {
-                const div = document.createElement('div');
-                div.className = 'symbol';
-                div.innerText = symbolsList[Math.floor(Math.random() * symbolsList.length)];
-                track.insertBefore(div, track.firstChild);
+                reelSymbols.push(symbolsList[Math.floor(Math.random() * symbolsList.length)]);
             }
+            // 41-й символ — це наш РЕЗУЛЬТАТ (він буде в самому низу)
+            reelSymbols.push(finalRes[index]);
 
-            const symbolHeight = 100; // Фіксована висота для точності
-            const travelDistance = (track.children.length - 1) * symbolHeight;
+            // 2. Вставляємо в HTML (тепер порядок залізний)
+            track.innerHTML = reelSymbols.map(s => `<div class="symbol">${s}</div>`).join('');
 
-            // АНІМАЦІЯ: Падіння зверху вниз (з мінуса в 0) з АМПЛІТУДОЮ
+            const symbolHeight = 100; // Фіксована висота
+            const travelDistance = (reelSymbols.length - 1) * symbolHeight;
+
+            // 3. АНІМАЦІЯ ПАДІННЯ ВНИЗ (з мінуса в нуль)
             const animation = track.animate([
                 { transform: `translateY(-${travelDistance}px)` }, // Початок зверху
                 { transform: 'translateY(15px)', offset: 0.85 },    // М'який проліт нижче
-                { transform: 'translateY(-5px)', offset: 0.95 },    // Легкий відскок вгору
-                { transform: 'translateY(0)' }                      // Фінальна зупинка
+                { transform: 'translateY(-5px)', offset: 0.95 },    // Відскок
+                { transform: 'translateY(0)' }                      // ФІНІШ
             ], {
-                duration: 2000 + (index * 400),
+                duration: 2000 + (index * 500),
                 easing: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
                 fill: 'forwards'
             });
@@ -207,10 +205,8 @@
                         frame.classList.add('win-glow');
                         container.classList.add('fade-out');
                         winMsg.classList.add('show');
-                        // Пауза 3.5 сек на виграш
                         setTimeout(() => { isSpinActive = false; }, 3500);
                     } else {
-                        // Пауза 1.5 сек на програш
                         setTimeout(() => { isSpinActive = false; }, 1500);
                     }
                 }
@@ -218,11 +214,7 @@
         });
     }
 
-    // Цикл перевірки запуску
-    setInterval(() => {
-        if (!isSpinActive) startSpin();
-    }, 200);
-
+    setInterval(() => { if (!isSpinActive) startSpin(); }, 200);
     startSpin();
 </script>
 
