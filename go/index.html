@@ -57,11 +57,12 @@
             border-radius: 15px; overflow: hidden; border: 1px solid #222;
             box-shadow: inset 0 10px 20px #000, inset 0 -10px 20px #000;
         }
+        
         .symbols-track { display: flex; flex-direction: column; align-items: center; }
         .symbol { font-size: 55px; height: 100px; min-height: 100px; display: flex; align-items: center; justify-content: center; }
 
         @keyframes spinDown {
-            0% { transform: translateY(-2800px); }
+            0% { transform: translateY(-3000px); }
             75% { transform: translateY(10px); }
             90% { transform: translateY(-5px); }
             100% { transform: translateY(0); }
@@ -100,9 +101,10 @@
     <div class="slot-frame" id="mainFrame">
         <div id="winMessage">WIN</div>
         <div class="slot-container" id="slotContainer">
-            <div class="reel"><div class="symbols-track" id="reel1"></div></div>
-            <div class="reel"><div class="symbols-track" id="reel2"></div></div>
-            <div class="reel"><div class="symbols-track" id="reel3"></div></div>
+            <!-- ТУТ ДОДАНО КЛАС symbols-track -->
+            <div class="reel" id="reel1"><div class="symbols-track"></div></div>
+            <div class="reel" id="reel2"><div class="symbols-track"></div></div>
+            <div class="reel" id="reel3"><div class="symbols-track"></div></div>
         </div>
     </div>
 
@@ -125,76 +127,68 @@
         </div>
     </div>
 
-    <div class="footer">
+    <div class="luxury-footer">
         <div class="age-container">21+</div>
         <div class="responsible-text">ГРАЙТЕ ВІДПОВІДАЛЬНО! Участь в азартних іграх може викликати залежність.</div>
     </div>
 
-<script>
-    const symbolsList = ['💎', '🎰', '🔥', '❤️', '🍀', '7️⃣'];
-    let spinCount = 0;
-    let winIdx = 0;
-    let isSpinActive = false;
+    <script>
+        const symbolsList = ['💎', '🎰', '🔥', '❤️', '🍀', '7️⃣'];
+        let spinCount = 0;
+        let winIdx = 0;
+        let isSpinActive = false;
 
-    function startSpin() {
-        if (isSpinActive) return;
-        isSpinActive = true;
-        
-        spinCount++;
-        const frame = document.getElementById('mainFrame');
-        const container = document.getElementById('slotContainer');
-        const winMsg = document.getElementById('winMessage');
-        
-        frame.classList.remove('win-glow');
-        container.classList.remove('fade-out');
-        winMsg.classList.remove('show');
-
-        // ГОРІШИЙ РАНДОМ АБО ДЖЕКПОТ
-        let finalRes = [];
-        const isWin = (spinCount % 3 === 0);
-
-        if (isWin) {
-            let s = symbolsList[winIdx % symbolsList.length];
-            finalRes = [s, s, s]; // СУВОРО ОДНАКОВІ
-            winIdx++;
-        } else {
-            let shuffled = [...symbolsList].sort(() => Math.random() - 0.5);
-            finalRes = [shuffled[0], shuffled[1], shuffled[2]]; // СУВОРО РІЗНІ
-        }
-
-        // ЗАПУСК КОЖНОГО БАРАБАНА ОКРЕМО
-        for (let i = 1; i <= 3; i++) {
-            const track = document.getElementById('reel' + i).querySelector('.symbols-track');
+        function startSpin() {
+            if (isSpinActive) return;
+            isSpinActive = true;
             
-            // ПОВНЕ ОЧИЩЕННЯ І ГЕНЕРАЦІЯ НОВОЇ СТРІЧКИ
-            let trackHTML = '';
-            for (let s = 0; s < 30; s++) {
-                trackHTML += `<div class="symbol">${symbolsList[Math.floor(Math.random() * symbolsList.length)]}</div>`;
-            }
-            // ВСТАВЛЯЄМО РЕЗУЛЬТАТ В САМИЙ КІНЕЦЬ СТРІЧКИ
-            trackHTML += `<div class="symbol">${finalRes[i-1]}</div>`;
+            spinCount++;
+            const frame = document.getElementById('mainFrame');
+            const container = document.getElementById('slotContainer');
+            const winMsg = document.getElementById('winMessage');
             
-            track.innerHTML = trackHTML;
+            frame.classList.remove('win-glow');
+            container.classList.remove('fade-out');
+            winMsg.classList.remove('show');
 
-            // СКИДАННЯ АНІМАЦІЇ ЧЕРЕЗ КЛАС
-            track.style.animation = 'none';
-            track.offsetHeight; // Force reflow
-            track.style.animation = `spinDown ${1.0 + i*0.3}s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards`;
-        }
+            let finalRes = [];
+            const isWin = (spinCount % 3 === 0);
 
-        setTimeout(() => {
             if (isWin) {
-                frame.classList.add('win-glow');
-                container.classList.add('fade-out');
-                winMsg.classList.add('show');
+                const s = symbolsList[winIdx % symbolsList.length];
+                finalRes = [s, s, s]; 
+                winIdx++;
+            } else {
+                let pool = [...symbolsList].sort(() => Math.random() - 0.5);
+                finalRes = [pool[0], pool[1], pool[2]];
             }
-            isSpinActive = false;
-        }, 2200); // Чекаємо повної зупинки останнього барабана
-    }
 
-    // ТВОЯ ДИНАМІКА: ПЕРЕРВА 1.5-2 СЕКУНДИ
-    setInterval(startSpin, 4500); 
-    startSpin();
-</script>
+            for (let i = 1; i <= 3; i++) {
+                const track = document.getElementById('reel' + i).querySelector('.symbols-track');
+                let trackHTML = '';
+                for (let s = 0; s < 30; s++) {
+                    trackHTML += `<div class="symbol">${symbolsList[Math.floor(Math.random() * symbolsList.length)]}</div>`;
+                }
+                trackHTML += `<div class="symbol">${finalRes[i-1]}</div>`;
+                track.innerHTML = trackHTML;
+
+                track.style.animation = 'none';
+                track.offsetHeight; 
+                track.style.animation = `spinDown ${1.0 + i*0.2}s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards`;
+            }
+
+            setTimeout(() => {
+                if (isWin) {
+                    frame.classList.add('win-glow');
+                    container.classList.add('fade-out');
+                    winMsg.classList.add('show');
+                }
+                isSpinActive = false;
+            }, 2000);
+        }
+
+        setInterval(startSpin, 4000); 
+        startSpin();
+    </script>
 </body>
 </html>
