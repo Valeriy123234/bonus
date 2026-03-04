@@ -162,68 +162,50 @@
             finalRes = [pool[0], pool[1], pool[2]];
         }
 
-        const reels = [1, 2, 3];
-        let completed = 0;
-
-        reels.forEach((i, index) => {
+        // Заповнюємо барабани ПЕРЕД стартом
+        for (let i = 1; i <= 3; i++) {
             const track = document.getElementById('reel' + i).querySelector('.symbols-track');
-            track.innerHTML = '';
             
-            // 1. Створюємо стрічку: ФІНАЛЬНИЙ СИМВОЛ ставимо ОСТАННІМ
-            // Але зверху над ним додаємо 40 рандомних символів
+            // Створюємо стрічку: 40 рандомних + 1 фінальний результат
+            let html = '';
             for (let s = 0; s < 40; s++) {
-                const div = document.createElement('div');
-                div.className = 'symbol';
-                div.innerText = symbolsList[Math.floor(Math.random() * symbolsList.length)];
-                track.appendChild(div);
+                html += `<div class="symbol">${symbolsList[Math.floor(Math.random() * symbolsList.length)]}</div>`;
             }
-            
-            const resDiv = document.createElement('div');
-            resDiv.className = 'symbol';
-            resDiv.innerText = finalRes[index];
-            track.appendChild(resDiv);
+            html += `<div class="symbol">${finalRes[i-1]}</div>`;
+            track.innerHTML = html;
 
-            const symbolHeight = 100; // Фіксована висота для точності
-            const travelDistance = (track.children.length - 1) * symbolHeight;
+            // Скидаємо позицію в самий верх (мінус висота всієї стрічки крім останнього символу)
+            track.style.transition = 'none';
+            track.style.transform = `translateY(-4000px)`; 
 
-            // 2. АНІМАЦІЯ ПАДІННЯ ВНИЗ
-            // Ми стартуємо з -travelDistance (високо вгорі) і їдемо до 0 (видима зона)
-            const animation = track.animate([
-                { transform: `translateY(-${travelDistance}px)` }, // Початок (небо)
-                { transform: 'translateY(15px)', offset: 0.85 },    // Проліт нижче (амплітуда)
-                { transform: 'translateY(-8px)', offset: 0.92 },    // Відскок вгору
-                { transform: 'translateY(0)' }                      // Стоп
-            ], {
-                duration: 2200 + (index * 500), // Повільніше і солідніше
-                easing: 'cubic-bezier(0.2, 0, 0.2, 1)',
-                fill: 'forwards'
-            });
+            // Запускаємо падіння вниз до нуля через невеликий таймаут
+            setTimeout(() => {
+                track.style.transition = `transform ${1.5 + (i * 0.5)}s cubic-bezier(0.17, 0.67, 0.1, 1.15)`; // Ефект пружини в кінці
+                track.style.transform = 'translateY(0)';
+            }, 50);
+        }
 
-            animation.onfinish = () => {
-                completed++;
-                if (completed === 3) {
-                    if (isWin) {
-                        frame.classList.add('win-glow');
-                        container.classList.add('fade-out');
-                        winMsg.classList.add('show');
-                        // Пауза 3.5 сек після джекпоту
-                        setTimeout(() => { isSpinActive = false; }, 3500);
-                    } else {
-                        // Пауза 1.5 сек після програшу
-                        setTimeout(() => { isSpinActive = false; }, 1500);
-                    }
-                }
-            };
-        });
+        // Чекаємо зупинки останнього барабана (3-й барабан зупиниться через 1.5 + 1.5 = 3с)
+        setTimeout(() => {
+            if (isWin) {
+                frame.classList.add('win-glow');
+                container.classList.add('fade-out');
+                winMsg.classList.add('show');
+                setTimeout(() => { isSpinActive = false; }, 3500); // Пауза на перемогу
+            } else {
+                setTimeout(() => { isSpinActive = false; }, 1500); // Пауза на програш
+            }
+        }, 3000);
     }
 
-    // Цикл автоматичного запуску
+    // Постійний цикл
     setInterval(() => {
         if (!isSpinActive) startSpin();
-    }, 200);
+    }, 500);
 
-    startSpin(); // Перший старт
+    startSpin();
 </script>
+
 
 </body>
 </html>
