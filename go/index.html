@@ -138,36 +138,87 @@
 </div>
 
 <script>
-const symbols = ['💎', '🎰', '🔥', '❤️', '🍀', '7️⃣'];
-const reelElems = document.querySelectorAll('.reel');
+    const symbolsList = ['💎', '🎰', '🔥', '❤️', '🍀', '7️⃣'];
+    let spinCount = 0;
+    let winIdx = 0;
+    let isSpinActive = false;
 
-function spin() {
-    reelElems.forEach((reel, i) => {
-        const isWin = Math.random() > 0.7; // Шанс на перемогу для тесту
-        const target = isWin ? symbols[0] : symbols[Math.floor(Math.random() * symbols.length)];
+    function startSpin() {
+        if (isSpinActive) return;
+        isSpinActive = true;
         
-        // Генеруємо "стрічку" для прокрутки
-        let strip = '';
-        for(let s=0; s<20; s++) strip += `<div>${symbols[Math.floor(Math.random()*symbols.length)]}</div>`;
-        strip += `<div style="color: gold">${target}</div>`;
+        spinCount++;
+        const frame = document.getElementById('mainFrame');
+        const container = document.getElementById('slotContainer');
+        const winMsg = document.getElementById('winMessage');
         
-        reel.innerHTML = `<div class="track">${strip}</div>`;
-        const track = reel.querySelector('.track');
-        
-        // Анімація вниз із ефектом пружини (cubic-bezier)
-        track.animate([
-            { transform: 'translateY(-100%)', opacity: 0.5 },
-            { transform: 'translateY(0)', opacity: 1 }
-        ], {
-            duration: 1000 + (i * 300),
-            easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)', // Ефект пружини
-            fill: 'forwards'
+        frame.classList.remove('win-glow');
+        container.classList.remove('fade-out');
+        winMsg.classList.remove('show');
+
+        const isWin = (spinCount % 3 === 0);
+        let finalRes = [];
+
+        if (isWin) {
+            const s = symbolsList[winIdx % symbolsList.length];
+            finalRes = [s, s, s];
+            winIdx++;
+        } else {
+            let pool = [...symbolsList].sort(() => Math.random() - 0.5);
+            finalRes = [pool[0], pool[1], pool[2]];
+        }
+
+        const reels = [1, 2, 3];
+        let completed = 0;
+
+        reels.forEach((i, index) => {
+            const track = document.getElementById('reel' + i).querySelector('.symbols-track');
+            track.innerHTML = '';
+            
+            // Створюємо стрічку: 40 символів для швидкості + фінальний
+            for (let s = 0; s < 40; s++) {
+                const div = document.createElement('div');
+                div.className = 'symbol';
+                div.innerText = symbolsList[Math.floor(Math.random() * symbolsList.length)];
+                track.appendChild(div);
+            }
+            
+            const resDiv = document.createElement('div');
+            resDiv.className = 'symbol';
+            resDiv.innerText = finalRes[index];
+            track.appendChild(resDiv);
+
+            // Обчислюємо точну відстань прокрутки
+            const symbolHeight = track.firstChild.offsetHeight || 100;
+            const travelDistance = (track.children.length - 1) * symbolHeight;
+
+            // Запускаємо анімацію через JS (Web Animations API)
+            const animation = track.animate([
+                { transform: 'translateY(0)' },
+                { transform: `translateY(-${travelDistance}px)` }
+            ], {
+                duration: 1500 + (index * 400),
+                easing: 'cubic-bezier(0.45, 0.05, 0.55, 0.95)',
+                fill: 'forwards'
+            });
+
+            animation.onfinish = () => {
+                completed++;
+                if (completed === 3) {
+                    if (isWin) {
+                        frame.classList.add('win-glow');
+                        container.classList.add('fade-out');
+                        winMsg.classList.add('show');
+                    }
+                    isSpinActive = false;
+                }
+            };
         });
-    });
-}
+    }
 
-setInterval(spin, 4000);
-spin();
+    // Автозапуск кожні 5 секунд
+    setInterval(startSpin, 5000); 
+    startSpin();
 </script>
 
 
