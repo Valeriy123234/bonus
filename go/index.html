@@ -23,14 +23,13 @@
 
         .sub-header { font-size: 13px; color: #666; letter-spacing: 6px; margin-bottom: 30px; text-transform: uppercase; font-weight: bold; }
 
-        /* РАМКА СЛОТІВ ТА ВАЖІЛЬ */
         .slot-frame {
             background: linear-gradient(145deg, #1a1a1a, #000);
             padding: 25px; border-radius: 35px;
             border: 4px solid #d4af37; position: relative;
             transition: all 0.4s ease; margin-bottom: 40px;
-            display: flex; align-items: center; gap: 30px;
-            overflow: visible !important;
+            display: flex; align-items: center; gap: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
         .slot-frame.win-glow {
@@ -55,80 +54,78 @@
         .slot-container { display: flex; gap: 12px; z-index: 2; position: relative; transition: opacity 0.4s, filter 0.4s; }
         .slot-container.fade-out { opacity: 0.1; filter: blur(5px); }
 
-        /* БАРАБАНИ ТА БЛИСКАВКИ */
         .reel {
             width: 90px; height: 100px; background: #000;
             border-radius: 15px; overflow: hidden !important; 
-            border: 1px solid #222; position: relative;
-            box-shadow: inset 0 10px 20px #000, inset 0 -10px 20px #000;
+            border: 2px solid #d4af37; position: relative;
+            box-shadow: inset 0 10px 20px #000, inset 0 -10px 20px #000, 0 0 10px rgba(212, 175, 55, 0.2);
+            transition: border-color 0.4s, box-shadow 0.4s;
         }
 
-        .reel::after {
-            content: ''; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px;
-            border: 2px solid #00f2ff; border-radius: 18px; pointer-events: none; z-index: 10;
-            filter: url(#lightning-filter) drop-shadow(0 0 8px #00f2ff);
-            animation: lightning-glow 0.15s infinite;
-        }
-        @keyframes lightning-glow { from { opacity: 0.7; } to { opacity: 1; } }
-        .win-glow .reel::after { border-color: #2ecc71; filter: url(#lightning-filter) drop-shadow(0 0 15px #2ecc71); }
+        .win-glow .reel { border-color: #2ecc71; box-shadow: inset 0 10px 20px #000, 0 0 20px rgba(46, 204, 113, 0.5); }
 
         .symbols-track { display: flex; flex-direction: column; align-items: center; width: 100%; }
         .symbol { font-size: 55px; height: 100px; min-height: 100px; display: flex; align-items: center; justify-content: center; user-select: none; }
 
-        /* ВАЖІЛЬ (РЫЧАГ) */
-        .lever-container { position: relative; width: 40px; height: 120px; cursor: pointer; user-select: none; }
-        .lever-base { width: 25px; height: 80px; background: #222; border-radius: 10px; border: 2px solid #d4af37; position: absolute; bottom: 0; left: 7px; }
-        .lever-arm { 
-            width: 10px; height: 70px; background: linear-gradient(to top, #444, #d4af37, #444);
-            position: absolute; bottom: 35px; left: 15px; border-radius: 5px;
-            transform-origin: bottom center; transition: transform 0.4s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+        .lever-container { position: relative; width: 50px; height: 140px; cursor: pointer; user-select: none; }
+        .lever-base { 
+            width: 35px; height: 100px; 
+            background: linear-gradient(145deg, #d4af37, #8a6d3b);
+            border-radius: 10px; border: 1px solid #fff2ac;
+            position: absolute; bottom: 0; left: 7px;
+            box-shadow: inset -2px -2px 5px rgba(0,0,0,0.5), inset 2px 2px 5px rgba(255,255,255,0.3);
         }
-        .lever-knob { width: 34px; height: 34px; background: radial-gradient(circle, #ff3333, #800); border-radius: 50%; position: absolute; top: -25px; left: -12px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-        .lever-active .lever-arm { transform: rotateX(150deg); }
+        .lever-slot { width: 12px; height: 70px; background: #000; position: absolute; top: 10px; left: 11px; border-radius: 10px; box-shadow: inset 0 2px 5px #000; }
+        .lever-arm { 
+            width: 10px; height: 90px; 
+            background: linear-gradient(90deg, #999, #eee, #999);
+            position: absolute; bottom: 35px; left: 13px; border-radius: 5px;
+            transform-origin: bottom center; transition: transform 0.4s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+            z-index: 5;
+        }
+        .lever-knob { 
+            width: 40px; height: 40px; 
+            background: radial-gradient(circle at 30% 30%, #ff4b2b, #800000);
+            border-radius: 50%; position: absolute; top: -30px; left: -15px; 
+            box-shadow: 0 8px 15px rgba(0,0,0,0.6), inset -2px -2px 10px rgba(0,0,0,0.5);
+        }
+        .lever-active .lever-arm { transform: rotateX(150deg) scaleY(0.8); }
 
-        /* КНОПКА ТА КОНТЕНТ */
         .btn {
             display: block; width: 320px; text-align: center;
             background: linear-gradient(135deg, #d4af37 0%, #fff2ac 50%, #d4af37 100%);
-            background-size: 200% auto; color: #000; padding: 24px 0;
-            font-size: 26px; font-weight: 900; border-radius: 80px;
+            background-size: 200% auto; color: #000; padding: 22px 0;
+            font-size: 24px; font-weight: 900; border-radius: 80px;
             text-decoration: none; text-transform: uppercase;
-            box-shadow: 0 15px 50px rgba(212, 175, 55, 0.6);
-            animation: pulse 2s infinite, shine 3s infinite; margin-bottom: 50px; border: none; cursor: pointer;
+            box-shadow: 0 10px 40px rgba(212, 175, 55, 0.4);
+            animation: pulse 2s infinite, shine 3s infinite; margin-bottom: 15px; border: none; cursor: pointer;
+        }
+        .btn-sub {
+            display: block; width: 300px; text-align: center;
+            background: rgba(255,255,255,0.05); color: #d4af37; padding: 15px 0;
+            font-size: 16px; font-weight: 700; border-radius: 40px;
+            text-decoration: none; text-transform: uppercase;
+            border: 1px solid rgba(212,175,55,0.3); margin-bottom: 50px;
+            transition: 0.3s;
         }
 
-        .prestige-content { width: 92%; max-width: 440px; margin-bottom: 50px; }
-        .prestige-card {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(212, 175, 55, 0.15);
-            padding: 20px; border-radius: 20px; margin-bottom: 15px; text-align: left;
-        }
-        .prestige-card b { color: #d4af37; font-size: 16px; display: flex; align-items: center; gap: 10px; margin-bottom: 8px; text-transform: uppercase; }
-        .prestige-card p { margin: 0; font-size: 14px; color: #aaa; line-height: 1.6; }
-
-        .luxury-footer { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; gap: 10px; padding: 40px 0; background: #000; border-top: 1px solid #222; }
-        .age-container { border: 2px solid #d4af37; padding: 8px 15px; border-radius: 8px; color: #d4af37; font-weight: 900; font-size: 20px; background: rgba(0,0,0,0.5); }
-        .responsible-text { font-size: 10px; color: rgba(255,255,255,0.4); padding: 0 40px; text-transform: uppercase; font-weight: bold; line-height: 1.8; max-width: 350px; }
-
-        /* ВІКНО ВИГРАШУ */
         #winPopup {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
-            background: rgba(0,0,0,0.95); padding: 35px; border: 3px solid #2ecc71; border-radius: 25px;
-            text-align: center; color: white; z-index: 2000; box-shadow: 0 0 60px rgba(46, 204, 113, 0.4);
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); width: 280px;
+            background: rgba(0,0,0,0.98); padding: 40px 30px; border: 2px solid #2ecc71; border-radius: 30px;
+            text-align: center; color: white; z-index: 2000; box-shadow: 0 0 100px rgba(46, 204, 113, 0.3);
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); width: 290px;
         }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; color: #555; cursor: pointer; }
+        
+        .luxury-footer { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; gap: 10px; padding: 40px 0; background: #000; border-top: 1px solid #222; }
+        .age-container { border: 2px solid #d4af37; padding: 8px 15px; border-radius: 8px; color: #d4af37; font-weight: 900; font-size: 20px; background: rgba(0,0,0,0.5); }
+        .responsible-text { font-size: 10px; color: rgba(255,255,255,0.4); text-transform: uppercase; font-weight: bold; max-width: 350px; }
+
+        @keyframes shine { 0% {background-position: 0% 50%;} 100% {background-position: 200% 50%;} }
+        @keyframes pulse { 0%, 100% {transform: scale(1);} 50% {transform: scale(1.03);} }
     </style>
 </head>
 <body>
-
-    <!-- SVG Фільтр для блискавок -->
-    <svg style="position: absolute; width: 0; height: 0;">
-      <filter id="lightning-filter">
-        <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" seed="1" result="noise">
-          <animate attributeName="seed" from="1" to="100" dur="0.8s" repeatCount="indefinite" />
-        </feTurbulence>
-        <feDisplacementMap in="SourceGraphic" in2="noise" scale="12" />
-      </filter>
-    </svg>
 
     <div class="brand-header">MR BONUS VIP</div>
     <div class="sub-header">ESTABLISHED 2020</div>
@@ -140,35 +137,21 @@
             <div class="reel" id="reel2"><div class="symbols-track"></div></div>
             <div class="reel" id="reel3"><div class="symbols-track"></div></div>
         </div>
-        <!-- Важіль -->
         <div class="lever-container" id="leverNode" onclick="startSpin()">
-            <div class="lever-base"></div>
+            <div class="lever-base"><div class="lever-slot"></div></div>
             <div class="lever-arm"><div class="lever-knob"></div></div>
         </div>
     </div>
 
     <button onclick="startSpin()" class="btn">Крутити Слоти 🎰</button>
+    <a href="https://t.me" class="btn-sub">Забрати Бонус 🎁</a>
 
     <div id="winPopup">
-        <h2 style="color:#2ecc71; margin:0; font-size: 28px; text-transform: uppercase;">Jackpot!</h2>
-        <p style="color: #aaa; margin: 10px 0;">Ваш ексклюзивний промкод:</p>
-        <div id="promoCode" style="font-size: 24px; font-weight: 900; background: #111; padding: 15px; border: 1px dashed #2ecc71; margin: 20px 0; letter-spacing: 2px;">MR-VIP-777</div>
-        <button onclick="copyAndGo()" style="width: 100%; padding: 15px; cursor: pointer; background: linear-gradient(135deg, #2ecc71, #27ae60); border: none; color: #000; font-weight: 900; border-radius: 10px; text-transform: uppercase;">Забрати Бонус</button>
-    </div>
-
-    <div class="prestige-content">
-        <div class="prestige-card">
-            <b>👑 ПРИВІЛЕЇ КЛУБУ</b>
-            <p>Ваш статус активовано. Учасникам MR. BONUS VIP доступні ексклюзивні бездепозитні фріспіни та підвищені ліміти на виплати.</p>
-        </div>
-        <div class="prestige-card">
-            <b>🛡️ ГАРАНТІЯ БЕЗПЕКИ</b>
-            <p>Ми працюємо за протоколами конфіденційності VIP-рівня. Ваші дані захищені.</p>
-        </div>
-        <div class="prestige-card">
-            <b>⚖️ ВІДПОВІДАЛЬНА ГРА</b>
-            <p>Ми суворо дотримуємось принципів Responsible Gambling. Грайте з розумом.</p>
-        </div>
+        <div class="close-btn" onclick="closePopup()">×</div>
+        <h2 style="color:#2ecc71; margin:0; font-size: 32px; text-transform: uppercase;">Jackpot!</h2>
+        <p style="color: #aaa; margin: 10px 0;">Ваш VIP статус активовано:</p>
+        <div id="promoCode" style="font-size: 26px; font-weight: 900; background: #111; padding: 18px; border: 1px dashed #2ecc71; margin: 25px 0; letter-spacing: 2px;">MR-VIP-777</div>
+        <button onclick="copyAndGo()" style="width: 100%; padding: 18px; cursor: pointer; background: linear-gradient(135deg, #2ecc71, #27ae60); border: none; color: #000; font-weight: 900; border-radius: 12px; text-transform: uppercase;">Забрати та Перейти</button>
     </div>
 
     <div class="luxury-footer">
@@ -177,6 +160,11 @@
     </div>
 
 <script>
+    // Аудіо ресурси
+    const audioLever = new Audio('https://www.soundjay.com');
+    const audioSpin = new Audio('https://www.soundjay.com');
+    const audioWin = new Audio('https://www.myinstants.com');
+
     const symbolsList = ['💎', '🎰', '🔥', '❤️', '🍀', '7️⃣'];
     let spinCount = 0;
     let winIdx = 0;
@@ -189,10 +177,17 @@
         });
     };
 
+    function closePopup() {
+        document.getElementById('winPopup').style.transform = 'translate(-50%, -50%) scale(0)';
+    }
+
     function startSpin() {
         if (isSpinActive) return;
         isSpinActive = true;
         
+        // Звук важеля
+        audioLever.play().catch(e => {});
+
         const lever = document.getElementById('leverNode');
         lever.classList.add('lever-active');
         setTimeout(() => lever.classList.remove('lever-active'), 500);
@@ -206,7 +201,7 @@
         frame.classList.remove('win-glow');
         container.classList.remove('fade-out');
         winMsg.classList.remove('show');
-        popup.style.transform = 'translate(-50%, -50%) scale(0)';
+        closePopup();
 
         const isWin = (spinCount % 3 === 0);
         let finalRes = isWin 
@@ -218,7 +213,6 @@
         [1, 2, 3].forEach((i, index) => {
             const track = document.getElementById('reel' + i).querySelector('.symbols-track');
             track.innerHTML = '';
-            
             const resDiv = document.createElement('div');
             resDiv.className = 'symbol';
             resDiv.innerText = finalRes[index];
@@ -231,19 +225,25 @@
                 track.insertBefore(div, track.firstChild);
             }
             
-            const travelDistance = (track.children.length - 1) * 100;
+            const symbolHeight = 100;
+            const travelDistance = (track.children.length - 1) * symbolHeight;
+
+            // Звук початку прокрутки
+            audioSpin.currentTime = 0;
+            audioSpin.play().catch(e => {});
 
             track.animate([
                 { transform: `translateY(-${travelDistance}px)` },
                 { transform: 'translateY(0)' }
             ], {
-                duration: 1500 + (index * 400),
+                duration: 1400 + (index * 400),
                 easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.05)', 
                 fill: 'forwards'
             }).onfinish = () => {
                 completed++;
                 if (completed === 3) {
                     if (isWin) {
+                        audioWin.play().catch(e => {}); // Звук перемоги
                         frame.classList.add('win-glow');
                         container.classList.add('fade-out');
                         winMsg.classList.add('show');
@@ -258,8 +258,8 @@
     function copyAndGo() {
         const code = document.getElementById('promoCode').innerText;
         navigator.clipboard.writeText(code);
-        event.target.innerText = 'СКОПІЙОВАНО!';
-        setTimeout(() => { window.location.href = 'https://t.me'; }, 800);
+        event.target.innerText = 'КОД СКОПІЙОВАНО!';
+        setTimeout(() => { window.location.href = 'https://t.me'; }, 1000);
     }
 </script>
 </body>
