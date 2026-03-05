@@ -23,11 +23,14 @@
 
         .sub-header { font-size: 13px; color: #666; letter-spacing: 6px; margin-bottom: 30px; text-transform: uppercase; font-weight: bold; }
 
+        /* РАМКА СЛОТІВ ТА ВАЖІЛЬ */
         .slot-frame {
             background: linear-gradient(145deg, #1a1a1a, #000);
-            padding: 20px; border-radius: 35px;
+            padding: 25px; border-radius: 35px;
             border: 4px solid #d4af37; position: relative;
             transition: all 0.4s ease; margin-bottom: 40px;
+            display: flex; align-items: center; gap: 30px;
+            overflow: visible !important;
         }
 
         .slot-frame.win-glow {
@@ -52,22 +55,38 @@
         .slot-container { display: flex; gap: 12px; z-index: 2; position: relative; transition: opacity 0.4s, filter 0.4s; }
         .slot-container.fade-out { opacity: 0.1; filter: blur(5px); }
 
+        /* БАРАБАНИ ТА БЛИСКАВКИ */
         .reel {
-            width: 90px; height: 100px; background: #111;
-            border-radius: 15px; overflow: hidden; border: 1px solid #222;
+            width: 90px; height: 100px; background: #000;
+            border-radius: 15px; overflow: hidden !important; 
+            border: 1px solid #222; position: relative;
             box-shadow: inset 0 10px 20px #000, inset 0 -10px 20px #000;
         }
-        
-        .symbols-track { display: flex; flex-direction: column; align-items: center; }
-        .symbol { font-size: 55px; height: 100px; min-height: 100px; display: flex; align-items: center; justify-content: center; }
 
-        @keyframes spinDown {
-            0% { transform: translateY(-3000px); }
-            75% { transform: translateY(10px); }
-            90% { transform: translateY(-5px); }
-            100% { transform: translateY(0); }
+        .reel::after {
+            content: ''; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px;
+            border: 2px solid #00f2ff; border-radius: 18px; pointer-events: none; z-index: 10;
+            filter: url(#lightning-filter) drop-shadow(0 0 8px #00f2ff);
+            animation: lightning-glow 0.15s infinite;
         }
+        @keyframes lightning-glow { from { opacity: 0.7; } to { opacity: 1; } }
+        .win-glow .reel::after { border-color: #2ecc71; filter: url(#lightning-filter) drop-shadow(0 0 15px #2ecc71); }
 
+        .symbols-track { display: flex; flex-direction: column; align-items: center; width: 100%; }
+        .symbol { font-size: 55px; height: 100px; min-height: 100px; display: flex; align-items: center; justify-content: center; user-select: none; }
+
+        /* ВАЖІЛЬ (РЫЧАГ) */
+        .lever-container { position: relative; width: 40px; height: 120px; cursor: pointer; user-select: none; }
+        .lever-base { width: 25px; height: 80px; background: #222; border-radius: 10px; border: 2px solid #d4af37; position: absolute; bottom: 0; left: 7px; }
+        .lever-arm { 
+            width: 10px; height: 70px; background: linear-gradient(to top, #444, #d4af37, #444);
+            position: absolute; bottom: 35px; left: 15px; border-radius: 5px;
+            transform-origin: bottom center; transition: transform 0.4s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+        }
+        .lever-knob { width: 34px; height: 34px; background: radial-gradient(circle, #ff3333, #800); border-radius: 50%; position: absolute; top: -25px; left: -12px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        .lever-active .lever-arm { transform: rotateX(150deg); }
+
+        /* КНОПКА ТА КОНТЕНТ */
         .btn {
             display: block; width: 320px; text-align: center;
             background: linear-gradient(135deg, #d4af37 0%, #fff2ac 50%, #d4af37 100%);
@@ -75,10 +94,8 @@
             font-size: 26px; font-weight: 900; border-radius: 80px;
             text-decoration: none; text-transform: uppercase;
             box-shadow: 0 15px 50px rgba(212, 175, 55, 0.6);
-            animation: pulse 2s infinite, shine 3s infinite; margin-bottom: 50px;
+            animation: pulse 2s infinite, shine 3s infinite; margin-bottom: 50px; border: none; cursor: pointer;
         }
-        @keyframes shine { 0% {background-position: 0% 50%;} 100% {background-position: 200% 50%;} }
-        @keyframes pulse { 0%, 100% {transform: scale(1);} 50% {transform: scale(1.05);} }
 
         .prestige-content { width: 92%; max-width: 440px; margin-bottom: 50px; }
         .prestige-card {
@@ -88,12 +105,30 @@
         .prestige-card b { color: #d4af37; font-size: 16px; display: flex; align-items: center; gap: 10px; margin-bottom: 8px; text-transform: uppercase; }
         .prestige-card p { margin: 0; font-size: 14px; color: #aaa; line-height: 1.6; }
 
-        .footer { width: 100%; background: #000; padding: 40px 0; text-align: center; border-top: 1px solid #222; }
-        .age-container { border: 2px solid #d4af37; width: 55px; height: 55px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #d4af37; font-weight: 900; margin-bottom: 20px; font-size: 20px; }
-        .responsible-text { font-size: 10px; color: #555; padding: 0 40px; text-transform: uppercase; font-weight: bold; line-height: 1.8; }
+        .luxury-footer { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; gap: 10px; padding: 40px 0; background: #000; border-top: 1px solid #222; }
+        .age-container { border: 2px solid #d4af37; padding: 8px 15px; border-radius: 8px; color: #d4af37; font-weight: 900; font-size: 20px; background: rgba(0,0,0,0.5); }
+        .responsible-text { font-size: 10px; color: rgba(255,255,255,0.4); padding: 0 40px; text-transform: uppercase; font-weight: bold; line-height: 1.8; max-width: 350px; }
+
+        /* ВІКНО ВИГРАШУ */
+        #winPopup {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+            background: rgba(0,0,0,0.95); padding: 35px; border: 3px solid #2ecc71; border-radius: 25px;
+            text-align: center; color: white; z-index: 2000; box-shadow: 0 0 60px rgba(46, 204, 113, 0.4);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); width: 280px;
+        }
     </style>
 </head>
 <body>
+
+    <!-- SVG Фільтр для блискавок -->
+    <svg style="position: absolute; width: 0; height: 0;">
+      <filter id="lightning-filter">
+        <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" seed="1" result="noise">
+          <animate attributeName="seed" from="1" to="100" dur="0.8s" repeatCount="indefinite" />
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="12" />
+      </filter>
+    </svg>
 
     <div class="brand-header">MR BONUS VIP</div>
     <div class="sub-header">ESTABLISHED 2020</div>
@@ -105,11 +140,21 @@
             <div class="reel" id="reel2"><div class="symbols-track"></div></div>
             <div class="reel" id="reel3"><div class="symbols-track"></div></div>
         </div>
+        <!-- Важіль -->
+        <div class="lever-container" id="leverNode" onclick="startSpin()">
+            <div class="lever-base"></div>
+            <div class="lever-arm"><div class="lever-knob"></div></div>
+        </div>
     </div>
 
-    <a href="https://t.me" 
-       onclick="window.location.href='https://t.me/MRBONUS_UA_bot'; setTimeout(function(){ window.location.href='https://t.me'; }, 500); return false;" 
-       class="btn">Забрати Бонус 🎁</a>
+    <button onclick="startSpin()" class="btn">Крутити Слоти 🎰</button>
+
+    <div id="winPopup">
+        <h2 style="color:#2ecc71; margin:0; font-size: 28px; text-transform: uppercase;">Jackpot!</h2>
+        <p style="color: #aaa; margin: 10px 0;">Ваш ексклюзивний промкод:</p>
+        <div id="promoCode" style="font-size: 24px; font-weight: 900; background: #111; padding: 15px; border: 1px dashed #2ecc71; margin: 20px 0; letter-spacing: 2px;">MR-VIP-777</div>
+        <button onclick="copyAndGo()" style="width: 100%; padding: 15px; cursor: pointer; background: linear-gradient(135deg, #2ecc71, #27ae60); border: none; color: #000; font-weight: 900; border-radius: 10px; text-transform: uppercase;">Забрати Бонус</button>
+    </div>
 
     <div class="prestige-content">
         <div class="prestige-card">
@@ -126,20 +171,10 @@
         </div>
     </div>
 
-   <div class="luxury-footer" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; gap: 10px; margin-top: 20px;">
-    
-    <!-- 21+ з легким затемненням та прозорістю -->
-    <div class="age-container" style="background: rgba(0,0,0,0.5); color: rgba(255,255,255,0.7); padding: 5px 15px; border-radius: 4px; font-weight: bold; width: fit-content;">
-        21+
+    <div class="luxury-footer">
+        <div class="age-container">21+</div>
+        <div class="responsible-text">ГРАЙТЕ ВІДПОВІДАЛЬНО! Участь в азартних іграх може викликати залежність.</div>
     </div>
-
-    <!-- Текст попередження -->
-    <div class="responsible-text" style="color: rgba(255,255,255,0.4); font-size: 12px; max-width: 300px;">
-        ГРАЙТЕ ВІДПОВІДАЛЬНО! Участь в азартних іграх може викликати залежність.
-    </div>
-    
-</div>
-
 
 <script>
     const symbolsList = ['💎', '🎰', '🔥', '❤️', '🍀', '7️⃣'];
@@ -147,71 +182,72 @@
     let winIdx = 0;
     let isSpinActive = false;
 
+    window.onload = () => {
+        [1, 2, 3].forEach(i => {
+            document.getElementById('reel' + i).querySelector('.symbols-track').innerHTML = 
+                `<div class="symbol">${symbolsList[Math.floor(Math.random()*6)]}</div>`;
+        });
+    };
+
     function startSpin() {
         if (isSpinActive) return;
         isSpinActive = true;
         
+        const lever = document.getElementById('leverNode');
+        lever.classList.add('lever-active');
+        setTimeout(() => lever.classList.remove('lever-active'), 500);
+
         spinCount++;
         const frame = document.getElementById('mainFrame');
         const container = document.getElementById('slotContainer');
         const winMsg = document.getElementById('winMessage');
+        const popup = document.getElementById('winPopup');
         
         frame.classList.remove('win-glow');
         container.classList.remove('fade-out');
         winMsg.classList.remove('show');
+        popup.style.transform = 'translate(-50%, -50%) scale(0)';
 
         const isWin = (spinCount % 3 === 0);
-        let finalRes = [];
+        let finalRes = isWin 
+            ? [symbolsList[winIdx % symbolsList.length], symbolsList[winIdx % symbolsList.length], symbolsList[winIdx % symbolsList.length]] 
+            : [...symbolsList].sort(() => Math.random() - 0.5).slice(0, 3);
+        if (isWin) winIdx++;
 
-        if (isWin) {
-            const s = symbolsList[winIdx % symbolsList.length];
-            finalRes = [s, s, s];
-            winIdx++;
-        } else {
-            let pool = [...symbolsList].sort(() => Math.random() - 0.5);
-            finalRes = [pool[0], pool[1], pool[2]];
-        }
-
-        const reels = [1, 2, 3];
         let completed = 0;
-
-        reels.forEach((i, index) => {
+        [1, 2, 3].forEach((i, index) => {
             const track = document.getElementById('reel' + i).querySelector('.symbols-track');
             track.innerHTML = '';
-            
-            for (let s = 0; s < 40; s++) {
-                const div = document.createElement('div');
-                div.className = 'symbol';
-                div.innerText = symbolsList[Math.floor(Math.random() * symbolsList.length)];
-                track.appendChild(div);
-            }
             
             const resDiv = document.createElement('div');
             resDiv.className = 'symbol';
             resDiv.innerText = finalRes[index];
             track.appendChild(resDiv);
 
-            const symbolHeight = track.firstChild.offsetHeight || 100;
-            const travelDistance = (track.children.length - 1) * symbolHeight;
+            for (let s = 0; s < 35; s++) {
+                const div = document.createElement('div');
+                div.className = 'symbol';
+                div.innerText = symbolsList[Math.floor(Math.random() * symbolsList.length)];
+                track.insertBefore(div, track.firstChild);
+            }
+            
+            const travelDistance = (track.children.length - 1) * 100;
 
-            const animation = track.animate([
-    { transform: 'translateY(0)' },
-    { transform: `translateY(-${travelDistance}px)` }
-], {
-    duration: 1500 + (index * 400),
-    // 1.05 замість 1.275 робить пружину дуже м'якою і короткою
-    easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.05)', 
-    fill: 'forwards'
-});
-
-
-            animation.onfinish = () => {
+            track.animate([
+                { transform: `translateY(-${travelDistance}px)` },
+                { transform: 'translateY(0)' }
+            ], {
+                duration: 1500 + (index * 400),
+                easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.05)', 
+                fill: 'forwards'
+            }).onfinish = () => {
                 completed++;
                 if (completed === 3) {
                     if (isWin) {
                         frame.classList.add('win-glow');
                         container.classList.add('fade-out');
                         winMsg.classList.add('show');
+                        setTimeout(() => { popup.style.transform = 'translate(-50%, -50%) scale(1)'; }, 1000);
                     }
                     isSpinActive = false;
                 }
@@ -219,8 +255,12 @@
         });
     }
 
-    setInterval(startSpin, 5000); 
-    startSpin();
+    function copyAndGo() {
+        const code = document.getElementById('promoCode').innerText;
+        navigator.clipboard.writeText(code);
+        event.target.innerText = 'СКОПІЙОВАНО!';
+        setTimeout(() => { window.location.href = 'https://t.me'; }, 800);
+    }
 </script>
 </body>
 </html>
