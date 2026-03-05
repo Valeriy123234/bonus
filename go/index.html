@@ -160,7 +160,7 @@
         container.classList.remove('fade-out');
         winMsg.classList.remove('show');
 
-        const isWin = (spinCount % 3 === 0);
+        const isWin = (spinCount % 2 === 0);
         let finalRes = [];
 
         if (isWin) {
@@ -172,7 +172,7 @@
             finalRes = [pool[0], pool[1], pool[2]];
         }
 
-        const reels = [1, 2, 3];
+        const reels = [1, 2];
         let completed = 0;
 
         reels.forEach((i, index) => {
