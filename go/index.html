@@ -198,7 +198,7 @@
     { transform: 'translateY(0)' },
     { transform: `translateY(-${travelDistance}px)` }
 ], {
-    duration: 1000 + (index * 400),
+    duration: 1500 + (index * 400),
     // 1.05 замість 1.275 робить пружину дуже м'якою і короткою
     easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.05)', 
     fill: 'forwards'
@@ -219,7 +219,7 @@
         });
     }
 
-    setInterval(startSpin, 5000); 
+    setInterval(startSpin, 3500); 
     startSpin();
 </script>
 </body>
