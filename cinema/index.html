@@ -1,1 +1,70 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GOLD CINEMA | Loading...</title>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <style>
+        body { margin: 0; background: #000; color: #fff; font-family: 'Montserrat', sans-serif; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        
+        .logo-container { position: relative; margin-bottom: 40px; text-align: center; }
+        .logo-text { font-size: 32px; font-weight: 800; letter-spacing: 5px; color: #f39c12; text-transform: uppercase; position: relative; z-index: 2; animation: pulse-text 2s ease-in-out infinite; }
+        .glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 60px; background: radial-gradient(circle, rgba(243, 156, 18, 0.5) 0%, rgba(0,0,0,0) 70%); filter: blur(25px); z-index: 1; animation: pulse-glow 2s ease-in-out infinite; }
+
+        @keyframes pulse-text { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.08); opacity: 1; text-shadow: 0 0 25px rgba(243, 156, 18, 0.7); } }
+        @keyframes pulse-glow { 0%, 100% { width: 180px; opacity: 0.3; } 50% { width: 300px; opacity: 0.8; } }
+
+        .promo-box { border: 1px solid rgba(243, 156, 18, 0.3); padding: 25px; border-radius: 20px; text-align: center; max-width: 85%; background: linear-gradient(145deg, #111 0%, #222 100%); box-shadow: 0 15px 40px rgba(0,0,0,0.8); z-index: 3; }
+        .btn-promo { display: inline-block; margin-top: 15px; padding: 12px 30px; background: #f39c12; color: #000; text-decoration: none; border-radius: 50px; font-weight: 900; text-transform: uppercase; font-size: 14px; transition: 0.3s; box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4); }
+        .text { font-size: 12px; margin-top: 25px; color: #666; letter-spacing: 2px; text-transform: uppercase; }
+
+        #player-container { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; background: #000; }
+        iframe { border: none; width: 100%; height: 100%; }
+    </style>
+</head>
+<body>
+    <div id="loading-screen">
+        <div class="logo-container">
+            <div class="glow"></div>
+            <div class="logo-text">GOLD CINEMA</div>
+        </div>
+        <div class="promo-box">
+            <h3 style="margin:0; color:#f39c12; font-size: 18px;">🎁 БОНУС АКТИВОВАНО</h3>
+            <p style="font-size:13px; color:#ccc; margin: 10px 0;">+500% ДО ПЕРШОГО ДЕПОЗИТУ!</p>
+            <!-- ЗАМІНИ ПОСИЛАННЯ НИЖЧЕ НА СВОЄ -->
+            <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="btn-promo">ЗАБРАТИ БОНУС 🎰</a>
+        </div>
+        <div class="text">ЗАВАНТАЖЕННЯ КІНОЗАЛУ... <span id="timer">4</span>с</div>
+    </div>
+    <div id="player-container"></div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const videoUrl = urlParams.get('url');
+        let timeLeft = 4;
+
+        const countdown = setInterval(() => {
+            timeLeft--;
+            document.getElementById('timer').innerText = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                if (videoUrl) { startPlayer(videoUrl); }
+            }
+        }, 1000);
+
+        function startPlayer(url) {
+            document.getElementById('loading-screen').style.display = 'none';
+            const container = document.getElementById('player-container');
+            container.style.display = 'block';
+            const iframe = document.createElement('iframe');
+            // Декодуємо URL, який прийшов від бота
+            iframe.src = decodeURIComponent(url);
+            iframe.allowFullscreen = true;
+            iframe.allow = "autoplay; encrypted-media";
+            container.appendChild(iframe);
+        }
+    </script>
+</body>
+</html>
 
