@@ -4,71 +4,124 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GOLD CINEMA | Плеєр</title>
-    <!-- ОСЬ ЦЕЙ РЯДОК МАЄ БУТИ ТАКИМ: -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat" rel="stylesheet">
+    <!-- ПРАВИЛЬНИЙ СКРИПТ ТЕЛЕГРАМ -->
+    <script src="https://telegram.org"></script>
+    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    
     <style>
-        body { margin: 0; background: #000; color: #fff; font-family: 'Montserrat', sans-serif; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        body { margin: 0; background: #000; color: #fff; font-family: 'Montserrat', sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        
+        #loading-screen { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 2000; background: #000; }
+        .gold-text { background: linear-gradient(to bottom, #fff6ad 0%, #f39c12 45%, #ffcc00 50%, #f39c12 55%, #8a5a00 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 15px rgba(243, 156, 18, 0.6)); }
         .logo-container { position: relative; margin-bottom: 40px; text-align: center; }
-        .logo-text { font-size: 32px; font-weight: 800; letter-spacing: 5px; color: #f39c12; text-transform: uppercase; position: relative; z-index: 2; animation: pulse-text 2s ease-in-out infinite; }
-        .glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 60px; background: radial-gradient(circle, rgba(243, 156, 18, 0.5) 0%, rgba(0,0,0,0) 70%); filter: blur(25px); z-index: 1; animation: pulse-glow 2s ease-in-out infinite; }
-        @keyframes pulse-text { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.08); opacity: 1; text-shadow: 0 0 25px rgba(243, 156, 18, 0.7); } }
-        @keyframes pulse-glow { 0%, 100% { width: 180px; opacity: 0.3; } 50% { width: 300px; opacity: 0.8; } }
-        .promo-box { border: 1px solid rgba(243, 156, 18, 0.3); padding: 25px; border-radius: 20px; text-align: center; max-width: 85%; background: linear-gradient(145deg, #111 0%, #222 100%); box-shadow: 0 15px 40px rgba(0,0,0,0.8); z-index: 3; }
-        .btn-promo { display: inline-block; margin-top: 15px; padding: 12px 30px; background: #f39c12; color: #000; text-decoration: none; border-radius: 50px; font-weight: 900; text-transform: uppercase; font-size: 14px; transition: 0.3s; box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4); }
-        .btn-promo:hover { transform: scale(1.1); background: #ffae19; }
-        .text { font-size: 12px; margin-top: 25px; color: #666; letter-spacing: 2px; text-transform: uppercase; }
-        #player-container { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; background: #000; }
-        iframe { border: none; width: 100%; height: 100%; }
+        .logo-text { font-size: 32px; font-weight: 900; letter-spacing: 5px; text-transform: uppercase; animation: pulse-text 2s infinite; }
+        .glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 250px; height: 80px; background: radial-gradient(circle, rgba(255,204,0,0.4), transparent 70%); filter: blur(30px); animation: pulse-glow 2s infinite; }
+        .promo-box { border: 2px solid #f39c12; padding: 25px; border-radius: 20px; text-align: center; background: rgba(20,20,20,0.9); box-shadow: 0 0 30px rgba(243,156,18,0.3); }
+        .btn-promo { display: inline-block; margin-top: 15px; padding: 12px 30px; background: linear-gradient(135deg, #f39c12, #ffcc00, #f39c12); color: #000; text-decoration: none; border-radius: 50px; font-weight: 900; box-shadow: 0 0 20px rgba(243,156,18,0.5); }
+        
+        #main-content { display: none; flex-direction: column; width: 100%; height: 100%; }
+        
+        /* ЗОНИ РЕКЛАМИ */
+        .ad-link { display: block; width: 100%; text-decoration: none; overflow: hidden; background: #0a0a0a; border: 1px solid #1a1a1a; position: relative; }
+        .ad-top { height: 80px; } 
+        .ad-bottom { flex-grow: 1; display: flex; align-items: center; justify-content: center; }
+
+        .ad-img { width: 100%; height: 100%; object-fit: contain; } /* object-fit збереже пропорції фото */
+
+        .player-wrapper { width: 100%; position: relative; background: #000; box-shadow: 0 0 50px rgba(0,0,0,1); }
+        .aspect-ratio-box { position: relative; width: 100%; padding-top: 56.25%; }
+        iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+        @keyframes pulse-text { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } }
+        @keyframes pulse-glow { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
     </style>
 </head>
 <body>
+
     <div id="loading-screen">
         <div class="logo-container">
             <div class="glow"></div>
-            <div class="logo-text">GOLD CINEMA</div>
+            <div class="logo-text gold-text">GOLD CINEMA</div>
         </div>
         <div class="promo-box">
-            <h3 style="margin:0; color:#f39c12; font-size: 18px;">🎁 БОНУС АКТИВОВАНО</h3>
-            <p style="font-size:13px; color:#ccc; margin: 10px 0;">+500% ДО ПЕРШОГО ДЕПОЗИТУ!</p>
+            <h3 style="margin:0; font-size: 18px;" class="gold-text">🎁 БОНУС АКТИВОВАНО</h3>
+            <p style="font-size:12px; color:#ccc; margin: 10px 0;">+500% ДО ДЕПОЗИТУ!</p>
             <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="btn-promo">ЗАБРАТИ БОНУС 🎰</a>
         </div>
-        <div class="text">ЗАВАНТАЖЕННЯ КІНОЗАЛУ... <span id="timer">4</span>с</div>
+        <p id="status-line" style="font-size: 10px; color: #555; margin-top: 20px; letter-spacing: 2px;">
+            ВХІД У КІНОЗАЛ... <span id="timer">4</span>с
+        </p>
     </div>
-    <div id="player-container"></div>
+
+    <div id="main-content">
+        <!-- ВЕРХНІЙ БАНЕР -->
+        <a href="ТВОЄ_ПОСИЛАННЯ_1" target="_blank" class="ad-link ad-top">
+            <img src="URL_ФОТО_ВЕРХ" class="ad-img" alt="Реклама">
+        </a>
+
+        <!-- ПЛЕЄР -->
+        <div class="player-wrapper">
+            <div class="aspect-ratio-box">
+                <iframe id="movie-player" src="" allowfullscreen allow="autoplay; encrypted-media; fullscreen"></iframe>
+            </div>
+        </div>
+
+        <!-- НИЖНІЙ БАНЕР -->
+        <a href="ТВОЄ_ПОСИЛАННЯ_2" target="_blank" class="ad-link ad-bottom">
+            <img src="URL_ФОТО_НИЗ" class="ad-img" alt="Реклама">
+        </a>
+    </div>
 
     <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        const KODI_TOKEN = "9f32fb7697420ba636311cee183b28de"; 
         const urlParams = new URLSearchParams(window.location.search);
-        let videoUrl = urlParams.get('url');
+        const title = urlParams.get('title');
+        const year = urlParams.get('year');
+        const type = urlParams.get('type');
+        
+        let finalUrl = "";
         let timeLeft = 4;
+
+        async function fetchMovie() {
+            const kTypes = type === "tv" ? "serial-movie,cartoon-serial,anime-serial" : "movie,cartoon,anime";
+            try {
+                let url = `https://kodikapi.com/search?token=${KODI_TOKEN}&title=${encodeURIComponent(title)}&year=${year}&types=${kTypes}&limit=1`;
+                let resp = await fetch(url);
+                let data = await resp.json();
+
+                if (!data.results || data.results.length === 0) {
+                    url = `https://kodikapi.com/search?token=${KODI_TOKEN}&title=${encodeURIComponent(title)}&types=${kTypes}&limit=1`;
+                    resp = await fetch(url);
+                    data = await resp.json();
+                }
+
+                if (data.results && data.results.length > 0) {
+                    let link = data.results[0].link.replace("kodik.info", "aniqit.com").replace("pay.kodik.info", "aniqit.com");
+                    if (!link.startsWith('http')) link = 'https:' + link;
+                    finalUrl = link + `?v=1&color=f39c12&translation_priority=ua,ru&hide_selectors=false${type === 'tv' ? '&with_episodes=true&with_seasons=true' : ''}`;
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        fetchMovie();
 
         const countdown = setInterval(() => {
             timeLeft--;
-            const timerEl = document.getElementById('timer');
-            if (timerEl) timerEl.innerText = timeLeft;
+            document.getElementById('timer').innerText = timeLeft;
             if (timeLeft <= 0) {
                 clearInterval(countdown);
-                if (videoUrl) { startPlayer(videoUrl); }
-                else { alert("URL не знайдено!"); }
+                if (finalUrl) {
+                    document.getElementById('loading-screen').style.display = 'none';
+                    document.getElementById('main-content').style.display = 'flex';
+                    document.getElementById('movie-player').src = finalUrl;
+                } else {
+                    document.getElementById('status-line').innerText = "ФІЛЬМ НЕ ЗНАЙДЕНО";
+                }
             }
         }, 1000);
-
-        function startPlayer(url) {
-            document.getElementById('loading-screen').style.display = 'none';
-            const container = document.getElementById('player-container');
-            container.style.display = 'block';
-            
-            const iframe = document.createElement('iframe');
-            let decodedUrl = decodeURIComponent(url).trim().replace(/['"]/g, '');
-            if (decodedUrl.startsWith('//')) decodedUrl = 'https:' + decodedUrl;
-
-            iframe.src = decodedUrl;
-            iframe.setAttribute('allowfullscreen', 'true');
-            iframe.setAttribute('webkitallowfullscreen', 'true');
-            iframe.setAttribute('mozallowfullscreen', 'true');
-            iframe.setAttribute('allow', 'autoplay; encrypted-media; fullscreen');
-            
-            container.appendChild(iframe);
-        }
     </script>
 </body>
 </html>
