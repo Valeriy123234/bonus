@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GOLD CINEMA | Плеєр</title>
-    <!-- ПРАВИЛЬНИЙ СКРИПТ ТЕЛЕГРАМ -->
-    <script src="https://telegram.org"></script>
-    <link href="https://fonts.googleapis.com" rel="stylesheet">
+    <!-- 1. Скрипт Телеграма -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- 2. Шрифт Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
         body { margin: 0; background: #000; color: #fff; font-family: 'Montserrat', sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-        
         #loading-screen { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 2000; background: #000; }
         .gold-text { background: linear-gradient(to bottom, #fff6ad 0%, #f39c12 45%, #ffcc00 50%, #f39c12 55%, #8a5a00 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 15px rgba(243, 156, 18, 0.6)); }
         .logo-container { position: relative; margin-bottom: 40px; text-align: center; }
@@ -19,19 +19,16 @@
         .promo-box { border: 2px solid #f39c12; padding: 25px; border-radius: 20px; text-align: center; background: rgba(20,20,20,0.9); box-shadow: 0 0 30px rgba(243,156,18,0.3); }
         .btn-promo { display: inline-block; margin-top: 15px; padding: 12px 30px; background: linear-gradient(135deg, #f39c12, #ffcc00, #f39c12); color: #000; text-decoration: none; border-radius: 50px; font-weight: 900; box-shadow: 0 0 20px rgba(243,156,18,0.5); }
         
-        #main-content { display: none; flex-direction: column; width: 100%; height: 100%; }
+        #main-content { display: none; flex-direction: column; width: 100%; height: 100%; transition: all 0.5s ease; }
+        .ad-link { display: block; width: 100%; text-decoration: none; overflow: hidden; background: #0a0a0a; border-bottom: 1px solid #1a1a1a; transition: all 0.5s ease; }
+        .ad-top { height: 80px; }
+        .ad-bottom { flex-grow: 1; display: flex; align-items: center; justify-content: center; border-top: 1px solid #1a1a1a; }
+        .ad-img { width: 100%; height: 100%; object-fit: contain; }
         
-        /* ЗОНИ РЕКЛАМИ */
-        .ad-link { display: block; width: 100%; text-decoration: none; overflow: hidden; background: #0a0a0a; border: 1px solid #1a1a1a; position: relative; }
-        .ad-top { height: 80px; } 
-        .ad-bottom { flex-grow: 1; display: flex; align-items: center; justify-content: center; }
-
-        .ad-img { width: 100%; height: 100%; object-fit: contain; } /* object-fit збереже пропорції фото */
-
-        .player-wrapper { width: 100%; position: relative; background: #000; box-shadow: 0 0 50px rgba(0,0,0,1); }
-        .aspect-ratio-box { position: relative; width: 100%; padding-top: 56.25%; }
+        .player-wrapper { width: 100%; position: relative; background: #000; transition: all 0.5s ease; }
+        .aspect-ratio-box { position: relative; width: 100%; padding-top: 56.25%; transition: all 0.5s ease; }
         iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-
+        
         @keyframes pulse-text { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } }
         @keyframes pulse-glow { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
     </style>
@@ -45,7 +42,7 @@
         </div>
         <div class="promo-box">
             <h3 style="margin:0; font-size: 18px;" class="gold-text">🎁 БОНУС АКТИВОВАНО</h3>
-            <p style="font-size:12px; color:#ccc; margin: 10px 0;">+500% ДО ДЕПОЗИТУ!</p>
+            <p style="font-size:12px; color:#ccc; margin: 10px 0;">+500% ДО ПЕРШОГО ДЕПОЗИТУ!</p>
             <a href="https://t.me/MRBONUS_UA_bot" target="_blank" class="btn-promo">ЗАБРАТИ БОНУС 🎰</a>
         </div>
         <p id="status-line" style="font-size: 10px; color: #555; margin-top: 20px; letter-spacing: 2px;">
@@ -55,26 +52,28 @@
 
     <div id="main-content">
         <!-- ВЕРХНІЙ БАНЕР -->
-        <a href="ТВОЄ_ПОСИЛАННЯ_1" target="_blank" class="ad-link ad-top">
-            <img src="URL_ФОТО_ВЕРХ" class="ad-img" alt="Реклама">
+        <a href="ТВОЄ_ПОСИЛАННЯ_1" target="_blank" id="ad-top-block" class="ad-link ad-top">
+            <img src="URL_ФОТО_ВЕРХ" class="ad-img">
         </a>
 
-        <!-- ПЛЕЄР -->
-        <div class="player-wrapper">
-            <div class="aspect-ratio-box">
+        <div id="player-wrap" class="player-wrapper">
+            <div id="aspect-box" class="aspect-ratio-box">
                 <iframe id="movie-player" src="" allowfullscreen allow="autoplay; encrypted-media; fullscreen"></iframe>
             </div>
         </div>
 
         <!-- НИЖНІЙ БАНЕР -->
-        <a href="ТВОЄ_ПОСИЛАННЯ_2" target="_blank" class="ad-link ad-bottom">
-            <img src="URL_ФОТО_НИЗ" class="ad-img" alt="Реклама">
+        <a href="ТВОЄ_ПОСИЛАННЯ_2" target="_blank" id="ad-bottom-block" class="ad-link ad-bottom">
+            <img src="URL_ФОТО_НИЗ" class="ad-img">
         </a>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
-        tg.expand();
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
 
         const KODI_TOKEN = "9f32fb7697420ba636311cee183b28de"; 
         const urlParams = new URLSearchParams(window.location.search);
@@ -86,39 +85,55 @@
         let timeLeft = 4;
 
         async function fetchMovie() {
+            if (!title) return;
             const kTypes = type === "tv" ? "serial-movie,cartoon-serial,anime-serial" : "movie,cartoon,anime";
             try {
-                let url = `https://kodikapi.com/search?token=${KODI_TOKEN}&title=${encodeURIComponent(title)}&year=${year}&types=${kTypes}&limit=1`;
-                let resp = await fetch(url);
-                let data = await resp.json();
+                let response = await fetch(`https://kodikapi.com/search?token=${KODI_TOKEN}&title=${encodeURIComponent(title)}&year=${year}&types=${kTypes}&limit=1`);
+                let data = await response.json();
 
                 if (!data.results || data.results.length === 0) {
-                    url = `https://kodikapi.com/search?token=${KODI_TOKEN}&title=${encodeURIComponent(title)}&types=${kTypes}&limit=1`;
-                    resp = await fetch(url);
-                    data = await resp.json();
+                    response = await fetch(`https://kodikapi.com/search?token=${KODI_TOKEN}&title=${encodeURIComponent(title)}&types=${kTypes}&limit=1`);
+                    data = await response.json();
                 }
 
                 if (data.results && data.results.length > 0) {
-                    let link = data.results[0].link.replace("kodik.info", "aniqit.com").replace("pay.kodik.info", "aniqit.com");
+                    let link = data.results[0].link; 
+                    link = link.replace("kodik.info", "aniqit.com").replace("pay.kodik.info", "aniqit.com");
                     if (!link.startsWith('http')) link = 'https:' + link;
-                    finalUrl = link + `?v=1&color=f39c12&translation_priority=ua,ru&hide_selectors=false${type === 'tv' ? '&with_episodes=true&with_seasons=true' : ''}`;
+                    
+                    const params = `?v=1&color=f39c12&translation_priority=ua,ru&hide_selectors=false${type === 'tv' ? '&with_episodes=true&with_seasons=true' : ''}`;
+                    finalUrl = link + params;
                 }
-            } catch (e) { console.error(e); }
+            } catch (e) { console.error("Search error:", e); }
         }
 
         fetchMovie();
 
         const countdown = setInterval(() => {
             timeLeft--;
-            document.getElementById('timer').innerText = timeLeft;
+            const timerEl = document.getElementById('timer');
+            if (timerEl) timerEl.innerText = timeLeft;
+            
             if (timeLeft <= 0) {
                 clearInterval(countdown);
                 if (finalUrl) {
                     document.getElementById('loading-screen').style.display = 'none';
                     document.getElementById('main-content').style.display = 'flex';
                     document.getElementById('movie-player').src = finalUrl;
+
+                    // --- ФУНКЦІЯ АВТО-ПРИХОВУВАННЯ РЕКЛАМИ ЧЕРЕЗ 20 СЕКУНД ---
+                    setTimeout(() => {
+                        document.getElementById('ad-top-block').style.display = 'none';
+                        document.getElementById('ad-bottom-block').style.display = 'none';
+                        // Розтягуємо плеєр
+                        document.getElementById('aspect-box').style.paddingTop = '0';
+                        document.getElementById('aspect-box').style.height = '100vh';
+                        document.getElementById('player-wrap').style.height = '100vh';
+                        document.getElementById('movie-player').style.height = '100vh';
+                    }, 20000); // 20 секунд (час реклами в плеєрі)
+
                 } else {
-                    document.getElementById('status-line').innerText = "ФІЛЬМ НЕ ЗНАЙДЕНО";
+                    document.getElementById('status-line').innerHTML = "<b style='color:#f39c12'>ФІЛЬМ НЕ ЗНАЙДЕНО</b>";
                 }
             }
         }, 1000);
