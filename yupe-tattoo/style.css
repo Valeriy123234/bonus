@@ -2,6 +2,7 @@
     --main-bg: #050505;
     --primary-red: #ff003c; /* Насичений червоний */
     --hot-pink: #ff007f;    /* Яскраво-рожевий */
+    --tg-blue: #00d4ff;     /* Блакитний для Телеграм */
 }
 
 body {
@@ -60,6 +61,8 @@ body {
     border: 1px solid rgba(255, 0, 60, 0.2);
     text-align: center;
     box-shadow: 0 0 40px rgba(255, 0, 60, 0.1);
+    width: 100%;
+    max-width: 320px;
 }
 
 .avatar-circle {
@@ -77,12 +80,13 @@ h1 { letter-spacing: 8px; margin: 15px 0; font-size: 32px; background: linear-gr
 .subtitle { color: #aaa; font-size: 14px; margin-bottom: 35px; letter-spacing: 2px; }
 
 .btn {
-    display: block; width: 220px; padding: 18px; margin: 12px auto;
+    display: block; width: 100%; max-width: 220px; padding: 18px; margin: 12px auto;
     background: transparent;
     border: 1.5px solid var(--primary-red);
     color: white; border-radius: 15px; cursor: pointer;
     transition: 0.4s all; letter-spacing: 3px; font-size: 12px; font-weight: bold;
     text-transform: uppercase;
+    text-decoration: none;
 }
 
 .btn:hover {
@@ -90,3 +94,68 @@ h1 { letter-spacing: 8px; margin: 15px 0; font-size: 32px; background: linear-gr
     box-shadow: 0 0 25px var(--primary-red);
     transform: translateY(-3px);
 }
+
+/* --- ОНОВЛЕНИЙ БЛОК СОЦМЕРЕЖ --- */
+.social-connect {
+    margin-top: 35px;
+    padding-top: 25px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.connect-text {
+    font-size: 10px;
+    letter-spacing: 5px;
+    color: #555;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.social-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+
+.social-btn {
+    text-decoration: none !important; /* ЗАБОРОНА ПІДКРЕСЛЕННЯ */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 220px;
+    height: 45px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    transition: all 0.4s ease;
+}
+
+/* Стиль для Telegram */
+.tg {
+    color: var(--tg-blue);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    background: rgba(0, 212, 255, 0.05);
+}
+
+.tg:hover {
+    background: rgba(0, 212, 255, 0.15);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+    transform: scale(1.03);
+}
+
+/* Стиль для Instagram */
+.inst {
+    color: var(--hot-pink);
+    border: 1px solid rgba(255, 0, 127, 0.3);
+    background: rgba(255, 0, 127, 0.05);
+}
+
+.inst:hover {
+    background: rgba(255, 0, 127, 0.15);
+    box-shadow: 0 0 15px rgba(255, 0, 127, 0.3);
+    transform: scale(1.03);
+}
+
+.social-btn:visited { color: inherit; }
