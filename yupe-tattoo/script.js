@@ -9,7 +9,7 @@ window.addEventListener('load', () => {
             content.classList.remove('hidden');
             content.classList.add('visible');
         }, 1000); // час для плавного зникнення
-    }, 4000); 
+    }, 3000); 
 });
 
 function navTo(url) {
