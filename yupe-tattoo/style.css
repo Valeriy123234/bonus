@@ -50,7 +50,7 @@ body {
     50% { opacity: 1; transform: scale(1.05); color: var(--hot-pink); }
 }
 
-/* --- КОНТЕНТ (З’ЯВЛЯЄТЬСЯ ПЛАВНО) --- */
+/* --- КОНТЕНТ --- */
 .hidden { opacity: 0; filter: blur(10px); transition: 1.5s ease; }
 .visible { opacity: 1; filter: blur(0); }
 
@@ -65,12 +65,27 @@ body {
     max-width: 320px;
 }
 
+/* --- ПУЛЬСУЮЧА РАМКА АВАТАРА --- */
 .avatar-circle {
     width: 130px; height: 130px; border-radius: 50%;
     margin: 0 auto 25px;
     border: 3px solid var(--primary-red);
     overflow: hidden;
-    box-shadow: 0 0 30px var(--primary-red);
+    /* Додана анімація пульсації */
+    animation: borderPulse 3s infinite ease-in-out;
+}
+
+@keyframes borderPulse {
+    0%, 100% {
+        border-color: var(--primary-red);
+        box-shadow: 0 0 20px var(--primary-red);
+        transform: scale(1);
+    }
+    50% {
+        border-color: var(--hot-pink);
+        box-shadow: 0 0 40px var(--hot-pink);
+        transform: scale(1.02); /* Легке збільшення для ефекту дихання */
+    }
 }
 
 .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
@@ -95,7 +110,6 @@ h1 { letter-spacing: 8px; margin: 15px 0; font-size: 32px; background: linear-gr
     transform: translateY(-3px);
 }
 
-/* --- ОНОВЛЕНИЙ БЛОК СОЦМЕРЕЖ --- */
 .social-connect {
     margin-top: 35px;
     padding-top: 25px;
@@ -118,7 +132,7 @@ h1 { letter-spacing: 8px; margin: 15px 0; font-size: 32px; background: linear-gr
 }
 
 .social-btn {
-    text-decoration: none !important; /* ЗАБОРОНА ПІДКРЕСЛЕННЯ */
+    text-decoration: none !important;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -132,7 +146,6 @@ h1 { letter-spacing: 8px; margin: 15px 0; font-size: 32px; background: linear-gr
     transition: all 0.4s ease;
 }
 
-/* Стиль для Telegram */
 .tg {
     color: var(--tg-blue);
     border: 1px solid rgba(0, 212, 255, 0.3);
@@ -145,7 +158,6 @@ h1 { letter-spacing: 8px; margin: 15px 0; font-size: 32px; background: linear-gr
     transform: scale(1.03);
 }
 
-/* Стиль для Instagram */
 .inst {
     color: var(--hot-pink);
     border: 1px solid rgba(255, 0, 127, 0.3);
