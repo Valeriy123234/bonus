@@ -7,34 +7,38 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- ЛОАДЕР 4 СЕКУНДИ -->
     <div id="loader" class="loader-wrapper">
         <div class="spinner"></div>
         <p class="loader-text">LOADING ART...</p>
     </div>
 
+    <!-- ОСНОВНИЙ КОНТЕНТ -->
     <main id="main-content" class="hidden">
         <div class="glass-card">
             <div class="avatar-circle">
+                <!-- Перевір назву файлу аватарки! Має бути avatar.png.PNG як у тебе вказано -->
                 <img src="avatar.png.PNG" alt="Avatar">
             </div>
+            
             <h1>YUPE TATTOO</h1>
             <p class="subtitle">Art on your skin 💟</p>
-            <div class="buttons">
+            
+            <!-- ГОЛОВНІ КНОПКИ -->
+            <div class="main-nav">
                 <button class="btn" onclick="navTo('portfolio.html')">ПОРТФОЛІО</button>
                 <button class="btn" onclick="navTo('booking.html')">ЗАПИСАТИСЬ</button>
             </div>
-            <!-- Блок соцмереж -->
-<div class="social-connect">
-    <p class="connect-text">ШВИДКИЙ ЗВ'ЯЗОК</p>
-    <div class="social-buttons">
-        <a href="https://t.me" target="_blank" class="social-btn tg">
-            <span>TELEGRAM</span>
-        </a>
-        <a href="https://instagram.com" target="_blank" class="social-btn inst">
-            <span>INSTAGRAM</span>
-        </a>
-    </div>
-</div>
+
+            <!-- БЛОК СОЦМЕРЕЖ -->
+            <div class="social-connect">
+                <p class="connect-text">ШВИДКИЙ ЗВ'ЯЗОК</p>
+                <div class="social-buttons">
+                    <!-- Заміни посилання на реальні ніки -->
+                    <a href="https://t.me" target="_blank" class="social-btn tg">TELEGRAM</a>
+                    <a href="https://instagram.com" target="_blank" class="social-btn inst">INSTAGRAM</a>
+                </div>
+            </div>
 
         </div>
     </main>
