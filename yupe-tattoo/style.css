@@ -50,42 +50,45 @@ body {
     50% { opacity: 1; transform: scale(1.05); color: var(--hot-pink); }
 }
 
-/* --- КОНТЕНТ --- */
+/* --- КОНТЕНТ (КАРТКА ЩО ПУЛЬСУЄ) --- */
 .hidden { opacity: 0; filter: blur(10px); transition: 1.5s ease; }
 .visible { opacity: 1; filter: blur(0); }
 
 .glass-card {
     background: rgba(255, 255, 255, 0.02);
-    padding: 50px 40px; border-radius: 40px;
+    padding: 50px 40px; 
+    border-radius: 40px;
     backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 0, 60, 0.2);
     text-align: center;
-    box-shadow: 0 0 40px rgba(255, 0, 60, 0.1);
     width: 100%;
     max-width: 320px;
+    
+    /* ПОЧАТКОВИЙ СТАН РАМКИ */
+    border: 2px solid var(--primary-red);
+    box-shadow: 0 0 30px rgba(255, 0, 60, 0.2);
+    
+    /* ПРИВ'ЯЗКА АНІМАЦІЇ */
+    animation: cardPulse 4s infinite ease-in-out;
 }
 
-/* --- ПУЛЬСУЮЧА РАМКА АВАТАРА --- */
+/* АНІМАЦІЯ ДЛЯ ВСІЄЇ РАМКИ КАРТКИ */
+@keyframes cardPulse {
+    0%, 100% {
+        border-color: var(--primary-red);
+        box-shadow: 0 0 20px rgba(255, 0, 60, 0.2), inset 0 0 10px rgba(255, 0, 60, 0.1);
+    }
+    50% {
+        border-color: var(--hot-pink);
+        box-shadow: 0 0 45px rgba(255, 0, 127, 0.5), inset 0 0 15px rgba(255, 0, 127, 0.2);
+    }
+}
+
 .avatar-circle {
     width: 130px; height: 130px; border-radius: 50%;
     margin: 0 auto 25px;
     border: 3px solid var(--primary-red);
     overflow: hidden;
-    /* Додана анімація пульсації */
-    animation: borderPulse 3s infinite ease-in-out;
-}
-
-@keyframes borderPulse {
-    0%, 100% {
-        border-color: var(--primary-red);
-        box-shadow: 0 0 20px var(--primary-red);
-        transform: scale(1);
-    }
-    50% {
-        border-color: var(--hot-pink);
-        box-shadow: 0 0 40px var(--hot-pink);
-        transform: scale(1.02); /* Легке збільшення для ефекту дихання */
-    }
+    box-shadow: 0 0 20px var(--primary-red);
 }
 
 .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
