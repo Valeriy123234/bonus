@@ -298,89 +298,110 @@
     <!-- ПРАВИЛЬНИЙ СКРИПТ (ЗАМІСТЬ JS DELIVER) -->
            <!-- ПІДКЛЮЧЕННЯ БІБЛІОТЕКИ -->
 <!-- ПРАВИЛЬНЫЙ СКРИПТ (С ОФИЦИАЛЬНОГО CDN) -->
+<!-- Swiper JS -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
 <style>
-    /* Базовая настройка для мягкости */
+    /* 1. Налаштування контейнера: один слайд по центру */
     .swiper {
         width: 100%;
-        padding: 50px 0 100px !important;
-        overflow: visible !important; /* Чтобы боковые слайды не обрезались */
+        padding: 40px 0 110px !important;
+        overflow: hidden;
     }
 
-    /* Слайд: большой и плавный */
     .swiper-slide {
-        width: 320px !important; /* Оптимальная ширина */
-        transition: all 0.9s cubic-bezier(0.2, 1, 0.3, 1) !important;
-        opacity: 0.4;
-        transform: scale(0.85);
+        width: 100% !important; /* Рівно один слайд на екран */
         display: flex;
         flex-direction: column;
         align-items: center;
+        opacity: 1 !important; /* Завжди 100% видимість */
+        transition: transform 1.2s cubic-bezier(0.2, 1, 0.3, 1);
     }
 
-    .swiper-slide-active {
-        opacity: 1;
-        transform: scale(1.05); /* Активный чуть больше */
-    }
-
-    /* Картинка: Жирная розовая рамка, ЦВЕТ НЕ МЕНЯЕТ */
+    /* 2. Картинка: тонка рамка 3px та Імпульс Сяйва */
     .swiper-slide img {
-        width: 100%;
-        height: 450px;
+        width: 320px;
+        height: 480px;
         object-fit: cover;
         border-radius: 25px;
         box-sizing: border-box;
-        /* Жирная рамка через двойной фон (бордер + градиент) */
-        border: 6px solid transparent !important;
+        border: 3px solid transparent !important;
+        /* Градієнтна рамка */
         background: linear-gradient(#000, #000) padding-box, 
                     linear-gradient(45deg, #ff003c, #ff1493) border-box !important;
-        /* Мягкое красно-розовое свечение */
-        box-shadow: 0 10px 30px rgba(255, 20, 147, 0.4) !important;
+        /* Анімація імпульсу (тіні) */
+        animation: glow-pulse 2.5s infinite ease-in-out;
     }
 
-    /* КНОПКИ: Без подчеркиваний, красивые, розовые */
-    .btn, .book-now, .swiper-slide a {
+    @keyframes glow-pulse {
+        0% { box-shadow: 0 0 5px rgba(255, 20, 147, 0.4); }
+        50% { box-shadow: 0 0 25px rgba(255, 0, 60, 0.8); }
+        100% { box-shadow: 0 0 5px rgba(255, 20, 147, 0.4); }
+    }
+
+    /* 3. КНОПКИ: Нові кольори, без червоного/рожевого */
+    .controls-container {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    /* Кнопка Записатись (Стильний темно-синій/смарагдовий градієнт) */
+    .book-now, .btn-main {
         display: inline-block !important;
-        margin-top: 20px !important;
-        padding: 14px 35px !important;
-        background: linear-gradient(45deg, #ff003c, #ff1493) !important;
+        padding: 15px 35px !important;
+        background: linear-gradient(45deg, #0f2027, #203a43, #2c5364) !important; /* Дорогий темний колір */
         color: #fff !important;
-        text-decoration: none !important; /* УБИРАЕМ УРОДСТВО */
-        border-radius: 50px !important;
+        text-decoration: none !important; /* Видаляємо уродське підкреслення */
+        border-radius: 12px !important;
         font-weight: 700 !important;
-        text-transform: uppercase !important;
-        font-size: 13px !important;
-        letter-spacing: 1px !important;
-        border: none !important;
-        box-shadow: 0 4px 15px rgba(255, 0, 60, 0.3) !important;
-        transition: 0.3s ease !important;
+        text-transform: uppercase;
+        font-size: 13px;
+        letter-spacing: 1px;
+        border: 1px solid rgba(255,255,255,0.1) !important;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.3) !important;
+        transition: all 0.4s ease !important;
+        cursor: pointer;
     }
 
-    .btn:hover, .book-now:hover {
-        transform: translateY(-3px) !important;
-        box-shadow: 0 6px 20px rgba(255, 0, 60, 0.5) !important;
+    /* Кнопка Назад (Мінімалістична та чиста) */
+    .btn-back {
+        display: inline-block !important;
+        padding: 15px 25px !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        color: #eee !important;
+        text-decoration: none !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        border-radius: 12px !important;
+        font-size: 13px;
+        transition: all 0.4s ease !important;
     }
 
-    /* ПАГИНАЦИЯ: 3 розовые точки, мягкая смена */
+    .book-now:hover, .btn-main:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 25px rgba(0,0,0,0.4) !important;
+        filter: brightness(1.2);
+    }
+
+    /* 4. ПАГІНАЦІЯ: Тільки 3 рожеві точки */
     .swiper-pagination {
-        bottom: 30px !important;
+        bottom: 40px !important;
     }
 
     .swiper-pagination-bullet {
-        width: 12px !important;
-        height: 12px !important;
-        background: #ff1493 !important; /* Розовый */
-        opacity: 0.3 !important;
+        width: 10px !important;
+        height: 10px !important;
+        background: #ff1493 !important; /* Рожевий колір точок */
+        opacity: 0.2 !important;
+        margin: 0 8px !important;
         transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1) !important;
     }
 
     .swiper-pagination-bullet-active {
-        width: 35px !important; /* Плавное удлинение */
+        width: 30px !important; /* Плавне розширення */
         border-radius: 10px !important;
         opacity: 1 !important;
-        background: #ff003c !important;
-        box-shadow: 0 0 12px rgba(255, 20, 147, 0.7) !important;
+        box-shadow: 0 0 10px rgba(255, 20, 147, 0.8) !important;
     }
 </style>
 
@@ -392,31 +413,33 @@
 
             setTimeout(() => {
                 if(loader) loader.style.display = 'none';
-                const content = document.getElementById('main-content');
-                if(content) {
-                    content.classList.remove('hidden');
-                    content.classList.add('visible');
-                }
                 
-                // Твой рабочий конфиг, но с докрученной мягкостью
                 new Swiper('.mySwiper', {
-                    direction: 'horizontal',
-                    slidesPerView: 'auto',
+                    slidesPerView: 1, // Тільки ОДИН слайд
                     centeredSlides: true,
-                    spaceBetween: 50,
                     loop: true,
+                    speed: 1200, // М'яка, "дорога" анімація
                     grabCursor: true,
-                    speed: 1000, // Скорость анимации (очень плавно)
                     mousewheel: true,
+                    // Ефект м'якого пересування
+                    parallax: true,
                     pagination: {
                         el: '.swiper-pagination',
                         clickable: true,
+                        // Жорстко обмежуємо до 3 точок
+                        renderBullet: function (index, className) {
+                            if (index < 3) {
+                                return '<span class="' + className + '"></span>';
+                            }
+                            return '';
+                        },
                     },
                 });
             }, 800);
-        }, 2500);
+        }, 1500);
     });
 </script>
+
 
 </body>
 </html>
