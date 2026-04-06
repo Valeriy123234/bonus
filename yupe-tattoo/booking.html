@@ -34,6 +34,15 @@
         input { width: 100%; padding: 12px; margin-bottom: 15px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 12px; text-align: center; box-sizing: border-box; }
         .btn { background: var(--primary-red); color: white; border: none; padding: 12px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; }
         .admin-access { margin-top: 15px; font-size: 9px; color: #333; cursor: pointer; text-align: center; }
+        /* Робимо календар сучасним */
+.fc { border: none !important; font-family: sans-serif; }
+.fc-theme-standard td, .fc-theme-standard th { border: 1px solid rgba(255, 255, 255, 0.05) !important; }
+.fc-toolbar-title { color: var(--hot-pink) !important; text-transform: uppercase; letter-spacing: 2px; }
+.fc-button { background: #1a1a1a !important; border: 1px solid var(--primary-red) !important; text-transform: uppercase; font-size: 10px !important; }
+.fc-daygrid-day:hover { background: rgba(255, 105, 180, 0.1); cursor: pointer; }
+/* Підсвітка сьогоднішнього дня */
+.fc-day-today { background: rgba(255, 255, 255, 0.05) !important; }
+
     </style>
 </head>
 <body>
