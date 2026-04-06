@@ -11,57 +11,52 @@
         body, html { margin: 0; padding: 0; height: 100%; background: #050505; overflow: hidden; font-family: 'Inter', sans-serif; }
 
         /* ЛОАДЕР */
-                /* ЛОАДЕР */
-        .loader-wrapper {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; display: flex; justify-content: center; align-items: center; z-index: 1000; 
-            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .loader-text {
-            font-size: 24px; letter-spacing: 8px; font-weight: 700; text-transform: uppercase;
-            background: linear-gradient(90deg, var(--primary-red), var(--hot-pink), var(--primary-red));
-            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: shine 2s linear infinite; position: relative; z-index: 2;
-        }
-        .emoji-container { position: absolute; width: 100%; height: 100%; pointer-events: none; }
-        
-        .floating-emoji {
-            position: absolute; font-size: 40px; opacity: 0;
-            /* М'яке світіння та початковий блюр */
-            filter: drop-shadow(0 0 15px var(--primary-red)) blur(10px);
-            /* Вакханальна анімація */
-            animation: chaoticFly 4s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95);
-            will-change: transform, opacity, filter;
-        }
+           /* ЛОАДЕР */
+.loader-wrapper {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #000; display: flex; justify-content: center; align-items: center; 
+    z-index: 1000; overflow: hidden;
+}
 
-        @keyframes chaoticFly {
-            0% { 
-                transform: translate(0, 100vh) rotate(0deg) scale(0); 
-                opacity: 0; 
-                filter: blur(15px); 
-            }
-            25% { 
-                opacity: 1; 
-                filter: blur(0px); 
-                transform: translate(25vw, 40vh) rotate(140deg) scale(1.4); 
-            }
-            50% { 
-                transform: translate(-20vw, 0vh) rotate(280deg) scale(0.8); 
-                opacity: 0.7; 
-            }
-            75% { 
-                opacity: 1; 
-                transform: translate(15vw, -40vh) rotate(420deg) scale(1.2); 
-            }
-            100% { 
-                transform: translate(0, -110vh) rotate(720deg) scale(0); 
-                opacity: 0; 
-                filter: blur(15px); 
-            }
-        }
+.loader-text {
+    font-size: 28px; letter-spacing: 12px; font-weight: 700; text-transform: uppercase;
+    background: linear-gradient(90deg, var(--primary-red), var(--hot-pink), var(--primary-red));
+    background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    animation: shine 3s linear infinite;
+    position: relative; z-index: 5;
+}
 
-        @keyframes shine { to { background-position: 200% center; } }
+/* КОНТЕЙНЕР ДЛЯ БАГАТЬОХ СМАЙЛІВ */
+.emoji-container { position: absolute; width: 100%; height: 100%; }
 
+.floating-emoji {
+    position: absolute;
+    font-size: 35px;
+    opacity: 0;
+    /* М'яке світіння, що переливається */
+    filter: drop-shadow(0 0 10px var(--primary-red));
+    animation: 
+        levitation 8s infinite ease-in-out, 
+        colorShift 4s infinite alternate ease-in-out;
+    will-change: transform, opacity;
+}
+
+/* ПЛАВНА ЛЕВІТАЦІЯ (Повільно вгору-вниз + погойдування) */
+@keyframes levitation {
+    0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.4; }
+    50% { transform: translateY(45vh) translateX(20px) rotate(15deg); opacity: 0.7; }
+    90% { opacity: 0.4; }
+    100% { transform: translateY(-20vh) translateX(-20px) rotate(-15deg); opacity: 0; }
+}
+
+/* ПЛАВНИЙ ПЕРЕЛИВ КОЛЬОРУ (Рожевий <-> Червоний) */
+@keyframes colorShift {
+    0% { filter: drop-shadow(0 0 15px var(--primary-red)) hue-rotate(0deg); }
+    100% { filter: drop-shadow(0 0 25px var(--hot-pink)) hue-rotate(45deg); }
+}
+
+@keyframes shine { to { background-position: 200% center; } }
 
         /* КОНТЕНТ */
         .hidden { opacity: 0; filter: blur(20px); transition: 1.2s ease; }
@@ -98,14 +93,19 @@
 </head>
 <body>
 
-    <div id="loader" class="loader-wrapper">
-        <div class="emoji-container">
-            <span class="floating-emoji" style="left:10%;">🖋️</span>
-            <span class="floating-emoji" style="left:30%; animation-delay:1s;">🔥</span>
-            <span class="floating-emoji" style="left:50%; animation-delay:0.5s;">💀</span>
-            <span class="floating-emoji" style="left:70%; animation-delay:2s;">💉</span>
-            <span class="floating-emoji" style="left:90%; animation-delay:1.5s;">🤘</span>
-        </div>
+    <div class="emoji-container">
+    <!-- Смайли з різним положенням (left) та затримкою (delay) -->
+    <span class="floating-emoji" style="left:5%;  animation-delay:0s;">🖋️</span>
+    <span class="floating-emoji" style="left:15%; animation-delay:2s;">🔥</span>
+    <span class="floating-emoji" style="left:25%; animation-delay:5s;">💀</span>
+    <span class="floating-emoji" style="left:40%; animation-delay:1s;">💉</span>
+    <span class="floating-emoji" style="left:55%; animation-delay:6s;">🤘</span>
+    <span class="floating-emoji" style="left:70%; animation-delay:3s;">🐲</span>
+    <span class="floating-emoji" style="left:85%; animation-delay:0.5s;">🔥</span>
+    <span class="floating-emoji" style="left:95%; animation-delay:4s;">💀</span>
+    <!-- Можна додати ще стільки, скільки хочеш -->
+</div>
+
         <h1 class="loader-text">Portfolio</h1>
     </div>
 
