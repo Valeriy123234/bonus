@@ -275,7 +275,9 @@
     </div>
 
     <!-- ПРАВИЛЬНИЙ СКРИПТ (ЗАМІСТЬ JS DELIVER) -->
+       <!-- ПІДКЛЮЧЕННЯ БІБЛІОТЕКИ -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
     <script>
         window.addEventListener('load', () => {
             setTimeout(() => {
@@ -286,16 +288,57 @@
                     content.classList.remove('hidden');
                     content.classList.add('visible');
                     
+                    // ОНОВЛЕНИЙ СЛАЙДЕР
                     new Swiper('.mySwiper', {
-                        direction: 'horizontal',
-                        slidesPerView: 'auto',
+                        effect: 'coverflow', // Додаємо 3D ефект
+                        grabCursor: true,    // Курсор стає "рукою"
                         centeredSlides: true,
-                        spaceBetween: 40,
+                        slidesPerView: 'auto',
+                        loop: true,          // Безкінечне коло (за бажанням)
+                        
+                        coverflowEffect: {
+                            rotate: 15,      // Кут нахилу карток
+                            stretch: 0,
+                            depth: 200,      // Глибина 3D
+                            modifier: 1,
+                            slideShadows: false, // Тіні (краще без них на темному фоні)
+                        },
+
+                        // Налаштування плавності
+                        speed: 800,          // Швидкість перемикання (мс)
                         mousewheel: true,
+                        keyboard: true,
+
+                        // Підказка (крапки внизу)
+                        pagination: {
+                            el: '.swiper-pagination',
+                            clickable: true,
+                            dynamicBullets: true, // Крапки будуть масштабуватися
+                        },
                     });
                 }, 800);
             }, 2500);
         });
     </script>
+
+    <!-- Додай цей рядок всередину <div id="main-content"> ПІСЛЯ блоку <div class="swiper-wrapper"> -->
+    <div class="swiper-pagination"></div>
+
+    <style>
+        /* Стиль крапок пагінації під твій дизайн */
+        .swiper-pagination-bullet {
+            background: var(--hot-pink) !important;
+            opacity: 0.4;
+        }
+        .swiper-pagination-bullet-active {
+            background: var(--primary-red) !important;
+            opacity: 1;
+            box-shadow: 0 0 10px var(--primary-red);
+        }
+        .swiper-pagination {
+            bottom: 10px !important;
+        }
+    </style>
+
 </body>
 </html>
