@@ -276,44 +276,55 @@
 
     <!-- ПРАВИЛЬНИЙ СКРИПТ (ЗАМІСТЬ JS DELIVER) -->
        <!-- ПІДКЛЮЧЕННЯ БІБЛІОТЕКИ -->
+       <!-- ПІДКЛЮЧЕННЯ БІБЛІОТЕКИ -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script>
         window.addEventListener('load', () => {
             setTimeout(() => {
-                document.getElementById('loader').style.opacity = '0';
+                const loader = document.getElementById('loader');
+                if(loader) loader.style.opacity = '0';
+                
                 setTimeout(() => {
-                    document.getElementById('loader').style.display = 'none';
+                    if(loader) loader.style.display = 'none';
                     const content = document.getElementById('main-content');
                     content.classList.remove('hidden');
                     content.classList.add('visible');
                     
-                    // ОНОВЛЕНИЙ СЛАЙДЕР
+                    // ПРЕМІАЛЬНИЙ СЛАЙДЕР (ОПТИМІЗОВАНИЙ)
                     new Swiper('.mySwiper', {
-                        effect: 'coverflow', // Додаємо 3D ефект
-                        grabCursor: true,    // Курсор стає "рукою"
+                        // Сучасний ефект напливу замість дитячого 3D
+                        effect: 'creative',
+                        creativeEffect: {
+                            prev: { shadow: true, translate: ['-20%', 0, -1] },
+                            next: { translate: ['100%', 0, 0] },
+                        },
+                        
+                        grabCursor: true,
                         centeredSlides: true,
                         slidesPerView: 'auto',
-                        loop: true,          // Безкінечне коло (за бажанням)
+                        loop: true,
                         
-                        coverflowEffect: {
-                            rotate: 15,      // Кут нахилу карток
-                            stretch: 0,
-                            depth: 200,      // Глибина 3D
-                            modifier: 1,
-                            slideShadows: false, // Тіні (краще без них на темному фоні)
+                        // "Масляна" плавність (speed 1000мс = 1 сек)
+                        speed: 1000,
+                        
+                        // Інерційність та опір для приємного свайпу
+                        touchRatio: 1.2,
+                        resistanceRatio: 0.85,
+                        freeMode: {
+                            enabled: false, // тримаємо чітку фіксацію на фото
                         },
 
-                        // Налаштування плавності
-                        speed: 800,          // Швидкість перемикання (мс)
-                        mousewheel: true,
+                        mousewheel: {
+                            thresholdDelta: 50,
+                        },
                         keyboard: true,
 
-                        // Підказка (крапки внизу)
+                        // Стильна пагінація (крапки)
                         pagination: {
                             el: '.swiper-pagination',
                             clickable: true,
-                            dynamicBullets: true, // Крапки будуть масштабуватися
+                            dynamicBullets: true, // Крапки змінюють розмір
                         },
                     });
                 }, 800);
@@ -321,24 +332,47 @@
         });
     </script>
 
-    <!-- Додай цей рядок всередину <div id="main-content"> ПІСЛЯ блоку <div class="swiper-wrapper"> -->
+    <!-- ВСТАВИТИ ЦЕ ВСЕРЕДИНУ <div id="main-content"> -->
     <div class="swiper-pagination"></div>
 
     <style>
-        /* Стиль крапок пагінації під твій дизайн */
-        .swiper-pagination-bullet {
-            background: var(--hot-pink) !important;
-            opacity: 0.4;
-        }
-        .swiper-pagination-bullet-active {
-            background: var(--primary-red) !important;
-            opacity: 1;
-            box-shadow: 0 0 10px var(--primary-red);
-        }
+        /* Стильні "розумні" крапки у стилі iOS/Modern UI */
         .swiper-pagination {
-            bottom: 10px !important;
+            bottom: 25px !important;
+            transition: 0.3s;
+        }
+
+        .swiper-pagination-bullet {
+            width: 8px;
+            height: 8px;
+            background: #fff !important;
+            opacity: 0.3;
+            margin: 0 6px !important;
+            /* Плавна анімація зміни форми крапки */
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        /* Активна крапка розтягується в лінію */
+        .swiper-pagination-bullet-active {
+            width: 22px !important;
+            border-radius: 10px !important;
+            background: var(--hot-pink) !important;
+            opacity: 1;
+            box-shadow: 0 0 15px var(--hot-pink);
+        }
+
+        /* Оптимізація картинок для відсутності лагів */
+        .swiper-slide img {
+            will-change: transform;
+            transition: transform 1s ease;
+        }
+
+        /* Легкий ефект наближення на активному фото */
+        .swiper-slide-active img {
+            transform: scale(1.03);
         }
     </style>
+
 
 </body>
 </html>
