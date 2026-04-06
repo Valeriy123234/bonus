@@ -112,6 +112,7 @@
     <a href="index.html" class="back-btn">← НАЗАД</a>
 
     <div id="main-content" class="hidden">
+        <div class="swiper-pagination"></div>
         <div class="swiper mySwiper">
             <div class="swiper-wrapper">
                 <!-- СЛАЙД 1 -->
@@ -305,7 +306,7 @@
 
     <!-- ПРАВИЛЬНИЙ СКРИПТ (ЗАМІСТЬ JS DELIVER) -->
            <!-- ПІДКЛЮЧЕННЯ БІБЛІОТЕКИ -->
-   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
 <script>
     window.addEventListener('load', () => {
@@ -325,28 +326,18 @@
                     slidesPerView: 1.2, 
                     spaceBetween: 20,
                     loop: true,
-                    speed: 900, // Значно плавніший перехід
+                    speed: 600, // Оптимально для 120Hz екранів
 
-                    // Ефект інерції для "масляного" гортання
-                    freeMode: {
-                        enabled: true,
-                        sticky: true,
-                        momentumRatio: 0.5,
-                    },
-
+                    // Плавність без лагів (iOS Optimization)
+                    touchEventsTarget: 'container',
+                    touchReleaseOnEdges: true,
+                    resistanceRatio: 0.85,
                     watchSlidesProgress: true,
-                    preloadImages: false,
-                    lazy: { loadPrevNext: true },
                     
-                    touchRatio: 1.2,
-                    resistanceRatio: 0.9,
-                    mousewheel: { thresholdDelta: 50 },
-                    keyboard: true,
-
                     pagination: {
                         el: '.swiper-pagination',
                         clickable: true,
-                        dynamicBullets: true, // Робить ефект 3-х активних точок
+                        dynamicBullets: true,
                         dynamicMainBullets: 1, 
                     },
                 });
@@ -355,16 +346,13 @@
     });
 </script>
 
-<!-- ВСТАВИТИ ЦЕ ВСЕРЕДИНУ <div id="main-content"> -->
-<div class="swiper-pagination"></div>
-
 <style>
     /* 1. ПЛАВНА ПОЯВА ТЕКСТУ */
     .swiper-slide .work-info, 
     .swiper-slide .book-now,
     .swiper-slide .btn { 
         opacity: 0; 
-        transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: opacity 0.5s ease;
         pointer-events: none;
     }
 
@@ -375,45 +363,40 @@
         pointer-events: auto;
     }
 
-    /* 2. ПЛАВНІСТЬ СЛАЙДІВ (М'яка крива) */
+    /* 2. ОПТИМІЗАЦІЯ ДЛЯ 14 PRO MAX (БЕЗ FILTER) */
     .swiper-slide {
-        filter: brightness(0.4);
-        /* cubic-bezier робить рух дорожчим та плавнішим */
-        transition: transform 0.9s cubic-bezier(0.25, 1, 0.5, 1), filter 0.9s ease !important;
+        /* Опасіті працює через GPU, тому не лагає */
+        opacity: 0.4;
+        transition: transform 0.6s cubic-bezier(0.2, 1, 0.4, 1), opacity 0.6s ease !important;
         transform: scale(0.88) translateZ(0);
         backface-visibility: hidden;
         -webkit-backface-visibility: hidden;
-        will-change: transform, filter;
+        will-change: transform, opacity;
     }
 
     .swiper-slide-active {
-        filter: brightness(1);
+        opacity: 1;
         transform: scale(1) translateZ(0);
         z-index: 10;
     }
 
-    /* 3. КРАПКИ (Фікс на 3 штуки та плавна зміна) */
-    .swiper-pagination { 
-        bottom: 25px !important; 
-    }
+    /* 3. КРАПКИ (3 штуки) */
+    .swiper-pagination { bottom: 25px !important; }
 
-    /* Обмежуємо ширину контейнера пагінації для ефекту 3-х точок */
     .swiper-pagination-bullets-dynamic {
         width: 60px !important; 
         overflow: hidden;
     }
 
     .swiper-pagination-bullet {
-        width: 8px; 
-        height: 8px;
+        width: 8px; height: 8px;
         background: #fff !important;
         opacity: 0.3; 
-        /* Плавне перетікання розміру точок */
-        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
 
     .swiper-pagination-bullet-active {
-        width: 22px !important; /* Активна точка довша */
+        width: 22px !important;
         border-radius: 10px !important;
         background: var(--hot-pink, #ff1493) !important;
         opacity: 1;
@@ -421,15 +404,12 @@
 
     /* 4. КАРТИНКА */
     .swiper-slide img {
-        width: 100%; 
-        height: 100%;
-        object-fit: cover; 
-        border-radius: 25px;
-        image-rendering: -webkit-optimize-contrast;
+        width: 100%; height: 100%;
+        object-fit: cover; border-radius: 25px;
+        /* Прискорює рендер на iPhone */
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
     }
 </style>
-
-
-
 </body>
 </html>
