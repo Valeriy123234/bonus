@@ -7,23 +7,32 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
     <style>
+        :root { --hot-pink: #ff69b4; --primary-red: #ff0000; }
         body { display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background: #050505; overflow: hidden; font-family: sans-serif; }
+        
+        /* --- ЛОАДЕР --- */
         #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: 0.8s ease; }
-        .loader-text { font-size: 24px; font-weight: bold; letter-spacing: 10px; color: #fff; text-shadow: 0 0 10px #ff69b4; animation: textGlow 2s infinite ease-in-out; }
-        @keyframes textGlow { 0%, 100% { opacity: 0.4; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1.05); } }
+        .loader-text { font-size: 24px; font-weight: bold; letter-spacing: 10px; color: #fff; text-shadow: 0 0 10px var(--hot-pink); animation: textGlow 2s infinite ease-in-out; z-index: 10001; }
+        @keyframes textGlow { 0%, 100% { opacity: 0.4; transform: scale(0.95); text-shadow: 0 0 5px var(--hot-pink); } 50% { opacity: 1; transform: scale(1.05); text-shadow: 0 0 20px var(--hot-pink), 0 0 30px var(--primary-red); } }
+        .floating-emoji { position: absolute; font-size: 25px; pointer-events: none; filter: drop-shadow(0 0 10px var(--hot-pink)); animation: levitate 4s ease-in-out infinite; opacity: 0; }
+        @keyframes levitate { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 50% { transform: translateY(-30px) rotate(15deg); opacity: 0.8; } 100% { transform: translateY(-60px) rotate(-15deg); opacity: 0; } }
+
+        /* --- КОНТЕНТ --- */
         #main-content { display: flex; justify-content: center; align-items: center; width: 100%; padding: 20px; box-sizing: border-box; }
         #main-content.hidden { display: none; }
         #calendar { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 20px; font-size: 11px; margin-top: 10px; width: 100%; color: white; }
         .fc-daygrid-day-number { color: #ccc !important; text-decoration: none !important; }
+        
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; backdrop-filter: blur(10px); }
-        .modal { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #0a0a0a; padding: 25px; border-radius: 35px; border: 2px solid #ff69b4; width: 90%; max-width: 300px; text-align: center; color: white; }
+        .modal { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #0a0a0a; padding: 25px; border-radius: 35px; border: 2px solid var(--hot-pink); width: 90%; max-width: 300px; text-align: center; color: white; }
         .time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
-        .time-slot { padding: 12px; border: 1.5px solid #ff0000; border-radius: 12px; background: transparent; color: white; cursor: pointer; font-weight: bold; }
-        .time-slot.selected { background: #ff0000; box-shadow: 0 0 15px #ff0000; }
+        .time-slot { padding: 12px; border: 1.5px solid var(--primary-red); border-radius: 12px; background: transparent; color: white; cursor: pointer; font-weight: bold; }
+        .time-slot.selected { background: var(--primary-red); box-shadow: 0 0 15px var(--primary-red); }
         .time-slot.blocked { background: #222 !important; border-color: #444 !important; color: #555 !important; text-decoration: line-through; cursor: not-allowed; }
-        input { width: 100%; padding: 12px; margin-bottom: 15px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 12px; text-align: center; }
+        
+        input { width: 100%; padding: 12px; margin-bottom: 15px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 12px; text-align: center; box-sizing: border-box; }
+        .btn { background: var(--primary-red); color: white; border: none; padding: 12px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; }
         .admin-access { margin-top: 15px; font-size: 9px; color: #333; cursor: pointer; text-align: center; }
-        .btn { background: #ff0000; color: white; border: none; padding: 10px; border-radius: 10px; cursor: pointer; width: 100%; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -41,7 +50,7 @@
 
     <div class="modal-overlay" id="overlay">
         <div class="modal">
-            <h4 id="dateTitle" style="color: #ff69b4; margin: 0;"></h4>
+            <h4 id="dateTitle" style="color: var(--hot-pink); margin: 0;"></h4>
             <div class="time-grid" id="timeGrid">
                 <button class="time-slot" data-time="10:00" onclick="handleTimeClick(this)">10:00</button>
                 <button class="time-slot" data-time="13:00" onclick="handleTimeClick(this)">13:00</button>
@@ -54,33 +63,46 @@
         </div>
     </div>
 
-    <!-- Підключення бази даних -->
+    <!-- Firebase SDK -->
     <script src="https://gstatic.com"></script>
     <script src="https://gstatic.com"></script>
 
     <script>
-        // --- НАЛАШТУВАННЯ (ЗМІНІТЬ ТІЛЬКИ ЦЕ) ---
         const firebaseConfig = { databaseURL: "https://yupe-cd9c3-default-rtdb.firebaseio.com/" };
         const TG_TOKEN = '8774532067:AAEKdELLNfVHATjIGB7SLu4txv1SImoJNuc';
         const TG_ADMIN_ID = '558274847';
-        // ---------------------------------------
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         let selTime = "", selDate = "", isAdm = false, blockedSlots = {};
 
-        // Завантаження зайнятих слотів з бази
+        // Лоадер
+        const loader = document.getElementById('loader');
+        const emojis = ['💟', '✨', '🌸', '💖', '✨', '🌸'];
+        for(let i=0; i<25; i++){
+            let e = document.createElement('div');
+            e.className = 'floating-emoji';
+            e.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+            e.style.left = Math.random() * 100 + 'vw';
+            e.style.top = Math.random() * 100 + 'vh';
+            e.style.animationDelay = (Math.random() * 3) + 's';
+            loader.appendChild(e);
+        }
+
+        window.onload = () => {
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    document.getElementById('main-content').classList.remove('hidden');
+                }, 800);
+            }, 3000);
+        };
+
         db.ref('slots').on('value', (snap) => {
             blockedSlots = snap.val() || {};
             updateTimeSlotsVisibility();
         });
-
-        window.onload = () => {
-            setTimeout(() => {
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('main-content').classList.remove('hidden');
-            }, 2000);
-        };
 
         document.addEventListener('DOMContentLoaded', () => {
             const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
@@ -124,31 +146,25 @@
         }
 
         function adminAuth() {
-            if(prompt("Пароль:") === "yupe123234") { isAdm = true; alert("Адмін-режим активовано"); }
+            if(prompt("Пароль:") === "yupe123234") { isAdm = true; alert("ADMIN MODE"); openBookingModal(); }
         }
 
         async function confirmBooking() {
             const name = document.getElementById('clientName').value;
-            if (!name || !selTime) return alert("Вкажіть ім'я та оберіть час!");
-
+            if (!name || !selTime) return alert("Вкажіть ім'я та час!");
             const message = `🚀 Новий запис!\n👤 Ім'я: ${name}\n📅 Дата: ${selDate}\n🕒 Час: ${selTime}`;
-            
             try {
-                const res = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+                const res = await fetch(`https://telegram.org{TG_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ chat_id: TG_ADMIN_ID, text: message })
                 });
-
                 if (res.ok) {
-                    // Зберігаємо в базу, щоб всі бачили блок
                     db.ref('slots/' + selDate).push(selTime);
-                    alert("Дякую! Запис прийнято, я вам відпишу в інстаграм.");
+                    alert("Дякую! Запис прийнято, я вам відпишу.");
                     document.getElementById('overlay').style.display = 'none';
-                } else {
-                    alert("Помилка Telegram. Перевірте налаштування бота.");
                 }
-            } catch (e) { alert("Помилка з'єднання."); }
+            } catch (e) { alert("Помилка з'єднання!"); }
         }
     </script>
 </body>
