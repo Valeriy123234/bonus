@@ -11,77 +11,67 @@
         body, html { margin: 0; padding: 0; height: 100%; background: #000; overflow: hidden; font-family: sans-serif; }
 
         /* ЛОАДЕР СТИЛІ */
-      <style>
-    :root {
-        --primary-red: #ff003c;
-        --hot-pink: #ff1493;
-    }
+        .loader-wrapper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; display: flex; justify-content: center; 
+            align-items: center; z-index: 1000; transition: opacity 0.8s ease;
+        }
+        .loader-text {
+            font-size: 42px; letter-spacing: 12px; font-weight: 900;
+            background: linear-gradient(90deg, var(--primary-red), var(--hot-pink), var(--primary-red));
+            background-size: 200% auto;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite, moveText 4s ease-in-out infinite;
+        }
+        @keyframes shine { to { background-position: 200% center; } }
+        @keyframes moveText { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-    /* 1. ЧИСТИЙ ЧОРНИЙ ФОН ТА ЦЕНТР */
-    .loader-wrapper {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: #000 !important; 
-        display: flex; justify-content: center; align-items: center; 
-        z-index: 9999; transition: 0.8s; overflow: hidden;
-    }
+        /* СМАЙЛИ */
+        .emoji-container { position: absolute; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
+        .floating-emoji {
+            position: absolute; font-size: 30px; opacity: 0;
+            filter: drop-shadow(0 0 10px var(--hot-pink));
+            animation: fly 6s infinite linear;
+        }
+        @keyframes fly {
+            0% { transform: translate(0, 100vh) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.6; }
+            100% { transform: translate(100px, -100px) rotate(360deg); opacity: 0; }
+        }
 
-    /* 2. ТЕКСТ БЕЗ ПІДКРЕСЛЕНЬ */
-    .loader-text {
-        font-size: 28px; letter-spacing: 10px; font-weight: 700; text-transform: uppercase;
-        background: linear-gradient(90deg, var(--primary-red), var(--hot-pink), var(--primary-red));
-        background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        animation: shine 2s linear infinite; 
-        position: relative; z-index: 100;
-        text-decoration: none !important; margin: 0; pointer-events: none;
-    }
+        /* ОСНОВНИЙ КОНТЕНТ */
+        .hidden { opacity: 0; filter: blur(10px); transition: 1s ease; }
+        .visible { opacity: 1; filter: blur(0); }
+        .swiper { width: 100%; height: 100vh; }
+        .swiper-slide { position: relative; display: flex; justify-content: center; align-items: center; background: #000; }
+        .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
 
-    /* 3. СУТО ВАКХАНАЛЬНЕ МЕРЕХТІННЯ ПО ВСЬОМУ ЕКРАНУ */
-    .emoji-container { position: absolute; width: 100%; height: 100%; pointer-events: none; }
-    
-    .floating-emoji {
-        position: absolute; opacity: 0;
-        filter: drop-shadow(0 0 15px var(--primary-red));
-        /* Анімація: з'явився, трохи поплавав на місці, зник */
-        animation: appearanceVakhanalia 6s infinite ease-in-out;
-        will-change: transform, opacity;
-    }
+        .back-btn {
+            position: fixed; top: 20px; left: 20px; z-index: 100;
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
+            color: white; border: 1px solid rgba(255,255,255,0.2);
+            padding: 10px 20px; border-radius: 50px; text-decoration: none;
+            font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+        }
+        .book-now {
+            position: absolute; bottom: 60px; right: 20px; z-index: 100;
+            background: var(--primary-red); color: white;
+            padding: 15px 25px; border-radius: 50px; text-decoration: none;
+            font-weight: bold; font-size: 14px;
+        }
+    </style>
+</head>
+<body>
 
-    @keyframes appearanceVakhanalia {
-        0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
-        30% { transform: scale(1.1) rotate(10deg); opacity: 0.8; filter: drop-shadow(0 0 20px var(--hot-pink)); }
-        70% { transform: scale(1) rotate(-5deg); opacity: 0.8; }
-        100% { transform: scale(0.3) rotate(10deg); opacity: 0; }
-    }
-
-    @keyframes shine { to { background-position: 200% center; } }
-</style>
-
-<div id="loader" class="loader-wrapper">
-    <div class="emoji-container" id="emoji-box"></div>
-    <h1 class="loader-text">Portfolio</h1>
-</div>
-
-<script>
-    const emojiBox = document.getElementById('emoji-box');
-    const emojis = ['🖋️', '🔥', '💀', '💉', '🤘', '🐲', '✨', '💖'];
-    
-    // Створюємо 50 смайлів, розкиданих по всій площі
-    for(let i = 0; i < 50; i++) {
-        let span = document.createElement('span');
-        span.className = 'floating-emoji';
-        span.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-        
-        // Рандомна позиція по всій ширині та висоті
-        span.style.left = Math.random() * 100 + 'vw';
-        span.style.top = Math.random() * 100 + 'vh';
-        
-        // Хаотичні затримки, щоб вони "блимали" в різний час
-        span.style.animationDuration = (4 + Math.random() * 4) + 's'; 
-        span.style.animationDelay = (Math.random() * 10) + 's';
-        span.style.fontSize = (15 + Math.random() * 30) + 'px';
-        
-        emojiBox.appendChild(span);
-    }
+    <div id="loader" class="loader-wrapper">
+        <div class="emoji-container">
+            <span class="floating-emoji" style="left:10%; animation-delay:0s;">🖋️</span>
+            <span class="floating-emoji" style="left:30%; animation-delay:2s;">🔥</span>
+            <span class="floating-emoji" style="left:50%; animation-delay:1s;">💀</span>
+            <span class="floating-emoji" style="left:70%; animation-delay:3s;">💉</span>
+            <span class="floating-emoji" style="left:90%; animation-delay:0.5s;">🤘</span>
+        </div>
         <h1 class="loader-text">PORTFOLIO</h1>
     </div>
 
