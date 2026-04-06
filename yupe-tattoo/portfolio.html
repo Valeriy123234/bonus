@@ -298,104 +298,95 @@
     <!-- ПРАВИЛЬНИЙ СКРИПТ (ЗАМІСТЬ JS DELIVER) -->
            <!-- ПІДКЛЮЧЕННЯ БІБЛІОТЕКИ -->
 <style>
-  /* Слайдер по центру */
+  /* 1. Центрируем контейнер */
   .swiper {
     width: 100%;
-    padding: 50px 0 80px !important;
+    height: auto;
+    padding: 60px 0 100px !important; /* Больше места под пагинацию */
   }
 
+  /* 2. Слайды: делаем их крупнее и мягче */
   .swiper-slide {
+    width: 350px !important; /* Увеличил ширину */
     display: flex;
     flex-direction: column;
     align-items: center;
-    opacity: 0.4;
-    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
+    opacity: 0.3;
+    transition: transform 0.9s cubic-bezier(0.2, 1, 0.3, 1), opacity 0.9s ease !important;
     transform: scale(0.8);
   }
 
   .swiper-slide-active {
-    opacity: 1;
-    transform: scale(1);
+    opacity: 1 !important;
+    transform: scale(1.1) !important; /* Активный слайд еще больше */
     z-index: 10;
   }
 
-  /* Жирная рамка и сохранение цвета картинки */
+  /* 3. Картинка с жирной розовой рамкой */
   .swiper-slide img {
-    width: 280px;
-    height: 400px;
+    width: 100%; 
+    height: 500px; /* Увеличил высоту */
     object-fit: cover;
-    border-radius: 20px;
-    /* Жирная рамка через border-image или двойной фон */
-    border: 5px solid transparent;
+    border-radius: 30px;
+    box-sizing: border-box;
+    /* Жирная рамка */
+    border: 6px solid transparent !important;
     background: linear-gradient(#000, #000) padding-box, 
-                linear-gradient(45deg, #ff003c, #ff1493) border-box;
-    /* Тень (свечение) */
-    box-shadow: 0 0 25px rgba(255, 20, 147, 0.4);
-    transition: box-shadow 0.3s ease;
+                linear-gradient(45deg, #ff003c, #ff1493) border-box !important;
+    /* Мощное красно-розовое свечение */
+    box-shadow: 0 10px 40px rgba(255, 0, 60, 0.5) !important;
   }
 
-  /* Красивые кнопки вместо ссылок */
-  .btn, .book-now {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 12px 30px;
-    background: linear-gradient(45deg, #ff003c, #ff1493);
+  /* 4. Кнопки (убиваем уродство) */
+  .btn, .book-now, .swiper-slide a {
+    display: inline-block !important;
+    margin-top: 25px !important;
+    padding: 15px 40px !important;
+    background: linear-gradient(45deg, #ff003c, #ff1493) !important;
     color: #fff !important;
-    text-decoration: none !important; /* Убираем уродливое подчеркивание */
-    border-radius: 50px;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 14px;
-    letter-spacing: 1px;
-    transition: all 0.3s ease;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(255, 0, 60, 0.3);
+    text-decoration: none !important; /* Никаких подчеркиваний */
+    border: none !important;
+    border-radius: 12px !important;
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.5px !important;
+    box-shadow: 0 5px 20px rgba(255, 20, 147, 0.4) !important;
+    transition: 0.3s all ease !important;
+    cursor: pointer !important;
   }
 
-  .btn:hover, .book-now:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 0, 60, 0.5);
-    opacity: 0.9;
+  .btn:hover {
+    transform: scale(1.05) !important;
+    box-shadow: 0 8px 25px rgba(255, 20, 147, 0.6) !important;
   }
 
-  /* Розовые точки пагинации */
+  /* 5. Розовые точки пагинации (ровно 3) */
   .swiper-pagination {
-    bottom: 20px !important;
+    bottom: 30px !important;
   }
 
   .swiper-pagination-bullet {
-    width: 10px;
-    height: 10px;
-    background: #ff1493 !important; /* Розовый цвет */
-    opacity: 0.3;
-    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important;
+    width: 12px !important;
+    height: 12px !important;
+    background: #ff1493 !important;
+    opacity: 0.2 !important;
+    margin: 0 8px !important;
+    transition: all 0.5s ease !important;
   }
 
   .swiper-pagination-bullet-active {
-    width: 30px !important; /* Удлиненная активная точка */
+    width: 35px !important;
     border-radius: 10px !important;
-    opacity: 1;
-    box-shadow: 0 0 10px rgba(255, 20, 147, 0.8);
-  }
-
-  /* Плавное появление контента слайда */
-  .work-info, .book-now, .btn {
-    opacity: 0;
-    transform: translateY(15px);
-    transition: all 0.8s ease 0.2s;
-  }
-
-  .swiper-slide-active .work-info, 
-  .swiper-slide-active .book-now, 
-  .swiper-slide-active .btn {
-    opacity: 1;
-    transform: translateY(0);
+    opacity: 1 !important;
+    background: #ff003c !important;
+    box-shadow: 0 0 15px #ff1493 !important;
   }
 </style>
 
 <script>
   window.addEventListener('load', () => {
+    // Ждем загрузку Swiper из CDN (проверь, чтобы скрипт Swiper был подключен выше)
     setTimeout(() => {
       const loader = document.getElementById('loader');
       if(loader) loader.style.opacity = '0';
@@ -405,27 +396,31 @@
         const content = document.getElementById('main-content');
         if(content) content.classList.remove('hidden');
 
-        new Swiper('.mySwiper', {
+        const swiper = new Swiper('.mySwiper', {
           grabCursor: true,
           centeredSlides: true,
-          slidesPerView: "auto",
+          slidesPerView: 'auto',
           initialSlide: 1,
-          spaceBetween: 40,
+          spaceBetween: 50,
           loop: true,
-          speed: 800, // Медленная и мягкая анимация
-          touchRatio: 1.5,
-          resistanceRatio: 0.7,
+          speed: 1000, // Очень мягкая смена
+          parallax: true,
+          mousewheel: {
+            forceToAxis: true,
+          },
+          keyboard: {
+            enabled: true,
+          },
           pagination: {
             el: '.swiper-pagination',
             clickable: true,
-            // Ограничиваем количество точек до 3, если нужно жестко 3
-            dynamicBullets: false, 
           },
         });
-      }, 600);
+      }, 500);
     }, 1000);
   });
 </script>
+
 
 
 </body>
