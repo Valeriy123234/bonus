@@ -7,48 +7,66 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
     <style>
-        /* Центрування всієї сторінки */
         body {
             display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; margin: 0; background: #050505; overflow-x: hidden;
+            min-height: 100vh; margin: 0; background: #050505; overflow: hidden;
         }
 
-        #main-content {
-            display: flex; justify-content: center; align-items: center;
-            width: 100%; padding: 20px; box-sizing: border-box;
+        /* --- НОВИЙ ЛОАДЕР (ЛЕВІТАЦІЯ) --- */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 9999; display: flex; 
+            justify-content: center; align-items: center; transition: 0.8s ease;
         }
 
-        /* Стиль календаря */
+        .loader-text {
+            font-size: 24px; font-weight: bold; letter-spacing: 10px;
+            color: #fff; text-shadow: 0 0 10px var(--hot-pink);
+            animation: textGlow 2s infinite ease-in-out;
+            z-index: 10001;
+        }
+
+        @keyframes textGlow {
+            0%, 100% { opacity: 0.4; transform: scale(0.95); text-shadow: 0 0 5px var(--hot-pink); }
+            50% { opacity: 1; transform: scale(1.05); text-shadow: 0 0 20px var(--hot-pink), 0 0 30px var(--primary-red); }
+        }
+
+        .floating-emoji {
+            position: absolute; font-size: 25px; pointer-events: none;
+            filter: drop-shadow(0 0 10px var(--hot-pink));
+            animation: levitate 4s ease-in-out infinite;
+            opacity: 0;
+        }
+
+        @keyframes levitate {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.6; }
+            50% { transform: translateY(-30px) rotate(15deg); opacity: 0.8; }
+            80% { opacity: 0.6; }
+            100% { transform: translateY(-60px) rotate(-15deg); opacity: 0; }
+        }
+
+        /* --- КОНТЕНТ --- */
+        #main-content { display: flex; justify-content: center; align-items: center; width: 100%; padding: 20px; box-sizing: border-box; }
         #calendar { background: rgba(0,0,0,0.3); padding: 10px; border-radius: 20px; font-size: 11px; margin-top: 10px; width: 100%; }
         .fc-daygrid-day-number { color: #ccc; text-decoration: none !important; }
         .disabled-day { background: rgba(255,0,0,0.1) !important; opacity: 0.5; }
-        
-        /* Лоадер */
-        .flying-cal { position: absolute; font-size: 25px; z-index: 1000; animation: chaos 2s ease-in-out infinite; pointer-events: none; }
-        @keyframes chaos {
-            0% { transform: translate(0, 0) rotate(0deg) scale(0); opacity: 0; }
-            50% { opacity: 1; transform: scale(1.2); }
-            100% { transform: translate(var(--mx), var(--my)) rotate(720deg) scale(0.2); opacity: 0; }
-        }
 
         /* Модалка */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; backdrop-filter: blur(10px); }
         .modal { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #0a0a0a; padding: 25px; border-radius: 35px; border: 2px solid var(--hot-pink); width: 90%; max-width: 300px; text-align: center; }
         .time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
-        
         .time-slot { padding: 12px; border: 1.5px solid var(--primary-red); border-radius: 12px; background: transparent; color: white; cursor: pointer; font-weight: bold; transition: 0.3s; }
         .time-slot.selected { background: var(--primary-red); box-shadow: 0 0 15px var(--primary-red); }
-        /* Стиль для заблокованого часу */
         .time-slot.blocked { background: #222 !important; border-color: #444 !important; color: #555 !important; text-decoration: line-through; cursor: not-allowed; }
-        
         input { width: 100%; padding: 12px; margin-bottom: 15px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 12px; box-sizing: border-box; text-align: center; }
         .admin-access { margin-top: 15px; font-size: 9px; color: #333; cursor: pointer; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
-    <div id="loader" class="loader-wrapper">
-        <div class="loader-text">CALENDAR...</div>
+    <div id="loader">
+        <div class="loader-text">CALENDAR</div>
     </div>
 
     <main id="main-content" class="hidden">
@@ -78,30 +96,33 @@
 
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <script>
-        // 1. Лоадер
+        // 1. ЛОАДЕР (МАГІЧНА ЛЕВІТАЦІЯ)
         const loader = document.getElementById('loader');
-        for(let i=0; i<20; i++){
-            let c = document.createElement('div');
-            c.className = 'flying-cal'; c.innerHTML = '📅';
-            c.style.left = '50%'; c.style.top = '50%';
-            c.style.setProperty('--mx', (Math.random()*600 - 300)+'px');
-            c.style.setProperty('--my', (Math.random()*600 - 300)+'px');
-            c.style.animationDelay = (Math.random()*1.5)+'s';
-            loader.appendChild(c);
+        const emojis = ['💟', '✨', '🌸', '💖', '✨'];
+        
+        for(let i=0; i<25; i++){
+            let e = document.createElement('div');
+            e.className = 'floating-emoji';
+            e.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+            e.style.left = Math.random() * 100 + 'vw';
+            e.style.top = Math.random() * 100 + 'vh';
+            e.style.animationDelay = (Math.random() * 3) + 's';
+            e.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            loader.appendChild(e);
         }
+
         window.onload = () => {
             setTimeout(() => {
                 loader.style.opacity = '0';
                 setTimeout(() => {
                     loader.style.display = 'none';
                     document.getElementById('main-content').classList.remove('hidden');
-                }, 500);
-            }, 2000); 
+                }, 800);
+            }, 2500); 
         };
 
-        // 2. Логіка
+        // 2. ЛОГІКА КАЛЕНДАРЯ ТА АДМІНКИ (СЛОТИ)
         let selTime = "", selDate = "", isAdm = false;
-        // Зберігаємо заблоковані СЛОТИ: { "2023-10-25": ["10:00", "13:00"] }
         let blockedSlots = JSON.parse(localStorage.getItem('blockedSlots')) || {};
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -123,41 +144,31 @@
             document.getElementById('adminNote').style.display = isAdm ? 'block' : 'none';
             document.getElementById('clientName').style.display = isAdm ? 'none' : 'block';
             document.getElementById('confirmBtn').style.display = isAdm ? 'none' : 'block';
-            
             updateTimeSlotsVisibility();
         }
 
         function updateTimeSlotsVisibility() {
             const slots = document.querySelectorAll('.time-slot');
             const dayBlocks = blockedSlots[selDate] || [];
-            
             slots.forEach(slot => {
                 slot.classList.remove('selected', 'blocked');
-                if (dayBlocks.includes(slot.dataset.time)) {
-                    slot.classList.add('blocked');
-                }
+                if (dayBlocks.includes(slot.dataset.time)) slot.classList.add('blocked');
             });
         }
 
         function handleTimeClick(btn) {
             const time = btn.dataset.time;
-
             if (isAdm) {
-                // Адмін: закрити/відкрити слот
                 if (!blockedSlots[selDate]) blockedSlots[selDate] = [];
-                
                 if (blockedSlots[selDate].includes(time)) {
                     blockedSlots[selDate] = blockedSlots[selDate].filter(t => t !== time);
                 } else {
                     blockedSlots[selDate].push(time);
                 }
-                
                 localStorage.setItem('blockedSlots', JSON.stringify(blockedSlots));
                 updateTimeSlotsVisibility();
             } else {
-                // Клієнт: обрати слот (якщо не заблоковано)
                 if (btn.classList.contains('blocked')) return;
-                
                 document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
                 btn.classList.add('selected');
                 selTime = time;
@@ -166,7 +177,7 @@
 
         function adminAuth() {
             if(prompt("Пароль:") === "yupe123234") {
-                isAdm = true; alert("ADMIN: Тепер виберіть дату та натискайте на час, щоб закрити його.");
+                isAdm = true; alert("ADMIN: Режим керування часом увімкнено.");
             }
         }
 
