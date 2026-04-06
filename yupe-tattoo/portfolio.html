@@ -11,67 +11,81 @@
         body, html { margin: 0; padding: 0; height: 100%; background: #000; overflow: hidden; font-family: sans-serif; }
 
         /* ЛОАДЕР СТИЛІ */
-        .loader-wrapper {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; display: flex; justify-content: center; 
-            align-items: center; z-index: 1000; transition: opacity 0.8s ease;
-        }
-        .loader-text {
-            font-size: 42px; letter-spacing: 12px; font-weight: 900;
-            background: linear-gradient(90deg, var(--primary-red), var(--hot-pink), var(--primary-red));
-            background-size: 200% auto;
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: shine 3s linear infinite, moveText 4s ease-in-out infinite;
-        }
-        @keyframes shine { to { background-position: 200% center; } }
-        @keyframes moveText { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+       <style>
+    :root {
+        --primary-red: #ff0000;
+        --hot-pink: #ff69b4;
+    }
 
-        /* СМАЙЛИ */
-        .emoji-container { position: absolute; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
-        .floating-emoji {
-            position: absolute; font-size: 30px; opacity: 0;
-            filter: drop-shadow(0 0 10px var(--hot-pink));
-            animation: fly 6s infinite linear;
-        }
-        @keyframes fly {
-            0% { transform: translate(0, 100vh) rotate(0deg); opacity: 0; }
-            20% { opacity: 0.6; }
-            80% { opacity: 0.6; }
-            100% { transform: translate(100px, -100px) rotate(360deg); opacity: 0; }
-        }
+    /* ЛОАДЕР КОНТЕЙНЕР */
+    .loader-wrapper {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: #000; display: flex; justify-content: center; 
+        align-items: center; z-index: 1000; transition: opacity 0.8s ease;
+        overflow: hidden;
+    }
 
-        /* ОСНОВНИЙ КОНТЕНТ */
-        .hidden { opacity: 0; filter: blur(10px); transition: 1s ease; }
-        .visible { opacity: 1; filter: blur(0); }
-        .swiper { width: 100%; height: 100vh; }
-        .swiper-slide { position: relative; display: flex; justify-content: center; align-items: center; background: #000; }
-        .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
+    /* МАЛЕНЬКИЙ ПУЛЬСУЮЧИЙ ТЕКСТ */
+    .loader-text {
+        font-size: 20px; /* Невеликий розмір */
+        letter-spacing: 6px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #fff;
+        text-shadow: 0 0 10px var(--hot-pink);
+        z-index: 1001;
+        animation: pulseText 2s ease-in-out infinite;
+    }
 
-        .back-btn {
-            position: fixed; top: 20px; left: 20px; z-index: 100;
-            background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
-            color: white; border: 1px solid rgba(255,255,255,0.2);
-            padding: 10px 20px; border-radius: 50px; text-decoration: none;
-            font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-        }
-        .book-now {
-            position: absolute; bottom: 60px; right: 20px; z-index: 100;
-            background: var(--primary-red); color: white;
-            padding: 15px 25px; border-radius: 50px; text-decoration: none;
-            font-weight: bold; font-size: 14px;
-        }
-    </style>
-</head>
+    @keyframes pulseText {
+        0%, 100% { transform: scale(1); opacity: 0.7; }
+        50% { transform: scale(1.15); opacity: 1; text-shadow: 0 0 20px var(--hot-pink); }
+    }
+
+    /* СМАЙЛИ ПО ПЕРИМЕТРУ ТА ЦЕНТРУ */
+    .emoji-container { position: absolute; width: 100%; height: 100%; pointer-events: none; }
+    
+    .floating-emoji {
+        position: absolute; font-size: 35px; opacity: 0;
+        filter: drop-shadow(0 0 15px var(--hot-pink)); /* Свічення */
+        animation: flyAround 10s infinite linear;
+    }
+
+    @keyframes flyAround {
+        0% { transform: translate(-10vw, 110vh) rotate(0deg); opacity: 0; }
+        10% { opacity: 0.8; }
+        50% { transform: translate(50vw, 50vh) rotate(180deg); } /* Проліт через центр */
+        90% { opacity: 0.8; }
+        100% { transform: translate(110vw, -10vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Різні траєкторії для кожного смайла */
+    .floating-emoji:nth-child(1) { left: 5%; animation-duration: 8s; animation-delay: 0s; }
+    .floating-emoji:nth-child(2) { left: 85%; animation-duration: 12s; animation-delay: 1s; animation-direction: reverse; }
+    .floating-emoji:nth-child(3) { left: 45%; animation-duration: 7s; animation-delay: 3s; }
+    .floating-emoji:nth-child(4) { left: 25%; animation-duration: 10s; animation-delay: 0.5s; animation-direction: reverse; }
+    .floating-emoji:nth-child(5) { left: 65%; animation-duration: 9s; animation-delay: 2s; }
+
+    /* ІНШИЙ КОНТЕНТ (БЕЗ ЗМІН) */
+    .hidden { opacity: 0; filter: blur(10px); transition: 1s ease; }
+    .visible { opacity: 1; filter: blur(0); }
+    .swiper { width: 100%; height: 100vh; }
+    .swiper-slide { position: relative; display: flex; justify-content: center; align-items: center; background: #000; }
+    .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
+    .back-btn { position: fixed; top: 20px; left: 20px; z-index: 100; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 50px; text-decoration: none; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+    .book-now { position: absolute; bottom: 60px; right: 20px; z-index: 100; background: var(--primary-red); color: white; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 14px; }
+</style>
+
 <body>
-
     <div id="loader" class="loader-wrapper">
         <div class="emoji-container">
-            <span class="floating-emoji" style="left:10%; animation-delay:0s;">🖋️</span>
-            <span class="floating-emoji" style="left:30%; animation-delay:2s;">🔥</span>
-            <span class="floating-emoji" style="left:50%; animation-delay:1s;">💀</span>
-            <span class="floating-emoji" style="left:70%; animation-delay:3s;">💉</span>
-            <span class="floating-emoji" style="left:90%; animation-delay:0.5s;">🤘</span>
+            <span class="floating-emoji">🖋️</span>
+            <span class="floating-emoji">🔥</span>
+            <span class="floating-emoji">💀</span>
+            <span class="floating-emoji">💉</span>
+            <span class="floating-emoji">🤘</span>
         </div>
+
         <h1 class="loader-text">PORTFOLIO</h1>
     </div>
 
