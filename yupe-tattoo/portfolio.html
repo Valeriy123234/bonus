@@ -301,107 +301,100 @@
 <!-- Swiper JS -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
+<!-- Swiper JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+
 <style>
-    /* 1. Налаштування контейнера: один слайд по центру */
+    /* ПОВНЕ ОБНУЛЕННЯ УРОДСТВА */
+    .mySwiper a, .mySwiper button {
+        text-decoration: none !important;
+        outline: none !important;
+        border: none !important;
+    }
+
     .swiper {
         width: 100%;
-        padding: 40px 0 110px !important;
-        overflow: hidden;
+        max-width: 400px; /* Обмежуємо ширину для стабільності */
+        margin: 0 auto;
+        padding: 30px 0 90px !important;
     }
 
     .swiper-slide {
-        width: 100% !important; /* Рівно один слайд на екран */
         display: flex;
         flex-direction: column;
         align-items: center;
-        opacity: 1 !important; /* Завжди 100% видимість */
-        transition: transform 1.2s cubic-bezier(0.2, 1, 0.3, 1);
+        justify-content: center;
+        transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1) !important;
     }
 
-    /* 2. Картинка: тонка рамка 3px та Імпульс Сяйва */
+    /* ФОТО ТА РАМКА З ІМПУЛЬСОМ */
     .swiper-slide img {
-        width: 320px;
-        height: 480px;
+        width: 280px;
+        height: 420px;
         object-fit: cover;
-        border-radius: 25px;
-        box-sizing: border-box;
+        border-radius: 20px;
         border: 3px solid transparent !important;
-        /* Градієнтна рамка */
         background: linear-gradient(#000, #000) padding-box, 
                     linear-gradient(45deg, #ff003c, #ff1493) border-box !important;
-        /* Анімація імпульсу (тіні) */
-        animation: glow-pulse 2.5s infinite ease-in-out;
+        box-shadow: 0 0 10px rgba(255, 20, 147, 0.3);
+        animation: breath 3s infinite ease-in-out;
     }
 
-    @keyframes glow-pulse {
-        0% { box-shadow: 0 0 5px rgba(255, 20, 147, 0.4); }
-        50% { box-shadow: 0 0 25px rgba(255, 0, 60, 0.8); }
-        100% { box-shadow: 0 0 5px rgba(255, 20, 147, 0.4); }
+    @keyframes breath {
+        0% { box-shadow: 0 0 10px rgba(255, 20, 147, 0.4); }
+        50% { box-shadow: 0 0 25px rgba(255, 0, 60, 0.7); }
+        100% { box-shadow: 0 0 10px rgba(255, 20, 147, 0.4); }
     }
 
-    /* 3. КНОПКИ: Нові кольори, без червоного/рожевого */
-    .controls-container {
+    /* КНОПКИ: ПРЕМІАЛЬНИЙ ГРАФІТ */
+    .btn-container {
         display: flex;
-        gap: 15px;
-        margin-top: 30px;
+        gap: 10px;
+        margin-top: 25px;
     }
 
-    /* Кнопка Записатись (Стильний темно-синій/смарагдовий градієнт) */
-    .book-now, .btn-main {
-        display: inline-block !important;
-        padding: 15px 35px !important;
-        background: linear-gradient(45deg, #0f2027, #203a43, #2c5364) !important; /* Дорогий темний колір */
-        color: #fff !important;
-        text-decoration: none !important; /* Видаляємо уродське підкреслення */
-        border-radius: 12px !important;
+    .btn-main, .book-now {
+        background: #121212 !important; /* Глибокий чорний */
+        color: #ffffff !important;
+        padding: 12px 28px !important;
+        border-radius: 10px !important;
         font-weight: 700 !important;
-        text-transform: uppercase;
-        font-size: 13px;
-        letter-spacing: 1px;
-        border: 1px solid rgba(255,255,255,0.1) !important;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.3) !important;
-        transition: all 0.4s ease !important;
-        cursor: pointer;
+        font-size: 13px !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5) !important;
+        transition: 0.3s all !important;
     }
 
-    /* Кнопка Назад (Мінімалістична та чиста) */
     .btn-back {
-        display: inline-block !important;
-        padding: 15px 25px !important;
-        background: rgba(255, 255, 255, 0.05) !important;
-        color: #eee !important;
-        text-decoration: none !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        border-radius: 12px !important;
-        font-size: 13px;
-        transition: all 0.4s ease !important;
+        background: rgba(255,255,255,0.1) !important;
+        color: #fff !important;
+        padding: 12px 20px !important;
+        border-radius: 10px !important;
+        border: 1px solid rgba(255,255,255,0.2) !important;
+        font-size: 13px !important;
     }
 
-    .book-now:hover, .btn-main:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 15px 25px rgba(0,0,0,0.4) !important;
-        filter: brightness(1.2);
+    .btn-main:hover {
+        background: #000 !important;
+        transform: translateY(-2px);
     }
 
-    /* 4. ПАГІНАЦІЯ: Тільки 3 рожеві точки */
-    .swiper-pagination {
-        bottom: 40px !important;
-    }
-
+    /* ПАГІНАЦІЯ: 3 РОЖЕВІ КРАПКИ */
     .swiper-pagination-bullet {
         width: 10px !important;
         height: 10px !important;
-        background: #ff1493 !important; /* Рожевий колір точок */
+        background: #ff1493 !important;
         opacity: 0.2 !important;
-        margin: 0 8px !important;
-        transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1) !important;
+        transition: 0.5s all ease !important;
     }
 
     .swiper-pagination-bullet-active {
-        width: 30px !important; /* Плавне розширення */
-        border-radius: 10px !important;
+        width: 25px !important;
+        border-radius: 5px !important;
         opacity: 1 !important;
-        box-shadow: 0 0 10px rgba(255, 20, 147, 0.8) !important;
+        box-shadow: 0 0 10px #ff1493 !important;
     }
 </style>
 
@@ -409,37 +402,28 @@
     window.addEventListener('load', () => {
         setTimeout(() => {
             const loader = document.getElementById('loader');
-            if(loader) loader.style.opacity = '0';
-
-            setTimeout(() => {
-                if(loader) loader.style.display = 'none';
-                
-                new Swiper('.mySwiper', {
-                    slidesPerView: 1, // Тільки ОДИН слайд
-                    centeredSlides: true,
-                    loop: true,
-                    speed: 1200, // М'яка, "дорога" анімація
-                    grabCursor: true,
-                    mousewheel: true,
-                    // Ефект м'якого пересування
-                    parallax: true,
-                    pagination: {
-                        el: '.swiper-pagination',
-                        clickable: true,
-                        // Жорстко обмежуємо до 3 точок
-                        renderBullet: function (index, className) {
-                            if (index < 3) {
-                                return '<span class="' + className + '"></span>';
-                            }
-                            return '';
-                        },
+            if(loader) loader.style.display = 'none';
+            
+            const swiper = new Swiper('.mySwiper', {
+                slidesPerView: 1, // Один слайд — нуль лагів
+                centeredSlides: true,
+                loop: true,
+                speed: 1000,
+                grabCursor: true,
+                mousewheel: true,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                    // Малюємо ТІЛЬКИ 3 точки
+                    renderBullet: function (index, className) {
+                        if (index < 3) return '<span class="' + className + '"></span>';
+                        return '';
                     },
-                });
-            }, 800);
-        }, 1500);
+                },
+            });
+        }, 1000);
     });
 </script>
-
 
 </body>
 </html>
