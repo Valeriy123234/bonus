@@ -154,7 +154,7 @@
             if (!name || !selTime) return alert("Вкажіть ім'я та час!");
             const message = `🚀 Новий запис!\n👤 Ім'я: ${name}\n📅 Дата: ${selDate}\n🕒 Час: ${selTime}`;
             try {
-                const res = await fetch(`https://telegram.org{TG_TOKEN}/sendMessage`, {
+                const res = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ chat_id: TG_ADMIN_ID, text: message })
