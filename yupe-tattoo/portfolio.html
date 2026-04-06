@@ -276,109 +276,130 @@
 
     <!-- ПРАВИЛЬНИЙ СКРИПТ (ЗАМІСТЬ JS DELIVER) -->
            <!-- ПІДКЛЮЧЕННЯ БІБЛІОТЕКИ -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-    <script>
-        window.addEventListener('load', () => {
+<script>
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const loader = document.getElementById('loader');
+            if(loader) loader.style.opacity = '0';
+            
             setTimeout(() => {
-                const loader = document.getElementById('loader');
-                if(loader) loader.style.opacity = '0';
+                if(loader) loader.style.display = 'none';
+                const content = document.getElementById('main-content');
+                if(content) content.classList.remove('hidden');
                 
-                setTimeout(() => {
-                    if(loader) loader.style.display = 'none';
-                    const content = document.getElementById('main-content');
-                    content.classList.remove('hidden');
+                new Swiper('.mySwiper', {
+                    effect: 'slide',
+                    grabCursor: true,
+                    centeredSlides: true,
+                    slidesPerView: 1.2, 
+                    spaceBetween: 20,
+                    loop: true,
+                    speed: 900, // Значно плавніший перехід
+
+                    // Ефект інерції для "масляного" гортання
+                    freeMode: {
+                        enabled: true,
+                        sticky: true,
+                        momentumRatio: 0.5,
+                    },
+
+                    watchSlidesProgress: true,
+                    preloadImages: false,
+                    lazy: { loadPrevNext: true },
                     
-                    // УЛЬТРА-ОПТИМІЗОВАНИЙ СЛАЙДЕР
-                    new Swiper('.mySwiper', {
-                        effect: 'slide', // Стандартний ефект — найшвидший
-                        grabCursor: true,
-                        centeredSlides: true,
-                        slidesPerView: 1.2, 
-                        spaceBetween: 15,
-                        loop: true,
-                        speed: 500, // Швидше перемикання менше навантажує систему
+                    touchRatio: 1.2,
+                    resistanceRatio: 0.9,
+                    mousewheel: { thresholdDelta: 50 },
+                    keyboard: true,
 
-                        // Оптимізація для слабких пристроїв
-                        watchSlidesProgress: true,
-                        preloadImages: false,
-                        lazy: {
-                            loadPrevNext: true,
-                        },
-                        
-                        touchRatio: 1.5,
-                        resistanceRatio: 0.85,
-                        mousewheel: { thresholdDelta: 50 },
-                        keyboard: true,
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                        dynamicBullets: true, // Робить ефект 3-х активних точок
+                        dynamicMainBullets: 1, 
+                    },
+                });
+            }, 600);
+        }, 2000);
+    });
+</script>
 
-                        pagination: {
-                            el: '.swiper-pagination',
-                            clickable: true,
-                        },
-                    });
-                }, 600);
-            }, 2000);
-        });
-    </script>
+<!-- ВСТАВИТИ ЦЕ ВСЕРЕДИНУ <div id="main-content"> -->
+<div class="swiper-pagination"></div>
 
-    <!-- ВСТАВИТИ ЦЕ ВСЕРЕДИНУ <div id="main-content"> -->
-    <div class="swiper-pagination"></div>
+<style>
+    /* 1. ПЛАВНА ПОЯВА ТЕКСТУ */
+    .swiper-slide .work-info, 
+    .swiper-slide .book-now,
+    .swiper-slide .btn { 
+        opacity: 0; 
+        transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: none;
+    }
 
-    <style>
-        /* 1. ПЛАВНА ПОЯВА ТЕКСТУ БЕЗ ВАЖКИХ ЕФЕКТІВ */
-        .swiper-slide .work-info, 
-        .swiper-slide .book-now,
-        .swiper-slide .btn { 
-            opacity: 0; 
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
+    .swiper-slide-active .work-info, 
+    .swiper-slide-active .book-now, 
+    .swiper-slide-active .btn { 
+        opacity: 1; 
+        pointer-events: auto;
+    }
 
-        .swiper-slide-active .work-info, 
-        .swiper-slide-active .book-now, 
-        .swiper-slide-active .btn { 
-            opacity: 1; 
-            pointer-events: auto;
-        }
+    /* 2. ПЛАВНІСТЬ СЛАЙДІВ (М'яка крива) */
+    .swiper-slide {
+        filter: brightness(0.4);
+        /* cubic-bezier робить рух дорожчим та плавнішим */
+        transition: transform 0.9s cubic-bezier(0.25, 1, 0.5, 1), filter 0.9s ease !important;
+        transform: scale(0.88) translateZ(0);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        will-change: transform, filter;
+    }
 
-        /* 2. ОПТИМІЗАЦІЯ СЛАЙДІВ (БЕЗ BLUR) */
-        .swiper-slide {
-            filter: brightness(0.4);
-            transition: transform 0.5s ease, filter 0.5s ease;
-            transform: scale(0.9) translateZ(0); /* Вмикаємо відеокарту */
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-        }
+    .swiper-slide-active {
+        filter: brightness(1);
+        transform: scale(1) translateZ(0);
+        z-index: 10;
+    }
 
-        .swiper-slide-active {
-            filter: brightness(1);
-            transform: scale(1) translateZ(0);
-            z-index: 10;
-        }
+    /* 3. КРАПКИ (Фікс на 3 штуки та плавна зміна) */
+    .swiper-pagination { 
+        bottom: 25px !important; 
+    }
 
-        /* 3. СПРОЩЕНІ КРАПКИ ДЛЯ ШВИДКОДІЇ */
-        .swiper-pagination { bottom: 20px !important; }
-        .swiper-pagination-bullet {
-            width: 8px; height: 8px;
-            background: #fff !important;
-            opacity: 0.3; transition: all 0.3s ease !important;
-        }
-        .swiper-pagination-bullet-active {
-            width: 20px !important;
-            border-radius: 10px !important;
-            background: var(--hot-pink) !important;
-            opacity: 1;
-        }
+    /* Обмежуємо ширину контейнера пагінації для ефекту 3-х точок */
+    .swiper-pagination-bullets-dynamic {
+        width: 60px !important; 
+        overflow: hidden;
+    }
 
-        /* 4. ОПТИМІЗАЦІЯ КАРТИНКИ */
-        .swiper-slide img {
-            width: 100%; height: 100%;
-            object-fit: cover; border-radius: 25px;
-            /* Кажемо браузеру не перераховувати картинку при русі */
-            image-rendering: -webkit-optimize-contrast;
-            will-change: transform;
-        }
-    </style>
+    .swiper-pagination-bullet {
+        width: 8px; 
+        height: 8px;
+        background: #fff !important;
+        opacity: 0.3; 
+        /* Плавне перетікання розміру точок */
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .swiper-pagination-bullet-active {
+        width: 22px !important; /* Активна точка довша */
+        border-radius: 10px !important;
+        background: var(--hot-pink, #ff1493) !important;
+        opacity: 1;
+    }
+
+    /* 4. КАРТИНКА */
+    .swiper-slide img {
+        width: 100%; 
+        height: 100%;
+        object-fit: cover; 
+        border-radius: 25px;
+        image-rendering: -webkit-optimize-contrast;
+    }
+</style>
+
 
 
 </body>
