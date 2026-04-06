@@ -67,16 +67,21 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
-    <script>
+     <script>
+        // 1. НАЛАШТУВАННЯ
         const firebaseConfig = { databaseURL: "https://yupe-cd9c3-default-rtdb.firebaseio.com/" };
         const TG_TOKEN = '8774532067:AAEKdELLNfVHATjIGB7SLu4txv1SImoJNuc';
         const TG_ADMIN_ID = '558274847';
 
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+        // Ініціалізація Firebase (з перевіркою)
+        try {
+            firebase.initializeApp(firebaseConfig);
+            var db = firebase.database();
+        } catch(e) { console.log("Firebase error:", e); }
+
         let selTime = "", selDate = "", isAdm = false, blockedSlots = {};
 
-        // Лоадер
+        // 2. ЛОАДЕР (МАГІЯ)
         const loader = document.getElementById('loader');
         const emojis = ['💟', '✨', '🌸', '💖', '✨', '🌸'];
         for(let i=0; i<25; i++){
@@ -95,26 +100,42 @@
                 setTimeout(() => {
                     loader.style.display = 'none';
                     document.getElementById('main-content').classList.remove('hidden');
+                    // МАЛЮЄМО КАЛЕНДАР ПІСЛЯ ЛОАДЕРА
+                    renderMyCalendar();
                 }, 800);
             }, 3000);
         };
 
-        db.ref('slots').on('value', (snap) => {
-            blockedSlots = snap.val() || {};
-            updateTimeSlotsVisibility();
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
-                initialView: 'dayGridMonth', locale: 'uk', firstDay: 1,
-                dateClick: (info) => { selDate = info.dateStr; openBookingModal(); }
+        // 3. ФУНКЦІЯ МАЛЮВАННЯ КАЛЕНДАРЯ
+        function renderMyCalendar() {
+            const calEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calEl, {
+                initialView: 'dayGridMonth', 
+                locale: 'uk', 
+                firstDay: 1,
+                headerToolbar: { left: 'prev', center: 'title', right: 'next' },
+                dateClick: (info) => {
+                    selDate = info.dateStr;
+                    openBookingModal();
+                }
             });
             calendar.render();
-        });
+        }
+
+        // 4. БАЗА ДАНИХ (СЛУХАЄМО В РЕАЛЬНОМУ ЧАСІ)
+        if(db) {
+            db.ref('slots').on('value', (snap) => {
+                blockedSlots = snap.val() || {};
+                if(document.getElementById('overlay').style.display === 'block') {
+                    updateTimeSlotsVisibility();
+                }
+            });
+        }
 
         function openBookingModal() {
             document.getElementById('dateTitle').innerText = selDate;
             document.getElementById('overlay').style.display = 'block';
+            document.getElementById('adminNote' ) ? document.getElementById('adminNote').style.display = isAdm ? 'block' : 'none' : null;
             document.getElementById('clientName').style.display = isAdm ? 'none' : 'block';
             document.getElementById('confirmBtn').style.display = isAdm ? 'none' : 'block';
             selTime = "";
@@ -146,7 +167,8 @@
         }
 
         function adminAuth() {
-            if(prompt("Пароль:") === "yupe123234") { isAdm = true; alert("ADMIN MODE"); openBookingModal(); }
+            let p = prompt("Пароль:");
+            if(p === "yupe123234") { isAdm = true; alert("ADMIN MODE"); openBookingModal(); }
         }
 
         async function confirmBooking() {
@@ -160,12 +182,10 @@
                     body: JSON.stringify({ chat_id: TG_ADMIN_ID, text: message })
                 });
                 if (res.ok) {
-                    db.ref('slots/' + selDate).push(selTime);
+                    if(db) db.ref('slots/' + selDate).push(selTime);
                     alert("Дякую! Запис прийнято, я вам відпишу.");
                     document.getElementById('overlay').style.display = 'none';
                 }
             } catch (e) { alert("Помилка з'єднання!"); }
         }
     </script>
-</body>
-</html>
