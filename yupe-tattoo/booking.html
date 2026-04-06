@@ -181,13 +181,40 @@
             }
         }
 
-        function confirmBooking() {
-            let name = document.getElementById('clientName').value;
-            if(name && selTime) {
-                alert(`Успіх! ${name}, запис на ${selDate} о ${selTime}`);
-                document.getElementById('overlay').style.display='none';
-            } else alert("Оберіть час та введіть ім'я!");
+        async function confirmBooking() {
+    const name = document.getElementById('clientName').value;
+    const token = '8774532067:AAEKdELLNfVHATjIGB7SLu4txv1SImoJNuc'; // Замініть на токен від @BotFather
+    const adminChatId = '558274847'; // Замініть на ID адміна
+
+    if (name && selTime) {
+        const text = `🚀 Новий запис!\n👤 Ім'я: ${name}\n📅 Дата: ${selDate}\n🕒 Час: ${selTime}`;
+        
+        try {
+            const response = await fetch(`https://telegram.org{token}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: adminChatId,
+                    text: text,
+                    parse_mode: 'HTML'
+                })
+            });
+
+            if (response.ok) {
+                alert(`Успіх! ${name}, запис на ${selDate} о ${selTime} підтверджено.`);
+                document.getElementById('overlay').style.display = 'none';
+            } else {
+                alert("Помилка відправки повідомлення. Спробуйте пізніше.");
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert("Сталася помилка з'єднання з сервером.");
         }
+    } else {
+        alert("Оберіть час та введіть ім'я!");
+    }
+}
+
     </script>
 </body>
 </html>
