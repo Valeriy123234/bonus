@@ -297,131 +297,126 @@
 
     <!-- ПРАВИЛЬНИЙ СКРИПТ (ЗАМІСТЬ JS DELIVER) -->
            <!-- ПІДКЛЮЧЕННЯ БІБЛІОТЕКИ -->
+<!-- ПРАВИЛЬНЫЙ СКРИПТ (С ОФИЦИАЛЬНОГО CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
 <style>
-  /* 1. Центрируем контейнер */
-  .swiper {
-    width: 100%;
-    height: auto;
-    padding: 60px 0 100px !important; /* Больше места под пагинацию */
-  }
+    /* Базовая настройка для мягкости */
+    .swiper {
+        width: 100%;
+        padding: 50px 0 100px !important;
+        overflow: visible !important; /* Чтобы боковые слайды не обрезались */
+    }
 
-  /* 2. Слайды: делаем их крупнее и мягче */
-  .swiper-slide {
-    width: 350px !important; /* Увеличил ширину */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    opacity: 0.3;
-    transition: transform 0.9s cubic-bezier(0.2, 1, 0.3, 1), opacity 0.9s ease !important;
-    transform: scale(0.8);
-  }
+    /* Слайд: большой и плавный */
+    .swiper-slide {
+        width: 320px !important; /* Оптимальная ширина */
+        transition: all 0.9s cubic-bezier(0.2, 1, 0.3, 1) !important;
+        opacity: 0.4;
+        transform: scale(0.85);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-  .swiper-slide-active {
-    opacity: 1 !important;
-    transform: scale(1.1) !important; /* Активный слайд еще больше */
-    z-index: 10;
-  }
+    .swiper-slide-active {
+        opacity: 1;
+        transform: scale(1.05); /* Активный чуть больше */
+    }
 
-  /* 3. Картинка с жирной розовой рамкой */
-  .swiper-slide img {
-    width: 100%; 
-    height: 500px; /* Увеличил высоту */
-    object-fit: cover;
-    border-radius: 30px;
-    box-sizing: border-box;
-    /* Жирная рамка */
-    border: 6px solid transparent !important;
-    background: linear-gradient(#000, #000) padding-box, 
-                linear-gradient(45deg, #ff003c, #ff1493) border-box !important;
-    /* Мощное красно-розовое свечение */
-    box-shadow: 0 10px 40px rgba(255, 0, 60, 0.5) !important;
-  }
+    /* Картинка: Жирная розовая рамка, ЦВЕТ НЕ МЕНЯЕТ */
+    .swiper-slide img {
+        width: 100%;
+        height: 450px;
+        object-fit: cover;
+        border-radius: 25px;
+        box-sizing: border-box;
+        /* Жирная рамка через двойной фон (бордер + градиент) */
+        border: 6px solid transparent !important;
+        background: linear-gradient(#000, #000) padding-box, 
+                    linear-gradient(45deg, #ff003c, #ff1493) border-box !important;
+        /* Мягкое красно-розовое свечение */
+        box-shadow: 0 10px 30px rgba(255, 20, 147, 0.4) !important;
+    }
 
-  /* 4. Кнопки (убиваем уродство) */
-  .btn, .book-now, .swiper-slide a {
-    display: inline-block !important;
-    margin-top: 25px !important;
-    padding: 15px 40px !important;
-    background: linear-gradient(45deg, #ff003c, #ff1493) !important;
-    color: #fff !important;
-    text-decoration: none !important; /* Никаких подчеркиваний */
-    border: none !important;
-    border-radius: 12px !important;
-    font-size: 16px !important;
-    font-weight: 800 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 1.5px !important;
-    box-shadow: 0 5px 20px rgba(255, 20, 147, 0.4) !important;
-    transition: 0.3s all ease !important;
-    cursor: pointer !important;
-  }
+    /* КНОПКИ: Без подчеркиваний, красивые, розовые */
+    .btn, .book-now, .swiper-slide a {
+        display: inline-block !important;
+        margin-top: 20px !important;
+        padding: 14px 35px !important;
+        background: linear-gradient(45deg, #ff003c, #ff1493) !important;
+        color: #fff !important;
+        text-decoration: none !important; /* УБИРАЕМ УРОДСТВО */
+        border-radius: 50px !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        font-size: 13px !important;
+        letter-spacing: 1px !important;
+        border: none !important;
+        box-shadow: 0 4px 15px rgba(255, 0, 60, 0.3) !important;
+        transition: 0.3s ease !important;
+    }
 
-  .btn:hover {
-    transform: scale(1.05) !important;
-    box-shadow: 0 8px 25px rgba(255, 20, 147, 0.6) !important;
-  }
+    .btn:hover, .book-now:hover {
+        transform: translateY(-3px) !important;
+        box-shadow: 0 6px 20px rgba(255, 0, 60, 0.5) !important;
+    }
 
-  /* 5. Розовые точки пагинации (ровно 3) */
-  .swiper-pagination {
-    bottom: 30px !important;
-  }
+    /* ПАГИНАЦИЯ: 3 розовые точки, мягкая смена */
+    .swiper-pagination {
+        bottom: 30px !important;
+    }
 
-  .swiper-pagination-bullet {
-    width: 12px !important;
-    height: 12px !important;
-    background: #ff1493 !important;
-    opacity: 0.2 !important;
-    margin: 0 8px !important;
-    transition: all 0.5s ease !important;
-  }
+    .swiper-pagination-bullet {
+        width: 12px !important;
+        height: 12px !important;
+        background: #ff1493 !important; /* Розовый */
+        opacity: 0.3 !important;
+        transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1) !important;
+    }
 
-  .swiper-pagination-bullet-active {
-    width: 35px !important;
-    border-radius: 10px !important;
-    opacity: 1 !important;
-    background: #ff003c !important;
-    box-shadow: 0 0 15px #ff1493 !important;
-  }
+    .swiper-pagination-bullet-active {
+        width: 35px !important; /* Плавное удлинение */
+        border-radius: 10px !important;
+        opacity: 1 !important;
+        background: #ff003c !important;
+        box-shadow: 0 0 12px rgba(255, 20, 147, 0.7) !important;
+    }
 </style>
 
 <script>
-  window.addEventListener('load', () => {
-    // Ждем загрузку Swiper из CDN (проверь, чтобы скрипт Swiper был подключен выше)
-    setTimeout(() => {
-      const loader = document.getElementById('loader');
-      if(loader) loader.style.opacity = '0';
-      
-      setTimeout(() => {
-        if(loader) loader.style.display = 'none';
-        const content = document.getElementById('main-content');
-        if(content) content.classList.remove('hidden');
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const loader = document.getElementById('loader');
+            if(loader) loader.style.opacity = '0';
 
-        const swiper = new Swiper('.mySwiper', {
-          grabCursor: true,
-          centeredSlides: true,
-          slidesPerView: 'auto',
-          initialSlide: 1,
-          spaceBetween: 50,
-          loop: true,
-          speed: 1000, // Очень мягкая смена
-          parallax: true,
-          mousewheel: {
-            forceToAxis: true,
-          },
-          keyboard: {
-            enabled: true,
-          },
-          pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-          },
-        });
-      }, 500);
-    }, 1000);
-  });
+            setTimeout(() => {
+                if(loader) loader.style.display = 'none';
+                const content = document.getElementById('main-content');
+                if(content) {
+                    content.classList.remove('hidden');
+                    content.classList.add('visible');
+                }
+                
+                // Твой рабочий конфиг, но с докрученной мягкостью
+                new Swiper('.mySwiper', {
+                    direction: 'horizontal',
+                    slidesPerView: 'auto',
+                    centeredSlides: true,
+                    spaceBetween: 50,
+                    loop: true,
+                    grabCursor: true,
+                    speed: 1000, // Скорость анимации (очень плавно)
+                    mousewheel: true,
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                });
+            }, 800);
+        }, 2500);
+    });
 </script>
-
-
 
 </body>
 </html>
