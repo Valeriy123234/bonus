@@ -277,6 +277,7 @@
     <!-- ПРАВИЛЬНИЙ СКРИПТ (ЗАМІСТЬ JS DELIVER) -->
        <!-- ПІДКЛЮЧЕННЯ БІБЛІОТЕКИ -->
        <!-- ПІДКЛЮЧЕННЯ БІБЛІОТЕКИ -->
+       <!-- ПІДКЛЮЧЕННЯ БІБЛІОТЕКИ -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script>
@@ -291,40 +292,33 @@
                     content.classList.remove('hidden');
                     content.classList.add('visible');
                     
-                    // ПРЕМІАЛЬНИЙ СЛАЙДЕР (ОПТИМІЗОВАНИЙ)
+                    // ПРЕМІАЛЬНИЙ СЛАЙДЕР (ЕФЕКТ НАШАРУВАННЯ + 10% ВИДИМОСТІ)
                     new Swiper('.mySwiper', {
-                        // Сучасний ефект напливу замість дитячого 3D
                         effect: 'creative',
                         creativeEffect: {
-                            prev: { shadow: true, translate: ['-20%', 0, -1] },
+                            prev: { shadow: true, translate: ['-120%', 0, -500] },
                             next: { translate: ['100%', 0, 0] },
                         },
                         
                         grabCursor: true,
                         centeredSlides: true,
-                        slidesPerView: 'auto',
+                        
+                        // ОСЬ ТУТ: центр 80%, боки по 10%
+                        slidesPerView: 1.2, 
+                        spaceBetween: 20,
+                        
                         loop: true,
-                        
-                        // "Масляна" плавність (speed 1000мс = 1 сек)
                         speed: 1000,
-                        
-                        // Інерційність та опір для приємного свайпу
                         touchRatio: 1.2,
                         resistanceRatio: 0.85,
-                        freeMode: {
-                            enabled: false, // тримаємо чітку фіксацію на фото
-                        },
 
-                        mousewheel: {
-                            thresholdDelta: 50,
-                        },
+                        mousewheel: { thresholdDelta: 50 },
                         keyboard: true,
 
-                        // Стильна пагінація (крапки)
                         pagination: {
                             el: '.swiper-pagination',
                             clickable: true,
-                            dynamicBullets: true, // Крапки змінюють розмір
+                            dynamicBullets: true,
                         },
                     });
                 }, 800);
@@ -332,27 +326,49 @@
         });
     </script>
 
-    <!-- ВСТАВИТИ ЦЕ ВСЕРЕДИНУ <div id="main-content"> -->
+    <!-- ВСТАВИТИ ЦЕ ВСЕРЕДИНУ <div id="main-content"> ПІСЛЯ блоку swiper-wrapper -->
     <div class="swiper-pagination"></div>
 
     <style>
-        /* Стильні "розумні" крапки у стилі iOS/Modern UI */
-        .swiper-pagination {
-            bottom: 25px !important;
-            transition: 0.3s;
+        /* 1. ПОКАЗУЄМО НАПИС ТА КНОПКУ ТІЛЬКИ В ЦЕНТРІ */
+        .swiper-slide .work-info, 
+        .swiper-slide .book-now,
+        .swiper-slide .btn { 
+            opacity: 0 !important; 
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+            pointer-events: none;
         }
 
+        .swiper-slide-active .work-info, 
+        .swiper-slide-active .book-now,
+        .swiper-slide-active .btn { 
+            opacity: 1 !important; 
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        /* 2. БОКОВІ ФОТО ТЕМНІШІ ТА МЕНШІ (ДЛЯ ФОКУСУ) */
+        .swiper-slide {
+            filter: brightness(0.3) blur(2px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: scale(0.85);
+        }
+
+        .swiper-slide-active {
+            filter: brightness(1) blur(0px);
+            transform: scale(1);
+            z-index: 10;
+        }
+
+        /* 3. СТИЛЬНІ КРАПКИ iOS */
+        .swiper-pagination { bottom: 25px !important; }
         .swiper-pagination-bullet {
-            width: 8px;
-            height: 8px;
+            width: 8px; height: 8px;
             background: #fff !important;
-            opacity: 0.3;
-            margin: 0 6px !important;
-            /* Плавна анімація зміни форми крапки */
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            opacity: 0.3; margin: 0 6px !important;
+            transition: all 0.5s ease !important;
         }
-
-        /* Активна крапка розтягується в лінію */
         .swiper-pagination-bullet-active {
             width: 22px !important;
             border-radius: 10px !important;
@@ -361,18 +377,13 @@
             box-shadow: 0 0 15px var(--hot-pink);
         }
 
-        /* Оптимізація картинок для відсутності лагів */
+        /* Оптимізація */
         .swiper-slide img {
-            will-change: transform;
-            transition: transform 1s ease;
-        }
-
-        /* Легкий ефект наближення на активному фото */
-        .swiper-slide-active img {
-            transform: scale(1.03);
+            width: 100%; height: 100%;
+            object-fit: cover; border-radius: 25px;
+            will-change: transform, filter;
         }
     </style>
-
 
 </body>
 </html>
