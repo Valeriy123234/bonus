@@ -291,8 +291,6 @@
 
     <!-- ПРАВИЛЬНИЙ СКРИПТ (ЗАМІСТЬ JS DELIVER) -->
            <!-- ПІДКЛЮЧЕННЯ БІБЛІОТЕКИ -->
- <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
 <script>
     window.addEventListener('load', () => {
         setTimeout(() => {
@@ -305,17 +303,15 @@
                 if(content) content.classList.remove('hidden');
                 
                 new Swiper('.mySwiper', {
-                    effect: 'slide',
                     grabCursor: true,
                     centeredSlides: true,
-                    slidesPerView: 1.2, 
-                    spaceBetween: 20,
+                    slidesPerView: "auto", // Щоб чітко центрувати картки
+                    initialSlide: 1,
+                    spaceBetween: 30,
                     loop: true,
-                    speed: 600, // Оптимально для 120Hz екранів
+                    speed: 700, 
 
-                    // Плавність без лагів (iOS Optimization)
                     touchEventsTarget: 'container',
-                    touchReleaseOnEdges: true,
                     resistanceRatio: 0.85,
                     watchSlidesProgress: true,
                     
@@ -332,69 +328,88 @@
 </script>
 
 <style>
-    /* 1. ПЛАВНА ПОЯВА ТЕКСТУ */
-    .swiper-slide .work-info, 
-    .swiper-slide .book-now,
-    .swiper-slide .btn { 
+    /* 1. ФІКС ЦЕНТРУВАННЯ УСЬОГО БЛОКУ */
+    .swiper {
+        width: 100%;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 50px 0 !important;
+    }
+
+    /* 2. РАМКА, ЩО ПЕРЕЛИВАЄТЬСЯ (ЖИРНА ТА НЕОНОВА) */
+    .swiper-slide {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        opacity: 0.4;
+        transition: transform 0.7s cubic-bezier(0.2, 1, 0.4, 1), opacity 0.7s ease !important;
+        transform: scale(0.85) translateZ(0);
+        will-change: transform, opacity;
+    }
+
+    /* Рамка навколо картинки */
+    .swiper-slide img {
+        width: 280px; /* Твій розмір */
+        height: 400px;
+        object-fit: cover;
+        border-radius: 25px;
+        box-sizing: border-box;
+        /* Сама рамка */
+        border: 5px solid transparent;
+        background: linear-gradient(#000, #000) padding-box, 
+                    linear-gradient(45deg, #ff003c, #ff1493, #bc13fe) border-box;
+        animation: borderRotate 4s linear infinite;
+        box-shadow: 0 0 20px rgba(255, 20, 147, 0.3);
+    }
+
+    @keyframes borderRotate {
+        0% { filter: hue-rotate(0deg); }
+        100% { filter: hue-rotate(360deg); }
+    }
+
+    .swiper-slide-active {
+        opacity: 1;
+        transform: scale(1.05) translateZ(0);
+        z-index: 10;
+    }
+
+    /* 3. КРАПКИ (ПЛАВНІСТЬ) */
+    .swiper-pagination { 
+        bottom: 10px !important; 
+        position: relative !important; /* Щоб не налізали на текст */
+        margin-top: 20px;
+    }
+
+    .swiper-pagination-bullet {
+        width: 10px; height: 10px;
+        background: #fff !important;
+        opacity: 0.3; 
+        transition: all 0.5s cubic-bezier(0.2, 1, 0.4, 1) !important;
+    }
+
+    .swiper-pagination-bullet-active {
+        width: 28px !important;
+        border-radius: 12px !important;
+        background: #ff1493 !important;
+        opacity: 1;
+        box-shadow: 0 0 10px #ff1493;
+    }
+
+    /* ТЕКСТ ТА КНОПКИ */
+    .work-info, .book-now, .btn { 
         opacity: 0; 
-        transition: opacity 0.5s ease;
-        pointer-events: none;
+        transform: translateY(10px);
+        transition: all 0.6s ease;
     }
 
     .swiper-slide-active .work-info, 
     .swiper-slide-active .book-now, 
     .swiper-slide-active .btn { 
         opacity: 1; 
-        pointer-events: auto;
-    }
-
-    /* 2. ОПТИМІЗАЦІЯ ДЛЯ 14 PRO MAX (БЕЗ FILTER) */
-    .swiper-slide {
-        /* Опасіті працює через GPU, тому не лагає */
-        opacity: 0.4;
-        transition: transform 0.6s cubic-bezier(0.2, 1, 0.4, 1), opacity 0.6s ease !important;
-        transform: scale(0.88) translateZ(0);
-        backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
-        will-change: transform, opacity;
-    }
-
-    .swiper-slide-active {
-        opacity: 1;
-        transform: scale(1) translateZ(0);
-        z-index: 10;
-    }
-
-    /* 3. КРАПКИ (3 штуки) */
-    .swiper-pagination { bottom: 25px !important; }
-
-    .swiper-pagination-bullets-dynamic {
-        width: 60px !important; 
-        overflow: hidden;
-    }
-
-    .swiper-pagination-bullet {
-        width: 8px; height: 8px;
-        background: #fff !important;
-        opacity: 0.3; 
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    }
-
-    .swiper-pagination-bullet-active {
-        width: 22px !important;
-        border-radius: 10px !important;
-        background: var(--hot-pink, #ff1493) !important;
-        opacity: 1;
-    }
-
-    /* 4. КАРТИНКА */
-    .swiper-slide img {
-        width: 100%; height: 100%;
-        object-fit: cover; border-radius: 25px;
-        /* Прискорює рендер на iPhone */
-        -webkit-transform-style: preserve-3d;
-        transform-style: preserve-3d;
+        transform: translateY(0);
     }
 </style>
+
 </body>
 </html>
