@@ -4,278 +4,309 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PORTFOLIO — YUPE TATTOO</title>
-    <!-- ПРАВИЛЬНИЙ CSS -->
+    <!-- ПРАВИЛЬНИЙ CSS ДЛЯ SWIPER -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
-        :root { --hot-pink: #ff007f; --primary-red: #ff003c; }
-        body, html { margin: 0; padding: 0; height: 100%; background: #050505; overflow: hidden; font-family: 'Inter', sans-serif; }
+        :root { --hot-pink: #ff69b4; --primary-red: #ff0000; }
+        body, html { margin: 0; padding: 0; height: 100%; background: #000; overflow: hidden; font-family: sans-serif; }
 
-        /* ЛОАДЕР */
+        /* ЛОАДЕР СТИЛІ */
         .loader-wrapper {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; display: flex; justify-content: center; align-items: center; z-index: 1000; transition: 0.8s;
+            background: #000; display: flex; justify-content: center; 
+            align-items: center; z-index: 1000; transition: opacity 0.8s ease;
         }
         .loader-text {
-            font-size: 24px; letter-spacing: 8px; font-weight: 700; text-transform: uppercase;
+            font-size: 42px; letter-spacing: 12px; font-weight: 900;
             background: linear-gradient(90deg, var(--primary-red), var(--hot-pink), var(--primary-red));
-            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: shine 2s linear infinite; position: relative; z-index: 2;
-        }
-        .emoji-container { position: absolute; width: 100%; height: 100%; pointer-events: none; }
-        .floating-emoji {
-            position: absolute; font-size: 40px; opacity: 0;
-            filter: drop-shadow(0 0 15px var(--primary-red)) drop-shadow(0 0 30px var(--hot-pink));
-            animation: chaoticFly 4s infinite ease-in-out;
-        }
-        @keyframes chaoticFly {
-            0% { transform: translate(-100px, 100vh) rotate(0deg); opacity: 0; }
-            50% { opacity: 1; transform: translate(50vw, 50vh) scale(1.2) rotate(180deg); }
-            100% { transform: translate(120vw, -100px) rotate(360deg); opacity: 0; }
+            background-size: 200% auto;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite, moveText 4s ease-in-out infinite;
         }
         @keyframes shine { to { background-position: 200% center; } }
+        @keyframes moveText { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        /* КОНТЕНТ */
-        .hidden { opacity: 0; filter: blur(20px); transition: 1.2s ease; }
-        .visible { opacity: 1; filter: blur(0); }
-        
-        .swiper { width: 100%; height: 80vh; margin-top: 10vh; }
-        .swiper-slide { display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        
-        .photo-card {
-            width: 280px; height: 400px; border-radius: 25px; overflow: hidden;
-            border: 1px solid rgba(255, 0, 60, 0.3);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        /* СМАЙЛИ */
+        .emoji-container { position: absolute; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
+        .floating-emoji {
+            position: absolute; font-size: 30px; opacity: 0;
+            filter: drop-shadow(0 0 10px var(--hot-pink));
+            animation: fly 6s infinite linear;
         }
-        .photo-card img { width: 100%; height: 100%; object-fit: cover; }
+        @keyframes fly {
+            0% { transform: translate(0, 100vh) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.6; }
+            100% { transform: translate(100px, -100px) rotate(360deg); opacity: 0; }
+        }
+
+        /* ОСНОВНИЙ КОНТЕНТ */
+        .hidden { opacity: 0; filter: blur(10px); transition: 1s ease; }
+        .visible { opacity: 1; filter: blur(0); }
+        .swiper { width: 100%; height: 100vh; }
+        .swiper-slide { position: relative; display: flex; justify-content: center; align-items: center; background: #000; }
+        .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
 
         .back-btn {
-            position: fixed; top: 25px; left: 25px; z-index: 100;
-            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px);
-            color: white; border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px 20px; border-radius: 15px; text-decoration: none;
-            font-size: 10px; letter-spacing: 2px; font-weight: bold;
+            position: fixed; top: 20px; left: 20px; z-index: 100;
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
+            color: white; border: 1px solid rgba(255,255,255,0.2);
+            padding: 10px 20px; border-radius: 50px; text-decoration: none;
+            font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
         }
-
-        /* Кнопка ЗАПИСАТИСЬ */
-        .book-btn {
-            margin-top: 25px; background: var(--primary-red); color: white;
-            padding: 15px 40px; border-radius: 15px; text-decoration: none;
-            font-weight: bold; font-size: 13px; letter-spacing: 2px;
-            box-shadow: 0 10px 20px rgba(255, 0, 60, 0.4);
-            transition: 0.3s;
+        .book-now {
+            position: absolute; bottom: 60px; right: 20px; z-index: 100;
+            background: var(--primary-red); color: white;
+            padding: 15px 25px; border-radius: 50px; text-decoration: none;
+            font-weight: bold; font-size: 14px;
         }
-        .book-btn:hover { transform: scale(1.05); background: var(--hot-pink); }
     </style>
 </head>
 <body>
 
     <div id="loader" class="loader-wrapper">
         <div class="emoji-container">
-            <span class="floating-emoji" style="left:10%;">🖋️</span>
-            <span class="floating-emoji" style="left:30%; animation-delay:1s;">🔥</span>
-            <span class="floating-emoji" style="left:50%; animation-delay:0.5s;">💀</span>
-            <span class="floating-emoji" style="left:70%; animation-delay:2s;">💉</span>
-            <span class="floating-emoji" style="left:90%; animation-delay:1.5s;">🤘</span>
+            <span class="floating-emoji" style="left:10%; animation-delay:0s;">🖋️</span>
+            <span class="floating-emoji" style="left:30%; animation-delay:2s;">🔥</span>
+            <span class="floating-emoji" style="left:50%; animation-delay:1s;">💀</span>
+            <span class="floating-emoji" style="left:70%; animation-delay:3s;">💉</span>
+            <span class="floating-emoji" style="left:90%; animation-delay:0.5s;">🤘</span>
         </div>
-        <h1 class="loader-text">Portfolio</h1>
+        <h1 class="loader-text">PORTFOLIO</h1>
     </div>
 
-    <a href="index.html" class="back-btn">← НАЗАД</a>
+    <a href="index.html" class="back-btn">← Назад</a>
 
     <div id="main-content" class="hidden">
         <div class="swiper mySwiper">
             <div class="swiper-wrapper">
-                <!-- СЛАЙД 1 -->
-                <div class="swiper-slide">
-                    <div class="photo-card"><img src="work1.jpg.jpg"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-                <!-- СЛАЙД 2 -->
-                <div class="swiper-slide">
-                    <div class="photo-card"><img src="work2.jpg.jpg"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work3.jpg.jpg"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work4.jpg.jpg"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work5.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work6.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work7.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work8.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work9.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work10.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work11.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work12.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work13.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work14.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work15.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work16.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work17.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work18.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work19.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work20.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work21.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work22.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work23.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work24.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work25.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work26.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work27.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work28.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work29.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work30.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work31.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work32.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work33.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work34.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work35.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work36.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
-
-<div class="swiper-slide">
-                    <div class="photo-card"><img src="work37.jpg.JPG"></div>
-                    <a href="booking.html" class="book-btn">ЗАПИСАТИСЬ</a>
-                </div>
+                <!-- ПРИКЛАД СЛАЙДУ (копіюй цей блок для нових фото) -->
+                 <div class="swiper-slide">
+                <img src="work1.jpg.jpg" alt="Tattoo 1">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ХОЧУ ТАКЕ</a>
+            </div>
+            <!-- Робота 2 -->
+            <div class="swiper-slide">
+                <img src="work2.jpg.jpg" alt="Tattoo 2">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work3.jpg.jpg" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work4.jpg.jpg" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work5.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work6.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work7.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work8.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work9.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work10.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work11.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work12.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work13.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work14.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work15.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work16.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work17.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work18.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work19.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work20.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work21.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work22.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work23.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work24.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work25.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work26.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work27.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work28.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work29.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work30.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work31.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work32.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work33.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work34.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work35.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work36.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
+            </div>
+            <!-- Робота 3 -->
+            <div class="swiper-slide">
+                <img src="work37.jpg.JPG" alt="Tattoo 3">
+                <div class="slide-overlay"></div>
+                <a href="calendar.html" class="book-now">ЗАПИСАТИСЯ</a>
             </div>
         </div>
     </div>
 
-    <!-- ПРАВИЛЬНИЙ СКРИПТ (ЗАМІСТЬ JS DELIVER) -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <!-- СКРИПТИ -->
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
         window.addEventListener('load', () => {
             setTimeout(() => {
@@ -286,11 +317,9 @@
                     content.classList.remove('hidden');
                     content.classList.add('visible');
                     
+                    // Ініціалізація після показу контенту
                     new Swiper('.mySwiper', {
-                        direction: 'horizontal',
-                        slidesPerView: 'auto',
-                        centeredSlides: true,
-                        spaceBetween: 40,
+                        direction: 'vertical',
                         mousewheel: true,
                     });
                 }, 800);
