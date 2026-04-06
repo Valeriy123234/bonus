@@ -11,7 +11,7 @@
         body, html { margin: 0; padding: 0; height: 100%; background: #000; overflow: hidden; font-family: sans-serif; }
 
         /* ЛОАДЕР СТИЛІ */
-       <style>
+      <style>
     :root {
         --primary-red: #ff1f1f;
         --hot-pink: #ff69b4;
@@ -25,68 +25,78 @@
         overflow: hidden;
     }
 
-    /* М'ЯКО-РОЖЕВИЙ ТЕКСТ З ЧЕРВОНОЮ ПУЛЬСАЦІЄЮ */
+    /* М'ЯКИЙ РОЖЕВИЙ ТЕКСТ (БЕЗ БІЛОГО) */
     .loader-text {
-        font-size: 22px;
+        font-size: 24px;
         letter-spacing: 8px;
         font-weight: 700;
         text-transform: uppercase;
-        color: var(--soft-pink); /* М'яко-рожевий колір */
+        color: var(--soft-pink); /* Завжди рожевий */
         z-index: 1001;
-        animation: pinkRedPulse 2.5s ease-in-out infinite;
+        text-shadow: 0 0 15px var(--hot-pink);
+        animation: softPulse 3s ease-in-out infinite;
     }
 
-    @keyframes pinkRedPulse {
+    @keyframes softPulse {
         0%, 100% { 
             transform: scale(1); 
-            text-shadow: 0 0 15px var(--hot-pink);
             color: var(--soft-pink);
+            text-shadow: 0 0 15px var(--hot-pink);
         }
         50% { 
-            transform: scale(1.1); 
-            text-shadow: 0 0 30px var(--primary-red), 0 0 10px var(--primary-red);
-            color: #fff; /* Трохи яскравіше в піку */
+            transform: scale(1.05); 
+            color: var(--hot-pink); /* Стає трохи насиченішим рожевим */
+            text-shadow: 0 0 25px var(--primary-red);
         }
     }
 
-    /* СМАЙЛИ З ПУЛЬСУЮЧОЮ АУРОЮ */
+    /* СМАЙЛИ: М'ЯКЕ ПОЯВЛЕННЯ ТА ОБЕРТАННЯ */
     .emoji-container { position: absolute; width: 100%; height: 100%; pointer-events: none; }
     
     .floating-emoji {
-        position: absolute; font-size: 35px; opacity: 0;
-        /* Пульсуюче свічення навколо смайлів */
-        animation: flyChaos 12s infinite linear, emojiGlow 2s ease-in-out infinite alternate;
+        position: absolute; font-size: 40px; opacity: 0;
+        filter: drop-shadow(0 0 15px var(--hot-pink));
+        /* Поєднання плавного руху, обертання та пульсації аури */
+        animation: 
+            appear 2s ease-in forwards,
+            drift 15s linear infinite,
+            spin 6s linear infinite,
+            glowAura 3s ease-in-out infinite alternate;
     }
 
-    @keyframes emojiGlow {
+    @keyframes appear {
+        to { opacity: 0.7; }
+    }
+
+    @keyframes spin {
+        from { rotate: 0deg; }
+        to { rotate: 360deg; }
+    }
+
+    @keyframes glowAura {
         from { filter: drop-shadow(0 0 10px var(--hot-pink)); }
-        to { filter: drop-shadow(0 0 25px var(--primary-red)); }
+        to { filter: drop-shadow(0 0 20px var(--primary-red)); }
     }
 
-    /* Хаотичний рух з різних сторін */
-    @keyframes flyChaos {
-        0% { transform: translate(-20vw, 50vh) rotate(0deg); opacity: 0; }
-        15% { opacity: 1; }
-        50% { transform: translate(120vw, 20vh) rotate(180deg); }
-        85% { opacity: 1; }
-        100% { transform: translate(50vw, -20vh) rotate(360deg); opacity: 0; }
+    /* Повільний дрейф по екрану */
+    @keyframes drift {
+        0% { translate: 0 0; }
+        25% { translate: 10vw, 10vh; }
+        50% { translate: -5vw, 15vh; }
+        75% { translate: -15vw, -5vh; }
+        100% { translate: 0 0; }
     }
 
-    /* Налаштування різних точок вильоту для різноманіття */
-    .floating-emoji:nth-child(1) { top: 10%; left: -10%; animation-duration: 9s; animation-delay: 0s; }
-    .floating-emoji:nth-child(2) { top: 80%; left: 110%; animation-duration: 11s; animation-delay: 2s; animation-direction: reverse; }
-    .floating-emoji:nth-child(3) { top: -10%; left: 50%; animation-duration: 10s; animation-delay: 4s; }
-    .floating-emoji:nth-child(4) { top: 110%; left: 20%; animation-duration: 8s; animation-delay: 1s; }
-    .floating-emoji:nth-child(5) { top: 40%; left: 110%; animation-duration: 13s; animation-delay: 5s; animation-direction: reverse; }
+    /* Розставляємо смайли по всьому периметру */
+    .floating-emoji:nth-child(1) { top: 15%; left: 15%; animation-delay: 0s, 0s, 0s; }
+    .floating-emoji:nth-child(2) { top: 70%; left: 80%; animation-delay: 1s, 0s, 0.5s; }
+    .floating-emoji:nth-child(3) { top: 20%; left: 75%; animation-delay: 2s, 0s, 1s; }
+    .floating-emoji:nth-child(4) { top: 80%; left: 20%; animation-delay: 1.5s, 0s, 1.5s; }
+    .floating-emoji:nth-child(5) { top: 45%; left: 45%; animation-delay: 2.5s, 0s, 2s; }
 
     /* ІНШИЙ КОНТЕНТ */
-    .hidden { opacity: 0; filter: blur(10px); transition: 1s ease; }
-    .visible { opacity: 1; filter: blur(0); }
-    .swiper { width: 100%; height: 100vh; }
-    .swiper-slide { position: relative; display: flex; justify-content: center; align-items: center; background: #000; }
-    .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
-    .back-btn { position: fixed; top: 20px; left: 20px; z-index: 100; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 50px; text-decoration: none; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
-    .book-now { position: absolute; bottom: 60px; right: 20px; z-index: 100; background: var(--primary-red); color: white; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 14px; }
+    .hidden { opacity: 0; }
+    .visible { opacity: 1; transition: 1s; }
 </style>
 
 <body>
@@ -100,7 +110,7 @@
         </div>
         <h1 class="loader-text">PORTFOLIO</h1>
     </div>
-</body>
+
 
 
     <a href="index.html" class="back-btn">← Назад</a>
