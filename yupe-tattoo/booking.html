@@ -3,165 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Запис — Оберіть час</title>
+    <title>ЗАПИС — YUPE TATTOO</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- ПРАВИЛЬНЕ ПОСИЛАННЯ НА СТИЛІ КАЛЕНДАРЯ -->
     <link href="https://jsdelivr.net" rel="stylesheet">
     <style>
-        :root {
-            --main-bg: #050505;
-            --primary-red: #ff003c;
-            --hot-pink: #ff007f;
-        }
-
-        body {
-            background: var(--main-bg);
-            color: white;
-            font-family: 'Inter', sans-serif;
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; margin: 0; overflow: hidden;
-        }
-
-        /* --- КРЕАТИВНИЙ ЛОАДЕР --- */
-        .loader-wrapper {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 9999; display: flex; 
-            justify-content: center; align-items: center; overflow: hidden;
-        }
-
-        .flying-icon {
-            position: absolute; font-size: 30px; opacity: 0;
-            animation: fly 2s ease-in-out infinite;
-        }
-
-        @keyframes fly {
-            0% { transform: translate(0, 0) rotate(0deg) scale(0.5); opacity: 0; }
-            20% { opacity: 1; }
-            80% { opacity: 1; }
-            100% { transform: translate(var(--x), var(--y)) rotate(360deg) scale(1.2); opacity: 0; }
-        }
-
-        .loader-text {
-            color: white; font-weight: bold; letter-spacing: 10px;
-            text-shadow: 0 0 15px var(--primary-red); z-index: 10;
-        }
-
-        /* --- КОНТЕНТ --- */
-        .content { opacity: 0; transition: 1s ease; transform: scale(0.9); }
-        .content.show { opacity: 1; transform: scale(1); }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.02);
-            padding: 35px; border-radius: 40px;
-            backdrop-filter: blur(15px);
-            border: 2px solid var(--primary-red);
-            width: 100%; max-width: 600px;
-            box-shadow: 0 0 30px rgba(255, 0, 60, 0.2);
-            animation: cardPulse 4s infinite ease-in-out;
-        }
-
-        @keyframes cardPulse {
-            0%, 100% { border-color: var(--primary-red); box-shadow: 0 0 20px rgba(255, 0, 60, 0.2); }
-            50% { border-color: var(--hot-pink); box-shadow: 0 0 45px rgba(255, 0, 127, 0.4); }
-        }
-
-        /* Стилі календаря та модалки (залишаємо як були) */
-        #calendar { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 20px; }
+        /* Додаткові стилі суто для цієї сторінки */
+        #calendar { background: rgba(0,0,0,0.3); padding: 10px; border-radius: 20px; font-size: 13px; margin-top: 10px; }
         .fc-daygrid-day-number { color: #ccc; text-decoration: none !important; }
-        .disabled-day { background: rgba(255,0,0,0.1) !important; opacity: 0.4; }
+        .disabled-day { background: rgba(255,0,0,0.15) !important; opacity: 0.5; pointer-events: none; }
         
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; backdrop-filter: blur(8px); }
-        .modal { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #0a0a0a; padding: 30px; border-radius: 35px; border: 2px solid var(--hot-pink); width: 300px; text-align: center; }
-        .time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
-        .time-slot { padding: 12px; border: 1.5px solid var(--primary-red); border-radius: 12px; background: transparent; color: white; cursor: pointer; }
-        .time-slot.selected { background: var(--primary-red); }
-        input { width: 100%; padding: 12px; margin-bottom: 15px; background: rgba(255,255,255,0.05); border: 1px solid #333; color: white; border-radius: 12px; box-sizing: border-box; }
-        .btn-confirm { width: 100%; padding: 15px; background: var(--primary-red); border: none; color: white; border-radius: 12px; font-weight: bold; cursor: pointer; }
-        .admin-toggle { text-align: center; margin-top: 15px; font-size: 10px; color: #333; cursor: pointer; }
+        /* Лоадер "Вакханалія" */
+        .flying-cal { position: absolute; font-size: 25px; z-index: 1000; animation: chaos 2s ease-in-out infinite; }
+        @keyframes chaos {
+            0% { transform: translate(0, 0) rotate(0deg) scale(0); opacity: 0; }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { transform: translate(var(--mx), var(--my)) rotate(720deg) scale(0.2); opacity: 0; }
+        }
+
+        /* Модалка вибору часу */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; backdrop-filter: blur(10px); }
+        .modal { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #0a0a0a; padding: 30px; border-radius: 35px; border: 2px solid var(--hot-pink); width: 280px; text-align: center; }
+        .time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; }
+        .time-slot { padding: 12px; border: 1px solid var(--primary-red); border-radius: 12px; background: transparent; color: white; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .time-slot.selected { background: var(--primary-red); box-shadow: 0 0 15px var(--primary-red); }
+        input { width: 100%; padding: 12px; margin-bottom: 15px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 12px; box-sizing: border-box; }
+        
+        .admin-access { margin-top: 15px; font-size: 9px; color: #333; cursor: pointer; letter-spacing: 2px; text-align: center; }
     </style>
 </head>
 <body>
 
-    <!-- ЛОАДЕР -->
-    <div class="loader-wrapper" id="loader">
+    <!-- ЛОАДЕР З КАЛЕНДАРЯМИ -->
+    <div id="loader" class="loader-wrapper">
         <div class="loader-text">CALENDAR...</div>
-        <!-- Іконки створюються через JS -->
     </div>
 
-    <!-- КАРТКА -->
-    <div class="content" id="mainContent">
+    <main id="main-content" class="hidden">
         <div class="glass-card">
-            <h2 style="text-align: center; letter-spacing: 5px; background: linear-gradient(to right, var(--primary-red), var(--hot-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">ОБЕРІТЬ ДАТУ</h2>
+            <h1 style="font-size: 24px;">ОБЕРІТЬ ДАТУ</h1>
+            
             <div id="calendar"></div>
-            <div class="admin-toggle" onclick="toggleAdminMode()">Admin Access</div>
-        </div>
-    </div>
 
-    <!-- Модалка -->
+            <div class="admin-access" onclick="adminAuth()">ADMIN ACCESS</div>
+            
+            <!-- Кнопка назад -->
+            <button class="btn" style="margin-top: 20px; padding: 10px;" onclick="window.location.href='index.html'">НАЗАД</button>
+        </div>
+    </main>
+
+    <!-- Вікно запису -->
     <div class="modal-overlay" id="overlay">
         <div class="modal">
-            <h3 id="dateLabel" style="color: var(--hot-pink);"></h3>
-            <input type="text" id="userName" placeholder="Ваше ім'я">
+            <h4 id="dateTitle" style="color: var(--hot-pink); margin: 0; letter-spacing: 2px;"></h4>
             <div class="time-grid">
-                <button class="time-slot" onclick="selectTime(this)">10:00</button>
-                <button class="time-slot" onclick="selectTime(this)">13:00</button>
-                <button class="time-slot" onclick="selectTime(this)">16:00</button>
-                <button class="time-slot" onclick="selectTime(this)">19:00</button>
+                <button class="time-slot" onclick="selectSlot(this)">10:00</button>
+                <button class="time-slot" onclick="selectSlot(this)">13:00</button>
+                <button class="time-slot" onclick="selectSlot(this)">16:00</button>
+                <button class="time-slot" onclick="selectSlot(this)">19:00</button>
             </div>
-            <button class="btn-confirm" onclick="sendBooking()">ПІДТВЕРДИТИ</button>
-            <button onclick="closeModal()" style="background:none; border:none; color:#444; margin-top:10px; cursor:pointer;">СКАСУВАТИ</button>
+            <input type="text" id="clientName" placeholder="Ваше ім'я / Інста">
+            <button class="btn" onclick="confirmBooking()">ПІДТВЕРДИТИ</button>
+            <button onclick="document.getElementById('overlay').style.display='none'" style="background:none; border:none; color:#555; margin-top:10px; cursor:pointer;">Закрити</button>
         </div>
     </div>
 
+    <!-- ПРАВИЛЬНЕ ПОСИЛАННЯ НА СКРИПТ КАЛЕНДАРЯ -->
     <script src="https://jsdelivr.net"></script>
     <script>
-        // Створення літаючих іконок для лоадера
+        // 1. Лоадер "Вакханалія" (2 секунди)
         const loader = document.getElementById('loader');
-        for (let i = 0; i < 15; i++) {
-            const icon = document.createElement('div');
-            icon.className = 'flying-icon';
-            icon.innerHTML = '📅';
-            icon.style.left = Math.random() * 100 + 'vw';
-            icon.style.top = Math.random() * 100 + 'vh';
-            icon.style.setProperty('--x', (Math.random() * 400 - 200) + 'px');
-            icon.style.setProperty('--y', (Math.random() * 400 - 200) + 'px');
-            icon.style.animationDelay = (Math.random() * 2) + 's';
-            loader.appendChild(icon);
+        for(let i=0; i<20; i++){
+            let c = document.createElement('div');
+            c.className = 'flying-cal'; c.innerHTML = '📅';
+            c.style.left = '50%'; c.style.top = '50%';
+            c.style.setProperty('--mx', (Math.random()*600 - 300)+'px');
+            c.style.setProperty('--my', (Math.random()*600 - 300)+'px');
+            c.style.animationDelay = (Math.random()*1.5)+'s';
+            loader.appendChild(c);
         }
 
-        // Логіка показу контенту
         window.onload = () => {
             setTimeout(() => {
-                document.getElementById('loader').style.opacity = '0';
+                loader.style.opacity = '0';
                 setTimeout(() => {
-                    document.getElementById('loader').style.display = 'none';
-                    document.getElementById('mainContent').classList.add('show');
-                    document.body.style.overflow = 'auto';
+                    loader.style.display = 'none';
+                    document.getElementById('main-content').classList.remove('hidden');
                 }, 500);
-            }, 2000); // 2 секунди лоадера
+            }, 2000); 
         };
 
-        // Твоя логіка календаря (пароль: yupe123234)
-        let selectedTime = "", selectedDate = "", adminMode = false;
-        let blockedDates = JSON.parse(localStorage.getItem('blockedDates')) || [];
+        let selTime = "", selDate = "", isAdm = false;
+        let blocked = JSON.parse(localStorage.getItem('blockedDates')) || [];
 
         document.addEventListener('DOMContentLoaded', function() {
-            const calendarEl = document.getElementById('calendar');
-            const calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                locale: 'uk', firstDay: 1,
-                dayCellDidMount: (info) => { if (blockedDates.includes(info.dateStr)) info.el.classList.add('disabled-day'); },
+            const calEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calEl, {
+                initialView: 'dayGridMonth', locale: 'uk', firstDay: 1,
+                headerToolbar: { left: 'prev', center: 'title', right: 'next' },
+                dayCellDidMount: (info) => { if(blocked.includes(info.dateStr)) info.el.classList.add('disabled-day'); },
                 dateClick: (info) => {
-                    if (adminMode) {
-                        if (blockedDates.includes(info.dateStr)) {
-                            blockedDates = blockedDates.filter(d => d !== info.dateStr);
-                            info.dayEl.classList.remove('disabled-day');
-                        } else {
-                            blockedDates.push(info.dateStr);
-                            info.dayEl.classList.add('disabled-day');
-                        }
-                        localStorage.setItem('blockedDates', JSON.stringify(blockedDates));
-                    } else if (!blockedDates.includes(info.dateStr)) {
-                        selectedDate = info.dateStr;
-                        document.getElementById('dateLabel').innerText = info.dateStr;
+                    if(isAdm) {
+                        if(blocked.includes(info.dateStr)) blocked = blocked.filter(d => d !== info.dateStr);
+                        else blocked.push(info.dateStr);
+                        localStorage.setItem('blockedDates', JSON.stringify(blocked));
+                        location.reload();
+                    } else if(!blocked.includes(info.dateStr)) {
+                        selDate = info.dateStr;
+                        document.getElementById('dateTitle').innerText = info.dateStr;
                         document.getElementById('overlay').style.display = 'block';
                     }
                 }
@@ -169,28 +118,23 @@
             calendar.render();
         });
 
-        function toggleAdminMode() {
-            let pass = prompt("Пароль:");
-            if (pass === "yupe123234") {
-                adminMode = !adminMode;
-                alert(adminMode ? "Адмін увімкнений" : "Адмін вимкнений");
+        function adminAuth() {
+            if(prompt("Пароль:") === "yupe123234") {
+                isAdm = true; alert("Admin Active! Click days to block.");
             }
         }
 
-        function selectTime(btn) {
+        function selectSlot(btn) {
             document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
-            btn.classList.add('selected');
-            selectedTime = btn.innerText;
+            btn.classList.add('selected'); selTime = btn.innerText;
         }
 
-        function closeModal() { document.getElementById('overlay').style.display = 'none'; }
-        
-        function sendBooking() {
-            const name = document.getElementById('userName').value;
-            if (name && selectedTime) {
-                alert(`Успіх! ${name}, чекаємо на вас ${selectedDate} о ${selectedTime}`);
-                closeModal();
-            } else alert("Оберіть ім'я та час!");
+        function confirmBooking() {
+            let name = document.getElementById('clientName').value;
+            if(name && selTime) {
+                alert(`Успіх! ${name}, дата: ${selDate}, час: ${selTime}`);
+                document.getElementById('overlay').style.display='none';
+            } else alert("Оберіть час та введіть ім'я!");
         }
     </script>
 </body>
