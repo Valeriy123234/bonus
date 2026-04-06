@@ -297,125 +297,136 @@
 
     <!-- ПРАВИЛЬНИЙ СКРИПТ (ЗАМІСТЬ JS DELIVER) -->
            <!-- ПІДКЛЮЧЕННЯ БІБЛІОТЕКИ -->
-<script>
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            const loader = document.getElementById('loader');
-            if(loader) loader.style.opacity = '0';
-            
-            setTimeout(() => {
-                if(loader) loader.style.display = 'none';
-                const content = document.getElementById('main-content');
-                if(content) content.classList.remove('hidden');
-                
-                new Swiper('.mySwiper', {
-                    grabCursor: true,
-                    centeredSlides: true,
-                    slidesPerView: "auto", // Щоб чітко центрувати картки
-                    initialSlide: 1,
-                    spaceBetween: 30,
-                    loop: true,
-                    speed: 700, 
+<style>
+  /* Слайдер по центру */
+  .swiper {
+    width: 100%;
+    padding: 50px 0 80px !important;
+  }
 
-                    touchEventsTarget: 'container',
-                    resistanceRatio: 0.85,
-                    watchSlidesProgress: true,
-                    
-                    pagination: {
-                        el: '.swiper-pagination',
-                        clickable: true,
-                        dynamicBullets: true,
-                        dynamicMainBullets: 1, 
-                    },
-                });
-            }, 600);
-        }, 2000);
-    });
+  .swiper-slide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0.4;
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
+    transform: scale(0.8);
+  }
+
+  .swiper-slide-active {
+    opacity: 1;
+    transform: scale(1);
+    z-index: 10;
+  }
+
+  /* Жирная рамка и сохранение цвета картинки */
+  .swiper-slide img {
+    width: 280px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 20px;
+    /* Жирная рамка через border-image или двойной фон */
+    border: 5px solid transparent;
+    background: linear-gradient(#000, #000) padding-box, 
+                linear-gradient(45deg, #ff003c, #ff1493) border-box;
+    /* Тень (свечение) */
+    box-shadow: 0 0 25px rgba(255, 20, 147, 0.4);
+    transition: box-shadow 0.3s ease;
+  }
+
+  /* Красивые кнопки вместо ссылок */
+  .btn, .book-now {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 30px;
+    background: linear-gradient(45deg, #ff003c, #ff1493);
+    color: #fff !important;
+    text-decoration: none !important; /* Убираем уродливое подчеркивание */
+    border-radius: 50px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 0, 60, 0.3);
+  }
+
+  .btn:hover, .book-now:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 0, 60, 0.5);
+    opacity: 0.9;
+  }
+
+  /* Розовые точки пагинации */
+  .swiper-pagination {
+    bottom: 20px !important;
+  }
+
+  .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    background: #ff1493 !important; /* Розовый цвет */
+    opacity: 0.3;
+    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important;
+  }
+
+  .swiper-pagination-bullet-active {
+    width: 30px !important; /* Удлиненная активная точка */
+    border-radius: 10px !important;
+    opacity: 1;
+    box-shadow: 0 0 10px rgba(255, 20, 147, 0.8);
+  }
+
+  /* Плавное появление контента слайда */
+  .work-info, .book-now, .btn {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 0.8s ease 0.2s;
+  }
+
+  .swiper-slide-active .work-info, 
+  .swiper-slide-active .book-now, 
+  .swiper-slide-active .btn {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<script>
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const loader = document.getElementById('loader');
+      if(loader) loader.style.opacity = '0';
+      
+      setTimeout(() => {
+        if(loader) loader.style.display = 'none';
+        const content = document.getElementById('main-content');
+        if(content) content.classList.remove('hidden');
+
+        new Swiper('.mySwiper', {
+          grabCursor: true,
+          centeredSlides: true,
+          slidesPerView: "auto",
+          initialSlide: 1,
+          spaceBetween: 40,
+          loop: true,
+          speed: 800, // Медленная и мягкая анимация
+          touchRatio: 1.5,
+          resistanceRatio: 0.7,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+            // Ограничиваем количество точек до 3, если нужно жестко 3
+            dynamicBullets: false, 
+          },
+        });
+      }, 600);
+    }, 1000);
+  });
 </script>
 
-<style>
-    /* 1. ФІКС ЦЕНТРУВАННЯ УСЬОГО БЛОКУ */
-    .swiper {
-        width: 100%;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        padding: 50px 0 !important;
-    }
-
-    /* 2. РАМКА, ЩО ПЕРЕЛИВАЄТЬСЯ (ЖИРНА ТА НЕОНОВА) */
-    .swiper-slide {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        opacity: 0.4;
-        transition: transform 0.7s cubic-bezier(0.2, 1, 0.4, 1), opacity 0.7s ease !important;
-        transform: scale(0.85) translateZ(0);
-        will-change: transform, opacity;
-    }
-
-    /* Рамка навколо картинки */
-    .swiper-slide img {
-        width: 280px; /* Твій розмір */
-        height: 400px;
-        object-fit: cover;
-        border-radius: 25px;
-        box-sizing: border-box;
-        /* Сама рамка */
-        border: 5px solid transparent;
-        background: linear-gradient(#000, #000) padding-box, 
-                    linear-gradient(45deg, #ff003c, #ff1493, #bc13fe) border-box;
-        animation: borderRotate 4s linear infinite;
-        box-shadow: 0 0 20px rgba(255, 20, 147, 0.3);
-    }
-
-    @keyframes borderRotate {
-        0% { filter: hue-rotate(0deg); }
-        100% { filter: hue-rotate(360deg); }
-    }
-
-    .swiper-slide-active {
-        opacity: 1;
-        transform: scale(1.05) translateZ(0);
-        z-index: 10;
-    }
-
-    /* 3. КРАПКИ (ПЛАВНІСТЬ) */
-    .swiper-pagination { 
-        bottom: 10px !important; 
-        position: relative !important; /* Щоб не налізали на текст */
-        margin-top: 20px;
-    }
-
-    .swiper-pagination-bullet {
-        width: 10px; height: 10px;
-        background: #fff !important;
-        opacity: 0.3; 
-        transition: all 0.5s cubic-bezier(0.2, 1, 0.4, 1) !important;
-    }
-
-    .swiper-pagination-bullet-active {
-        width: 28px !important;
-        border-radius: 12px !important;
-        background: #ff1493 !important;
-        opacity: 1;
-        box-shadow: 0 0 10px #ff1493;
-    }
-
-    /* ТЕКСТ ТА КНОПКИ */
-    .work-info, .book-now, .btn { 
-        opacity: 0; 
-        transform: translateY(10px);
-        transition: all 0.6s ease;
-    }
-
-    .swiper-slide-active .work-info, 
-    .swiper-slide-active .book-now, 
-    .swiper-slide-active .btn { 
-        opacity: 1; 
-        transform: translateY(0);
-    }
-</style>
 
 </body>
 </html>
