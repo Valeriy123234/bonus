@@ -13,90 +13,62 @@
         /* ЛОАДЕР СТИЛІ */
       <style>
     :root {
-        --primary-red: #ff1f1f;
-        --hot-pink: #ff69b4;
+        --pink: #ff69b4;
         --soft-pink: #ffb6c1;
+        --neon-red: #ff0033;
     }
 
     .loader-wrapper {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background: #000; display: flex; justify-content: center; 
-        align-items: center; z-index: 1000; transition: opacity 0.8s ease;
-        overflow: hidden;
+        align-items: center; z-index: 1000; overflow: hidden;
     }
 
-    /* М'ЯКИЙ РОЖЕВИЙ ТЕКСТ (БЕЗ БІЛОГО) */
+    /* ТЕКСТ: ПЛАВНЕ РОЖЕВЕ СЯЙВО */
     .loader-text {
-        font-size: 24px;
-        letter-spacing: 8px;
-        font-weight: 700;
+        font-size: 26px;
+        letter-spacing: 10px;
+        font-weight: 800;
         text-transform: uppercase;
-        color: var(--soft-pink); /* Завжди рожевий */
+        color: var(--soft-pink);
+        text-shadow: 0 0 20px var(--pink);
+        animation: smoothPulse 3s ease-in-out infinite;
         z-index: 1001;
-        text-shadow: 0 0 15px var(--hot-pink);
-        animation: softPulse 3s ease-in-out infinite;
     }
 
-    @keyframes softPulse {
-        0%, 100% { 
-            transform: scale(1); 
-            color: var(--soft-pink);
-            text-shadow: 0 0 15px var(--hot-pink);
-        }
-        50% { 
-            transform: scale(1.05); 
-            color: var(--hot-pink); /* Стає трохи насиченішим рожевим */
-            text-shadow: 0 0 25px var(--primary-red);
-        }
+    @keyframes smoothPulse {
+        0%, 100% { transform: scale(1); opacity: 0.8; text-shadow: 0 0 15px var(--pink); }
+        50% { transform: scale(1.08); opacity: 1; text-shadow: 0 0 30px var(--neon-red); }
     }
 
-    /* СМАЙЛИ: М'ЯКЕ ПОЯВЛЕННЯ ТА ОБЕРТАННЯ */
+    /* СМАЙЛИ: КРУТЯТЬСЯ І ПОВІЛЬНО ЛІТАЮТЬ */
     .emoji-container { position: absolute; width: 100%; height: 100%; pointer-events: none; }
     
     .floating-emoji {
-        position: absolute; font-size: 40px; opacity: 0;
-        filter: drop-shadow(0 0 15px var(--hot-pink));
-        /* Поєднання плавного руху, обертання та пульсації аури */
+        position: absolute; font-size: 45px; opacity: 0;
+        filter: drop-shadow(0 0 15px var(--pink));
         animation: 
-            appear 2s ease-in forwards,
-            drift 15s linear infinite,
-            spin 6s linear infinite,
-            glowAura 3s ease-in-out infinite alternate;
+            softShow 2s ease-in forwards,
+            slowMove 20s linear infinite,
+            spin 8s linear infinite;
     }
 
-    @keyframes appear {
-        to { opacity: 0.7; }
+    @keyframes softShow { to { opacity: 0.7; } }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    /* Повільний хаотичний рух через весь екран */
+    @keyframes slowMove {
+        0% { translate: var(--x1) var(--y1); }
+        50% { translate: var(--x2) var(--y2); }
+        100% { translate: var(--x3) var(--y3); }
     }
 
-    @keyframes spin {
-        from { rotate: 0deg; }
-        to { rotate: 360deg; }
-    }
-
-    @keyframes glowAura {
-        from { filter: drop-shadow(0 0 10px var(--hot-pink)); }
-        to { filter: drop-shadow(0 0 20px var(--primary-red)); }
-    }
-
-    /* Повільний дрейф по екрану */
-    @keyframes drift {
-        0% { translate: 0 0; }
-        25% { translate: 10vw, 10vh; }
-        50% { translate: -5vw, 15vh; }
-        75% { translate: -15vw, -5vh; }
-        100% { translate: 0 0; }
-    }
-
-    /* Розставляємо смайли по всьому периметру */
-    .floating-emoji:nth-child(1) { top: 15%; left: 15%; animation-delay: 0s, 0s, 0s; }
-    .floating-emoji:nth-child(2) { top: 70%; left: 80%; animation-delay: 1s, 0s, 0.5s; }
-    .floating-emoji:nth-child(3) { top: 20%; left: 75%; animation-delay: 2s, 0s, 1s; }
-    .floating-emoji:nth-child(4) { top: 80%; left: 20%; animation-delay: 1.5s, 0s, 1.5s; }
-    .floating-emoji:nth-child(5) { top: 45%; left: 45%; animation-delay: 2.5s, 0s, 2s; }
-
-    /* ІНШИЙ КОНТЕНТ */
-    .hidden { opacity: 0; }
-    .visible { opacity: 1; transition: 1s; }
+    /* Розставляємо по периметру з різними векторами */
+    .floating-emoji:nth-child(1) { --x1: -10vw; --y1: 10vh; --x2: 90vw; --y2: 50vh; --x3: 20vw; --y3: 90vh; animation-delay: 0s; }
+    .floating-emoji:nth-child(2) { --x1: 100vw; --y1: 20vh; --x2: 10vw; --y2: 80vh; --x3: 80vw; --y3: 10vh; animation-delay: 1s; }
+    .floating-emoji:nth-child(3) { --x1: 50vw; --y1: -10vh; --x2: 30vw; --y2: 110vh; --x3: 90vw; --y3: 40vh; animation-delay: 2s; }
+    .floating-emoji:nth-child(4) { --x1: -10vw; --y1: 80vh; --x2: 110vw; --y2: 20vh; --x3: 40vw; --y3: 100vh; animation-delay: 1.5s; }
+    .floating-emoji:nth-child(5) { --x1: 80vw; --y1: 110vh; --x2: 50vw; --y2: -10vh; --x3: 10vw; --y3: 50vh; animation-delay: 2.5s; }
 </style>
 
 <body>
@@ -111,6 +83,7 @@
         <h1 class="loader-text">PORTFOLIO</h1>
     </div>
 </body>
+
 
 
     <a href="index.html" class="back-btn">← Назад</a>
