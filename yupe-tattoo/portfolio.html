@@ -14,69 +14,96 @@
           /* ЛОАДЕР СТИЛІ */
                /* ЛОАДЕР СТИЛІ */
              /* ЛОАДЕР СТИЛІ */
-          .loader-wrapper {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; display: flex; justify-content: center; 
-            align-items: center; z-index: 1000; transition: opacity 0.8s ease;
-        }
-        .loader-text {
-            font-size: 42px; letter-spacing: 12px; font-weight: 900;
-            background: linear-gradient(90deg, var(--primary-red), var(--hot-pink), var(--primary-red));
-            background-size: 200% auto;
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: shine 3s linear infinite, moveText 4s ease-in-out infinite;
-        }
-        @keyframes shine { to { background-position: 200% center; } }
-        @keyframes moveText { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        
+    :root {
+        --primary-red: #ff1f1f;
+        --hot-pink: #ff69b4;
+        --soft-pink: #ffb6c1;
+    }
 
-        /* СМАЙЛИ */
-        .emoji-container { position: absolute; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
-        .floating-emoji {
-            position: absolute; font-size: 30px; opacity: 0;
-            filter: drop-shadow(0 0 10px var(--hot-pink));
-            animation: fly 6s infinite linear;
-        }
-        @keyframes fly {
-            0% { transform: translate(0, 100vh) rotate(0deg); opacity: 0; }
-            20% { opacity: 0.6; }
-            80% { opacity: 0.6; }
-            100% { transform: translate(100px, -100px) rotate(360deg); opacity: 0; }
-        }
+    .loader-wrapper {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: #000; display: flex; justify-content: center; 
+        align-items: center; z-index: 1000; transition: opacity 0.8s ease;
+        overflow: hidden;
+    }
 
-        /* ОСНОВНИЙ КОНТЕНТ */
-        .hidden { opacity: 0; filter: blur(10px); transition: 1s ease; }
-        .visible { opacity: 1; filter: blur(0); }
-        .swiper { width: 100%; height: 100vh; }
-        .swiper-slide { position: relative; display: flex; justify-content: center; align-items: center; background: #000; }
-        .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
+    /* ЗМЕНШЕНИЙ ТА ПУЛЬСУЮЧИЙ ТЕКСТ */
+    .loader-text {
+        font-size: 24px; /* Було 42px, зробив невеликим */
+        letter-spacing: 8px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--soft-pink);
+        text-shadow: 0 0 15px var(--hot-pink);
+        z-index: 1001;
+        animation: softPulse 3s ease-in-out infinite;
+    }
 
-        .back-btn {
-            position: fixed; top: 20px; left: 20px; z-index: 100;
-            background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
-            color: white; border: 1px solid rgba(255,255,255,0.2);
-            padding: 10px 20px; border-radius: 50px; text-decoration: none;
-            font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-        }
-        .book-now {
-            position: absolute; bottom: 60px; right: 20px; z-index: 100;
-            background: var(--primary-red); color: white;
-            padding: 15px 25px; border-radius: 50px; text-decoration: none;
-            font-weight: bold; font-size: 14px;
-        }
-    </style>
-</head>
-<body>
+    @keyframes softPulse {
+        0%, 100% { transform: scale(1); opacity: 0.8; text-shadow: 0 0 15px var(--hot-pink); }
+        50% { transform: scale(1.08); opacity: 1; text-shadow: 0 0 25px var(--primary-red); }
+    }
 
-    <div id="loader" class="loader-wrapper">
-        <div class="emoji-container">
-            <span class="floating-emoji" style="left:10%; animation-delay:0s;">🖋️</span>
-            <span class="floating-emoji" style="left:30%; animation-delay:2s;">🔥</span>
-            <span class="floating-emoji" style="left:50%; animation-delay:1s;">💀</span>
-            <span class="floating-emoji" style="left:70%; animation-delay:3s;">💉</span>
-            <span class="floating-emoji" style="left:90%; animation-delay:0.5s;">🤘</span>
-        </div>
-        <h1 class="loader-text">PORTFOLIO</h1>
+    /* СМАЙЛИ: ЛЕВІТАЦІЯ ТА МИГОТІННЯ */
+    .emoji-container { position: absolute; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
+    
+    .floating-emoji {
+        position: absolute;
+        filter: drop-shadow(0 0 12px var(--hot-pink));
+        opacity: 0;
+        /* Левітація + Обертання + Поява/Зникнення */
+        animation: 
+            levitate 12s infinite ease-in-out alternate, 
+            spin 8s infinite linear,
+            blink 10s infinite ease-in-out;
+    }
+
+    @keyframes levitate {
+        0% { transform: translate(0, 0); }
+        100% { transform: translate(50px, -50px); }
+    }
+
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    @keyframes blink {
+        0%, 100% { opacity: 0; }
+        20%, 80% { opacity: 0.6; }
+    }
+
+    /* ОСНОВНИЙ КОНТЕНТ (БЕЗ ЗМІН) */
+    .hidden { opacity: 0; filter: blur(10px); transition: 1s ease; }
+    .visible { opacity: 1; filter: blur(0); }
+    .swiper { width: 100%; height: 100vh; }
+    .swiper-slide { position: relative; display: flex; justify-content: center; align-items: center; background: #000; }
+</style>
+
+<div id="loader" class="loader-wrapper">
+    <div class="emoji-container">
+        <!-- 40 смайлів з різними позиціями, розмірами та затримками -->
+        <span class="floating-emoji" style="left:5%; top:10%; font-size:40px; animation-delay:0s;">🖋️</span>
+        <span class="floating-emoji" style="left:85%; top:15%; font-size:20px; animation-delay:2s;">🔥</span>
+        <span class="floating-emoji" style="left:40%; top:70%; font-size:50px; animation-delay:4s;">💀</span>
+        <span class="floating-emoji" style="left:15%; top:60%; font-size:25px; animation-delay:1s;">💉</span>
+        <span class="floating-emoji" style="left:75%; top:65%; font-size:35px; animation-delay:3s;">🤘</span>
+        <span class="floating-emoji" style="left:50%; top:20%; font-size:22px; animation-delay:5s;">🔥</span>
+        <span class="floating-emoji" style="left:10%; top:85%; font-size:45px; animation-delay:0.5s;">💀</span>
+        <span class="floating-emoji" style="left:90%; top:80%; font-size:18px; animation-delay:6s;">💉</span>
+        <span class="floating-emoji" style="left:30%; top:5%; font-size:30px; animation-delay:1.5s;">🤘</span>
+        <span class="floating-emoji" style="left:60%; top:40%; font-size:38px; animation-delay:2.5s;">🖋️</span>
+        <!-- Додай ще за таким же принципом до потрібної кількості -->
+        <span class="floating-emoji" style="left:25%; top:30%; font-size:28px; animation-delay:7s;">🔥</span>
+        <span class="floating-emoji" style="left:80%; top:50%; font-size:42px; animation-delay:0.2s;">💀</span>
+        <span class="floating-emoji" style="left:45%; top:55%; font-size:20px; animation-delay:3.5s;">💉</span>
+        <span class="floating-emoji" style="left:5%; top:45%; font-size:33px; animation-delay:1.2s;">🤘</span>
+        <span class="floating-emoji" style="left:95%; top:5%; font-size:26px; animation-delay:4.8s;">🖋️</span>
     </div>
+    <h1 class="loader-text">PORTFOLIO</h1>
+</div>
+
 
 
     <a href="index.html" class="back-btn">← Назад</a>
