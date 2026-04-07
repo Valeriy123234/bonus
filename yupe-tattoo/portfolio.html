@@ -12,18 +12,18 @@
 
         /* ЛОАДЕР СТИЛІ */
            /* ОНОВЛЕНИЙ СТИЛЬ ЛОАДЕРА */
- .loader-wrapper {
+  .loader-wrapper {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background: #000; display: flex; justify-content: center; 
         align-items: center; z-index: 1000; transition: opacity 0.8s ease;
     }
     .loader-text {
-        font-size: 28px; /* Зменшений розмір тексту */
-        letter-spacing: 12px; font-weight: 900;
+        font-size: 28px; letter-spacing: 12px; font-weight: 900;
         background: linear-gradient(90deg, var(--primary-red, #ff0000), var(--hot-pink, #ff69b4), var(--primary-red, #ff0000));
         background-size: 200% auto;
         -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         animation: shine 3s linear infinite, moveText 4s ease-in-out infinite;
+        position: relative; z-index: 10;
     }
     @keyframes shine { to { background-position: 200% center; } }
     @keyframes moveText { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
@@ -31,62 +31,79 @@
     /* СМАЙЛИ */
     .emoji-container { position: absolute; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
     .floating-emoji {
-        position: absolute; font-size: 30px; opacity: 0;
-        filter: drop-shadow(0 0 15px #ff1493); /* Рожевий неон */
-        animation: randomAppear 4s infinite ease-in-out;
+        position: absolute; font-size: 25px; opacity: 0;
+        filter: drop-shadow(0 0 10px #ff1493) drop-shadow(0 0 20px #ff69b4);
+        animation: randomAppear 5s infinite ease-in-out;
     }
 
     @keyframes randomAppear {
-        0%, 100% { opacity: 0; transform: scale(0.5); }
-        50% { opacity: 0.7; transform: scale(1.2); }
+        0%, 100% { opacity: 0; transform: scale(0.3) rotate(-10deg); }
+        50% { opacity: 0.8; transform: scale(1.1) rotate(10deg); }
     }
 
-    /* Позиції для 10 смайлів */
-    .floating-emoji:nth-child(1) { top: 15%; left: 10%; animation-delay: 0s; }
-    .floating-emoji:nth-child(2) { top: 65%; left: 25%; animation-delay: 2s; }
-    .floating-emoji:nth-child(3) { top: 40%; left: 80%; animation-delay: 1s; }
-    .floating-emoji:nth-child(4) { top: 75%; left: 60%; animation-delay: 3s; }
-    .floating-emoji:nth-child(5) { top: 20%; left: 70%; animation-delay: 0.5s; }
-    .floating-emoji:nth-child(6) { top: 10%; left: 45%; animation-delay: 1.5s; }
-    .floating-emoji:nth-child(7) { top: 85%; left: 15%; animation-delay: 2.5s; }
-    .floating-emoji:nth-child(8) { top: 50%; left: 5%; animation-delay: 0.8s; }
-    .floating-emoji:nth-child(9) { top: 80%; left: 85%; animation-delay: 3.5s; }
-    .floating-emoji:nth-child(10) { top: 5%; left: 85%; animation-delay: 1.2s; }
+    /* Генерація позицій для 40 смайлів */
+    .floating-emoji:nth-child(1) { top: 5%; left: 5%; animation-delay: 0.1s; }
+    .floating-emoji:nth-child(2) { top: 15%; left: 25%; animation-delay: 1.2s; }
+    .floating-emoji:nth-child(3) { top: 10%; left: 50%; animation-delay: 2.3s; }
+    .floating-emoji:nth-child(4) { top: 5%; left: 75%; animation-delay: 0.5s; }
+    .floating-emoji:nth-child(5) { top: 15%; left: 90%; animation-delay: 3.4s; }
+    .floating-emoji:nth-child(6) { top: 25%; left: 15%; animation-delay: 1.8s; }
+    .floating-emoji:nth-child(7) { top: 35%; left: 5%; animation-delay: 4.1s; }
+    .floating-emoji:nth-child(8) { top: 30%; left: 35%; animation-delay: 0.9s; }
+    .floating-emoji:nth-child(9) { top: 25%; left: 65%; animation-delay: 2.7s; }
+    .floating-emoji:nth-child(10) { top: 35%; left: 85%; animation-delay: 1.5s; }
+    .floating-emoji:nth-child(11) { top: 45%; left: 10%; animation-delay: 3.8s; }
+    .floating-emoji:nth-child(12) { top: 55%; left: 20%; animation-delay: 0.2s; }
+    .floating-emoji:nth-child(13) { top: 45%; left: 40%; animation-delay: 2.1s; }
+    .floating-emoji:nth-child(14) { top: 55%; left: 70%; animation-delay: 4.5s; }
+    .floating-emoji:nth-child(15) { top: 45%; left: 90%; animation-delay: 1.3s; }
+    .floating-emoji:nth-child(16) { top: 65%; left: 5%; animation-delay: 2.9s; }
+    .floating-emoji:nth-child(17) { top: 75%; left: 15%; animation-delay: 0.7s; }
+    .floating-emoji:nth-child(18) { top: 65%; left: 35%; animation-delay: 3.2s; }
+    .floating-emoji:nth-child(19) { top: 75%; left: 50%; animation-delay: 1.1s; }
+    .floating-emoji:nth-child(20) { top: 65%; left: 80%; animation-delay: 4.7s; }
+    .floating-emoji:nth-child(21) { top: 85%; left: 5%; animation-delay: 2.5s; }
+    .floating-emoji:nth-child(22) { top: 95%; left: 20%; animation-delay: 0.4s; }
+    .floating-emoji:nth-child(23) { top: 85%; left: 45%; animation-delay: 3.6s; }
+    .floating-emoji:nth-child(24) { top: 95%; left: 65%; animation-delay: 1.9s; }
+    .floating-emoji:nth-child(25) { top: 85%; left: 90%; animation-delay: 4.2s; }
+    .floating-emoji:nth-child(26) { top: 12%; left: 60%; animation-delay: 0.8s; }
+    .floating-emoji:nth-child(27) { top: 40%; left: 25%; animation-delay: 2.4s; }
+    .floating-emoji:nth-child(28) { top: 60%; left: 95%; animation-delay: 1.6s; }
+    .floating-emoji:nth-child(29) { top: 2%; left: 30%; animation-delay: 3.9s; }
+    .floating-emoji:nth-child(30) { top: 90%; left: 75%; animation-delay: 0.3s; }
+    .floating-emoji:nth-child(31) { top: 22%; left: 45%; animation-delay: 2.2s; }
+    .floating-emoji:nth-child(32) { top: 52%; left: 55%; animation-delay: 4.8s; }
+    .floating-emoji:nth-child(33) { top: 72%; left: 25%; animation-delay: 1.4s; }
+    .floating-emoji:nth-child(34) { top: 18%; left: 5%; animation-delay: 3.1s; }
+    .floating-emoji:nth-child(35) { top: 82%; left: 65%; animation-delay: 0.6s; }
+    .floating-emoji:nth-child(36) { top: 38%; left: 50%; animation-delay: 2.8s; }
+    .floating-emoji:nth-child(37) { top: 58%; left: 10%; animation-delay: 4.3s; }
+    .floating-emoji:nth-child(38) { top: 48%; left: 75%; animation-delay: 1.7s; }
+    .floating-emoji:nth-child(39) { top: 88%; left: 35%; animation-delay: 3.5s; }
+    .floating-emoji:nth-child(40) { top: 28%; left: 95%; animation-delay: 0.1s; }
 
-    /* ОСНОВНИЙ КОНТЕНТ */
+    /* ІНШИЙ КОНТЕНТ БЕЗ ЗМІН */
     .hidden { opacity: 0; filter: blur(10px); transition: 1s ease; }
     .visible { opacity: 1; filter: blur(0); }
     .swiper { width: 100%; height: 100vh; }
     .swiper-slide { position: relative; display: flex; justify-content: center; align-items: center; background: #000; }
     .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
-
-    .back-btn {
-        position: fixed; top: 20px; left: 20px; z-index: 100;
-        background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
-        color: white; border: 1px solid rgba(255,255,255,0.2);
-        padding: 10px 20px; border-radius: 50px; text-decoration: none;
-        font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-    }
-    .book-now {
-        position: absolute; bottom: 60px; right: 20px; z-index: 100;
-        background: var(--primary-red, #ff0000); color: white;
-        padding: 15px 25px; border-radius: 50px; text-decoration: none;
-        font-weight: bold; font-size: 14px;
-    }
+    .back-btn { position: fixed; top: 20px; left: 20px; z-index: 100; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 50px; text-decoration: none; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+    .book-now { position: absolute; bottom: 60px; right: 20px; z-index: 100; background: var(--primary-red, #ff0000); color: white; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 14px; }
 </style>
 
 <div id="loader" class="loader-wrapper">
     <div class="emoji-container">
-        <span class="floating-emoji">🖋️</span>
-        <span class="floating-emoji">🔥</span>
-        <span class="floating-emoji">💀</span>
-        <span class="floating-emoji">💉</span>
-        <span class="floating-emoji">🤘</span>
-        <span class="floating-emoji">⚡</span>
-        <span class="floating-emoji">🐍</span>
-        <span class="floating-emoji">🖤</span>
-        <span class="floating-emoji">💎</span>
-        <span class="floating-emoji">🎨</span>
+        <!-- 40 смайлів -->
+        <span class="floating-emoji">🖋️</span><span class="floating-emoji">🔥</span><span class="floating-emoji">💀</span><span class="floating-emoji">💉</span><span class="floating-emoji">🤘</span>
+        <span class="floating-emoji">⚡</span><span class="floating-emoji">🐍</span><span class="floating-emoji">🖤</span><span class="floating-emoji">💎</span><span class="floating-emoji">🎨</span>
+        <span class="floating-emoji">👹</span><span class="floating-emoji">🌹</span><span class="floating-emoji">⛓️</span><span class="floating-emoji">🧿</span><span class="floating-emoji">🕯️</span>
+        <span class="floating-emoji">🎸</span><span class="floating-emoji">🩸</span><span class="floating-emoji">🍷</span><span class="floating-emoji">🕷️</span><span class="floating-emoji">🦇</span>
+        <span class="floating-emoji">🌙</span><span class="floating-emoji">🛸</span><span class="floating-emoji">🧨</span><span class="floating-emoji">🔫</span><span class="floating-emoji">🎲</span>
+        <span class="floating-emoji">🎰</span><span class="floating-emoji">🧬</span><span class="floating-emoji">⚔️</span><span class="floating-emoji">🥀</span><span class="floating-emoji">🔮</span>
+        <span class="floating-emoji">🧪</span><span class="floating-emoji">🕶️</span><span class="floating-emoji">💣</span><span class="floating-emoji">🏴‍☠️</span><span class="floating-emoji">🌪️</span>
+        <span class="floating-emoji">👺</span><span class="floating-emoji">🐲</span><span class="floating-emoji">🐺</span><span class="floating-emoji">🪐</span><span class="floating-emoji">⚓</span>
     </div>
     <h1 class="loader-text">PORTFOLIO</h1>
 </div>
