@@ -14,86 +14,69 @@
           /* ЛОАДЕР СТИЛІ */
                /* ЛОАДЕР СТИЛІ */
              /* ЛОАДЕР СТИЛІ */
-       <style>
-    :root {
-        --hot-pink: #ff69b4;
-        --soft-pink: #ffb6c1;
-        --neon-red: #ff0033;
-    }
+          .loader-wrapper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; display: flex; justify-content: center; 
+            align-items: center; z-index: 1000; transition: opacity 0.8s ease;
+        }
+        .loader-text {
+            font-size: 42px; letter-spacing: 12px; font-weight: 900;
+            background: linear-gradient(90deg, var(--primary-red), var(--hot-pink), var(--primary-red));
+            background-size: 200% auto;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite, moveText 4s ease-in-out infinite;
+        }
+        @keyframes shine { to { background-position: 200% center; } }
+        @keyframes moveText { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-    #loader {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: #000; display: flex; justify-content: center; 
-        align-items: center; z-index: 10000; transition: opacity 0.8s ease;
-        overflow: hidden; pointer-events: none;
-    }
+        /* СМАЙЛИ */
+        .emoji-container { position: absolute; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
+        .floating-emoji {
+            position: absolute; font-size: 30px; opacity: 0;
+            filter: drop-shadow(0 0 10px var(--hot-pink));
+            animation: fly 6s infinite linear;
+        }
+        @keyframes fly {
+            0% { transform: translate(0, 100vh) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.6; }
+            100% { transform: translate(100px, -100px) rotate(360deg); opacity: 0; }
+        }
 
-    /* М'ЯКИЙ ПУЛЬСУЮЧИЙ ТЕКСТ */
-    .loader-text {
-        font-size: 26px; letter-spacing: 10px; font-weight: 700;
-        text-transform: uppercase; color: var(--soft-pink);
-        text-shadow: 0 0 15px var(--hot-pink);
-        animation: softPulse 3s ease-in-out infinite;
-        z-index: 10001;
-    }
+        /* ОСНОВНИЙ КОНТЕНТ */
+        .hidden { opacity: 0; filter: blur(10px); transition: 1s ease; }
+        .visible { opacity: 1; filter: blur(0); }
+        .swiper { width: 100%; height: 100vh; }
+        .swiper-slide { position: relative; display: flex; justify-content: center; align-items: center; background: #000; }
+        .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
 
-    @keyframes softPulse {
-        0%, 100% { transform: scale(1); opacity: 0.8; text-shadow: 0 0 15px var(--hot-pink); }
-        50% { transform: scale(1.08); opacity: 1; text-shadow: 0 0 25px var(--neon-red); }
-    }
+        .back-btn {
+            position: fixed; top: 20px; left: 20px; z-index: 100;
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
+            color: white; border: 1px solid rgba(255,255,255,0.2);
+            padding: 10px 20px; border-radius: 50px; text-decoration: none;
+            font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+        }
+        .book-now {
+            position: absolute; bottom: 60px; right: 20px; z-index: 100;
+            background: var(--primary-red); color: white;
+            padding: 15px 25px; border-radius: 50px; text-decoration: none;
+            font-weight: bold; font-size: 14px;
+        }
+    </style>
+</head>
+<body>
 
-    /* СМАЙЛИ: ЛЕВІТАЦІЯ ТА ОБЕРТАННЯ */
-    .floating-emoji {
-        position: absolute; opacity: 0;
-        filter: drop-shadow(0 0 12px var(--hot-pink));
-        /* Поява + плавне плавання + обертання */
-        animation: 
-            emojiFade 3s forwards, 
-            levitate 15s infinite ease-in-out alternate, 
-            spinEmoji 10s infinite linear;
-    }
-
-    @keyframes emojiFade { to { opacity: 0.6; } }
-    @keyframes spinEmoji { from { rotate: 0deg; } to { rotate: 360deg; } }
-    @keyframes levitate {
-        0% { transform: translate(0, 0); }
-        100% { transform: translate(60px, -60px); }
-    }
-</style>
-
-<div id="loader">
-    <h1 class="loader-text">PORTFOLIO</h1>
-</div>
-
-<script>
-    const loader = document.getElementById('loader');
-    const emojis = ['🖋️', '🔥', '💀', '💉', '🤘']; 
-    
-    // Генерація 25 смайлів через JS
-    for(let i=0; i<25; i++){
-        let e = document.createElement('div');
-        e.className = 'floating-emoji';
-        e.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-        
-        e.style.left = Math.random() * 100 + 'vw';
-        e.style.top = Math.random() * 100 + 'vh';
-        e.style.fontSize = (Math.random() * 25 + 20) + 'px'; 
-        e.style.animationDelay = (Math.random() * 5) + 's';
-        
-        // Різна швидкість для кожного, щоб летіли врозкид
-        e.style.animationDuration = '3s, ' + (Math.random() * 10 + 10) + 's, ' + (Math.random() * 5 + 5) + 's';
-        
-        loader.appendChild(e);
-    }
-
-    // Закриття лоадера
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            loader.style.opacity = '0';
-            setTimeout(() => { loader.style.display = 'none'; }, 800);
-        }, 2000);
-    });
-</script>
+    <div id="loader" class="loader-wrapper">
+        <div class="emoji-container">
+            <span class="floating-emoji" style="left:10%; animation-delay:0s;">🖋️</span>
+            <span class="floating-emoji" style="left:30%; animation-delay:2s;">🔥</span>
+            <span class="floating-emoji" style="left:50%; animation-delay:1s;">💀</span>
+            <span class="floating-emoji" style="left:70%; animation-delay:3s;">💉</span>
+            <span class="floating-emoji" style="left:90%; animation-delay:0.5s;">🤘</span>
+        </div>
+        <h1 class="loader-text">PORTFOLIO</h1>
+    </div>
 
 
     <a href="index.html" class="back-btn">← Назад</a>
