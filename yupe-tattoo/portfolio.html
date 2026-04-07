@@ -13,52 +13,73 @@
         /* ЛОАДЕР СТИЛІ */
           /* ЛОАДЕР СТИЛІ */
                /* ЛОАДЕР СТИЛІ */
+             /* ЛОАДЕР СТИЛІ */
         .loader-wrapper {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; display: flex; justify-content: center; 
             align-items: center; z-index: 1000; transition: opacity 0.8s ease;
         }
+        
         .loader-text {
             font-size: 24px; letter-spacing: 8px; font-weight: 700;
             text-transform: uppercase;
-            /* М'який рожевий замість градієнта */
             color: var(--soft-pink); 
             text-shadow: 0 0 15px var(--hot-pink);
             animation: softPulse 3s ease-in-out infinite;
         }
         
         @keyframes softPulse {
-            0%, 100% { transform: scale(1); opacity: 0.8; color: var(--soft-pink); }
-            50% { transform: scale(1.1); opacity: 1; color: var(--hot-pink); text-shadow: 0 0 25px var(--primary-red); }
+            0%, 100% { transform: scale(1); opacity: 0.7; text-shadow: 0 0 15px var(--hot-pink); }
+            50% { transform: scale(1.05); opacity: 1; text-shadow: 0 0 25px var(--primary-red); }
         }
 
-        /* СМАЙЛИ */
+        /* СМАЙЛИ: ПЛАВНИЙ ПОЛІТ ПО ВСЬОМУ ПЕРИМЕТРУ */
         .emoji-container { position: absolute; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
-        .floating-emoji {
-            position: absolute; font-size: 35px; opacity: 0;
-            filter: drop-shadow(0 0 15px var(--hot-pink));
-            /* М'яка поява + повільний політ + обертання */
-            animation: fly 15s infinite linear, spin 6s infinite linear;
-        }
         
-        @keyframes fly {
-            0% { transform: translate(0, 100vh); opacity: 0; }
-            10% { opacity: 0.7; }
-            90% { opacity: 0.7; }
-            100% { transform: translate(50px, -100px); opacity: 0; }
+        .floating-emoji {
+            position: absolute; opacity: 0;
+            filter: drop-shadow(0 0 15px var(--hot-pink));
+            /* Поява + Політ + Обертання */
+            animation: 
+                smoothAppear 3s forwards,
+                slowOrbit 20s infinite linear,
+                spin 8s infinite linear,
+                glowPulse 3s infinite ease-in-out;
+        }
+
+        /* Різні розміри та початкові точки */
+        .floating-emoji:nth-child(1) { font-size: 45px; --x: 10vw; --y: 20vh; --x-move: 80vw; --y-move: 70vh; animation-delay: 0s; }
+        .floating-emoji:nth-child(2) { font-size: 25px; --x: 85vw; --y: 10vh; --x-move: -10vw; --y-move: 80vh; animation-delay: 2s; }
+        .floating-emoji:nth-child(3) { font-size: 55px; --x: 40vw; --y: 80vh; --x-move: 60vw; --y-move: -10vh; animation-delay: 4s; }
+        .floating-emoji:nth-child(4) { font-size: 30px; --x: 15vw; --y: 70vh; --x-move: 90vw; --y-move: 20vh; animation-delay: 1s; }
+        .floating-emoji:nth-child(5) { font-size: 40px; --x: 70vw; --y: 60vh; --x-move: -20vw; --y-move: 10vh; animation-delay: 3s; }
+
+        @keyframes smoothAppear {
+            to { opacity: 0.7; }
+        }
+
+        /* Плавний політ з точки А в точку Б */
+        @keyframes slowOrbit {
+            0% { left: var(--x); top: var(--y); }
+            50% { left: var(--x-move); top: var(--y-move); }
+            100% { left: var(--x); top: var(--y); }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { filter: drop-shadow(0 0 10px var(--hot-pink)); }
+            50% { filter: drop-shadow(0 0 25px var(--primary-red)); }
         }
 
         @keyframes spin {
-            from { rotate: 0deg; }
-            to { rotate: 360deg; }
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
-        /* РЕШТА КОДУ БЕЗ ЗМІН */
+        /* ОСНОВНИЙ КОНТЕНТ */
         .hidden { opacity: 0; filter: blur(10px); transition: 1s ease; }
         .visible { opacity: 1; filter: blur(0); }
         .swiper { width: 100%; height: 100vh; }
-        .swiper-slide { position: relative; display: flex; justify-content: center; align-items: center; background: #000; }
-        .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
+
 
 
         .back-btn {
