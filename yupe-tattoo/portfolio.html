@@ -36,18 +36,22 @@
         animation: randomAppear 4s infinite ease-in-out;
     }
 
-    /* Анімація появи */
     @keyframes randomAppear {
         0%, 100% { opacity: 0; transform: scale(0.5); }
         50% { opacity: 0.7; transform: scale(1.2); }
     }
 
-    /* Позиції смайлів через CSS */
+    /* Позиції для 10 смайлів */
     .floating-emoji:nth-child(1) { top: 15%; left: 10%; animation-delay: 0s; }
     .floating-emoji:nth-child(2) { top: 65%; left: 25%; animation-delay: 2s; }
     .floating-emoji:nth-child(3) { top: 40%; left: 80%; animation-delay: 1s; }
     .floating-emoji:nth-child(4) { top: 75%; left: 60%; animation-delay: 3s; }
     .floating-emoji:nth-child(5) { top: 20%; left: 70%; animation-delay: 0.5s; }
+    .floating-emoji:nth-child(6) { top: 10%; left: 45%; animation-delay: 1.5s; }
+    .floating-emoji:nth-child(7) { top: 85%; left: 15%; animation-delay: 2.5s; }
+    .floating-emoji:nth-child(8) { top: 50%; left: 5%; animation-delay: 0.8s; }
+    .floating-emoji:nth-child(9) { top: 80%; left: 85%; animation-delay: 3.5s; }
+    .floating-emoji:nth-child(10) { top: 5%; left: 85%; animation-delay: 1.2s; }
 
     /* ОСНОВНИЙ КОНТЕНТ */
     .hidden { opacity: 0; filter: blur(10px); transition: 1s ease; }
@@ -76,8 +80,13 @@
         <span class="floating-emoji">🖋️</span>
         <span class="floating-emoji">🔥</span>
         <span class="floating-emoji">💀</span>
-        <span class="floating-emoji) 💉</span>
+        <span class="floating-emoji">💉</span>
         <span class="floating-emoji">🤘</span>
+        <span class="floating-emoji">⚡</span>
+        <span class="floating-emoji">🐍</span>
+        <span class="floating-emoji">🖤</span>
+        <span class="floating-emoji">💎</span>
+        <span class="floating-emoji">🎨</span>
     </div>
     <h1 class="loader-text">PORTFOLIO</h1>
 </div>
