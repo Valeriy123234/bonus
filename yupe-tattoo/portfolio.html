@@ -12,83 +12,75 @@
 
         /* ЛОАДЕР СТИЛІ */
            /* ОНОВЛЕНИЙ СТИЛЬ ЛОАДЕРА */
-.loader-text {
-    font-size: 28px; /* Менший розмір тексту */
-    letter-spacing: 8px;
-    font-weight: 900;
-    background: linear-gradient(90deg, var(--primary-red), var(--hot-pink), var(--primary-red));
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: shine 3s linear infinite;
-    position: relative;
-    z-index: 2;
-}
-
-/* ОНОВЛЕНІ СМАЙЛИ */
-.floating-emoji {
-    position: absolute;
-    font-size: 25px;
-    opacity: 0;
-    /* Рожеве неонове світіння */
-    text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493, 0 0 30px #ff1493;
-    animation: randomAppear 5s infinite ease-in-out;
-}
-
-@keyframes randomAppear {
-    0% {
-        opacity: 0;
-        transform: scale(0.5) translate(0, 0);
+ .loader-wrapper {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: #000; display: flex; justify-content: center; 
+        align-items: center; z-index: 1000; transition: opacity 0.8s ease;
     }
-    20% {
-        opacity: 1;
-        transform: scale(1.2) translate(10px, -10px);
+    .loader-text {
+        font-size: 28px; /* Зменшений розмір тексту */
+        letter-spacing: 12px; font-weight: 900;
+        background: linear-gradient(90deg, var(--primary-red, #ff0000), var(--hot-pink, #ff69b4), var(--primary-red, #ff0000));
+        background-size: 200% auto;
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        animation: shine 3s linear infinite, moveText 4s ease-in-out infinite;
     }
-    80% {
-        opacity: 0.8;
-        transform: scale(1) translate(-10px, 10px);
+    @keyframes shine { to { background-position: 200% center; } }
+    @keyframes moveText { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+    /* СМАЙЛИ */
+    .emoji-container { position: absolute; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
+    .floating-emoji {
+        position: absolute; font-size: 30px; opacity: 0;
+        filter: drop-shadow(0 0 15px #ff1493); /* Рожевий неон */
+        animation: randomAppear 4s infinite ease-in-out;
     }
-    100% {
-        opacity: 0;
-        transform: scale(0.8) translate(0, 0);
+
+    /* Анімація появи */
+    @keyframes randomAppear {
+        0%, 100% { opacity: 0; transform: scale(0.5); }
+        50% { opacity: 0.7; transform: scale(1.2); }
     }
-}
 
-/* Додаємо різні позиції для кожного смайла вручну */
-.floating-emoji:nth-child(1) { top: 20%; left: 15%; animation-delay: 0s; }
-.floating-emoji:nth-child(2) { top: 70%; left: 25%; animation-delay: 1.5s; }
-.floating-emoji:nth-child(3) { top: 40%; left: 80%; animation-delay: 3s; }
-.floating-emoji:nth-child(4) { top: 80%; left: 60%; animation-delay: 0.5s; }
-.floating-emoji:nth-child(5) { top: 15%; left: 65%; animation-delay: 2.2s; }
+    /* Позиції смайлів через CSS */
+    .floating-emoji:nth-child(1) { top: 15%; left: 10%; animation-delay: 0s; }
+    .floating-emoji:nth-child(2) { top: 65%; left: 25%; animation-delay: 2s; }
+    .floating-emoji:nth-child(3) { top: 40%; left: 80%; animation-delay: 1s; }
+    .floating-emoji:nth-child(4) { top: 75%; left: 60%; animation-delay: 3s; }
+    .floating-emoji:nth-child(5) { top: 20%; left: 70%; animation-delay: 0.5s; }
 
+    /* ОСНОВНИЙ КОНТЕНТ */
+    .hidden { opacity: 0; filter: blur(10px); transition: 1s ease; }
+    .visible { opacity: 1; filter: blur(0); }
+    .swiper { width: 100%; height: 100vh; }
+    .swiper-slide { position: relative; display: flex; justify-content: center; align-items: center; background: #000; }
+    .swiper-slide img { width: 100%; height: 100%; object-fit: cover; }
 
-        .back-btn {
-            position: fixed; top: 20px; left: 20px; z-index: 100;
-            background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
-            color: white; border: 1px solid rgba(255,255,255,0.2);
-            padding: 10px 20px; border-radius: 50px; text-decoration: none;
-            font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-        }
-        .book-now {
-            position: absolute; bottom: 60px; right: 20px; z-index: 100;
-            background: var(--primary-red); color: white;
-            padding: 15px 25px; border-radius: 50px; text-decoration: none;
-            font-weight: bold; font-size: 14px;
-        }
-    </style>
-</head>
-<body>
+    .back-btn {
+        position: fixed; top: 20px; left: 20px; z-index: 100;
+        background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
+        color: white; border: 1px solid rgba(255,255,255,0.2);
+        padding: 10px 20px; border-radius: 50px; text-decoration: none;
+        font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    }
+    .book-now {
+        position: absolute; bottom: 60px; right: 20px; z-index: 100;
+        background: var(--primary-red, #ff0000); color: white;
+        padding: 15px 25px; border-radius: 50px; text-decoration: none;
+        font-weight: bold; font-size: 14px;
+    }
+</style>
 
-    <div id="loader" class="loader-wrapper">
-        <div class="emoji-container">
-            <span class="floating-emoji" style="left:10%; animation-delay:0s;">🖋️</span>
-            <span class="floating-emoji" style="left:30%; animation-delay:2s;">🔥</span>
-            <span class="floating-emoji" style="left:50%; animation-delay:1s;">💀</span>
-            <span class="floating-emoji" style="left:70%; animation-delay:3s;">💉</span>
-            <span class="floating-emoji" style="left:90%; animation-delay:0.5s;">🤘</span>
-        </div>
-        <h1 class="loader-text">PORTFOLIO</h1>
+<div id="loader" class="loader-wrapper">
+    <div class="emoji-container">
+        <span class="floating-emoji">🖋️</span>
+        <span class="floating-emoji">🔥</span>
+        <span class="floating-emoji">💀</span>
+        <span class="floating-emoji) 💉</span>
+        <span class="floating-emoji">🤘</span>
     </div>
+    <h1 class="loader-text">PORTFOLIO</h1>
+</div>
 
 
 
