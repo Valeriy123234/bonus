@@ -3,158 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YYOKAI | MATRIX</title>
+    <title>YYOKAI | SYSTEM</title>
+    <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        @import url('https://googleapis.com');
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            background: #000; 
-            color: #fff; 
-            font-family: 'Space Mono', monospace; 
+            background: #000; color: #fff; 
+            font-family: 'Space Grotesk', sans-serif;
             overflow: hidden;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            min-height: 100vh;
         }
 
-        /* --- НОВИЙ ЛОУДЕР --- */
+        /* ЕФЕКТ ШУМУ (Глибина чорного) */
+        body::after {
+            content: ""; position: fixed; inset: 0;
+            background-image: url("https://vercel.app");
+            opacity: 0.05; pointer-events: none; z-index: 100;
+        }
+
+        /* КІНЕМАТОГРАФІЧНИЙ ЛОУДЕР */
         #loader {
             position: fixed; inset: 0; background: #000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000; transition: transform 1.2s cubic-bezier(0.8, 0, 0.2, 1);
         }
-        .loader-title {
-            color: #ff0000; font-family: 'Syncopate'; font-size: 18px;
-            letter-spacing: 10px; margin-bottom: 40px;
-            text-shadow: 0 0 20px #ff0000;
+        .counter {
+            font-size: 15vw; font-weight: 700; letter-spacing: -5px;
+            color: #111; position: relative;
         }
-        .portal {
-            position: relative; width: 100px; height: 100px;
-        }
-        .ring {
-            position: absolute; width: 100%; height: 100%;
-            border-radius: 50%; border: 4px solid transparent;
-            border-top: 4px solid #ff0000;
-            filter: drop-shadow(0 0 15px #ff0000);
-            animation: spin 1s linear infinite;
-        }
-        .core {
-            position: absolute; inset: 20px; background: #ff0000;
-            border-radius: 50%; box-shadow: 0 0 40px #ff0000;
-            animation: pulse 1s ease-in-out infinite;
+        .counter::after {
+            content: attr(data-percent); position: absolute; left: 0;
+            color: #ff0000; width: var(--p); overflow: hidden;
+            white-space: nowrap; transition: 0.1s;
         }
 
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes pulse { 0%, 100% { transform: scale(0.8); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 1; } }
-
-        /* --- ГОЛОВНА РАМКА --- */
-        .neon-frame {
-            opacity: 0; transform: scale(0.9);
-            border: 3px solid #ff0000;
-            border-radius: 30px; /* Закруглені кути */
-            padding: 40px 25px;
-            text-align: center;
-            width: 350px;
-            background: rgba(10, 0, 0, 0.8);
-            box-shadow: 0 0 30px #ff000066, inset 0 0 20px #ff000033;
-            animation: glow-change 5s infinite alternate; /* Переливання рамки */
-            transition: all 0.8s ease;
-        }
-        @keyframes glow-change {
-            0% { border-color: #ff0000; box-shadow: 0 0 30px #ff000066; }
-            100% { border-color: #990000; box-shadow: 0 0 50px #ff000099; }
+        /* КОНТЕНТ */
+        main {
+            height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            padding: 20px; opacity: 0; transform: translateY(30px);
+            transition: 1s ease 0.5s;
         }
 
-        .avatar {
-            width: 140px; height: 140px; border-radius: 50%;
-            border: 3px solid #ff0000; margin-bottom: 20px;
-            box-shadow: 0 0 25px #ff0000; object-fit: cover;
+        .avatar-wrap {
+            position: relative; width: 180px; height: 180px; margin-bottom: 40px;
+        }
+        .avatar-wrap img {
+            width: 100%; height: 100%; object-fit: cover;
+            filter: grayscale(1) contrast(1.1); /* Дорогий ЧБ ефект */
+            border: 1px solid #222;
+        }
+        .avatar-wrap::before {
+            content: ""; position: absolute; inset: -10px;
+            border: 1px solid #ff0000; opacity: 0.3;
         }
 
-        h1 { font-family: 'Syncopate'; font-size: 32px; letter-spacing: 5px; text-shadow: 0 0 15px #ff0000; }
-        .tag { color: #ff0000; font-size: 10px; letter-spacing: 5px; margin-bottom: 30px; }
-
-        /* --- КНОПКИ --- */
-        .btn {
-            display: block; width: 100%; padding: 15px; margin: 15px 0;
-            border-radius: 15px; border: 2px solid;
-            text-decoration: none; font-weight: bold; text-transform: uppercase;
-            font-size: 13px; letter-spacing: 2px; transition: 0.3s;
-            background: transparent;
+        h1 {
+            font-size: 2.5rem; letter-spacing: 15px; font-weight: 700;
+            text-transform: uppercase; margin-bottom: 10px;
+        }
+        .sub {
+            font-size: 10px; letter-spacing: 5px; color: #666;
+            margin-bottom: 60px; text-transform: uppercase;
         }
 
-        /* Записатись (Переливання) */
-        .btn-booking {
-            border-color: #fff;
-            color: #fff;
-            animation: booking-glow 3s infinite;
+        /* МІНІМАЛІСТИЧНІ КНОПКИ */
+        .nav { width: 100%; max-width: 300px; }
+        .link {
+            display: block; width: 100%; padding: 20px;
+            text-decoration: none; color: #fff;
+            border-bottom: 1px solid #222;
+            font-size: 11px; letter-spacing: 3px;
+            text-transform: uppercase; transition: 0.4s;
+            position: relative;
         }
-        @keyframes booking-glow {
-            0%, 100% { box-shadow: 0 0 10px #fff; text-shadow: 0 0 5px #fff; }
-            50% { box-shadow: 0 0 25px #ff0000; border-color: #ff0000; color: #ff0000; }
+        .link span { position: relative; z-index: 2; }
+        .link::after {
+            content: ""; position: absolute; left: 0; bottom: 0;
+            width: 0; height: 100%; background: #ff0000;
+            transition: 0.4s cubic-bezier(0.8, 0, 0.2, 1); z-index: 1;
         }
+        .link:hover { color: #000; }
+        .link:hover::after { width: 100%; }
 
-        /* Інстаграм (Рожевий неон) */
-        .btn-insta {
-            border-color: #ff00ff; color: #ff00ff;
-            box-shadow: 0 0 15px #ff00ff66;
-        }
-        .btn-insta:hover { background: #ff00ff; color: #000; box-shadow: 0 0 30px #ff00ff; }
+        .link-booking { color: #ff0000; font-weight: 700; border-top: 1px solid #222; }
 
-        /* Нижні кнопки поза рамкою */
-        .bottom-grid {
-            display: flex; gap: 10px; width: 350px; margin-top: 20px; opacity: 0;
-        }
-
-        /* Заживлення (Зелений неон) */
-        .btn-healing {
-            flex: 1; border-color: #00ff00; color: #00ff00;
-            box-shadow: 0 0 15px #00ff0066; border: 2px solid; border-radius: 15px;
-            padding: 12px; text-decoration: none; text-align: center; font-size: 11px;
-        }
-
-        /* Телеграм (Синій неон) */
-        .btn-tg {
-            flex: 1; border-color: #0088ff; color: #0088ff;
-            box-shadow: 0 0 15px #0088ff66; border: 2px solid; border-radius: 15px;
-            padding: 12px; text-decoration: none; text-align: center; font-size: 11px;
-        }
-
-        .show { opacity: 1 !important; transform: scale(1) !important; }
+        .active-main { opacity: 1 !important; transform: translateY(0) !important; }
     </style>
 </head>
 <body>
 
     <div id="loader">
-        <div class="loader-title">YYOKAI MATRIX</div>
-        <div class="portal">
-            <div class="ring"></div>
-            <div class="core"></div>
+        <div class="counter" id="count" data-percent="0%">000</div>
+    </div>
+
+    <main id="main">
+        <div class="avatar-wrap">
+            <img src="ТВОЄ_ФОТО" alt="YYOKAI">
         </div>
-    </div>
-
-    <div class="neon-frame" id="frame">
-        <img src="https://placeholder.com" class="avatar">
         <h1>YYOKAI</h1>
-        <div class="tag">INK.ARCHIVE</div>
+        <div class="sub">Tattoo Architecture & Code</div>
 
-        <a href="#" class="btn btn-booking">Записатися</a>
-        <a href="https://instagram.com" class="btn btn-insta">Instagram</a>
-    </div>
-
-    <div class="bottom-grid" id="bottom">
-        <a href="#" class="btn-healing">Догляд</a>
-        <a href="https://t.me" class="btn-tg">Telegram</a>
-    </div>
+        <div class="nav">
+            <a href="#" class="link link-booking"><span>Записатись</span></a>
+            <a href="https://instagram.com" class="link"><span>Instagram</span></a>
+            <a href="#" class="link"><span>Догляд</span></a>
+            <a href="https://t.me" class="link"><span>Telegram</span></a>
+        </div>
+    </main>
 
     <script>
-        window.onload = function() {
-            setTimeout(() => {
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('frame').classList.add('show');
-                document.getElementById('bottom').classList.add('show');
-            }, 3000);
-        };
+        // Логіка лічильника лоудера
+        let count = 0;
+        const countEl = document.getElementById('count');
+        const interval = setInterval(() => {
+            count += Math.floor(Math.random() * 10) + 1;
+            if(count >= 100) {
+                count = 100;
+                clearInterval(interval);
+                setTimeout(() => {
+                    document.getElementById('loader').style.transform = 'translateY(-100%)';
+                    document.getElementById('main').classList.add('active-main');
+                }, 500);
+            }
+            countEl.innerText = count.toString().padStart(3, '0');
+            countEl.setAttribute('data-percent', count + '%');
+            countEl.style.setProperty('--p', count + '%');
+        }, 80);
     </script>
 </body>
 </html>
