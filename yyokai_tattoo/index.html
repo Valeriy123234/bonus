@@ -4,22 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>YYOKAI | INK ARCHITECT</title>
-    <!-- Використовуємо стандартний системний шрифт, якщо Google не вантажиться, щоб не було чорного екрану -->
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --red: #ff0000; --bg: #000; --white: #ffffff; }
+        :root { --red: #ff0000; --bg: #000; --white: #ffffff; --card-bg: #151515; }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body { background: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        /* --- НАДІЙНИЙ ЛОУДЕР --- */
+        /* --- ЛОУДЕР (ІДЕАЛЬНЕ ЦЕНТРУВАННЯ) --- */
         #loader {
             position: fixed; inset: 0; background: #000; z-index: 9999;
             display: flex; justify-content: center; align-items: center;
-            transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
         }
         .loader-num {
-            font-family: 'Unbounded', sans-serif; font-size: 25vw; color: #fff;
-            letter-spacing: -10px; line-height: 1;
+            font-family: 'Unbounded', sans-serif; 
+            font-size: 25vw; color: #fff;
+            line-height: 1;
+            text-align: center;
+            letter-spacing: 0.02em; /* Однаковий проміжок між цифрами */
+            width: 100%;
+            display: flex; justify-content: center;
         }
 
         .noise {
@@ -30,9 +34,9 @@
         /* --- HERO & LOGO --- */
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #000; position: relative; }
         .hero-title {
-            font-family: 'Unbounded', sans-serif; font-size: 24vw; line-height: 0.75;
+            font-family: 'Unbounded', sans-serif; font-size: 24vw; line-height: 0.9; /* Збільшено відступ між рядками */
             text-transform: uppercase; text-align: center; letter-spacing: -0.05em;
-            display: flex; flex-direction: column; visibility: hidden; /* Ховаємо до старту анімації */
+            display: flex; flex-direction: column; visibility: hidden;
         }
         .hero-title.visible { visibility: visible; }
         .hero-title span {
@@ -41,36 +45,47 @@
             filter: blur(20px); transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .hero-title.active span { opacity: 1; transform: scaleY(1) translateY(0) translateZ(0); filter: blur(0); }
-        .hero-title span:nth-child(2) { transition-delay: 0.15s; }
+        .hero-title span:nth-child(2) { transition-delay: 0.15s; margin-top: 20px; /* Додатковий простір між YYO та KAI */ }
 
         .hero-tagline {
-            margin-top: 30px; font-size: 10px; letter-spacing: 8px;
+            margin-top: 40px; font-size: 10px; letter-spacing: 8px;
             color: #444; text-transform: uppercase; font-weight: 400;
             opacity: 0; transform: translateY(15px);
             transition: all 1s ease 1s;
         }
         .hero-title.active + .hero-tagline { opacity: 1; transform: translateY(0); }
 
-        /* --- GRID --- */
-        .grid { display: flex; flex-direction: column; width: 100%; gap: 2px; background: #111; }
+        /* --- GRID (СВІТЛІШИЙ ТОН) --- */
+        .grid { display: flex; flex-direction: column; width: 100%; gap: 2px; background: #222; }
         .grid-item {
             height: 50vh; position: relative; overflow: hidden;
             display: flex; flex-direction: column; justify-content: flex-end;
             padding: 40px; text-decoration: none; color: #fff;
+            background-color: var(--card-bg); /* Світліший за чорний */
         }
+        
+        /* Градієнт зверху вниз (затемнення) */
         .grid-item::before {
             content: ""; position: absolute; inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, transparent 80%);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 50%, rgba(0,0,0,0.8) 100%);
             z-index: 1;
         }
-        /* Тимчасові фони */
-        .img-1 { background: #050505; } .img-2 { background: #080808; }
-        .img-3 { background: #050505; } .img-4 { background: #080808; }
+
+        /* Місця для твоїх фото */
+        .img-1 { background-image: url('1.jpg'); background-position: center; background-size: cover; }
+        .img-2 { background-image: url('2.jpg'); background-position: center; background-size: cover; }
+        .img-3 { background-image: url('3.jpg'); background-position: center; background-size: cover; }
+        .img-4 { background-image: url('4.jpg'); background-position: center; background-size: cover; }
 
         .grid-item h2 { font-family: 'Unbounded', sans-serif; font-size: 28px; text-transform: uppercase; z-index: 2; position: relative; }
         .grid-item span { font-size: 10px; letter-spacing: 4px; margin-bottom: 10px; opacity: 0.5; z-index: 2; position: relative; }
 
-        /* --- ФІКСОВАНА КНОПКА --- */
+        /* --- FOOTER 2026 --- */
+        footer { padding: 80px 40px 140px; background: #000; border-top: 1px solid #111; }
+        .footer-info { font-size: 9px; letter-spacing: 2px; color: #333; line-height: 2.5; text-transform: uppercase; }
+        .footer-year { font-family: 'Unbounded', sans-serif; font-size: 12px; color: var(--red); margin-top: 30px; }
+
+        /* --- КНОПКА ЗАПИСУ --- */
         .cta-fixed {
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
             background: var(--red); color: #fff; padding: 22px 60px;
@@ -80,7 +95,7 @@
             white-space: nowrap; transition: 0.3s;
         }
 
-        @media (max-width: 768px) { .hero-title { font-size: 28vw; } }
+        @media (max-width: 768px) { .hero-title { font-size: 28vw; } .grid-item { padding: 30px; } }
     </style>
 </head>
 <body>
@@ -108,10 +123,19 @@
             <a href="#" class="grid-item img-3"><span>03 // ARCHIVE</span><h2>Portfolio</h2></a>
             <a href="#" class="grid-item img-4"><span>04 // SYSTEM</span><h2>Aftercare</h2></a>
         </section>
+
+        <footer>
+            <div class="footer-info">
+                YYOKAI SYSTEM PROTOCOL<br>
+                ESTABLISHED IN THE FOREST<br>
+                DATA SYNC: ACTIVE<br>
+                SECTOR: LVIV_CENTER
+            </div>
+            <div class="footer-year">© 2026 // BEYOND THE LIMITS</div>
+        </footer>
     </main>
 
     <script>
-        // ГАРАНТОВАНА ЛОГІКА ЗАПУСКУ
         window.addEventListener('DOMContentLoaded', () => {
             let count = 0;
             const loadVal = document.getElementById('load-val');
@@ -119,13 +143,12 @@
             const logo = document.getElementById('main-logo');
 
             const interval = setInterval(() => {
-                count += Math.floor(Math.random() * 12) + 1;
+                count += Math.floor(Math.random() * 8) + 1;
                 
                 if (count >= 100) {
                     count = 100;
                     clearInterval(interval);
                     
-                    // Відкриваємо сайт
                     setTimeout(() => {
                         loader.style.transform = "translateY(-100%)";
                         logo.classList.add('visible');
