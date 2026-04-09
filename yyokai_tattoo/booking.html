@@ -7,189 +7,182 @@
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         :root { --red: #ff0000; --bg: #000; --white: #fff; }
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body { background: #000; color: #fff; font-family: sans-serif; overflow-x: hidden; touch-action: manipulation; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Unbounded', sans-serif; }
+        body { background: #000; color: #fff; overflow-x: hidden; }
 
         /* --- ЛОУДЕР --- */
         #loader { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center; }
-        #l-val { font-family: 'Unbounded'; font-size: 15vw; color: #fff; }
+        #l-val { font-size: 15vw; font-weight: 900; }
 
         /* --- HERO --- */
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .hero-logo { font-family: 'Unbounded'; font-size: 24vw; line-height: 0.85; text-transform: uppercase; }
-        .hero-logo span { display: block; }
-        .scroll-hint { font-family: 'Unbounded'; font-size: 12px; letter-spacing: 5px; color: #fff; margin-top: 50px; font-weight: 900; }
-        .arrow { margin-top: 20px; animation: arrowMove 1.5s infinite ease-in-out; }
-        @keyframes arrowMove { 0%, 100% { transform: translateY(0); opacity: 0.4; } 50% { transform: translateY(20px); opacity: 1; } }
+        
+        /* Анімація викривлення YOKAI */
+        .hero-logo { font-size: 20vw; line-height: 0.85; text-transform: uppercase; font-weight: 900; position: relative; }
+        .hero-logo span { display: block; animation: glitch 3s infinite; }
+        .hero-logo span:nth-child(2) { color: var(--red); animation-delay: 0.1s; }
+
+        @keyframes glitch {
+            0% { transform: translate(0); text-shadow: none; }
+            2% { transform: translate(-5px, 2px); text-shadow: 2px 0 var(--red); }
+            4% { transform: translate(5px, -2px); text-shadow: -2px 0 blue; }
+            6% { transform: translate(0); }
+            100% { transform: translate(0); }
+        }
+
+        .scroll-hint { font-size: 10px; letter-spacing: 3px; margin-top: 50px; opacity: 0.7; }
 
         /* --- CONTENT --- */
-        #mainContent { display: none; padding: 20px; max-width: 480px; margin: 0 auto; text-align: center; }
+        #mainContent { display: none; padding: 20px; max-width: 480px; margin: 0 auto; }
+        .calendar-box { background: #fff; padding: 15px; border-radius: 20px; margin-bottom: 20px; }
+        
+        table { width: 100%; border-collapse: collapse; }
+        td { color: #000; height: 45px; text-align: center; border-radius: 10px; cursor: pointer; font-weight: 900; font-size: 14px; }
+        td.selected { background: var(--red) !important; color: #fff; }
+        td.empty { pointer-events: none; }
+        td:hover:not(.empty) { background: #eee; }
 
-        .calendar-box { background: #fff; padding: 15px; border-radius: 25px; margin-bottom: 25px; width: 100%; }
-        table { width: 100%; border-collapse: separate; border-spacing: 6px; table-layout: fixed; }
-        td { background: #eee; color: #000; height: 50px; border-radius: 12px; font-weight: 900; cursor: pointer; font-size: 14px; vertical-align: middle; }
-        td.selected { background: var(--red); color: #fff; }
-        td.booked { opacity: 0.15; cursor: not-allowed; text-decoration: line-through; }
-        td.empty { background: transparent; }
-
-        .slots { display: none; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 25px; }
-        .slot { border: 1px solid #333; padding: 15px; border-radius: 15px; font-family: 'Unbounded'; font-size: 12px; cursor: pointer; }
+        .slots { display: none; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 20px 0; }
+        .slot { border: 1px solid #333; padding: 15px; border-radius: 10px; text-align: center; font-size: 12px; cursor: pointer; }
         .slot.selected { background: var(--red); border-color: var(--red); }
-        .slot.booked-slot { opacity: 0.1; pointer-events: none; border-style: dashed; }
 
-        #bookingForm { display: none; flex-direction: column; gap: 12px; }
-        input { background: #111; border: 1px solid #333; padding: 20px; color: #fff; font-size: 16px; border-radius: 15px; width: 100%; }
-        .btn { background: var(--red); color: #fff; border: none; padding: 22px; border-radius: 15px; font-family: 'Unbounded'; font-size: 11px; font-weight: 900; cursor: pointer; }
+        #bookingForm { display: none; flex-direction: column; gap: 10px; }
+        input { background: #111; border: 1px solid #333; padding: 15px; color: #fff; border-radius: 10px; }
+        .btn { background: var(--red); color: #fff; border: none; padding: 18px; border-radius: 10px; font-weight: 900; cursor: pointer; margin-top: 10px; }
 
-        /* --- MODAL / SUCCESS --- */
-        #bonusModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 10000; justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: #111; padding: 40px 20px; border-radius: 30px; border: 1px solid var(--red); width: 100%; max-width: 400px; text-align: center; }
-        .promo-box { background: #000; border: 1px dashed var(--red); padding: 15px; margin: 20px 0; font-family: 'Unbounded'; font-size: 20px; color: var(--red); cursor: pointer; position: relative; }
-        .promo-box:active { transform: scale(0.95); }
-
-        .admin-trigger { margin-top: 100px; opacity: 0.05; font-size: 10px; cursor: pointer; padding: 20px; }
-        #adminPanel { display: none; text-align: left; background: #080808; padding: 20px; border-radius: 20px; margin-top: 40px; }
-        .log-card { border-left: 2px solid red; padding: 15px; background: #111; margin-bottom: 10px; font-size: 12px; }
+        /* MODAL */
+        #bonusModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: #111; padding: 30px; border-radius: 20px; border: 1px solid var(--red); text-align: center; width: 100%; }
+        .promo-box { border: 2px dashed var(--red); padding: 15px; margin: 20px 0; font-size: 24px; color: var(--red); }
     </style>
 </head>
 <body>
 
-    <div id="loader"><div id="l-val">0</div></div>
+<div id="loader"><div id="l-val">0</div></div>
 
-    <section class="hero">
-        <div class="hero-logo"><span>YYO</span><span>KAI</span></div>
-        <div class="scroll-hint">ЗАПИСАТИСЬ ГОРТАЙ ВНИЗ</div>
-        <div class="arrow"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg></div>
-    </section>
+<section class="hero">
+    <div class="hero-logo">
+        <span>YYO</span>
+        <span>KAI</span>
+    </div>
+    <div class="scroll-hint">ГОРТАЙ ВНИЗ ↓</div>
+</section>
 
-    <div id="mainContent">
-        <div class="calendar-box"><table id="calTable"></table></div>
-        <div class="slots" id="slotsGrid">
-            <div class="slot" data-time="10:00">10:00</div><div class="slot" data-time="13:00">13:00</div>
-            <div class="slot" data-time="16:00">16:00</div><div class="slot" data-time="19:00">19:00</div>
-        </div>
-
-        <form id="bookingForm">
-            <p id="dateLabel" style="color:red; font-weight:900; margin-bottom:15px; font-size:11px;"></p>
-            <input type="text" id="uName" placeholder="ІМ'Я" required>
-            <input type="text" id="uPhone" value="+380" required>
-            <input type="text" id="uInsta" value="@" required>
-            <button type="submit" class="btn">ПІДТВЕРДИТИ ЗАПИС</button>
-        </form>
-
-        <div id="bonusModal">
-            <div class="modal-content">
-                <p style="font-size: 14px; line-height: 1.6;">Дякую за те що обрав саме мене. Очікуй, я з тобою зв’яжусь як умога швидше.</p>
-                <h3 style="font-family:'Unbounded'; margin-top:30px; font-size:12px; color:var(--red);">ТРИМАЙ -10% НА ТАТУ</h3>
-                <div class="promo-box" id="promoCode" onclick="copyPromo()">0000000</div>
-                <p style="font-size: 9px; opacity:0.5;">НАТИСНИ НА КОД ЩОБ СКОПІЮВАТИ</p>
-                <button class="btn" style="margin-top:30px; padding:15px;" onclick="location.reload()">ЗАКРИТИ</button>
-            </div>
-        </div>
-        
-        <div class="admin-trigger" onclick="openAdmin()">.access_protocol</div>
-        <div id="adminPanel"><div id="adminList"></div></div>
+<div id="mainContent">
+    <h2 style="margin-bottom: 20px; font-size: 14px; text-align: center;">ОБЕРИ ДАТУ ТА ЧАС</h2>
+    <div class="calendar-box">
+        <table id="calTable"></table>
     </div>
 
-    <script>
-        const DB_URL = "https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/";
-        const TG_TOKEN = "8747396400:AAFgsvQfGymY2SlG2slGuidFXgvbEVVmq-o";
-        const TG_CHAT_ID = "1634779056";
+    <div class="slots" id="slotsGrid">
+        <div class="slot" data-time="10:00">10:00</div>
+        <div class="slot" data-time="13:00">13:00</div>
+        <div class="slot" data-time="16:00">16:00</div>
+        <div class="slot" data-time="19:00">19:00</div>
+    </div>
 
-        let bookings = {}, selD = "", selT = "";
+    <form id="bookingForm">
+        <p id="dateLabel" style="color:var(--red); font-size:12px; margin-bottom:10px; text-align:center;"></p>
+        <input type="text" id="uName" placeholder="ІМ'Я" required>
+        <input type="text" id="uPhone" value="+380" required>
+        <input type="text" id="uInsta" placeholder="@INSTAGRAM" required>
+        <button type="submit" class="btn">ЗАБРОНЮВАТИ</button>
+    </form>
+</div>
 
-        // Лоадер
-        let c = 0;
-        let iv = setInterval(() => {
-            c += Math.floor(Math.random() * 5) + 3;
-            if(c >= 100) {
-                c = 100; clearInterval(iv);
-                setTimeout(() => {
-                    document.getElementById('loader').style.display = 'none';
-                    document.getElementById('mainContent').style.display = 'block';
-                    fetchData();
-                }, 500);
-            }
-            document.getElementById('l-val').innerText = c;
-        }, 40);
+<div id="bonusModal">
+    <div class="modal-content">
+        <p>ЗАПИС СТВОРЕНО!</p>
+        <div class="promo-box" id="promoCode">------</div>
+        <p style="font-size: 10px; opacity: 0.6;">СКОПІЮЙТЕ КОД ДЛЯ ЗНИЖКИ -10%</p>
+        <button class="btn" onclick="location.reload()">ЗАКРИТИ</button>
+    </div>
+</div>
 
-        async function fetchData() {
-            const res = await fetch(DB_URL);
-            bookings = await res.json() || {};
+<script>
+const DB_URL = "https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/";
+const TG_BOT_URL = "https://t.me/yyokai_ink_bot";
+const TG_CHAT_ID = "1634779056";
+
+let bookings = {}, selD = "", selT = "";
+
+// Loader
+let c = 0;
+let iv = setInterval(() => {
+    c += Math.floor(Math.random() * 10) + 2;
+    if(c >= 100) {
+        c = 100; clearInterval(iv);
+        setTimeout(() => {
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
             renderCal();
-        }
+        }, 400);
+    }
+    document.getElementById('l-val').innerText = c;
+}, 30);
 
-        function renderCal() {
-            const table = document.getElementById('calTable');
-            table.innerHTML = ""; let date = 1;
-            for(let i=0; i<6; i++) {
-                let tr = document.createElement('tr');
-                for(let j=0; j<7; j++) {
-                    let td = document.createElement('td');
-                    if(date > 31) break;
-                    const dStr = `2026-05-${date}`;
-                    td.innerText = date;
-                    const full = ["10:00","13:00","16:00","19:00"].every(t => Object.values(bookings).some(b => b.date === dStr && b.time === t));
-                    if(full) td.className = "booked";
-                    else td.onclick = () => selectDay(dStr, td);
-                    date++; tr.appendChild(td);
-                }
-                if(tr.innerText.trim() !== "") table.appendChild(tr);
+function renderCal() {
+    const table = document.getElementById('calTable');
+    table.innerHTML = "";
+    let date = 1;
+    // Спрощена генерація на травень 2026 (починається з п'ятниці)
+    for(let i=0; i<6; i++) {
+        let tr = document.createElement('tr');
+        for(let j=0; j<7; j++) {
+            let td = document.createElement('td');
+            if((i===0 && j<4) || date > 31) {
+                td.className = "empty";
+            } else {
+                let currentDay = date;
+                td.innerText = currentDay;
+                td.onclick = () => selectDay(`2026-05-${currentDay}`, td);
+                date++;
             }
+            tr.appendChild(td);
         }
+        table.appendChild(tr);
+    }
+}
 
-        function selectDay(dStr, el) {
-            document.querySelectorAll('td').forEach(t => t.classList.remove('selected'));
-            el.classList.add('selected'); selD = dStr;
-            document.getElementById('slotsGrid').style.display = 'grid';
-            document.querySelectorAll('.slot').forEach(s => {
-                const t = s.dataset.time;
-                s.classList.remove('selected', 'booked-slot');
-                if(Object.values(bookings).some(b => b.date === dStr && b.time === t)) s.classList.add('booked-slot');
-                s.onclick = () => {
-                    document.querySelectorAll('.slot').forEach(sl => sl.classList.remove('selected'));
-                    s.classList.add('selected'); selT = t;
-                    document.getElementById('dateLabel').innerText = `ОБРАНО: ${dStr} | ${t}`;
-                    document.getElementById('bookingForm').style.display = 'flex';
-                };
-            });
-        }
+function selectDay(dStr, el) {
+    document.querySelectorAll('td').forEach(t => t.classList.remove('selected'));
+    el.classList.add('selected');
+    selD = dStr;
+    document.getElementById('slotsGrid').style.display = 'grid';
+    document.getElementById('bookingForm').style.display = 'none';
+}
 
-        document.getElementById('bookingForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const promo = Math.floor(1000000 + Math.random() * 9000000);
-            const data = { 
-                date: selD, time: selT, promo,
-                name: document.getElementById('uName').value, 
-                insta: document.getElementById('uInsta').value, 
-                phone: document.getElementById('uPhone').value 
-            };
+document.querySelectorAll('.slot').forEach(s => {
+    s.onclick = () => {
+        document.querySelectorAll('.slot').forEach(sl => sl.classList.remove('selected'));
+        s.classList.add('selected');
+        selT = s.dataset.time;
+        document.getElementById('dateLabel').innerText = `ОБРАНО: ${selD} о ${selT}`;
+        document.getElementById('bookingForm').style.display = 'flex';
+    };
+});
 
-            await fetch(DB_URL, { method: 'POST', body: JSON.stringify(data) });
-            
-            const msg = `⚡️ ЗАПИС: ${data.date} | ${data.time}\n👤 ${data.name}\n📱 Соцмережі: ${data.insta}\n📞 Тел: ${data.phone}\n🎁 Промокод: ${promo}`;
-            fetch(`https://telegram.org{TG_TOKEN}/sendMessage?chat_id=${TG_CHAT_ID}&text=${encodeURIComponent(msg)}`);
+document.getElementById('bookingForm').onsubmit = async (e) => {
+    e.preventDefault();
+    const promo = Math.floor(100000 + Math.random() * 900000);
+    const data = {
+        date: selD, time: selT, promo,
+        name: document.getElementById('uName').value,
+        insta: document.getElementById('uInsta').value,
+        phone: document.getElementById('uPhone').value
+    };
 
-            document.getElementById('promoCode').innerText = promo;
-            document.getElementById('bonusModal').style.display = 'flex';
-        };
+    // Відправка в Firebase
+    await fetch(DB_URL, { method: 'POST', body: JSON.stringify(data) });
 
-        function copyPromo() {
-            const code = document.getElementById('promoCode').innerText;
-            navigator.clipboard.writeText(code);
-            alert("Код скопійовано: " + code);
-        }
+    // Відправка в Telegram
+    const msg = `⚡️ НОВИЙ ЗАПИС!\n📅 Дата: ${data.date}\n⏰ Час: ${data.time}\n👤 Ім'я: ${data.name}\n📱 Insta: ${data.insta}\n📞 Тел: ${data.phone}\n🎁 Промо: ${promo}`;
+    
+    await fetch(`${TG_BOT_URL}?chat_id=${TG_CHAT_ID}&text=${encodeURIComponent(msg)}`);
 
-        window.openAdmin = () => {
-            if(prompt('PASS:') === 'yokai123234') {
-                document.getElementById('adminPanel').style.display = 'block';
-                const list = document.getElementById('adminList'); list.innerHTML = "";
-                for(let key in bookings) {
-                    const b = bookings[key];
-                    list.innerHTML += `<div class="log-card"><b>${b.date} | ${b.time}</b><br>${b.name} (${b.insta})<br>Код: ${b.promo}</div>`;
-                }
-            }
-        };
-    </script>
+    document.getElementById('promoCode').innerText = promo;
+    document.getElementById('bonusModal').style.display = 'flex';
+};
+</script>
 </body>
 </html>
