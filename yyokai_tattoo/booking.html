@@ -3,104 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYOKAI | BOOKING SYSTEM</title>
+    <title>YYOKAI | BOOKING</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         :root { --red: #ff0000; --bg: #000; --white: #ffffff; }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body { background: #000; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; touch-action: manipulation; }
 
-        /* --- ЛОУДЕР (ФІКС: ВІН ЗАВЖДИ ВІДКРИВАЄТЬСЯ) --- */
+        /* --- ЛОУДЕР (CSS ONLY - ГАРАНТОВАНА ПОЯВА) --- */
         #loader { 
             position: fixed; inset: 0; background: #000; z-index: 9999; 
             display: flex; justify-content: center; align-items: center; 
-            transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1); 
+            animation: slideUpLoader 1.2s cubic-bezier(0.85, 0, 0.15, 1) forwards 2s; 
         }
-        .loader-logo-static { font-family: 'Unbounded', sans-serif; font-size: 15vw; color: #fff; text-align: center; line-height: 0.8; }
+        .loader-logo { font-family: 'Unbounded', sans-serif; font-size: 15vw; color: #fff; text-align: center; line-height: 0.8; }
+        .loader-logo span { display: block; }
+        @keyframes slideUpLoader { to { transform: translateY(-100%); visibility: hidden; } }
 
-        /* --- ГОЛОВНЕ ЛОГО (ТВІЙ ІСТИННИЙ СТИЛЬ) --- */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
+        /* --- ГОЛОВНЕ ЛОГО (ІСТИННИЙ СТИЛЬ) --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #000; }
         .hero-title {
-            font-family: 'Unbounded', sans-serif; font-size: 24vw; line-height: 0.9;
+            font-family: 'Unbounded', sans-serif; font-size: 26vw; line-height: 0.85;
             text-transform: uppercase; text-align: center; letter-spacing: -0.05em;
-            display: flex; flex-direction: column; visibility: hidden;
+            display: flex; flex-direction: column;
         }
-        .hero-title.visible { visibility: visible; }
         .hero-title span {
             display: inline-block; opacity: 0;
             transform: scaleY(4) translateY(200px);
-            filter: blur(20px); transition: 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            filter: blur(20px);
+            animation: logoIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        .hero-title.active span { opacity: 1; transform: scaleY(1) translateY(0); filter: blur(0); }
-        .hero-title span:nth-child(2) { transition-delay: 0.15s; margin-top: 30px; }
+        .hero-title span:nth-child(1) { animation-delay: 2.2s; }
+        .hero-title span:nth-child(2) { animation-delay: 2.35s; margin-top: 40px; } /* ВІДСТУП ТУТ */
+
+        @keyframes logoIn { to { opacity: 1; transform: scaleY(1) translateY(0); filter: blur(0); } }
 
         /* --- КОНТЕНТ --- */
-        .container { padding: 40px 20px; max-width: 500px; margin: 0 auto; opacity: 0; transition: 1.5s; visibility: hidden; }
-        .container.visible { opacity: 1; visibility: visible; }
+        .container { padding: 40px 20px; max-width: 500px; margin: 0 auto; opacity: 0; animation: fadeIn 1s forwards 3.5s; }
+        @keyframes fadeIn { to { opacity: 1; } }
 
-        /* КАЛЕНДАР (БІЛИЙ З ЗАКРУГЛЕННЯМИ) */
-        .calendar-box { background: var(--white); padding: 25px; border-radius: 35px; margin-bottom: 30px; }
+        .calendar-box { background: var(--white); padding: 25px; border-radius: 35px; margin-bottom: 30px; margin-top: 40px; }
         .calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
-        .day { 
-            aspect-ratio: 1; background: #f0f0f0; color: #000; border-radius: 12px;
-            display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600;
-            cursor: pointer; transition: 0.3s; position: relative;
-        }
+        .day { aspect-ratio: 1; background: #f0f0f0; color: #000; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.3s; }
         .day.selected { background: var(--red); color: #fff; transform: scale(1.1); box-shadow: 0 8px 20px rgba(255,0,0,0.3); }
-        .day.booked { opacity: 0.3; cursor: not-allowed; }
-        .day.booked::after { content: ''; position: absolute; width: 60%; height: 1px; background: #000; transform: rotate(-45deg); }
+        .day.booked { opacity: 0.3; cursor: not-allowed; text-decoration: line-through; }
 
-        /* ФОРМА */
         #bookingForm { display: none; flex-direction: column; gap: 15px; margin-top: 20px; }
-        #bookingForm.active { display: flex; animation: slideUp 0.6s ease forwards; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-        input { background: #111; border: 1px solid #222; padding: 20px; color: #fff; font-size: 16px; border-radius: 18px; }
+        #bookingForm.active { display: flex; }
+        input { background: #111; border: 1px solid #222; padding: 20px; color: #fff; font-size: 16px; border-radius: 18px; width: 100%; }
         input:focus { outline: none; border-color: var(--red); }
         .submit-btn { background: var(--red); color: #fff; border: none; padding: 22px; border-radius: 18px; font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 900; cursor: pointer; }
 
-        .success-msg { display: none; text-align: center; color: var(--red); font-family: 'Unbounded', sans-serif; font-size: 14px; margin-top: 40px; }
-
-        /* АДМІНКА */
-        .admin-trigger { margin: 100px 0; text-align: center; opacity: 0.1; font-size: 10px; cursor: pointer; padding: 20px; }
-        #adminSection { display: none; background: #080808; padding: 20px; border-radius: 20px; margin-top: 40px; }
-        .booking-card { background: #111; padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+        .admin-trigger { margin: 100px 0; text-align: center; opacity: 0.05; font-size: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
 
+    <!-- ЛОУДЕР -->
     <div id="loader">
-        <div class="loader-logo-static"><span>YYO</span><span>KAI</span></div>
+        <div class="loader-logo"><span>YYO</span><span>KAI</span></div>
     </div>
 
     <main>
+        <!-- ЛОГОТИП -->
         <section class="hero">
-            <h1 class="hero-title" id="main-logo"><span>YYO</span><span>KAI</span></h1>
+            <h1 class="hero-title"><span>YYO</span><span>KAI</span></h1>
         </section>
 
+        <!-- КАЛЕНДАР -->
         <div class="container" id="mainContent">
             <div class="calendar-box">
                 <div class="calendar" id="calendarGrid"></div>
             </div>
 
             <form id="bookingForm">
-                <p id="dateLabel" style="color: var(--red); font-size: 9px; letter-spacing: 3px; margin-bottom: 10px; font-weight: 900;"></p>
+                <p id="dateLabel" style="color: var(--red); font-size: 10px; letter-spacing: 2px; margin-bottom: 10px; font-weight: 900; text-transform: uppercase;"></p>
                 <input type="text" id="userName" placeholder="IDENTITY / NAME" required>
                 <input type="text" id="userPhone" placeholder="CONTACT PHONE" required>
                 <input type="text" id="userInsta" placeholder="INSTAGRAM TAG" required>
                 <button type="submit" class="submit-btn">INITIATE PROTOCOL</button>
             </form>
 
-            <div id="success" class="success-msg">PROTOCOL ACCEPTED.<br>Я ЗКОНТАКТУЮ З ТОБОЮ.</div>
-
-            <div id="adminSection"><div id="adminList"></div></div>
+            <div id="success" style="display:none; text-align:center; color:var(--red); font-family:'Unbounded'; padding: 40px 0;">PROTOCOL ACCEPTED.</div>
             <div class="admin-trigger" onclick="unlockAdmin()">.access_protocol</div>
         </div>
     </main>
 
+    <!-- FIREBASE ТА ЛОГІКА -->
     <script type="module">
         import { initializeApp } from "https://gstatic.com";
-        import { getDatabase, ref, set, push, onValue, remove } from "https://gstatic.com";
+        import { getDatabase, ref, push, onValue } from "https://gstatic.com";
 
         const firebaseConfig = {
             apiKey: "AIzaSyALs-ZgFX7auGxRQ2EeQnVngjnejimPLV4",
@@ -112,83 +104,50 @@
             appId: "1:995298614954:web:e4039c69fcb0541a95fad3"
         };
 
-        // Старт анімацій (тепер незалежно від Firebase)
-        window.addEventListener('DOMContentLoaded', () => {
-            const loader = document.getElementById('loader');
-            const logo = document.getElementById('main-logo');
-            const content = document.getElementById('mainContent');
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
 
-            // Лоудер просто висить 1.5 сек і зникає
-            setTimeout(() => {
-                loader.style.transform = "translateY(-100%)";
-                logo.classList.add('visible');
-                setTimeout(() => { 
-                    logo.classList.add('active'); 
-                    setTimeout(() => { content.classList.add('visible'); }, 1500);
-                }, 200);
-            }, 1500);
+        const grid = document.getElementById('calendarGrid');
+        const form = document.getElementById('bookingForm');
+        let selectedDate = null;
 
-            // Запуск бази
-            try {
-                const app = initializeApp(firebaseConfig);
-                const db = getDatabase(app);
-                initCalendar(db);
-            } catch (e) { console.log("Firebase error"); }
+        // Слухаємо базу даних
+        onValue(ref(db, 'bookings'), (snapshot) => {
+            grid.innerHTML = '';
+            const data = snapshot.val() || {};
+            const bookedDays = Object.values(data).map(b => b.date);
+
+            for (let i = 1; i <= 31; i++) {
+                const day = document.createElement('div');
+                day.className = 'day' + (bookedDays.includes(i.toString()) ? ' booked' : '');
+                day.innerText = i;
+                day.onclick = () => {
+                    if (!day.classList.contains('booked')) {
+                        document.querySelectorAll('.day').forEach(d => d.classList.remove('selected'));
+                        day.classList.add('selected');
+                        selectedDate = i;
+                        document.getElementById('dateLabel').innerText = `DATE: ${i} / MAY`;
+                        form.classList.add('active');
+                    }
+                };
+                grid.appendChild(day);
+            }
         });
 
-        function initCalendar(db) {
-            onValue(ref(db, 'bookings'), (snapshot) => {
-                const grid = document.getElementById('calendarGrid');
-                grid.innerHTML = '';
-                const data = snapshot.val() || {};
-                const bookedDays = Object.values(data).map(b => b.date);
-
-                for (let i = 1; i <= 31; i++) {
-                    const day = document.createElement('div');
-                    day.className = 'day' + (bookedDays.includes(i.toString()) ? ' booked' : '');
-                    day.innerText = i;
-                    day.onclick = () => {
-                        if (!day.classList.contains('booked')) {
-                            document.querySelectorAll('.day').forEach(d => d.classList.remove('selected'));
-                            day.classList.add('selected');
-                            window.selectedDate = i;
-                            document.getElementById('dateLabel').innerText = `DATE: ${i} / MAY`;
-                            document.getElementById('bookingForm').classList.add('active');
-                            document.getElementById('bookingForm').scrollIntoView({behavior: 'smooth'});
-                        }
-                    };
-                    grid.appendChild(day);
-                }
-                updateAdminList(db, data);
-            });
-        }
-
-        document.getElementById('bookingForm').onsubmit = async (e) => {
+        // Відправка
+        form.onsubmit = async (e) => {
             e.preventDefault();
-            const app = initializeApp(firebaseConfig);
-            const db = getDatabase(app);
             await push(ref(db, 'bookings'), {
-                date: window.selectedDate.toString(),
+                date: selectedDate.toString(),
                 name: document.getElementById('userName').value,
                 phone: document.getElementById('userPhone').value,
                 insta: document.getElementById('userInsta').value
             });
-            document.getElementById('bookingForm').style.display = 'none';
+            form.style.display = 'none';
             document.getElementById('success').style.display = 'block';
         };
 
-        window.unlockAdmin = () => { if(prompt('PASS:') === 'yokai123234') document.getElementById('adminSection').style.display='block'; };
-        function updateAdminList(db, data) {
-            const list = document.getElementById('adminList'); list.innerHTML = '';
-            for (let id in data) {
-                const b = data[id];
-                list.innerHTML += `<div class="booking-card">
-                    <div><b>${b.date}</b> | ${b.name}</div>
-                    <button onclick="deleteEntry('${id}')" style="color:red; background:none; border:none;">DEL</button>
-                </div>`;
-            }
-            window.deleteEntry = (id) => { if(confirm('FREE?')) remove(ref(db, `bookings/${id}`)); };
-        }
+        window.unlockAdmin = () => { if(prompt('PASS:') === 'yokai123234') alert('Адмінку додамо в наступному кроці, перевір спершу це!'); };
     </script>
 </body>
 </html>
