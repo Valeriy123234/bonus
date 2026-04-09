@@ -31,29 +31,56 @@
             pointer-events: none; background: url(https://vercel.app);
         }
 
-        /* --- HERO & LOGO --- */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #000; position: relative; }
+               .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #000; position: relative; }
+        
         .hero-title {
-            font-family: 'Unbounded', sans-serif; font-size: 24vw; line-height: 0.9; /* Збільшено відступ між рядками */
-            text-transform: uppercase; text-align: center; letter-spacing: -0.05em;
-            display: flex; flex-direction: column; visibility: hidden;
+            font-family: 'Unbounded', sans-serif; 
+            font-size: 24vw; 
+            line-height: 0.75; /* Максимально щільно */
+            text-transform: uppercase; 
+            text-align: center; 
+            letter-spacing: -0.05em;
+            display: flex; 
+            flex-direction: column; 
+            visibility: hidden;
         }
+
         .hero-title.visible { visibility: visible; }
+
         .hero-title span {
-            display: inline-block; opacity: 0;
+            display: inline-block; 
+            opacity: 0;
             transform: scaleY(4) translateY(200px) translateZ(-800px);
-            filter: blur(20px); transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            filter: blur(20px); 
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .hero-title.active span { opacity: 1; transform: scaleY(1) translateY(0) translateZ(0); filter: blur(0); }
-        .hero-title span:nth-child(2) { transition-delay: 0.15s; margin-top: 20px; /* Додатковий простір між YYO та KAI */ }
+
+        .hero-title.active span { 
+            opacity: 1; 
+            transform: scaleY(1) translateY(0) translateZ(0); 
+            filter: blur(0); 
+        }
+
+        /* Мінімальний відступ для другого рядка */
+        .hero-title span:nth-child(2) { 
+            transition-delay: 0.15s; 
+            margin-top: -5px; /* Трохи підтягуємо вгору до першого рядка */
+        }
 
         .hero-tagline {
-            margin-top: 40px; font-size: 10px; letter-spacing: 8px;
-            color: #444; text-transform: uppercase; font-weight: 400;
-            opacity: 0; transform: translateY(15px);
+            margin-top: 35px; /* Відступ підпису під усім логотипом */
+            font-size: 10px; 
+            letter-spacing: 8px;
+            color: #444; 
+            text-transform: uppercase; 
+            font-weight: 400;
+            opacity: 0; 
+            transform: translateY(15px);
             transition: all 1s ease 1s;
         }
+
         .hero-title.active + .hero-tagline { opacity: 1; transform: translateY(0); }
+
 
         /* --- GRID (СВІТЛІШИЙ ТОН) --- */
         .grid { display: flex; flex-direction: column; width: 100%; gap: 2px; background: #222; }
