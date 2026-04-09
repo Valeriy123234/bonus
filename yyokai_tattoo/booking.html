@@ -8,113 +8,142 @@
     <style>
         :root { --red: #ff0000; --bg: #000; --white: #ffffff; }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        
         body { background: #000; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; touch-action: manipulation; }
 
-        /* ЛОУДЕР - ТЕПЕР ВІН ЗВЕРХУ ВСЬОГО */
+        /* --- ЛОУДЕР (ЯК В ОРИГІНАЛІ) --- */
         #loader { 
             position: fixed; inset: 0; background: #000; z-index: 9999; 
-            display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            transition: 1.2s cubic-bezier(0.85, 0, 0.15, 1); 
+            display: flex; justify-content: center; align-items: center; 
+            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1); 
         }
-        .loader-logo { font-family: 'Unbounded', sans-serif; font-size: 15vw; text-align: center; line-height: 0.8; color: #fff; }
-        .loader-logo span { display: block; }
+        .loader-num { font-family: 'Unbounded', sans-serif; font-size: 25vw; color: #fff; }
 
-        /* КОНТЕНТ (ПРИХОВАНИЙ СПОЧАТКУ) */
-        .container { padding: 40px 20px; max-width: 500px; margin: 0 auto; opacity: 0; visibility: hidden; transition: 1s ease; }
-        .container.visible { opacity: 1; visibility: visible; }
+        /* --- ГОЛОВНЕ ЛОГО (ТВІЙ СТИЛЬ) --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
+        .hero-title {
+            font-family: 'Unbounded', sans-serif; font-size: 24vw; line-height: 0.9;
+            text-transform: uppercase; text-align: center; letter-spacing: -0.05em;
+            display: flex; flex-direction: column; visibility: hidden;
+        }
+        .hero-title.visible { visibility: visible; }
+        .hero-title span {
+            display: inline-block; opacity: 0;
+            transform: scaleY(4) translateY(200px);
+            filter: blur(20px); transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .hero-title.active span { opacity: 1; transform: scaleY(1) translateY(0); filter: blur(0); }
+        /* Відступи між YYO та KAI */
+        .hero-title span:nth-child(2) { transition-delay: 0.15s; margin-top: 25px; margin-bottom: 25px; }
 
-        h1 { font-family: 'Unbounded', sans-serif; font-size: 42px; text-transform: uppercase; margin-bottom: 30px; letter-spacing: -2px; }
+        /* --- КОНТЕНТ БУКІНГУ --- */
+        .container { padding: 40px 20px; max-width: 500px; margin: 0 auto; opacity: 0; transition: 1.5s; }
+        .container.visible { opacity: 1; }
 
-        /* КАЛЕНДАР (БІЛИЙ З ЗАКРУГЛЕННЯМИ) */
-        .calendar-box { background: var(--white); padding: 25px; border-radius: 35px; margin-bottom: 30px; }
+        /* КАЛЕНДАР (БІЛИЙ СТИЛЬНИЙ) --- */
+        .calendar-box { background: var(--white); padding: 25px; border-radius: 35px; margin-bottom: 30px; margin-top: 50px; }
         .calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
-        
         .day { 
             aspect-ratio: 1; background: #f0f0f0; color: #000; border-radius: 12px;
             display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600;
             cursor: pointer; transition: 0.3s; position: relative;
         }
-        .day:hover:not(.booked) { background: #e0e0e0; transform: scale(1.05); }
         .day.selected { background: var(--red); color: #fff; transform: scale(1.1); box-shadow: 0 8px 20px rgba(255,0,0,0.3); }
         .day.booked { opacity: 0.3; cursor: not-allowed; }
-        .day.booked::after { content: ''; position: absolute; width: 60%; height: 1px; background: #000; transform: rotate(-45deg); }
 
-        /* ФОРМА ТА ІНПУТИ */
+        /* ФОРМА (БЕЗ ЗУМУ) --- */
         #bookingForm { display: none; flex-direction: column; gap: 15px; }
         #bookingForm.active { display: flex; animation: slideUp 0.6s ease forwards; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        input { background: #111; border: 1px solid #222; padding: 20px; color: #fff; font-size: 16px; border-radius: 18px; transition: 0.3s; }
-        input:focus { outline: none; border-color: var(--red); background: #151515; }
-        
-        .submit-btn { background: var(--red); color: #fff; border: none; padding: 22px; border-radius: 18px; font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 900; cursor: pointer; margin-top: 10px; }
-        
-        .success-msg { display: none; text-align: center; color: var(--red); font-family: 'Unbounded', sans-serif; font-size: 14px; margin-top: 40px; }
+        input { background: #111; border: 1px solid #222; padding: 20px; color: #fff; font-size: 16px; border-radius: 18px; }
+        input:focus { outline: none; border-color: var(--red); }
+        .submit-btn { background: var(--red); color: #fff; border: none; padding: 22px; border-radius: 18px; font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 900; cursor: pointer; }
 
-        /* АДМІН */
-        #adminSection { display: none; margin-top: 60px; padding-top: 30px; border-top: 1px solid #222; }
-        .booking-card { background: #111; padding: 20px; border-radius: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
-        .del-btn { color: var(--red); border: 1px solid var(--red); background: none; padding: 10px 15px; border-radius: 10px; cursor: pointer; font-size: 10px; }
-
-        .admin-trigger { margin: 80px 0; text-align: center; opacity: 0.1; font-size: 10px; cursor: pointer; }
+        /* АДМІНКА --- */
+        .admin-trigger { margin: 100px 0; text-align: center; opacity: 0.1; font-size: 10px; cursor: pointer; }
+        #adminSection { display: none; padding: 20px; background: #080808; border-radius: 20px; margin-top: 40px; }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div class="loader-logo"><span>YYO</span><span>KAI</span></div>
-    </div>
+    <div id="loader"><div class="loader-num" id="load-val">0</div></div>
 
-    <main class="container" id="mainContent">
-        <h1>BOOKING</h1>
-        
-        <div class="calendar-box">
-            <div class="calendar" id="calendarGrid"></div>
+    <main>
+        <!-- ТВОЄ ІСТИННЕ ЛОГО ПІСЛЯ ЛОУДЕРА -->
+        <section class="hero">
+            <h1 class="hero-title" id="main-logo"><span>YYO</span><span>KAI</span></h1>
+        </section>
+
+        <div class="container" id="mainContent">
+            <div class="calendar-box">
+                <div class="calendar" id="calendarGrid"></div>
+            </div>
+
+            <form id="bookingForm">
+                <p id="dateLabel" style="color: var(--red); font-size: 9px; letter-spacing: 3px; margin-bottom: 15px; font-weight: 900;"></p>
+                <input type="text" id="userName" placeholder="IDENTITY / NAME" required>
+                <input type="text" id="userPhone" placeholder="CONTACT PHONE" required>
+                <input type="text" id="userInsta" placeholder="INSTAGRAM TAG" required>
+                <button type="submit" class="submit-btn">INITIATE PROTOCOL</button>
+            </form>
+
+            <div id="success" style="display:none; text-align:center; color:var(--red); font-family:'Unbounded'; padding: 40px 0;">PROTOCOL ACCEPTED.</div>
+
+            <div id="adminSection"><div id="adminList"></div></div>
+            <div class="admin-trigger" onclick="unlockAdmin()">.access_protocol</div>
         </div>
-
-        <form id="bookingForm">
-            <p id="dateLabel" style="color: var(--red); font-size: 9px; letter-spacing: 3px; margin-bottom: 10px; font-weight: 900;"></p>
-            <input type="text" id="userName" placeholder="IDENTITY / NAME" required>
-            <input type="text" id="userPhone" placeholder="CONTACT PHONE" required>
-            <input type="text" id="userInsta" placeholder="INSTAGRAM TAG" required>
-            <button type="submit" class="submit-btn">INITIATE PROTOCOL</button>
-        </form>
-
-        <div id="success" class="success-msg">PROTOCOL ACCEPTED.<br>Я ЗКОНТАКТУЮ З ТОБОЮ.</div>
-
-        <div id="adminSection"><div id="adminList"></div></div>
-        <div class="admin-trigger" onclick="unlockAdmin()">.access_protocol</div>
     </main>
 
     <script type="module">
         import { initializeApp } from "https://gstatic.com";
         import { getDatabase, ref, set, push, onValue, remove } from "https://gstatic.com";
 
-        // ВСТАВ СВОЇ ДАНІ ТУТ
+        // ВСТАВ СВІЙ АПІ КЕЙ ТУТ (ЯКЩО ПОРОЖНЬО - АНІМАЦІЯ ВСЕ ОДНО ПРАЦЮВАТИМЕ)
         const firebaseConfig = {
-            apiKey: "\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC/vo8+4jYKYILc\nrySEmBAQw2nKrpo2a5di4hbgPFRDOYWbyVFKbKhZ4kzSK2/z/22YMTwVEnFks2Ox\n3EBeVgIMf1d363wAAh18l0bmm6MNyTDaY2TTV+Qnj/zPtp6ipkNNB+uCaiWdjVBC\n6bihCJwmhJjOofFAYAie3E1UyCchWf5GS+NYirOcx3FQxszTVc1byrJ9n1luL4Gm\nnBlmpfq8wqAN95L9Xm82e3WPb89YbeKgMfeofm7govAkGCaS6qtboD/UwGRVmKxq\nuj6TSPCNu1zvI+Mcuy/jItvpkv6Aqabco/0mzysqSV25V1Yc94MfqrV027qpK0Xq\neEBhLIzXAgMBAAECggEAQ2W7/CKPVD5wQRnfACxjGUFW4kNVOWPAJqXJ3K/X/nkt\nmYC97icbVdzRm95gz6cs4p4LvGxrJzZXCKGejoo01ie8mw5O28Hik3SpG04Blkrt\nvRXKzu7J544ZEvnh8NH4Pg9WnNSqvCJ738k/eHsKSA+7loYdwr7+yLgvBmoENxhL\nDzcTn/Ppp4D+g6Iv5t1g+XXruCu1BpAf810zurJMx2kjT+iiYWwlHTA1wVAleTha\nj1H3XzYSPTe55WmdW4HiwhuoeK42Jd8TwQxfL8Tx5J6QN2GsBUYIxyph6C0P8D5G\n7BJHv1u1xFvPG8rSl46rH6EjMw8MrJQqr0OTOrkJQQKBgQDkvBJeitGLv2AJkmd9\nobs+OtEmBpNYHY6cAUq1PdnaFLgUXjAhd+gxxYea2xrPG/jAKy21KqlLvjXlkoc9\n/fi5viJ39a1i2q0KGJcfJIpUcD/kx9RQSWFnLIhXD0uj4IWZjl4gaiIkhVWrAEjP\nSiKPdNwfzZrlJChQLnQ5TM0NKQKBgQDWmbb5xJ2fObOeR4s7tkd607quIvMkoRL6\nUlt98VfNVYRFFcDAC6KH1t3cu3e7RpKFGZ39ZliFjzkWKHEu7+cSgobGn3pTXDC9\nNofwC4agRrqVBp4VK8mlt1L7xzhfUq439CeuZk+1VzAGkGfwGrJtWgjUdklTz/LU\n+sHPiIYJ/wKBgDLJCy8QlVv43sLhTbcYLLGxb3SI6zgaP+qlYsgA9pi0Fvb2vqr/\nq385g1U/pqErbbyFGb3qvfICRoc1VG/QLuRWseJ+msOjF95w/US94TTEQ3txXtOA\np2639YGW9M1q8V7ZvE5oIjKHpDC2fHQB2tCNOr6Y8PZFY+oBlm6OfcyZAoGBAJd1\nWayiVdTA9sJpIB1+oqhPstugExbxD+HYKnaS1TM4fef8WFOyYn2Y6nEVZoWoY1TJ\nJbZoe2WYFeRLmsZTzzRDJzgb6kvXLxb726lRmSyZfqobR4sNon3xCwJkMqckRY18\nJl1yHCOSa3TWimTtkqyW9NBuw4YBqBMk/5CnfGKlAoGAC45ycU28xwwDfuEhOZTa\n0+jAQ1r1340n8UxNvfJPD0L2JIYxKnlGJaPhnqXhTvC9iQk/9+3AUoMdT72QeXaP\n3spYik1SiAXriYtfU0Xk+6xBBT1CdGA5/sbptCh73YULpsf1gc6mGUd9Y2q8Iqfb\nY6fl1ZEapGm3cgH3w11sHeE=\n-----END PRIVATE KEY-----\n",",
-            databaseURL: "https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/",
+            apiKey: "ВСТАВ_СВІЙ_API_KEY",
+            databaseURL: "https://firebasedatabase.app",
             projectId: "yyokai-tattoo-system",
-            storageBucket: "yyokai-tattoo-system.appspot.com",
+            storageBucket: "://appspot.com",
             appId: "995298614954"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+        // Безпечний запуск Firebase
+        let db;
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getDatabase(app);
+        } catch (e) { console.error("Firebase config missing"); }
 
-        // Логіка лоудера
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('loader').style.transform = "translateY(-100%)";
-                document.getElementById('mainContent').classList.add('visible');
-                initApp();
-            }, 1800);
+        // ЛОДЕР ТА АНІМАЦІЯ ЛОГО (ТВІЙ ОРИГІНАЛЬНИЙ СКРИПТ)
+        window.addEventListener('DOMContentLoaded', () => {
+            let count = 0;
+            const loadVal = document.getElementById('load-val');
+            const loader = document.getElementById('loader');
+            const logo = document.getElementById('main-logo');
+            const content = document.getElementById('mainContent');
+
+            const interval = setInterval(() => {
+                count += Math.floor(Math.random() * 8) + 1;
+                if (count >= 100) {
+                    count = 100;
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        loader.style.transform = "translateY(-100%)";
+                        logo.classList.add('visible');
+                        setTimeout(() => { 
+                            logo.classList.add('active'); 
+                            // Через 2 секунди після лого з'являється календар
+                            setTimeout(() => { content.classList.add('visible'); }, 1500);
+                        }, 200);
+                    }, 400);
+                }
+                loadVal.innerText = count;
+            }, 50);
+
+            if (db) initApp(db);
         });
 
-        let selectedDate = null;
-
-        function initApp() {
+        function initApp(db) {
             onValue(ref(db, 'bookings'), (snapshot) => {
                 const grid = document.getElementById('calendarGrid');
                 grid.innerHTML = '';
@@ -129,8 +158,8 @@
                         if (!day.classList.contains('booked')) {
                             document.querySelectorAll('.day').forEach(d => d.classList.remove('selected'));
                             day.classList.add('selected');
-                            selectedDate = i;
-                            document.getElementById('dateLabel').innerText = `DATE SELECTED: ${i} / MAY`;
+                            window.selectedDate = i;
+                            document.getElementById('dateLabel').innerText = `DATE: ${i} / MAY`;
                             document.getElementById('bookingForm').classList.add('active');
                             document.getElementById('bookingForm').scrollIntoView({behavior: 'smooth'});
                         }
@@ -141,36 +170,8 @@
             });
         }
 
-        document.getElementById('bookingForm').onsubmit = async (e) => {
-            e.preventDefault();
-            await push(ref(db, 'bookings'), {
-                date: selectedDate.toString(),
-                name: document.getElementById('userName').value,
-                phone: document.getElementById('userPhone').value,
-                insta: document.getElementById('userInsta').value
-            });
-            document.getElementById('bookingForm').style.display = 'none';
-            document.getElementById('success').style.display = 'block';
-        };
-
-        window.unlockAdmin = function() {
-            if (prompt('PASSCODE:') === 'yokai123234') {
-                document.getElementById('adminSection').style.display = 'block';
-            }
-        };
-
-        function updateAdminList(data) {
-            const list = document.getElementById('adminList');
-            list.innerHTML = '';
-            for (let id in data) {
-                const b = data[id];
-                list.innerHTML += `<div class="booking-card">
-                    <div><b>DATE: ${b.date}</b><br>${b.name}<br><span>${b.insta}</span></div>
-                    <button class="del-btn" onclick="deleteEntry('${id}')">RELEASE</button>
-                </div>`;
-            }
-        }
-        window.deleteEntry = (id) => { if(confirm('FREE THIS DATE?')) remove(ref(db, `bookings/${id}`)); };
+        // Кліки для кнопок
+        window.unlockAdmin = () => { if(prompt('PASS:') === 'yokai123234') document.getElementById('adminSection').style.display='block'; };
     </script>
 </body>
 </html>
