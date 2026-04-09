@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYOKAI | TATTOO ARCHITECTURE</title>
+    <title>YYOKAI | INK ARCHITECT</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         :root { --red: #ff0000; --bg: #000; --white: #ffffff; }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body { background: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        /* --- ЛОУДЕР (БЕЗБАЖНИЙ) --- */
+        /* --- ЛОУДЕР (БЕЗ НУЛЯ ПОПЕРЕДУ) --- */
         #loader {
             position: fixed; inset: 0; background: #000; z-index: 9999;
             display: flex; justify-content: center; align-items: center;
@@ -41,16 +41,17 @@
         .hero-title.active span { opacity: 1; transform: scaleY(1) translateY(0) translateZ(0); filter: blur(0); }
         .hero-title span:nth-child(2) { transition-delay: 0.15s; }
 
-        /* ДЕСКРИПТОР ПІД ЛОГО */
+        /* ДЕСКРИПТОР (ТЕПЕР СТИЛЬНИЙ І СТРИМАНИЙ) */
         .hero-tagline {
-            margin-top: 30px; font-size: 10px; letter-spacing: 6px;
-            color: var(--red); text-transform: uppercase; font-weight: 700;
-            opacity: 0; transform: translateY(20px);
+            margin-top: 30px; font-size: 10px; letter-spacing: 8px;
+            color: #444; /* Стриманий сірий */
+            text-transform: uppercase; font-weight: 400;
+            opacity: 0; transform: translateY(15px);
             transition: all 1s ease 1s;
         }
         .hero-title.active + .hero-tagline { opacity: 1; transform: translateY(0); }
 
-        /* --- ІМЕРСИВНА СІТКА --- */
+        /* --- GRID --- */
         .grid { display: flex; flex-direction: column; width: 100%; gap: 2px; background: #111; }
         .grid-item {
             height: 50vh; position: relative; overflow: hidden;
@@ -62,7 +63,6 @@
             background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, transparent 80%);
             z-index: 1;
         }
-        /* ФОНИ - ЗАМІНИ НА СВОЇ */
         .img-1 { background: url('https://unsplash.com') center/cover; }
         .img-2 { background: url('https://unsplash.com') center/cover; }
         .img-3 { background: url('https://unsplash.com') center/cover; }
@@ -76,7 +76,7 @@
         .footer-info { font-size: 9px; letter-spacing: 2px; color: #333; line-height: 2.5; text-transform: uppercase; }
         .footer-year { font-family: 'Unbounded'; font-size: 11px; color: var(--red); margin-top: 30px; }
 
-        /* --- ФІКСОВАНА КНОПКА (ЗАВЖДИ ПОВЕРХ) --- */
+        /* --- КНОПКА ЗАПИСУ --- */
         .cta-fixed {
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
             background: var(--red); color: #fff; padding: 22px 60px;
@@ -93,7 +93,7 @@
 <body>
 
     <div id="loader">
-        <div class="loader-num" id="load-val">000</div>
+        <div class="loader-num" id="load-val">0</div>
     </div>
 
     <div class="noise"></div>
@@ -106,7 +106,7 @@
                 <span>YYO</span>
                 <span>KAI</span>
             </h1>
-            <div class="hero-tagline">TATTOO ARCHITECTURE // LVIV</div>
+            <div class="hero-tagline">INK ARCHITECT // LVIV</div>
         </section>
 
         <section class="grid">
@@ -117,7 +117,7 @@
         </section>
 
         <footer>
-            <div class="footer-info">YYOKAI TATTOO ARCHITECTURE<br>LVIV CITY // CORE SECTOR<br>ESTABLISHED IN THE FOREST<br>V.1.0_MATRIX_READY</div>
+            <div class="footer-info">YYOKAI INK ARCHITECT<br>LVIV CITY // CORE SECTOR<br>V.1.0_MATRIX_READY</div>
             <div class="footer-year">© 2026 // BEYOND THE LIMITS</div>
         </footer>
     </main>
@@ -125,7 +125,6 @@
     <script src="https://telegram.org"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Ініціалізація Telegram
             if (window.Telegram && window.Telegram.WebApp) {
                 window.Telegram.WebApp.expand();
                 window.Telegram.WebApp.headerColor = '#000000';
@@ -150,7 +149,8 @@
                         }, 400);
                     }, 500);
                 }
-                loadVal.innerText = count.toString().padStart(3, '0');
+                // Виводимо число як воно є (без 0 попереду)
+                loadVal.innerText = count;
             }, 60);
         });
     </script>
