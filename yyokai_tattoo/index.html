@@ -2,147 +2,108 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYOKAI MATRIX</title>
-    <script src="https://jsdelivr.net"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YYOKAI | MATRIX</title>
     <style>
         @import url('https://googleapis.com');
 
-        :root {
-            --red: #ff0000;
-            --black: #050505;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; 
+            color: #fff; 
+            font-family: 'Space Mono', monospace; 
+            overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--black); color: white; font-family: 'Space Mono', monospace; overflow: hidden; }
-
-        /* СКЛЯНИЙ ШУМ НА ФОНІ */
-        body::before {
-            content: ""; position: fixed; inset: 0;
-            background-image: url("https://vercel.app");
-            opacity: 0.05; pointer-events: none; z-index: 10;
-        }
-
-        /* --- LOADER (GLITCH STYLE) --- */
+        /* ЛОУДЕР - ТЕПЕР ВІН НЕ ЗАВИСНЕ */
         #loader {
-            position: fixed; inset: 0; background: black; z-index: 9999;
+            position: fixed; inset: 0; background: #000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 9999;
         }
-        .glitch-text {
-            font-family: 'Syncopate', sans-serif; font-weight: 700; font-size: 14px;
-            letter-spacing: 8px; color: var(--red); text-transform: uppercase;
-            position: relative; animation: glitch 1s infinite;
+        .scanner {
+            width: 200px; height: 2px;
+            background: #200; position: relative; overflow: hidden;
         }
-        @keyframes glitch {
-            0% { transform: skew(0deg); }
-            20% { transform: skew(10deg); text-shadow: 2px 0 red; }
-            40% { transform: skew(-10deg); text-shadow: -2px 0 red; }
-            100% { transform: skew(0deg); }
+        .scanner::after {
+            content: ""; position: absolute; inset: 0;
+            background: #ff0000; box-shadow: 0 0 15px #ff0000;
+            animation: scan 2s infinite;
         }
-        .load-bar { width: 150px; height: 1px; background: #222; margin-top: 20px; position: relative; }
-        .load-progress { position: absolute; height: 100%; background: var(--red); width: 0%; animation: load 2.5s forwards ease-in-out; }
-        @keyframes load { 100% { width: 100%; } }
-
-        /* --- MAIN CONTENT --- */
-        main {
-            height: 100vh; display: flex; flex-direction: column; align-items: center;
-            justify-content: center; opacity: 0; transition: opacity 1s ease;
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
-        /* АВАТАР З ЕФЕКТОМ ГЛІТЧУ */
-        .avatar-wrapper {
-            position: relative; width: 180px; height: 180px; margin-bottom: 30px;
+        /* ОСНОВНИЙ КОНТЕНТ */
+        main { opacity: 0; text-align: center; transition: opacity 1s ease; z-index: 5; }
+
+        /* АВАТАР */
+        .avatar-box {
+            position: relative; width: 150px; height: 150px; margin: 0 auto 30px;
         }
-        .avatar-img {
-            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
-            border: 1px solid rgba(255, 0, 0, 0.3); padding: 5px;
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.1);
+        .avatar-box img {
+            width: 100%; height: 100%; border-radius: 50%;
+            border: 1px solid #ff0000; padding: 5px; object-fit: cover;
         }
-        .avatar-wrapper::after {
-            content: "妖怪"; position: absolute; bottom: -10px; right: -10px;
-            background: var(--red); color: black; font-weight: bold; padding: 5px 10px;
-            font-size: 14px; font-family: 'Syncopate';
+        .avatar-box::after {
+            content: "YOKAI"; position: absolute; top: 0; right: -10px;
+            background: #ff0000; color: #000; font-size: 10px; padding: 2px 5px; font-weight: bold;
         }
 
-        .title { font-family: 'Syncopate', sans-serif; font-size: 28px; letter-spacing: 10px; margin-bottom: 5px; }
-        .sub { color: var(--red); font-size: 10px; letter-spacing: 4px; margin-bottom: 40px; opacity: 0.7; }
+        h1 { font-family: 'Syncopate', sans-serif; font-size: 24px; letter-spacing: 8px; margin-bottom: 5px; }
+        .tag { color: #ff0000; font-size: 10px; letter-spacing: 5px; margin-bottom: 40px; }
 
-        /* КНОПКИ (BRUTALISM) */
-        .links { width: 80%; max-width: 300px; }
-        .link-item {
-            display: block; width: 100%; padding: 18px; margin-bottom: 15px;
-            text-decoration: none; color: white; border: 1px solid rgba(255,255,255,0.1);
-            text-align: center; text-transform: uppercase; font-size: 12px;
-            letter-spacing: 2px; transition: 0.3s; position: relative;
-            background: rgba(255, 255, 255, 0.02); overflow: hidden;
+        /* КНОПКИ */
+        .btn {
+            display: block; width: 260px; padding: 15px; margin: 10px auto;
+            border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.02);
+            color: #fff; text-decoration: none; text-transform: uppercase;
+            font-size: 12px; letter-spacing: 2px; transition: 0.3s;
         }
-        .link-item:hover {
-            border-color: var(--red); background: var(--red); color: black;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
-        }
-        .link-item::before {
-            content: ""; position: absolute; top: 0; left: -100%;
-            width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: 0.5s;
-        }
-        .link-item:hover::before { left: 100%; }
+        .btn:hover { border-color: #ff0000; color: #ff0000; background: rgba(255,0,0,0.05); }
 
-        /* ЧАСТИНКИ НА ФОНІ */
-        #tsparticles { position: fixed; inset: 0; z-index: -1; }
+        /* ФОНОВИЙ ІЄРОГЛІФ */
+        .kanji {
+            position: absolute; font-size: 50vh; color: rgba(255,0,0,0.03);
+            z-index: 1; user-select: none; pointer-events: none;
+        }
     </style>
 </head>
 <body>
 
     <div id="loader">
-        <div class="glitch-text">YYOKAI SYSTEM</div>
-        <div class="load-bar"><div class="load-progress"></div></div>
+        <div style="color: #ff0000; letter-spacing: 5px; font-size: 10px; margin-bottom: 10px;">BOOTING SYSTEM...</div>
+        <div class="scanner"></div>
     </div>
 
-    <div id="tsparticles"></div>
+    <div class="kanji">妖怪</div>
 
-    <main id="content">
-        <div class="avatar-wrapper">
-            <!-- ЗАМІНИ НА СВОЄ ФОТО -->
-            <img src="ТВОЄ_ФОТО_АБО_ID" alt="YYOKAI" class="avatar-img">
+    <main id="main">
+        <div class="avatar-box">
+            <!-- Встав своє посилання або залиш порожнім для тесту -->
+            <img src="https://placeholder.com" alt="Avatar">
         </div>
+        <h1>YYOKAI</h1>
+        <div class="tag">INK_ARCHIVE_V1.0</div>
         
-        <h1 class="title">YYOKAI</h1>
-        <div class="sub">V.1.0_MATRIX_LOADED</div>
-
         <div class="links">
-            <a href="https://instagram.com" class="link-item">Instagram</a>
-            <a href="#" class="link-item" onclick="showPortfolio()">Portfolio</a>
-            <a href="#" class="link-item" style="border: 1px solid var(--red); color: var(--red);">Book Session</a>
+            <a href="https://instagram.com" class="btn">Instagram</a>
+            <a href="#" class="btn">Portfolio</a>
+            <a href="#" class="btn" style="border-color: #ff0000;">Book Session</a>
         </div>
     </main>
 
-    <script src="https://jsdelivr.net"></script>
     <script>
-        // Ініціалізація часток (Matrix Dust)
-        tsParticles.load("tsparticles", {
-            particles: {
-                number: { value: 40 },
-                color: { value: "#ff0000" },
-                shape: { type: "circle" },
-                opacity: { value: 0.3 },
-                size: { value: 2 },
-                move: { enable: true, speed: 1, direction: "none", outModes: "out" },
-                line_linked: { enable: true, distance: 150, color: "#ff0000", opacity: 0.1, width: 1 }
-            }
-        });
-
-        // Керування лоудером
-        window.addEventListener('load', () => {
+        // Гарантований запуск навіть якщо картинки ще вантажаться
+        window.onload = function() {
             setTimeout(() => {
                 document.getElementById('loader').style.display = 'none';
-                document.getElementById('content').style.opacity = '1';
-            }, 2500);
-        });
-
-        function showPortfolio() {
-            // Тут можна додати перехід на іншу сторінку або відкриття попапу
-            alert("Завантаження архіву робіт...");
-        }
+                document.getElementById('main').style.opacity = '1';
+            }, 2000);
+        };
     </script>
 </body>
 </html>
