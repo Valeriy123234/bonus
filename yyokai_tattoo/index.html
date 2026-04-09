@@ -5,83 +5,100 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>YYOKAI | INK ARCHITECT</title>
     <link href="https://googleapis.com" rel="stylesheet">
+    <!-- Smooth Scroll Library (120Hz effect) -->
+    <script src="https://unpkg.com"></script>
     <style>
         :root { --red: #ff0000; --bg: #000; --white: #ffffff; --card-bg: #151515; }
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        html.lenis { height: auto; }
+        .lenis-smooth { scroll-behavior: auto !important; }
+        
         body { background: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        /* --- МЕНЮ (3 ПОЛОСКИ) --- */
+        /* --- МЕНЮ --- */
         .menu-btn {
-            position: fixed; top: 30px; right: 20px; z-index: 2000;
-            width: 25px; height: 14px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer;
+            position: fixed; top: 30px; right: 25px; z-index: 2000;
+            width: 30px; height: 16px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer;
         }
-        .menu-btn span { display: block; width: 100%; height: 1px; background: #fff; transition: 0.3s; }
-        .menu-btn.active span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+        .menu-btn span { display: block; width: 100%; height: 1px; background: #fff; transition: 0.4s; }
+        .menu-btn.active span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
         .menu-btn.active span:nth-child(2) { opacity: 0; }
-        .menu-btn.active span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+        .menu-btn.active span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
 
         .nav-overlay {
             position: fixed; inset: 0; background: #000; z-index: 1999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transform: translateX(100%); transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(-100%); transition: 0.6s cubic-bezier(0.85, 0, 0.15, 1);
         }
-        .nav-overlay.active { transform: translateX(0); }
+        .nav-overlay.active { transform: translateY(0); }
         .nav-overlay a {
-            font-family: 'Unbounded', sans-serif; font-size: 20px; color: #fff; text-decoration: none;
-            margin: 12px 0; text-transform: uppercase; letter-spacing: 2px; opacity: 0.7; transition: 0.3s;
+            font-family: 'Unbounded', sans-serif; font-size: 24px; color: #fff; text-decoration: none;
+            margin: 15px 0; text-transform: uppercase; letter-spacing: 2px;
         }
-        .nav-overlay a:hover { opacity: 1; color: var(--red); }
 
         /* --- ЛОУДЕР --- */
         #loader { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: 1s cubic-bezier(0.85, 0, 0.15, 1); }
-        .loader-num { font-family: 'Unbounded', sans-serif; font-size: 25vw; color: #fff; width: 100%; display: flex; justify-content: center; }
+        .loader-num { font-family: 'Unbounded', sans-serif; font-size: 25vw; color: #fff; line-height: 1; text-align: center; width: 100%; display: flex; justify-content: center; }
         .noise { position: fixed; inset: 0; z-index: 999; opacity: 0.06; pointer-events: none; background: url(https://vercel.app); }
 
-        /* --- HERO (ПІДНЯТО ВГОРУ) --- */
-        .hero { height: 92vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
-        .hero-title { font-family: 'Unbounded', sans-serif; font-size: 24vw; line-height: 0.9; text-transform: uppercase; text-align: center; visibility: hidden; }
+        /* --- HERO (ТВІЙ ОРИГІНАЛЬНИЙ ЛОГО) --- */
+        .hero { height: 85vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; background: #000; }
+        .hero-title {
+            font-family: 'Unbounded', sans-serif; font-size: 24vw; line-height: 0.9;
+            text-transform: uppercase; text-align: center; letter-spacing: -0.05em;
+            display: flex; flex-direction: column; visibility: hidden;
+        }
         .hero-title.visible { visibility: visible; }
-        .hero-title span { display: inline-block; opacity: 0; transform: scaleY(4) translateY(100px); filter: blur(20px); transition: 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
-        .hero-title.active span { opacity: 1; transform: scaleY(1) translateY(0); filter: blur(0); }
-        .hero-title span:nth-child(2) { transition-delay: 0.1s; margin-top: 15px; }
+        .hero-title span {
+            display: inline-block; opacity: 0;
+            transform: scaleY(4) translateY(200px) translateZ(-800px);
+            filter: blur(20px); transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .hero-title.active span { opacity: 1; transform: scaleY(1) translateY(0) translateZ(0); filter: blur(0); }
+        .hero-title span:nth-child(2) { transition-delay: 0.15s; margin-top: 20px; }
 
-        .hero-tagline { margin-top: 30px; font-size: 10px; letter-spacing: 8px; color: #444; text-transform: uppercase; opacity: 0; transition: 1s ease 1s; }
+        .hero-tagline { margin-top: 40px; font-size: 10px; letter-spacing: 8px; color: #444; text-transform: uppercase; opacity: 0; transition: 1s ease 1s; }
         .hero-title.active + .hero-tagline { opacity: 1; }
 
-        /* СТРІЛКА */
-        .scroll-indicator { margin-top: 20px; opacity: 0; transition: 1s ease 2s; }
-        .hero-title.active ~ .scroll-indicator { opacity: 0.3; animation: arrowMove 2s infinite ease-in-out; }
-        @keyframes arrowMove { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+        /* СПЕЦІАЛЬНА СТРІЛКА (50% -> 100%) */
+        .scroll-indicator { margin-top: 35px; opacity: 0; transition: 1s ease 2s; }
+        .hero-title.active ~ .scroll-indicator { opacity: 1; animation: arrowHit 1.5s infinite; }
+        @keyframes arrowHit {
+            0% { transform: translateY(-10px); opacity: 0.5; }
+            70% { transform: translateY(15px); opacity: 1; }
+            100% { transform: translateY(15px); opacity: 0; }
+        }
 
         /* --- GRID --- */
         .grid { display: flex; flex-direction: column; width: 100%; gap: 2px; background: #222; }
-        .grid-item { min-height: 55vh; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding: 40px; text-decoration: none; color: #fff; background-color: var(--card-bg); }
-        .grid-item::before { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, rgba(0,0,0,0.8) 100%); z-index: 1; }
+        .grid-item { min-height: 60vh; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding: 40px; text-decoration: none; color: #fff; background-color: var(--card-bg); }
+        .grid-item::before { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 20%, rgba(0,0,0,0.9) 100%); z-index: 1; }
 
-        .img-inst { background: url('1.jpg') center/cover; }
-        .img-tg { background: url('2.JPG') center/cover; }
-        .img-port { background: url('5.jpg') center/cover; }
-        .img-price { background: url('6.jpg') center/cover; }
-        .img-sketches { background: url('7.jpg') center/cover; }
-        .img-care { background: url('10.jpg') center/cover; }
+        /* Фото */
+        .img-1 { background-image: url('1.jpg'); background-position: center; background-size: cover; }
+        .img-2 { background-image: url('2.JPG'); background-position: center; background-size: cover; }
+        .img-3 { background-image: url('5.jpg'); background-position: center; background-size: cover; }
+        .img-price { background-image: url('6.jpg'); background-position: center; background-size: cover; }
+        .img-sketches { background-image: url('7.jpg'); background-position: center; background-size: cover; }
+        .img-care { background-image: url('8.jpg'); background-position: center; background-size: cover; }
 
-        .grid-item h2 { font-family: 'Unbounded', sans-serif; font-size: 26px; text-transform: uppercase; z-index: 2; position: relative; }
-        .grid-item span.label { font-size: 10px; letter-spacing: 4px; margin-bottom: 8px; opacity: 0.5; z-index: 2; position: relative; }
+        .grid-item h2 { font-family: 'Unbounded', sans-serif; font-size: 28px; text-transform: uppercase; z-index: 2; position: relative; }
+        .grid-item span.label { font-size: 10px; letter-spacing: 4px; margin-bottom: 10px; opacity: 0.5; z-index: 2; position: relative; }
 
         /* --- М'ЯКИЙ ПРАЙС --- */
-        .price-content {
-            max-height: 0; overflow: hidden; opacity: 0;
-            transition: max-height 0.6s ease-in-out, opacity 0.4s ease;
-            z-index: 2; position: relative;
-        }
-        .grid-item.open-price .price-content { max-height: 400px; opacity: 1; padding-top: 25px; }
-        .price-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; text-transform: uppercase; }
-        .price-row span:last-child { color: var(--red); font-weight: bold; }
+        .price-container { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.6s cubic-bezier(0.33, 1, 0.68, 1); z-index: 2; position: relative; overflow: hidden; }
+        .grid-item.open-price .price-container { grid-template-rows: 1fr; padding-bottom: 20px; }
+        .price-inner { min-height: 0; }
+        .price-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; text-transform: uppercase; opacity: 0; transform: translateY(10px); transition: 0.4s; }
+        .grid-item.open-price .price-row { opacity: 1; transform: translateY(0); transition-delay: 0.2s; }
+        .price-row span:last-child { color: var(--red); font-weight: 900; }
 
-        footer { padding: 60px 40px 120px; background: #000; font-size: 9px; color: #333; line-height: 2; letter-spacing: 2px; }
-        .footer-year { font-family: 'Unbounded', sans-serif; font-size: 11px; color: var(--red); margin-top: 20px; }
+        footer { padding: 100px 40px; background: #000; font-size: 9px; letter-spacing: 2px; color: #333; line-height: 2.5; }
+        .footer-year { font-family: 'Unbounded', sans-serif; font-size: 12px; color: var(--red); margin-top: 30px; }
 
-        .cta-fixed { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--red); color: #fff; padding: 20px 50px; border-radius: 100px; text-decoration: none; font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 900; z-index: 1000; box-shadow: 0 10px 30px rgba(255,0,0,0.3); }
+        .cta-fixed { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--red); color: #fff; padding: 22px 60px; border-radius: 100px; text-decoration: none; font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 900; z-index: 1000; box-shadow: 0 10px 40px rgba(255,0,0,0.5); }
+
+        @media (max-width: 768px) { .hero-title { font-size: 28vw; } }
     </style>
 </head>
 <body>
@@ -89,9 +106,7 @@
     <div id="loader"><div class="loader-num" id="load-val">0</div></div>
     <div class="noise"></div>
 
-    <div class="menu-btn" id="menuBtn" onclick="toggleMenu()">
-        <span></span><span></span><span></span>
-    </div>
+    <div class="menu-btn" id="menuBtn" onclick="toggleMenu()"><span></span><span></span><span></span></div>
 
     <nav class="nav-overlay" id="nav">
         <a href="#" onclick="toggleMenu()">Home</a>
@@ -99,7 +114,6 @@
         <a href="#telegram" onclick="toggleMenu()">Telegram</a>
         <a href="#portfolio" onclick="toggleMenu()">Portfolio</a>
         <a href="#price" onclick="toggleMenu()">Price</a>
-        <a href="#sketches" onclick="toggleMenu()">Sketches</a>
         <a href="#aftercare" onclick="toggleMenu()">Aftercare</a>
     </nav>
 
@@ -110,49 +124,43 @@
             <h1 class="hero-title" id="main-logo"><span>YYO</span><span>KAI</span></h1>
             <div class="hero-tagline">INK ARCHITECT // LVIV</div>
             <div class="scroll-indicator">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
             </div>
         </section>
 
         <section class="grid">
-            <a href="https://instagram.com" id="instagram" class="grid-item img-inst">
-                <span class="label">01 // IDENTITY</span><h2>Instagram</h2>
-            </a>
-            
-            <a href="https://t.me" id="telegram" class="grid-item img-tg">
-                <span class="label">02 // CONNECT</span><h2>Telegram</h2>
-            </a>
-            
-            <a href="#" id="portfolio" class="grid-item img-port">
-                <span class="label">03 // ARCHIVE</span><h2>Portfolio</h2>
-            </a>
+            <a href="https://instagram.com" id="instagram" class="grid-item img-1"><span class="label">01 // INSTA</span><h2>Instagram</h2></a>
+            <a href="https://t.me" id="telegram" class="grid-item img-2"><span class="label">02 // TG</span><h2>Telegram</h2></a>
+            <a href="#" id="portfolio" class="grid-item img-3"><span class="label">03 // ART</span><h2>Portfolio</h2></a>
             
             <div id="price" class="grid-item img-price" onclick="this.classList.toggle('open-price')">
                 <span class="label">04 // SYSTEM</span>
                 <h2>Price List</h2>
-                <div class="price-content">
-                    <div class="price-row"><span>Minimal</span><span>80€+</span></div>
-                    <div class="price-row"><span>Medium</span><span>200€+</span></div>
-                    <div class="price-row"><span>Full Session</span><span>450€+</span></div>
+                <div class="price-container">
+                    <div class="price-inner">
+                        <div class="price-row"><span>Minimal</span><span>80€+</span></div>
+                        <div class="price-row"><span>Medium</span><span>200€+</span></div>
+                        <div class="price-row"><span>Full Day</span><span>450€+</span></div>
+                    </div>
                 </div>
             </div>
 
-            <a href="#" id="sketches" class="grid-item img-sketches">
-                <span class="label">05 // FLASH</span><h2>Available Sketches</h2>
-            </a>
-
-            <a href="#" id="aftercare" class="grid-item img-care">
-                <span class="label">06 // CARE</span><h2>Aftercare</h2>
-            </a>
+            <a href="#" id="sketches" class="grid-item img-sketches"><span class="label">05 // FLASH</span><h2>Sketches</h2></a>
+            <a href="#" id="aftercare" class="grid-item img-care"><span class="label">06 // CARE</span><h2>Aftercare</h2></a>
         </section>
 
         <footer>
-            YYOKAI SYSTEM PROTOCOL<br>LVIV_CENTER // DATA SYNC: ACTIVE
+            YYOKAI SYSTEM PROTOCOL<br>ESTABLISHED IN THE FOREST // LVIV<br>DATA SYNC: ACTIVE
             <div class="footer-year">© 2026 // BEYOND THE LIMITS</div>
         </footer>
     </main>
 
     <script>
+        // Smooth Scroll 120Hz
+        const lenis = new Lenis();
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+
         function toggleMenu() {
             document.getElementById('nav').classList.toggle('active');
             document.getElementById('menuBtn').classList.toggle('active');
@@ -170,7 +178,7 @@
                         document.getElementById('loader').style.transform = "translateY(-100%)";
                         const logo = document.getElementById('main-logo');
                         logo.classList.add('visible');
-                        setTimeout(() => logo.classList.add('active'), 200);
+                        setTimeout(() => { logo.classList.add('active'); }, 200);
                     }, 400);
                 }
                 loadVal.innerText = count;
