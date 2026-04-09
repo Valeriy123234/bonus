@@ -12,14 +12,31 @@
 
         /* --- HERO --- */
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        
         .hero-logo { 
             font-size: 18vw; font-weight: 900; transform: translateY(100vh);
-            animation: jumpUp 1s cubic-bezier(0.2, 0.8, 0.2, 1.1) forwards;
+            animation: jumpUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1.1) forwards;
         }
         @keyframes jumpUp {
-            0% { transform: translateY(100vh) scaleY(2); }
+            0% { transform: translateY(100vh) scaleY(1.5); }
             60% { transform: translateY(-20px) scaleY(0.9); }
             100% { transform: translateY(0) scaleY(1); }
+        }
+
+        .scroll-hint { 
+            margin-top: 30px; font-size: 10px; letter-spacing: 2px; opacity: 0;
+            animation: fadeIn 0.8s ease forwards; animation-delay: 1.4s;
+        }
+        @keyframes fadeIn { to { opacity: 0.6; } }
+
+        .arrow { 
+            margin-top: 15px; opacity: 0; background: none; border: none;
+            animation: arrowFade 1s ease forwards, arrowJump 2s infinite; animation-delay: 2s, 2s;
+        }
+        @keyframes arrowFade { to { opacity: 1; } }
+        @keyframes arrowJump {
+            0%, 100% { transform: translateY(0); opacity: 0.5; }
+            50% { transform: translateY(12px); opacity: 1; }
         }
 
         /* --- CONTENT --- */
@@ -34,28 +51,35 @@
         .slots { display: none; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 25px 0; width: 100%; max-width: 400px; }
         .slot { background: #111; border: 1px solid #333; padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; font-size: 12px; }
         .slot.selected { background: #fff; color: #000; font-weight: 900; }
-        .slot.disabled { opacity: 0.2; pointer-events: none; text-decoration: line-through; border: 1px dashed #444; }
-        .slot.admin-off { background: var(--red); border-color: var(--red); color: #fff; }
+        .slot.disabled, .slot.admin-off { opacity: 0.2; pointer-events: none; text-decoration: line-through; }
+        .slot.admin-off { background: var(--red); opacity: 1; pointer-events: auto; text-decoration: none; }
 
         #bookingForm { display: none; flex-direction: column; gap: 10px; width: 100%; max-width: 400px; }
         input { background: #080808; border: 1px solid #333; padding: 18px; color: #fff; border-radius: 15px; outline: none; }
 
+        /* --- MODAL --- */
+        #bonusModal { 
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); 
+            z-index: 9999; align-items: center; justify-content: center; padding: 20px; 
+        }
+        .modal-card { background: #111; padding: 40px 25px; border-radius: 35px; border: 1px solid var(--red); text-align: center; width: 100%; max-width: 380px; }
+        .promo-code { font-size: 32px; font-weight: 900; color: var(--red); margin: 20px 0; letter-spacing: 2px; }
+
         .float-btn {
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-            background: var(--red); color: #fff; border: none; padding: 20px 40px;
+            background: var(--red); color: #fff; border: none; padding: 18px 40px;
             border-radius: 50px; font-weight: 900; box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
             z-index: 100; display: none; cursor: pointer;
         }
-
-        .admin-trigger { margin: 50px 0; opacity: 0.1; font-size: 8px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <section class="hero">
     <div class="hero-logo">YYO<br>KAI</div>
-    <button onclick="scrollToMain()" style="margin-top:40px; background:none; border:none; cursor:pointer;">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+    <p class="scroll-hint">ЗАПИСАТИСЬ ГОРТАЙ ВНИЗ</p>
+    <button class="arrow" onclick="scrollToMain()">
+        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
     </button>
 </section>
 
@@ -69,7 +93,7 @@
         <table id="calTable"><tbody id="calBody"></tbody></table>
     </div>
 
-    <div id="adminBadge" style="display:none; color:red; font-size:10px; margin-top:20px;">РЕЖИМ АДМІНА: ТИСНИ НА ЧАС ЩОБ ЗАКРИТИ</div>
+    <div id="adminBadge" style="display:none; color:red; font-size:10px; margin-top:15px;">ADMIN MODE: ТИСНИ НА ЧАС ДЛЯ БЛОКУ</div>
 
     <div class="slots" id="slotsGrid">
         <div class="slot" data-time="10:00">10:00</div>
@@ -82,13 +106,22 @@
         <input type="text" id="uName" placeholder="ІМ'Я" required>
         <input type="text" id="uInsta" placeholder="@INSTAGRAM" required>
         <input type="text" id="uPhone" value="+380" required>
-        <button type="submit" style="background:var(--red); color:#fff; border:none; padding:20px; border-radius:15px; font-weight:900; cursor:pointer;">ЗАБРОНЮВАТИ</button>
+        <button type="submit" style="background:var(--red); color:#fff; border:none; padding:20px; border-radius:15px; font-weight:900; cursor:pointer; margin-top:10px;">ЗАБРОНЮВАТИ</button>
     </form>
 
-    <div class="admin-trigger" onclick="openAdmin()">.access_protocol</div>
+    <div onclick="openAdmin()" style="margin-top:100px; opacity:0.05; cursor:pointer; font-size:8px;">.access_protocol</div>
 </div>
 
 <button class="float-btn" id="menuBtn" onclick="location.reload()">ДО МЕНЮ</button>
+
+<div id="bonusModal">
+    <div class="modal-card">
+        <p style="color:var(--red); font-size:12px; font-weight:900;">ТРИМАЙ -10% ЗНИЖКИ</p>
+        <div id="promoRes" class="promo-code">XXXXXXX</div>
+        <p style="font-size:10px; line-height:1.6; opacity:0.8;">ЗАПРОСИ ДРУГА ТА ОТРИМАЙ -20%<br>НА НАСТУПНИЙ СЕАНС</p>
+        <button class="btn-red" style="background:var(--red); color:#fff; border:none; padding:18px; width:100%; border-radius:15px; margin-top:25px; font-weight:900; cursor:pointer;" onclick="location.reload()">ЗАКРИТИ</button>
+    </div>
+</div>
 
 <script>
 const DB_URL = "https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/";
@@ -97,8 +130,8 @@ const CHAT_ID = "1634779056";
 
 let currentMonth = new Date().getMonth();
 let currentYear = new Date().getFullYear();
-let selDate = "", isAdmin = false;
-let db = { bookings: {}, manualBlocks: {} }; // Структура: manualBlocks: { "date": ["10:00", "13:00"] }
+let selDate = "", selTime = "", isAdmin = false;
+let db = { bookings: {}, manualBlocks: {} };
 
 async function loadDB() {
     const res = await fetch(DB_URL + ".json");
@@ -112,7 +145,6 @@ function renderCal() {
     const body = document.getElementById('calBody');
     body.innerHTML = "";
     document.getElementById('monthName').innerText = new Intl.DateTimeFormat('uk-UA', {month:'long', year:'numeric'}).format(new Date(currentYear, currentMonth)).toUpperCase();
-
     const offset = (new Date(currentYear, currentMonth, 1).getDay() || 7) - 1;
     const days = new Date(currentYear, currentMonth + 1, 0).getDate();
 
@@ -126,16 +158,12 @@ function renderCal() {
             } else {
                 let dStr = `${currentYear}-${currentMonth+1}-${date}`;
                 cell.innerText = date;
-                
-                // Якщо всі 4 слоти зайняті - закреслюємо день
-                const blockedForDay = db.manualBlocks[dStr] || [];
-                const bookedForDay = Object.values(db.bookings).filter(b => b.date === dStr).map(b => b.time);
-                if ([...new Set([...blockedForDay, ...bookedForDay])].length >= 4) cell.classList.add('booked-day');
-
+                const blocked = db.manualBlocks[dStr] || [];
+                const booked = Object.values(db.bookings).filter(b => b.date === dStr).map(b => b.time);
+                if ([...new Set([...blocked, ...booked])].length >= 4) cell.classList.add('booked-day');
                 cell.onclick = () => {
                     document.querySelectorAll('td').forEach(t => t.classList.remove('active'));
-                    cell.classList.add('active'); selDate = dStr;
-                    renderSlots(dStr);
+                    cell.classList.add('active'); selDate = dStr; renderSlots(dStr);
                 };
                 date++;
             }
@@ -147,41 +175,38 @@ function renderCal() {
 }
 
 function renderSlots(dStr) {
-    const grid = document.getElementById('slotsGrid');
-    grid.style.display = 'grid';
+    document.getElementById('slotsGrid').style.display = 'grid';
     document.getElementById('bookingForm').style.display = 'none';
-
     document.querySelectorAll('.slot').forEach(slot => {
         const time = slot.dataset.time;
         const isBooked = Object.values(db.bookings).some(b => b.date === dStr && b.time === time);
-        const isManuallyBlocked = db.manualBlocks[dStr] && db.manualBlocks[dStr].includes(time);
-
+        const isManual = db.manualBlocks[dStr] && db.manualBlocks[dStr].includes(time);
+        
         slot.className = 'slot';
         if (isBooked) slot.classList.add('disabled');
-        if (isManuallyBlocked) slot.classList.add('admin-off');
+        if (isManual) slot.classList.add('admin-off');
 
         slot.onclick = async () => {
             if (isAdmin) {
-                // Логіка адміна: перемикаємо блок
                 if (!db.manualBlocks[dStr]) db.manualBlocks[dStr] = [];
-                if (db.manualBlocks[dStr].includes(time)) {
-                    db.manualBlocks[dStr] = db.manualBlocks[dStr].filter(t => t !== time);
-                } else {
-                    db.manualBlocks[dStr].push(time);
-                }
+                if (db.manualBlocks[dStr].includes(time)) db.manualBlocks[dStr] = db.manualBlocks[dStr].filter(t => t !== time);
+                else db.manualBlocks[dStr].push(time);
                 await fetch(DB_URL + "manualBlocks.json", { method: 'PUT', body: JSON.stringify(db.manualBlocks) });
-                renderSlots(dStr);
-                renderCal();
+                renderSlots(dStr); renderCal();
             } else {
-                // Логіка клієнта
-                if (isBooked || isManuallyBlocked) return;
+                if (isBooked || isManual) return;
                 document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
-                slot.classList.add('selected');
-                window.selTime = time;
+                slot.classList.add('selected'); selTime = time;
                 document.getElementById('bookingForm').style.display = 'flex';
             }
         };
     });
+}
+
+function scrollToMain() {
+    document.getElementById('mainContent').style.display = 'flex';
+    document.getElementById('menuBtn').style.display = 'block';
+    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
 }
 
 function openAdmin() {
@@ -192,23 +217,18 @@ function openAdmin() {
     }
 }
 
-function scrollToMain() {
-    document.getElementById('mainContent').style.display = 'flex';
-    document.getElementById('menuBtn').style.display = 'block';
-    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
-}
-
 document.getElementById('bookingForm').onsubmit = async (e) => {
     e.preventDefault();
+    const promo = Math.random().toString(36).substring(2, 9).toUpperCase();
     const data = { 
-        date: selDate, time: window.selTime, 
-        name: document.getElementById('uName').value, 
-        insta: document.getElementById('uInsta').value,
-        phone: document.getElementById('uPhone').value 
+        date: selDate, time: selTime, name: document.getElementById('uName').value, 
+        insta: document.getElementById('uInsta').value, phone: document.getElementById('uPhone').value, promo 
     };
     await fetch(DB_URL + "bookings.json", { method: 'POST', body: JSON.stringify(data) });
-    await fetch(`${TG_BOT}?chat_id=${CHAT_ID}&text=${encodeURIComponent("🔥 ЗАПИС: "+data.date+" о "+data.time+"\n👤 "+data.name+"\n📱 "+data.insta)}`);
-    location.reload();
+    await fetch(`${TG_BOT}?chat_id=${CHAT_ID}&text=${encodeURIComponent("🏮 ЗАПИС!\n👤 "+data.name+"\n📱 "+data.insta+"\n📞 "+data.phone+"\n📅 "+data.date+" о "+data.time+"\n🎁 Промо: "+promo)}`);
+    
+    document.getElementById('promoRes').innerText = promo;
+    document.getElementById('bonusModal').style.display = 'flex';
 };
 
 function changeMonth(dir) { currentMonth += dir; if(currentMonth>11){currentMonth=0;currentYear++} if(currentMonth<0){currentMonth=11;currentYear--} renderCal(); }
