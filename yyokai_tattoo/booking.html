@@ -1,1 +1,173 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <!-- user-scalable=no та 16px шрифт прибирають бісяче наближення на iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>YYOKAI | BOOKING SYSTEM</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root { --red: #ff0000; --bg: #000; --white: #ffffff; --card: #f5f5f5; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        body { background: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; overflow-x: hidden; touch-action: manipulation; }
+
+        /* --- LOADER --- */
+        #loader { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 1.2s cubic-bezier(0.85, 0, 0.15, 1); }
+        .loader-logo { font-family: 'Unbounded', sans-serif; font-size: 15vw; text-align: center; line-height: 0.8; }
+        .loader-logo span { display: block; }
+
+        /* --- CONTENT --- */
+        .container { padding: 40px 20px; max-width: 500px; margin: 0 auto; opacity: 0; transition: 1s; }
+        .container.visible { opacity: 1; }
+        h1 { font-family: 'Unbounded', sans-serif; font-size: 42px; text-transform: uppercase; margin-bottom: 30px; }
+
+        /* --- КАЛЕНДАР (БІЛИЙ) --- */
+        .calendar { 
+            display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; 
+            background: var(--white); padding: 20px; border-radius: 25px; margin-bottom: 30px;
+        }
+        .day { 
+            aspect-ratio: 1; background: #eee; color: #000; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600;
+            cursor: pointer; transition: 0.3s; position: relative;
+        }
+        .day:hover:not(.booked) { background: #ddd; transform: scale(1.05); }
+        .day.selected { background: var(--red); color: #fff; transform: scale(1.1); box-shadow: 0 5px 15px rgba(255,0,0,0.3); }
+        .day.booked { background: #f0f0f0; color: #ccc; cursor: not-allowed; }
+        .day.booked::after { content: ''; position: absolute; width: 60%; height: 2px; background: #ccc; transform: rotate(-45deg); }
+
+        /* --- ФОРМА (БЕЗ ЗУМУ) --- */
+        #bookingForm { display: none; flex-direction: column; gap: 15px; margin-top: 20px; }
+        #bookingForm.active { display: flex; animation: slideUp 0.5s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        input { 
+            background: #111; border: 1px solid #222; padding: 18px; color: #fff; 
+            font-size: 16px; /* Важливо: 16px запобігає зуму на iPhone */
+            border-radius: 15px; transition: 0.3s; 
+        }
+        input:focus { outline: none; border-color: var(--red); background: #1a1a1a; }
+        
+        .submit-btn { background: var(--red); color: #fff; border: none; padding: 20px; border-radius: 15px; font-family: 'Unbounded', sans-serif; font-size: 12px; font-weight: 900; cursor: pointer; margin-top: 10px; }
+        
+        .success-msg { display: none; text-align: center; color: var(--red); font-family: 'Unbounded', sans-serif; font-size: 14px; margin-top: 30px; }
+
+        /* --- ADMIN --- */
+        #adminSection { display: none; margin-top: 50px; padding: 20px; border-top: 1px solid #222; }
+        .booking-card { background: #111; padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+        .del-btn { color: var(--red); background: none; border: 1px solid var(--red); padding: 8px 12px; border-radius: 8px; cursor: pointer; }
+
+        .admin-trigger { margin: 60px 0; text-align: center; opacity: 0.1; font-size: 10px; padding: 20px; }
+    </style>
+</head>
+<body>
+
+    <div id="loader"><div class="loader-logo"><span>YYO</span><span>KAI</span></div></div>
+
+    <main class="container" id="mainContent">
+        <h1>BOOKING</h1>
+        
+        <div class="calendar" id="calendarGrid"></div>
+
+        <form id="bookingForm">
+            <p id="dateLabel" style="color: var(--red); font-size: 10px; letter-spacing: 2px; margin-bottom: 5px;"></p>
+            <input type="text" id="userName" placeholder="ІМ'Я / IDENTITY" required>
+            <input type="text" id="userPhone" placeholder="ТЕЛЕФОН / WHATSAPP" required>
+            <input type="text" id="userInsta" placeholder="INSTAGRAM TAG" required>
+            <button type="submit" class="submit-btn">CONFIRM PROTOCOL</button>
+        </form>
+
+        <div id="success" class="success-msg">ПРОТОКОЛ ПРИЙНЯТО.<br>Я ЗКОНТАКТУЮ З ТОБОЮ.</div>
+
+        <div id="adminSection"><div id="adminList"></div></div>
+        <div class="admin-trigger" onclick="unlockAdmin()">.access_point</div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://gstatic.com";
+        import { getDatabase, ref, set, push, onValue, remove } from "https://gstatic.com";
+
+        // --- ВСТАВ СВОЇ ДАНІ СЮДИ ---
+        const firebaseConfig = {
+            apiKey: "ТВІЙ_API_KEY",
+            databaseURL: "ТВІЙ_URL_БАЗИ_ДАНИХ",
+            projectId: "ТВІЙ_PROJECT_ID",
+            storageBucket: "ТВІЙ_STORAGE_BUCKET",
+            appId: "ТВІЙ_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Loader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.transform = "translateY(-100%)";
+                document.getElementById('mainContent').classList.add('visible');
+                initApp();
+            }, 1500);
+        });
+
+        let selectedDate = null;
+
+        function initApp() {
+            onValue(ref(db, 'bookings'), (snapshot) => {
+                const grid = document.getElementById('calendarGrid');
+                grid.innerHTML = '';
+                const data = snapshot.val() || {};
+                const bookedDays = Object.values(data).map(b => b.date);
+
+                for (let i = 1; i <= 31; i++) {
+                    const day = document.createElement('div');
+                    day.className = 'day' + (bookedDays.includes(i.toString()) ? ' booked' : '');
+                    day.innerText = i;
+                    day.onclick = () => {
+                        if (!day.classList.contains('booked')) {
+                            document.querySelectorAll('.day').forEach(d => d.classList.remove('selected'));
+                            day.classList.add('selected');
+                            selectedDate = i;
+                            document.getElementById('dateLabel').innerText = `DATA: ${i} / MAY`;
+                            document.getElementById('bookingForm').classList.add('active');
+                        }
+                    };
+                    grid.appendChild(day);
+                }
+                updateAdminList(data);
+            });
+        }
+
+        document.getElementById('bookingForm').onsubmit = async (e) => {
+            e.preventDefault();
+            await push(ref(db, 'bookings'), {
+                date: selectedDate.toString(),
+                name: document.getElementById('userName').value,
+                phone: document.getElementById('userPhone').value,
+                insta: document.getElementById('userInsta').value
+            });
+            document.getElementById('bookingForm').style.display = 'none';
+            document.getElementById('success').style.display = 'block';
+        };
+
+        window.unlockAdmin = function() {
+            if (prompt('KEY:') === 'yokai123234') {
+                document.getElementById('adminSection').style.display = 'block';
+            }
+        };
+
+        function updateAdminList(data) {
+            const list = document.getElementById('adminList');
+            list.innerHTML = '';
+            for (let id in data) {
+                const b = data[id];
+                list.innerHTML += `<div class="booking-card">
+                    <div><b>${b.date}</b> | ${b.name}<br><span>${b.insta}</span></div>
+                    <button class="del-btn" onclick="deleteEntry('${id}')">DEL</button>
+                </div>`;
+            }
+        }
+
+        window.deleteEntry = (id) => { if(confirm('FREE DATE?')) remove(ref(db, `bookings/${id}`)); };
+    </script>
+</body>
+</html>
 
