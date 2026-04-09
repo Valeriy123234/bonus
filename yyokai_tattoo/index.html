@@ -3,25 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYOKAI | ARCHITECT OF INK</title>
-    
+    <title>YYOKAI | MATRIX 2026</title>
     <link href="https://googleapis.com" rel="stylesheet">
-    
     <style>
         :root { --red: #ff0000; --bg: #000; --white: #ffffff; }
-        
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        
-        body { 
-            background: var(--bg); color: var(--white); 
-            font-family: 'Inter', sans-serif; 
-            overflow-x: hidden;
-            perspective: 1500px; /* Для 3D ефекту */
-        }
+        body { background: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        /* --- PRELOADER --- */
+        /* --- ЛОУДЕР (ФІКС) --- */
         #loader {
-            position: fixed; inset: 0; background: #000; z-index: 2000;
+            position: fixed; inset: 0; background: #000; z-index: 9999;
             display: flex; justify-content: center; align-items: center;
             transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1);
         }
@@ -35,59 +26,33 @@
             pointer-events: none; background: url(https://vercel.app);
         }
 
-        /* --- KINETIC HERO LOGO --- */
-        .hero { 
-            height: 100vh; display: flex; justify-content: center; 
-            align-items: center; overflow: hidden; background: #000;
-        }
-        
+        /* --- LOGO ANIMATION --- */
+        .hero { height: 100vh; display: flex; justify-content: center; align-items: center; background: #000; }
         .hero-title {
-            font-family: 'Unbounded';
-            font-size: 24vw;
-            line-height: 0.75;
-            text-transform: uppercase;
-            text-align: center;
-            letter-spacing: -0.05em;
-            display: flex;
-            flex-direction: column;
-            pointer-events: none;
+            font-family: 'Unbounded'; font-size: 24vw; line-height: 0.75;
+            text-transform: uppercase; text-align: center; letter-spacing: -0.05em;
+            display: flex; flex-direction: column;
         }
-
         .hero-title span {
-            display: inline-block;
-            opacity: 0;
-            /* Початковий стан: розтягнуті в 3 рази, в глибині та розмиті */
+            display: inline-block; opacity: 0;
             transform: scaleY(4) translateY(200px) translateZ(-800px);
-            filter: blur(20px);
-            transition: all 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+            filter: blur(20px); transition: all 1.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
-
-        /* Анімація при додаванні класу .active */
-        .hero-title.active span {
-            opacity: 1;
-            transform: scaleY(1) translateY(0) translateZ(0);
-            filter: blur(0);
-        }
-
-        /* Затримка для другого рядка */
+        .hero-title.active span { opacity: 1; transform: scaleY(1) translateY(0) translateZ(0); filter: blur(0); }
         .hero-title span:nth-child(2) { transition-delay: 0.15s; }
 
         /* --- GRID КАРТКИ --- */
         .grid { display: flex; flex-direction: column; width: 100%; gap: 2px; background: #111; }
-        
         .grid-item {
             height: 50vh; position: relative; overflow: hidden;
             display: flex; flex-direction: column; justify-content: flex-end;
             padding: 40px; text-decoration: none; color: #fff;
         }
-
         .grid-item::before {
             content: ""; position: absolute; inset: 0;
             background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 80%);
             z-index: 1;
         }
-
-        /* ФОНИ (Встав свої роботи) */
         .img-1 { background: url('https://unsplash.com') center/cover; }
         .img-2 { background: url('https://unsplash.com') center/cover; }
         .img-3 { background: url('https://unsplash.com') center/cover; }
@@ -97,20 +62,28 @@
         .grid-item span { font-size: 10px; letter-spacing: 4px; margin-bottom: 10px; opacity: 0.5; z-index: 2; position: relative; }
 
         /* --- FOOTER --- */
-        footer {
-            padding: 100px 40px; background: #000; border-top: 1px solid #111;
-        }
+        footer { padding: 100px 40px; background: #000; border-top: 1px solid #111; }
         .footer-info { font-size: 9px; letter-spacing: 2px; color: #333; line-height: 2.5; text-transform: uppercase; }
         .footer-year { font-family: 'Unbounded'; font-size: 12px; color: var(--red); margin-top: 30px; }
 
-        /* CTA BUTTON */
+        /* --- ФІКСОВАНА КНОПКА (ТЕПЕР ІДЕ СЛІДОМ) --- */
         .cta-fixed {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-            background: var(--red); color: #fff; padding: 22px 60px;
-            border-radius: 100px; text-decoration: none;
-            font-family: 'Unbounded'; font-size: 11px; font-weight: 900;
-            z-index: 200; box-shadow: 0 10px 40px rgba(255,0,0,0.4);
-            white-space: nowrap; transition: 0.3s;
+            position: fixed; 
+            bottom: 30px; 
+            left: 50%; 
+            transform: translateX(-50%);
+            background: var(--red); 
+            color: #fff; 
+            padding: 22px 60px;
+            border-radius: 100px; 
+            text-decoration: none;
+            font-family: 'Unbounded'; 
+            font-size: 11px; 
+            font-weight: 900;
+            z-index: 999; /* Максимальний пріоритет */
+            box-shadow: 0 10px 40px rgba(255,0,0,0.5);
+            white-space: nowrap; 
+            transition: 0.3s;
         }
         .cta-fixed:active { transform: translateX(-50%) scale(0.9); }
 
@@ -121,7 +94,6 @@
 </head>
 <body>
 
-    <!-- LOADER -->
     <div id="loader">
         <div class="loader-num" id="load-val">000</div>
     </div>
@@ -139,31 +111,14 @@
         </section>
 
         <section class="grid">
-            <a href="https://instagram.com" class="grid-item img-1">
-                <span>01 // IDENTITY</span>
-                <h2>Instagram</h2>
-            </a>
-            <a href="https://t.me" class="grid-item img-2">
-                <span>02 // CONNECT</span>
-                <h2>Telegram</h2>
-            </a>
-            <a href="#" class="grid-item img-3">
-                <span>03 // ARCHIVE</span>
-                <h2>Portfolio</h2>
-            </a>
-            <a href="#" class="grid-item img-4">
-                <span>04 // SYSTEM</span>
-                <h2>Aftercare</h2>
-            </a>
+            <a href="https://instagram.com" class="grid-item img-1"><span>01 // IDENTITY</span><h2>Instagram</h2></a>
+            <a href="https://t.me" class="grid-item img-2"><span>02 // CONNECT</span><h2>Telegram</h2></a>
+            <a href="#" class="grid-item img-3"><span>03 // ARCHIVE</span><h2>Portfolio</h2></a>
+            <a href="#" class="grid-item img-4"><span>04 // SYSTEM</span><h2>Aftercare</h2></a>
         </section>
 
         <footer>
-            <div class="footer-info">
-                YYOKAI TATTOO ARCHITECTURE<br>
-                LVIV // CORE SECTOR<br>
-                ESTABLISHED IN THE FOREST<br>
-                V.1.0_MATRIX_READY
-            </div>
+            <div class="footer-info">YYOKAI TATTOO ARCHITECTURE<br>LVIV // CORE SECTOR<br>V.1.0_MATRIX_READY</div>
             <div class="footer-year">© 2026 // ESTABLISHED IN FOREST</div>
         </footer>
     </main>
@@ -176,13 +131,15 @@
             const logo = document.getElementById('main-logo');
 
             const interval = setInterval(() => {
-                count += Math.floor(Math.random() * 9) + 1;
+                count += Math.floor(Math.random() * 10) + 1;
+                
                 if (count >= 100) {
                     count = 100;
                     clearInterval(interval);
+                    
+                    // Гарантований вихід лоудера
                     setTimeout(() => {
                         loader.style.transform = "translateY(-100%)";
-                        // Запуск кінетичної анімації лого
                         setTimeout(() => {
                             logo.classList.add('active');
                         }, 400);
