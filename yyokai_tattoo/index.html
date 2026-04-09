@@ -2,190 +2,147 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YYOKAI | TATTOO SYSTEM</title>
-    <link href="https://googleapis.com" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>YYOKAI MATRIX</title>
+    <script src="https://jsdelivr.net"></script>
     <style>
+        @import url('https://googleapis.com');
+
         :root {
-            --bg: #050505;
-            --accent: #ff0000;
-            --text: #ffffff;
-            --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 0, 0, 0.2);
+            --red: #ff0000;
+            --black: #050505;
         }
 
-        body, html {
-            margin: 0; padding: 0;
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Space Grotesk', sans-serif;
-            overflow-x: hidden;
-            height: 100%;
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--black); color: white; font-family: 'Space Mono', monospace; overflow: hidden; }
+
+        /* СКЛЯНИЙ ШУМ НА ФОНІ */
+        body::before {
+            content: ""; position: fixed; inset: 0;
+            background-image: url("https://vercel.app");
+            opacity: 0.05; pointer-events: none; z-index: 10;
         }
 
-        /* --- LOADER STYLE --- */
+        /* --- LOADER (GLITCH STYLE) --- */
         #loader {
-            position: fixed;
-            inset: 0;
-            background: #000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+            position: fixed; inset: 0; background: black; z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
-
-        .loader-dragon {
-            width: 100px; height: 100px;
-            border-radius: 50%;
-            border-left: 2px solid var(--accent);
-            border-right: 2px solid transparent;
-            animation: spin 1s linear infinite;
-            filter: drop-shadow(0 0 10px var(--accent));
+        .glitch-text {
+            font-family: 'Syncopate', sans-serif; font-weight: 700; font-size: 14px;
+            letter-spacing: 8px; color: var(--red); text-transform: uppercase;
+            position: relative; animation: glitch 1s infinite;
         }
-
-        .loader-text {
-            margin-top: 30px;
-            font-size: 10px;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            color: var(--accent);
-            opacity: 0.8;
+        @keyframes glitch {
+            0% { transform: skew(0deg); }
+            20% { transform: skew(10deg); text-shadow: 2px 0 red; }
+            40% { transform: skew(-10deg); text-shadow: -2px 0 red; }
+            100% { transform: skew(0deg); }
         }
+        .load-bar { width: 150px; height: 1px; background: #222; margin-top: 20px; position: relative; }
+        .load-progress { position: absolute; height: 100%; background: var(--red); width: 0%; animation: load 2.5s forwards ease-in-out; }
+        @keyframes load { 100% { width: 100%; } }
 
         /* --- MAIN CONTENT --- */
-        .main-container {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            background: radial-gradient(circle at center, #110000 0%, #050505 100%);
+        main {
+            height: 100vh; display: flex; flex-direction: column; align-items: center;
+            justify-content: center; opacity: 0; transition: opacity 1s ease;
         }
 
-        .bg-kanji {
-            position: absolute;
-            font-size: 60vh;
-            color: rgba(255, 0, 0, 0.02);
-            z-index: 0;
-            user-select: none;
-            font-weight: 900;
+        /* АВАТАР З ЕФЕКТОМ ГЛІТЧУ */
+        .avatar-wrapper {
+            position: relative; width: 180px; height: 180px; margin-bottom: 30px;
+        }
+        .avatar-img {
+            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+            border: 1px solid rgba(255, 0, 0, 0.3); padding: 5px;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.1);
+        }
+        .avatar-wrapper::after {
+            content: "妖怪"; position: absolute; bottom: -10px; right: -10px;
+            background: var(--red); color: black; font-weight: bold; padding: 5px 10px;
+            font-size: 14px; font-family: 'Syncopate';
         }
 
-        .profile-card {
-            z-index: 1;
-            text-align: center;
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            padding: 40px;
-            border-radius: 30px;
-            border: 1px solid var(--border);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            max-width: 320px;
-            width: 85%;
-        }
+        .title { font-family: 'Syncopate', sans-serif; font-size: 28px; letter-spacing: 10px; margin-bottom: 5px; }
+        .sub { color: var(--red); font-size: 10px; letter-spacing: 4px; margin-bottom: 40px; opacity: 0.7; }
 
-        .avatar {
-            width: 140px; height: 140px;
-            border-radius: 50%;
-            margin-bottom: 20px;
-            border: 2px solid var(--accent);
-            padding: 5px;
-            box-shadow: 0 0 20px rgba(255,0,0,0.3);
-            object-fit: cover;
+        /* КНОПКИ (BRUTALISM) */
+        .links { width: 80%; max-width: 300px; }
+        .link-item {
+            display: block; width: 100%; padding: 18px; margin-bottom: 15px;
+            text-decoration: none; color: white; border: 1px solid rgba(255,255,255,0.1);
+            text-align: center; text-transform: uppercase; font-size: 12px;
+            letter-spacing: 2px; transition: 0.3s; position: relative;
+            background: rgba(255, 255, 255, 0.02); overflow: hidden;
         }
+        .link-item:hover {
+            border-color: var(--red); background: var(--red); color: black;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+        }
+        .link-item::before {
+            content: ""; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: 0.5s;
+        }
+        .link-item:hover::before { left: 100%; }
 
-        h1 {
-            font-size: 24px;
-            letter-spacing: 4px;
-            margin: 10px 0;
-            font-weight: 700;
-        }
-
-        .username {
-            font-size: 12px;
-            color: var(--accent);
-            letter-spacing: 2px;
-            margin-bottom: 30px;
-            opacity: 0.8;
-        }
-
-        .btn {
-            display: block;
-            text-decoration: none;
-            color: white;
-            padding: 15px;
-            margin: 12px 0;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            font-size: 14px;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-        }
-
-        .btn:hover {
-            background: var(--accent);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(255,0,0,0.2);
-            border-color: transparent;
-        }
-
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        /* Анімація появи контенту */
-        .fade-in {
-            animation: fadeIn 1.5s ease forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        /* ЧАСТИНКИ НА ФОНІ */
+        #tsparticles { position: fixed; inset: 0; z-index: -1; }
     </style>
 </head>
 <body>
 
-    <!-- LOADER -->
     <div id="loader">
-        <div class="loader-dragon"></div>
-        <div class="loader-text">Initializing Matrix...</div>
+        <div class="glitch-text">YYOKAI SYSTEM</div>
+        <div class="load-bar"><div class="load-progress"></div></div>
     </div>
 
-    <!-- MAIN -->
-    <div class="main-container">
-        <div class="bg-kanji">妖怪</div>
-        
-        <div class="profile-card fade-in">
-            <!-- Встав сюди посилання на свою аву -->
-            <img src="https://placeholder.com" alt="YYOKAI" class="avatar">
-            
-            <h1>YYOKAI</h1>
-            <div class="username">YYOKAI.INK</div>
-            
-            <a href="https://instagram.com" class="btn">Instagram</a>
-            <a href="#" onclick="Telegram.WebApp.close()" class="btn">Portfolio</a>
-            <a href="#" class="btn" style="background: rgba(255,0,0,0.1); border-color: var(--accent);">Book Session</a>
+    <div id="tsparticles"></div>
+
+    <main id="content">
+        <div class="avatar-wrapper">
+            <!-- ЗАМІНИ НА СВОЄ ФОТО -->
+            <img src="ТВОЄ_ФОТО_АБО_ID" alt="YYOKAI" class="avatar-img">
         </div>
-    </div>
+        
+        <h1 class="title">YYOKAI</h1>
+        <div class="sub">V.1.0_MATRIX_LOADED</div>
 
-    <script src="https://telegram.org"></script>
+        <div class="links">
+            <a href="https://instagram.com" class="link-item">Instagram</a>
+            <a href="#" class="link-item" onclick="showPortfolio()">Portfolio</a>
+            <a href="#" class="link-item" style="border: 1px solid var(--red); color: var(--red);">Book Session</a>
+        </div>
+    </main>
+
+    <script src="https://jsdelivr.net"></script>
     <script>
-        // Скрипт лоудера
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const loader = document.getElementById('loader');
-                loader.style.transform = 'translateY(-100%)';
-            }, 2500); // 2.5 секунди затримки
+        // Ініціалізація часток (Matrix Dust)
+        tsParticles.load("tsparticles", {
+            particles: {
+                number: { value: 40 },
+                color: { value: "#ff0000" },
+                shape: { type: "circle" },
+                opacity: { value: 0.3 },
+                size: { value: 2 },
+                move: { enable: true, speed: 1, direction: "none", outModes: "out" },
+                line_linked: { enable: true, distance: 150, color: "#ff0000", opacity: 0.1, width: 1 }
+            }
         });
 
-        // Ініціалізація Telegram WebApp
-        let tg = window.Telegram.WebApp;
-        tg.expand();
-        tg.headerColor = '#050505';
+        // Керування лоудером
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('content').style.opacity = '1';
+            }, 2500);
+        });
+
+        function showPortfolio() {
+            // Тут можна додати перехід на іншу сторінку або відкриття попапу
+            alert("Завантаження архіву робіт...");
+        }
     </script>
 </body>
 </html>
-
