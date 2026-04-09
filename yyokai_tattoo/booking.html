@@ -6,153 +6,148 @@
     <title>YYOKAI | BOOKING</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --red: #ff0000; --bg: #000; --white: #ffffff; }
+        :root { --red: #ff0000; }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body { background: #000; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; touch-action: manipulation; }
+        body { background: #000; color: #fff; font-family: sans-serif; overflow-x: hidden; touch-action: manipulation; }
 
-        /* --- ЛОУДЕР 0-100 (АВТОНОМНИЙ) --- */
+        /* --- ЛОУДЕР 0-100 (ПРАЦЮЄ ЗАВЖДИ) --- */
         #loader { 
             position: fixed; inset: 0; background: #000; z-index: 9999; 
             display: flex; justify-content: center; align-items: center; 
-            transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1); 
         }
-        #l-val { font-family: 'Unbounded', sans-serif; font-size: 25vw; color: #fff; line-height: 1; }
+        #l-val { font-family: 'Unbounded', sans-serif; font-size: 25vw; color: #fff; }
 
         /* --- КОНТЕНТ --- */
-        .container { 
-            opacity: 0; padding: 20px; max-width: 450px; margin: 0 auto; 
-            display: flex; flex-direction: column; align-items: center; 
-            transition: 1s ease;
+        #mainContent { display: none; padding: 20px; max-width: 450px; margin: 0 auto; text-align: center; }
+
+        .logo { font-family: 'Unbounded', sans-serif; font-size: 45px; line-height: 0.8; margin: 40px 0; text-transform: uppercase; }
+        .logo span { display: block; }
+        .logo b { color: var(--red); }
+
+        /* --- КАЛЕНДАР (СІТКА ТАБЛИЦЕЮ) --- */
+        .calendar-box { background: #fff; padding: 20px; border-radius: 30px; margin-bottom: 25px; width: 100%; }
+        table { width: 100%; border-collapse: separate; border-spacing: 8px; }
+        td { 
+            background: #eee; color: #000; width: 14%; height: 50px; 
+            border-radius: 12px; font-weight: 900; cursor: pointer; font-size: 14px; 
         }
-        .container.visible { opacity: 1; }
+        td.selected { background: var(--red); color: #fff; transform: scale(1.1); }
+        td.booked { opacity: 0.15; cursor: not-allowed; text-decoration: line-through; }
 
-        .mini-logo { font-family: 'Unbounded', sans-serif; font-size: 12vw; line-height: 0.8; margin: 40px 0; text-align: center; text-transform: uppercase; }
-        .mini-logo span { display: block; }
-        .mini-logo span:last-child { color: var(--red); margin-top: 5px; }
-
-        /* КАЛЕНДАР (БІЛА СІТКА) */
-        .calendar-box { background: var(--white); padding: 20px; border-radius: 30px; width: 100%; margin-bottom: 30px; }
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
-        .day { 
-            aspect-ratio: 1/1; background: #eee; color: #000; border-radius: 10px; 
-            display: flex; align-items: center; justify-content: center; 
-            font-size: 13px; font-weight: 900; cursor: pointer; transition: 0.2s;
-        }
-        .day.selected { background: var(--red); color: #fff; transform: scale(1.1); }
-        .day.booked { opacity: 0.2; cursor: not-allowed; position: relative; }
-        .day.booked::after { content: ''; position: absolute; width: 70%; height: 1px; background: #000; transform: rotate(-45deg); }
-
-        /* ФОРМА */
-        #bookingForm { display: none; width: 100%; flex-direction: column; gap: 12px; }
-        #bookingForm.active { display: flex; }
+        /* --- ФОРМА --- */
+        #bookingForm { display: none; flex-direction: column; gap: 12px; }
         input { background: #111; border: 1px solid #222; padding: 18px; color: #fff; font-size: 16px; border-radius: 15px; width: 100%; }
-        .submit-btn { background: var(--red); color: #fff; border: none; padding: 20px; border-radius: 15px; font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 900; cursor: pointer; }
-
-        .success-msg { display: none; color: var(--red); text-align: center; font-family: 'Unbounded'; font-size: 12px; padding: 20px; line-height: 1.5; }
-        .admin-trigger { margin-top: 50px; opacity: 0.05; font-size: 8px; cursor: pointer; }
+        input:focus { outline: none; border-color: var(--red); }
+        .btn { background: var(--red); color: #fff; border: none; padding: 20px; border-radius: 15px; font-family: 'Unbounded'; font-size: 10px; font-weight: 900; cursor: pointer; }
+        
+        .admin-btn { margin-top: 50px; opacity: 0.05; font-size: 8px; cursor: pointer; padding: 20px; }
     </style>
 </head>
 <body>
 
-    <div id="loader">
-        <div id="l-val">0</div>
-    </div>
+    <div id="loader"><div id="l-val">0</div></div>
 
-    <main class="container" id="mainContent">
-        <div class="mini-logo"><span>YYO</span><span>KAI</span></div>
-
+    <div id="mainContent">
+        <div class="logo"><span>YYO</span><b>KAI</b></div>
+        
         <div class="calendar-box">
-            <div class="calendar-grid" id="calendarGrid"></div>
+            <table id="calTable"></table>
         </div>
 
         <form id="bookingForm">
-            <p id="dateLabel" style="color: var(--red); font-size: 9px; margin-bottom: 10px; font-weight: 900; letter-spacing: 2px;"></p>
-            <input type="text" id="userName" placeholder="NAME / IDENTITY" required>
+            <p id="dateLabel" style="color:red; font-weight:900; margin-bottom:15px; font-size:10px; letter-spacing:2px;"></p>
+            <input type="text" id="userName" placeholder="IDENTITY / NAME" required>
             <input type="text" id="userPhone" placeholder="PHONE NUMBER" required>
             <input type="text" id="userInsta" placeholder="INSTAGRAM TAG" required>
-            <button type="submit" class="submit-btn">INITIATE PROTOCOL</button>
+            <button type="submit" class="btn">INITIATE PROTOCOL</button>
         </form>
 
-        <div id="success" class="success-msg">ПРОТОКОЛ ПРИЙНЯТО.<br>Я ЗКОНТАКТУЮ З ТОБОЮ.</div>
-        <div class="admin-trigger" onclick="unlockAdmin()">.system_access</div>
-    </main>
+        <div id="success" style="display:none; color:red; font-family:'Unbounded'; font-size:12px; padding:40px 0;">Я ЗКОНТАКТУЮ З ТОБОЮ.</div>
+        
+        <div class="admin-btn" onclick="openAdmin()">.system_access</div>
+    </div>
 
-    <!-- ОСНОВНИЙ СКРИПТ (ЛОУДЕР ПРАЦЮЄ ПЕРШИМ) -->
     <script>
-        let count = 0;
-        const lVal = document.getElementById('l-val');
-        const loader = document.getElementById('loader');
-        const content = document.getElementById('mainContent');
+        const DB_URL = "https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/";
 
-        // Цифри побіжать миттєво
-        const loadInt = setInterval(() => {
-            count += Math.floor(Math.random() * 5) + 1;
-            if(count >= 100) {
-                count = 100;
-                clearInterval(loadInt);
+        // 1. ЛОУДЕР 0-100
+        let c = 0;
+        let iv = setInterval(() => {
+            c += Math.floor(Math.random() * 5) + 2;
+            if(c >= 100) {
+                c = 100; clearInterval(iv);
                 setTimeout(() => {
-                    loader.style.transform = "translateY(-100%)";
-                    content.classList.add('visible');
-                }, 400);
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('mainContent').style.display = 'block';
+                    loadBookings();
+                }, 500);
             }
-            lVal.innerText = count;
-        }, 35);
-    </script>
+            document.getElementById('l-val').innerText = c;
+        }, 40);
 
-    <!-- FIREBASE ПІДКЛЮЧАЄТЬСЯ ОКРЕМО -->
-    <script type="module">
-        import { initializeApp } from "https://gstatic.com";
-        import { getDatabase, ref, push, onValue } from "https://gstatic.com";
+        // 2. ЗАВАНТАЖЕННЯ ДАНИХ (БЕЗ КЛЮЧІВ)
+        async function loadBookings() {
+            try {
+                const res = await fetch(DB_URL);
+                const data = await res.json();
+                const booked = data ? Object.values(data).map(b => b.date) : [];
+                renderCalendar(booked);
+            } catch (e) { renderCalendar([]); }
+        }
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyALs-ZgFX7auGxRQ2EeQnVngjnejimPLV4",
-            databaseURL: "https://firebasedatabase.app",
-            projectId: "yyokai-tattoo-system",
-            storageBucket: "://appspot.com",
-            appId: "1:995298614954:web:e4039c69fcb0541a95fad3"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        const grid = document.getElementById('calendarGrid');
-
-        // Рендер календаря
-        onValue(ref(db, 'bookings'), (snapshot) => {
-            grid.innerHTML = '';
-            const data = snapshot.val() || {};
-            const bookedDays = Object.values(data).map(b => b.date);
-
-            for (let i = 1; i <= 31; i++) {
-                const day = document.createElement('div');
-                day.className = 'day' + (bookedDays.includes(i.toString()) ? ' booked' : '');
-                day.innerText = i;
-                day.onclick = () => {
-                    if (!day.classList.contains('booked')) {
-                        document.querySelectorAll('.day').forEach(d => d.classList.remove('selected'));
-                        day.classList.add('selected');
-                        window.selDate = i;
-                        document.getElementById('dateLabel').innerText = `DATE SELECTED: ${i} / MAY`;
-                        document.getElementById('bookingForm').classList.add('active');
+        function renderCalendar(booked) {
+            const table = document.getElementById('calTable');
+            table.innerHTML = '';
+            let day = 1;
+            for(let r = 0; r < 5; r++) {
+                let tr = document.createElement('tr');
+                for(let d = 0; d < 7; d++) {
+                    if(day > 31) break;
+                    let td = document.createElement('td');
+                    td.innerText = day;
+                    if(booked.includes(day.toString())) {
+                        td.className = 'booked';
+                    } else {
+                        td.onclick = function() {
+                            document.querySelectorAll('td').forEach(el => el.classList.remove('selected'));
+                            this.classList.add('selected');
+                            window.selDate = this.innerText;
+                            document.getElementById('dateLabel').innerText = "SELECTED: " + this.innerText + " / MAY";
+                            document.getElementById('bookingForm').style.display = 'flex';
+                            document.getElementById('bookingForm').scrollIntoView({behavior: 'smooth'});
+                        };
                     }
-                };
-                grid.appendChild(day);
+                    tr.appendChild(td);
+                    day++;
+                }
+                table.appendChild(tr);
             }
-        });
+        }
 
-        // Відправка
+        // 3. ВІДПРАВКА ДАНИХ
         document.getElementById('bookingForm').onsubmit = async (e) => {
             e.preventDefault();
-            await push(ref(db, 'bookings'), {
-                date: window.selDate.toString(),
+            const payload = {
+                date: window.selDate,
                 name: document.getElementById('userName').value,
                 phone: document.getElementById('userPhone').value,
                 insta: document.getElementById('userInsta').value
+            };
+
+            await fetch(DB_URL, {
+                method: 'POST',
+                body: JSON.stringify(payload)
             });
+
             document.getElementById('bookingForm').style.display = 'none';
             document.getElementById('success').style.display = 'block';
         };
 
-        window.unlockAdmin = () => { if(prompt('KEY:') === 'yokai123234') alert('ADMIN UNLOCKED'); };
+        function openAdmin() {
+            if(prompt('KEY:') === 'yokai123234') {
+                window.location.href = "https://google.com";
+            }
+        }
     </script>
 </body>
 </html>
