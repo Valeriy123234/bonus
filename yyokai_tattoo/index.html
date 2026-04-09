@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>YYOKAI | ARCHITECT OF INK</title>
     
     <link href="https://googleapis.com" rel="stylesheet">
@@ -13,70 +13,67 @@
         
         body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        /* --- PRELOADER (LAKSHERY) --- */
+        /* --- НАДІЙНИЙ ЛОУДЕР --- */
         #loader {
             position: fixed; inset: 0; background: #000; z-index: 2000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: transform 1s cubic-bezier(0.8, 0, 0.2, 1);
         }
         .loader-num {
-            font-family: 'Unbounded'; font-size: 20vw; color: #fff; line-height: 1;
-            letter-spacing: -10px;
+            font-family: 'Unbounded'; font-size: 25vw; color: #fff; line-height: 1;
+            letter-spacing: -10px; transition: opacity 0.5s;
         }
         .loader-bar {
-            position: fixed; bottom: 0; left: 0; height: 4px; background: var(--red);
-            width: 0%; transition: width 0.1s linear;
+            position: fixed; bottom: 0; left: 0; height: 5px; background: var(--red);
+            width: 0%; transition: width 0.2s ease-out;
         }
 
-        /* --- UI ELEMENTS --- */
+        /* --- UI --- */
         .noise {
-            position: fixed; inset: 0; z-index: 999; opacity: 0.03;
+            position: fixed; inset: 0; z-index: 999; opacity: 0.04;
             pointer-events: none; background: url(https://vercel.app);
         }
 
         header {
-            position: fixed; top: 0; width: 100%; padding: 40px;
+            position: fixed; top: 0; width: 100%; padding: 30px;
             display: flex; justify-content: space-between; align-items: center;
             z-index: 100; mix-blend-mode: difference;
         }
-        .logo { font-family: 'Unbounded'; font-size: 20px; letter-spacing: -1px; }
 
-        /* --- HERO SECTION --- */
+        /* --- HERO --- */
         .hero {
             height: 100vh; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; position: relative;
+            justify-content: center; align-items: center; text-align: center;
         }
         .hero-title {
-            font-family: 'Unbounded'; font-size: 22vw; line-height: 0.75;
-            text-transform: uppercase; text-align: center; letter-spacing: -0.05em;
+            font-family: 'Unbounded'; font-size: 22vw; line-height: 0.8;
+            text-transform: uppercase; letter-spacing: -0.05em;
+            opacity: 0; transform: translateY(50px);
+            transition: all 1.2s ease 0.5s;
         }
+        .hero-title.active { opacity: 1; transform: translateY(0); }
 
-        /* --- GRID (NIKE / STONE ISLAND VIBE) --- */
-        .section-grid { padding: 4px; background: #111; }
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; }
-        
+        /* --- GRID --- */
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; background: #111; border: 1px solid #111; }
         .grid-item {
-            aspect-ratio: 1/1.2; background: #000; position: relative;
+            aspect-ratio: 1/1.2; background: #000; padding: 40px;
             display: flex; flex-direction: column; justify-content: flex-end;
-            padding: 40px; text-decoration: none; color: #fff;
-            overflow: hidden; transition: 0.4s;
+            text-decoration: none; color: #fff; transition: 0.4s;
         }
         .grid-item:hover { background: var(--red); color: #000; }
-        .grid-item h2 { font-family: 'Unbounded'; font-size: 24px; text-transform: uppercase; z-index: 2; }
-        .grid-item span { font-size: 10px; letter-spacing: 2px; margin-bottom: 10px; z-index: 2; }
+        .grid-item h2 { font-family: 'Unbounded'; font-size: 24px; text-transform: uppercase; }
 
-        /* --- FOOTER CTA --- */
         .cta-fixed {
             position: fixed; bottom: 30px; right: 30px;
-            background: #fff; color: #000; padding: 25px 50px;
+            background: #fff; color: #000; padding: 20px 40px;
             border-radius: 100px; text-decoration: none;
-            font-family: 'Unbounded'; font-size: 12px; font-weight: 900;
-            z-index: 200; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            font-family: 'Unbounded'; font-size: 10px; font-weight: 900;
+            z-index: 200;
         }
 
         @media (max-width: 768px) {
             .hero-title { font-size: 28vw; }
             .grid { grid-template-columns: 1fr; }
-            header { padding: 20px; }
         }
     </style>
 </head>
@@ -90,84 +87,53 @@
     <div class="noise"></div>
 
     <header>
-        <div class="logo">YYOKAI ©</div>
-        <div style="font-size: 10px; letter-spacing: 2px;">LVIV_MATRIX_V1</div>
+        <div style="font-family: 'Unbounded'; font-size: 14px;">YYOKAI ©</div>
+        <div style="font-size: 9px; letter-spacing: 2px;">V.1.0_MATRIX</div>
     </header>
 
-    <a href="#" class="cta-fixed" id="book-btn">ЗАПИСАТИСЯ</a>
+    <a href="#" class="cta-fixed" onclick="window.close()">ЗАПИСАТИСЯ</a>
 
-    <main data-scroll-container>
+    <main>
         <section class="hero">
-            <h1 class="hero-title">YYO<br>KAI</h1>
+            <h1 class="hero-title" id="h-title">YYO<br>KAI</h1>
         </section>
 
-        <section class="section-grid">
-            <div class="grid">
-                <a href="https://instagram.com" class="grid-item">
-                    <span>01 // SOCIAL</span>
-                    <h2>Instagram</h2>
-                </a>
-                <a href="https://t.me" class="grid-item">
-                    <span>02 // CONNECT</span>
-                    <h2>Telegram</h2>
-                </a>
-                <a href="#" class="grid-item">
-                    <span>03 // KNOWLEDGE</span>
-                    <h2>Догляд</h2>
-                </a>
-                <a href="#" class="grid-item" onclick="Telegram.WebApp.close()">
-                    <span>04 // EXIT</span>
-                    <h2>Назад</h2>
-                </a>
-            </div>
+        <section class="grid">
+            <a href="https://instagram.com" class="grid-item"><h2>Instagram</h2></a>
+            <a href="https://t.me" class="grid-item"><h2>Telegram</h2></a>
+            <a href="#" class="grid-item"><h2>Догляд</h2></a>
+            <a href="#" class="grid-item" onclick="window.close()"><h2>Закрити</h2></a>
         </section>
     </main>
 
-    <!-- СКРИПТИ ДЛЯ ЛАКШЕРІ АНІМАЦІЙ -->
-    <script src="https://cloudflare.com"></script>
-    <script src="https://unpkg.com"></script>
-
     <script>
-        // 1. ПЛАВНИЙ СКРОЛ (Lenis)
-        const lenis = new Lenis();
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
+        // ЛОГІКА ЗАВАНТАЖЕННЯ (БЕЗ ЗОВНІШНІХ ЗАЛЕЖНОСТЕЙ)
+        document.addEventListener("DOMContentLoaded", function() {
+            let count = 0;
+            const loadVal = document.getElementById('load-val');
+            const lBar = document.getElementById('l-bar');
+            const loader = document.getElementById('loader');
+            const title = document.getElementById('h-title');
 
-        // 2. НАДІЙНИЙ ЛОУДЕР ДО 100
-        let count = 0;
-        const loadVal = document.getElementById('load-val');
-        const lBar = document.getElementById('l-bar');
-
-        const interval = setInterval(() => {
-            count += Math.floor(Math.random() * 8) + 1;
-            
-            if(count >= 100) {
-                count = 100;
-                clearInterval(interval);
+            const interval = setInterval(() => {
+                count += Math.floor(Math.random() * 5) + 1;
                 
-                const tl = gsap.timeline();
-                tl.to("#load-val", { y: -150, opacity: 0, duration: 0.8, ease: "expo.in" })
-                  .to("#loader", { y: "-100%", duration: 1, ease: "expo.inOut" }, "-=0.4")
-                  .from(".hero-title", { y: 200, opacity: 0, duration: 1.5, ease: "expo.out" }, "-=0.2");
-            }
-            
-            loadVal.innerText = count.toString().padStart(3, '0');
-            lBar.style.width = count + "%";
-        }, 60);
-
-        // 3. ІНТЕГРАЦІЯ З TELEGRAM
-        if (window.Telegram && window.Telegram.WebApp) {
-            const tg = window.Telegram.WebApp;
-            tg.expand();
-            tg.headerColor = '#000000';
-            
-            document.getElementById('book-btn').addEventListener('click', () => {
-                tg.close(); // Закриваємо веб-ап, щоб юзер опинився в боті на формі запису
-            });
-        }
+                if (count >= 100) {
+                    count = 100;
+                    clearInterval(interval);
+                    
+                    // Фінальна анімація
+                    setTimeout(() => {
+                        loadVal.style.opacity = "0";
+                        loader.style.transform = "translateY(-100%)";
+                        title.classList.add('active');
+                    }, 500);
+                }
+                
+                loadVal.innerText = count.toString().padStart(3, '0');
+                lBar.style.width = count + "%";
+            }, 50);
+        });
     </script>
 </body>
 </html>
