@@ -60,12 +60,14 @@
         .hero-tagline { margin-top: 35px; font-size: 10px; letter-spacing: 8px; color: #444; text-transform: uppercase; opacity: 0; transform: translateY(15px); transition: all 1s ease 1s; }
         .hero-title.active + .hero-tagline { opacity: 1; transform: translateY(0); }
 
-        /* СТРІЛКА (ТІЛЬКИ ПІСЛЯ КЛАСУ .show) */
+        /* СТРІЛКА (КЛІКАБЕЛЬНА) */
         .scroll-indicator { 
             margin-top: 30px; 
             opacity: 0; 
             visibility: hidden; 
             transition: opacity 2s ease; 
+            cursor: pointer;
+            z-index: 10;
         }
         .scroll-indicator.show { 
             opacity: 0.6; 
@@ -132,7 +134,8 @@
         <section class="hero">
             <h1 class="hero-title" id="main-logo"><span>YYO</span><span>KAI</span></h1>
             <div class="hero-tagline">INK ARCHITECT // LVIV</div>
-            <div class="scroll-indicator" id="arrow-icon">
+            <!-- СТРІЛКА ТЕПЕР ПЕРЕПРАВЛЯЄ НА ІНСТАГРАМ -->
+            <div class="scroll-indicator" id="arrow-icon" onclick="document.getElementById('instagram').scrollIntoView({behavior: 'smooth'})">
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
             </div>
         </section>
@@ -187,7 +190,6 @@
                         logo.classList.add('visible');
                         setTimeout(() => { 
                             logo.classList.add('active');
-                            // СТРІЛКА: З'ЯВЛЯЄТЬСЯ ПЛАВНО ЧЕРЕЗ 2 СЕКУНДИ ПІСЛЯ ЛОГО
                             setTimeout(() => {
                                 arrow.classList.add('show');
                             }, 2000);
