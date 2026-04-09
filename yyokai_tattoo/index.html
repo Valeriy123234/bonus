@@ -18,7 +18,6 @@
             transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1); 
         }
         .loader-num { font-family: 'Unbounded', sans-serif; font-size: 25vw; color: #fff; line-height: 1; }
-
         .noise { position: fixed; inset: 0; z-index: 999; opacity: 0.05; pointer-events: none; background: url(https://vercel.app); }
 
         /* --- МЕНЮ --- */
@@ -42,7 +41,7 @@
             margin: 15px 0; text-transform: uppercase; letter-spacing: 2px;
         }
 
-        /* --- HERO (ЛОГО ПО ЦЕНТРУ) --- */
+        /* --- HERO --- */
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
         .hero-title {
             font-family: 'Unbounded', sans-serif; font-size: 24vw; line-height: 0.9;
@@ -61,22 +60,21 @@
         .hero-tagline { margin-top: 35px; font-size: 10px; letter-spacing: 8px; color: #444; text-transform: uppercase; opacity: 0; transform: translateY(15px); transition: all 1s ease 1s; }
         .hero-title.active + .hero-tagline { opacity: 1; transform: translateY(0); }
 
-        /* СТРІЛКА (БЕЗ ГЛЮКІВ ПРИ ЗАВАНТАЖЕННІ) */
+        /* СТРІЛКА (ТІЛЬКИ ПІСЛЯ КЛАСУ .show) */
         .scroll-indicator { 
             margin-top: 30px; 
             opacity: 0; 
             visibility: hidden; 
-            transition: opacity 1s ease 2s; 
+            transition: opacity 2s ease; 
         }
-        /* З'являється тільки коли логотип став .active */
-        .hero-title.active ~ .scroll-indicator { 
+        .scroll-indicator.show { 
             opacity: 0.6; 
             visibility: visible; 
             animation: arrowFloat 2s infinite ease-in-out; 
         }
         @keyframes arrowFloat {
-            0%, 100% { transform: translateY(0); opacity: 0.4; }
-            50% { transform: translateY(15px); opacity: 1; }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(12px); }
         }
 
         /* --- GRID --- */
@@ -109,8 +107,6 @@
         .footer-year { font-family: 'Unbounded', sans-serif; font-size: 12px; color: var(--red); margin-top: 25px; }
 
         .cta-fixed { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--red); color: #fff; padding: 22px 60px; border-radius: 100px; text-decoration: none; font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 900; z-index: 1000; box-shadow: 0 10px 40px rgba(255,0,0,0.4); }
-
-        @media (max-width: 768px) { .hero-title { font-size: 28vw; } .grid-item { padding: 30px; } }
     </style>
 </head>
 <body>
@@ -136,8 +132,7 @@
         <section class="hero">
             <h1 class="hero-title" id="main-logo"><span>YYO</span><span>KAI</span></h1>
             <div class="hero-tagline">INK ARCHITECT // LVIV</div>
-            <!-- СТРІЛКА ТЕПЕР ПІД КЛАСОМ .active -->
-            <div class="scroll-indicator">
+            <div class="scroll-indicator" id="arrow-icon">
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
             </div>
         </section>
@@ -175,11 +170,12 @@
             document.getElementById('menuBtn').classList.toggle('active');
         }
 
-        window.onload = function() {
+        window.addEventListener('load', function() {
             let count = 0;
             const loadVal = document.getElementById('load-val');
             const loader = document.getElementById('loader');
             const logo = document.getElementById('main-logo');
+            const arrow = document.getElementById('arrow-icon');
 
             const counterInterval = setInterval(() => {
                 count += Math.floor(Math.random() * 5) + 2;
@@ -190,13 +186,17 @@
                         loader.style.transform = "translateY(-100%)";
                         logo.classList.add('visible');
                         setTimeout(() => { 
-                            logo.classList.add('active'); 
+                            logo.classList.add('active');
+                            // СТРІЛКА: З'ЯВЛЯЄТЬСЯ ПЛАВНО ЧЕРЕЗ 2 СЕКУНДИ ПІСЛЯ ЛОГО
+                            setTimeout(() => {
+                                arrow.classList.add('show');
+                            }, 2000);
                         }, 200);
                     }, 300);
                 }
                 loadVal.innerHTML = count;
             }, 40);
-        };
+        });
     </script>
 </body>
 </html>
