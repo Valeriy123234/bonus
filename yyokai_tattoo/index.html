@@ -13,96 +13,150 @@
             color: #fff; 
             font-family: 'Space Mono', monospace; 
             overflow: hidden;
-            display: flex; justify-content: center; align-items: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
             height: 100vh;
         }
 
-        /* ЛОУДЕР - ТЕПЕР ВІН НЕ ЗАВИСНЕ */
+        /* --- УНІКАЛЬНИЙ ЛОУДЕР --- */
         #loader {
             position: fixed; inset: 0; background: #000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             z-index: 9999;
         }
-        .scanner {
-            width: 200px; height: 2px;
-            background: #200; position: relative; overflow: hidden;
-        }
-        .scanner::after {
-            content: ""; position: absolute; inset: 0;
-            background: #ff0000; box-shadow: 0 0 15px #ff0000;
-            animation: scan 2s infinite;
-        }
-        @keyframes scan {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+
+        .loader-portal {
+            position: relative;
+            width: 120px; height: 120px;
+            display: flex; justify-content: center; align-items: center;
         }
 
-        /* ОСНОВНИЙ КОНТЕНТ */
-        main { opacity: 0; text-align: center; transition: opacity 1s ease; z-index: 5; }
-
-        /* АВАТАР */
-        .avatar-box {
-            position: relative; width: 150px; height: 150px; margin: 0 auto 30px;
+        /* Неонове коло, що обертається */
+        .portal-ring {
+            position: absolute;
+            width: 100%; height: 100%;
+            border: 2px solid transparent;
+            border-top: 2px solid #ff0000;
+            border-radius: 50%;
+            animation: rotate 1s linear infinite;
+            box-shadow: 0 0 20px #ff0000, inset 0 0 10px #ff0000;
         }
-        .avatar-box img {
+
+        /* Пульсуюче ядро */
+        .portal-core {
+            width: 40px; height: 40px;
+            background: #ff0000;
+            border-radius: 50%;
+            box-shadow: 0 0 40px #ff0000;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .loader-status {
+            margin-top: 40px;
+            color: #ff0000;
+            font-size: 10px;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            font-weight: bold;
+            text-shadow: 0 0 5px #ff0000;
+        }
+
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
+        @keyframes pulse { 0%, 100% { transform: scale(0.8); opacity: 0.5; } 50% { transform: scale(1.2); opacity: 1; } }
+
+        /* --- ГОЛОВНИЙ КОНТЕНТ --- */
+        .neon-frame {
+            opacity: 0;
+            border: 2px solid #ff0000;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.2);
+            max-width: 360px; width: 90%;
+            transition: all 1.2s ease;
+            transform: scale(0.9);
+        }
+
+        .neon-frame.active {
+            opacity: 1; transform: scale(1);
+        }
+
+        .avatar-container {
+            width: 140px; height: 140px; margin: 0 auto 25px;
+            position: relative;
+        }
+        .avatar-container img {
             width: 100%; height: 100%; border-radius: 50%;
-            border: 1px solid #ff0000; padding: 5px; object-fit: cover;
-        }
-        .avatar-box::after {
-            content: "YOKAI"; position: absolute; top: 0; right: -10px;
-            background: #ff0000; color: #000; font-size: 10px; padding: 2px 5px; font-weight: bold;
+            border: 2px solid #ff0000; object-fit: cover;
+            box-shadow: 0 0 25px #ff0000;
         }
 
-        h1 { font-family: 'Syncopate', sans-serif; font-size: 24px; letter-spacing: 8px; margin-bottom: 5px; }
-        .tag { color: #ff0000; font-size: 10px; letter-spacing: 5px; margin-bottom: 40px; }
+        h1 { 
+            font-family: 'Syncopate', sans-serif; 
+            font-size: 36px; /* Масивні букви */
+            letter-spacing: 8px; 
+            margin-bottom: 5px;
+            text-shadow: 0 0 15px #ff0000;
+        }
 
-        /* КНОПКИ */
+        .tag { color: #ff0000; font-size: 10px; letter-spacing: 5px; margin-bottom: 30px; }
+
         .btn {
-            display: block; width: 260px; padding: 15px; margin: 10px auto;
-            border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.02);
+            display: block; width: 100%; padding: 18px; margin: 15px 0;
+            border: 1px solid #ff0000; background: transparent;
             color: #fff; text-decoration: none; text-transform: uppercase;
-            font-size: 12px; letter-spacing: 2px; transition: 0.3s;
+            font-size: 14px; letter-spacing: 3px; font-weight: bold;
+            transition: 0.4s;
         }
-        .btn:hover { border-color: #ff0000; color: #ff0000; background: rgba(255,0,0,0.05); }
+        .btn:hover { background: #ff0000; color: #000; box-shadow: 0 0 30px #ff0000; }
 
-        /* ФОНОВИЙ ІЄРОГЛІФ */
-        .kanji {
-            position: absolute; font-size: 50vh; color: rgba(255,0,0,0.03);
-            z-index: 1; user-select: none; pointer-events: none;
+        .sub-menu {
+            opacity: 0; display: flex; gap: 10px; width: 90%; max-width: 360px;
+            margin-top: 25px; transition: 1s ease 0.8s;
+        }
+        .btn-sub {
+            flex: 1; padding: 14px; text-align: center;
+            background: rgba(255, 0, 0, 0.05); border: 1px solid #300;
+            color: #ff0000; text-decoration: none; font-size: 11px;
+            text-transform: uppercase; letter-spacing: 2px;
         }
     </style>
 </head>
 <body>
 
     <div id="loader">
-        <div style="color: #ff0000; letter-spacing: 5px; font-size: 10px; margin-bottom: 10px;">BOOTING SYSTEM...</div>
-        <div class="scanner"></div>
+        <div class="loader-portal">
+            <div class="portal-ring"></div>
+            <div class="portal-core"></div>
+        </div>
+        <div class="loader-status">Initializing Ritual...</div>
     </div>
 
-    <div class="kanji">妖怪</div>
-
-    <main id="main">
-        <div class="avatar-box">
-            <!-- Встав своє посилання або залиш порожнім для тесту -->
+    <div class="neon-frame" id="frame">
+        <div class="avatar-container">
             <img src="https://placeholder.com" alt="Avatar">
         </div>
         <h1>YYOKAI</h1>
-        <div class="tag">INK_ARCHIVE_V1.0</div>
+        <div class="tag">INK_TRANSFORMATION</div>
         
-        <div class="links">
-            <a href="https://instagram.com" class="btn">Instagram</a>
-            <a href="#" class="btn">Portfolio</a>
-            <a href="#" class="btn" style="border-color: #ff0000;">Book Session</a>
-        </div>
-    </main>
+        <a href="https://instagram.com" class="btn">PORTFOLIO</a>
+        <a href="#" class="btn" style="background: rgba(255,0,0,0.1);">BOOK NOW</a>
+    </div>
+
+    <div class="sub-menu" id="sub">
+        <a href="#" class="btn-sub">🩹 AFTERCARE</a>
+        <a href="https://t.me" class="btn-sub">✈️ TELEGRAM</a>
+    </div>
 
     <script>
-        // Гарантований запуск навіть якщо картинки ще вантажаться
         window.onload = function() {
             setTimeout(() => {
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('main').style.opacity = '1';
-            }, 2000);
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('frame').classList.add('active');
+                    document.getElementById('sub').style.opacity = '1';
+                }, 500);
+            }, 3000); // 3 секунди на завантаження
         };
     </script>
 </body>
