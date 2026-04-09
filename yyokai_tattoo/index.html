@@ -4,20 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>YYOKAI | INK ARCHITECT</title>
+    <!-- Використовуємо стандартний системний шрифт, якщо Google не вантажиться, щоб не було чорного екрану -->
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         :root { --red: #ff0000; --bg: #000; --white: #ffffff; }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body { background: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        /* --- ЛОУДЕР (БЕЗ НУЛЯ ПОПЕРЕДУ) --- */
+        /* --- НАДІЙНИЙ ЛОУДЕР --- */
         #loader {
             position: fixed; inset: 0; background: #000; z-index: 9999;
             display: flex; justify-content: center; align-items: center;
-            transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1);
+            transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
         }
         .loader-num {
-            font-family: 'Unbounded'; font-size: 25vw; color: #fff;
+            font-family: 'Unbounded', sans-serif; font-size: 25vw; color: #fff;
             letter-spacing: -10px; line-height: 1;
         }
 
@@ -29,23 +30,22 @@
         /* --- HERO & LOGO --- */
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #000; position: relative; }
         .hero-title {
-            font-family: 'Unbounded'; font-size: 24vw; line-height: 0.75;
+            font-family: 'Unbounded', sans-serif; font-size: 24vw; line-height: 0.75;
             text-transform: uppercase; text-align: center; letter-spacing: -0.05em;
-            display: flex; flex-direction: column;
+            display: flex; flex-direction: column; visibility: hidden; /* Ховаємо до старту анімації */
         }
+        .hero-title.visible { visibility: visible; }
         .hero-title span {
             display: inline-block; opacity: 0;
             transform: scaleY(4) translateY(200px) translateZ(-800px);
-            filter: blur(20px); transition: all 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+            filter: blur(20px); transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .hero-title.active span { opacity: 1; transform: scaleY(1) translateY(0) translateZ(0); filter: blur(0); }
         .hero-title span:nth-child(2) { transition-delay: 0.15s; }
 
-        /* ДЕСКРИПТОР (ТЕПЕР СТИЛЬНИЙ І СТРИМАНИЙ) */
         .hero-tagline {
             margin-top: 30px; font-size: 10px; letter-spacing: 8px;
-            color: #444; /* Стриманий сірий */
-            text-transform: uppercase; font-weight: 400;
+            color: #444; text-transform: uppercase; font-weight: 400;
             opacity: 0; transform: translateY(15px);
             transition: all 1s ease 1s;
         }
@@ -63,31 +63,24 @@
             background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, transparent 80%);
             z-index: 1;
         }
-        .img-1 { background: url('https://unsplash.com') center/cover; }
-        .img-2 { background: url('https://unsplash.com') center/cover; }
-        .img-3 { background: url('https://unsplash.com') center/cover; }
-        .img-4 { background: url('https://unsplash.com') center/cover; }
+        /* Тимчасові фони */
+        .img-1 { background: #050505; } .img-2 { background: #080808; }
+        .img-3 { background: #050505; } .img-4 { background: #080808; }
 
-        .grid-item h2 { font-family: 'Unbounded'; font-size: 28px; text-transform: uppercase; z-index: 2; position: relative; }
+        .grid-item h2 { font-family: 'Unbounded', sans-serif; font-size: 28px; text-transform: uppercase; z-index: 2; position: relative; }
         .grid-item span { font-size: 10px; letter-spacing: 4px; margin-bottom: 10px; opacity: 0.5; z-index: 2; position: relative; }
 
-        /* --- FOOTER --- */
-        footer { padding: 100px 40px 140px; background: #000; border-top: 1px solid #111; }
-        .footer-info { font-size: 9px; letter-spacing: 2px; color: #333; line-height: 2.5; text-transform: uppercase; }
-        .footer-year { font-family: 'Unbounded'; font-size: 11px; color: var(--red); margin-top: 30px; }
-
-        /* --- КНОПКА ЗАПИСУ --- */
+        /* --- ФІКСОВАНА КНОПКА --- */
         .cta-fixed {
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
             background: var(--red); color: #fff; padding: 22px 60px;
             border-radius: 100px; text-decoration: none;
-            font-family: 'Unbounded'; font-size: 11px; font-weight: 900;
-            z-index: 999; box-shadow: 0 10px 40px rgba(255,0,0,0.5);
+            font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 900;
+            z-index: 1000; box-shadow: 0 10px 40px rgba(255,0,0,0.5);
             white-space: nowrap; transition: 0.3s;
         }
-        .cta-fixed:active { transform: translateX(-50%) scale(0.9); }
 
-        @media (max-width: 768px) { .hero-title { font-size: 28vw; } .grid-item { padding: 30px; } }
+        @media (max-width: 768px) { .hero-title { font-size: 28vw; } }
     </style>
 </head>
 <body>
@@ -98,7 +91,7 @@
 
     <div class="noise"></div>
 
-    <a href="#" class="cta-fixed" onclick="Telegram.WebApp.close()">ЗАПИСАТИСЯ</a>
+    <a href="#" class="cta-fixed" onclick="if(window.Telegram) Telegram.WebApp.close();">ЗАПИСАТИСЯ</a>
 
     <main>
         <section class="hero">
@@ -115,43 +108,34 @@
             <a href="#" class="grid-item img-3"><span>03 // ARCHIVE</span><h2>Portfolio</h2></a>
             <a href="#" class="grid-item img-4"><span>04 // SYSTEM</span><h2>Aftercare</h2></a>
         </section>
-
-        <footer>
-            <div class="footer-info">YYOKAI INK ARCHITECT<br>LVIV CITY // CORE SECTOR<br>V.1.0_MATRIX_READY</div>
-            <div class="footer-year">© 2026 // BEYOND THE LIMITS</div>
-        </footer>
     </main>
 
-    <script src="https://telegram.org"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            if (window.Telegram && window.Telegram.WebApp) {
-                window.Telegram.WebApp.expand();
-                window.Telegram.WebApp.headerColor = '#000000';
-            }
-
+        // ГАРАНТОВАНА ЛОГІКА ЗАПУСКУ
+        window.addEventListener('DOMContentLoaded', () => {
             let count = 0;
             const loadVal = document.getElementById('load-val');
             const loader = document.getElementById('loader');
             const logo = document.getElementById('main-logo');
 
             const interval = setInterval(() => {
-                count += Math.floor(Math.random() * 10) + 1;
+                count += Math.floor(Math.random() * 12) + 1;
                 
                 if (count >= 100) {
                     count = 100;
                     clearInterval(interval);
                     
+                    // Відкриваємо сайт
                     setTimeout(() => {
                         loader.style.transform = "translateY(-100%)";
+                        logo.classList.add('visible');
                         setTimeout(() => {
                             logo.classList.add('active');
-                        }, 400);
-                    }, 500);
+                        }, 200);
+                    }, 400);
                 }
-                // Виводимо число як воно є (без 0 попереду)
                 loadVal.innerText = count;
-            }, 60);
+            }, 50);
         });
     </script>
 </body>
