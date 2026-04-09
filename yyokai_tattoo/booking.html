@@ -2,254 +2,215 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYOKAI | SYSTEM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YYOKAI SYSTEM</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --red: #ff0000; --bg: #000; --white: #fff; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Unbounded', sans-serif; scroll-behavior: smooth; }
-        body { background: #000; color: #fff; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
+        :root { --red: #ff0000; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Unbounded', sans-serif; }
+        body { background: #000; color: #fff; line-height: 1.5; }
 
-        /* --- HERO --- */
+        /* HERO */
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .hero-logo { font-size: 18vw; font-weight: 900; animation: jumpIn 1.2s ease-out forwards; }
+        @keyframes jumpIn { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .arrow { margin-top: 20px; cursor: pointer; animation: pulse 2s infinite; background: none; border: none; }
+        @keyframes pulse { 0%, 100% { transform: translateY(0); opacity: 0.3; } 50% { transform: translateY(10px); opacity: 1; } }
+
+        /* CONTENT */
+        .container { max-width: 450px; margin: 0 auto; padding: 20px; }
+        .calendar-box { background: #111; padding: 20px; border-radius: 25px; border: 1px solid #222; }
+        .cal-head { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 12px; }
         
-        .hero-logo { 
-            font-size: 18vw; font-weight: 900; transform: translateY(80vh); opacity: 0;
-            animation: softJump 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        }
-        @keyframes softJump {
-            0% { transform: translateY(80vh) scaleY(1.3); opacity: 0; }
-            100% { transform: translateY(0) scaleY(1); opacity: 1; }
-        }
-
-        .scroll-hint { 
-            margin-top: 30px; font-size: 10px; letter-spacing: 2px; opacity: 0;
-            animation: softFade 1.2s ease forwards; animation-delay: 1.2s;
-        }
-        @keyframes softFade { to { opacity: 0.6; } }
-
-        .arrow { 
-            margin-top: 15px; opacity: 0; background: none; border: none; cursor: pointer;
-            animation: softFade 1s ease forwards, arrowFloat 2.5s infinite ease-in-out; 
-            animation-delay: 1.8s, 1.8s;
-        }
-        @keyframes arrowFloat {
-            0%, 100% { transform: translateY(0); opacity: 0.3; }
-            50% { transform: translateY(10px); opacity: 0.8; }
-        }
-
-        /* --- CONTENT --- */
-        #mainContent { display: none; padding: 80px 20px; flex-direction: column; align-items: center; }
-        .calendar-box { background: #111; padding: 25px; border-radius: 30px; border: 1px solid #222; width: 100%; max-width: 400px; }
-        
-        table { width: 100%; border-spacing: 5px; }
-        td { height: 45px; text-align: center; border-radius: 12px; cursor: pointer; font-size: 13px; transition: 0.2s; }
-        td.active { background: var(--red) !important; font-weight: 900; }
+        table { width: 100%; border-collapse: collapse; }
+        td { height: 45px; text-align: center; cursor: pointer; border-radius: 10px; }
+        td.active { background: var(--red); font-weight: 900; }
         td.booked-day { opacity: 0.1; text-decoration: line-through; pointer-events: none; }
 
-        .slots { display: none; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 25px 0; width: 100%; max-width: 400px; }
-        .slot { background: #111; border: 1px solid #333; padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; font-size: 12px; transition: 0.2s; }
-        .slot.selected { background: #fff; color: #000; font-weight: 900; }
-        .slot.disabled { opacity: 0.2; pointer-events: none; }
-        .slot.admin-off { background: var(--red); color: #fff; opacity: 1; }
+        /* SLOTS & FORM */
+        .slots { display: none; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 20px; }
+        .slot { background: #111; border: 1px solid #333; padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; font-size: 12px; }
+        .slot.selected { background: #fff; color: #000; }
+        .slot.off { background: var(--red); opacity: 0.5; }
 
-        #bookingForm { display: none; flex-direction: column; gap: 12px; width: 100%; max-width: 400px; }
-        input { background: #0a0a0a; border: 1px solid #222; padding: 20px; color: #fff; border-radius: 18px; outline: none; font-size: 14px; }
+        #form-box { display: none; margin-top: 20px; }
+        input { width: 100%; background: #080808; border: 1px solid #333; padding: 15px; color: #fff; border-radius: 15px; margin-bottom: 10px; outline: none; }
+        .btn { width: 100%; background: var(--red); color: #fff; border: none; padding: 18px; border-radius: 15px; font-weight: 900; cursor: pointer; }
 
-        .btn-confirm { 
-            background: var(--red); color: #fff; border: none; padding: 22px; 
-            border-radius: 18px; font-weight: 900; cursor: pointer; margin-top: 10px;
-            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.2); transition: 0.3s;
-        }
-        .btn-confirm:active { transform: scale(0.96); }
+        /* ADMIN */
+        #admin-panel { display: none; background: #050505; border: 2px solid var(--red); padding: 20px; border-radius: 20px; margin-top: 30px; }
+        .admin-item { border-bottom: 1px solid #222; padding: 10px 0; font-size: 11px; }
 
-        /* --- MODAL --- */
-        #bonusModal { 
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); 
-            z-index: 10000; align-items: center; justify-content: center; padding: 20px; 
-        }
-        .modal-card { background: #111; padding: 45px 25px; border-radius: 40px; border: 1px solid var(--red); text-align: center; width: 100%; max-width: 380px; box-shadow: 0 0 50px rgba(255,0,0,0.15); }
-        .promo-code { font-size: 36px; font-weight: 900; color: var(--red); margin: 25px 0; letter-spacing: 3px; }
-
-        .float-btn {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-            background: var(--red); color: #fff; border: none; padding: 18px 45px;
-            border-radius: 50px; font-weight: 900; box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
-            z-index: 100; display: none; cursor: pointer;
-        }
+        /* MODAL */
+        #modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 999; align-items: center; justify-content: center; padding: 20px; text-align: center; }
+        .promo { font-size: 32px; color: var(--red); margin: 20px 0; font-weight: 900; }
     </style>
 </head>
 <body>
 
-<section class="hero">
-    <div class="hero-logo">YYO<br>KAI</div>
-    <p class="scroll-hint">ЗАПИСАТИСЬ ГОРТАЙ ВНИЗ</p>
-    <button class="arrow" onclick="scrollToMain()">
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.2" stroke-linecap="round"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
-    </button>
-</section>
+    <section class="hero">
+        <div class="hero-logo">YYO<br>KAI</div>
+        <p style="font-size: 10px; opacity: 0.5; margin-top: 20px;">ЗАПИСАТИСЬ ГОРТАЙ ВНИЗ</p>
+        <button class="arrow" onclick="document.getElementById('booking-section').scrollIntoView()">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+        </button>
+    </section>
 
-<div id="mainContent">
-    <div class="calendar-box">
-        <div style="display:flex; justify-content:space-between; margin-bottom:20px; font-size:12px;">
-            <button onclick="changeMonth(-1)" style="color:#fff; background:none; border:none; cursor:pointer; padding:10px;">←</button>
-            <span id="monthName" style="letter-spacing:2px;"></span>
-            <button onclick="changeMonth(1)" style="color:#fff; background:none; border:none; cursor:pointer; padding:10px;">→</button>
+    <div class="container" id="booking-section">
+        <div class="calendar-box">
+            <div class="cal-head">
+                <button onclick="moveMonth(-1)" style="color:#fff; background:none; border:none;">←</button>
+                <span id="month-title"></span>
+                <button onclick="moveMonth(1)" style="color:#fff; background:none; border:none;">→</button>
+            </div>
+            <table id="calendar"></table>
         </div>
-        <table id="calTable"><tbody id="calBody"></tbody></table>
+
+        <div class="slots" id="slots-grid">
+            <div class="slot" onclick="selSlot('10:00', this)">10:00</div>
+            <div class="slot" onclick="selSlot('13:00', this)">13:00</div>
+            <div class="slot" onclick="selSlot('16:00', this)">16:00</div>
+            <div class="slot" onclick="selSlot('19:00', this)">19:00</div>
+        </div>
+
+        <div id="form-box">
+            <input type="text" id="name" placeholder="ІМ'Я">
+            <input type="text" id="insta" placeholder="@INSTAGRAM">
+            <input type="text" id="phone" value="+380">
+            <button class="btn" onclick="sendBooking()">ЗАБРОНЮВАТИ</button>
+        </div>
+
+        <div onclick="askAdmin()" style="margin-top:100px; opacity:0.1; font-size:8px; text-align:center;">.access_protocol</div>
+        
+        <div id="admin-panel">
+            <h4 style="color:var(--red); font-size:12px; margin-bottom:15px;">ADMIN PANEL</h4>
+            <p style="font-size:10px; margin-bottom:10px;">Клікни на слот в календарі, щоб закрити час</p>
+            <div id="booking-list"></div>
+        </div>
     </div>
 
-    <div id="adminBadge" style="display:none; color:red; font-size:9px; margin-top:15px; letter-spacing:1px;">ADMIN MODE: ТИСНИ НА ЧАС ДЛЯ БЛОКУ</div>
-
-    <div class="slots" id="slotsGrid">
-        <div class="slot" data-time="10:00">10:00</div>
-        <div class="slot" data-time="13:00">13:00</div>
-        <div class="slot" data-time="16:00">16:00</div>
-        <div class="slot" data-time="19:00">19:00</div>
+    <div id="modal">
+        <div style="border:1px solid var(--red); padding:30px; border-radius:30px; width:100%;">
+            <p style="font-size:12px;">ТВОЯ ЗНИЖКА -10%</p>
+            <div class="promo" id="promo-code"></div>
+            <p style="font-size:10px; opacity:0.6;">ЗАПРОСИ ДРУГА — ОТРИМАЙ -20%</p>
+            <button class="btn" style="margin-top:20px;" onclick="location.reload()">ЗАКРИТИ</button>
+        </div>
     </div>
-
-    <div id="bookingForm">
-        <input type="text" id="uName" placeholder="ТВОЄ ІМ'Я">
-        <input type="text" id="uInsta" placeholder="@INSTAGRAM">
-        <input type="text" id="uPhone" value="+380">
-        <button type="button" class="btn-confirm" onclick="submitBooking()">ЗАБРОНЮВАТИ СЕАНС</button>
-    </div>
-
-    <div onclick="openAdmin()" style="margin-top:120px; opacity:0.02; cursor:pointer; font-size:8px;">.access_protocol</div>
-</div>
-
-<button class="float-btn" id="menuBtn" onclick="location.reload()">ДО МЕНЮ</button>
-
-<div id="bonusModal">
-    <div class="modal-card">
-        <p style="color:var(--red); font-size:11px; font-weight:900; letter-spacing:1px;">ДЯКУЮ! ТРИМАЙ -10% ЗНИЖКИ</p>
-        <div id="promoRes" class="promo-code">XXXXXXX</div>
-        <p style="font-size:10px; line-height:1.7; opacity:0.7;">ЗАПРОСИ ДРУГА ТА ОТРИМАЙ -20%<br>НА НАСТУПНИЙ СЕАНС</p>
-        <button style="background:var(--red); color:#fff; border:none; padding:18px; width:100%; border-radius:18px; margin-top:30px; font-weight:900; cursor:pointer;" onclick="location.reload()">ЗАКРИТИ</button>
-    </div>
-</div>
 
 <script>
-const DB_URL = "https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/";
-const TG_BOT = "https://t.me/yyokai_ink_bot";
-const CHAT_ID = "1634779056";
+    const DB = "https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/";
+    const BOT = "8747396400:AAFgsvQfGymY2SlG2slGuidFXgvbEVVmq-o";
+    const CHAT = "1634779056";
 
-let currentMonth = new Date().getMonth();
-let currentYear = new Date().getFullYear();
-let selDate = "", selTime = "", isAdmin = false;
-let db = { bookings: {}, manualBlocks: {} };
+    let m = new Date().getMonth(), y = new Date().getFullYear();
+    let selD = "", selT = "", isAdmin = false, data = { bookings: {}, manual: {} };
 
-async function loadDB() {
-    try {
-        const res = await fetch(DB_URL + ".json");
-        const data = await res.json() || {};
-        db.bookings = data.bookings || {};
-        db.manualBlocks = data.manualBlocks || {};
-        renderCal();
-    } catch(e) { console.log("DB Error"); renderCal(); }
-}
-
-function renderCal() {
-    const body = document.getElementById('calBody');
-    body.innerHTML = "";
-    document.getElementById('monthName').innerText = new Intl.DateTimeFormat('uk-UA', {month:'long', year:'numeric'}).format(new Date(currentYear, currentMonth)).toUpperCase();
-    const offset = (new Date(currentYear, currentMonth, 1).getDay() || 7) - 1;
-    const days = new Date(currentYear, currentMonth + 1, 0).getDate();
-
-    let date = 1;
-    for (let i = 0; i < 6; i++) {
-        let row = document.createElement('tr');
-        for (let j = 0; j < 7; j++) {
-            let cell = document.createElement('td');
-            if (i === 0 && j < offset || date > days) {
-                cell.className = "empty";
-            } else {
-                let dStr = `${currentYear}-${currentMonth+1}-${date}`;
-                cell.innerText = date;
-                const blocked = db.manualBlocks[dStr] || [];
-                const booked = Object.values(db.bookings).filter(b => b.date === dStr).map(b => b.time);
-                if ([...new Set([...blocked, ...booked])].length >= 4) cell.classList.add('booked-day');
-                cell.onclick = () => {
-                    document.querySelectorAll('td').forEach(t => t.classList.remove('active'));
-                    cell.classList.add('active'); selDate = dStr; renderSlots(dStr);
-                };
-                date++;
-            }
-            row.appendChild(cell);
-        }
-        body.appendChild(row);
-        if (date > days) break;
+    async function init() {
+        const r = await fetch(DB + ".json");
+        const d = await r.json() || {};
+        data.bookings = d.bookings || {};
+        data.manual = d.manual || {};
+        render();
     }
-}
 
-function renderSlots(dStr) {
-    document.getElementById('slotsGrid').style.display = 'grid';
-    document.getElementById('bookingForm').style.display = 'none';
-    document.querySelectorAll('.slot').forEach(slot => {
-        const time = slot.dataset.time;
-        const isBooked = Object.values(db.bookings).some(b => b.date === dStr && b.time === time);
-        const isManual = db.manualBlocks[dStr] && db.manualBlocks[dStr].includes(time);
+    function render() {
+        const title = document.getElementById('month-title');
+        const cal = document.getElementById('calendar');
+        cal.innerHTML = "";
+        title.innerText = new Intl.DateTimeFormat('uk-UA', {month:'long', year:'numeric'}).format(new Date(y, m)).toUpperCase();
         
-        slot.className = 'slot';
-        if (isBooked) slot.classList.add('disabled');
-        if (isManual) slot.classList.add('admin-off');
+        const first = (new Date(y, m, 1).getDay() || 7) - 1;
+        const days = new Date(y, m + 1, 0).getDate();
+        let d = 1;
 
-        slot.onclick = async () => {
-            if (isAdmin) {
-                if (!db.manualBlocks[dStr]) db.manualBlocks[dStr] = [];
-                if (db.manualBlocks[dStr].includes(time)) db.manualBlocks[dStr] = db.manualBlocks[dStr].filter(t => t !== time);
-                else db.manualBlocks[dStr].push(time);
-                await fetch(DB_URL + "manualBlocks.json", { method: 'PUT', body: JSON.stringify(db.manualBlocks) });
-                renderSlots(dStr); renderCal();
-            } else {
-                if (isBooked || isManual) return;
-                document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
-                slot.classList.add('selected'); selTime = time;
-                document.getElementById('bookingForm').style.display = 'flex';
+        for (let i = 0; i < 6; i++) {
+            let tr = document.createElement('tr');
+            for (let j = 0; j < 7; j++) {
+                let td = document.createElement('td');
+                if (i === 0 && j < first || d > days) { td.innerText = ""; } 
+                else {
+                    let dateStr = `${y}-${m+1}-${d}`;
+                    td.innerText = d;
+                    if (data.manual[dateStr]?.length >= 4) td.className = 'booked-day';
+                    td.onclick = () => {
+                        document.querySelectorAll('td').forEach(el => el.classList.remove('active'));
+                        td.classList.add('active');
+                        selD = dateStr;
+                        showSlots(dateStr);
+                    };
+                    d++;
+                }
+                tr.appendChild(td);
             }
-        };
-    });
-}
-
-async function submitBooking() {
-    const name = document.getElementById('uName').value;
-    const insta = document.getElementById('uInsta').value;
-    const phone = document.getElementById('uPhone').value;
-
-    if(!name || !insta) { alert("Заповни всі поля, бро"); return; }
-
-    const promo = Math.random().toString(36).substring(2, 9).toUpperCase();
-    const data = { date: selDate, time: selTime, name, insta, phone, promo };
-
-    // Показуємо вікно відразу, щоб клієнт не чекав
-    document.getElementById('promoRes').innerText = promo;
-    document.getElementById('bonusModal').style.display = 'flex';
-
-    // Відправка в фоні
-    try {
-        fetch(DB_URL + "bookings.json", { method: 'POST', body: JSON.stringify(data) });
-        fetch(`${TG_BOT}?chat_id=${CHAT_ID}&text=${encodeURIComponent("🏮 ЗАПИС!\n👤 "+name+"\n📱 "+insta+"\n📞 "+phone+"\n📅 "+selDate+" о "+selTime+"\n🎁 Промо: "+promo)}`);
-    } catch(e) { console.log("Silent Error"); }
-}
-
-function scrollToMain() {
-    document.getElementById('mainContent').style.display = 'flex';
-    document.getElementById('menuBtn').style.display = 'block';
-    const top = document.getElementById('mainContent').offsetTop;
-    window.scrollTo({ top: top, behavior: 'smooth' });
-}
-
-function openAdmin() {
-    if(prompt("PASS:") === "yokai123234") {
-        isAdmin = true;
-        document.getElementById('adminBadge').style.display = 'block';
-        if(selDate) renderSlots(selDate);
+            cal.appendChild(tr);
+            if (d > days) break;
+        }
     }
-}
 
-function changeMonth(dir) { currentMonth += dir; if(currentMonth>11){currentMonth=0;currentYear++} if(currentMonth<0){currentMonth=11;currentYear--} renderCal(); }
+    function showSlots(date) {
+        document.getElementById('slots-grid').style.display = 'grid';
+        document.querySelectorAll('.slot').forEach(s => {
+            const time = s.innerText;
+            const isOff = data.manual[date]?.includes(time);
+            const isTaken = Object.values(data.bookings).some(b => b.date === date && b.time === time);
+            s.className = 'slot' + (isOff || isTaken ? ' off' : '');
+            s.onclick = () => isAdmin ? toggleTime(date, time) : selSlot(time, s);
+        });
+    }
 
-loadDB();
+    async function toggleTime(date, time) {
+        if (!data.manual[date]) data.manual[date] = [];
+        if (data.manual[date].includes(time)) data.manual[date] = data.manual[date].filter(x => x !== time);
+        else data.manual[date].push(time);
+        await fetch(`${DB}manual/${date}.json`, { method: 'PUT', body: JSON.stringify(data.manual[date]) });
+        init();
+    }
+
+    function selSlot(t, el) {
+        if (el.classList.contains('off')) return;
+        document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
+        el.classList.add('selected');
+        selT = t;
+        document.getElementById('form-box').style.display = 'block';
+    }
+
+    async function sendBooking() {
+        const n = document.getElementById('name').value, i = document.getElementById('insta').value;
+        if (!n || !i) return alert("Заповни все!");
+        const promo = Math.random().toString(36).substring(7).toUpperCase();
+        const b = { date: selD, time: selT, name: n, insta: i, promo };
+        
+        document.getElementById('promo-code').innerText = promo;
+        document.getElementById('modal').style.display = 'flex';
+
+        fetch(DB + "bookings.json", { method: 'POST', body: JSON.stringify(b) });
+        fetch(`https://telegram.org{BOT}/sendMessage?chat_id=${CHAT}&text=${encodeURIComponent("🏮 ЗАПИС: "+selD+" "+selT+"\n👤 "+n+"\n📱 "+i+"\n🎁 "+promo)}`);
+    }
+
+    function askAdmin() {
+        if (prompt("PASS") === "yokai123234") {
+            isAdmin = true;
+            document.getElementById('admin-panel').style.display = 'block';
+            updateList();
+        }
+    }
+
+    function updateList() {
+        const box = document.getElementById('booking-list');
+        box.innerHTML = "";
+        Object.entries(data.bookings).forEach(([id, b]) => {
+            box.innerHTML += `<div class="admin-item"><b>${b.date} | ${b.time}</b> - ${b.name} <span onclick="del('${id}')" style="color:red; float:right">X</span></div>`;
+        });
+    }
+
+    async function del(id) {
+        await fetch(`${DB}bookings/${id}.json`, { method: 'DELETE' });
+        init(); updateList();
+    }
+
+    function moveMonth(dir) { m += dir; if(m>11){m=0;y++} if(m<0){m=11;y--} render(); }
+    init();
 </script>
 </body>
 </html>
