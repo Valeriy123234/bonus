@@ -3,132 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YYOKAI | SYSTEM</title>
+    <title>YYOKAI | ARCHITECT OF INK</title>
+    
+    <!-- ШРИФТИ: Масивний для заголовків, чистий для тексту -->
     <link href="https://googleapis.com" rel="stylesheet">
+    
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --red: #ff0000; --bg: #000; --ui: #111; }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        
         body { 
-            background: #000; color: #fff; 
-            font-family: 'Space Grotesk', sans-serif;
-            overflow: hidden;
+            background: var(--bg); color: #fff; 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden;
         }
 
-        /* ЕФЕКТ ШУМУ (Глибина чорного) */
-        body::after {
-            content: ""; position: fixed; inset: 0;
-            background-image: url("https://vercel.app");
-            opacity: 0.05; pointer-events: none; z-index: 100;
-        }
-
-        /* КІНЕМАТОГРАФІЧНИЙ ЛОУДЕР */
+        /* --- PRELOADER (Nike Style) --- */
         #loader {
-            position: fixed; inset: 0; background: #000;
+            position: fixed; inset: 0; background: #000; z-index: 1000;
             display: flex; justify-content: center; align-items: center;
-            z-index: 1000; transition: transform 1.2s cubic-bezier(0.8, 0, 0.2, 1);
         }
-        .counter {
-            font-size: 15vw; font-weight: 700; letter-spacing: -5px;
-            color: #111; position: relative;
-        }
-        .counter::after {
-            content: attr(data-percent); position: absolute; left: 0;
-            color: #ff0000; width: var(--p); overflow: hidden;
-            white-space: nowrap; transition: 0.1s;
+        .loader-num {
+            font-family: 'Unbounded'; font-size: 15vw; color: #fff;
+            mix-blend-mode: difference;
         }
 
-        /* КОНТЕНТ */
-        main {
+        /* --- GRAIN OVERLAY (Ефект дорогої плівки) --- */
+        .noise {
+            position: fixed; inset: 0; z-index: 999; opacity: 0.03;
+            pointer-events: none; background: url(https://vercel.app);
+        }
+
+        /* --- HEADER / NAVIGATION --- */
+        header {
+            position: fixed; top: 0; width: 100%; padding: 30px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100; mix-blend-mode: difference;
+        }
+        .logo { font-family: 'Unbounded'; font-size: 18px; letter-spacing: -1px; }
+        .menu-btn { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* --- HERO SECTION --- */
+        .hero {
             height: 100vh; display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            padding: 20px; opacity: 0; transform: translateY(30px);
-            transition: 1s ease 0.5s;
+            justify-content: center; align-items: center; position: relative;
         }
-
-        .avatar-wrap {
-            position: relative; width: 180px; height: 180px; margin-bottom: 40px;
+        .hero-title {
+            font-family: 'Unbounded'; font-size: 22vw; line-height: 0.75;
+            text-transform: uppercase; text-align: center; letter-spacing: -0.05em;
+            margin-top: -50px;
         }
-        .avatar-wrap img {
-            width: 100%; height: 100%; object-fit: cover;
-            filter: grayscale(1) contrast(1.1); /* Дорогий ЧБ ефект */
-            border: 1px solid #222;
-        }
-        .avatar-wrap::before {
-            content: ""; position: absolute; inset: -10px;
-            border: 1px solid #ff0000; opacity: 0.3;
-        }
-
-        h1 {
-            font-size: 2.5rem; letter-spacing: 15px; font-weight: 700;
-            text-transform: uppercase; margin-bottom: 10px;
-        }
-        .sub {
+        .hero-sub {
+            position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%);
             font-size: 10px; letter-spacing: 5px; color: #666;
-            margin-bottom: 60px; text-transform: uppercase;
         }
 
-        /* МІНІМАЛІСТИЧНІ КНОПКИ */
-        .nav { width: 100%; max-width: 300px; }
-        .link {
-            display: block; width: 100%; padding: 20px;
-            text-decoration: none; color: #fff;
-            border-bottom: 1px solid #222;
-            font-size: 11px; letter-spacing: 3px;
-            text-transform: uppercase; transition: 0.4s;
-            position: relative;
+        /* --- PRODUCT GRID (Stone Island Vibe) --- */
+        .grid-section { padding: 100px 20px; }
+        .grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px;
+            background: #222; border: 1px solid #222;
         }
-        .link span { position: relative; z-index: 2; }
-        .link::after {
-            content: ""; position: absolute; left: 0; bottom: 0;
-            width: 0; height: 100%; background: #ff0000;
-            transition: 0.4s cubic-bezier(0.8, 0, 0.2, 1); z-index: 1;
+        .grid-item {
+            aspect-ratio: 1 / 1.2; background: #000;
+            display: flex; flex-direction: column; justify-content: space-between;
+            padding: 30px; text-decoration: none; color: #fff;
+            transition: 0.6s cubic-bezier(0.8, 0, 0.2, 1);
+            position: relative; overflow: hidden;
         }
-        .link:hover { color: #000; }
-        .link:hover::after { width: 100%; }
+        .grid-item:hover { background: var(--red); color: #000; }
+        .item-num { font-size: 10px; opacity: 0.5; }
+        .item-title { font-family: 'Unbounded'; font-size: 18px; text-transform: uppercase; }
 
-        .link-booking { color: #ff0000; font-weight: 700; border-top: 1px solid #222; }
+        /* --- CTA FLOATING BUTTON --- */
+        .cta-fixed {
+            position: fixed; bottom: 30px; right: 30px;
+            background: #fff; color: #000; padding: 25px 50px;
+            border-radius: 100px; text-decoration: none;
+            font-family: 'Unbounded'; font-size: 12px; font-weight: 900;
+            z-index: 200; transition: 0.4s;
+        }
+        .cta-fixed:hover { transform: scale(1.05); background: var(--red); color: #fff; }
 
-        .active-main { opacity: 1 !important; transform: translateY(0) !important; }
+        @media (max-width: 768px) {
+            .hero-title { font-size: 25vw; }
+            .grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
     <div id="loader">
-        <div class="counter" id="count" data-percent="0%">000</div>
+        <div class="loader-num" id="load-val">00</div>
     </div>
 
-    <main id="main">
-        <div class="avatar-wrap">
-            <img src="ТВОЄ_ФОТО" alt="YYOKAI">
-        </div>
-        <h1>YYOKAI</h1>
-        <div class="sub">Tattoo Architecture & Code</div>
+    <div class="noise"></div>
 
-        <div class="nav">
-            <a href="#" class="link link-booking"><span>Записатись</span></a>
-            <a href="https://instagram.com" class="link"><span>Instagram</span></a>
-            <a href="#" class="link"><span>Догляд</span></a>
-            <a href="https://t.me" class="link"><span>Telegram</span></a>
-        </div>
+    <header>
+        <div class="logo">YYOKAI ©</div>
+        <div class="menu-btn">SYSTEM_v1.0</div>
+    </header>
+
+    <a href="#" class="cta-fixed">ЗАПИСАТИСЯ</a>
+
+    <main>
+        <section class="hero">
+            <h1 class="hero-title">YYO<br>KAI</h1>
+            <div class="hero-sub">ARCHITECTURE OF INK & CODE</div>
+        </section>
+
+        <section class="grid-section">
+            <div class="grid">
+                <a href="https://instagram.com" class="grid-item">
+                    <span class="item-num">01 / SOCIAL</span>
+                    <span class="item-title">Instagram</span>
+                </a>
+                <a href="https://t.me" class="grid-item">
+                    <span class="item-num">02 / CONNECT</span>
+                    <span class="item-title">Telegram</span>
+                </a>
+                <a href="#" class="grid-item">
+                    <span class="item-num">03 / ARCHIVE</span>
+                    <span class="item-title">Portfolio</span>
+                </a>
+                <a href="#" class="grid-item">
+                    <span class="item-num">04 / CARE</span>
+                    <span class="item-title">Aftercare</span>
+                </a>
+            </div>
+        </section>
     </main>
 
+    <!-- GSAP - БІБЛІОТЕКА ДЛЯ ТОПОВИХ АНІМАЦІЙ -->
+    <script src="https://cloudflare.com"></script>
     <script>
-        // Логіка лічильника лоудера
+        // LOADER LOGIC
         let count = 0;
-        const countEl = document.getElementById('count');
+        const loadVal = document.getElementById('load-val');
         const interval = setInterval(() => {
-            count += Math.floor(Math.random() * 10) + 1;
+            count += Math.floor(Math.random() * 20) + 1;
             if(count >= 100) {
                 count = 100;
                 clearInterval(interval);
-                setTimeout(() => {
-                    document.getElementById('loader').style.transform = 'translateY(-100%)';
-                    document.getElementById('main').classList.add('active-main');
-                }, 500);
+                gsap.to("#loader", { 
+                    y: "-100%", duration: 1.2, ease: "expo.inOut", delay: 0.5 
+                });
+                gsap.from(".hero-title", { 
+                    y: 200, opacity: 0, duration: 1.5, ease: "expo.out", delay: 1.5 
+                });
             }
-            countEl.innerText = count.toString().padStart(3, '0');
-            countEl.setAttribute('data-percent', count + '%');
-            countEl.style.setProperty('--p', count + '%');
+            loadVal.innerText = count.toString().padStart(2, '0');
         }, 80);
+
+        // ПЛАВНА ПОЯВА СІТКИ ПРИ СКРОЛІ
+        gsap.from(".grid-item", {
+            scrollTrigger: ".grid",
+            opacity: 0,
+            y: 50,
+            stagger: 0.1,
+            duration: 1
+        });
     </script>
 </body>
 </html>
