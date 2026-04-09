@@ -10,123 +10,96 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body { background: #000; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; touch-action: manipulation; }
 
-        /* --- ЛОУДЕР 0-100 (ТЕХНО СТИЛЬ) --- */
+        /* --- ЛОУДЕР 0-100 (АВТОНОМНИЙ) --- */
         #loader { 
             position: fixed; inset: 0; background: #000; z-index: 9999; 
-            display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1); 
+            display: flex; justify-content: center; align-items: center; 
+            transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1); 
         }
-        .load-wrap { text-align: center; }
-        .load-val { font-family: 'Unbounded', sans-serif; font-size: 20vw; line-height: 1; color: #fff; }
-        .load-bar { width: 100vw; height: 2px; background: #111; position: absolute; bottom: 10%; left: 0; }
-        .load-progress { width: 0%; height: 100%; background: var(--red); transition: 0.1s; }
+        #l-val { font-family: 'Unbounded', sans-serif; font-size: 25vw; color: #fff; line-height: 1; }
 
         /* --- КОНТЕНТ --- */
         .container { 
-            padding: 20px; 
-            max-width: 450px; 
-            margin: 0 auto; 
-            opacity: 0; 
-            transition: 1s ease; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            opacity: 0; padding: 20px; max-width: 450px; margin: 0 auto; 
+            display: flex; flex-direction: column; align-items: center; 
+            transition: 1s ease;
         }
         .container.visible { opacity: 1; }
 
-        /* ЛОГОТИП НАД КАЛЕНДАРЕМ */
-        .mini-logo {
-            font-family: 'Unbounded', sans-serif;
-            text-align: center;
-            font-size: 12vw;
-            line-height: 0.8;
-            margin: 40px 0;
-            text-transform: uppercase;
-        }
+        .mini-logo { font-family: 'Unbounded', sans-serif; font-size: 12vw; line-height: 0.8; margin: 40px 0; text-align: center; text-transform: uppercase; }
         .mini-logo span { display: block; }
-        .mini-logo span:last-child { margin-top: 10px; color: var(--red); }
+        .mini-logo span:last-child { color: var(--red); margin-top: 5px; }
 
-        /* КАЛЕНДАР-СІТКА (ФІКС: ТЕПЕР ЦЕ ТОЧНО СІТКА) */
-        .calendar-box { 
-            background: var(--white); 
-            padding: 20px; 
-            border-radius: 30px; 
-            width: 100%;
-            margin-bottom: 30px;
-        }
-        .calendar-grid { 
-            display: grid !important; 
-            grid-template-columns: repeat(7, 1fr) !important; 
-            gap: 8px !important; 
-        }
+        /* КАЛЕНДАР (БІЛА СІТКА) */
+        .calendar-box { background: var(--white); padding: 20px; border-radius: 30px; width: 100%; margin-bottom: 30px; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
         .day { 
-            aspect-ratio: 1/1; 
-            background: #eee; 
-            color: #000; 
-            border-radius: 10px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 14px; 
-            font-weight: 900; 
-            cursor: pointer; 
-            transition: 0.2s;
+            aspect-ratio: 1/1; background: #eee; color: #000; border-radius: 10px; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 13px; font-weight: 900; cursor: pointer; transition: 0.2s;
         }
-        .day:hover:not(.booked) { background: #ddd; }
         .day.selected { background: var(--red); color: #fff; transform: scale(1.1); }
-        .day.booked { opacity: 0.15; cursor: not-allowed; text-decoration: line-through; }
+        .day.booked { opacity: 0.2; cursor: not-allowed; position: relative; }
+        .day.booked::after { content: ''; position: absolute; width: 70%; height: 1px; background: #000; transform: rotate(-45deg); }
 
         /* ФОРМА */
         #bookingForm { display: none; width: 100%; flex-direction: column; gap: 12px; }
-        #bookingForm.active { display: flex; animation: slideUp 0.5s ease; }
-        input { 
-            background: #111; border: 1px solid #222; padding: 18px; 
-            color: #fff; font-size: 16px; border-radius: 15px; width: 100%;
-        }
-        input:focus { outline: none; border-color: var(--red); }
-        .submit-btn { 
-            background: var(--red); color: #fff; border: none; padding: 18px; 
-            border-radius: 15px; font-family: 'Unbounded', sans-serif; 
-            font-size: 10px; font-weight: 900; cursor: pointer; margin-top: 5px;
-        }
+        #bookingForm.active { display: flex; }
+        input { background: #111; border: 1px solid #222; padding: 18px; color: #fff; font-size: 16px; border-radius: 15px; width: 100%; }
+        .submit-btn { background: var(--red); color: #fff; border: none; padding: 20px; border-radius: 15px; font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 900; cursor: pointer; }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .admin-trigger { margin: 50px 0; opacity: 0.05; font-size: 8px; cursor: pointer; }
+        .success-msg { display: none; color: var(--red); text-align: center; font-family: 'Unbounded'; font-size: 12px; padding: 20px; line-height: 1.5; }
+        .admin-trigger { margin-top: 50px; opacity: 0.05; font-size: 8px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div id="loader">
-        <div class="load-wrap">
-            <div class="load-val" id="l-val">0</div>
-        </div>
-        <div class="load-bar"><div class="load-progress" id="l-prog"></div></div>
+        <div id="l-val">0</div>
     </div>
 
     <main class="container" id="mainContent">
-        <div class="mini-logo">
-            <span>YYO</span><span>KAI</span>
-        </div>
+        <div class="mini-logo"><span>YYO</span><span>KAI</span></div>
 
         <div class="calendar-box">
-            <div class="calendar-grid" id="calendarGrid">
-                <!-- Сюди JS вставить квадратики -->
-            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
         </div>
 
         <form id="bookingForm">
-            <p id="dateLabel" style="color: var(--red); font-size: 9px; letter-spacing: 2px; margin-bottom: 10px; font-weight: 900;"></p>
+            <p id="dateLabel" style="color: var(--red); font-size: 9px; margin-bottom: 10px; font-weight: 900; letter-spacing: 2px;"></p>
             <input type="text" id="userName" placeholder="NAME / IDENTITY" required>
-            <input type="text" id="userPhone" placeholder="PHONE" required>
-            <input type="text" id="userInsta" placeholder="INSTAGRAM" required>
-            <button type="submit" class="submit-btn">CONFIRM PROTOCOL</button>
+            <input type="text" id="userPhone" placeholder="PHONE NUMBER" required>
+            <input type="text" id="userInsta" placeholder="INSTAGRAM TAG" required>
+            <button type="submit" class="submit-btn">INITIATE PROTOCOL</button>
         </form>
 
-        <div id="success" style="display:none; color:var(--red); font-family:'Unbounded'; font-size: 12px; text-align:center; padding: 20px;">Я ЗКОНТАКТУЮ З ТОБОЮ.</div>
-        
+        <div id="success" class="success-msg">ПРОТОКОЛ ПРИЙНЯТО.<br>Я ЗКОНТАКТУЮ З ТОБОЮ.</div>
         <div class="admin-trigger" onclick="unlockAdmin()">.system_access</div>
     </main>
 
+    <!-- ОСНОВНИЙ СКРИПТ (ЛОУДЕР ПРАЦЮЄ ПЕРШИМ) -->
+    <script>
+        let count = 0;
+        const lVal = document.getElementById('l-val');
+        const loader = document.getElementById('loader');
+        const content = document.getElementById('mainContent');
+
+        // Цифри побіжать миттєво
+        const loadInt = setInterval(() => {
+            count += Math.floor(Math.random() * 5) + 1;
+            if(count >= 100) {
+                count = 100;
+                clearInterval(loadInt);
+                setTimeout(() => {
+                    loader.style.transform = "translateY(-100%)";
+                    content.classList.add('visible');
+                }, 400);
+            }
+            lVal.innerText = count;
+        }, 35);
+    </script>
+
+    <!-- FIREBASE ПІДКЛЮЧАЄТЬСЯ ОКРЕМО -->
     <script type="module">
         import { initializeApp } from "https://gstatic.com";
         import { getDatabase, ref, push, onValue } from "https://gstatic.com";
@@ -141,29 +114,9 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-
-        // --- ЛОУДЕР 0-100 ---
-        let count = 0;
-        const lVal = document.getElementById('l-val');
-        const lProg = document.getElementById('l-prog');
-        const loader = document.getElementById('loader');
-        
-        const loadInt = setInterval(() => {
-            count += Math.floor(Math.random() * 4) + 1;
-            if(count >= 100) {
-                count = 100;
-                clearInterval(loadInt);
-                setTimeout(() => {
-                    loader.style.transform = "translateY(-100%)";
-                    document.getElementById('mainContent').classList.add('visible');
-                }, 500);
-            }
-            lVal.innerText = count;
-            lProg.style.width = count + "%";
-        }, 30);
-
-        // --- КАЛЕНДАР ---
         const grid = document.getElementById('calendarGrid');
+
+        // Рендер календаря
         onValue(ref(db, 'bookings'), (snapshot) => {
             grid.innerHTML = '';
             const data = snapshot.val() || {};
@@ -178,7 +131,7 @@
                         document.querySelectorAll('.day').forEach(d => d.classList.remove('selected'));
                         day.classList.add('selected');
                         window.selDate = i;
-                        document.getElementById('dateLabel').innerText = `DATE: ${i} / MAY`;
+                        document.getElementById('dateLabel').innerText = `DATE SELECTED: ${i} / MAY`;
                         document.getElementById('bookingForm').classList.add('active');
                     }
                 };
@@ -186,7 +139,7 @@
             }
         });
 
-        // ВІДПРАВКА
+        // Відправка
         document.getElementById('bookingForm').onsubmit = async (e) => {
             e.preventDefault();
             await push(ref(db, 'bookings'), {
@@ -199,7 +152,7 @@
             document.getElementById('success').style.display = 'block';
         };
 
-        window.unlockAdmin = () => { if(prompt('KEY:') === 'yokai123234') alert('ADMIN ACTIVE'); };
+        window.unlockAdmin = () => { if(prompt('KEY:') === 'yokai123234') alert('ADMIN UNLOCKED'); };
     </script>
 </body>
 </html>
