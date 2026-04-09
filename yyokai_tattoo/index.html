@@ -6,77 +6,129 @@
     <title>YYOKAI | INK ARCHITECT</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --red: #ff0000; --bg: #000; --white: #ffffff; --card-bg: #111; }
+        :root { --red: #ff0000; --bg: #000; --white: #ffffff; --card-bg: #151515; }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
         body { background: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
         /* --- МЕНЮ (3 ПОЛОСКИ) --- */
         .menu-btn {
-            position: fixed; top: 30px; right: 25px; z-index: 2000;
-            width: 30px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer;
+            position: fixed; top: 35px; right: 25px; z-index: 2000;
+            width: 25px; height: 16px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer;
         }
         .menu-btn span { display: block; width: 100%; height: 1px; background: #fff; transition: 0.4s; }
-        .menu-btn.open span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
-        .menu-btn.open span:nth-child(2) { opacity: 0; }
-        .menu-btn.open span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
+        .menu-btn.active span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+        .menu-btn.active span:nth-child(2) { opacity: 0; }
+        .menu-btn.active span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
 
         .nav-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1999;
+            position: fixed; inset: 0; background: #000; z-index: 1999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transform: translateX(100%); transition: 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+            transform: translateY(-100%); transition: 0.6s cubic-bezier(0.85, 0, 0.15, 1);
         }
-        .nav-overlay.active { transform: translateX(0); }
+        .nav-overlay.active { transform: translateY(0); }
         .nav-overlay a {
             font-family: 'Unbounded', sans-serif; font-size: 24px; color: #fff; text-decoration: none;
             margin: 15px 0; text-transform: uppercase; letter-spacing: 2px;
         }
 
-        /* --- HERO & СТРІЛКА --- */
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; text-align: center; }
-        .hero-title { font-family: 'Unbounded', sans-serif; font-size: 24vw; line-height: 0.9; text-transform: uppercase; visibility: hidden; }
-        .hero-title.visible { visibility: visible; }
-        .hero-title span { display: inline-block; opacity: 0; transform: scaleY(3) translateY(100px); filter: blur(15px); transition: 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
-        .hero-title.active span { opacity: 1; transform: scaleY(1) translateY(0); filter: blur(0); }
-        .hero-title span:nth-child(2) { transition-delay: 0.1s; margin-top: 10px; }
-        
-        .scroll-arrow {
-            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-            opacity: 0; transition: 1.5s ease 2s; animation: float 2s infinite ease-in-out;
+        /* --- ЛОУДЕР (ТВІЙ ОРИГІНАЛ) --- */
+        #loader {
+            position: fixed; inset: 0; background: #000; z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
         }
-        .hero-title.active ~ .scroll-arrow { opacity: 0.4; }
-        @keyframes float { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 15px); } }
+        .loader-num {
+            font-family: 'Unbounded', sans-serif; font-size: 25vw; color: #fff; line-height: 1;
+            text-align: center; letter-spacing: 0.02em; width: 100%; display: flex; justify-content: center;
+        }
 
-        /* --- GRID & ПРАЙС --- */
-        .grid { display: flex; flex-direction: column; width: 100%; gap: 2px; background: #222; }
-        .grid-item { min-height: 50vh; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding: 40px; text-decoration: none; color: #fff; background-color: var(--card-bg); cursor: pointer; }
-        
-        .price-content { 
-            max-height: 0; overflow: hidden; transition: max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1); 
-            background: #000; padding: 0 40px; margin: 0 -40px;
+        .noise { position: fixed; inset: 0; z-index: 999; opacity: 0.06; pointer-events: none; background: url(https://vercel.app); }
+
+        /* --- HERO --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #000; position: relative; }
+        .hero-title {
+            font-family: 'Unbounded', sans-serif; font-size: 24vw; line-height: 0.9;
+            text-transform: uppercase; text-align: center; letter-spacing: -0.05em;
+            display: flex; flex-direction: column; visibility: hidden;
         }
-        .grid-item.open-price .price-content { max-height: 600px; padding-top: 40px; padding-bottom: 40px; }
+        .hero-title.visible { visibility: visible; }
+        .hero-title span {
+            display: inline-block; opacity: 0;
+            transform: scaleY(4) translateY(200px) translateZ(-800px);
+            filter: blur(20px); transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .hero-title.active span { opacity: 1; transform: scaleY(1) translateY(0) translateZ(0); filter: blur(0); }
+        .hero-title span:nth-child(2) { transition-delay: 0.15s; margin-top: 20px; }
+
+        .hero-tagline {
+            margin-top: 40px; font-size: 10px; letter-spacing: 8px; color: #444; text-transform: uppercase;
+            font-weight: 400; opacity: 0; transform: translateY(15px); transition: all 1s ease 1s;
+        }
+        .hero-title.active + .hero-tagline { opacity: 1; transform: translateY(0); }
+
+        /* СТРІЛКА (ВИЩЕ ПІД НАПИСОМ) */
+        .scroll-indicator {
+            margin-top: 30px; opacity: 0; transition: 1s ease 2s;
+        }
+        .hero-title.active ~ .scroll-indicator { opacity: 0.4; animation: arrowMove 2s infinite ease-in-out; }
+        @keyframes arrowMove { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+
+        /* --- GRID --- */
+        .grid { display: flex; flex-direction: column; width: 100%; gap: 2px; background: #222; }
+        .grid-item {
+            min-height: 50vh; position: relative; overflow: hidden;
+            display: flex; flex-direction: column; justify-content: flex-end;
+            padding: 40px; text-decoration: none; color: #fff; background-color: var(--card-bg);
+        }
+        .grid-item::before {
+            content: ""; position: absolute; inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 50%, rgba(0,0,0,0.8) 100%); z-index: 1;
+        }
+
+        .img-1 { background-image: url('1.jpg'); background-position: center; background-size: cover; }
+        .img-2 { background-image: url('2.JPG'); background-position: center; background-size: cover; }
+        .img-3 { background-image: url('5.jpg'); background-position: center; background-size: cover; }
+        .img-4 { background-image: url('6.jpg'); background-position: center; background-size: cover; }
+        .img-price { background-image: url('7.jpg'); background-position: center; background-size: cover; }
+        .img-sketches { background-image: url('8.jpg'); background-position: center; background-size: cover; }
+
+        .grid-item h2 { font-family: 'Unbounded', sans-serif; font-size: 28px; text-transform: uppercase; z-index: 2; position: relative; }
+        .grid-item span.label { font-size: 10px; letter-spacing: 4px; margin-bottom: 10px; opacity: 0.5; z-index: 2; position: relative; }
+
+        /* --- PRICE ANIMATION --- */
+        .price-content {
+            max-height: 0; overflow: hidden; opacity: 0;
+            transition: max-height 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.5s ease;
+            z-index: 2; position: relative;
+        }
+        .grid-item.open-price .price-content { max-height: 500px; opacity: 1; padding-top: 20px; }
         
-        .price-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #222; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+        .price-row { 
+            display: flex; justify-content: space-between; padding: 15px 0; 
+            border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 12px; 
+            text-transform: uppercase; letter-spacing: 1px;
+        }
         .price-row span:last-child { color: var(--red); font-weight: bold; }
 
-        /* Фонові зображення */
-        .img-portfolio { background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('5.jpg') center/cover; }
-        .img-price { background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('6.jpg') center/cover; }
-        .img-flash { background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('7.jpg') center/cover; }
+        /* --- FOOTER --- */
+        footer { padding: 80px 40px 140px; background: #000; border-top: 1px solid #111; }
+        .footer-info { font-size: 9px; letter-spacing: 2px; color: #333; line-height: 2.5; text-transform: uppercase; }
+        .footer-year { font-family: 'Unbounded', sans-serif; font-size: 12px; color: var(--red); margin-top: 30px; }
 
-        .grid-item h2 { font-family: 'Unbounded', sans-serif; font-size: 28px; text-transform: uppercase; z-index: 2; }
-        .grid-item span.label { font-size: 10px; letter-spacing: 4px; margin-bottom: 10px; opacity: 0.5; z-index: 2; }
+        .cta-fixed {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: var(--red); color: #fff; padding: 22px 60px; border-radius: 100px;
+            text-decoration: none; font-family: 'Unbounded', sans-serif; font-size: 11px;
+            font-weight: 900; z-index: 1000; box-shadow: 0 10px 40px rgba(255,0,0,0.5); transition: 0.3s;
+        }
 
-        /* LOADER */
-        #loader { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: 1s cubic-bezier(0.85, 0, 0.15, 1); }
-        .loader-num { font-family: 'Unbounded', sans-serif; font-size: 20vw; color: #fff; }
-
-        .cta-fixed { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--red); color: #fff; padding: 22px 50px; border-radius: 100px; text-decoration: none; font-family: 'Unbounded', sans-serif; font-size: 11px; z-index: 1000; box-shadow: 0 10px 30px rgba(255,0,0,0.3); }
+        @media (max-width: 768px) { .hero-title { font-size: 28vw; } .grid-item { padding: 30px; } }
     </style>
 </head>
 <body>
 
     <div id="loader"><div class="loader-num" id="load-val">0</div></div>
+    <div class="noise"></div>
 
     <div class="menu-btn" id="menuBtn" onclick="toggleMenu()">
         <span></span><span></span><span></span>
@@ -85,76 +137,88 @@
     <nav class="nav-overlay" id="nav">
         <a href="#" onclick="toggleMenu()">Home</a>
         <a href="#portfolio" onclick="toggleMenu()">Portfolio</a>
-        <a href="#price" onclick="toggleMenu()">Price List</a>
+        <a href="#price" onclick="toggleMenu()">Price</a>
         <a href="#sketches" onclick="toggleMenu()">Sketches</a>
     </nav>
 
-    <a href="https://t.me" class="cta-fixed">ЗАПИСАТИСЯ</a>
+    <a href="#" class="cta-fixed" onclick="if(window.Telegram) Telegram.WebApp.close();">ЗАПИСАТИСЯ</a>
 
     <main>
         <section class="hero">
             <h1 class="hero-title" id="main-logo"><span>YYO</span><span>KAI</span></h1>
-            <div class="scroll-arrow">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="0.5" stroke-linecap="round"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+            <div class="hero-tagline">INK ARCHITECT // LVIV</div>
+            <!-- СТРІЛКА ОДРАЗУ ПІД ТЕКСТОМ -->
+            <div class="scroll-indicator">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
             </div>
         </section>
 
         <section class="grid">
-            <!-- ПОРТФОЛІО -->
-            <a href="https://instagram.com" id="portfolio" class="grid-item img-portfolio">
-                <span class="label">01 // VISUALS</span>
-                <h2>Portfolio</h2>
+            <a href="https://instagram.com" class="grid-item img-1">
+                <span class="label">01 // IDENTITY</span><h2>Instagram</h2>
             </a>
-
-            <!-- ПРАЙС З ВИПАДАЮЧИМ СПИСКОМ -->
+            <a href="https://t.me" class="grid-item img-2">
+                <span class="label">02 // CONNECT</span><h2>Telegram</h2>
+            </a>
+            
+            <a href="#" id="portfolio" class="grid-item img-3">
+                <span class="label">03 // ARCHIVE</span><h2>Portfolio</h2>
+            </a>
+            
+            <!-- ПРАЙС З ПРУЖИННОЮ АНІМАЦІЄЮ -->
             <div id="price" class="grid-item img-price" onclick="this.classList.toggle('open-price')">
-                <span class="label">02 // SYSTEM</span>
+                <span class="label">04 // SYSTEM</span>
                 <h2>Price List</h2>
                 <div class="price-content">
-                    <div class="price-row"><span>Minimal Tattoo</span><span>80€+</span></div>
-                    <div class="price-row"><span>Medium Project</span><span>200€+</span></div>
-                    <div class="price-row"><span>Full Day Session</span><span>450€+</span></div>
-                    <div class="price-row"><span>Custom Design</span><span>FREE*</span></div>
+                    <div class="price-row"><span>Minimal</span><span>80€+</span></div>
+                    <div class="price-row"><span>Medium</span><span>200€+</span></div>
+                    <div class="price-row"><span>Full Day</span><span>450€+</span></div>
                 </div>
             </div>
-
-            <!-- ВІЛЬНІ ЕСКІЗИ -->
-            <a href="https://t.me" id="sketches" class="grid-item img-flash">
-                <span class="label">03 // FLASH</span>
-                <h2>Available Sketches</h2>
+            
+            <a href="#" id="sketches" class="grid-item img-sketches">
+                <span class="label">05 // FLASH</span><h2>Available Sketches</h2>
+            </a>
+            
+            <a href="#" class="grid-item img-4">
+                <span class="label">06 // INFO</span><h2>Aftercare</h2>
             </a>
         </section>
 
-        <footer style="padding: 100px 40px; text-align: center; opacity: 0.3; font-size: 10px; letter-spacing: 2px;">
-            YYOKAI SYSTEM // LVIV 2026
+        <footer>
+            <div class="footer-info">
+                YYOKAI SYSTEM PROTOCOL<br>ESTABLISHED IN THE FOREST<br>DATA SYNC: ACTIVE<br>SECTOR: LVIV_CENTER
+            </div>
+            <div class="footer-year">© 2026 // BEYOND THE LIMITS</div>
         </footer>
     </main>
 
     <script>
-        // Loader logic
+        function toggleMenu() {
+            document.getElementById('nav').classList.toggle('active');
+            document.getElementById('menuBtn').classList.toggle('active');
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             let count = 0;
+            const loadVal = document.getElementById('load-val');
+            const loader = document.getElementById('loader');
+            const logo = document.getElementById('main-logo');
+
             const interval = setInterval(() => {
-                count += Math.floor(Math.random() * 12) + 1;
+                count += Math.floor(Math.random() * 8) + 1;
                 if (count >= 100) {
                     count = 100;
                     clearInterval(interval);
                     setTimeout(() => {
-                        document.getElementById('loader').style.transform = "translateY(-100%)";
-                        const logo = document.getElementById('main-logo');
+                        loader.style.transform = "translateY(-100%)";
                         logo.classList.add('visible');
-                        setTimeout(() => logo.classList.add('active'), 200);
+                        setTimeout(() => { logo.classList.add('active'); }, 200);
                     }, 400);
                 }
-                document.getElementById('load-val').innerText = count;
+                loadVal.innerText = count;
             }, 50);
         });
-
-        // Menu toggle
-        function toggleMenu() {
-            document.getElementById('nav').classList.toggle('active');
-            document.getElementById('menuBtn').classList.toggle('open');
-        }
     </script>
 </body>
 </html>
