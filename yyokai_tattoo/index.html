@@ -42,8 +42,8 @@
             margin: 15px 0; text-transform: uppercase; letter-spacing: 2px;
         }
 
-        /* --- HERO --- */
-        .hero { height: 88vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
+        /* --- HERO (ЛОГО ПО ЦЕНТРУ) --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
         .hero-title {
             font-family: 'Unbounded', sans-serif; font-size: 24vw; line-height: 0.9;
             text-transform: uppercase; text-align: center; letter-spacing: -0.05em;
@@ -53,30 +53,38 @@
         .hero-title span {
             display: inline-block; opacity: 0;
             transform: scaleY(4) translateY(200px);
-            filter: blur(20px); transition: 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            filter: blur(20px); transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .hero-title.active span { opacity: 1; transform: scaleY(1) translateY(0); filter: blur(0); }
         .hero-title span:nth-child(2) { transition-delay: 0.15s; margin-top: 15px; }
 
-        .hero-tagline { margin-top: 35px; font-size: 10px; letter-spacing: 8px; color: #444; text-transform: uppercase; opacity: 0; transition: 1s ease 1s; }
-        .hero-title.active + .hero-tagline { opacity: 1; }
+        .hero-tagline { margin-top: 35px; font-size: 10px; letter-spacing: 8px; color: #444; text-transform: uppercase; opacity: 0; transform: translateY(15px); transition: all 1s ease 1s; }
+        .hero-title.active + .hero-tagline { opacity: 1; transform: translateY(0); }
 
-        /* СТРІЛКА (Б’ЄТЬСЯ ВНИЗ) */
-        .scroll-indicator { margin-top: 30px; opacity: 0; transition: 1s ease 2s; }
-        .hero-title.active ~ .scroll-indicator { opacity: 1; animation: arrowHit 1.6s infinite; }
-        @keyframes arrowHit {
-            0% { transform: translateY(-10px); opacity: 0.5; }
-            70% { transform: translateY(15px); opacity: 1; }
-            100% { transform: translateY(15px); opacity: 0; }
+        /* СТРІЛКА (БЕЗ ГЛЮКІВ ПРИ ЗАВАНТАЖЕННІ) */
+        .scroll-indicator { 
+            margin-top: 30px; 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: opacity 1s ease 2s; 
+        }
+        /* З'являється тільки коли логотип став .active */
+        .hero-title.active ~ .scroll-indicator { 
+            opacity: 0.6; 
+            visibility: visible; 
+            animation: arrowFloat 2s infinite ease-in-out; 
+        }
+        @keyframes arrowFloat {
+            0%, 100% { transform: translateY(0); opacity: 0.4; }
+            50% { transform: translateY(15px); opacity: 1; }
         }
 
-        /* --- GRID (ЧИСТІ СТИКИ) --- */
+        /* --- GRID --- */
         .grid { display: flex; flex-direction: column; width: 100%; gap: 1px; background: #111; }
         .grid-item { 
-            min-height: 55vh; position: relative; overflow: hidden; 
+            min-height: 60vh; position: relative; overflow: hidden; 
             display: flex; flex-direction: column; justify-content: flex-end; 
             padding: 40px; text-decoration: none; color: #fff; background-color: var(--card-bg);
-            border: none;
         }
         .grid-item::before { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 20%, rgba(0,0,0,0.85) 100%); z-index: 1; }
 
@@ -90,7 +98,7 @@
         .grid-item h2 { font-family: 'Unbounded', sans-serif; font-size: 26px; text-transform: uppercase; z-index: 2; position: relative; }
         .grid-item span.label { font-size: 10px; letter-spacing: 4px; margin-bottom: 8px; opacity: 0.4; z-index: 2; position: relative; }
 
-        /* --- ПРАЙС (М'ЯКИЙ) --- */
+        /* --- ПРАЙС --- */
         .price-container { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.5s ease-in-out; z-index: 2; position: relative; overflow: hidden; }
         .grid-item.open-price .price-container { grid-template-rows: 1fr; }
         .price-inner { min-height: 0; padding-top: 20px; }
@@ -98,11 +106,11 @@
         .price-row span:last-child { color: var(--red); font-weight: 900; }
 
         footer { padding: 100px 40px; background: #000; font-size: 9px; letter-spacing: 2px; color: #222; line-height: 2.5; border-top: 1px solid #111; }
-        .footer-year { font-family: 'Unbounded', sans-serif; font-size: 12px; color: var(--red); margin-top: 25px; opacity: 0.8; }
+        .footer-year { font-family: 'Unbounded', sans-serif; font-size: 12px; color: var(--red); margin-top: 25px; }
 
         .cta-fixed { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--red); color: #fff; padding: 22px 60px; border-radius: 100px; text-decoration: none; font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 900; z-index: 1000; box-shadow: 0 10px 40px rgba(255,0,0,0.4); }
 
-        @media (max-width: 768px) { .hero-title { font-size: 28vw; } .grid-item { padding: 30px; min-height: 50vh; } }
+        @media (max-width: 768px) { .hero-title { font-size: 28vw; } .grid-item { padding: 30px; } }
     </style>
 </head>
 <body>
@@ -128,8 +136,9 @@
         <section class="hero">
             <h1 class="hero-title" id="main-logo"><span>YYO</span><span>KAI</span></h1>
             <div class="hero-tagline">INK ARCHITECT // LVIV</div>
+            <!-- СТРІЛКА ТЕПЕР ПІД КЛАСОМ .active -->
             <div class="scroll-indicator">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
             </div>
         </section>
 
@@ -173,18 +182,20 @@
             const logo = document.getElementById('main-logo');
 
             const counterInterval = setInterval(() => {
-                count += Math.floor(Math.random() * 6) + 2;
+                count += Math.floor(Math.random() * 5) + 2;
                 if (count >= 100) {
                     count = 100;
                     clearInterval(counterInterval);
                     setTimeout(() => {
                         loader.style.transform = "translateY(-100%)";
                         logo.classList.add('visible');
-                        setTimeout(() => { logo.classList.add('active'); }, 200);
+                        setTimeout(() => { 
+                            logo.classList.add('active'); 
+                        }, 200);
                     }, 300);
                 }
                 loadVal.innerHTML = count;
-            }, 45);
+            }, 40);
         };
     </script>
 </body>
