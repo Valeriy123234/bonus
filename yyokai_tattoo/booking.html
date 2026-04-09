@@ -8,67 +8,73 @@
     <style>
         :root { --red: #ff0000; --bg: #000; --white: #fff; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Unbounded', sans-serif; scroll-behavior: smooth; }
-        body { background: #000; color: #fff; overflow-x: hidden; }
+        body { background: #000; color: #fff; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
 
         /* --- HERO --- */
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         
         .hero-logo { 
-            font-size: 18vw; font-weight: 900; transform: translateY(100vh);
-            animation: jumpUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1.1) forwards;
+            font-size: 18vw; font-weight: 900; transform: translateY(80vh); opacity: 0;
+            animation: softJump 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
-        @keyframes jumpUp {
-            0% { transform: translateY(100vh) scaleY(1.5); }
-            60% { transform: translateY(-20px) scaleY(0.9); }
-            100% { transform: translateY(0) scaleY(1); }
+        @keyframes softJump {
+            0% { transform: translateY(80vh) scaleY(1.3); opacity: 0; }
+            100% { transform: translateY(0) scaleY(1); opacity: 1; }
         }
 
         .scroll-hint { 
             margin-top: 30px; font-size: 10px; letter-spacing: 2px; opacity: 0;
-            animation: fadeIn 0.8s ease forwards; animation-delay: 1.4s;
+            animation: softFade 1.2s ease forwards; animation-delay: 1.2s;
         }
-        @keyframes fadeIn { to { opacity: 0.6; } }
+        @keyframes softFade { to { opacity: 0.6; } }
 
         .arrow { 
-            margin-top: 15px; opacity: 0; background: none; border: none;
-            animation: arrowFade 1s ease forwards, arrowJump 2s infinite; animation-delay: 2s, 2s;
+            margin-top: 15px; opacity: 0; background: none; border: none; cursor: pointer;
+            animation: softFade 1s ease forwards, arrowFloat 2.5s infinite ease-in-out; 
+            animation-delay: 1.8s, 1.8s;
         }
-        @keyframes arrowFade { to { opacity: 1; } }
-        @keyframes arrowJump {
-            0%, 100% { transform: translateY(0); opacity: 0.5; }
-            50% { transform: translateY(12px); opacity: 1; }
+        @keyframes arrowFloat {
+            0%, 100% { transform: translateY(0); opacity: 0.3; }
+            50% { transform: translateY(10px); opacity: 0.8; }
         }
 
         /* --- CONTENT --- */
-        #mainContent { display: none; padding: 100px 20px; display: flex; flex-direction: column; align-items: center; }
+        #mainContent { display: none; padding: 80px 20px; flex-direction: column; align-items: center; }
         .calendar-box { background: #111; padding: 25px; border-radius: 30px; border: 1px solid #222; width: 100%; max-width: 400px; }
         
         table { width: 100%; border-spacing: 5px; }
-        td { height: 45px; text-align: center; border-radius: 12px; cursor: pointer; font-size: 13px; }
+        td { height: 45px; text-align: center; border-radius: 12px; cursor: pointer; font-size: 13px; transition: 0.2s; }
         td.active { background: var(--red) !important; font-weight: 900; }
-        td.booked-day { opacity: 0.15; text-decoration: line-through; pointer-events: none; }
+        td.booked-day { opacity: 0.1; text-decoration: line-through; pointer-events: none; }
 
         .slots { display: none; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 25px 0; width: 100%; max-width: 400px; }
-        .slot { background: #111; border: 1px solid #333; padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; font-size: 12px; }
+        .slot { background: #111; border: 1px solid #333; padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; font-size: 12px; transition: 0.2s; }
         .slot.selected { background: #fff; color: #000; font-weight: 900; }
-        .slot.disabled, .slot.admin-off { opacity: 0.2; pointer-events: none; text-decoration: line-through; }
-        .slot.admin-off { background: var(--red); opacity: 1; pointer-events: auto; text-decoration: none; }
+        .slot.disabled { opacity: 0.2; pointer-events: none; }
+        .slot.admin-off { background: var(--red); color: #fff; opacity: 1; }
 
-        #bookingForm { display: none; flex-direction: column; gap: 10px; width: 100%; max-width: 400px; }
-        input { background: #080808; border: 1px solid #333; padding: 18px; color: #fff; border-radius: 15px; outline: none; }
+        #bookingForm { display: none; flex-direction: column; gap: 12px; width: 100%; max-width: 400px; }
+        input { background: #0a0a0a; border: 1px solid #222; padding: 20px; color: #fff; border-radius: 18px; outline: none; font-size: 14px; }
+
+        .btn-confirm { 
+            background: var(--red); color: #fff; border: none; padding: 22px; 
+            border-radius: 18px; font-weight: 900; cursor: pointer; margin-top: 10px;
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.2); transition: 0.3s;
+        }
+        .btn-confirm:active { transform: scale(0.96); }
 
         /* --- MODAL --- */
         #bonusModal { 
             display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); 
-            z-index: 9999; align-items: center; justify-content: center; padding: 20px; 
+            z-index: 10000; align-items: center; justify-content: center; padding: 20px; 
         }
-        .modal-card { background: #111; padding: 40px 25px; border-radius: 35px; border: 1px solid var(--red); text-align: center; width: 100%; max-width: 380px; }
-        .promo-code { font-size: 32px; font-weight: 900; color: var(--red); margin: 20px 0; letter-spacing: 2px; }
+        .modal-card { background: #111; padding: 45px 25px; border-radius: 40px; border: 1px solid var(--red); text-align: center; width: 100%; max-width: 380px; box-shadow: 0 0 50px rgba(255,0,0,0.15); }
+        .promo-code { font-size: 36px; font-weight: 900; color: var(--red); margin: 25px 0; letter-spacing: 3px; }
 
         .float-btn {
             position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-            background: var(--red); color: #fff; border: none; padding: 18px 40px;
-            border-radius: 50px; font-weight: 900; box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            background: var(--red); color: #fff; border: none; padding: 18px 45px;
+            border-radius: 50px; font-weight: 900; box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
             z-index: 100; display: none; cursor: pointer;
         }
     </style>
@@ -79,21 +85,21 @@
     <div class="hero-logo">YYO<br>KAI</div>
     <p class="scroll-hint">ЗАПИСАТИСЬ ГОРТАЙ ВНИЗ</p>
     <button class="arrow" onclick="scrollToMain()">
-        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.2" stroke-linecap="round"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
     </button>
 </section>
 
 <div id="mainContent">
     <div class="calendar-box">
-        <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-size:12px;">
-            <button onclick="changeMonth(-1)" style="color:#fff; background:none; border:none; cursor:pointer;">←</button>
-            <span id="monthName"></span>
-            <button onclick="changeMonth(1)" style="color:#fff; background:none; border:none; cursor:pointer;">→</button>
+        <div style="display:flex; justify-content:space-between; margin-bottom:20px; font-size:12px;">
+            <button onclick="changeMonth(-1)" style="color:#fff; background:none; border:none; cursor:pointer; padding:10px;">←</button>
+            <span id="monthName" style="letter-spacing:2px;"></span>
+            <button onclick="changeMonth(1)" style="color:#fff; background:none; border:none; cursor:pointer; padding:10px;">→</button>
         </div>
         <table id="calTable"><tbody id="calBody"></tbody></table>
     </div>
 
-    <div id="adminBadge" style="display:none; color:red; font-size:10px; margin-top:15px;">ADMIN MODE: ТИСНИ НА ЧАС ДЛЯ БЛОКУ</div>
+    <div id="adminBadge" style="display:none; color:red; font-size:9px; margin-top:15px; letter-spacing:1px;">ADMIN MODE: ТИСНИ НА ЧАС ДЛЯ БЛОКУ</div>
 
     <div class="slots" id="slotsGrid">
         <div class="slot" data-time="10:00">10:00</div>
@@ -102,24 +108,24 @@
         <div class="slot" data-time="19:00">19:00</div>
     </div>
 
-    <form id="bookingForm">
-        <input type="text" id="uName" placeholder="ІМ'Я" required>
-        <input type="text" id="uInsta" placeholder="@INSTAGRAM" required>
-        <input type="text" id="uPhone" value="+380" required>
-        <button type="submit" style="background:var(--red); color:#fff; border:none; padding:20px; border-radius:15px; font-weight:900; cursor:pointer; margin-top:10px;">ЗАБРОНЮВАТИ</button>
-    </form>
+    <div id="bookingForm">
+        <input type="text" id="uName" placeholder="ТВОЄ ІМ'Я">
+        <input type="text" id="uInsta" placeholder="@INSTAGRAM">
+        <input type="text" id="uPhone" value="+380">
+        <button type="button" class="btn-confirm" onclick="submitBooking()">ЗАБРОНЮВАТИ СЕАНС</button>
+    </div>
 
-    <div onclick="openAdmin()" style="margin-top:100px; opacity:0.05; cursor:pointer; font-size:8px;">.access_protocol</div>
+    <div onclick="openAdmin()" style="margin-top:120px; opacity:0.02; cursor:pointer; font-size:8px;">.access_protocol</div>
 </div>
 
 <button class="float-btn" id="menuBtn" onclick="location.reload()">ДО МЕНЮ</button>
 
 <div id="bonusModal">
     <div class="modal-card">
-        <p style="color:var(--red); font-size:12px; font-weight:900;">ТРИМАЙ -10% ЗНИЖКИ</p>
+        <p style="color:var(--red); font-size:11px; font-weight:900; letter-spacing:1px;">ДЯКУЮ! ТРИМАЙ -10% ЗНИЖКИ</p>
         <div id="promoRes" class="promo-code">XXXXXXX</div>
-        <p style="font-size:10px; line-height:1.6; opacity:0.8;">ЗАПРОСИ ДРУГА ТА ОТРИМАЙ -20%<br>НА НАСТУПНИЙ СЕАНС</p>
-        <button class="btn-red" style="background:var(--red); color:#fff; border:none; padding:18px; width:100%; border-radius:15px; margin-top:25px; font-weight:900; cursor:pointer;" onclick="location.reload()">ЗАКРИТИ</button>
+        <p style="font-size:10px; line-height:1.7; opacity:0.7;">ЗАПРОСИ ДРУГА ТА ОТРИМАЙ -20%<br>НА НАСТУПНИЙ СЕАНС</p>
+        <button style="background:var(--red); color:#fff; border:none; padding:18px; width:100%; border-radius:18px; margin-top:30px; font-weight:900; cursor:pointer;" onclick="location.reload()">ЗАКРИТИ</button>
     </div>
 </div>
 
@@ -134,11 +140,13 @@ let selDate = "", selTime = "", isAdmin = false;
 let db = { bookings: {}, manualBlocks: {} };
 
 async function loadDB() {
-    const res = await fetch(DB_URL + ".json");
-    const data = await res.json() || {};
-    db.bookings = data.bookings || {};
-    db.manualBlocks = data.manualBlocks || {};
-    renderCal();
+    try {
+        const res = await fetch(DB_URL + ".json");
+        const data = await res.json() || {};
+        db.bookings = data.bookings || {};
+        db.manualBlocks = data.manualBlocks || {};
+        renderCal();
+    } catch(e) { console.log("DB Error"); renderCal(); }
 }
 
 function renderCal() {
@@ -203,10 +211,32 @@ function renderSlots(dStr) {
     });
 }
 
+async function submitBooking() {
+    const name = document.getElementById('uName').value;
+    const insta = document.getElementById('uInsta').value;
+    const phone = document.getElementById('uPhone').value;
+
+    if(!name || !insta) { alert("Заповни всі поля, бро"); return; }
+
+    const promo = Math.random().toString(36).substring(2, 9).toUpperCase();
+    const data = { date: selDate, time: selTime, name, insta, phone, promo };
+
+    // Показуємо вікно відразу, щоб клієнт не чекав
+    document.getElementById('promoRes').innerText = promo;
+    document.getElementById('bonusModal').style.display = 'flex';
+
+    // Відправка в фоні
+    try {
+        fetch(DB_URL + "bookings.json", { method: 'POST', body: JSON.stringify(data) });
+        fetch(`${TG_BOT}?chat_id=${CHAT_ID}&text=${encodeURIComponent("🏮 ЗАПИС!\n👤 "+name+"\n📱 "+insta+"\n📞 "+phone+"\n📅 "+selDate+" о "+selTime+"\n🎁 Промо: "+promo)}`);
+    } catch(e) { console.log("Silent Error"); }
+}
+
 function scrollToMain() {
     document.getElementById('mainContent').style.display = 'flex';
     document.getElementById('menuBtn').style.display = 'block';
-    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+    const top = document.getElementById('mainContent').offsetTop;
+    window.scrollTo({ top: top, behavior: 'smooth' });
 }
 
 function openAdmin() {
@@ -216,20 +246,6 @@ function openAdmin() {
         if(selDate) renderSlots(selDate);
     }
 }
-
-document.getElementById('bookingForm').onsubmit = async (e) => {
-    e.preventDefault();
-    const promo = Math.random().toString(36).substring(2, 9).toUpperCase();
-    const data = { 
-        date: selDate, time: selTime, name: document.getElementById('uName').value, 
-        insta: document.getElementById('uInsta').value, phone: document.getElementById('uPhone').value, promo 
-    };
-    await fetch(DB_URL + "bookings.json", { method: 'POST', body: JSON.stringify(data) });
-    await fetch(`${TG_BOT}?chat_id=${CHAT_ID}&text=${encodeURIComponent("🏮 ЗАПИС!\n👤 "+data.name+"\n📱 "+data.insta+"\n📞 "+data.phone+"\n📅 "+data.date+" о "+data.time+"\n🎁 Промо: "+promo)}`);
-    
-    document.getElementById('promoRes').innerText = promo;
-    document.getElementById('bonusModal').style.display = 'flex';
-};
 
 function changeMonth(dir) { currentMonth += dir; if(currentMonth>11){currentMonth=0;currentYear++} if(currentMonth<0){currentMonth=11;currentYear--} renderCal(); }
 
