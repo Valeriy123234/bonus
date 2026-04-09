@@ -6,81 +6,70 @@
     <title>YYOKAI | SYSTEM</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        :root { --red: #ff0000; --bg: #000; --white: #fff; --gray: #111; }
+        :root { --red: #ff0000; --bg: #000; --white: #fff; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Unbounded', sans-serif; scroll-behavior: smooth; }
-        
-        body { background: var(--bg); color: var(--white); overflow-x: hidden; }
+        body { background: #000; color: #fff; overflow-x: hidden; }
 
         /* --- HERO --- */
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .hero-logo { font-size: 18vw; font-weight: 900; animation: bounceOnce 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        
-        @keyframes bounceOnce {
-            0% { transform: translateY(-200px); opacity: 0; }
-            70% { transform: translateY(20px); }
-            100% { transform: translateY(0); opacity: 1; }
+        .hero-logo { 
+            font-size: 18vw; font-weight: 900; transform: translateY(100vh);
+            animation: jumpUp 1s cubic-bezier(0.2, 0.8, 0.2, 1.1) forwards;
+        }
+        @keyframes jumpUp {
+            0% { transform: translateY(100vh) scaleY(2); }
+            60% { transform: translateY(-20px) scaleY(0.9); }
+            100% { transform: translateY(0) scaleY(1); }
         }
 
-        .scroll-hint { margin-top: 20px; font-size: 10px; letter-spacing: 2px; opacity: 0.6; }
-        .arrow { margin-top: 20px; cursor: pointer; animation: arrowVib 2s infinite; background: none; border: none; }
-        @keyframes arrowVib { 0%, 100% { transform: translateY(0); opacity: 0.3; } 50% { transform: translateY(10px); opacity: 1; } }
-
-        /* --- MAIN CONTENT --- */
-        #mainContent { display: none; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
-        .calendar-box { background: var(--gray); padding: 25px; border-radius: 30px; border: 1px solid #222; width: 100%; max-width: 400px; }
-        
-        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .cal-btn { background: #222; border: none; color: #fff; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
+        /* --- CONTENT --- */
+        #mainContent { display: none; padding: 100px 20px; display: flex; flex-direction: column; align-items: center; }
+        .calendar-box { background: #111; padding: 25px; border-radius: 30px; border: 1px solid #222; width: 100%; max-width: 400px; }
         
         table { width: 100%; border-spacing: 5px; }
-        td { height: 45px; text-align: center; border-radius: 12px; cursor: pointer; font-size: 13px; border: 1px solid transparent; }
+        td { height: 45px; text-align: center; border-radius: 12px; cursor: pointer; font-size: 13px; }
         td.active { background: var(--red) !important; font-weight: 900; }
-        td.booked-day { opacity: 0.2; text-decoration: line-through; pointer-events: none; }
+        td.booked-day { opacity: 0.15; text-decoration: line-through; pointer-events: none; }
 
-        /* --- SLOTS & FORM --- */
         .slots { display: none; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 25px 0; width: 100%; max-width: 400px; }
         .slot { background: #111; border: 1px solid #333; padding: 15px; border-radius: 15px; text-align: center; cursor: pointer; font-size: 12px; }
-        .slot.selected { background: var(--white); color: #000; font-weight: 900; }
-        .slot.disabled { opacity: 0.1; pointer-events: none; border-style: dashed; }
+        .slot.selected { background: #fff; color: #000; font-weight: 900; }
+        .slot.disabled { opacity: 0.2; pointer-events: none; text-decoration: line-through; border: 1px dashed #444; }
+        .slot.admin-off { background: var(--red); border-color: var(--red); color: #fff; }
 
         #bookingForm { display: none; flex-direction: column; gap: 10px; width: 100%; max-width: 400px; }
         input { background: #080808; border: 1px solid #333; padding: 18px; color: #fff; border-radius: 15px; outline: none; }
-        .btn-red { background: var(--red); color: #fff; border: none; padding: 20px; border-radius: 15px; font-weight: 900; cursor: pointer; }
 
-        /* --- ADMIN --- */
-        .admin-trigger { margin: 100px 0 20px; opacity: 0.1; font-size: 8px; cursor: pointer; }
-        #adminSection { display: none; width: 100%; max-width: 400px; background: #050505; padding: 20px; border-radius: 20px; border: 1px solid var(--red); }
-        .admin-slot-btn { padding: 8px; font-size: 10px; border: 1px solid #333; margin: 2px; cursor: pointer; background: #111; color: #fff; }
-        .admin-slot-btn.off { background: var(--red); }
-        .admin-card { background: #111; padding: 15px; border-radius: 10px; margin-top: 15px; font-size: 11px; border-left: 3px solid var(--red); position: relative; }
+        .float-btn {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: var(--red); color: #fff; border: none; padding: 20px 40px;
+            border-radius: 50px; font-weight: 900; box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            z-index: 100; display: none; cursor: pointer;
+        }
 
-        #bonusModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 999; align-items: center; justify-content: center; padding: 20px; }
-        .modal-card { background: #111; padding: 35px; border-radius: 30px; border: 1px solid var(--red); text-align: center; width: 100%; max-width: 380px; }
+        .admin-trigger { margin: 50px 0; opacity: 0.1; font-size: 8px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <section class="hero">
     <div class="hero-logo">YYO<br>KAI</div>
-    <p class="scroll-hint">ЗАПИСАТИСЬ ГОРТАЙ ВНИЗ</p>
-    <button class="arrow" onclick="document.getElementById('mainContent').scrollIntoView()">
+    <button onclick="scrollToMain()" style="margin-top:40px; background:none; border:none; cursor:pointer;">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
     </button>
 </section>
 
 <div id="mainContent">
-    <div class="cal-header">
-        <button class="cal-btn" onclick="changeMonth(-1)">←</button>
-        <h3 id="monthName"></h3>
-        <button class="cal-btn" onclick="changeMonth(1)">→</button>
-    </div>
-    
     <div class="calendar-box">
-        <table id="calTable">
-            <thead><tr style="font-size: 9px; opacity: 0.5;"><th>ПН</th><th>ВТ</th><th>СР</th><th>ЧТ</th><th>ПТ</th><th>СБ</th><th>НД</th></tr></thead>
-            <tbody id="calBody"></tbody>
-        </table>
+        <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-size:12px;">
+            <button onclick="changeMonth(-1)" style="color:#fff; background:none; border:none; cursor:pointer;">←</button>
+            <span id="monthName"></span>
+            <button onclick="changeMonth(1)" style="color:#fff; background:none; border:none; cursor:pointer;">→</button>
+        </div>
+        <table id="calTable"><tbody id="calBody"></tbody></table>
     </div>
+
+    <div id="adminBadge" style="display:none; color:red; font-size:10px; margin-top:20px;">РЕЖИМ АДМІНА: ТИСНИ НА ЧАС ЩОБ ЗАКРИТИ</div>
 
     <div class="slots" id="slotsGrid">
         <div class="slot" data-time="10:00">10:00</div>
@@ -93,36 +82,25 @@
         <input type="text" id="uName" placeholder="ІМ'Я" required>
         <input type="text" id="uInsta" placeholder="@INSTAGRAM" required>
         <input type="text" id="uPhone" value="+380" required>
-        <button type="submit" class="btn-red">ЗАБРОНЮВАТИ</button>
+        <button type="submit" style="background:var(--red); color:#fff; border:none; padding:20px; border-radius:15px; font-weight:900; cursor:pointer;">ЗАБРОНЮВАТИ</button>
     </form>
 
-    <div class="admin-trigger" onclick="authAdmin()">.access_protocol</div>
-    <div id="adminSection">
-        <h4 style="font-size:10px; color:var(--red); margin-bottom:10px;">МЕНЕДЖЕР ЧАСУ ДЛЯ <span id="adminDateView">...</span></h4>
-        <div id="adminTimeControls"></div>
-        <div id="adminList"></div>
-    </div>
+    <div class="admin-trigger" onclick="openAdmin()">.access_protocol</div>
 </div>
 
-<div id="bonusModal">
-    <div class="modal-card">
-        <p style="color:var(--red); font-size:12px;">ЗНИЖКА 10% НА СЕАНС</p>
-        <div id="promoRes" style="font-size:30px; margin:20px 0; font-weight:900;" onclick="copyCode()"></div>
-        <p style="font-size:10px; opacity:0.7;">ЗАПРОСИ ДРУГА ТА ОТРИМАЙ -20%</p>
-        <button class="btn-red" style="margin-top:20px; width:100%;" onclick="location.reload()">НА ГОЛОВНУ</button>
-    </div>
-</div>
+<button class="float-btn" id="menuBtn" onclick="location.reload()">ДО МЕНЮ</button>
 
 <script>
 const DB_URL = "https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/";
-const TG_TOKEN = "8747396400:AAFgsvQfGymY2SlG2slGuidFXgvbEVVmq-o";
-const TG_CHAT_ID = "1634779056";
+const TG_BOT = "https://t.me/yyokai_ink_bot";
+const CHAT_ID = "1634779056";
 
 let currentMonth = new Date().getMonth();
 let currentYear = new Date().getFullYear();
-let selDate = "", selTime = "", db = { bookings: {}, manualBlocks: {} };
+let selDate = "", isAdmin = false;
+let db = { bookings: {}, manualBlocks: {} }; // Структура: manualBlocks: { "date": ["10:00", "13:00"] }
 
-async function fetchDB() {
+async function loadDB() {
     const res = await fetch(DB_URL + ".json");
     const data = await res.json() || {};
     db.bookings = data.bookings || {};
@@ -133,7 +111,7 @@ async function fetchDB() {
 function renderCal() {
     const body = document.getElementById('calBody');
     body.innerHTML = "";
-    document.getElementById('monthName').innerText = new Intl.DateTimeFormat('uk-UA', { month: 'long', year: 'numeric' }).format(new Date(currentYear, currentMonth));
+    document.getElementById('monthName').innerText = new Intl.DateTimeFormat('uk-UA', {month:'long', year:'numeric'}).format(new Date(currentYear, currentMonth)).toUpperCase();
 
     const offset = (new Date(currentYear, currentMonth, 1).getDay() || 7) - 1;
     const days = new Date(currentYear, currentMonth + 1, 0).getDate();
@@ -149,20 +127,15 @@ function renderCal() {
                 let dStr = `${currentYear}-${currentMonth+1}-${date}`;
                 cell.innerText = date;
                 
-                // Перевірка чи весь день зайнятий
-                const times = ["10:00", "13:00", "16:00", "19:00"];
-                const isFull = times.every(t => 
-                    Object.values(db.bookings).some(b => b.date === dStr && b.time === t) || 
-                    (db.manualBlocks[dStr] && db.manualBlocks[dStr].includes(t))
-                );
-                
-                if(isFull) cell.classList.add('booked-day');
-                
+                // Якщо всі 4 слоти зайняті - закреслюємо день
+                const blockedForDay = db.manualBlocks[dStr] || [];
+                const bookedForDay = Object.values(db.bookings).filter(b => b.date === dStr).map(b => b.time);
+                if ([...new Set([...blockedForDay, ...bookedForDay])].length >= 4) cell.classList.add('booked-day');
+
                 cell.onclick = () => {
                     document.querySelectorAll('td').forEach(t => t.classList.remove('active'));
-                    cell.classList.add('active');
-                    selDate = dStr;
-                    showSlots(dStr);
+                    cell.classList.add('active'); selDate = dStr;
+                    renderSlots(dStr);
                 };
                 date++;
             }
@@ -173,86 +146,74 @@ function renderCal() {
     }
 }
 
-function showSlots(dStr) {
-    document.getElementById('slotsGrid').style.display = 'grid';
+function renderSlots(dStr) {
+    const grid = document.getElementById('slotsGrid');
+    grid.style.display = 'grid';
     document.getElementById('bookingForm').style.display = 'none';
-    document.querySelectorAll('.slot').forEach(s => {
-        const t = s.dataset.time;
-        const isTaken = Object.values(db.bookings).some(b => b.date === dStr && b.time === t) || (db.manualBlocks[dStr] && db.manualBlocks[dStr].includes(t));
-        s.className = isTaken ? 'slot disabled' : 'slot';
-        s.onclick = () => {
-            if(isTaken) return;
-            document.querySelectorAll('.slot').forEach(sl => sl.classList.remove('selected'));
-            s.classList.add('selected');
-            selTime = t;
-            document.getElementById('bookingForm').style.display = 'flex';
+
+    document.querySelectorAll('.slot').forEach(slot => {
+        const time = slot.dataset.time;
+        const isBooked = Object.values(db.bookings).some(b => b.date === dStr && b.time === time);
+        const isManuallyBlocked = db.manualBlocks[dStr] && db.manualBlocks[dStr].includes(time);
+
+        slot.className = 'slot';
+        if (isBooked) slot.classList.add('disabled');
+        if (isManuallyBlocked) slot.classList.add('admin-off');
+
+        slot.onclick = async () => {
+            if (isAdmin) {
+                // Логіка адміна: перемикаємо блок
+                if (!db.manualBlocks[dStr]) db.manualBlocks[dStr] = [];
+                if (db.manualBlocks[dStr].includes(time)) {
+                    db.manualBlocks[dStr] = db.manualBlocks[dStr].filter(t => t !== time);
+                } else {
+                    db.manualBlocks[dStr].push(time);
+                }
+                await fetch(DB_URL + "manualBlocks.json", { method: 'PUT', body: JSON.stringify(db.manualBlocks) });
+                renderSlots(dStr);
+                renderCal();
+            } else {
+                // Логіка клієнта
+                if (isBooked || isManuallyBlocked) return;
+                document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
+                slot.classList.add('selected');
+                window.selTime = time;
+                document.getElementById('bookingForm').style.display = 'flex';
+            }
         };
     });
-    if(document.getElementById('adminSection').style.display === 'block') renderAdminTools(dStr);
 }
 
-// --- ADMIN LOGIC ---
-function authAdmin() {
+function openAdmin() {
     if(prompt("PASS:") === "yokai123234") {
-        document.getElementById('adminSection').style.display = 'block';
-        if(selDate) renderAdminTools(selDate);
+        isAdmin = true;
+        document.getElementById('adminBadge').style.display = 'block';
+        if(selDate) renderSlots(selDate);
     }
 }
 
-function renderAdminTools(dStr) {
-    document.getElementById('adminDateView').innerText = dStr;
-    const container = document.getElementById('adminTimeControls');
-    container.innerHTML = "";
-    ["10:00", "13:00", "16:00", "19:00"].forEach(t => {
-        const isOff = db.manualBlocks[dStr] && db.manualBlocks[dStr].includes(t);
-        const btn = document.createElement('button');
-        btn.className = `admin-slot-btn ${isOff ? 'off' : ''}`;
-        btn.innerText = t + (isOff ? " (OFF)" : " (ON)");
-        btn.onclick = async () => {
-            if(!db.manualBlocks[dStr]) db.manualBlocks[dStr] = [];
-            if(isOff) db.manualBlocks[dStr] = db.manualBlocks[dStr].filter(x => x !== t);
-            else db.manualBlocks[dStr].push(t);
-            await fetch(DB_URL + "manualBlocks.json", { method: 'PUT', body: JSON.stringify(db.manualBlocks) });
-            fetchDB();
-        };
-        container.appendChild(btn);
-    });
-
-    const list = document.getElementById('adminList');
-    list.innerHTML = "";
-    Object.keys(db.bookings).forEach(key => {
-        const b = db.bookings[key];
-        if(b.date === dStr) {
-            list.innerHTML += `<div class="admin-card"><span style="color:red; float:right; cursor:pointer" onclick="delBooking('${key}')">ВИДАЛИТИ</span><b>${b.time}</b> - ${b.name} (${b.insta})</div>`;
-        }
-    });
-}
-
-async function delBooking(key) {
-    if(confirm("Видалити цей запис?")) {
-        await fetch(`${DB_URL}bookings/${key}.json`, { method: 'DELETE' });
-        fetchDB();
-    }
+function scrollToMain() {
+    document.getElementById('mainContent').style.display = 'flex';
+    document.getElementById('menuBtn').style.display = 'block';
+    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
 }
 
 document.getElementById('bookingForm').onsubmit = async (e) => {
     e.preventDefault();
-    const promo = Math.random().toString(36).substring(2, 9).toUpperCase();
-    const data = { date: selDate, time: selTime, name: document.getElementById('uName').value, insta: document.getElementById('uInsta').value, phone: document.getElementById('uPhone').value, promo };
-
+    const data = { 
+        date: selDate, time: window.selTime, 
+        name: document.getElementById('uName').value, 
+        insta: document.getElementById('uInsta').value,
+        phone: document.getElementById('uPhone').value 
+    };
     await fetch(DB_URL + "bookings.json", { method: 'POST', body: JSON.stringify(data) });
-    
-    const text = `🏮 ЗАПИС: ${data.date} о ${data.time}\n👤 ${data.name}\n📱 Insta: ${data.insta}\n📞 ${data.phone}\n🎁 Промо: ${promo}`;
-    fetch(`https://telegram.org{TG_TOKEN}/sendMessage?chat_id=${TG_CHAT_ID}&text=${encodeURIComponent(text)}`);
-
-    document.getElementById('promoRes').innerText = promo;
-    document.getElementById('bonusModal').style.display = 'flex';
+    await fetch(`${TG_BOT}?chat_id=${CHAT_ID}&text=${encodeURIComponent("🔥 ЗАПИС: "+data.date+" о "+data.time+"\n👤 "+data.name+"\n📱 "+data.insta)}`);
+    location.reload();
 };
 
 function changeMonth(dir) { currentMonth += dir; if(currentMonth>11){currentMonth=0;currentYear++} if(currentMonth<0){currentMonth=11;currentYear--} renderCal(); }
-function copyCode() { navigator.clipboard.writeText(document.getElementById('promoRes').innerText); alert("Код скопійовано!"); }
 
-document.addEventListener('DOMContentLoaded', fetchDB);
+loadDB();
 </script>
 </body>
 </html>
