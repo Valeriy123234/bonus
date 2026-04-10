@@ -67,6 +67,50 @@
         }
 
         .btn-visible { opacity: 1; visibility: visible; }
+
+        .bottom-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 25px;
+}
+
+.arrow-wrapper {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+/* Анімація лівої стрілки: рухається вліво */
+.left-anim {
+    animation: moveLeft 1.5s infinite ease-in-out;
+}
+@keyframes moveLeft {
+    0% { transform: translateX(0); opacity: 1; }
+    100% { transform: translateX(-15px); opacity: 0.5; }
+}
+
+/* Анімація правої стрілки: рухається вправо */
+.right-anim {
+    animation: moveRight 1.5s infinite ease-in-out;
+}
+@keyframes moveRight {
+    0% { transform: translateX(0); opacity: 1; }
+    100% { transform: translateX(15px); opacity: 0.5; }
+}
+
+.counter {
+    font-size: 10px;
+    letter-spacing: 3px;
+    opacity: 0.6;
+    min-width: 80px;
+    text-align: center;
+}
+
+/* Прибираємо старі стрілки з фото */
+.nav-arrow { display: none; }
+
     </style>
 </head>
 <body>
@@ -107,6 +151,7 @@
     </div>
 </section>
 
+    <script>
         // Масив для 83 фото
         const photos = [
     "19.jpg",
