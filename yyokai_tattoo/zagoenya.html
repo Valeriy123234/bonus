@@ -13,14 +13,15 @@
         /* --- HERO СЕКЦІЯ --- */
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         
-      .hero-logo {
+    .hero-logo {
     font-size: 20vw;
     font-weight: 900;
-    white-space: nowrap; /* Щоб не перестрибувало на інший рядок */
-    letter-spacing: -1.2vw; /* Це "стисне" всі літери докупи. Регулюйте це число! */
+    line-height: 0.75; /* Це значення «стягує» рядки докупи. Спробуйте 0.8 для більшого зазору */
+    text-align: center;
     transform: translateY(100vh);
     animation: verticalStretch 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
+
 
 
 .hero-logo .kai {
@@ -89,7 +90,10 @@
     <a href="booking.html" class="btn-bottom" id="bottomBtn">ЗАПИСАТИСЬ</a>
 
     <section class="hero">
-        <div class="hero-logo"> <span>YYO</span><span class="kai">KAI</span></div>
+       <div class="hero-logo">
+    YYO<br>KAI
+</div>
+
         <div class="hero-title">КАРТКА ЗАГОЄННЯ</div>
         <button class="arrow" onclick="document.getElementById('content').scrollIntoView({behavior: 'smooth'})">
             <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.2" stroke-linecap="round"><path d="M7 13l5 5 5-5M7 6l5 5 5-5""")/>></svg>
