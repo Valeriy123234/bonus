@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>YYOKAI | SYSTEM</title>
     <link href="https://googleapis.com" rel="stylesheet">
-    <link href="https://jsdelivr.net" rel="stylesheet">
-    <script src="https://jsdelivr.net"></script>
+     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <style>
         :root { --red: #ff0000; --bg: #000; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Unbounded', sans-serif; }
@@ -91,11 +91,11 @@
         </div>
     </div>
 
-    <script src="https://gstatic.com"></script>
-    <script src="https://gstatic.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <script>
-        const firebaseConfig = { databaseURL: "https://firebasedatabase.app" };
+        const firebaseConfig = { databaseURL: "https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/" };
         const TG_TOKEN = '8747396400:AAFgsvQfGymY2SlG2slGuidFXgvbEVVmq-o';
         const TG_CHAT_ID = '1634779056';
 
@@ -165,7 +165,7 @@
 
             try {
                 // 1. Текст
-                await fetch(`https://telegram.org{TG_TOKEN}/sendMessage`, {
+                await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({ chat_id: TG_CHAT_ID, text: msg })
@@ -176,7 +176,7 @@
                     let fd = new FormData();
                     fd.append('chat_id', TG_CHAT_ID);
                     fd.append('photo', file);
-                    await fetch(`https://telegram.org{TG_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
+                    await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendPhoto`, { method: 'POST', body: fd });
                 }
 
                 db.ref('slots/' + selDate).push(selTime);
