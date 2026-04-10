@@ -44,9 +44,45 @@
 
         #bonusModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 10001; align-items: center; justify-content: center; padding: 20px; }
         .promo-code { font-size: 32px; font-weight: 900; color: var(--red); margin: 20px 0; }
+
+        .menu-float-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 20px;
+    background: var(--red);
+    color: #fff;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 50px;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 10px;
+    font-weight: 900;
+    cursor: pointer;
+    z-index: 999;
+    
+    /* Свічення (Glow effect) */
+    box-shadow: 0 0 15px var(--red), 0 0 30px rgba(255, 0, 0, 0.4);
+    
+    /* Плавна поява кнопки */
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.4s all ease-in-out;
+}
+
+/* Клас, який додасться при скролі */
+.menu-float-btn.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+    
     </style>
 </head>
 <body>
+
+    <button class="menu-float-btn" id="floatingMenuBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+    ДО МЕНЮ
+</button>
 
     <section class="hero">
         <div class="hero-logo">YYO<br>KAI</div>
@@ -209,6 +245,17 @@
         alert("СКОПІЙОВАНО: " + code);
     });
 }
+
+        window.onscroll = function() {
+    const btn = document.getElementById('floatingMenuBtn');
+    // Якщо проскролив більше 300 пікселів - показуємо кнопку
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        btn.classList.add('visible');
+    } else {
+        btn.classList.remove('visible');
+    }
+};
+
 </script>
 </body>
 </html>
