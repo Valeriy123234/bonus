@@ -13,38 +13,37 @@
         /* --- HERO СЕКЦІЯ --- */
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         
-        /* Складний стрибок з викривленням */
+        /* Гігантське лого з вертикальним розтягуванням */
         .hero-logo { 
-            font-size: 15vw; font-weight: 900; transform: translateY(100vh);
-            animation: glitchJump 1.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            font-size: 22vw; font-weight: 900; transform: translateY(100vh);
+            animation: verticalStretch 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
-        @keyframes glitchJump {
-            0% { transform: translateY(100vh) scaleY(2) skewX(10deg); opacity: 0; }
-            50% { transform: translateY(-30px) scaleY(0.8) skewX(-5deg); opacity: 1; }
-            70% { transform: translateY(15px) scaleY(1.1); }
-            100% { transform: translateY(0) scaleY(1) skewX(0); opacity: 1; }
+        @keyframes verticalStretch {
+            0% { transform: translateY(100vh) scaleY(3); opacity: 0; }
+            70% { transform: translateY(-30px) scaleY(0.7); opacity: 1; }
+            100% { transform: translateY(0) scaleY(1); opacity: 1; }
         }
 
-        .port-title { margin-top: 15px; font-size: 10px; letter-spacing: 5px; opacity: 0; animation: fadeIn 0.8s forwards 1.4s; }
+        .port-title { margin-top: 20px; font-size: 10px; letter-spacing: 5px; opacity: 0; animation: fadeIn 0.8s forwards 1.2s; }
+        
+        /* Вузька стрілка */
         .arrow { 
-            margin-top: 25px; background: none; border: none; opacity: 0; 
-            animation: fadeIn 0.8s forwards 2s, arrowMove 2s infinite 2s; 
+            margin-top: 30px; background: none; border: none; opacity: 0; 
+            animation: fadeIn 0.8s forwards 1.8s, arrowMove 2s infinite 1.8s; 
         }
         @keyframes fadeIn { to { opacity: 0.6; } }
-        @keyframes arrowMove { 0%, 100% { transform: translateY(0); opacity: 0.4; } 50% { transform: translateY(10px); opacity: 1; } }
+        @keyframes arrowMove { 0%, 100% { transform: translateY(0); opacity: 0.3; } 50% { transform: translateY(10px); opacity: 1; } }
 
-        /* --- ВЕЛИКИЙ ПЛЕЄР ФОТО --- */
+        /* --- ПЛЕЄР --- */
         .gallery-container { position: relative; width: 100vw; height: 85vh; display: flex; align-items: center; justify-content: center; margin: 50px 0 150px; }
         .gallery-viewer { width: 95%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-        
-        /* Фото на 85% висоти екрану */
-        .gallery-viewer img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 5px; transition: opacity 0.2s ease-in-out; }
+        .gallery-viewer img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 5px; transition: opacity 0.2s; }
         
         .nav-zone { position: absolute; top: 0; width: 50%; height: 100%; z-index: 10; cursor: pointer; }
         .left-zone { left: 0; }
         .right-zone { right: 0; }
         
-        .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 24px; opacity: 0.2; pointer-events: none; z-index: 11; font-weight: 100; }
+        .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 20px; opacity: 0.2; pointer-events: none; z-index: 11; }
         .left-arrow { left: 10px; }
         .right-arrow { right: 10px; }
         
@@ -53,10 +52,10 @@
         /* --- ПЛАВАЮЧІ КНОПКИ --- */
         .btn-top {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            background: rgba(0,0,0,0.8); color: #fff; border: 1px solid var(--red);
+            background: rgba(0,0,0,0.85); color: #fff; border: 1px solid var(--red);
             padding: 10px 25px; border-radius: 50px; font-weight: 900; font-size: 9px;
             box-shadow: 0 0 15px rgba(255, 0, 0, 0.4); z-index: 1000;
-            text-decoration: none; transition: 0.4s; opacity: 0; visibility: hidden;
+            text-decoration: none; opacity: 0; visibility: hidden; transition: 0.4s;
         }
 
         .btn-bottom {
@@ -64,7 +63,7 @@
             background: var(--red); color: #fff; border: none;
             padding: 18px 45px; border-radius: 50px; font-weight: 900; font-size: 11px;
             box-shadow: 0 0 20px var(--red), 0 0 40px rgba(255, 0, 0, 0.5);
-            z-index: 1000; text-decoration: none; transition: 0.4s; opacity: 0; visibility: hidden;
+            z-index: 1000; text-decoration: none; opacity: 0; visibility: hidden; transition: 0.4s;
         }
 
         .btn-visible { opacity: 1; visibility: visible; }
@@ -76,7 +75,7 @@
         <div class="hero-logo">YYO<br>KAI</div>
         <div class="port-title">ПОРТФОЛІО</div>
         <button class="arrow" onclick="document.getElementById('gallery').scrollIntoView({behavior: 'smooth'})">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.2" stroke-linecap="round"><path d="M7 13l5 5 5-5M7 6l5 5 5-5""")/>></svg>
+            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.2" stroke-linecap="round"><path d="M7 13l5 5 5-5M7 6l5 5 5-5""")/>></svg>
         </button>
     </section>
 
@@ -95,21 +94,23 @@
         <div class="gallery-viewer">
             <img id="mainImg" src="" alt="YYOKAI TATTOO">
         </div>
-        <div class="counter" id="imgCounter">1 / 120</div>
+        <div class="counter" id="imgCounter">1 / 83</div>
     </section>
 
     <script>
-        // Масив для твоїх 120 фото
+        // Масив для 83 фото
         const photos = [];
-        // Заглушка (заміни на реальні посилання)
-        for(let i=1; i<=120; i++) photos.push(`https://placeholder.com{i}`);
+        // Наповнюємо масив (заміни на реальні посилання)
+        for(let i=1; i<=83; i++) {
+            photos.push(`https://placeholder.com{i}`);
+        }
 
         let currentIdx = 0;
         const mainImg = document.getElementById('mainImg');
         const counter = document.getElementById('imgCounter');
 
         function updateImg() {
-            mainImg.style.opacity = '0.5';
+            mainImg.style.opacity = '0.4';
             setTimeout(() => {
                 mainImg.src = photos[currentIdx];
                 counter.innerText = `${currentIdx + 1} / ${photos.length}`;
@@ -120,7 +121,6 @@
         function nextImg() { currentIdx = (currentIdx + 1) % photos.length; updateImg(); }
         function prevImg() { currentIdx = (currentIdx - 1 + photos.length) % photos.length; updateImg(); }
 
-        // Поява кнопок при скролі
         window.onscroll = function() {
             const top = document.getElementById('topBtn');
             const bottom = document.getElementById('bottomBtn');
