@@ -84,20 +84,29 @@
     <a href="booking.html" class="btn-bottom" id="bottomBtn">ЗАПИСАТИСЬ</a>
 
     <!-- ПЛЕЄР -->
-    <section class="gallery-container" id="gallery">
-        <div class="nav-zone left-zone" onclick="prevImg()"></div>
-        <div class="nav-zone right-zone" onclick="nextImg()"></div>
-        
-        <div class="nav-arrow left-arrow">←</div>
-        <div class="nav-arrow right-arrow">→</div>
+  <section class="gallery-container" id="gallery">
+    <!-- Зони кліку на самому фото залишаємо для зручності -->
+    <div class="nav-zone left-zone" onclick="prevImg()"></div>
+    <div class="nav-zone right-zone" onclick="nextImg()"></div>
 
-        <div class="gallery-viewer">
-            <img id="mainImg" src="" alt="YYOKAI TATTOO">
+    <div class="gallery-viewer">
+        <img id="mainImg" src="" alt="YYOKAI TATTOO">
+    </div>
+
+    <!-- Блок навігації під фото з анімованими стрілками -->
+    <div class="bottom-nav">
+        <div class="arrow-wrapper left-anim" onclick="prevImg()">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6""")/>></svg>
         </div>
+        
         <div class="counter" id="imgCounter">1 / 83</div>
-    </section>
 
-    <script>
+        <div class="arrow-wrapper right-anim" onclick="nextImg()">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"><path d="M9 18l6-6-6-6""")/>></svg>
+        </div>
+    </div>
+</section>
+
         // Масив для 83 фото
         const photos = [
     "19.jpg",
