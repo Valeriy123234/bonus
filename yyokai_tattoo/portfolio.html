@@ -1,1 +1,147 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>YYOKAI | PORTFOLIO</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root { --red: #ff0000; --bg: #000; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Unbounded', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: #fff; overflow-x: hidden; }
+
+        /* --- HERO --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .hero-logo { 
+            font-size: 15vw; font-weight: 900; transform: translateY(100vh);
+            animation: jumpUp 1s cubic-bezier(0.2, 0.8, 0.2, 1.1) forwards;
+        }
+        @keyframes jumpUp {
+            0% { transform: translateY(100vh) scaleY(1.5); }
+            100% { transform: translateY(0) scaleY(1); }
+        }
+        .port-title { margin-top: 20px; font-size: 12px; letter-spacing: 5px; opacity: 0; animation: fadeIn 0.8s forwards 1.2s; }
+        .arrow { margin-top: 30px; background: none; border: none; opacity: 0; animation: fadeIn 0.8s forwards 1.8s, arrowMove 2s infinite 1.8s; }
+        @keyframes fadeIn { to { opacity: 0.6; } }
+        @keyframes arrowMove { 0%, 100% { transform: translateY(0); opacity: 0.5; } 50% { transform: translateY(15px); opacity: 1; } }
+
+        /* --- ГАЛЕРЕЯ (ПЛЕЄР) --- */
+        .gallery-container { position: relative; width: 100vw; height: 80vh; display: flex; align-items: center; justify-content: center; margin: 100px 0; }
+        .gallery-viewer { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        .gallery-viewer img { max-width: 90%; max-height: 90%; object-fit: contain; border-radius: 10px; transition: opacity 0.3s ease; }
+        
+        .nav-zone { position: absolute; top: 0; width: 50%; height: 100%; z-index: 10; cursor: pointer; }
+        .left-zone { left: 0; }
+        .right-zone { right: 0; }
+        
+        .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 30px; opacity: 0.3; pointer-events: none; z-index: 11; }
+        .left-arrow { left: 20px; }
+        .right-arrow { right: 20px; }
+        .counter { position: absolute; bottom: 20px; font-size: 10px; opacity: 0.4; letter-spacing: 2px; }
+
+        /* --- ПЛАВАЮЧІ КНОПКИ (FIXED) --- */
+        
+        /* КНОПКА ЗВЕРХУ: ДО МЕНЮ */
+        .btn-top {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,0,0,0.8); color: #fff; border: 1px solid var(--red);
+            padding: 12px 30px; border-radius: 50px; font-weight: 900; font-size: 10px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3); z-index: 1000;
+            text-decoration: none; transition: 0.3s;
+            opacity: 0; visibility: hidden; /* Початково прихована */
+        }
+
+        /* КНОПКА ЗНИЗУ: ЗАПИС */
+        .btn-bottom {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: var(--red); color: #fff; border: none;
+            padding: 20px 50px; border-radius: 50px; font-weight: 900; font-size: 12px;
+            box-shadow: 0 0 20px var(--red), 0 0 40px rgba(255, 0, 0, 0.4);
+            z-index: 1000; text-decoration: none; transition: 0.3s;
+            opacity: 0; visibility: hidden; /* Початково прихована */
+        }
+
+        /* Клас для появи кнопок при скролі */
+        .btn-visible { opacity: 1; visibility: visible; }
+
+        .btn-top:active, .btn-bottom:active { transform: translateX(-50%) scale(0.95); }
+
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div class="hero-logo">YYO<br>KAI</div>
+        <div class="port-title">ПОРТФОЛІО</div>
+        <button class="arrow" onclick="document.getElementById('gallery').scrollIntoView({behavior: 'smooth'})">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M7 13l5 5 5-5M7 6l5 5 5-5""")/>></svg>
+        </button>
+    </section>
+
+    <!-- ПЛАВАЮЧІ КНОПКИ -->
+    <a href="index.html" class="btn-top" id="topBtn">ДО МЕНЮ</a>
+    <a href="booking.html" class="btn-bottom" id="bottomBtn">ЗАПИСАТИСЬ</a>
+
+    <section class="gallery-container" id="gallery">
+        <div class="nav-zone left-zone" onclick="prevImg()"></div>
+        <div class="nav-zone right-zone" onclick="nextImg()"></div>
+        
+        <div class="nav-arrow left-arrow">←</div>
+        <div class="nav-arrow right-arrow">→</div>
+
+        <div class="gallery-viewer">
+            <img id="mainImg" src="" alt="YYOKAI TATTOO">
+        </div>
+        <div class="counter" id="imgCounter">1 / 120</div>
+    </section>
+
+    <script>
+        // Масив фото (встав свої посилання)
+        const photos = [];
+        for(let i=1; i<=120; i++) photos.push(`https://placeholder.com{i}`);
+
+        let currentIdx = 0;
+        const mainImg = document.getElementById('mainImg');
+        const counter = document.getElementById('imgCounter');
+
+        function updateImg() {
+            mainImg.style.opacity = '0.3';
+            setTimeout(() => {
+                mainImg.src = photos[currentIdx];
+                counter.innerText = `${currentIdx + 1} / ${photos.length}`;
+                mainImg.style.opacity = '1';
+            }, 150);
+        }
+
+        function nextImg() { currentIdx = (currentIdx + 1) % photos.length; updateImg(); }
+        function prevImg() { currentIdx = (currentIdx - 1 + photos.length) % photos.length; updateImg(); }
+
+        // Логіка появи кнопок при скролі
+        window.onscroll = function() {
+            const topBtn = document.getElementById('topBtn');
+            const bottomBtn = document.getElementById('bottomBtn');
+            
+            if (window.scrollY > 300) {
+                topBtn.classList.add('btn-visible');
+                bottomBtn.classList.add('btn-visible');
+            } else {
+                topBtn.classList.remove('btn-visible');
+                bottomBtn.classList.remove('btn-visible');
+            }
+        };
+
+        // Свайпи для мобільних
+        let startX = 0;
+        document.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+        document.addEventListener('touchend', e => {
+            let endX = e.changedTouches[0].clientX;
+            if (startX - endX > 50) nextImg();
+            if (endX - startX > 50) prevImg();
+        });
+
+        // Ініціалізація першого фото
+        updateImg();
+    </script>
+</body>
+</html>
 
