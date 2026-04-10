@@ -13,10 +13,14 @@
         /* --- HERO СЕКЦІЯ --- */
         .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         
-        .hero-logo { 
-            font-size: 20vw; font-weight: 900; transform: translateY(100vh);
-            animation: verticalStretch 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        }
+       .hero-logo {
+    font-size: 20vw;
+    font-weight: 900;
+    letter-spacing: -0.05em; /* Додайте це: від'ємне значення зближує літери */
+    transform: translateY(100vh);
+    animation: verticalStretch 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
         @keyframes verticalStretch {
             0% { transform: translateY(100vh) scaleY(3); opacity: 0; }
             70% { transform: translateY(-30px) scaleY(0.7); opacity: 1; }
