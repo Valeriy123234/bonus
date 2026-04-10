@@ -34,6 +34,35 @@
         @keyframes fadeIn { to { opacity: 0.6; } }
         @keyframes arrowMove { 0%, 100% { transform: translateY(0); opacity: 0.3; } 50% { transform: translateY(10px); opacity: 1; } }
 
+        .btn-top, .btn-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    z-index: 9999; /* Максимальний пріоритет */
+    pointer-events: auto; /* Дозволяє клік */
+    transition: 0.4s all ease-in-out;
+}
+
+.btn-top {
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,0.85); color: #fff; border: 1px solid var(--red);
+    padding: 10px 25px; border-radius: 50px; font-weight: 900; font-size: 9px;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+    opacity: 0; visibility: hidden;
+}
+
+.btn-bottom {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    background: var(--red); color: #fff; border: none;
+    padding: 18px 45px; border-radius: 50px; font-weight: 900; font-size: 11px;
+    box-shadow: 0 0 20px var(--red), 0 0 40px rgba(255, 0, 0, 0.5);
+    opacity: 0; visibility: hidden;
+}
+
+.btn-visible { opacity: 1 !important; visibility: visible !important; }
+
+        
         /* --- ПЛЕЄР --- */
      .gallery-container { 
     position: relative; 
@@ -247,16 +276,19 @@
         function prevImg() { currentIdx = (currentIdx - 1 + photos.length) % photos.length; updateImg(); }
 
         window.onscroll = function() {
-            const top = document.getElementById('topBtn');
-            const bottom = document.getElementById('bottomBtn');
-            if (window.scrollY > 300) {
-                top.classList.add('btn-visible');
-                bottom.classList.add('btn-visible');
-            } else {
-                top.classList.remove('btn-visible');
-                bottom.classList.remove('btn-visible');
-            }
-        };
+    const top = document.getElementById('topBtn');
+    const bottom = document.getElementById('bottomBtn');
+    
+    // Якщо проскролив хоча б трохи (150px), кнопки мають з'явитися
+    if (window.pageYOffset > 150) { 
+        top.classList.add('btn-visible');
+        bottom.classList.add('btn-visible');
+    } else {
+        top.classList.remove('btn-visible');
+        bottom.classList.remove('btn-visible');
+    }
+};
+
 
         // Свайпи
         let startX = 0;
