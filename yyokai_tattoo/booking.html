@@ -88,8 +88,8 @@
             <p style="color:var(--red); font-size:12px; font-weight:900; letter-spacing:1px;">ТРИМАЙ -10% ЗНИЖКИ НА СЕАНС</p>
             <p style="color:#fff; font-size:10px; margin-top:5px; opacity:0.8;">А ТАКОЖ -20% ЗА ТЕ ЩО ПРИВЕДЕШ ДРУГА</p>
             
-            <div id="promoRes" class="promo-code">XXXXXXX</div>
-            
+            <div id="promoRes" class="promo-code" onclick="copyPromo()">XXXXXXX</div>
+
             <p style="font-size:9px; opacity:0.5; margin-bottom:20px;">НАТИСНИ НА КОД ЩОБ СКОПІЮВАТИ</p>
             <button class="btn-confirm" onclick="location.reload()">НА ГОЛОВНУ</button>
         </div>
@@ -193,6 +193,22 @@
 
         function adminAuth() { if(prompt("PASS:") === "yokai123234") { isAdm = true; alert("ADMIN ON"); } }
         document.addEventListener('DOMContentLoaded', initCalendar);
-    </script>
+    
+
+    function copyPromo() {
+    const code = document.getElementById('promoRes').innerText;
+    navigator.clipboard.writeText(code).then(() => {
+        alert("СКОПІЙОВАНО: " + code);
+    }).catch(() => {
+        const input = document.createElement("textarea");
+        input.value = code;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand("copy");
+        document.body.removeChild(input);
+        alert("СКОПІЙОВАНО: " + code);
+    });
+}
+</script>
 </body>
 </html>
