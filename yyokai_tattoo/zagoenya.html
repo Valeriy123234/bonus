@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>YYOKAI | ЗАГОЄННЯ</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        :root { --red: #ff0000; --bg: #000; --panel: #0a0a0a; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Unbounded', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: #fff; overflow-x: hidden; line-height: 1.6; }
+
+        /* --- HERO СЕКЦІЯ --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        
+        .hero-logo { 
+            font-size: 20vw; font-weight: 900; transform: translateY(100vh);
+            animation: verticalStretch 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        @keyframes verticalStretch {
+            0% { transform: translateY(100vh) scaleY(3); opacity: 0; }
+            70% { transform: translateY(-30px) scaleY(0.7); opacity: 1; }
+            100% { transform: translateY(0) scaleY(1); opacity: 1; }
+        }
+
+        .hero-title { 
+            margin-top: 20px; font-size: 10px; letter-spacing: 4px; opacity: 0; 
+            animation: fadeIn 0.8s forwards 1.3s; color: var(--red); 
+        }
+
+        .arrow { 
+            margin-top: 30px; background: none; border: none; opacity: 0; 
+            animation: fadeIn 0.8s forwards 1.8s, arrowMove 2s infinite 1.8s; 
+        }
+        @keyframes fadeIn { to { opacity: 0.8; } }
+        @keyframes arrowMove { 0%, 100% { transform: translateY(0); opacity: 0.4; } 50% { transform: translateY(10px); opacity: 1; } }
+
+        /* --- ІНФО-КАРТКИ --- */
+        .container { max-width: 450px; margin: 0 auto; padding: 40px 20px 150px; }
+        .info-card { 
+            background: var(--panel); border: 1px solid #1a1a1a; padding: 25px; 
+            border-radius: 25px; margin-bottom: 25px; position: relative; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .info-card:hover { border-color: var(--red); transition: 0.3s; }
+        
+        .card-tag { font-size: 8px; color: var(--red); letter-spacing: 2px; margin-bottom: 10px; font-weight: 900; }
+        .card-header { font-size: 13px; font-weight: 900; margin-bottom: 15px; letter-spacing: 1px; }
+        .info-card ul { list-style: none; }
+        .info-card li { font-size: 11px; margin-bottom: 10px; opacity: 0.8; position: relative; padding-left: 15px; }
+        .info-card li::before { content: "•"; position: absolute; left: 0; color: var(--red); }
+        .important { color: var(--red); font-weight: 900; border-left: 2px solid var(--red); padding-left: 10px; margin: 10px 0; font-size: 10px; }
+
+        /* --- ПЛАВАЮЧІ КНОПКИ --- */
+        .btn-top {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            background: rgba(20, 20, 20, 0.85); color: #fff; border: 1px solid #333;
+            padding: 10px 25px; border-radius: 50px; font-weight: 900; font-size: 9px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.05); z-index: 1000;
+            text-decoration: none; opacity: 0; visibility: hidden; transition: 0.4s;
+        }
+
+        .btn-bottom {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: var(--red); color: #fff; border: none;
+            padding: 18px 45px; border-radius: 50px; font-weight: 900; font-size: 11px;
+            box-shadow: 0 0 20px var(--red), 0 0 40px rgba(255, 0, 0, 0.5);
+            z-index: 1000; text-decoration: none; opacity: 0; visibility: hidden; transition: 0.4s;
+        }
+
+        .btn-visible { opacity: 1; visibility: visible; }
+    </style>
+</head>
+<body>
+
+    <!-- КНОПКИ -->
+    <a href="index.html" class="btn-top" id="topBtn">ДО МЕНЮ</a>
+    <a href="booking.html" class="btn-bottom" id="bottomBtn">ЗАПИСАТИСЬ</a>
+
+    <section class="hero">
+        <div class="hero-logo">YYO<br>KAI</div>
+        <div class="hero-title">КАРТКА ЗАГОЄННЯ</div>
+        <button class="arrow" onclick="document.getElementById('content').scrollIntoView({behavior: 'smooth'})">
+            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.2" stroke-linecap="round"><path d="M7 13l5 5 5-5M7 6l5 5 5-5""")/>></svg>
+        </button>
+    </section>
+
+    <div class="container" id="content">
+        
+        <p style="text-align:center; font-size:9px; opacity:0.4; margin-bottom:30px; letter-spacing:1px;">ПАМ'ЯТКА КЛІЄНТА</p>
+
+        <!-- ЕТАП 1 -->
+        <div class="info-card">
+            <div class="card-tag">⛩️ ЕТАП 1</div>
+            <div class="card-header">ПЕРШІ 2-4 ГОДИНИ</div>
+            <ul>
+                <li>Зніміть пелюшку (якщо не плівка).</li>
+                <li>Промийте теплою водою з рідким милом. Не тріть!</li>
+                <li>Промокніть паперовим рушником. Дайте шкірі «подихати» 10-15 хв.</li>
+                <li>Нанесіть тонкий шар проф. крему або Бепантен.</li>
+            </ul>
+        </div>
+
+        <!-- ЕТАП 2 -->
+        <div class="info-card">
+            <div class="card-tag">🪭 ЕТАП 2</div>
+            <div class="card-header">ДНІ 1–4 (АКТИВНЕ ЗАГОЄННЯ)</div>
+            <ul>
+                <li>Повторюйте (промити + намазати) 3-4 рази на день.</li>
+                <li>Плівку не знімайте 5 днів. Рідина під нею — це ок.</li>
+            </ul>
+            <p class="important">ЯКЩО ПЕЛЮШКА: Знімати перед миттям та клеїти наново!</p>
+        </div>
+
+        <!-- ЕТАП 3 -->
+        <div class="info-card">
+            <div class="card-tag">👹 ЕТАП 3</div>
+            <div class="card-header">ДНІ 5–10 (ЛУЩЕННЯ)</div>
+            <ul>
+                <li>Тату почне лущитися і свербіти.</li>
+                <li style="color:var(--red);">НЕ ЧУХАТИ і не здирати шкіру! Можна вирвати пігмент.</li>
+                <li>Зволожуйте кремом 2 рази на день.</li>
+            </ul>
+        </div>
+
+        <!-- ЕТАП 4 -->
+        <div class="info-card">
+            <div class="card-tag">🐉 ЕТАП 4</div>
+            <div class="card-header">2 ТИЖНІ – 1 МІСЯЦЬ</div>
+            <ul>
+                <li>Шкіра ніжна. Уникайте сонця або використовуйте SPF 50+.</li>
+            </ul>
+        </div>
+
+        <!-- ЗАБОРОНИ -->
+        <div class="info-card" style="border-color: #333; background: #050505;">
+            <div class="card-header" style="color:var(--red);">🚫 КАТЕГОРИЧНО НЕ МОЖНА</div>
+            <p style="font-size:8px; opacity:0.5; margin-bottom:15px;">ПРОТЯГОМ 2-Х ТИЖНІВ</p>
+            <ul>
+                <li>Басейни, сауни, гарячі ванни.</li>
+                <li>Спортзал (піт та тертя шкодять).</li>
+                <li>Алкоголь (вимиває фарбу).</li>
+                <li>Синтетичний та тісний одяг.</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script>
+        // Поява кнопок при скролі
+        window.onscroll = function() {
+            const top = document.getElementById('topBtn');
+            const bottom = document.getElementById('bottomBtn');
+            if (window.scrollY > 300) {
+                top.classList.add('btn-visible');
+                bottom.classList.add('btn-visible');
+            } else {
+                top.classList.remove('btn-visible');
+                bottom.classList.remove('btn-visible');
+            }
+        };
+    </script>
+</body>
+</html>
