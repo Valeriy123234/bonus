@@ -3,161 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ЗАПИС — YUPE TATTOO</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+    <title>YYOKAI | SYSTEM</title>
+     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
     <style>
-        :root { --hot-pink: #ff69b4; --primary-red: #ff0000; }
-        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background: #050505; overflow: hidden; font-family: sans-serif; }
-        
-        /* --- ЛОАДЕР --- */
-        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: 0.8s ease; }
-        .loader-text { font-size: 24px; font-weight: bold; letter-spacing: 10px; color: #fff; text-shadow: 0 0 10px var(--hot-pink); animation: textGlow 2s infinite ease-in-out; z-index: 10001; }
-        @keyframes textGlow { 0%, 100% { opacity: 0.4; transform: scale(0.95); text-shadow: 0 0 5px var(--hot-pink); } 50% { opacity: 1; transform: scale(1.05); text-shadow: 0 0 20px var(--hot-pink), 0 0 30px var(--primary-red); } }
-        .floating-emoji { position: absolute; font-size: 25px; pointer-events: none; filter: drop-shadow(0 0 10px var(--hot-pink)); animation: levitate 4s ease-in-out infinite; opacity: 0; }
-        @keyframes levitate { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 50% { transform: translateY(-30px) rotate(15deg); opacity: 0.8; } 100% { transform: translateY(-60px) rotate(-15deg); opacity: 0; } }
+        :root { --red: #ff0000; --bg: #000; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Unbounded', sans-serif; scroll-behavior: smooth; }
+        body { background: var(--bg); color: #fff; overflow-x: hidden; }
 
-        /* --- КОНТЕНТ --- */
-        #main-content { display: flex; justify-content: center; align-items: center; width: 100%; padding: 20px; box-sizing: border-box; }
-        #main-content.hidden { display: none; }
-        #calendar { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 20px; font-size: 11px; margin-top: 10px; width: 100%; color: white; }
-        .fc-daygrid-day-number { color: #ccc !important; text-decoration: none !important; }
-        
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; backdrop-filter: blur(10px); }
-        .modal { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #0a0a0a; padding: 25px; border-radius: 35px; border: 2px solid var(--hot-pink); width: 90%; max-width: 300px; text-align: center; color: white; }
-        .time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
-        .time-slot { padding: 12px; border: 1.5px solid var(--primary-red); border-radius: 12px; background: transparent; color: white; cursor: pointer; font-weight: bold; }
-        .time-slot.selected { background: var(--primary-red); box-shadow: 0 0 15px var(--primary-red); }
-        .time-slot.blocked { background: #222 !important; border-color: #444 !important; color: #555 !important; text-decoration: line-through; cursor: not-allowed; }
-        
-        input { width: 100%; padding: 12px; margin-bottom: 15px; background: #1a1a1a; border: 1px solid #333; color: white; border-radius: 12px; text-align: center; box-sizing: border-box; }
-        .btn { background: var(--primary-red); color: white; border: none; padding: 12px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; }
-        .admin-access { margin-top: 15px; font-size: 9px; color: #333; cursor: pointer; text-align: center; }
-        /* Робимо календар сучасним */
-.fc { border: none !important; font-family: sans-serif; }
-.fc-theme-standard td, .fc-theme-standard th { border: 1px solid rgba(255, 255, 255, 0.05) !important; }
-.fc-toolbar-title { color: var(--hot-pink) !important; text-transform: uppercase; letter-spacing: 2px; }
-.fc-button { background: #1a1a1a !important; border: 1px solid var(--primary-red) !important; text-transform: uppercase; font-size: 10px !important; }
-.fc-daygrid-day:hover { background: rgba(255, 105, 180, 0.1); cursor: pointer; }
-/* Підсвітка сьогоднішнього дня */
-.fc-day-today { background: rgba(255, 255, 255, 0.05) !important; }
+        /* --- HERO --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .hero-logo { 
+            font-size: 18vw; font-weight: 900; transform: translateY(100vh);
+            animation: jumpUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1.1) forwards;
+        }
+        @keyframes jumpUp {
+            0% { transform: translateY(100vh) scaleY(1.5); }
+            60% { transform: translateY(-20px) scaleY(0.9); }
+            100% { transform: translateY(0) scaleY(1); }
+        }
+        .scroll-hint { margin-top: 30px; font-size: 10px; letter-spacing: 2px; opacity: 0; animation: fadeIn 0.8s ease forwards 1.4s; }
+        .arrow { margin-top: 15px; opacity: 0; animation: fadeIn 1s forwards 2s, arrowJump 2s infinite 2s; background: none; border: none; cursor: pointer; }
+        @keyframes fadeIn { to { opacity: 0.6; } }
+        @keyframes arrowJump { 0%, 100% { transform: translateY(0); opacity: 0.4; } 50% { transform: translateY(10px); opacity: 1; } }
 
+        /* --- CALENDAR --- */
+        #mainContent { display: none; padding: 60px 15px; flex-direction: column; align-items: center; min-height: 100vh; }
+        .calendar-card { background: #0a0a0a; padding: 15px; border-radius: 30px; border: 1px solid #1a1a1a; width: 100%; max-width: 450px; }
+        
+        .fc { --fc-border-color: #222; --fc-button-bg-color: #111; --fc-button-border-color: #333; --fc-button-hover-bg-color: var(--red); --fc-today-bg-color: rgba(255,0,0,0.05); }
+        .fc .fc-toolbar-title { font-size: 14px; text-transform: uppercase; font-weight: 900; color: #fff; }
+        .fc .fc-button { font-size: 10px; font-weight: 900; border-radius: 12px; border: 1px solid #333 !important; }
+        .fc-daygrid-day-number { font-size: 12px; color: #777; padding: 10px !important; text-decoration: none !important; }
+
+        /* --- MODAL --- */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10000; backdrop-filter: blur(10px); align-items: center; justify-content: center; padding: 20px; }
+        .modal { background: #0a0a0a; padding: 30px; border-radius: 40px; border: 1px solid var(--red); width: 100%; max-width: 320px; text-align: center; }
+        
+        .time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; }
+        .time-slot { padding: 15px; border: 1.5px solid #222; border-radius: 15px; background: transparent; color: white; cursor: pointer; font-size: 12px; font-weight: 900; transition: 0.3s; }
+        .time-slot.selected { background: var(--red); border-color: var(--red); box-shadow: 0 0 15px var(--red); }
+        .time-slot.blocked { background: #1a1a1a !important; border-color: #222 !important; color: #444 !important; text-decoration: line-through; cursor: not-allowed; }
+        .time-slot.admin-off { border-color: var(--red); color: var(--red); opacity: 0.8; text-decoration: line-through; }
+
+        input { width: 100%; padding: 18px; margin-bottom: 12px; background: #111; border: 1px solid #333; color: white; border-radius: 15px; text-align: center; outline: none; }
+        .btn-confirm { background: var(--red); color: white; border: none; padding: 20px; border-radius: 15px; width: 100%; font-weight: 900; cursor: pointer; }
+
+        /* --- BONUS MODAL --- */
+        #bonusModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 10001; align-items: center; justify-content: center; padding: 20px; text-align: center; }
+        .promo-code { font-size: 32px; font-weight: 900; color: var(--red); margin: 20px 0; letter-spacing: 2px; }
+
+        .admin-access { margin-top: 50px; font-size: 8px; color: #111; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div id="loader"><div class="loader-text">CALENDAR</div></div>
+    <section class="hero">
+        <div class="hero-logo">YYO<br>KAI</div>
+        <p class="scroll-hint">ЗАПИСАТИСЬ ГОРТАЙ ВНИЗ</p>
+        <button class="arrow" onclick="scrollToMain()">
+            <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+        </button>
+    </section>
 
-    <main id="main-content" class="hidden">
-        <div class="glass-card">
-            <h1 style="font-size: 22px; margin: 0; color: white; text-align: center;">ОБЕРІТЬ ДАТУ</h1>
+    <main id="mainContent">
+        <div class="calendar-card">
+            <h1 style="font-size: 14px; margin-bottom: 20px; text-align: center; letter-spacing: 2px;">ОБЕРИ ДАТУ</h1>
             <div id="calendar"></div>
-            <div class="admin-access" onclick="adminAuth()">ADMIN ACCESS</div>
-            <button class="btn" style="margin-top: 15px; background: #222;" onclick="window.location.href='index.html'">НАЗАД</button>
         </div>
+        <div class="admin-access" onclick="adminAuth()">.access_protocol</div>
     </main>
 
     <div class="modal-overlay" id="overlay">
         <div class="modal">
-            <h4 id="dateTitle" style="color: var(--hot-pink); margin: 0;"></h4>
-            <div class="time-grid" id="timeGrid">
+            <h4 id="dateTitle" style="color: var(--red); font-size: 12px; margin-bottom: 5px;"></h4>
+            <div id="adminNote" style="display:none; font-size:9px; color:red; margin-bottom:10px;">ADMIN: ТИСНИ НА ЧАС ДЛЯ БЛОКУ</div>
+            <div class="time-grid">
                 <button class="time-slot" data-time="10:00" onclick="handleTimeClick(this)">10:00</button>
                 <button class="time-slot" data-time="13:00" onclick="handleTimeClick(this)">13:00</button>
                 <button class="time-slot" data-time="16:00" onclick="handleTimeClick(this)">16:00</button>
                 <button class="time-slot" data-time="19:00" onclick="handleTimeClick(this)">19:00</button>
             </div>
-            <input type="text" id="clientName" placeholder="Ваше ім'я / Інста">
-            <button class="btn" id="confirmBtn" onclick="confirmBooking()">ПІДТВЕРДИТИ</button>
-            <button onclick="document.getElementById('overlay').style.display='none'" style="background:none; border:none; color:#555; margin-top:10px; cursor:pointer;">Закрити</button>
+            <div id="bookingFields">
+                <input type="text" id="clientName" placeholder="ТВОЄ ІМ'Я">
+                <input type="text" id="clientInsta" placeholder="@INSTAGRAM">
+                <input type="tel" id="clientPhone" value="+380" maxlength="13">
+                <button class="btn-confirm" onclick="confirmBooking()">ПІДТВЕРДИТИ</button>
+            </div>
+            <button onclick="document.getElementById('overlay').style.display='none'" style="background:none; border:none; color:#444; margin-top:15px; cursor:pointer; font-size:10px;">ЗАКРИТИ</button>
         </div>
     </div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <div id="bonusModal">
+        <div class="modal">
+            <p style="color:var(--red); font-size:11px; font-weight:900;">ТРИМАЙ -10% ЗНИЖКИ</p>
+            <div id="promoRes" class="promo-code">XXXXXXX</div>
+            <p style="font-size:10px; opacity:0.7;">ЗАПРОСИ ДРУГА ТА ОТРИМАЙ -20%</p>
+            <button class="btn-confirm" style="margin-top:25px;" onclick="location.reload()">ДО МЕНЮ</button>
+        </div>
+    </div>
 
-     <script>
-        // 1. НАЛАШТУВАННЯ
-        const firebaseConfig = { databaseURL: "https://yupe-cd9c3-default-rtdb.firebaseio.com/" };
-        const TG_TOKEN = '8774532067:AAEKdELLNfVHATjIGB7SLu4txv1SImoJNuc';
-        const TG_ADMIN_ID = '558274847';
+       <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+       <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
-        // Ініціалізація Firebase (з перевіркою)
-        try {
-            firebase.initializeApp(firebaseConfig);
-            var db = firebase.database();
-        } catch(e) { console.log("Firebase error:", e); }
+    <script>
+        const firebaseConfig = { "https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/" };
+        const TG_TOKEN = '8747396400:AAFgsvQfGymY2SlG2slGuidFXgvbEVVmq-o';
+        const TG_CHAT_ID = '1634779056';
 
-        let selTime = "", selDate = "", isAdm = false, blockedSlots = {};
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-        // 2. ЛОАДЕР (МАГІЯ)
-        const loader = document.getElementById('loader');
-        const emojis = ['💟', '✨', '🌸', '💖', '✨', '🌸'];
-        for(let i=0; i<25; i++){
-            let e = document.createElement('div');
-            e.className = 'floating-emoji';
-            e.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-            e.style.left = Math.random() * 100 + 'vw';
-            e.style.top = Math.random() * 100 + 'vh';
-            e.style.animationDelay = (Math.random() * 3) + 's';
-            loader.appendChild(e);
-        }
+        let selDate = "", selTime = "", isAdm = false, blockedSlots = {};
 
-        window.onload = () => {
-            setTimeout(() => {
-                loader.style.opacity = '0';
-                setTimeout(() => {
-                    loader.style.display = 'none';
-                    document.getElementById('main-content').classList.remove('hidden');
-                    // МАЛЮЄМО КАЛЕНДАР ПІСЛЯ ЛОАДЕРА
-                    renderMyCalendar();
-                }, 800);
-            }, 3000);
-        };
+        // Захист номера телефону
+        const phoneInput = document.getElementById('clientPhone');
+        phoneInput.oninput = function() { if(!this.value.startsWith('+380')) this.value = '+380'; };
+        phoneInput.onkeydown = function(e) { if(this.selectionStart <= 4 && (e.key==='Backspace' || e.key==='Delete')) e.preventDefault(); };
 
-        // 3. ФУНКЦІЯ МАЛЮВАННЯ КАЛЕНДАРЯ
-        function renderMyCalendar() {
-            const calEl = document.getElementById('calendar');
-            const calendar = new FullCalendar.Calendar(calEl, {
-                initialView: 'dayGridMonth', 
-                locale: 'uk', 
+        function initCalendar() {
+            const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+                initialView: 'dayGridMonth',
+                locale: 'uk',
                 firstDay: 1,
                 headerToolbar: { left: 'prev', center: 'title', right: 'next' },
-                dateClick: (info) => {
-                    selDate = info.dateStr;
-                    openBookingModal();
-                }
+                dateClick: (info) => { selDate = info.dateStr; openBookingModal(); }
             });
             calendar.render();
         }
 
-        // 4. БАЗА ДАНИХ (СЛУХАЄМО В РЕАЛЬНОМУ ЧАСІ)
-        if(db) {
-            db.ref('slots').on('value', (snap) => {
-                blockedSlots = snap.val() || {};
-                if(document.getElementById('overlay').style.display === 'block') {
-                    updateTimeSlotsVisibility();
-                }
-            });
-        }
+        db.ref('slots').on('value', (snap) => {
+            blockedSlots = snap.val() || {};
+            if(document.getElementById('overlay').style.display === 'flex') updateSlotsUI();
+        });
 
         function openBookingModal() {
             document.getElementById('dateTitle').innerText = selDate;
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('adminNote' ) ? document.getElementById('adminNote').style.display = isAdm ? 'block' : 'none' : null;
-            document.getElementById('clientName').style.display = isAdm ? 'none' : 'block';
-            document.getElementById('confirmBtn').style.display = isAdm ? 'none' : 'block';
-            selTime = "";
-            updateTimeSlotsVisibility();
+            document.getElementById('overlay').style.display = 'flex';
+            document.getElementById('bookingFields').style.display = isAdm ? 'none' : 'block';
+            document.getElementById('adminNote').style.display = isAdm ? 'block' : 'none';
+            updateSlotsUI();
         }
 
-        function updateTimeSlotsVisibility() {
+        function updateSlotsUI() {
             const slots = document.querySelectorAll('.time-slot');
-            const dayBlocks = blockedSlots[selDate] ? Object.values(blockedSlots[selDate]) : [];
+            const dayData = blockedSlots[selDate] ? Object.values(blockedSlots[selDate]) : [];
             slots.forEach(slot => {
-                slot.classList.remove('selected', 'blocked');
-                if (dayBlocks.includes(slot.dataset.time)) slot.classList.add('blocked');
+                slot.className = 'time-slot';
+                if (dayData.includes(slot.dataset.time)) slot.classList.add(isAdm ? 'admin-off' : 'blocked');
             });
         }
 
@@ -165,43 +159,47 @@
             const time = btn.dataset.time;
             if (isAdm) {
                 const ref = db.ref('slots/' + selDate);
-                if (btn.classList.contains('blocked')) {
+                if (btn.classList.contains('admin-off')) {
                     ref.once('value').then(s => s.forEach(c => { if(c.val() === time) c.ref.remove(); }));
                 } else { ref.push(time); }
             } else {
                 if (btn.classList.contains('blocked')) return;
                 document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
-                btn.classList.add('selected');
-                selTime = time;
+                btn.classList.add('selected'); selTime = time;
             }
-        }
-
-        function adminAuth() {
-            let p = prompt("Пароль:");
-            if(p === "yupe123234") { isAdm = true; alert("ADMIN MODE"); openBookingModal(); }
         }
 
         async function confirmBooking() {
             const name = document.getElementById('clientName').value;
-            if (!name || !selTime) return alert("Вкажіть ім'я та час!");
-            const message = `🚀 Новий запис!\n👤 Ім'я: ${name}\n📅 Дата: ${selDate}\n🕒 Час: ${selTime}`;
+            const insta = document.getElementById('clientInsta').value;
+            const phone = document.getElementById('clientPhone').value;
+            if (!name || !selTime || phone.length < 13) return alert("Заповни всі дані!");
+
+            const promo = Math.random().toString(36).substring(2, 9).toUpperCase();
+            const message = `🏮 ЗАПИС!\n👤 ${name}\n📱 Insta: ${insta}\n📞 Тел: ${phone}\n📅 Дата: ${selDate}\n🕒 Час: ${selTime}\n🎁 Промо: ${promo}`;
+
             try {
-                const res = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+                await fetch(`https://telegram.org{TG_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: TG_ADMIN_ID, text: message })
+                    body: JSON.stringify({ chat_id: TG_CHAT_ID, text: message })
                 });
-                if (res.ok) {
-                    if(db) db.ref('slots/' + selDate).push(selTime);
-                    alert("Дякую! Запис прийнято, я вам відпишу.");
-                    document.getElementById('overlay').style.display = 'none';
-                }
-                       } catch (e) { 
-                alert("Помилка з'єднання з сервером!"); 
-            }
+                db.ref('slots/' + selDate).push(selTime);
+                document.getElementById('promoRes').innerText = promo;
+                document.getElementById('overlay').style.display = 'none';
+                document.getElementById('bonusModal').style.display = 'flex';
+            } catch (e) { alert("Помилка відправки!"); }
         }
 
+        function scrollToMain() {
+            document.getElementById('mainContent').style.display = 'flex';
+            window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+            setTimeout(initCalendar, 500);
+        }
+
+        function adminAuth() {
+            if(prompt("PASS:") === "yokai123234") { isAdm = true; alert("ADMIN ACCESS GRANTED"); }
+        }
     </script>
 </body>
 </html>
-
