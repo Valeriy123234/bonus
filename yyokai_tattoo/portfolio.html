@@ -35,81 +35,66 @@
         @keyframes arrowMove { 0%, 100% { transform: translateY(0); opacity: 0.3; } 50% { transform: translateY(10px); opacity: 1; } }
 
         /* --- ПЛЕЄР --- */
-        .gallery-container { position: relative; width: 100vw; height: 85vh; display: flex; align-items: center; justify-content: center; margin: 50px 0 150px; }
-        .gallery-viewer { width: 95%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-        .gallery-viewer img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 5px; transition: opacity 0.2s; }
-        
-        .nav-zone { position: absolute; top: 0; width: 50%; height: 100%; z-index: 10; cursor: pointer; }
-        .left-zone { left: 0; }
-        .right-zone { right: 0; }
-        
-        .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 20px; opacity: 0.2; pointer-events: none; z-index: 11; }
-        .left-arrow { left: 10px; }
-        .right-arrow { right: 10px; }
-        
-        .counter { position: absolute; bottom: -30px; font-size: 9px; opacity: 0.3; letter-spacing: 2px; }
+     .gallery-container { 
+    position: relative; 
+    width: 100vw; 
+    display: flex; 
+    flex-direction: column; /* Ставить навігацію ПІД фото */
+    align-items: center; 
+    justify-content: center; 
+    margin: 50px 0 150px; 
+}
 
-        /* --- ПЛАВАЮЧІ КНОПКИ --- */
-        .btn-top {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            background: rgba(0,0,0,0.85); color: #fff; border: 1px solid var(--red);
-            padding: 10px 25px; border-radius: 50px; font-weight: 900; font-size: 9px;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4); z-index: 1000;
-            text-decoration: none; opacity: 0; visibility: hidden; transition: 0.4s;
-        }
+.gallery-viewer { 
+    width: 95%; 
+    height: 70vh; /* Висота самого фото */
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    position: relative; 
+}
 
-        .btn-bottom {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-            background: var(--red); color: #fff; border: none;
-            padding: 18px 45px; border-radius: 50px; font-weight: 900; font-size: 11px;
-            box-shadow: 0 0 20px var(--red), 0 0 40px rgba(255, 0, 0, 0.5);
-            z-index: 1000; text-decoration: none; opacity: 0; visibility: hidden; transition: 0.4s;
-        }
+.gallery-viewer img { 
+    max-width: 100%; 
+    max-height: 100%; 
+    object-fit: contain; 
+}
 
-        .btn-visible { opacity: 1; visibility: visible; }
-
-        .bottom-nav {
+/* Навігація в рядок ПІД фото */
+.bottom-nav {
     display: flex;
+    flex-direction: row; /* Стрілки та цифри в один рядок */
     align-items: center;
     justify-content: center;
     gap: 30px;
-    margin-top: 25px;
+    margin-top: 30px; /* Відступ від низу фото */
+    width: 100%;
 }
 
-.arrow-wrapper {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-}
+.arrow-wrapper { cursor: pointer; display: flex; align-items: center; }
 
-/* Анімація лівої стрілки: рухається вліво */
-.left-anim {
-    animation: moveLeft 1.5s infinite ease-in-out;
-}
+/* Твоя анімація: розліт в сторони */
+.left-anim { animation: moveLeft 1.5s infinite ease-in-out; }
 @keyframes moveLeft {
     0% { transform: translateX(0); opacity: 1; }
-    100% { transform: translateX(-15px); opacity: 0.5; }
+    100% { transform: translateX(-20px); opacity: 0.5; }
 }
 
-/* Анімація правої стрілки: рухається вправо */
-.right-anim {
-    animation: moveRight 1.5s infinite ease-in-out;
-}
+.right-anim { animation: moveRight 1.5s infinite ease-in-out; }
 @keyframes moveRight {
     0% { transform: translateX(0); opacity: 1; }
-    100% { transform: translateX(15px); opacity: 0.5; }
+    100% { transform: translateX(20px); opacity: 0.5; }
 }
 
 .counter {
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 3px;
-    opacity: 0.6;
-    min-width: 80px;
+    opacity: 0.7;
+    min-width: 90px;
     text-align: center;
+    font-weight: 900;
 }
 
-/* Прибираємо старі стрілки з фото */
-.nav-arrow { display: none; }
 
     </style>
 </head>
@@ -128,8 +113,8 @@
     <a href="booking.html" class="btn-bottom" id="bottomBtn">ЗАПИСАТИСЬ</a>
 
     <!-- ПЛЕЄР -->
-  <section class="gallery-container" id="gallery">
-    <!-- Зони кліку на самому фото залишаємо для зручності -->
+ <section class="gallery-container" id="gallery">
+    <!-- Зони кліку на фото -->
     <div class="nav-zone left-zone" onclick="prevImg()"></div>
     <div class="nav-zone right-zone" onclick="nextImg()"></div>
 
@@ -137,18 +122,19 @@
         <img id="mainImg" src="" alt="YYOKAI TATTOO">
     </div>
 
-    <!-- Блок навігації під фото з анімованими стрілками -->
-       <div class="bottom-nav">
+    <!-- БЛОК НАВІГАЦІЇ СТРОГО ПО ЦЕНТРУ -->
+    <div class="bottom-nav">
         <div class="arrow-wrapper left-anim" onclick="prevImg()">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6""")/>></svg>
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6""")/>></svg>
         </div>
         
         <div class="counter" id="imgCounter">1 / 83</div>
 
         <div class="arrow-wrapper right-anim" onclick="nextImg()">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"><path d="M9 18l6-6-6-6""")/>></svg>
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6""")/>></svg>
         </div>
     </div>
+
 
 </section>
 
