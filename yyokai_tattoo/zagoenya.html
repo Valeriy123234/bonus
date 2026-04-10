@@ -16,11 +16,12 @@
       .hero-logo {
     font-size: 20vw;
     font-weight: 900;
-    display: flex; /* Робимо флексом, щоб зручно рухати частини */
-    align-items: center;
+    white-space: nowrap; /* Щоб не перестрибувало на інший рядок */
+    letter-spacing: -1.2vw; /* Це "стисне" всі літери докупи. Регулюйте це число! */
     transform: translateY(100vh);
     animation: verticalStretch 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
+
 
 .hero-logo .kai {
     margin-left: -0.15em; /* Це значення зближує YYO та KAI. Регулюйте його! */
