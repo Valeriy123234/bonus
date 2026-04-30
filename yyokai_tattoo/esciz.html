@@ -2,87 +2,93 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>WoW Style NFT Card</title>
     <style>
-        body { background: #050505; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; perspective: 1000px; }
+        :root {
+            --frame-color: #4a0404; /* Темно-червоне лаковане дерево */
+            --gold: #c5a059;
+        }
 
-        .scene { width: 300px; height: 300px; } /* Квадратна іконка як у WoW */
+        body { background: #050505; display: flex; justify-content: center; height: 100vh; align-items: center; perspective: 2000px; margin: 0; }
 
-        .card {
-            width: 100%; height: 100%;
+        .nft-artifact {
+            width: 350px;
+            height: 500px;
             position: relative;
             transform-style: preserve-3d;
-            animation: rotateCard 10s linear infinite;
+            animation: slowRotate 8s ease-in-out infinite;
         }
 
-        @keyframes rotateCard {
-            0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(360deg); }
+        @keyframes slowRotate {
+            0%, 100% { transform: rotateY(-10deg) rotateX(5deg); }
+            50% { transform: rotateY(10deg) rotateX(-5deg); }
         }
 
-        /* МАСИВНА РАМКА В СТИЛІ LEGENDARY (WoW) */
-        .card-front {
+        /* Об'ємна рама з текстурою */
+        .frame-body {
             position: absolute;
-            width: 100%; height: 100%;
-            background: #111;
-            /* Складний градієнт під коване золото */
-            border: 12px solid;
-            border-image: linear-gradient(135deg, #ff8000 0%, #331a00 50%, #ff8000 100%) 1;
-            box-shadow: 0 0 30px #ff8000, inset 0 0 20px #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden; /* Це важливо! Обрізає фото */
-            z-index: 2;
+            inset: 0;
+            background: var(--frame-color);
+            /* Текстура старого дерева або металу */
+            background-image: url('https://transparenttextures.com');
+            border: 15px solid #1a1a1a;
+            border-image: linear-gradient(#333, #000, #333) 1;
+            box-shadow: 
+                0 0 40px rgba(0,0,0,1),
+                inset 0 0 60px rgba(130, 0, 0, 0.5);
+            transform: translateZ(0px);
         }
 
-        /* ФОТО ТЕПЕР ПІДЛАШТОВУЄТЬСЯ */
-        .sketch-img {
+        /* МАСКА ХАНЬЯ (Центральний елемент) */
+        .hanya-mask {
+            position: absolute;
+            top: -40px; /* Виступає зверху */
+            left: 50%;
+            transform: translateX(-50%) translateZ(50px); /* Винесена вперед */
+            width: 120px;
+            height: auto;
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.8));
+            z-index: 10;
+        }
+
+        /* Контент ескізу "всередині" */
+        .sketch-vault {
+            position: absolute;
+            inset: 30px;
+            background: #000;
+            border: 2px solid var(--gold);
+            overflow: hidden;
+            transform: translateZ(-20px); /* Втиснутий всередину */
+        }
+
+        .sketch-vault img {
             width: 100%;
             height: 100%;
-            /* 'contain' — фото повністю влізе всередину, 'cover' — заповнить без полів */
-            object-fit: cover; 
-            display: block;
+            object-fit: cover;
+            opacity: 0.7;
+            filter: contrast(1.2) sepia(0.3);
         }
 
-        /* Ефект внутрішньої тіні поверх фото */
-        .inner-shadow {
+        /* Сяйво очей маски або рамки */
+        .glow-eyes {
             position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            box-shadow: inset 0 0 40px rgba(0,0,0,0.9);
+            width: 100%;
+            height: 100%;
+            box-shadow: inset 0 0 100px rgba(255, 0, 0, 0.2);
             pointer-events: none;
         }
 
-        .card-back {
-            position: absolute;
-            width: 100%; height: 100%;
-            background: #1a1a1a;
-            border: 12px solid #333;
-            transform: rotateY(180deg) translateZ(1px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #ff8000;
-            font-weight: bold;
-            font-family: serif;
-        }
     </style>
 </head>
 <body>
 
-    <div class="scene">
-        <div class="card">
-            <!-- Передня сторона -->
-            <div class="card-front">
-                <!-- ВСТАВ СВОЄ ПОСИЛАННЯ ТУТ -->
-                <img src="111.PNG" class="sketch-img" alt="Sketch">
-                <div class="inner-shadow"></div>
-            </div>
+    <div class="nft-artifact">
+        <!-- ТУТ МАЄ БУТИ ТВОЄ PNG З МАСКОЮ ХАНЬЯ -->
+        <img src="222.PNG" class="hanya-mask" alt="Hanya">
 
-            <!-- Задня сторона -->
-            <div class="card-face card-back">
-                LEGENDARY
+        <div class="frame-body">
+            <div class="sketch-vault">
+                <img src="111.PNG" alt="Sketch">
+                <div class="glow-eyes"></div>
             </div>
         </div>
     </div>
