@@ -4,129 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        /* Оптимізація: GPU Acceleration */
-        body { 
-            background: #000; 
-            margin: 0; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            perspective: 1000px; /* Менше значення — легше для телефону */
-            overflow: hidden;
-        }
+        body { background: #000; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; perspective: 1500px; overflow: hidden; }
 
         .artifact {
-            width: 300px;
-            height: 430px;
+            width: 320px;
+            height: 460px;
             position: relative;
             transform-style: preserve-3d;
-            animation: rotateFull 10s infinite linear;
-            will-change: transform; /* Готуємо GPU заздалегідь */
+            animation: rotate 10s infinite linear;
+            will-change: transform;
         }
 
-        @keyframes rotateFull {
-            0% { transform: translate3d(0,0,0) rotateY(0deg); }
-            100% { transform: translate3d(0,0,0) rotateY(360deg); }
+        @keyframes rotate {
+            from { transform: rotateY(0deg) rotateX(5deg); }
+            to { transform: rotateY(360deg) rotateX(5deg); }
         }
 
-        /* СПРОЩЕНА РАМКА (Тільки 5 шарів для ілюзії товщини) */
-        .f-layer {
+        /* ШАРИ РАМКИ (дуже щільно для об'єму) */
+        .f {
             position: absolute;
             inset: 0;
             background: url('022.PNG') no-repeat center/contain;
-            pointer-events: none;
             backface-visibility: visible;
-        }
-
-        /* ЕСКІЗ (Оптимізований) */
-        .sketch-wrap {
-            position: absolute;
-            inset: 0;
-            z-index: 5;
-            /* Обрізка через маску — найшвидший спосіб */
-            -webkit-mask: url('022.PNG') no-repeat center/contain;
-            mask: url('022.PNG') no-repeat center/contain;
-            transform: translateZ(10px);
-        }
-
-        .sketch-wrap img {
-            width: 80%; height: 80%;
-            position: absolute; top: 10%; left: 10%;
-            object-fit: contain;
-            /* Покращення продуктивності */
-            image-rendering: -webkit-optimize-contrast;
-        }
-
-        /* СКЛО (Один шар замість багатьох) */
-        .glass {
-            position: absolute;
-            inset: 40px;
-            background: linear-gradient(135deg, rgba(0, 242, 255, 0.1), transparent);
-            border: 1px solid rgba(255,255,255,0.05);
-            transform: translateZ(20px);
             pointer-events: none;
         }
 
-        /* ЗАДНЯ СТОРОНА */
-        .card-back {
+        /* ЕСКІЗ (фіксований посередині) */
+        .sketch-layer {
             position: absolute;
-            inset: 0;
-            background: #080808;
-            transform: rotateY(180deg) translateZ(1px);
+            inset: 50px; /* Регулюй це значення, щоб ескіз вписався в дирку */
+            background: url('011.PNG') no-repeat center/contain;
+            transform: translateZ(7px);
+            z-index: 5;
+        }
+
+        /* СКЛО З ЛОГОТИПОМ */
+        .glass-back {
+            position: absolute;
+            inset: 20px;
+            background: rgba(0, 242, 255, 0.05);
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: rotateY(180deg) translateZ(-1px);
             display: flex;
             justify-content: center;
             align-items: center;
             backface-visibility: hidden;
-            border-radius: 15px;
         }
 
         .logo {
-            color: #000;
+            color: rgba(0, 0, 0, 0.9);
             font-size: 40px;
             font-family: sans-serif;
             font-weight: 900;
-            letter-spacing: 8px;
-            text-shadow: 0 1px 1px rgba(255,255,255,0.1);
+            letter-spacing: 6px;
+            text-shadow: 0 1px 1px rgba(255,255,255,0.2);
+            transform: scaleX(-1); /* Щоб читалося правильно ззаду */
         }
 
-        /* СЯЙВО (Оптимізовано через один фільтр) */
-        .glow {
+        .blue-glow {
             position: absolute;
             inset: -50px;
             background: radial-gradient(circle, rgba(0, 242, 255, 0.2), transparent 70%);
-            transform: translateZ(-20px);
-            pointer-events: none;
+            transform: translateZ(-15px);
         }
     </style>
 </head>
 <body>
 
-    <div class="artifact">
-        <div class="glow"></div>
-
-        <!-- Створюємо всього 5 шарів рамки вручну (це набагато швидше для браузера) -->
-        <div class="f-layer" style="transform: translateZ(0px)"></div>
-        <div class="f-layer" style="transform: translateZ(5px)"></div>
-        <div class="f-layer" style="transform: translateZ(15px)"></div>
-        <div class="f-layer" style="transform: translateZ(25px)"></div>
-
-        <!-- Ескіз всередині -->
-        <div class="sketch-wrap">
-            <img src="011.PNG" loading="lazy"> <!-- lazy load для економії трафіку -->
-        </div>
-
-        <!-- Скло -->
-        <div class="glass"></div>
-
-        <!-- Остання рамка (лицьова) -->
-        <div class="f-layer" style="transform: translateZ(30px)"></div>
-
-        <!-- Задня сторона -->
-        <div class="card-back">
-            <div class="logo">YYOKAI</div>
-        </div>
+    <div class="artifact" id="box">
+        <div class="blue-glow"></div>
+        <!-- Ескіз -->
+        <div class="sketch-layer"></div>
     </div>
 
+    <script>
+        const box = document.getElementById('box');
+        const layers = 25; // Кількість шарів
+
+        for (let i = 0; i < layers; i++) {
+            const layer = document.createElement('div');
+            layer.className = 'f';
+            // Крок 0.5px створює щільний об'єм без щілин
+            layer.style.transform = `translateZ(${i * 0.5}px)`;
+            box.appendChild(layer);
+
+            // На самому останньому шарі (задньому) додаємо скло з лого
+            if (i === 0) {
+                const glass = document.createElement('div');
+                glass.className = 'glass-back';
+                glass.innerHTML = '<div class="logo">YYOKAI</div>';
+                layer.appendChild(glass);
+            }
+        }
+    </script>
 </body>
 </html>
