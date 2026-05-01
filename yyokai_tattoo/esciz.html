@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { background: #000; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; perspective: 1500px; overflow: hidden; }
+        body { background: #000; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; perspective: 2000px; overflow: hidden; }
 
         .artifact {
             width: 320px;
             height: 460px;
             position: relative;
             transform-style: preserve-3d;
-            animation: rotate 10s infinite linear;
+            /* Повільне обертання та легке погойдування вгору-вниз для левітації */
+            animation: rotate 20s infinite linear, levitate 4s infinite ease-in-out; 
             will-change: transform;
         }
 
@@ -20,7 +21,28 @@
             to { transform: rotateY(360deg) rotateX(5deg); }
         }
 
-        /* ШАРИ РАМКИ (дуже щільно для об'єму) */
+        @keyframes levitate {
+            0%, 100% { margin-top: 0px; }
+            50% { margin-top: -15px; } /* Піднімається вгору */
+        }
+
+        /* М'ЯКЕ СИНЄ СЯЙВО (ЛЕВІТАЦІЯ) */
+        .levitation-glow {
+            position: absolute;
+            inset: 40px;
+            background: rgba(0, 242, 255, 0.4);
+            filter: blur(80px);
+            border-radius: 50%;
+            transform: translateZ(-50px); /* Знаходиться глибоко за артефактом */
+            animation: pulseGlow 4s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.3; transform: translateZ(-50px) scale(1); }
+            50% { opacity: 0.6; transform: translateZ(-80px) scale(1.2); } /* Світло розширюється при підйомі */
+        }
+
         .f {
             position: absolute;
             inset: 0;
@@ -29,67 +51,60 @@
             pointer-events: none;
         }
 
-        /* ЕСКІЗ (фіксований посередині) */
         .sketch-layer {
             position: absolute;
-            inset: 50px; /* Регулюй це значення, щоб ескіз вписався в дирку */
-            background: url('011.PNG') no-repeat center/contain;
+            inset: 0;
+            -webkit-mask: url('022.PNG') no-repeat center/contain;
+            mask: url('022.PNG') no-repeat center/contain;
+            background: url('011.PNG') no-repeat center/cover;
             transform: translateZ(7px);
             z-index: 5;
         }
 
-        /* СКЛО З ЛОГОТИПОМ */
         .glass-back {
             position: absolute;
-            inset: 20px;
-            background: rgba(0, 242, 255, 0.05);
-            backdrop-filter: blur(2px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85); 
+            backdrop-filter: blur(10px);
             transform: rotateY(180deg) translateZ(-1px);
             display: flex;
             justify-content: center;
             align-items: center;
             backface-visibility: hidden;
+            -webkit-mask: url('022.PNG') no-repeat center/contain;
+            mask: url('022.PNG') no-repeat center/contain;
         }
 
         .logo {
-            color: rgba(0, 0, 0, 0.9);
-            font-size: 40px;
-            font-family: sans-serif;
+            color: #000;
+            font-size: 45px;
+            font-family: 'Arial Black', sans-serif;
             font-weight: 900;
-            letter-spacing: 6px;
-            text-shadow: 0 1px 1px rgba(255,255,255,0.2);
-            transform: scaleX(-1); /* Щоб читалося правильно ззаду */
-        }
-
-        .blue-glow {
-            position: absolute;
-            inset: -50px;
-            background: radial-gradient(circle, rgba(0, 242, 255, 0.2), transparent 70%);
-            transform: translateZ(-15px);
+            letter-spacing: 8px;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.1); 
+            transform: scaleX(-1);
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
     <div class="artifact" id="box">
-        <div class="blue-glow"></div>
-        <!-- Ескіз -->
+        <!-- М'яке світло під рамкою -->
+        <div class="levitation-glow"></div>
         <div class="sketch-layer"></div>
     </div>
 
     <script>
         const box = document.getElementById('box');
-        const layers = 25; // Кількість шарів
+        const layers = 30;
 
         for (let i = 0; i < layers; i++) {
             const layer = document.createElement('div');
             layer.className = 'f';
-            // Крок 0.5px створює щільний об'єм без щілин
             layer.style.transform = `translateZ(${i * 0.5}px)`;
             box.appendChild(layer);
 
-            // На самому останньому шарі (задньому) додаємо скло з лого
             if (i === 0) {
                 const glass = document.createElement('div');
                 glass.className = 'glass-back';
