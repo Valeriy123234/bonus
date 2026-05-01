@@ -18,18 +18,19 @@
             font-family: 'Bebas Neue', cursive;
         }
 
+        /* Контейнер для списку - керує відступами між ескізами */
         .collection-grid {
             display: flex;
             flex-direction: column;
-            gap: 150px;
+            gap: 150px; /* ФІКСОВАНА ВІДСТАНЬ МІЖ КАРТКАМИ */
             padding: 100px 0;
             width: 100%;
         }
 
         .artifact-item {
             position: relative;
-            width: 320px; /* ЗБІЛЬШЕНО */
-            height: 460px; /* ЗБІЛЬШЕНО */
+            width: 320px; 
+            height: 460px;
             margin: 0 auto;
             transform-style: preserve-3d;
             display: flex;
@@ -39,7 +40,7 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* МАЯТНИК (Амплітуда для великої рамки) */
+        /* Анімація маятника */
         .artifact-body {
             width: 100%;
             height: 100%;
@@ -60,61 +61,79 @@
             background-repeat: no-repeat;
             background-position: center;
             pointer-events: none;
-            /* СЯЙВО, ЩО ВИПРОМІНЮЄТЬСЯ ВІД РАМКИ */
-            filter: drop-shadow(0 0 8px rgba(0, 242, 255, 0.4));
+            filter: drop-shadow(0 0 12px rgba(255, 0, 0, 0.3));
         }
 
-        /* ТЕКСТ РІДКОСТІ */
+        /* Блок рідкості */
         .rarity-box {
-            margin-top: 30px;
+            margin-top: 35px;
             text-align: center;
             transform: translateZ(15px);
         }
 
         .rarity-text {
-            color: #00f2ff;
-            font-size: 24px; /* Трохи крупніше під нову рамку */
-            letter-spacing: 7px;
-            text-shadow: 0 0 15px rgba(0, 242, 255, 0.9);
+            color: #ff0000;
+            font-size: 26px;
+            letter-spacing: 8px;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
             margin: 0;
+            display: inline-block;
+            position: relative;
+        }
+
+        /* Пулсуюче підкреслення */
+        .rarity-text::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff0000, transparent);
+            box-shadow: 0 0 10px #ff0000;
+            animation: underlinePulse 2s infinite ease-in-out;
+        }
+
+        @keyframes underlinePulse {
+            0%, 100% { opacity: 0.3; transform: scaleX(0.8); }
+            50% { opacity: 1; transform: scaleX(1.1); }
         }
 
         .rarity-jp {
             font-family: 'Noto Sans JP', sans-serif;
-            color: #555;
+            color: #331111;
             font-size: 11px;
             letter-spacing: 3px;
-            margin-top: -3px;
+            margin-top: 8px;
             display: block;
         }
 
-        /* КНОПКА DETAILS */
+        /* Червона кнопка */
         .details-btn {
-            margin-top: 20px;
+            margin-top: 25px;
             padding: 8px 45px;
-            background: rgba(0, 242, 255, 0.05);
-            border: 1px solid #00f2ff;
-            color: #00f2ff;
+            background: rgba(255, 0, 0, 0.05);
+            border: 1px solid #ff0000;
+            color: #ff0000;
             font-size: 16px;
             letter-spacing: 4px;
             border-radius: 2px;
             animation: pulseBtn 3s infinite;
-            box-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
         }
 
         @keyframes pulseBtn {
-            0%, 100% { opacity: 0.7; box-shadow: 0 0 5px rgba(0, 242, 255, 0.3); }
-            50% { opacity: 1; box-shadow: 0 0 20px rgba(0, 242, 255, 0.6); }
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
         }
 
-        /* СВІТЛОВА ПОДУШКА ПІД НИЗОМ */
         .glow-bottom {
             position: absolute;
             bottom: 80px;
             width: 240px;
             height: 40px;
-            background: radial-gradient(circle, rgba(0, 242, 255, 0.3), transparent 75%);
-            filter: blur(35px);
+            background: radial-gradient(circle, rgba(255, 0, 0, 0.3), transparent 75%);
+            filter: blur(40px);
             z-index: -1;
         }
     </style>
@@ -123,33 +142,31 @@
 
     <div class="collection-grid">
 
-        <!-- ПОЧАТОК КАРТКИ -->
+        <!-- ========================================== -->
+        <!-- ПОЧАТОК КАРТКИ (Копіюй цей блок) -->
         <a href="page_item_1.html" class="artifact-item">
             <div class="artifact-body">
-                <!-- Об'ємні шари рамки 022 -->
+                <!-- Шари товщини (022.PNG) -->
                 <div class="layer" style="transform: translateZ(0px); background-image: url('022.PNG');"></div>
                 <div class="layer" style="transform: translateZ(3px); background-image: url('022.PNG');"></div>
                 
-                <!-- ЦЕНТР: Рамка + Ескіз 023 -->
+                <!-- ЦЕНТР: Ескіз (023.PNG) -->
                 <div class="layer" style="transform: translateZ(6px); background-image: url('023.PNG');"></div>
                 
-                <!-- Передні шари для об'єму -->
                 <div class="layer" style="transform: translateZ(9px); background-image: url('022.PNG');"></div>
                 <div class="layer" style="transform: translateZ(12px); background-image: url('022.PNG');"></div>
             </div>
 
-            <!-- Рідкість -->
             <div class="rarity-box">
                 <p class="rarity-text">LEGENDARY</p>
-                <span class="rarity-jp">伝説のアート</span>
+                <span class="rarity-jp">伝説の妖怪</span>
             </div>
 
-            <!-- Кнопка -->
             <div class="details-btn">DETAILS</div>
-            
             <div class="glow-bottom"></div>
         </a>
         <!-- КІНЕЦЬ КАРТКИ -->
+        <!-- ========================================== -->
 
     </div>
 
