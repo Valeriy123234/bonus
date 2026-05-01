@@ -2,58 +2,46 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>YYOKAI Artifact 3D</title>
     <style>
-        body {
-            background: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            perspective: 2000px;
-            overflow: hidden;
-            font-family: 'Arial Black', sans-serif;
-        }
+        body { background: #000; display: flex; justify-content: center; align-items: center; height: 100vh; perspective: 2000px; margin: 0; overflow: hidden; }
 
-        /* Головний контейнер артефакту */
         .artifact-3d {
             width: 350px;
             height: 500px;
             position: relative;
             transform-style: preserve-3d;
             animation: rotateFull 12s infinite linear;
-            cursor: pointer;
         }
 
         @keyframes rotateFull {
-            from { transform: rotateY(0deg) rotateX(5deg); }
-            to { transform: rotateY(360deg) rotateX(5deg); }
+            0% { transform: rotateY(0deg) rotateX(5deg); }
+            100% { transform: rotateY(360deg) rotateX(5deg); }
         }
 
-        /* Шари рамки (створюють товщину) */
+        /* ШАР РАМКИ */
         .frame-layer {
             position: absolute;
             inset: 0;
             background: url('022.PNG') no-repeat center/contain;
-            backface-visibility: hidden;
+            transform-style: preserve-3d;
             pointer-events: none;
+            /* Важливо для Safari/Chrome */
+            -webkit-backface-visibility: visible;
+            backface-visibility: visible;
         }
 
-        /* Ескіз, обрізаний за формою рамки */
+        /* ЕСКІЗ */
         .sketch-layer {
             position: absolute;
-            inset: 0;
+            inset: 0; /* Тепер 0, бо маска сама все обріже */
             z-index: 5;
-            pointer-events: none;
-            /* Використовуємо рамку як маску, щоб обрізати білий фон ескізу */
+            transform-style: preserve-3d;
+            /* Маскування */
             -webkit-mask-image: url('022.PNG');
             mask-image: url('022.PNG');
             -webkit-mask-size: contain;
             mask-size: contain;
             -webkit-mask-repeat: no-repeat;
-            mask-repeat: no-repeat;
-            -webkit-mask-position: center;
             mask-position: center;
         }
 
@@ -61,54 +49,36 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: contrast(1.1) brightness(0.9);
+            display: block; /* Гарантує видимість */
         }
 
-        /* Скляні вставки між шарами */
+        /* СКЛО (строго всередині рамки) */
         .glass-pane {
             position: absolute;
-            inset: 20px;
+            inset: 50px; /* Збільшив відступ, щоб не вилазило за краї */
             background: rgba(0, 242, 255, 0.05);
-            backdrop-filter: blur(1px);
+            backdrop-filter: blur(2px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            pointer-events: none;
             transform-style: preserve-3d;
-            border-radius: 15px;
-        }
-
-        /* Задня сторона з логотипом на склі */
-        .glass-back {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid #111;
-            backface-visibility: hidden;
+            pointer-events: none;
         }
 
         .yokai-text {
-            color: #000;
+            position: absolute;
+            color: rgba(0, 0, 0, 0.9);
             font-size: 50px;
-            letter-spacing: 12px;
-            text-transform: uppercase;
-            /* Ефект гравірування на склі */
-            text-shadow: 1px 1px 1px rgba(255,255,255,0.1), -1px -1px 1px rgba(0,0,0,0.9);
-            transform: scaleX(-1); /* Дзеркально, щоб ззаду читалось вірно */
+            font-family: 'Arial Black';
+            letter-spacing: 10px;
+            transform: rotateY(180deg); /* Для задньої сторони */
+            white-space: nowrap;
         }
 
-        /* СИНЄ СЯЙВО (АУРА) */
         .glow {
             position: absolute;
-            inset: -60px;
-            background: radial-gradient(circle, rgba(0, 242, 255, 0.4) 0%, transparent 70%);
-            filter: blur(50px);
-            transform: translateZ(-40px);
-            animation: pulseGlow 3s infinite alternate ease-in-out;
-        }
-
-        @keyframes pulseGlow {
-            from { opacity: 0.3; transform: scale(0.9) translateZ(-40px); }
-            to { opacity: 0.7; transform: scale(1.1) translateZ(-40px); }
+            inset: -100px;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.3) 0%, transparent 70%);
+            filter: blur(60px);
+            transform: translateZ(-100px);
         }
     </style>
 </head>
@@ -116,46 +86,44 @@
 
     <div class="artifact-3d" id="artifact">
         <div class="glow"></div>
-        <!-- Шари генеруються скриптом нижче -->
     </div>
 
     <script>
         const container = document.getElementById('artifact');
-        const totalLayers = 30; // Товщина артефакту
+        const layers = 30;
 
-        for (let i = 0; i < totalLayers; i++) {
-            // 1. Створюємо шар рамки для об'єму
-            const layer = document.createElement('div');
-            layer.className = 'frame-layer';
-            layer.style.transform = `translateZ(${i}px)`;
-            container.appendChild(layer);
+        for (let i = 0; i < layers; i++) {
+            // Створюємо фізичний шар рамки
+            const f = document.createElement('div');
+            f.className = 'frame-layer';
+            f.style.transform = `translateZ(${i}px)`;
+            container.appendChild(f);
 
-            // 2. Вставляємо ескіз всередину (на 12-й шар)
-            if (i === 12) {
-                const sketchWrap = document.createElement('div');
-                sketchWrap.className = 'sketch-layer';
-                sketchWrap.style.transform = `translateZ(${i}px)`;
-                sketchWrap.innerHTML = `<img src="011.PNG" alt="Sketch">`;
-                container.appendChild(sketchWrap);
+            // Вставляємо ескіз посередині "пирога"
+            if (i === 15) {
+                const s = document.createElement('div');
+                s.className = 'sketch-layer';
+                s.style.transform = `translateZ(${i}px)`;
+                // ПЕРЕВІР, ЩО ФАЙЛ 011.PNG ІСНУЄ
+                s.innerHTML = `<img src="011.PNG" onerror="this.style.display='none'; console.log('Ескіз не знайдено')">`;
+                container.appendChild(s);
             }
 
-            // 3. Додаємо скло кожні 6 шарів для ефекту глибини
-            if (i % 6 === 0 && i > 0) {
-                const glass = document.createElement('div');
-                glass.className = 'glass-pane';
-                glass.style.transform = `translateZ(${i}px)`;
-                container.appendChild(glass);
+            // Додаємо скло тільки на декількох шарах, щоб не перевантажувати
+            if (i === 5 || i === 25) {
+                const g = document.createElement('div');
+                g.className = 'glass-pane';
+                g.style.transform = `translateZ(${i}px)`;
+                container.appendChild(g);
             }
         }
 
-        // 4. Додаємо фінальну задню панель зі склом та лого YYOKAI
-        const backSide = document.createElement('div');
-        backSide.className = 'glass-pane glass-back';
-        // Розташовуємо чітко на звороті
-        backSide.style.transform = `translateZ(-1px) rotateY(180deg)`;
-        backSide.innerHTML = `<div class="yokai-text">YYOKAI</div>`;
-        container.appendChild(backSide);
+        // Логотип на самому останньому шарі ззаду
+        const logo = document.createElement('div');
+        logo.className = 'yokai-text';
+        logo.style.transform = `translateZ(-2px) rotateY(180deg)`;
+        logo.innerText = 'YYOKAI';
+        container.appendChild(logo);
     </script>
-
 </body>
 </html>
