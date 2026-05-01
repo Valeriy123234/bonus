@@ -21,15 +21,15 @@
         .collection-grid {
             display: flex;
             flex-direction: column;
-            gap: 140px;
-            padding: 80px 0;
+            gap: 150px;
+            padding: 100px 0;
             width: 100%;
         }
 
         .artifact-item {
             position: relative;
-            width: 250px; 
-            height: 360px;
+            width: 320px; /* ЗБІЛЬШЕНО */
+            height: 460px; /* ЗБІЛЬШЕНО */
             margin: 0 auto;
             transform-style: preserve-3d;
             display: flex;
@@ -39,19 +39,19 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* МАЯТНИК */
+        /* МАЯТНИК (Амплітуда для великої рамки) */
         .artifact-body {
             width: 100%;
             height: 100%;
             position: relative;
             transform-style: preserve-3d;
-            animation: swing 6s infinite ease-in-out;
+            animation: swing 7s infinite ease-in-out;
             will-change: transform;
         }
 
         @keyframes swing {
-            0%, 100% { transform: rotateY(-18deg) rotateX(4deg); }
-            50% { transform: rotateY(18deg) rotateX(-2deg); }
+            0%, 100% { transform: rotateY(-20deg) rotateX(6deg); }
+            50% { transform: rotateY(20deg) rotateX(-3deg); }
         }
 
         .layer {
@@ -60,58 +60,61 @@
             background-repeat: no-repeat;
             background-position: center;
             pointer-events: none;
+            /* СЯЙВО, ЩО ВИПРОМІНЮЄТЬСЯ ВІД РАМКИ */
+            filter: drop-shadow(0 0 8px rgba(0, 242, 255, 0.4));
         }
 
-        /* ТЕКСТ РІДКОСТІ (CYBER-JAPAN) */
+        /* ТЕКСТ РІДКОСТІ */
         .rarity-box {
-            margin-top: 25px;
+            margin-top: 30px;
             text-align: center;
-            transform: translateZ(10px);
+            transform: translateZ(15px);
         }
 
         .rarity-text {
             color: #00f2ff;
-            font-size: 20px;
-            letter-spacing: 6px;
-            text-shadow: 0 0 10px rgba(0, 242, 255, 0.8);
+            font-size: 24px; /* Трохи крупніше під нову рамку */
+            letter-spacing: 7px;
+            text-shadow: 0 0 15px rgba(0, 242, 255, 0.9);
             margin: 0;
         }
 
         .rarity-jp {
             font-family: 'Noto Sans JP', sans-serif;
-            color: #444;
-            font-size: 10px;
-            letter-spacing: 2px;
-            margin-top: -5px;
+            color: #555;
+            font-size: 11px;
+            letter-spacing: 3px;
+            margin-top: -3px;
             display: block;
         }
 
-        /* ПУЛЬСУЮЧА КНОПКА */
+        /* КНОПКА DETAILS */
         .details-btn {
-            margin-top: 15px;
-            padding: 6px 35px;
+            margin-top: 20px;
+            padding: 8px 45px;
             background: rgba(0, 242, 255, 0.05);
             border: 1px solid #00f2ff;
             color: #00f2ff;
-            font-size: 14px;
-            letter-spacing: 3px;
+            font-size: 16px;
+            letter-spacing: 4px;
             border-radius: 2px;
-            animation: pulseBtn 2.5s infinite;
-            box-shadow: 0 0 5px rgba(0, 242, 255, 0.2);
+            animation: pulseBtn 3s infinite;
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
         }
 
         @keyframes pulseBtn {
-            0%, 100% { opacity: 0.5; box-shadow: 0 0 5px rgba(0, 242, 255, 0.2); }
-            50% { opacity: 1; box-shadow: 0 0 15px rgba(0, 242, 255, 0.5); }
+            0%, 100% { opacity: 0.7; box-shadow: 0 0 5px rgba(0, 242, 255, 0.3); }
+            50% { opacity: 1; box-shadow: 0 0 20px rgba(0, 242, 255, 0.6); }
         }
 
+        /* СВІТЛОВА ПОДУШКА ПІД НИЗОМ */
         .glow-bottom {
             position: absolute;
-            bottom: 60px;
-            width: 160px;
-            height: 30px;
-            background: rgba(0, 242, 255, 0.25);
-            filter: blur(30px);
+            bottom: 80px;
+            width: 240px;
+            height: 40px;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.3), transparent 75%);
+            filter: blur(35px);
             z-index: -1;
         }
     </style>
@@ -123,25 +126,25 @@
         <!-- ПОЧАТОК КАРТКИ -->
         <a href="page_item_1.html" class="artifact-item">
             <div class="artifact-body">
-                <!-- Глибина (022.PNG) -->
+                <!-- Об'ємні шари рамки 022 -->
                 <div class="layer" style="transform: translateZ(0px); background-image: url('022.PNG');"></div>
-                <div class="layer" style="transform: translateZ(2px); background-image: url('022.PNG');"></div>
+                <div class="layer" style="transform: translateZ(3px); background-image: url('022.PNG');"></div>
                 
-                <!-- Центр (023.PNG - Рамка + Ескіз) -->
-                <div class="layer" style="transform: translateZ(4px); background-image: url('023.PNG');"></div>
+                <!-- ЦЕНТР: Рамка + Ескіз 023 -->
+                <div class="layer" style="transform: translateZ(6px); background-image: url('023.PNG');"></div>
                 
-                <!-- Перед (022.PNG) -->
-                <div class="layer" style="transform: translateZ(6px); background-image: url('022.PNG');"></div>
-                <div class="layer" style="transform: translateZ(8px); background-image: url('022.PNG');"></div>
+                <!-- Передні шари для об'єму -->
+                <div class="layer" style="transform: translateZ(9px); background-image: url('022.PNG');"></div>
+                <div class="layer" style="transform: translateZ(12px); background-image: url('022.PNG');"></div>
             </div>
 
-            <!-- Блок опису -->
+            <!-- Рідкість -->
             <div class="rarity-box">
                 <p class="rarity-text">LEGENDARY</p>
                 <span class="rarity-jp">伝説のアート</span>
             </div>
 
-            <!-- Кнопка дії -->
+            <!-- Кнопка -->
             <div class="details-btn">DETAILS</div>
             
             <div class="glow-bottom"></div>
