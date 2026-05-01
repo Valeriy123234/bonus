@@ -2,51 +2,99 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
         @import url('https://googleapis.com');
 
+        /* Плавний скрол та GPU прискорення */
+        html { scroll-behavior: smooth; height: 100%; }
         body { 
             background: #000; margin: 0; display: flex; flex-direction: column;
-            align-items: center; justify-content: space-between; height: 100vh; 
+            align-items: center; justify-content: space-around; min-height: 100vh; 
             perspective: 1500px; font-family: 'Bebas Neue', cursive; color: white;
-            overflow: hidden; padding: 10px 0; box-sizing: border-box;
+            overflow-x: hidden; padding: 20px 0; box-sizing: border-box;
+            -webkit-overflow-scrolling: touch; /* Плавність для iOS */
         }
 
-        /* ПЛАШКА СТАТУСУ НАД РАМКОЮ */
+        /* ПЛАШКА СТАТУСУ */
         .status-badge {
-            padding: 2px 15px; font-size: 14px; letter-spacing: 3px;
-            border-radius: 2px; margin-bottom: 5px; transition: 0.3s;
+            padding: 4px 20px; font-size: 16px; letter-spacing: 4px;
+            border-radius: 2px; margin-bottom: 10px; transition: 0.4s;
+            text-shadow: 0 0 10px currentColor;
         }
-        .status-free { background: rgba(0, 255, 100, 0.2); color: #00ff64; border: 1px solid #00ff64; box-shadow: 0 0 10px #00ff64; }
-        .status-sold { background: rgba(255, 0, 0, 0.2); color: #ff0000; border: 1px solid #ff0000; box-shadow: 0 0 10px #ff0000; }
+        .status-free { background: rgba(0, 255, 100, 0.1); color: #00ff64; border: 1px solid #00ff64; }
+        .status-sold { background: rgba(255, 0, 0, 0.1); color: #ff0000; border: 1px solid #ff0000; }
 
-        .artifact-container { position: relative; width: 250px; height: 350px; transform-style: preserve-3d; }
-        .artifact { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; animation: swing 8s infinite ease-in-out; }
+        /* ЗБІЛЬШЕНА РАМКА */
+        .artifact-container { 
+            position: relative; 
+            width: 280px; /* Трохи збільшено */
+            height: 400px; 
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+        .artifact { 
+            width: 100%; height: 100%; 
+            position: relative; transform-style: preserve-3d; 
+            animation: swing 8s infinite ease-in-out; 
+        }
 
         @keyframes swing {
-            0%, 100% { transform: rotateY(-15deg) rotateX(4deg); }
-            50% { transform: rotateY(15deg) rotateX(-2deg); }
+            0%, 100% { transform: rotateY(-18deg) rotateX(4deg); }
+            50% { transform: rotateY(18deg) rotateX(-2deg); }
         }
 
-        .layer { position: absolute; inset: 0; background-size: contain; background-repeat: no-repeat; background-position: center; transition: 0.4s; }
+        .layer { 
+            position: absolute; inset: 0; 
+            background-size: 101% 101%; /* Фікс білих артефактів по боках */
+            background-repeat: no-repeat; 
+            background-position: center; 
+            transition: opacity 0.3s ease;
+            backface-visibility: hidden; /* Фікс мигтіння */
+        }
 
-        /* ПІДСВІТКА (ЗМІНЮЄТЬСЯ ВІД СТАТУСУ) */
-        #main-glow { position: absolute; bottom: 30px; width: 150px; height: 30px; filter: blur(30px); z-index: -1; transition: 0.5s; }
+        #main-glow { 
+            position: absolute; bottom: 40px; left: 50%;
+            width: 200px; height: 40px; 
+            filter: blur(40px); z-index: -1; 
+            transform: translateX(-50%) translateZ(-50px);
+            transition: 0.8s ease; 
+        }
 
-        .selector-menu { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 90%; max-width: 360px; transition: 0.3s; }
-        .zone-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid #444; color: #666; padding: 8px 5px; font-size: 13px; cursor: pointer; }
-        .zone-btn.active { background: white; color: black; border-color: white; }
+        /* КНОПКИ ВИБОРУ МІСЦЯ (Стиль "Скло") */
+        .selector-menu { 
+            display: grid; grid-template-columns: repeat(3, 1fr); 
+            gap: 10px; width: 90%; max-width: 360px; 
+        }
+        .zone-btn { 
+            background: rgba(255, 255, 255, 0.03); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            color: #555; padding: 10px 5px; 
+            font-size: 13px; cursor: pointer;
+            letter-spacing: 1px; transition: 0.3s;
+        }
+        .zone-btn.active { 
+            background: rgba(255, 255, 255, 0.1); 
+            border-color: #00ff64; color: #00ff64;
+            box-shadow: 0 0 15px rgba(0, 255, 100, 0.2);
+        }
 
-        .book-btn { width: 90%; max-width: 360px; padding: 15px; font-size: 20px; letter-spacing: 4px; cursor: pointer; transition: 0.3s; border: none; }
+        /* КНОПКА ЗАПИСУ */
+        .book-btn { 
+            width: 90%; max-width: 360px; padding: 18px; 
+            font-size: 22px; letter-spacing: 5px; cursor: pointer; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            border: none; border-radius: 4px;
+            font-family: 'Bebas Neue', cursive;
+        }
+        .book-btn:active { transform: scale(0.95); }
 
-        /* СТАН "ЗАБРОНЬОВАНО" */
-        body.is-sold .zone-btn { opacity: 0.2; pointer-events: none; }
-        body.is-sold .book-btn { background: #111 !important; color: #333 !important; pointer-events: none; box-shadow: none !important; }
-        body.is-sold .layer { filter: grayscale(1) brightness(0.5); }
+        /* АДМІН-ТОЧКА */
+        .admin-trigger { position: absolute; bottom: 5px; opacity: 0.05; cursor: pointer; font-size: 10px; }
 
-        /* СЕКРЕТНА КНОПКА */
-        .admin-trigger { font-size: 8px; color: #111; cursor: pointer; margin-top: 5px; user-select: none; }
+        /* РЕЖИМ SOLD */
+        body.is-sold .layer { filter: grayscale(1) brightness(0.3); }
+        body.is-sold .zone-btn { opacity: 0.1; pointer-events: none; }
     </style>
 </head>
 <body id="main-body" class="is-free">
@@ -71,26 +119,33 @@
         <button class="zone-btn" onclick="updateImg('023_back.PNG', this)">BACK</button>
     </div>
 
-    <button id="main-book-btn" class="book-btn" style="background: #00ff64; box-shadow: 0 0 20px rgba(0,255,100,0.4);" onclick="window.location.href='ТВОЄ_ПОСИЛАННЯ_НА_САЙТ'">RESERVE SLOT</button>
+    <button id="main-book-btn" class="book-btn" 
+            style="background: #00ff64; color: black; box-shadow: 0 10px 30px rgba(0,255,100,0.3);" 
+            onclick="window.location.href='ТВОЄ_ПОСИЛАННЯ'">RESERVE SLOT</button>
 
     <div class="admin-trigger" onclick="adminLogin()">.</div>
 
     <script>
+        // Збереження вибору в пам'ять браузера
+        if(localStorage.getItem('status') === 'sold') setSold(true);
+
         function updateImg(img, btn) {
-            document.getElementById('target-sketch').style.backgroundImage = `url('${img}')`;
+            const sketch = document.getElementById('target-sketch');
+            sketch.style.opacity = '0'; // Плавне зникнення
+            setTimeout(() => {
+                sketch.style.backgroundImage = `url('${img}')`;
+                sketch.style.opacity = '1'; // Плавна поява
+            }, 150);
             document.querySelectorAll('.zone-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
         }
 
         function adminLogin() {
-            const pass = prompt("Enter Yokai Admin Pass:");
+            const pass = prompt("Yokai Admin:");
             if (pass === "yokai123234") {
-                const action = confirm("Натисніть OK щоб ЗАБРОНЮВАТИ, або CANCEL щоб ЗВІЛЬНИТИ:");
-                if (action) {
-                    setSold(true);
-                } else {
-                    setSold(false);
-                }
+                const sold = confirm("OK - SOLD, Cancel - FREE");
+                setSold(sold);
+                localStorage.setItem('status', sold ? 'sold' : 'free');
             }
         }
 
@@ -101,20 +156,21 @@
             const btn = document.getElementById('main-book-btn');
 
             if (sold) {
-                body.classList.replace('is-free', 'is-sold');
+                body.classList.add('is-sold');
                 badge.innerText = "SOLD / MINTED";
                 badge.className = "status-badge status-sold";
                 glow.style.background = "radial-gradient(circle, #ff0000, transparent 70%)";
-                btn.innerText = "RESERVED";
+                btn.style.background = "#111"; btn.style.color = "#333";
+                btn.innerText = "RESERVED"; btn.style.boxShadow = "none";
             } else {
-                body.classList.replace('is-sold', 'is-free');
+                body.classList.remove('is-sold');
                 badge.innerText = "AVAILABLE";
                 badge.className = "status-badge status-free";
                 glow.style.background = "radial-gradient(circle, #00ff64, transparent 70%)";
-                btn.innerText = "RESERVE SLOT";
+                btn.style.background = "#00ff64"; btn.style.color = "black";
+                btn.innerText = "RESERVE SLOT"; btn.style.boxShadow = "0 10px 30px rgba(0,255,100,0.3)";
             }
         }
     </script>
-
 </body>
 </html>
