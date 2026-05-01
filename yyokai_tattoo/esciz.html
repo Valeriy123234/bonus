@@ -2,6 +2,7 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
+    <title>YYOKAI Artifact 3D</title>
     <style>
         body {
             background: #000;
@@ -15,8 +16,8 @@
             font-family: 'Arial Black', sans-serif;
         }
 
-        /* КОНТЕЙНЕР АРТЕФАКТУ */
-        .artifact-card {
+        /* Головний контейнер артефакту */
+        .artifact-3d {
             width: 350px;
             height: 500px;
             position: relative;
@@ -26,127 +27,135 @@
         }
 
         @keyframes rotateFull {
-            from { transform: rotateY(0deg); }
-            to { transform: rotateY(360deg); }
+            from { transform: rotateY(0deg) rotateX(5deg); }
+            to { transform: rotateY(360deg) rotateX(5deg); }
         }
 
-        /* СИНЄ ДЕМОНІЧНЕ СЯЙВО */
-        .blue-glow {
-            position: absolute;
-            inset: -30px;
-            background: radial-gradient(circle, rgba(0, 242, 255, 0.5) 0%, transparent 75%);
-            filter: blur(50px);
-            transform: translateZ(-15px);
-            animation: pulseBlue 3s infinite alternate ease-in-out;
-        }
-
-        @keyframes pulseBlue {
-            from { opacity: 0.3; transform: scale(0.9) translateZ(-15px); }
-            to { opacity: 0.8; transform: scale(1.1) translateZ(-15px); }
-        }
-
-        /* ПЕРЕДНЯ СТОРОНА */
-        .card-front {
+        /* Шари рамки (створюють товщину) */
+        .frame-layer {
             position: absolute;
             inset: 0;
+            background: url('022.PNG') no-repeat center/contain;
             backface-visibility: hidden;
-            transform-style: preserve-3d;
+            pointer-events: none;
         }
 
-        /* ТВОЯ PNG РАМКА (HEARTHSTONE STYLE) */
-      .frame-png {
-    position: absolute;
-    inset: 0;
-    background: url('022.PNG') no-repeat center/contain; /* Ось тут твоя рамка */
-    z-index: 10;
-    transform: translateZ(45px);
-    filter: drop-shadow(0 0 20px rgba(0, 242, 255, 0.4));
-}
-
-
-        /* ЕСКІЗ У ГЛИБИНІ */
+        /* Ескіз, обрізаний за формою рамки */
         .sketch-layer {
             position: absolute;
-            inset: 45px; /* Підганяй під дірку своєї рамки */
-            background: #000;
-            transform: translateZ(10px);
-            overflow: hidden;
-            border: 1px solid rgba(0, 242, 255, 0.2);
+            inset: 0;
+            z-index: 5;
+            pointer-events: none;
+            /* Використовуємо рамку як маску, щоб обрізати білий фон ескізу */
+            -webkit-mask-image: url('022.PNG');
+            mask-image: url('022.PNG');
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-position: center;
         }
 
         .sketch-layer img {
-            width: 100%; height: 100%;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             filter: contrast(1.1) brightness(0.9);
         }
 
-        /* БЛІК НА СКЛІ */
-        .glass-shine {
+        /* Скляні вставки між шарами */
+        .glass-pane {
             position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 40%, rgba(0, 242, 255, 0.1) 100%);
-            z-index: 5;
+            inset: 20px;
+            background: rgba(0, 242, 255, 0.05);
+            backdrop-filter: blur(1px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             pointer-events: none;
+            transform-style: preserve-3d;
+            border-radius: 15px;
         }
 
-        /* ЗАДНЯ СТОРОНА */
-        .card-back {
-            position: absolute;
-            inset: 0;
-            background: #050505;
-            transform: rotateY(180deg);
-            backface-visibility: hidden;
+        /* Задня сторона з логотипом на склі */
+        .glass-back {
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-            border: 1px solid #111;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #111;
+            backface-visibility: hidden;
         }
 
-        .blur-sketch {
-            position: absolute;
-            inset: 0;
-            background: url('sketch.jpg') no-repeat center/cover;
-            filter: blur(25px) grayscale(1) brightness(0.3);
-            opacity: 0.6;
-        }
-
-        .logo-yokai {
-            position: relative;
-            color: #000; /* Чорне лого, як ти хотів */
-            font-size: 55px;
+        .yokai-text {
+            color: #000;
+            font-size: 50px;
             letter-spacing: 12px;
             text-transform: uppercase;
-            font-weight: 900;
-            /* Ефект гравірування на металі */
-            text-shadow: 1px 1px 1px rgba(255,255,255,0.05), -1px -1px 1px rgba(0,0,0,0.9);
-            z-index: 2;
+            /* Ефект гравірування на склі */
+            text-shadow: 1px 1px 1px rgba(255,255,255,0.1), -1px -1px 1px rgba(0,0,0,0.9);
+            transform: scaleX(-1); /* Дзеркально, щоб ззаду читалось вірно */
         }
 
+        /* СИНЄ СЯЙВО (АУРА) */
+        .glow {
+            position: absolute;
+            inset: -60px;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.4) 0%, transparent 70%);
+            filter: blur(50px);
+            transform: translateZ(-40px);
+            animation: pulseGlow 3s infinite alternate ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+            from { opacity: 0.3; transform: scale(0.9) translateZ(-40px); }
+            to { opacity: 0.7; transform: scale(1.1) translateZ(-40px); }
+        }
     </style>
 </head>
 <body>
 
-    <div class="artifact-card">
-        <!-- Синє магічне сяйво -->
-        <div class="blue-glow"></div>
-
-        <!-- ЛИЦЬОВА ЧАСТИНА -->
-        <div class="card-front">
-    <div class="frame-png"></div> <!-- Цей блок візьме картинку з CSS -->
-    <div class="sketch-layer">
-        <div class="glass-shine"></div>
-        <img src="011.PNG" alt="Sketch">
+    <div class="artifact-3d" id="artifact">
+        <div class="glow"></div>
+        <!-- Шари генеруються скриптом нижче -->
     </div>
-</div>
 
+    <script>
+        const container = document.getElementById('artifact');
+        const totalLayers = 30; // Товщина артефакту
 
-        <!-- ТИЛЬНА ЧАСТИНА -->
-        <div class="card-back">
-            <div class="blur-sketch"></div>
-            <div class="logo-yokai">YYOKAI</div>
-        </div>
-    </div>
+        for (let i = 0; i < totalLayers; i++) {
+            // 1. Створюємо шар рамки для об'єму
+            const layer = document.createElement('div');
+            layer.className = 'frame-layer';
+            layer.style.transform = `translateZ(${i}px)`;
+            container.appendChild(layer);
+
+            // 2. Вставляємо ескіз всередину (на 12-й шар)
+            if (i === 12) {
+                const sketchWrap = document.createElement('div');
+                sketchWrap.className = 'sketch-layer';
+                sketchWrap.style.transform = `translateZ(${i}px)`;
+                sketchWrap.innerHTML = `<img src="011.PNG" alt="Sketch">`;
+                container.appendChild(sketchWrap);
+            }
+
+            // 3. Додаємо скло кожні 6 шарів для ефекту глибини
+            if (i % 6 === 0 && i > 0) {
+                const glass = document.createElement('div');
+                glass.className = 'glass-pane';
+                glass.style.transform = `translateZ(${i}px)`;
+                container.appendChild(glass);
+            }
+        }
+
+        // 4. Додаємо фінальну задню панель зі склом та лого YYOKAI
+        const backSide = document.createElement('div');
+        backSide.className = 'glass-pane glass-back';
+        // Розташовуємо чітко на звороті
+        backSide.style.transform = `translateZ(-1px) rotateY(180deg)`;
+        backSide.innerHTML = `<div class="yokai-text">YYOKAI</div>`;
+        container.appendChild(backSide);
+    </script>
 
 </body>
 </html>
