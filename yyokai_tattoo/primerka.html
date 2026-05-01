@@ -1,1 +1,169 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YYOKAI - Fitting Room (Large View)</title>
+    <style>
+        @import url('https://googleapis.com');
+
+        body { 
+            background: #000; 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            min-height: 100vh; 
+            perspective: 2500px; /* Більша перспектива для великої рамки */
+            font-family: 'Bebas Neue', cursive;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* КОНТЕЙНЕР АРТЕФАКТУ (ЗБІЛЬШЕНИЙ) */
+        .artifact-container {
+            position: relative;
+            width: 400px; /* Максимальна ширина */
+            height: 580px; /* Максимальна висота */
+            margin: 30px auto;
+            transform-style: preserve-3d;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Адаптація під маленькі екрани (щоб не вилазило за межі телефону) */
+        @media (max-width: 420px) {
+            .artifact-container {
+                width: 320px;
+                height: 460px;
+            }
+        }
+
+        .artifact {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: deepSwing 9s infinite ease-in-out; /* Повільніше для величі */
+        }
+
+        @keyframes deepSwing {
+            0%, 100% { transform: rotateY(-18deg) rotateX(4deg); }
+            50% { transform: rotateY(18deg) rotateX(-2deg); }
+        }
+
+        .layer {
+            position: absolute; inset: 0;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            pointer-events: none;
+            filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.3));
+            transition: background-image 0.4s ease, opacity 0.4s;
+        }
+
+        /* СВІТЛОВА ПОДУШКА */
+        .glow-bottom {
+            position: absolute;
+            bottom: 100px;
+            width: 300px;
+            height: 60px;
+            background: radial-gradient(circle, rgba(255, 0, 0, 0.4), transparent 75%);
+            filter: blur(50px);
+            z-index: -1;
+        }
+
+        /* МЕНЮ ВИБОРУ */
+        .selector-menu {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            width: 90%;
+            max-width: 400px;
+            margin-top: 20px;
+        }
+
+        .zone-btn {
+            background: rgba(255, 0, 0, 0.05);
+            border: 1px solid #ff0000;
+            color: #ff0000;
+            padding: 15px;
+            font-family: 'Bebas Neue', cursive;
+            font-size: 18px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            text-align: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .zone-btn.active {
+            background: #ff0000;
+            color: black;
+            box-shadow: 0 0 25px #ff0000;
+        }
+
+        .book-btn {
+            width: 90%;
+            max-width: 400px;
+            padding: 18px;
+            background: #ff0000;
+            color: black;
+            border: none;
+            font-family: 'Bebas Neue', cursive;
+            font-size: 22px;
+            letter-spacing: 6px;
+            cursor: pointer;
+            margin: 30px 0 60px 0;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <div style="margin-top: 40px; text-align: center;">
+        <h2 style="color: #ff0000; letter-spacing: 5px; margin: 0;">PREVIEW ARTIFACT</h2>
+    </div>
+
+    <div class="artifact-container">
+        <div class="artifact">
+            <!-- Шари рамки -->
+            <div class="layer" style="transform: translateZ(0px); background-image: url('022.PNG');"></div>
+            <div class="layer" style="transform: translateZ(4px); background-image: url('022.PNG');"></div>
+            
+            <!-- Ескіз, який змінюється -->
+            <div class="layer" id="target-sketch" style="transform: translateZ(8px); background-image: url('023.PNG');"></div>
+            
+            <div class="layer" style="transform: translateZ(12px); background-image: url('022.PNG');"></div>
+            <div class="layer" style="transform: translateZ(16px); background-image: url('022.PNG');"></div>
+        </div>
+        <div class="glow-bottom"></div>
+    </div>
+
+    <div class="selector-menu">
+        <button class="zone-btn active" onclick="updatePreview('023.PNG', this)">ORIGINAL</button>
+        <button class="zone-btn" onclick="updatePreview('023_arm.PNG', this)">FOREARM</button>
+        <button class="zone-btn" onclick="updatePreview('023_calf.PNG', this)">CALF</button>
+        <button class="zone-btn" onclick="updatePreview('023_bicep.PNG', this)">BICEP</button>
+        <button class="zone-btn" onclick="updatePreview('023_quad.PNG', this)">QUADRICEPS</button>
+    </div>
+
+    <button class="book-btn" onclick="alert('REDIRECTING TO YYOKAI BOT...')">RESERVE SLOT</button>
+
+    <script>
+        function updatePreview(imgUrl, btn) {
+            const sketch = document.getElementById('target-sketch');
+            sketch.style.opacity = '0';
+            setTimeout(() => {
+                sketch.style.backgroundImage = `url('${imgUrl}')`;
+                sketch.style.opacity = '1';
+            }, 300);
+
+            document.querySelectorAll('.zone-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+    </script>
+
+</body>
+</html>
 
