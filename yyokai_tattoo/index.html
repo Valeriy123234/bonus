@@ -93,30 +93,44 @@
         .img-3 { background: url('18.jpg') center/cover; }
         .img-price { background: url('5.jpg') center/cover; }
         /* Це вставляєш у блок <style> */
+/* Знаходь свій .img-sketches і замінюй на цей */
 .img-sketches { 
     position: relative; 
     overflow: hidden; 
     background: #000; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Щоб текст лишився знизу як в інших кнопках */
 }
 
+/* Обов'язково додай цей блок стилів для відео */
 .video-bg {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    transform: translate(-50%, -50%);
+    object-fit: cover; /* Це магія: відео розтягнеться на весь екран кнопки без чорних смуг */
     z-index: 0;
     pointer-events: none;
 }
 
-/* Переконайся, що текст видно поверх відео */
+/* Щоб текст не пропадав, даємо йому пріоритет */
 .img-sketches span.label, 
 .img-sketches h2 {
     position: relative;
     z-index: 2;
 }
+
+/* Щоб твій темний градієнт (::before) теж працював поверх відео */
+.img-sketches::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 20%, rgba(0,0,0,0.85) 100%);
+    z-index: 1;
+}
+
 
 
         .img-care { background: url('14.jpg') center/cover; }
