@@ -56,27 +56,56 @@
         }
 
        /* Загальні налаштування (без кольору) */
+/* 1. Загальні налаштування шарів (без кольору) */
 .layer {
-  position: absolute;
-  inset: 0;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  pointer-events: none;
+    position: absolute;
+    inset: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    pointer-events: none;
+    /* Тут filter видалено, щоб він не був однаковим для всіх */
 }
 
-/* Окремі класи для кольорів */
-.layer-red {
-  filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.5));
+/* 2. Налаштування для кожної картки (батьківський елемент) */
+.artifact-item {
+    position: relative;
+    display: block; /* або flex, залежно від верстки */
+    text-decoration: none;
 }
 
-.layer-neon-green {
-  filter: drop-shadow(0 0 15px rgba(57, 255, 20, 0.8));
+/* 3. КОЛЬОРИ (Спрацьовують на всі шари всередині конкретної картки) */
+
+/* Зелений неон */
+.neon-green .layer {
+    filter: drop-shadow(0 0 15px rgba(57, 255, 20, 0.8));
 }
 
-.layer-blue {
-  filter: drop-shadow(0 0 15px rgba(0, 0, 255, 0.5));
+/* Червоний неон */
+.neon-red .layer {
+    filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.6));
 }
+
+/* Синій неон */
+.neon-blue .layer {
+    filter: drop-shadow(0 0 15px rgba(0, 191, 255, 0.8));
+}
+
+/* Фіолетовий/Маджента */
+.neon-purple .layer {
+    filter: drop-shadow(0 0 15px rgba(191, 0, 255, 0.8));
+}
+
+/* Золотий/Жовтий */
+.neon-gold .layer {
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.7));
+}
+
+/* 4. Додатково: щоб при наведенні світіння ставало яскравішим (опціонально) */
+.artifact-item:hover .layer {
+    filter: drop-shadow(0 0 25px currentColor); /* Підсилює поточний колір */
+}
+
 
 
         /* Блок рідкості */
@@ -159,55 +188,58 @@
 
         <!-- ========================================== -->
         <!-- ПОЧАТОК КАРТКИ (Копіюй цей блок) -->
-        <a href="primerka.html" class="artifact-item">
-            <div class="artifact-body">
-                <!-- Шари товщини (022.PNG) -->
-                <div class="layer" style="transform: translateZ(0px); background-image: url('01.PNG');"></div>
-                <div class="layer" style="transform: translateZ(3px); background-image: url('01.PNG');"></div>
-                
-                <!-- ЦЕНТР: Ескіз (023.PNG) -->
-                <div class="layer" style="transform: translateZ(6px); background-image: url('02.PNG');"></div>
-                
-                <div class="layer" style="transform: translateZ(9px); background-image: url('01.PNG');"></div>
-                <div class="layer" style="transform: translateZ(12px); background-image: url('01.PNG');"></div>
-                <div class="layer layer-red"></div>
-            </div>
+        <!-- Додав клас neon-red сюди -->
+<a href="primerka.html" class="artifact-item neon-red">
+    <div class="artifact-body">
+        <!-- Шари товщини (01.PNG) -->
+        <div class="layer" style="transform: translateZ(0px); background-image: url('01.PNG');"></div>
+        <div class="layer" style="transform: translateZ(3px); background-image: url('01.PNG');"></div>
+        
+        <!-- ЦЕНТР: Ескіз (02.PNG) -->
+        <div class="layer" style="transform: translateZ(6px); background-image: url('02.PNG');"></div>
+        
+        <div class="layer" style="transform: translateZ(9px); background-image: url('01.PNG');"></div>
+        <div class="layer" style="transform: translateZ(12px); background-image: url('01.PNG');"></div>
+    </div>
 
-            <div class="rarity-box">
-                <p class="rarity-text">LEGENDARY</p>
-                <span class="rarity-jp">伝説の妖怪</span>
-            </div>
+    <div class="rarity-box">
+        <p class="rarity-text">LEGENDARY</p>
+        <span class="rarity-jp">伝説の妖怪</span>
+    </div>
 
-            <div class="details-btn">DETAILS</div>
-            <div class="glow-bottom"></div>
-        </a>
+    <div class="details-btn">DETAILS</div>
+    <div class="glow-bottom"></div>
+</a>
+
         <!-- КІНЕЦЬ КАРТКИ -->
         <!-- ========================================== -->
 
          <!-- ========================================== -->
         <!-- ПОЧАТОК КАРТКИ (Копіюй цей блок) -->
-        <a href="primerka.html" class="artifact-item">
-            <div class="artifact-body">
-                <!-- Шари товщини (022.PNG) -->
-                <div class="layer" style="transform: translateZ(0px); background-image: url('03.PNG');"></div>
-                <div class="layer" style="transform: translateZ(3px); background-image: url('03.PNG');"></div>
-                
-                <!-- ЦЕНТР: Ескіз (023.PNG) -->
-                <div class="layer" style="transform: translateZ(6px); background-image: url('04.PNG');"></div>
-                
-                <div class="layer" style="transform: translateZ(9px); background-image: url('03.PNG');"></div>
-                <div class="layer" style="transform: translateZ(12px); background-image: url('03.PNG');"></div>
-                <div class="layer layer-neon-green"></div>
-            </div>
+        <!-- Додав клас neon-green сюди -->
+<a href="primerka.html" class="artifact-item neon-green">
+    <div class="artifact-body">
+        <!-- Шари товщини -->
+        <div class="layer" style="transform: translateZ(0px); background-image: url('03.PNG');"></div>
+        <div class="layer" style="transform: translateZ(3px); background-image: url('03.PNG');"></div>
+        
+        <!-- ЦЕНТР: Ескіз -->
+        <div class="layer" style="transform: translateZ(6px); background-image: url('04.PNG');"></div>
+        
+        <div class="layer" style="transform: translateZ(9px); background-image: url('03.PNG');"></div>
+        <div class="layer" style="transform: translateZ(12px); background-image: url('03.PNG');"></div>
+        <!-- Порожній шар більше не потрібен, видалив його, щоб не плутатись -->
+    </div>
 
-            <div class="rarity-box">
-                <p class="rarity-text">LEGENDARY</p>
-                <span class="rarity-jp">伝説の妖怪</span>
-            </div>
+    <div class="rarity-box">
+        <p class="rarity-text">LEGENDARY</p>
+        <span class="rarity-jp">伝説の妖怪</span>
+    </div>
 
-            <div class="details-btn">DETAILS</div>
-            <div class="glow-bottom"></div>
-        </a>
+    <div class="details-btn">DETAILS</div>
+    <div class="glow-bottom"></div>
+</a>
+
         <!-- КІНЕЦЬ КАРТКИ -->
         <!-- ========================================== -->
 
