@@ -3,34 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YYOKAI Collection</title>
     <style>
         body { 
             background: #000; 
             margin: 0; 
             display: flex; 
-            flex-direction: column; 
             justify-content: center; 
-            align-items: center; 
             min-height: 100vh; 
             perspective: 2000px; 
-            font-family: 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        .artifact-link {
-            text-decoration: none;
+        /* СІТКА ДЛЯ ВСІХ РАМОК */
+        .artifact-grid {
+            display: grid;
+            /* Автоматично підлаштовує кількість колонок залежно від ширини екрану */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 120px 40px;
+            padding: 80px 20px;
+            width: 100%;
+            max-width: 1200px;
+            justify-items: center;
+        }
+
+        .artifact-container {
+            position: relative;
+            width: 260px; 
+            height: 380px;
+            transform-style: preserve-3d;
             display: flex;
             flex-direction: column;
             align-items: center;
-            cursor: pointer;
         }
 
+        /* САМА РАМКА - ОБЕРТАННЯ */
         .artifact {
-            width: 320px; 
-            height: 460px;
+            width: 100%;
+            height: 100%;
             position: relative;
             transform-style: preserve-3d;
             animation: rotate 18s infinite linear;
-            margin-bottom: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .artifact:hover {
+            filter: brightness(1.2);
         }
 
         @keyframes rotate {
@@ -44,125 +64,106 @@
             background-repeat: no-repeat;
             background-position: center;
             pointer-events: none;
+            backface-visibility: visible;
         }
-        .empty { background-image: url('022.PNG'); }
-        .full { background-image: url('023.PNG'); }
 
-        /* ПЕРЕДНЄ СКЛО З ГРАДІЄНТНИМ НАПИСОМ */
-        .glass-front {
+        /* ШАР СКЛА З БЛІКОМ */
+        .glass-layer {
             position: absolute;
-            inset: 0;
-            z-index: 20;
-            transform: translateZ(8px); /* Трохи вище передньої рамки */
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            padding-bottom: 50px;
+            inset: 25px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 60%);
+            transform: translateZ(5px);
+            z-index: 4;
             pointer-events: none;
-            /* Обрізаємо скло по формі рамки */
-            -webkit-mask: url('022.PNG') no-repeat center/contain;
-            mask: url('022.PNG') no-repeat center/contain;
         }
 
-        .collector-tag {
-            font-size: 10px;
-            font-weight: 900;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            /* КРУТИЙ ГРАДІЄНТ */
-            background: linear-gradient(45deg, #00f2ff, #ffffff, #00f2ff);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shineText 3s linear infinite;
-            text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
-            padding: 5px 15px;
-            border: 1px solid rgba(0, 242, 255, 0.3);
-            background-color: rgba(0, 0, 0, 0.4);
-            border-radius: 2px;
-        }
-
-        @keyframes shineText {
-            to { background-position: 200% center; }
-        }
-
-        .static-glow {
-            position: absolute;
-            bottom: -30px;
-            left: 50%;
-            width: 260px;
-            height: 70px;
-            background: radial-gradient(ellipse at center, rgba(0, 242, 255, 0.5) 0%, transparent 70%);
-            filter: blur(35px);
-            transform: translateX(-50%) translateZ(-50px);
-            z-index: -1;
-        }
-
-        .description-box {
-            max-width: 320px;
-            text-align: center;
-            color: #fff;
-            padding: 20px;
-            border-top: 1px solid rgba(0, 242, 255, 0.2);
-        }
-
-        .description-box h2 {
-            margin: 0;
-            font-size: 20px;
-            letter-spacing: 4px;
-            color: #00f2ff;
-            text-transform: uppercase;
-        }
-
-        /* ЗАДНЯ СТОРОНА */
+        /* ЗАДНЯ СТОРОНА (YYOKAI) */
         .back-glass {
             position: absolute; inset: 0;
-            background: rgba(0, 0, 0, 0.92);
+            background: rgba(0, 0, 0, 0.95);
             transform: rotateY(180deg) translateZ(-1px);
             display: flex; justify-content: center; align-items: center;
             backface-visibility: hidden;
-            -webkit-mask: url('022.PNG') no-repeat center/contain;
-            mask: url('022.PNG') no-repeat center/contain;
+            /* Обрізка за формою порожньої рамки */
+            -webkit-mask: inherit; 
+            mask: inherit;
+        }
+        .logo { color: #111; font-size: 32px; font-family: sans-serif; font-weight: 900; letter-spacing: 6px; transform: scaleX(-1); }
+
+        /* СТАТИЧНА ПЛАШКА РІДКОСТІ */
+        .rarity-static {
+            margin-top: 20px;
+            color: #00f2ff;
+            font-family: 'Arial Black', sans-serif;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px #00f2ff;
+            background: rgba(0, 242, 255, 0.05);
+            padding: 6px 20px;
+            border: 1px solid rgba(0, 242, 255, 0.3);
+            border-radius: 2px;
+            transform: translateZ(20px) rotateX(10deg);
+            pointer-events: none;
+            white-space: nowrap;
         }
 
-        .logo {
-            color: #000; font-size: 35px; font-weight: 900;
-            letter-spacing: 8px; transform: scaleX(-1);
-            text-shadow: 1px 1px 0 rgba(255,255,255,0.05);
+        /* СТАТИЧНЕ СЯЙВО ЗНИЗУ */
+        .glow {
+            position: absolute;
+            bottom: 60px;
+            width: 200px;
+            height: 40px;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.3), transparent 70%);
+            filter: blur(30px);
+            z-index: -1;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
 
-    <a href="ТВОЄ_ПОСИЛАННЯ" class="artifact-link">
+<div class="artifact-grid">
+
+    <!-- ========================================== -->
+    <!-- ПОЧАТОК КАРТКИ (Скопіюй цей блок для нової рамки) -->
+    <div class="artifact-container">
+        <a href="page1.html" style="text-decoration:none; width:100%; height:100%;">
+            <div class="artifact">
+                <div class="glass-layer"></div>
+                
+                <!-- Задній шар + ЛОГО -->
+                <div class="layer" style="transform: translateZ(0px); background-image: url('022.PNG');">
+                    <div class="back-glass" style="-webkit-mask: url('022.PNG') no-repeat center/contain; mask: url('022.PNG') no-repeat center/contain;">
+                        <div class="logo">YYOKAI</div>
+                    </div>
+                </div>
+                
+                <!-- Середні шари для об'єму (порожня рамка) -->
+                <div class="layer" style="transform: translateZ(2px); background-image: url('022.PNG');"></div>
+                
+                <!-- ЦЕНТРАЛЬНИЙ ШАР (Рамка з ескізом 023.PNG) -->
+                <div class="layer" style="transform: translateZ(4px); background-image: url('023.PNG');"></div>
+                
+                <!-- Передні шари для об'єму (порожня рамка) -->
+                <div class="layer" style="transform: translateZ(6px); background-image: url('022.PNG');"></div>
+            </div>
+        </a>
         
-        <div class="artifact">
-            <div class="static-glow"></div>
+        <!-- Текст рідкості (можна змінювати: LEGENDARY, EPIC, RARE) -->
+        <div class="rarity-static">LEGENDARY QUALITY</div>
+        
+        <!-- Сяйво під цією рамкою -->
+        <div class="glow"></div>
+    </div>
+    <!-- КІНЕЦЬ КАРТКИ -->
+    <!-- ========================================== -->
 
-            <!-- Передній шар скла з градієнтною плашкою -->
-            <div class="glass-front">
-                <div class="collector-tag">COLLECTOR'S EDITION</div>
-            </div>
 
-            <!-- Бутерброд -->
-            <div class="layer empty" style="transform: translateZ(0px)">
-                <div class="back-glass"><div class="logo">YYOKAI</div></div>
-            </div>
-            <div class="layer empty" style="transform: translateZ(1px)"></div>
-            <div class="layer empty" style="transform: translateZ(2px)"></div>
-            <div class="layer full" style="transform: translateZ(3px)"></div>
-            <div class="layer empty" style="transform: translateZ(4px)"></div>
-            <div class="layer empty" style="transform: translateZ(5px)"></div>
-            <div class="layer empty" style="transform: translateZ(6px)"></div>
-        </div>
+    <!-- МІСЦЕ ДЛЯ НАСТУПНОЇ КАРТКИ (Встав копію сюди) -->
 
-        <div class="description-box">
-            <h2>KUMIHO SPIRIT</h2>
-            <p style="color: #666; font-size: 13px;">Натисніть на артефакт, щоб відкрити деталі та вибрати місце для нанесення.</p>
-        </div>
 
-    </a>
+</div>
 
 </body>
 </html>
