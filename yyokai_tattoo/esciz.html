@@ -3,121 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YYOKAI Collection</title>
     <style>
+        @import url('https://googleapis.com');
+
         body { 
             background: #000; 
             margin: 0; 
             display: flex; 
-            justify-content: center; 
+            flex-direction: column;
+            align-items: center; 
             min-height: 100vh; 
-            perspective: 2000px; 
-            overflow-x: hidden;
-            scroll-behavior: smooth;
+            perspective: 1500px; 
+            font-family: 'Bebas Neue', cursive;
         }
 
-        /* СІТКА ДЛЯ ВСІХ РАМОК */
         .artifact-grid {
-            display: grid;
-            /* Автоматично підлаштовує кількість колонок залежно від ширини екрану */
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 120px 40px;
-            padding: 80px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 120px;
+            padding: 60px 0;
             width: 100%;
-            max-width: 1200px;
-            justify-items: center;
         }
 
         .artifact-container {
             position: relative;
-            width: 260px; 
-            height: 380px;
+            width: 250px; 
+            height: 360px;
+            margin: 0 auto;
             transform-style: preserve-3d;
             display: flex;
             flex-direction: column;
             align-items: center;
+            text-decoration: none;
+            /* Відгук на дотик для мобілок */
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* САМА РАМКА - ОБЕРТАННЯ */
+        .artifact-container:active .artifact {
+            transform: scale(0.92) rotateY(0deg); /* Ефект натискання */
+            transition: 0.1s;
+        }
+
         .artifact {
             width: 100%;
             height: 100%;
             position: relative;
             transform-style: preserve-3d;
-            animation: rotate 18s infinite linear;
-            cursor: pointer;
-            transition: 0.3s;
+            animation: mobileSwing 5s infinite ease-in-out;
+            transition: transform 0.5s ease;
         }
 
-        .artifact:hover {
-            filter: brightness(1.2);
-        }
-
-        @keyframes rotate {
-            from { transform: rotateY(0deg) rotateX(5deg); }
-            to { transform: rotateY(360deg) rotateX(5deg); }
+        @keyframes mobileSwing {
+            0%, 100% { transform: rotateY(-10deg) rotateX(2deg); }
+            50% { transform: rotateY(10deg) rotateX(-2deg); }
         }
 
         .layer {
-            position: absolute; inset: 0;
+            position: absolute; 
+            inset: 0;
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
             pointer-events: none;
-            backface-visibility: visible;
         }
 
-        /* ШАР СКЛА З БЛІКОМ */
-        .glass-layer {
-            position: absolute;
-            inset: 25px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 60%);
-            transform: translateZ(5px);
-            z-index: 4;
-            pointer-events: none;
-        }
-
-        /* ЗАДНЯ СТОРОНА (YYOKAI) */
-        .back-glass {
-            position: absolute; inset: 0;
-            background: rgba(0, 0, 0, 0.95);
-            transform: rotateY(180deg) translateZ(-1px);
-            display: flex; justify-content: center; align-items: center;
-            backface-visibility: hidden;
-            /* Обрізка за формою порожньої рамки */
-            -webkit-mask: inherit; 
-            mask: inherit;
-        }
-        .logo { color: #111; font-size: 32px; font-family: sans-serif; font-weight: 900; letter-spacing: 6px; transform: scaleX(-1); }
-
-        /* СТАТИЧНА ПЛАШКА РІДКОСТІ */
-        .rarity-static {
+        /* КНОПКА-ПІДКАЗКА (ІНТУЇТИВНО) */
+        .action-btn {
             margin-top: 20px;
+            padding: 8px 30px;
+            background: rgba(0, 242, 255, 0.1);
+            border: 1px solid #00f2ff;
             color: #00f2ff;
-            font-family: 'Arial Black', sans-serif;
-            font-size: 11px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            text-shadow: 0 0 10px #00f2ff;
-            background: rgba(0, 242, 255, 0.05);
-            padding: 6px 20px;
-            border: 1px solid rgba(0, 242, 255, 0.3);
+            font-size: 16px;
+            letter-spacing: 2px;
             border-radius: 2px;
-            transform: translateZ(20px) rotateX(10deg);
-            pointer-events: none;
-            white-space: nowrap;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+            animation: pulseBtn 2s infinite;
         }
 
-        /* СТАТИЧНЕ СЯЙВО ЗНИЗУ */
+        @keyframes pulseBtn {
+            0%, 100% { opacity: 0.6; box-shadow: 0 0 5px #00f2ff; }
+            50% { opacity: 1; box-shadow: 0 0 20px #00f2ff; }
+        }
+
+        .rarity {
+            font-size: 12px;
+            color: #444;
+            letter-spacing: 3px;
+            margin-top: 10px;
+        }
+
         .glow {
             position: absolute;
             bottom: 60px;
-            width: 200px;
-            height: 40px;
-            background: radial-gradient(circle, rgba(0, 242, 255, 0.3), transparent 70%);
-            filter: blur(30px);
+            width: 150px;
+            height: 30px;
+            background: rgba(0, 242, 255, 0.3);
+            filter: blur(25px);
             z-index: -1;
-            pointer-events: none;
         }
     </style>
 </head>
@@ -125,43 +108,22 @@
 
 <div class="artifact-grid">
 
-    <!-- ========================================== -->
-    <!-- ПОЧАТОК КАРТКИ (Скопіюй цей блок для нової рамки) -->
-    <div class="artifact-container">
-        <a href="page1.html" style="text-decoration:none; width:100%; height:100%;">
-            <div class="artifact">
-                <div class="glass-layer"></div>
-                
-                <!-- Задній шар + ЛОГО -->
-                <div class="layer" style="transform: translateZ(0px); background-image: url('022.PNG');">
-                    <div class="back-glass" style="-webkit-mask: url('022.PNG') no-repeat center/contain; mask: url('022.PNG') no-repeat center/contain;">
-                        <div class="logo">YYOKAI</div>
-                    </div>
-                </div>
-                
-                <!-- Середні шари для об'єму (порожня рамка) -->
-                <div class="layer" style="transform: translateZ(2px); background-image: url('022.PNG');"></div>
-                
-                <!-- ЦЕНТРАЛЬНИЙ ШАР (Рамка з ескізом 023.PNG) -->
-                <div class="layer" style="transform: translateZ(4px); background-image: url('023.PNG');"></div>
-                
-                <!-- Передні шари для об'єму (порожня рамка) -->
-                <div class="layer" style="transform: translateZ(6px); background-image: url('022.PNG');"></div>
-            </div>
-        </a>
+    <!-- КАРТКА №1 -->
+    <a href="page1.html" class="artifact-container">
+        <div class="artifact">
+            <!-- 5 шарів для об'єму -->
+            <div class="layer" style="transform: translateZ(0px); background-image: url('022.PNG');"></div>
+            <div class="layer" style="transform: translateZ(2px); background-image: url('022.PNG');"></div>
+            <!-- Ескіз по центру -->
+            <div class="layer" style="transform: translateZ(4px); background-image: url('023.PNG');"></div>
+            <div class="layer" style="transform: translateZ(6px); background-image: url('022.PNG');"></div>
+            <div class="layer" style="transform: translateZ(8px); background-image: url('022.PNG');"></div>
+        </div>
         
-        <!-- Текст рідкості (можна змінювати: LEGENDARY, EPIC, RARE) -->
-        <div class="rarity-static">LEGENDARY QUALITY</div>
-        
-        <!-- Сяйво під цією рамкою -->
+        <div class="rarity">LEGENDARY ARTIFACT</div>
+        <div class="action-btn">BOOK NOW</div> <!-- Кнопка для інтуїтивності -->
         <div class="glow"></div>
-    </div>
-    <!-- КІНЕЦЬ КАРТКИ -->
-    <!-- ========================================== -->
-
-
-    <!-- МІСЦЕ ДЛЯ НАСТУПНОЇ КАРТКИ (Встав копію сюди) -->
-
+    </a>
 
 </div>
 
