@@ -3,167 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YYOKAI - Fitting Room (Large View)</title>
     <style>
         @import url('https://googleapis.com');
 
         body { 
-            background: #000; 
-            margin: 0; 
-            display: flex; 
-            flex-direction: column;
-            align-items: center; 
-            min-height: 100vh; 
-            perspective: 2500px; /* Більша перспектива для великої рамки */
-            font-family: 'Bebas Neue', cursive;
-            color: white;
-            overflow-x: hidden;
+            background: #000; margin: 0; display: flex; flex-direction: column;
+            align-items: center; justify-content: space-between; height: 100vh; 
+            perspective: 1500px; font-family: 'Bebas Neue', cursive; color: white;
+            overflow: hidden; padding: 10px 0; box-sizing: border-box;
         }
 
-        /* КОНТЕЙНЕР АРТЕФАКТУ (ЗБІЛЬШЕНИЙ) */
-        .artifact-container {
-            position: relative;
-            width: 400px; /* Максимальна ширина */
-            height: 580px; /* Максимальна висота */
-            margin: 30px auto;
-            transform-style: preserve-3d;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        /* ПЛАШКА СТАТУСУ НАД РАМКОЮ */
+        .status-badge {
+            padding: 2px 15px; font-size: 14px; letter-spacing: 3px;
+            border-radius: 2px; margin-bottom: 5px; transition: 0.3s;
+        }
+        .status-free { background: rgba(0, 255, 100, 0.2); color: #00ff64; border: 1px solid #00ff64; box-shadow: 0 0 10px #00ff64; }
+        .status-sold { background: rgba(255, 0, 0, 0.2); color: #ff0000; border: 1px solid #ff0000; box-shadow: 0 0 10px #ff0000; }
+
+        .artifact-container { position: relative; width: 250px; height: 350px; transform-style: preserve-3d; }
+        .artifact { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; animation: swing 8s infinite ease-in-out; }
+
+        @keyframes swing {
+            0%, 100% { transform: rotateY(-15deg) rotateX(4deg); }
+            50% { transform: rotateY(15deg) rotateX(-2deg); }
         }
 
-        /* Адаптація під маленькі екрани (щоб не вилазило за межі телефону) */
-        @media (max-width: 420px) {
-            .artifact-container {
-                width: 320px;
-                height: 460px;
-            }
-        }
+        .layer { position: absolute; inset: 0; background-size: contain; background-repeat: no-repeat; background-position: center; transition: 0.4s; }
 
-        .artifact {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            animation: deepSwing 9s infinite ease-in-out; /* Повільніше для величі */
-        }
+        /* ПІДСВІТКА (ЗМІНЮЄТЬСЯ ВІД СТАТУСУ) */
+        #main-glow { position: absolute; bottom: 30px; width: 150px; height: 30px; filter: blur(30px); z-index: -1; transition: 0.5s; }
 
-        @keyframes deepSwing {
-            0%, 100% { transform: rotateY(-18deg) rotateX(4deg); }
-            50% { transform: rotateY(18deg) rotateX(-2deg); }
-        }
+        .selector-menu { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 90%; max-width: 360px; transition: 0.3s; }
+        .zone-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid #444; color: #666; padding: 8px 5px; font-size: 13px; cursor: pointer; }
+        .zone-btn.active { background: white; color: black; border-color: white; }
 
-        .layer {
-            position: absolute; inset: 0;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            pointer-events: none;
-            filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.3));
-            transition: background-image 0.4s ease, opacity 0.4s;
-        }
+        .book-btn { width: 90%; max-width: 360px; padding: 15px; font-size: 20px; letter-spacing: 4px; cursor: pointer; transition: 0.3s; border: none; }
 
-        /* СВІТЛОВА ПОДУШКА */
-        .glow-bottom {
-            position: absolute;
-            bottom: 100px;
-            width: 300px;
-            height: 60px;
-            background: radial-gradient(circle, rgba(255, 0, 0, 0.4), transparent 75%);
-            filter: blur(50px);
-            z-index: -1;
-        }
+        /* СТАН "ЗАБРОНЬОВАНО" */
+        body.is-sold .zone-btn { opacity: 0.2; pointer-events: none; }
+        body.is-sold .book-btn { background: #111 !important; color: #333 !important; pointer-events: none; box-shadow: none !important; }
+        body.is-sold .layer { filter: grayscale(1) brightness(0.5); }
 
-        /* МЕНЮ ВИБОРУ */
-        .selector-menu {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            width: 90%;
-            max-width: 400px;
-            margin-top: 20px;
-        }
-
-        .zone-btn {
-            background: rgba(255, 0, 0, 0.05);
-            border: 1px solid #ff0000;
-            color: #ff0000;
-            padding: 15px;
-            font-family: 'Bebas Neue', cursive;
-            font-size: 18px;
-            letter-spacing: 2px;
-            cursor: pointer;
-            text-align: center;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .zone-btn.active {
-            background: #ff0000;
-            color: black;
-            box-shadow: 0 0 25px #ff0000;
-        }
-
-        .book-btn {
-            width: 90%;
-            max-width: 400px;
-            padding: 18px;
-            background: #ff0000;
-            color: black;
-            border: none;
-            font-family: 'Bebas Neue', cursive;
-            font-size: 22px;
-            letter-spacing: 6px;
-            cursor: pointer;
-            margin: 30px 0 60px 0;
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
-        }
+        /* СЕКРЕТНА КНОПКА */
+        .admin-trigger { font-size: 8px; color: #111; cursor: pointer; margin-top: 5px; user-select: none; }
     </style>
 </head>
-<body>
+<body id="main-body" class="is-free">
 
-    <div style="margin-top: 40px; text-align: center;">
-        <h2 style="color: #ff0000; letter-spacing: 5px; margin: 0;">PREVIEW ARTIFACT</h2>
-    </div>
+    <div id="badge" class="status-badge status-free">AVAILABLE</div>
 
     <div class="artifact-container">
+        <div id="main-glow" style="background: radial-gradient(circle, #00ff64, transparent 70%);"></div>
         <div class="artifact">
-            <!-- Шари рамки -->
             <div class="layer" style="transform: translateZ(0px); background-image: url('022.PNG');"></div>
-            <div class="layer" style="transform: translateZ(4px); background-image: url('022.PNG');"></div>
-            
-            <!-- Ескіз, який змінюється -->
-            <div class="layer" id="target-sketch" style="transform: translateZ(8px); background-image: url('023.PNG');"></div>
-            
-            <div class="layer" style="transform: translateZ(12px); background-image: url('022.PNG');"></div>
-            <div class="layer" style="transform: translateZ(16px); background-image: url('022.PNG');"></div>
+            <div class="layer" id="target-sketch" style="transform: translateZ(4px); background-image: url('023.PNG');"></div>
+            <div class="layer" style="transform: translateZ(8px); background-image: url('022.PNG');"></div>
         </div>
-        <div class="glow-bottom"></div>
     </div>
 
     <div class="selector-menu">
-        <button class="zone-btn active" onclick="updatePreview('023.PNG', this)">ORIGINAL</button>
-        <button class="zone-btn" onclick="updatePreview('023_arm.PNG', this)">FOREARM</button>
-        <button class="zone-btn" onclick="updatePreview('023_calf.PNG', this)">CALF</button>
-        <button class="zone-btn" onclick="updatePreview('023_bicep.PNG', this)">BICEP</button>
-        <button class="zone-btn" onclick="updatePreview('023_quad.PNG', this)">QUADRICEPS</button>
+        <button class="zone-btn active" onclick="updateImg('023.PNG', this)">ORIGIN</button>
+        <button class="zone-btn" onclick="updateImg('023_arm.PNG', this)">ARM</button>
+        <button class="zone-btn" onclick="updateImg('023_calf.PNG', this)">CALF</button>
+        <button class="zone-btn" onclick="updateImg('023_bicep.PNG', this)">BICEP</button>
+        <button class="zone-btn" onclick="updateImg('023_quad.PNG', this)">QUAD</button>
+        <button class="zone-btn" onclick="updateImg('023_back.PNG', this)">BACK</button>
     </div>
 
-    <button class="book-btn" onclick="alert('REDIRECTING TO YYOKAI BOT...')">RESERVE SLOT</button>
+    <button id="main-book-btn" class="book-btn" style="background: #00ff64; box-shadow: 0 0 20px rgba(0,255,100,0.4);" onclick="window.location.href='ТВОЄ_ПОСИЛАННЯ_НА_САЙТ'">RESERVE SLOT</button>
+
+    <div class="admin-trigger" onclick="adminLogin()">.</div>
 
     <script>
-        function updatePreview(imgUrl, btn) {
-            const sketch = document.getElementById('target-sketch');
-            sketch.style.opacity = '0';
-            setTimeout(() => {
-                sketch.style.backgroundImage = `url('${imgUrl}')`;
-                sketch.style.opacity = '1';
-            }, 300);
-
+        function updateImg(img, btn) {
+            document.getElementById('target-sketch').style.backgroundImage = `url('${img}')`;
             document.querySelectorAll('.zone-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+        }
+
+        function adminLogin() {
+            const pass = prompt("Enter Yokai Admin Pass:");
+            if (pass === "yokai123234") {
+                const action = confirm("Натисніть OK щоб ЗАБРОНЮВАТИ, або CANCEL щоб ЗВІЛЬНИТИ:");
+                if (action) {
+                    setSold(true);
+                } else {
+                    setSold(false);
+                }
+            }
+        }
+
+        function setSold(sold) {
+            const body = document.getElementById('main-body');
+            const badge = document.getElementById('badge');
+            const glow = document.getElementById('main-glow');
+            const btn = document.getElementById('main-book-btn');
+
+            if (sold) {
+                body.classList.replace('is-free', 'is-sold');
+                badge.innerText = "SOLD / MINTED";
+                badge.className = "status-badge status-sold";
+                glow.style.background = "radial-gradient(circle, #ff0000, transparent 70%)";
+                btn.innerText = "RESERVED";
+            } else {
+                body.classList.replace('is-sold', 'is-free');
+                badge.innerText = "AVAILABLE";
+                badge.className = "status-badge status-free";
+                glow.style.background = "radial-gradient(circle, #00ff64, transparent 70%)";
+                btn.innerText = "RESERVE SLOT";
+            }
         }
     </script>
 
 </body>
 </html>
-
