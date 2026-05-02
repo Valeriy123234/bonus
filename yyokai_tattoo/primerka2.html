@@ -3,25 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YOKAI TATTOO | CHARACTER SELECT</title>
+    <title>YOKAI TATTOO | INTERACTIVE UI</title>
+    
     <link href="https://googleapis.com" rel="stylesheet">
     
+    <!-- Firebase -->
     <script src="https://gstatic.com"></script>
     <script src="https://gstatic.com"></script>
 
     <style>
         :root { 
-            --red: #ff0000;
-            --bg: #000;
+            --red-bright: #ff0000;
+            --red-glow: rgba(255, 0, 0, 0.5);
+            --font-main: 'Shippori Mincho', serif;
+            --font-title: 'Cinzel', serif;
         }
 
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
-            background: var(--bg); color: #fff; 
-            font-family: 'Shippori Mincho', serif; overflow: hidden; 
+            background: #000; color: #fff; 
+            font-family: var(--font-main); 
+            overflow: hidden; 
         }
 
-        /* МАТРИЦЯ (ФОН 15%) */
+        /* ПОСТІЙНИЙ ФОН МАТРИЦЯ (15%) */
         #matrix-canvas {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: 1; pointer-events: none; opacity: 0.15;
@@ -29,140 +34,162 @@
 
         #game-ui { position: relative; z-index: 10; width: 100%; height: 100%; transition: 0.5s; }
 
-        .screen {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100vh; animation: fadeIn 0.8s ease;
+        /* ЕКРАНИ */
+        .step-container { 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            height: 100vh; width: 100%; animation: fadeIn 0.8s ease;
         }
         .hidden { display: none !important; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .title {
-            font-family: 'Cinzel', serif; font-size: 2rem; letter-spacing: 12px;
-            color: var(--red); text-align: center; margin-bottom: 60px;
+        .title-step { 
+            font-family: var(--font-title); font-size: 2rem; letter-spacing: 12px; 
+            text-transform: uppercase; color: var(--red-bright); text-align: center;
+            margin-bottom: 60px; text-shadow: 0 0 15px var(--red-glow);
         }
 
-        /* КЛАНИ */
-        .clan-wrapper { display: flex; gap: 80px; }
-        .clan-card { cursor: pointer; text-align: center; transition: all 0.5s ease; }
-        .clan-img { width: 220px; height: 220px; object-fit: contain; filter: grayscale(0); transition: all 0.5s ease; }
+        /* КАРТКИ-ПРЯМОКУТНИКИ ДЛЯ КЛАНІВ ТА ТІЛА */
+        .cards-wrapper { display: flex; gap: 40px; align-items: center; }
 
-        .clan-wrapper:hover .clan-card:not(:hover) .clan-img { filter: grayscale(1); opacity: 0.15; transform: scale(0.9); }
-        .clan-card:hover .clan-img { transform: scale(1.15); filter: grayscale(0); opacity: 1; }
-
-        .clan-name { font-family: 'Cinzel', serif; margin-top: 20px; font-size: 1.1rem; letter-spacing: 5px; color: #fff; transition: 0.5s; }
-        .clan-wrapper:hover .clan-card:not(:hover) .clan-name { opacity: 0.2; }
-
-        /* ТІЛО (ПРЯМОКУТНИКИ) */
-        .body-card {
-            width: 250px; height: 450px; position: relative; cursor: pointer;
-            border: 1px solid #222; overflow: hidden; background: #050505; transition: 0.4s;
+        .rect-card {
+            width: 250px; height: 450px; border: 1px solid #222; position: relative;
+            cursor: pointer; overflow: hidden; background: rgba(255,255,255,0.02); transition: 0.5s ease;
         }
+
+        /* МАГІЧНИЙ КРУГ (ТІЛЬКИ ДЛЯ ТІЛА І ФІНАЛУ) */
         .magic-circle {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 130%; opacity: 0.2; pointer-events: none;
-            animation: rotateCircle 25s infinite linear;
+            width: 140%; opacity: 0.2; pointer-events: none; z-index: 1;
+            animation: magicSpin 20s infinite linear, levitate 6s infinite ease-in-out;
         }
-        @keyframes rotateCircle { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
-        .body-img { position: relative; z-index: 5; width: 100%; height: 100%; object-fit: contain; opacity: 0.5; transition: 0.5s; }
-        .body-card:hover .body-img { opacity: 1; }
-        .body-card:hover { border-color: var(--red); box-shadow: 0 0 20px rgba(255,0,0,0.4); }
+        @keyframes magicSpin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes levitate { 0%, 100% { margin-top: -15px; } 50% { margin-top: 15px; } }
 
-        /* ЗАГЛУШКА SOLD OUT */
-        #lock-overlay { 
+        /* ЗОБРАЖЕННЯ ВСЕРЕДИНІ КАРТОК */
+        .card-img { 
+            position: relative; z-index: 5; width: 100%; height: 100%; 
+            object-fit: contain; filter: grayscale(0); transition: 0.5s ease; opacity: 0.8;
+        }
+
+        /* ЕФЕКТИ ДЛЯ КЛАНІВ (СІРИЙ/КОЛЬОРОВИЙ) */
+        .cards-wrapper:hover .rect-card:not(:hover) .card-img {
+            filter: grayscale(1); opacity: 0.1; transform: scale(0.95);
+        }
+        .rect-card:hover .card-img { transform: scale(1.05); filter: grayscale(0); opacity: 1; }
+        .rect-card:hover { border-color: var(--red-bright); box-shadow: 0 0 30px var(--red-glow); }
+
+        .card-label { 
+            position: absolute; bottom: 30px; width: 100%; text-align: center;
+            font-family: var(--font-title); font-size: 1.2rem; letter-spacing: 5px; 
+            color: #fff; z-index: 10; text-shadow: 0 0 10px #000; transition: 0.5s;
+        }
+        .cards-wrapper:hover .rect-card:not(:hover) .card-label { opacity: 0.2; }
+
+        /* ФІНАЛЬНИЙ ЕКРАН ПРИМІРКИ */
+        .model-container { height: 70vh; margin-bottom: 20px; position: relative; display: flex; align-items: center; justify-content: center; }
+        #main-char-img { height: 100%; position: relative; z-index: 10; object-fit: contain; transition: 0.4s; }
+
+        .parts-nav { display: flex; gap: 15px; margin-bottom: 25px; }
+        .part-btn { 
+            background: #111; border: 1px solid #333; color: #555; 
+            padding: 12px 30px; cursor: pointer; font-family: var(--font-title);
+            text-transform: uppercase; font-size: 11px; letter-spacing: 2px; transition: 0.3s;
+        }
+        .part-btn.active { border-color: var(--red-bright); color: #fff; box-shadow: inset 0 0 10px var(--red-glow); }
+
+        .booking-btn {
+            background: var(--red-bright); color: white; border: none; 
+            padding: 20px 70px; font-family: var(--font-main); font-weight: bold;
+            font-size: 1.2rem; cursor: pointer; letter-spacing: 5px;
+            transition: 0.4s; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+        }
+        .booking-btn:hover { background: #fff; color: #000; box-shadow: 0 0 40px var(--red-bright); }
+
+        /* SOLD OUT ЕФЕКТ */
+        .is-sold { filter: grayscale(1) brightness(0.2); pointer-events: none; }
+        #soldOverlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.85); z-index: 1000; display: none;
-            align-items: center; justify-content: center; flex-direction: column;
-            animation: fadeIn 0.3s;
+            background: rgba(0,0,0,0.8); z-index: 2000; display: none;
+            align-items: center; justify-content: center;
         }
 
         /* АДМІНКА */
-        .admin-trigger { position: fixed; bottom: 10px; right: 10px; opacity: 0.1; cursor: pointer; font-size: 10px; z-index: 2000; color: #444; }
-        .admin-trigger:hover { opacity: 1; color: var(--red); }
-        .admin-modal {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: #0a0a0a; border: 1px solid var(--red); padding: 25px;
-            z-index: 2100; display: none; text-align: center; box-shadow: 0 0 40px #000;
-        }
-        .admin-modal input { background: #000; border: 1px solid #333; color: var(--red); padding: 10px; margin-bottom: 15px; text-align: center; font-family: 'Cinzel'; }
-        .admin-modal button { background: var(--red); color: #fff; border: none; padding: 10px 20px; cursor: pointer; font-family: 'Cinzel'; }
-
-        /* КНОПКИ ТА ПРИМІРКА */
-        .nav-btn { background: #111; border: 1px solid #333; color: #555; padding: 12px 25px; cursor: pointer; margin: 5px; font-family: 'Cinzel'; }
-        .nav-btn.active { border-color: var(--red); color: #fff; }
-        .book-btn { margin-top: 30px; background: var(--red); color: #fff; border: none; padding: 18px 60px; cursor: pointer; letter-spacing: 4px; font-weight: bold; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); }
+        .admin-panel { position: fixed; bottom: 10px; right: 10px; opacity: 0.05; background: #111; padding: 10px; z-index: 3000; transition: 0.3s; }
+        .admin-panel:hover { opacity: 1; }
+        .admin-panel input { background: #000; border: 1px solid #333; color: red; padding: 5px; width: 80px; text-align: center; font-size: 10px; }
+        
+        .reset-btn { position: absolute; top: 35px; left: 35px; background: none; border: 1px solid #222; color: #444; padding: 6px 12px; cursor: pointer; font-size: 10px; }
     </style>
 </head>
 <body>
 
-    <div id="lock-overlay">
-        <h1 style="color:var(--red); letter-spacing:15px; font-family: 'Cinzel'; text-shadow: 0 0 20px red;">RESERVED</h1>
-        <p style="font-size:10px; color:gray; letter-spacing:5px;">ACCESS DENIED BY OPERATOR</p>
+    <div id="soldOverlay">
+        <h1 style="color:red; font-family:var(--font-title); letter-spacing:15px; text-shadow:0 0 20px red;">RESERVED</h1>
     </div>
 
     <canvas id="matrix-canvas"></canvas>
 
     <div id="game-ui">
-        <!-- КРОК 1 -->
-        <div id="step1" class="screen">
-            <h1 class="title">SELECT CLAN</h1>
-            <div class="clan-wrapper">
-                <div class="clan-card" onclick="show('step2')">
-                    <img src="122.png" class="clan-img" alt="Tauren">
-                    <div class="clan-name">TAUREN</div>
+        <!-- КРОК 1: КЛАНИ (ТЕПЕР ПРЯМОКУТНИКИ) -->
+        <div id="step1" class="step-container">
+            <h1 class="title-step">Оберіть клан</h1>
+            <div class="cards-wrapper">
+                <div class="rect-card" onclick="selectRace('tauren')">
+                    <img src="122.png" class="card-img">
+                    <div class="card-label">TAUREN</div>
                 </div>
-                <div class="clan-card" onclick="show('step2')">
-                    <img src="123.png" class="clan-img" alt="Elf">
-                    <div class="clan-name">ELF</div>
+                <div class="rect-card" onclick="selectRace('elf')">
+                    <img src="123.png" class="card-img">
+                    <div class="card-label">ELF</div>
                 </div>
             </div>
         </div>
 
-        <!-- КРОК 2 -->
-        <div id="step2" class="screen hidden">
-            <h1 class="title">SELECT BODY</h1>
-            <div class="clan-wrapper">
-                <div class="body-card" onclick="show('main-ui')">
+        <!-- КРОК 2: ТІЛО -->
+        <div id="step2" class="step-container hidden">
+            <h1 class="title-step">Оберіть тіло</h1>
+            <div class="cards-wrapper">
+                <div class="rect-card" onclick="selectGender('male')">
                     <img src="124.png" class="magic-circle">
-                    <img src="https://placeholder.com" class="body-img">
+                    <img src="URL_MALE_BODY" class="card-img">
+                    <div class="card-label">MALE</div>
                 </div>
-                <div class="body-card" onclick="show('main-ui')">
+                <div class="rect-card" onclick="selectGender('female')">
                     <img src="124.png" class="magic-circle">
-                    <img src="https://placeholder.com" class="body-img">
+                    <img src="URL_FEMALE_BODY" class="card-img">
+                    <div class="card-label">FEMALE</div>
                 </div>
             </div>
-            <p onclick="location.reload()" style="margin-top:30px; opacity:0.3; font-size:10px; cursor:pointer;">[ BACK ]</p>
+            <p onclick="location.reload()" style="margin-top:40px; cursor:pointer; opacity:0.3; font-size:10px;">[ BACK ]</p>
         </div>
 
-        <!-- КРОК 3 -->
-        <div id="main-ui" class="screen hidden">
-            <div style="position:relative; height: 60vh;">
-                <img src="124.png" class="magic-circle" style="width: 110%;">
-                <img id="char-img" src="https://placeholder.com" style="height:100%; position:relative; z-index:5;">
+        <!-- КРОК 3: ФІНАЛ -->
+        <div id="main-ui" class="step-container hidden">
+            <button class="reset-btn" onclick="resetAll()">[ RESET SOUL ]</button>
+            <div class="model-container">
+                <img src="124.png" class="magic-circle" style="width:100vh; opacity:0.3;">
+                <img id="main-char-img" src="">
             </div>
-            <div style="margin-top:20px;">
-                <button class="nav-btn active">FOREARM</button>
-                <button class="nav-btn">BICEPS</button>
-                <button class="nav-btn">CALF</button>
+            <div class="parts-nav">
+                <button class="part-btn active" onclick="setPart('forearm', this)">Передпліччя</button>
+                <button class="part-btn" onclick="setPart('biceps', this)">Біцепс</button>
+                <button class="part-btn" onclick="setPart('calf', this)">Ікра</button>
             </div>
-            <button class="book-btn">BOOK TATTOO</button>
+            <button class="booking-btn" onclick="window.open('ТВІЙ_ТГ_ЛІНК')">ЗАБРОНЮВАТИ</button>
         </div>
-    </div>
 
-    <!-- ПРИХОВАНА АДМІНКА -->
-    <div class="admin-trigger" onclick="document.getElementById('admBox').style.display='block'">⚙️ ADM</div>
-    
-    <div id="admBox" class="admin-modal">
-        <h3 style="color:red; font-family:'Cinzel'; font-size:14px; margin-bottom:20px;">SYSTEM LOGIN</h3>
-        <input type="password" id="admKey" placeholder="KEY">
-        <br>
-        <button onclick="checkAdm()">CONFIRM</button>
-        <div id="admTools" style="display:none; margin-top:20px; border-top:1px solid #222; padding-top:20px;">
-            <button onclick="toggleLock()" style="background:#fff; color:#000;">TOGGLE SITE LOCK</button>
+        <!-- АДМІНКА -->
+        <div class="admin-panel">
+            <input type="password" id="admPass" placeholder="KEY">
+            <button onclick="loginAdm()" style="background:#222; color:#fff; border:none; cursor:pointer; padding:5px 10px; font-size:10px;">OK</button>
+            <div id="admTools" style="display:none; margin-top:10px;">
+                <button onclick="toggleLock()" style="background:red; color:white; border:none; padding:8px; cursor:pointer; width:100%; font-size:10px;">TOGGLE LOCK</button>
+            </div>
         </div>
-        <p onclick="document.getElementById('admBox').style.display='none'" style="color:gray; font-size:10px; cursor:pointer; margin-top:20px;">[ CLOSE ]</p>
     </div>
 
     <script>
-        // МАТРИЦЯ
+        // --- 1. МАТРИЦЯ (ПОСТІЙНИЙ ФОН) ---
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         let w, h, cols, drops;
@@ -173,8 +200,7 @@
         function drawM() {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
             ctx.fillRect(0, 0, w, h);
-            ctx.fillStyle = '#ff0000';
-            ctx.font = fSize + 'px monospace';
+            ctx.fillStyle = '#ff0000'; ctx.font = fSize + 'px monospace';
             for (let i = 0; i < drops.length; i++) {
                 ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*fSize, drops[i]*fSize);
                 if (drops[i]*fSize > h && Math.random() > 0.985) drops[i] = 0;
@@ -183,23 +209,90 @@
         }
         window.onresize = initM; initM(); setInterval(drawM, 80);
 
-        // ЛОГІКА САЙТУ
+        // --- 2. FIREBASE ТА ДАНІ ---
+        const images = {
+            tauren_male_forearm: "TMF.png", tauren_male_biceps: "TMB.png", tauren_male_calf: "TMC.png",
+            tauren_female_forearm: "TFF.png", tauren_female_biceps: "TFB.png", tauren_female_calf: "TFC.png",
+            elf_male_forearm: "EMF.png", elf_male_biceps: "EMB.png", elf_male_calf: "EMC.png",
+            elf_female_forearm: "EFF.png", elf_female_biceps: "EFB.png", elf_female_calf: "EFC.png"
+        };
+
+        const firebaseConfig = { databaseURL: "ТВІЙ_FIREBASE_URL" };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let state = { 
+            race: localStorage.getItem('race') || '', 
+            gender: localStorage.getItem('gender') || '', 
+            part: 'forearm' 
+        };
+
+        // Статус блокування через Firebase
+        db.ref('site_status').on('value', (snap) => {
+            const status = snap.val();
+            const ui = document.getElementById('game-ui');
+            const overlay = document.getElementById('soldOverlay');
+            if (status === 'blocked') {
+                ui.classList.add('is-sold');
+                overlay.style.display = 'flex';
+            } else {
+                ui.classList.remove('is-sold');
+                overlay.style.display = 'none';
+            }
+        });
+
+        window.onload = () => {
+            if (state.race && state.gender) {
+                show('main-ui');
+                updateView();
+            }
+        };
+
+        // --- 3. ЛОГІКА ---
+        function selectRace(r) { 
+            state.race = r; localStorage.setItem('race', r); 
+            show('step2');
+        }
+
+        function selectGender(g) { 
+            state.gender = g; localStorage.setItem('gender', g); 
+            show('main-ui');
+            updateView(); 
+        }
+
+        function setPart(p, btn) { 
+            state.part = p; 
+            document.querySelectorAll('.part-btn').forEach(b => b.classList.remove('active')); 
+            btn.classList.add('active'); 
+            updateView(); 
+        }
+
+        function updateView() {
+            const key = `${state.race}_${state.gender}_${state.part}`;
+            const img = document.getElementById('main-char-img');
+            img.style.opacity = 0;
+            setTimeout(() => { 
+                if(images[key]) img.src = images[key]; 
+                img.style.opacity = 1; 
+            }, 300);
+        }
+
         function show(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+            document.querySelectorAll('.step-container').forEach(s => s.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
         }
 
-        // АДМІНКА
-        let siteLocked = false;
-        function checkAdm() {
-            if(document.getElementById('admKey').value === 'yokai123234') {
-                document.getElementById('admTools').style.display = 'block';
-            } else { alert('ACCESS DENIED'); }
+        function resetAll() { localStorage.clear(); location.reload(); }
+
+        // --- 4. АДМІНКА ---
+        function loginAdm() { 
+            if(document.getElementById('admPass').value === "yokai123234") {
+                document.getElementById('admTools').style.display='block'; 
+            }
         }
         function toggleLock() {
-            siteLocked = !siteLocked;
-            document.getElementById('lock-overlay').style.display = siteLocked ? 'flex' : 'none';
-            document.getElementById('game-ui').style.filter = siteLocked ? 'grayscale(1) brightness(0.2)' : 'none';
+            const isBlocked = document.getElementById('game-ui').classList.contains('is-sold');
+            db.ref('site_status').set(isBlocked ? 'active' : 'blocked');
         }
     </script>
 </body>
