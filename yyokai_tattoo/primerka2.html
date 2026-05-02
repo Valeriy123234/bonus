@@ -4,64 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YOKAI TATTOO | INTERACTIVE UI</title>
-    
     <link href="https://googleapis.com" rel="stylesheet">
     
+    <!-- Підключення Firebase (додано бібліотеки) -->
     <script src="https://gstatic.com"></script>
     <script src="https://gstatic.com"></script>
 
-<style>
-    :root { 
-        --red-bright: #ff0000;
-        --red-glow: rgba(255, 0, 0, 0.5);
-        --font-main: 'Shippori Mincho', serif;
-    }
+    <style>
+        :root { 
+            --red-bright: #ff0000;
+            --red-glow: rgba(255, 0, 0, 0.5);
+            --font-main: 'Shippori Mincho', serif;
+        }
 
-    body, html { 
-        margin: 0; 
-        padding: 0; 
-        width: 100%; 
-        height: 100%; 
-        background: #000; 
-        color: #fff; 
-        font-family: var(--font-main); 
-        overflow: hidden; /* Прибирає зайву прокрутку */
-    }
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            background: #000; color: #fff; 
+            font-family: var(--font-main); 
+            overflow: hidden; 
+        }
 
-    /* Магічний фон з ієрогліфами */
-    #matrix-canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: -1; /* Завжди під контентом */
-        pointer-events: none;
-        opacity: 0.12; /* Ледь помітний ефект (12%) */
-        display: block;
-    }
+        /* МАГІЧНИЙ ФОН */
+        #matrix-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 1; /* Рівень 1 */
+            pointer-events: none;
+            opacity: 0.12;
+        }
 
-    /* Шар для твоїх іконок та тексту */
-    .content-wrapper {
-        position: relative;
-        z-index: 10; /* Виносить іконки НА передній план */
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
+        /* ШАР КОНТЕНТУ */
+        .app-container {
+            position: relative;
+            z-index: 10; /* Рівень 10 (Понад фоном) */
+            width: 100%; height: 100%;
+        }
 
-
-
-
-        /* ЛЕВІТАЦІЯ ЗА СПИНОЮ */
         .floating-bg {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 75vh; height: 75vh;
-            background: url('URL_ТВОЄЇ_ПНГ_ЗА_СПИНОЮ') center/contain no-repeat;
-            z-index: -4; opacity: 0.25;
+            background: url('124.png') center/contain no-repeat;
+            z-index: -1; opacity: 0.25;
             animation: levitate 12s infinite ease-in-out;
             pointer-events: none;
         }
@@ -71,14 +55,9 @@
             50% { transform: translate(-50%, -50%) translateY(15px) translateX(10px); }
         }
 
-        /* ЗАГОЛОВОК "ДИХАННЯ" */
         .title-step { 
-            font-size: 1.6rem;
-            letter-spacing: 10px; 
-            text-transform: uppercase;
-            color: var(--red-bright);
-            text-align: center;
-            margin-bottom: 50px;
+            font-size: 1.6rem; letter-spacing: 10px; text-transform: uppercase;
+            color: var(--red-bright); text-align: center; margin-bottom: 50px;
             animation: breath 3s infinite ease-in-out;
         }
 
@@ -90,38 +69,21 @@
         .step-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; width: 100%; }
         .hidden { display: none !important; }
 
-        /* ГРУПА ЕМБЛЕМ */
         .icons-wrapper { display: flex; gap: 40px; }
-
-        /* ЕМБЛЕМИ: НАТУРАЛЬНИЙ ВИГЛЯД */
         .icon-select { 
-            width: 180px; /* Трохи більше */
-            height: 180px; 
-            cursor: pointer; 
+            width: 180px; height: 180px; cursor: pointer;
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             object-fit: contain;
-            filter: grayscale(0) opacity(1);
         }
+        .icons-wrapper:hover .icon-select:not(:hover) { filter: grayscale(1) opacity(0.3); transform: scale(0.9); }
+        .icon-select:hover { transform: scale(1.15) translateY(-10px); }
 
-        /* ЕФЕКТ ПРИ НАВЕДЕННІ: ТА ЩО ПІД МИШКОЮ - РОСТЕ, ІНША - СІРІЄ */
-        .icons-wrapper:hover .icon-select:not(:hover) {
-            filter: grayscale(1) opacity(0.3); /* Інша емблема стає сірою та прозорою */
-            transform: scale(0.9);
-        }
-
-        .icon-select:hover { 
-            transform: scale(1.15) translateY(-10px); /* Вибрана збільшується */
-            filter: grayscale(0) opacity(1);
-        }
-
-        /* БЛОКУВАННЯ (SOLD OUT) */
         .step-container.is-sold { filter: grayscale(1) brightness(0.2); pointer-events: none; }
         #soldLabel { color: red; font-size: 1.2rem; position: absolute; top: 15%; display: none; letter-spacing: 4px; }
 
-        /* ГОЛОВНИЙ ЕКРАН ПРИМІРКИ */
         .main-ui { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: relative; }
         .model-container { height: 75vh; margin-bottom: 20px; position: relative; }
-        #main-char-img { height: 100%; object-fit: contain; transition: 0.4s; }
+        #main-char-img { height: 100%; object-fit: contain; transition: 0.4s; opacity: 1; }
 
         .parts-nav { display: flex; gap: 12px; margin-bottom: 25px; }
         .part-btn { 
@@ -134,68 +96,97 @@
         .booking-btn {
             background: var(--red-bright); color: white; border: none; 
             padding: 20px 60px; font-family: var(--font-main);
-            font-size: 1.2rem; cursor: pointer; letter-spacing: 4px;
-            transition: 0.4s;
+            font-size: 1.2rem; cursor: pointer; letter-spacing: 4px; transition: 0.4s;
         }
         .booking-btn:hover { transform: scale(1.05); box-shadow: 0 0 35px var(--red-bright); }
 
-        /* АДМІНКА */
         .admin-panel { position: fixed; bottom: 0; right: 0; opacity: 0.05; background: #111; padding: 10px; z-index: 1000; transition: 0.3s; }
         .admin-panel:hover { opacity: 1; }
         .admin-panel input { background: #000; border: 1px solid #333; color: red; padding: 5px; width: 65px; font-size: 10px; }
-        
-        .reset-btn { position: absolute; top: 35px; left: 35px; background: none; border: 1px solid #222; color: #444; padding: 6px 12px; cursor: pointer; font-size: 10px; }
+        .reset-btn { position: absolute; top: 35px; left: 35px; background: none; border: 1px solid #222; color: #444; padding: 6px 12px; cursor: pointer; font-size: 10px; z-index: 100; }
     </style>
 </head>
 <body>
 
-   <!-- ЦЕ ВСТАВЛЯЙ -->
-<body>
-  <canvas id="matrix-canvas"></canvas>
+    <canvas id="matrix-canvas"></canvas>
 
+    <div class="app-container">
+        <div class="floating-bg"></div>
 
-    <!-- КРОК 1: РАСА -->
-    <div id="step1" class="step-container">
-        <div id="soldLabel">RESTRICTED ACCESS</div>
-        <h1 class="title-step">Обери клан</h1>
-        <div class="icons-wrapper">
-            <img src="122.png" class="icon-select" onclick="selectRace('tauren')">
-            <img src="123.png" class="icon-select" onclick="selectRace('elf')">
+        <!-- КРОК 1 -->
+        <div id="step1" class="step-container">
+            <div id="soldLabel">RESTRICTED ACCESS</div>
+            <h1 class="title-step">Обери клан</h1>
+            <div class="icons-wrapper">
+                <img src="122.png" class="icon-select" onclick="selectRace('tauren')">
+                <img src="123.png" class="icon-select" onclick="selectRace('elf')">
+            </div>
+        </div>
+
+        <!-- КРОК 2 -->
+        <div id="step2" class="step-container hidden">
+            <h1 class="title-step">Обери тіло</h1>
+            <div class="icons-wrapper">
+                <img src="URL_MALE_ICON" class="icon-select" onclick="selectGender('male')">
+                <img src="URL_FEMALE_ICON" class="icon-select" onclick="selectGender('female')">
+            </div>
+        </div>
+
+        <!-- КРОК 3 -->
+        <div id="main-ui" class="main-ui hidden">
+            <button class="reset-btn" onclick="resetAll()">[ RESET SOUL ]</button>
+            <div class="model-container"><img id="main-char-img" src=""></div>
+            <div class="parts-nav">
+                <button class="part-btn active" onclick="setPart('forearm', this)">Передпліччя</button>
+                <button class="part-btn" onclick="setPart('biceps', this)">Біцепс</button>
+                <button class="part-btn" onclick="setPart('calf', this)">Ікра</button>
+            </div>
+            <button class="booking-btn" onclick="window.open('https://t.me')">ЗАБРОНЮВАТИ СЕАНС</button>
+        </div>
+
+        <!-- АДМІНКА -->
+        <div class="admin-panel" id="adminZone">
+            <input type="password" id="admPass" placeholder="KEY">
+            <button onclick="loginAdm()" style="background:#222; color:#fff; border:none; cursor:pointer; padding:5px 10px;">OK</button>
+            <div id="admTools" style="display:none; margin-top:10px;">
+                <button onclick="toggleSold()" style="background:red; color:white; border:none; padding:8px; cursor:pointer; width:100%; font-size:10px;">TOGGLE SOLD</button>
+            </div>
         </div>
     </div>
-
-    <!-- КРОК 2: СТАТЬ -->
-    <div id="step2" class="step-container hidden">
-        <h1 class="title-step">Обери тіло</h1>
-        <div class="icons-wrapper">
-            <img src="URL_ICON_MALE" class="icon-select" onclick="selectGender('male')">
-            <img src="URL_ICON_FEMALE" class="icon-select" onclick="selectGender('female')">
-        </div>
-    </div>
-
-    <!-- КРОК 3: ПЕРСОНАЖ -->
-    <div id="main-ui" class="main-ui hidden">
-        <button class="reset-btn" onclick="resetAll()">[ RESET SOUL ]</button>
-        <div class="model-container"><img id="main-char-img" src=""></div>
-        <div class="parts-nav">
-            <button class="part-btn active" onclick="setPart('forearm', this)">Передпліччя</button>
-            <button class="part-btn" onclick="setPart('biceps', this)">Біцепс</button>
-            <button class="part-btn" onclick="setPart('calf', this)">Ікра</button>
-        </div>
-        <button class="booking-btn" onclick="window.open('ТВІЙ_ТЕЛЕГРАМ')">ЗАБРОНЮВАТИ СЕАНС</button>
-    </div>
-
-    <!-- АДМІНКА -->
-    <div class="admin-panel" id="adminZone">
-        <input type="password" id="admPass" placeholder="KEY">
-        <button onclick="loginAdm()" style="background:#222; color:#fff; border:none; cursor:pointer; padding:5px 10px;">OK</button>
-        <div id="admTools" style="display:none; margin-top:10px;">
-            <button onclick="toggleSold()" style="background:red; color:white; border:none; padding:8px; cursor:pointer; width:100%; font-size:10px;">TOGGLE SOLD</button>
-        </div>
-    </div>
-    
 
     <script>
+        // --- МАТРИЦЯ ---
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, columns, drops;
+        const fontSize = 16;
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプ';
+
+        function initMatrix() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            columns = Math.floor(width / fontSize);
+            drops = new Array(columns).fill(1);
+        }
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = '#ff3333';
+            ctx.font = fontSize + 'px monospace';
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#ff0000';
+            for (let i = 0; i < drops.length; i++) {
+                const text = katakana[Math.floor(Math.random() * katakana.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > height && Math.random() > 0.99) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        window.addEventListener('resize', initMatrix);
+        initMatrix();
+        setInterval(drawMatrix, 80);
+
+        // --- ЛОГІКА ДОДАТКУ ---
         const images = {
             tauren_male_forearm: "URL", tauren_male_biceps: "URL", tauren_male_calf: "URL",
             tauren_female_forearm: "URL", tauren_female_biceps: "URL", tauren_female_calf: "URL",
@@ -204,27 +195,23 @@
         };
 
         const firebaseConfig = { databaseURL: "ТВІЙ_FIREBASE_URL" };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+        if (firebaseConfig.databaseURL !== "ТВІЙ_FIREBASE_URL") {
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.database();
+            db.ref('project_status').on('value', (snap) => {
+                const status = snap.val();
+                const s1 = document.getElementById('step1');
+                const label = document.getElementById('soldLabel');
+                if (status === 'blocked') { s1.classList.add('is-sold'); label.style.display = 'block'; }
+                else { s1.classList.remove('is-sold'); label.style.display = 'none'; }
+            });
+        }
 
         let state = { 
             race: localStorage.getItem('race') || '', 
             gender: localStorage.getItem('gender') || '', 
             part: 'forearm' 
         };
-
-        db.ref('project_status').on('value', (snap) => {
-            const status = snap.val();
-            const s1 = document.getElementById('step1');
-            const label = document.getElementById('soldLabel');
-            if (status === 'blocked') {
-                s1.classList.add('is-sold');
-                label.style.display = 'block';
-            } else {
-                s1.classList.remove('is-sold');
-                label.style.display = 'none';
-            }
-        });
 
         window.onload = () => {
             if (state.race && state.gender) {
@@ -258,63 +245,18 @@
             const key = `${state.race}_${state.gender}_${state.part}`;
             const img = document.getElementById('main-char-img');
             img.style.opacity = 0;
-            setTimeout(() => { img.src = images[key]; img.style.opacity = 1; }, 300);
+            setTimeout(() => { 
+                if(images[key]) img.src = images[key]; 
+                img.style.opacity = 1; 
+            }, 300);
         }
 
         function resetAll() { localStorage.clear(); location.reload(); }
         function loginAdm() { if(document.getElementById('admPass').value === "yokai123234") document.getElementById('admTools').style.display='block'; }
         function toggleSold() {
             const isBlocked = document.getElementById('step1').classList.contains('is-sold');
-            db.ref('project_status').set(isBlocked ? 'active' : 'blocked');
+            firebase.database().ref('project_status').set(isBlocked ? 'active' : 'blocked');
         }
-        
-
     </script>
-        <!-- Твій контент (іконки, текст тощо) -->
-
-    <!-- ВСТАВЛЯЙ СЮДИ -->
-  <script>
-    const canvas = document.getElementById('matrix-canvas');
-    const ctx = canvas.getContext('2d');
-
-    let width, height, columns, drops;
-    const fontSize = 16;
-    const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプ';
-
-    function init() {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-        columns = Math.floor(width / fontSize);
-        drops = new Array(columns).fill(1);
-    }
-
-    function draw() {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; 
-        ctx.fillRect(0, 0, width, height);
-
-        ctx.fillStyle = '#ff3333'; 
-        ctx.font = fontSize + 'px monospace';
-        ctx.shadowBlur = 10; 
-        ctx.shadowColor = '#ff0000';
-
-        for (let i = 0; i < drops.length; i++) {
-            const text = katakana[Math.floor(Math.random() * katakana.length)];
-            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-            if (drops[i] * fontSize > height && Math.random() > 0.99) {
-                drops[i] = 0;
-            }
-            drops[i]++;
-        }
-    }
-
-    window.addEventListener('resize', init);
-    init();
-    setInterval(draw, 80); 
-</script>
-
-</body>
-
-
 </body>
 </html>
