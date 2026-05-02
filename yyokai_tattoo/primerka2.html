@@ -261,46 +261,51 @@
     <!-- ВСТАВЛЯЙ СЮДИ -->
     <script>
         const canvas = document.getElementById('matrix-canvas');
-        const ctx = canvas.getContext('2d');
+const ctx = canvas.getContext('2d');
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+const chars = katakana.split('');
+const fontSize = 18; // Трохи більший шрифт краще виглядає
+const columns = Math.floor(canvas.width / fontSize);
+const drops = new Array(columns).fill(1);
+
+function draw() {
+    // Малюємо напівпрозорий прямокутник, щоб старі символи згасали поступово
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; 
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Колір ієрогліфів (тьмяно-червоний для м'якості)
+    ctx.fillStyle = '#990000'; 
+    ctx.font = fontSize + 'px monospace';
+    
+    // Слабке неонове сяйво
+    ctx.shadowBlur = 4;
+    ctx.shadowColor = '#ff0000';
+
+    for (let i = 0; i < drops.length; i++) {
+        const text = chars[Math.floor(Math.random() * chars.length)];
+        
+        // Малюємо символ
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        // Шанс повернення наверх (зменшено, щоб вони падали рідше)
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.985) {
+            drops[i] = 0;
         }
+        drops[i]++;
+    }
+}
 
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+// Збільшуємо число до 50-70 мс (чим більше число, тим повільніше анімація)
+setInterval(draw, 60); 
 
-        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
-        const chars = katakana.split('');
-        const fontSize = 16;
-        const columns = Math.floor(canvas.width / fontSize);
-        const drops = new Array(columns).fill(1);
-
-        function draw() {
-            // Це зробить "хвости" ієрогліфів значно коротшими і прозорішими
-            ctx.clearRect(0, 0, canvas.width, canvas.height); 
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.01)'; 
-
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = '#ff0000'; 
-            ctx.font = fontSize + 'px monospace';
-            ctx.shadowBlur = 5;
-            ctx.shadowColor = '#ff0000';
-
-            for (let i = 0; i < drops.length; i++) {
-                const text = chars[Math.floor(Math.random() * chars.length)];
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                drops[i]++;
-            }
-        }
-
-        setInterval(draw, 33);
     </script>
 </body>
 
