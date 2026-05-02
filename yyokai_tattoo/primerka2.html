@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YOKAI TATTOO | UI TEST</title>
-    <!-- Підключення японських та готичних шрифтів для вайбу WoW -->
+    <title>YOKAI TATTOO | CHARACTER SELECT</title>
     <link href="https://googleapis.com" rel="stylesheet">
     
     <script src="https://gstatic.com"></script>
@@ -13,7 +12,6 @@
     <style>
         :root { 
             --red: #ff0000;
-            --red-glow: rgba(255, 0, 0, 0.6);
             --bg: #000;
         }
 
@@ -23,104 +21,96 @@
             font-family: 'Shippori Mincho', serif; overflow: hidden; 
         }
 
-        /* МАГІЧНИЙ ФОН: ЦИФРОВИЙ КОД (МАТРИЦЯ) */
+        /* МАТРИЦЯ (ФОН 15%) */
         #matrix-canvas {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: 1; pointer-events: none; opacity: 0.15; /* Твої 15% */
+            z-index: 1; pointer-events: none; opacity: 0.15;
         }
 
-        #game-ui { position: relative; z-index: 10; width: 100%; height: 100%; }
+        #game-ui { position: relative; z-index: 10; width: 100%; height: 100%; transition: 0.5s; }
 
-        /* ЕКРАНИ */
         .screen {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             height: 100vh; animation: fadeIn 0.8s ease;
         }
         .hidden { display: none !important; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
 
         .title {
-            font-family: 'Cinzel', serif; font-size: 2.2rem; letter-spacing: 12px;
-            color: var(--red); text-shadow: 0 0 15px var(--red-glow); margin-bottom: 50px;
+            font-family: 'Cinzel', serif; font-size: 2rem; letter-spacing: 12px;
+            color: var(--red); text-align: center; margin-bottom: 60px;
         }
 
-        /* КАРТКИ РАС */
-        .clan-wrapper { display: flex; gap: 60px; }
-        .clan-card { cursor: pointer; text-align: center; transition: 0.4s; }
-        .clan-card:hover { transform: scale(1.1); }
-        .clan-img { 
-            width: 200px; height: 200px; border-radius: 50%; 
-            border: 2px solid #222; transition: 0.4s; object-fit: cover;
-        }
-        .clan-card:hover .clan-img { border-color: var(--red); box-shadow: 0 0 30px var(--red-glow); }
-        .clan-name { 
-            font-family: 'Cinzel', serif; margin-top: 15px; font-size: 1.2rem; 
-            letter-spacing: 5px; color: #777; transition: 0.3s;
-        }
-        .clan-card:hover .clan-name { color: #fff; text-shadow: 0 0 10px var(--red); }
+        /* КЛАНИ */
+        .clan-wrapper { display: flex; gap: 80px; }
+        .clan-card { cursor: pointer; text-align: center; transition: all 0.5s ease; }
+        .clan-img { width: 220px; height: 220px; object-fit: contain; filter: grayscale(0); transition: all 0.5s ease; }
+
+        .clan-wrapper:hover .clan-card:not(:hover) .clan-img { filter: grayscale(1); opacity: 0.15; transform: scale(0.9); }
+        .clan-card:hover .clan-img { transform: scale(1.15); filter: grayscale(0); opacity: 1; }
+
+        .clan-name { font-family: 'Cinzel', serif; margin-top: 20px; font-size: 1.1rem; letter-spacing: 5px; color: #fff; transition: 0.5s; }
+        .clan-wrapper:hover .clan-card:not(:hover) .clan-name { opacity: 0.2; }
 
         /* ТІЛО (ПРЯМОКУТНИКИ) */
         .body-card {
-            width: 260px; height: 480px; position: relative; cursor: pointer;
-            border: 1px solid #222; overflow: hidden; background: #050505;
+            width: 250px; height: 450px; position: relative; cursor: pointer;
+            border: 1px solid #222; overflow: hidden; background: #050505; transition: 0.4s;
         }
         .magic-circle {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 130%; opacity: 0.2; pointer-events: none;
-            animation: rotateCircle 20s infinite linear, levitate 5s infinite ease-in-out;
+            animation: rotateCircle 25s infinite linear;
         }
         @keyframes rotateCircle { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
-        @keyframes levitate { 0%, 100% { margin-top: -15px; } 50% { margin-top: 15px; } }
+        .body-img { position: relative; z-index: 5; width: 100%; height: 100%; object-fit: contain; opacity: 0.5; transition: 0.5s; }
+        .body-card:hover .body-img { opacity: 1; }
+        .body-card:hover { border-color: var(--red); box-shadow: 0 0 20px rgba(255,0,0,0.4); }
 
-        .body-img { position: relative; z-index: 5; width: 100%; height: 100%; object-fit: contain; opacity: 0.6; transition: 0.5s; }
-        .body-card:hover .body-img { opacity: 1; transform: scale(1.05); }
-        .body-card:hover { border-color: var(--red); box-shadow: 0 0 25px var(--red-glow); }
-
-        /* ПРИМІРКА */
-        .nav-btn {
-            background: #111; border: 1px solid #333; color: #555;
-            padding: 12px 25px; cursor: pointer; letter-spacing: 2px; font-family: 'Cinzel', serif;
-            margin: 5px; transition: 0.3s;
-        }
-        .nav-btn.active { border-color: var(--red); color: #fff; box-shadow: 0 0 15px var(--red-glow); }
-        .book-btn {
-            margin-top: 30px; background: var(--red); color: #fff; border: none;
-            padding: 18px 60px; font-weight: bold; cursor: pointer; letter-spacing: 4px;
-            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); transition: 0.4s;
-        }
-        .book-btn:hover { background: #fff; color: #000; box-shadow: 0 0 30px var(--red); }
-
-        /* БЛОКУВАННЯ */
-        .is-locked { filter: grayscale(1) brightness(0.2); pointer-events: none; }
+        /* ЗАГЛУШКА SOLD OUT */
         #lock-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.8); z-index: 1000; display: none;
+            background: rgba(0,0,0,0.85); z-index: 1000; display: none;
             align-items: center; justify-content: center; flex-direction: column;
+            animation: fadeIn 0.3s;
         }
+
+        /* АДМІНКА */
+        .admin-trigger { position: fixed; bottom: 10px; right: 10px; opacity: 0.1; cursor: pointer; font-size: 10px; z-index: 2000; color: #444; }
+        .admin-trigger:hover { opacity: 1; color: var(--red); }
+        .admin-modal {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: #0a0a0a; border: 1px solid var(--red); padding: 25px;
+            z-index: 2100; display: none; text-align: center; box-shadow: 0 0 40px #000;
+        }
+        .admin-modal input { background: #000; border: 1px solid #333; color: var(--red); padding: 10px; margin-bottom: 15px; text-align: center; font-family: 'Cinzel'; }
+        .admin-modal button { background: var(--red); color: #fff; border: none; padding: 10px 20px; cursor: pointer; font-family: 'Cinzel'; }
+
+        /* КНОПКИ ТА ПРИМІРКА */
+        .nav-btn { background: #111; border: 1px solid #333; color: #555; padding: 12px 25px; cursor: pointer; margin: 5px; font-family: 'Cinzel'; }
+        .nav-btn.active { border-color: var(--red); color: #fff; }
+        .book-btn { margin-top: 30px; background: var(--red); color: #fff; border: none; padding: 18px 60px; cursor: pointer; letter-spacing: 4px; font-weight: bold; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); }
     </style>
 </head>
 <body>
 
-    <!-- Заглушка блокування -->
     <div id="lock-overlay">
-        <h1 style="color:red; letter-spacing:10px; text-shadow: 0 0 20px red;">RESERVED</h1>
-        <p style="font-size:10px; color:gray; letter-spacing:3px;">SYSTEM ACCESS DENIED</p>
+        <h1 style="color:var(--red); letter-spacing:15px; font-family: 'Cinzel'; text-shadow: 0 0 20px red;">RESERVED</h1>
+        <p style="font-size:10px; color:gray; letter-spacing:5px;">ACCESS DENIED BY OPERATOR</p>
     </div>
 
     <canvas id="matrix-canvas"></canvas>
 
     <div id="game-ui">
-        
         <!-- КРОК 1 -->
         <div id="step1" class="screen">
             <h1 class="title">SELECT CLAN</h1>
             <div class="clan-wrapper">
-                <div class="clan-card" onclick="setRace('tauren')">
-                    <img src="https://placeholder.com" class="clan-img">
+                <div class="clan-card" onclick="show('step2')">
+                    <img src="122.png" class="clan-img" alt="Tauren">
                     <div class="clan-name">TAUREN</div>
                 </div>
-                <div class="clan-card" onclick="setRace('elf')">
-                    <img src="https://placeholder.com" class="clan-img">
+                <div class="clan-card" onclick="show('step2')">
+                    <img src="123.png" class="clan-img" alt="Elf">
                     <div class="clan-name">ELF</div>
                 </div>
             </div>
@@ -130,99 +120,86 @@
         <div id="step2" class="screen hidden">
             <h1 class="title">SELECT BODY</h1>
             <div class="clan-wrapper">
-                <div class="body-card" onclick="setGender('male')">
-                    <img src="https://placeholder.com" class="magic-circle"> <!-- Круг-заглушка -->
+                <div class="body-card" onclick="show('main-ui')">
+                    <img src="124.png" class="magic-circle">
                     <img src="https://placeholder.com" class="body-img">
                 </div>
-                <div class="body-card" onclick="setGender('female')">
-                    <img src="https://placeholder.com" class="magic-circle">
+                <div class="body-card" onclick="show('main-ui')">
+                    <img src="124.png" class="magic-circle">
                     <img src="https://placeholder.com" class="body-img">
                 </div>
             </div>
-            <p onclick="location.reload()" style="margin-top:40px; cursor:pointer; opacity:0.3; font-size:10px;">[ BACK ]</p>
+            <p onclick="location.reload()" style="margin-top:30px; opacity:0.3; font-size:10px; cursor:pointer;">[ BACK ]</p>
         </div>
 
         <!-- КРОК 3 -->
         <div id="main-ui" class="screen hidden">
-            <div style="position:relative; height: 60vh; width: 400px; text-align:center;">
-                <img src="https://placeholder.com" class="magic-circle" style="width: 120%;">
+            <div style="position:relative; height: 60vh;">
+                <img src="124.png" class="magic-circle" style="width: 110%;">
                 <img id="char-img" src="https://placeholder.com" style="height:100%; position:relative; z-index:5;">
             </div>
             <div style="margin-top:20px;">
-                <button class="nav-btn active" onclick="setPart('forearm', this)">FOREARM</button>
-                <button class="nav-btn" onclick="setPart('biceps', this)">BICEPS</button>
-                <button class="nav-btn" onclick="setPart('calf', this)">CALF</button>
+                <button class="nav-btn active">FOREARM</button>
+                <button class="nav-btn">BICEPS</button>
+                <button class="nav-btn">CALF</button>
             </div>
             <button class="book-btn">BOOK TATTOO</button>
-            <p onclick="location.reload()" style="margin-top:20px; cursor:pointer; opacity:0.3; font-size:10px;">[ RESET SOUL ]</p>
         </div>
-
     </div>
 
-    <!-- АДМІНКА -->
-    <div style="position:fixed; bottom:10px; right:10px; opacity:0.1; cursor:pointer; font-size:10px;" onclick="document.getElementById('adm').style.display='block'">⚙️ ADM</div>
-    <div id="adm" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#111; border:1px solid red; padding:20px; display:none; z-index:2000; text-align:center;">
-        <input type="password" id="p" placeholder="KEY" style="background:#000; color:red; border:1px solid #333; padding:10px;">
-        <button onclick="if(document.getElementById('p').value==='yokai123234') document.getElementById('ctrl').style.display='block'">OK</button>
-        <div id="ctrl" style="display:none; margin-top:10px;">
-            <button onclick="toggleLock()" style="background:red; color:white; border:none; padding:10px; cursor:pointer;">TOGGLE SOLD OUT</button>
+    <!-- ПРИХОВАНА АДМІНКА -->
+    <div class="admin-trigger" onclick="document.getElementById('admBox').style.display='block'">⚙️ ADM</div>
+    
+    <div id="admBox" class="admin-modal">
+        <h3 style="color:red; font-family:'Cinzel'; font-size:14px; margin-bottom:20px;">SYSTEM LOGIN</h3>
+        <input type="password" id="admKey" placeholder="KEY">
+        <br>
+        <button onclick="checkAdm()">CONFIRM</button>
+        <div id="admTools" style="display:none; margin-top:20px; border-top:1px solid #222; padding-top:20px;">
+            <button onclick="toggleLock()" style="background:#fff; color:#000;">TOGGLE SITE LOCK</button>
         </div>
-        <button onclick="this.parentElement.style.display='none'" style="display:block; margin: 10px auto; background:none; color:gray; border:none; cursor:pointer;">CLOSE</button>
+        <p onclick="document.getElementById('admBox').style.display='none'" style="color:gray; font-size:10px; cursor:pointer; margin-top:20px;">[ CLOSE ]</p>
     </div>
 
     <script>
-        // 1. МАТРИЦЯ (ФОН)
+        // МАТРИЦЯ
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         let w, h, cols, drops;
         const fSize = 16;
         const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプ';
 
-        function initM() {
-            w = canvas.width = window.innerWidth;
-            h = canvas.height = window.innerHeight;
-            cols = Math.floor(w / fSize);
-            drops = new Array(cols).fill(1);
-        }
-
+        function initM() { w=canvas.width=window.innerWidth; h=canvas.height=window.innerHeight; cols=Math.floor(w/fSize); drops=new Array(cols).fill(1); }
         function drawM() {
-            // Чорний фон з прозорістю для ефекту шлейфу
             ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
             ctx.fillRect(0, 0, w, h);
-
-            ctx.fillStyle = '#ff0000'; // Яскраво-червоний код
+            ctx.fillStyle = '#ff0000';
             ctx.font = fSize + 'px monospace';
-            
             for (let i = 0; i < drops.length; i++) {
-                const text = chars[Math.floor(Math.random() * chars.length)];
-                ctx.fillText(text, i * fSize, drops[i] * fSize);
-
-                if (drops[i] * fSize > h && Math.random() > 0.985) {
-                    drops[i] = 0;
-                }
+                ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*fSize, drops[i]*fSize);
+                if (drops[i]*fSize > h && Math.random() > 0.985) drops[i] = 0;
                 drops[i]++;
             }
         }
-        window.onresize = initM;
-        initM();
-        setInterval(drawM, 80); // Швидкість падіння
+        window.onresize = initM; initM(); setInterval(drawM, 80);
 
-        // 2. ЛОГІКА
-        let currentStatus = false;
-        function setRace() { show('step2'); }
-        function setGender() { show('main-ui'); }
-        function setPart(p, b) {
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            b.classList.add('active');
-        }
+        // ЛОГІКА САЙТУ
         function show(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
         }
+
+        // АДМІНКА
+        let siteLocked = false;
+        function checkAdm() {
+            if(document.getElementById('admKey').value === 'yokai123234') {
+                document.getElementById('admTools').style.display = 'block';
+            } else { alert('ACCESS DENIED'); }
+        }
         function toggleLock() {
-            currentStatus = !currentStatus;
-            document.getElementById('lock-overlay').style.display = currentStatus ? 'flex' : 'none';
-            document.getElementById('game-ui').style.filter = currentStatus ? 'grayscale(1) brightness(0.2)' : 'none';
+            siteLocked = !siteLocked;
+            document.getElementById('lock-overlay').style.display = siteLocked ? 'flex' : 'none';
+            document.getElementById('game-ui').style.filter = siteLocked ? 'grayscale(1) brightness(0.2)' : 'none';
         }
     </script>
 </body>
