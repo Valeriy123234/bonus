@@ -3,259 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YOKAI TATTOO | INTERACTIVE UI</title>
+    <title>YOKAI TATTOO | CHARACTER SELECT</title>
     <link href="https://googleapis.com" rel="stylesheet">
     
-    <!-- Підключення Firebase (додано бібліотеки) -->
+    <!-- Firebase Libraries -->
     <script src="https://gstatic.com"></script>
     <script src="https://gstatic.com"></script>
 
     <style>
         :root { 
-            --red-bright: #ff0000;
-            --red-glow: rgba(255, 0, 0, 0.5);
-            --font-main: 'Shippori Mincho', serif;
+            --red: #ff0000;
+            --red-glow: rgba(255, 0, 0, 0.6);
+            --bg-dark: #050505;
         }
 
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
-            background: #000; color: #fff; 
-            font-family: var(--font-main); 
-            overflow: hidden; 
+            background: var(--bg-dark); color: #fff; 
+            font-family: 'Shippori Mincho', serif; overflow: hidden; 
         }
 
-        /* МАГІЧНИЙ ФОН */
+        /* ПОСТІЙНИЙ ФОН МАТРИЦЯ */
         #matrix-canvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            z-index: 1; /* Рівень 1 */
-            pointer-events: none;
-            opacity: 0.12;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 1; pointer-events: none; opacity: 0.15;
         }
 
-        /* ШАР КОНТЕНТУ */
-        .app-container {
-            position: relative;
-            z-index: 10; /* Рівень 10 (Понад фоном) */
-            width: 100%; height: 100%;
-        }
+        #game-ui { position: relative; z-index: 10; width: 100%; height: 100%; }
 
-        .floating-bg {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 75vh; height: 75vh;
-            background: url('124.png') center/contain no-repeat;
-            z-index: -1; opacity: 0.25;
-            animation: levitate 12s infinite ease-in-out;
-            pointer-events: none;
+        .screen {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; animation: fadeIn 0.8s ease;
         }
-
-        @keyframes levitate {
-            0%, 100% { transform: translate(-50%, -50%) translateY(-15px); }
-            50% { transform: translate(-50%, -50%) translateY(15px) translateX(10px); }
-        }
-
-        .title-step { 
-            font-size: 1.6rem; letter-spacing: 10px; text-transform: uppercase;
-            color: var(--red-bright); text-align: center; margin-bottom: 50px;
-            animation: breath 3s infinite ease-in-out;
-        }
-
-        @keyframes breath {
-            0%, 100% { opacity: 0.5; text-shadow: 0 0 10px var(--red-glow); }
-            50% { opacity: 1; text-shadow: 0 0 20px var(--red-bright); }
-        }
-
-        .step-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; width: 100%; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .hidden { display: none !important; }
 
-        .icons-wrapper { display: flex; gap: 40px; }
-        .icon-select { 
-            width: 180px; height: 180px; cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            object-fit: contain;
+        /* БЛОКУВАННЯ САЙТУ */
+        .is-locked { filter: grayscale(1) brightness(0.3); pointer-events: none; }
+        #lock-msg { 
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            color: var(--red); font-size: 2rem; letter-spacing: 10px; z-index: 1000;
+            display: none; text-shadow: 0 0 20px var(--red); text-align: center;
         }
-        .icons-wrapper:hover .icon-select:not(:hover) { filter: grayscale(1) opacity(0.3); transform: scale(0.9); }
-        .icon-select:hover { transform: scale(1.15) translateY(-10px); }
 
-        .step-container.is-sold { filter: grayscale(1) brightness(0.2); pointer-events: none; }
-        #soldLabel { color: red; font-size: 1.2rem; position: absolute; top: 15%; display: none; letter-spacing: 4px; }
-
-        .main-ui { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: relative; }
-        .model-container { height: 75vh; margin-bottom: 20px; position: relative; }
-        #main-char-img { height: 100%; object-fit: contain; transition: 0.4s; opacity: 1; }
-
-        .parts-nav { display: flex; gap: 12px; margin-bottom: 25px; }
-        .part-btn { 
-            background: rgba(255,255,255,0.03); border: 1px solid #222; color: #555; 
-            padding: 12px 35px; cursor: pointer; font-family: var(--font-main);
-            text-transform: uppercase; font-size: 12px; letter-spacing: 2px; transition: 0.3s;
+        .title {
+            font-size: 2rem; letter-spacing: 15px; text-transform: uppercase;
+            color: var(--red); text-align: center; margin-bottom: 60px;
+            text-shadow: 0 0 15px var(--red-glow);
         }
-        .part-btn.active { border-color: var(--red-bright); color: #fff; background: rgba(255, 0, 0, 0.05); }
 
-        .booking-btn {
-            background: var(--red-bright); color: white; border: none; 
-            padding: 20px 60px; font-family: var(--font-main);
-            font-size: 1.2rem; cursor: pointer; letter-spacing: 4px; transition: 0.4s;
+        /* КАРТКИ ОБ'ЄКТІВ */
+        .wrapper { display: flex; gap: 40px; }
+        .card { position: relative; cursor: pointer; transition: 0.4s; text-align: center; }
+        .card:hover { transform: translateY(-10px); }
+
+        /* МАГІЧНИЙ КРУГ ЗА ПЕРСОНАЖЕМ */
+        .magic-circle {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 140%; opacity: 0.2; pointer-events: none; z-index: 1;
+            animation: magicSpin 20s infinite linear, levitate 6s infinite ease-in-out;
         }
-        .booking-btn:hover { transform: scale(1.05); box-shadow: 0 0 35px var(--red-bright); }
+        @keyframes magicSpin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes levitate { 0%, 100% { margin-top: -15px; } 50% { margin-top: 15px; } }
 
-        .admin-panel { position: fixed; bottom: 0; right: 0; opacity: 0.05; background: #111; padding: 10px; z-index: 1000; transition: 0.3s; }
-        .admin-panel:hover { opacity: 1; }
-        .admin-panel input { background: #000; border: 1px solid #333; color: red; padding: 5px; width: 65px; font-size: 10px; }
-        .reset-btn { position: absolute; top: 35px; left: 35px; background: none; border: 1px solid #222; color: #444; padding: 6px 12px; cursor: pointer; font-size: 10px; z-index: 100; }
+        .main-img { position: relative; z-index: 2; height: 450px; object-fit: contain; opacity: 0.7; transition: 0.5s; }
+        .card:hover .main-img { opacity: 1; filter: drop-shadow(0 0 20px var(--red-glow)); }
+        .card:hover .magic-circle { opacity: 0.6; }
+
+        /* НАВІГАЦІЯ ПРИМІРКИ */
+        .nav-menu { display: flex; gap: 15px; margin-top: 30px; }
+        .nav-btn {
+            background: rgba(255,255,255,0.05); border: 1px solid #333; color: #666;
+            padding: 12px 30px; cursor: pointer; letter-spacing: 2px; transition: 0.3s;
+        }
+        .nav-btn.active { border-color: var(--red); color: #fff; box-shadow: 0 0 15px var(--red-glow); }
+
+        .book-btn {
+            margin-top: 40px; background: var(--red); color: #fff; border: none;
+            padding: 20px 60px; cursor: pointer; letter-spacing: 5px; font-weight: bold;
+            transition: 0.4s; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+        }
+        .book-btn:hover { background: #fff; color: #000; transform: scale(1.05); }
+
+        /* АДМІН ПАНЕЛЬ */
+        .admin-btn { position: fixed; bottom: 20px; right: 20px; opacity: 0.1; cursor: pointer; z-index: 2000; font-size: 10px; }
+        .admin-btn:hover { opacity: 1; color: var(--red); }
+        .admin-modal {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: #111; border: 1px solid var(--red); padding: 30px;
+            z-index: 2100; display: none; text-align: center;
+        }
+        .admin-modal input { background: #000; border: 1px solid #333; color: var(--red); padding: 10px; margin-bottom: 10px; text-align: center; }
     </style>
 </head>
 <body>
 
+    <div id="lock-msg">ESQUISSE RESERVED<br><span style="font-size: 10px; letter-spacing: 2px;">ACCESS DENIED</span></div>
     <canvas id="matrix-canvas"></canvas>
 
-    <div class="app-container">
-        <div class="floating-bg"></div>
-
-        <!-- КРОК 1 -->
-        <div id="step1" class="step-container">
-            <div id="soldLabel">RESTRICTED ACCESS</div>
-            <h1 class="title-step">Обери клан</h1>
-            <div class="icons-wrapper">
-                <img src="122.png" class="icon-select" onclick="selectRace('tauren')">
-                <img src="123.png" class="icon-select" onclick="selectRace('elf')">
+    <div id="game-ui">
+        
+        <!-- КРОК 1: КЛАНИ -->
+        <div id="step1" class="screen">
+            <h1 class="title">Оберіть клан</h1>
+            <div class="wrapper">
+                <div class="card" onclick="setRace('tauren')">
+                    <img src="122.png" class="main-img" style="height: 200px;">
+                    <p style="letter-spacing: 5px; color: var(--red);">TAUREN</p>
+                </div>
+                <div class="card" onclick="setRace('elf')">
+                    <img src="123.png" class="main-img" style="height: 200px;">
+                    <p style="letter-spacing: 5px; color: var(--red);">ELF</p>
+                </div>
             </div>
         </div>
 
-        <!-- КРОК 2 -->
-        <div id="step2" class="step-container hidden">
-            <h1 class="title-step">Обери тіло</h1>
-            <div class="icons-wrapper">
-                <img src="URL_MALE_ICON" class="icon-select" onclick="selectGender('male')">
-                <img src="URL_FEMALE_ICON" class="icon-select" onclick="selectGender('female')">
+        <!-- КРОК 2: ТІЛО -->
+        <div id="step2" class="screen hidden">
+            <h1 class="title">Оберіть тіло</h1>
+            <div class="wrapper">
+                <div class="card" onclick="setGender('male')">
+                    <img src="124.png" class="magic-circle"> <!-- МАГІЧНИЙ КРУГ -->
+                    <img src="URL_MALE_BODY" class="main-img">
+                    <p style="letter-spacing: 5px;">MALE</p>
+                </div>
+                <div class="card" onclick="setGender('female')">
+                    <img src="124.png" class="magic-circle"> <!-- МАГІЧНИЙ КРУГ -->
+                    <img src="URL_FEMALE_BODY" class="main-img">
+                    <p style="letter-spacing: 5px;">FEMALE</p>
+                </div>
             </div>
+            <p onclick="location.reload()" style="margin-top:40px; cursor:pointer; opacity:0.3; font-size:10px;">[ ПОВЕРНУТИСЯ ]</p>
         </div>
 
-        <!-- КРОК 3 -->
-        <div id="main-ui" class="main-ui hidden">
-            <button class="reset-btn" onclick="resetAll()">[ RESET SOUL ]</button>
-            <div class="model-container"><img id="main-char-img" src=""></div>
-            <div class="parts-nav">
-                <button class="part-btn active" onclick="setPart('forearm', this)">Передпліччя</button>
-                <button class="part-btn" onclick="setPart('biceps', this)">Біцепс</button>
-                <button class="part-btn" onclick="setPart('calf', this)">Ікра</button>
+        <!-- КРОК 3: ПРИМІРКА -->
+        <div id="main-ui" class="screen hidden">
+            <div style="position:relative; height: 60vh;">
+                <img src="124.png" class="magic-circle" style="width: 100vh;">
+                <img id="char-img" src="" style="height: 100%; position: relative; z-index: 5; object-fit: contain;">
             </div>
-            <button class="booking-btn" onclick="window.open('https://t.me')">ЗАБРОНЮВАТИ СЕАНС</button>
+            <div class="nav-menu">
+                <button class="nav-btn active" onclick="setPart('forearm', this)">Передпліччя</button>
+                <button class="nav-btn" onclick="setPart('biceps', this)">Біцепс</button>
+                <button class="nav-btn" onclick="setPart('calf', this)">Ікра</button>
+            </div>
+            <button class="book-btn" onclick="window.open('ТВІЙ_ТГ_ЛІНК')">ЗАБРОНЮВАТИ СЕАНС</button>
+            <p onclick="location.reload()" style="margin-top:20px; cursor:pointer; opacity:0.3; font-size:10px;">[ RESET SOUL ]</p>
         </div>
 
-        <!-- АДМІНКА -->
-        <div class="admin-panel" id="adminZone">
-            <input type="password" id="admPass" placeholder="KEY">
-            <button onclick="loginAdm()" style="background:#222; color:#fff; border:none; cursor:pointer; padding:5px 10px;">OK</button>
-            <div id="admTools" style="display:none; margin-top:10px;">
-                <button onclick="toggleSold()" style="background:red; color:white; border:none; padding:8px; cursor:pointer; width:100%; font-size:10px;">TOGGLE SOLD</button>
-            </div>
+    </div>
+
+    <!-- АДМІНКА -->
+    <div class="admin-btn" onclick="openAdmin()">⚙️ SYSTEM</div>
+    <div id="adminModal" class="admin-modal">
+        <h3 style="color:red; letter-spacing:2px; font-size:12px;">ADMIN ACCESS</h3>
+        <input type="password" id="admPass" placeholder="PASSWORD">
+        <br>
+        <button onclick="checkPass()" style="background:red; color:white; border:none; padding:10px; cursor:pointer;">ENTER</button>
+        <button onclick="closeAdmin()" style="background:none; color:gray; border:none; cursor:pointer; margin-left:10px;">X</button>
+        
+        <div id="admControls" style="display:none; margin-top:20px; border-top:1px solid #333; padding-top:20px;">
+            <p style="font-size:10px;">PROJECT STATUS</p>
+            <button id="lockBtn" onclick="toggleFirebaseLock()" style="background:white; color:black; padding:10px; border:none; cursor:pointer; font-weight:bold;"></button>
         </div>
     </div>
 
     <script>
-        // --- МАТРИЦЯ ---
+        // 1. КОНФІГУРАЦІЯ FIREBASE (ЗАМІНИ НА СВІЙ URL)
+        const firebaseConfig = { databaseURL: "https://firebaseio.com" };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // 2. МАТРИЦЯ (ФОН)
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
-        let width, height, columns, drops;
-        const fontSize = 16;
-        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプ';
+        let w, h, cols, drops;
+        const fSize = 16;
+        const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピ';
+        function initM() { w=canvas.width=window.innerWidth; h=canvas.height=window.innerHeight; cols=Math.floor(w/fSize); drops=new Array(cols).fill(1); }
+        function drawM() { ctx.fillStyle='rgba(0,0,0,0.1)'; ctx.fillRect(0,0,w,h); ctx.fillStyle='#f00'; ctx.font=fSize+'px monospace'; for(let i=0;i<drops.length;i++){ ctx.fillText(chars[Math.floor(Math.random()*chars.length)],i*fSize,drops[i]*fSize); if(drops[i]*fSize>h&&Math.random()>0.98)drops[i]=0; drops[i]++; } }
+        window.onresize=initM; initM(); setInterval(drawM, 70);
 
-        function initMatrix() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            columns = Math.floor(width / fontSize);
-            drops = new Array(columns).fill(1);
-        }
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-            ctx.fillRect(0, 0, width, height);
-            ctx.fillStyle = '#ff3333';
-            ctx.font = fontSize + 'px monospace';
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = '#ff0000';
-            for (let i = 0; i < drops.length; i++) {
-                const text = katakana[Math.floor(Math.random() * katakana.length)];
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                if (drops[i] * fontSize > height && Math.random() > 0.99) drops[i] = 0;
-                drops[i]++;
+        // 3. ЛОГІКА БЛОКУВАННЯ (FIREBASE)
+        let isLocked = false;
+        db.ref('site_locked').on('value', (snap) => {
+            isLocked = snap.val();
+            const ui = document.getElementById('game-ui');
+            const msg = document.getElementById('lock-msg');
+            const btn = document.getElementById('lockBtn');
+            if(isLocked) {
+                ui.classList.add('is-locked');
+                msg.style.display = 'block';
+                btn.innerText = "UNLOCK SITE";
+            } else {
+                ui.classList.remove('is-locked');
+                msg.style.display = 'none';
+                btn.innerText = "LOCK SITE (SOLD OUT)";
             }
-        }
-        window.addEventListener('resize', initMatrix);
-        initMatrix();
-        setInterval(drawMatrix, 80);
+        });
 
-        // --- ЛОГІКА ДОДАТКУ ---
+        // 4. ЛОГІКА ГРИ
+        let state = { race: '', gender: '', part: 'forearm' };
         const images = {
-            tauren_male_forearm: "URL", tauren_male_biceps: "URL", tauren_male_calf: "URL",
-            tauren_female_forearm: "URL", tauren_female_biceps: "URL", tauren_female_calf: "URL",
-            elf_male_forearm: "URL", elf_male_biceps: "URL", elf_male_calf: "URL",
-            elf_female_forearm: "URL", elf_female_biceps: "URL", elf_female_calf: "URL"
+            tauren_male_forearm: "TMF.png", tauren_male_biceps: "TMB.png", tauren_male_calf: "TMC.png",
+            tauren_female_forearm: "TFF.png", tauren_female_biceps: "TFB.png", tauren_female_calf: "TFC.png",
+            elf_male_forearm: "EMF.png", elf_male_biceps: "EMB.png", elf_male_calf: "EMC.png",
+            elf_female_forearm: "EFF.png", elf_female_biceps: "EFB.png", elf_female_calf: "EFC.png"
         };
 
-        const firebaseConfig = { databaseURL: "ТВІЙ_FIREBASE_URL" };
-        if (firebaseConfig.databaseURL !== "ТВІЙ_FIREBASE_URL") {
-            firebase.initializeApp(firebaseConfig);
-            const db = firebase.database();
-            db.ref('project_status').on('value', (snap) => {
-                const status = snap.val();
-                const s1 = document.getElementById('step1');
-                const label = document.getElementById('soldLabel');
-                if (status === 'blocked') { s1.classList.add('is-sold'); label.style.display = 'block'; }
-                else { s1.classList.remove('is-sold'); label.style.display = 'none'; }
-            });
-        }
-
-        let state = { 
-            race: localStorage.getItem('race') || '', 
-            gender: localStorage.getItem('gender') || '', 
-            part: 'forearm' 
-        };
-
-        window.onload = () => {
-            if (state.race && state.gender) {
-                document.getElementById('step1').classList.add('hidden');
-                document.getElementById('main-ui').classList.remove('hidden');
-                updateView();
-            }
-        };
-
-        function selectRace(r) { 
-            state.race = r; localStorage.setItem('race', r); 
-            document.getElementById('step1').classList.add('hidden'); 
-            document.getElementById('step2').classList.remove('hidden'); 
-        }
-
-        function selectGender(g) { 
-            state.gender = g; localStorage.setItem('gender', g); 
-            document.getElementById('step2').classList.add('hidden'); 
-            document.getElementById('main-ui').classList.remove('hidden'); 
-            updateView(); 
-        }
-
+        function setRace(r) { state.race = r; showScreen('step2'); }
+        function setGender(g) { state.gender = g; showScreen('main-ui'); updateImg(); }
         function setPart(p, btn) { 
             state.part = p; 
-            document.querySelectorAll('.part-btn').forEach(b => b.classList.remove('active')); 
-            btn.classList.add('active'); 
-            updateView(); 
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            updateImg(); 
         }
-        
-        function updateView() {
-            const key = `${state.race}_${state.gender}_${state.part}`;
-            const img = document.getElementById('main-char-img');
+        function updateImg() {
+            const img = document.getElementById('char-img');
             img.style.opacity = 0;
-            setTimeout(() => { 
-                if(images[key]) img.src = images[key]; 
-                img.style.opacity = 1; 
-            }, 300);
+            setTimeout(() => { img.src = images[`${state.race}_${state.gender}_${state.part}`]; img.style.opacity = 1; }, 250);
+        }
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
         }
 
-        function resetAll() { localStorage.clear(); location.reload(); }
-        function loginAdm() { if(document.getElementById('admPass').value === "yokai123234") document.getElementById('admTools').style.display='block'; }
-        function toggleSold() {
-            const isBlocked = document.getElementById('step1').classList.contains('is-sold');
-            firebase.database().ref('project_status').set(isBlocked ? 'active' : 'blocked');
+        // 5. АДМІНКА
+        function openAdmin() { document.getElementById('adminModal').style.display = 'block'; }
+        function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
+        function checkPass() {
+            if(document.getElementById('admPass').value === "yokai123234") {
+                document.getElementById('admControls').style.display = 'block';
+            } else { alert('WRONG KEY'); }
+        }
+        function toggleFirebaseLock() {
+            db.ref('site_locked').set(!isLocked);
         }
     </script>
 </body>
