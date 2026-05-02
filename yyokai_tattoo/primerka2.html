@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOKAI TATTOO | CHARACTER GENERATOR</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
+
+    <style>
+        :root {
+            --red-glow: rgba(255, 0, 0, 0.7);
+            --dark-bg: #050505;
+            --ui-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            background: var(--dark-bg); color: white;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+        }
+
+        #matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.1; z-index: -1; }
+
+        /* Екрани вибору */
+        .step-container {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; width: 100%; transition: 0.5s;
+        }
+
+        .hidden { display: none !important; }
+
+        .icon-select {
+            width: 160px; height: 160px; cursor: pointer;
+            margin: 20px; transition: 0.4s;
+            filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.2));
+            object-fit: contain;
+        }
+
+        .icon-select:hover {
+            filter: drop-shadow(0 0 15px var(--red-glow));
+            transform: scale(1.05);
+        }
+
+        .title-step { letter-spacing: 5px; text-shadow: 0 0 10px red; margin-bottom: 40px; text-align: center; }
+
+        /* Основний інтерфейс */
+        .main-ui {
+            display: grid; grid-template-columns: 1fr 320px;
+            height: 100vh; width: 100%;
+        }
+
+        .view-section {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            position: relative; border-right: 1px solid var(--ui-border);
+        }
+
+        .model-box { position: relative; height: 75vh; width: 100%; display: flex; justify-content: center; }
+        #char-img { height: 100%; object-fit: contain; z-index: 1; }
+        #tattoo-img {
+            position: absolute; height: 100%; object-fit: contain;
+            mix-blend-mode: multiply; opacity: 0.85; z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Кнопки під персонажем */
+        .part-selector { margin-top: 20px; display: flex; gap: 10px; }
+        .part-btn {
+            background: #000; border: 1px solid #333; color: #888;
+            padding: 8px 16px; cursor: pointer; font-size: 11px; transition: 0.3s;
+        }
+        .part-btn.active { border-color: red; color: white; box-shadow: 0 0 10px rgba(255,0,0,0.4); }
+
+        /* Список ескізів */
+        .sketch-aside {
+            background: rgba(8, 8, 8, 0.95); padding: 20px; 
+            overflow-y: auto; backdrop-filter: blur(10px);
+        }
+
+        .sketch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+        .sketch-item {
+            border: 1px solid #222; cursor: pointer; position: relative;
+            background: #000; transition: 0.3s;
+        }
+        .sketch-item img { width: 100%; display: block; }
+        
+        /* Стиль заблокованого ескізу */
+        .sketch-item.blocked {
+            filter: grayscale(1) brightness(0.2);
+            border-color: #444;
+            cursor: not-allowed;
+        }
+        .sketch-item.blocked::after {
+            content: "SOLD"; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); color: #ff0000; font-size: 12px; font-weight: bold;
+        }
+
+        /* Адмінка (5% прозорості) */
+        .admin-panel {
+            position: fixed; bottom: 0; right: 0; opacity: 0.05;
+            background: #1a0000; padding: 10px; z-index: 1000;
+            border-top-left-radius: 10px; transition: 0.3s;
+        }
+        .admin-panel:hover { opacity: 1; }
+        .admin-panel input { background: #000; border: 1px solid #444; color: red; width: 80px; padding: 5px; font-size: 10px; }
+
+        /* Кнопка зміни персонажа */
+        .reset-btn {
+            position: absolute; top: 20px; left: 20px;
+            background: none; border: 1px solid #333; color: #555;
+            padding: 5px 10px; font-size: 10px; cursor: pointer; z-index: 100;
+        }
+        .reset-btn:hover { color: white; border-color: red; }
+    </style>
+</head>
+<body>
+
+    <canvas id="matrix-bg"></canvas>
+
+    <!-- КРОК 1: РАСА -->
+    <div id="step1" class="step-container">
+        <h1 class="title-step">ОБЕРИ СВІЙ КЛАН</h1>
+        <div style="display: flex;">
+            <img src="assets/icon_tauren.png" class="icon-select" onclick="selectRace('tauren')">
+            <img src="assets/icon_elf.png" class="icon-select" onclick="selectRace('elf')">
+        </div>
+    </div>
+
+    <!-- КРОК 2: СТАТЬ -->
+    <div id="step2" class="step-container hidden">
+        <h1 class="title-step">ОБЕРИ ТІЛО</h1>
+        <div style="display: flex;">
+            <img src="assets/icon_male.png" class="icon-select" onclick="selectGender('male')">
+            <img src="assets/icon_female.png" class="icon-select" onclick="selectGender('female')">
+        </div>
+    </div>
+
+    <!-- КРОК 3: ІНТЕРФЕЙС ГРИ -->
+    <div id="main-ui" class="main-ui hidden">
+        <button class="reset-btn" onclick="resetSelection()">[ CHANGE CHARACTER ]</button>
+        
+        <div class="view-section">
+            <div class="model-box">
+                <img id="char-img" src="">
+                <img id="tattoo-img" src="">
+            </div>
+            
+            <div class="part-selector">
+                <button class="part-btn active" onclick="setPart('forearm', this)">ПРЕДПЛІЧЧЯ</button>
+                <button class="part-btn" onclick="setPart('biceps', this)">БІЦЕПС</button>
+                <button class="part-btn" onclick="setPart('calf', this)">ІКРА</button>
+            </div>
+        </div>
+
+        <aside class="sketch-aside">
+            <h3 style="color:red; font-size:12px; letter-spacing:2px; margin-bottom:20px;">AVAILABLE SKETCHES</h3>
+            <div id="sketch-list" class="sketch-grid">
+                <!-- Дані з Firebase -->
+            </div>
+            <div style="margin-top: 40px; display:flex; flex-direction:column; gap:10px;">
+                <button style="background:red; border:none; color:white; padding:15px; cursor:pointer; font-weight:bold;">ЗАПИСАТИСЬ</button>
+                <button style="background:none; border:1px solid white; color:white; padding:15px; cursor:pointer;">ВСТУПИТИ В КЛАН</button>
+            </div>
+        </aside>
+    </div>
+
+    <!-- АДМІНКА -->
+    <div class="admin-panel" id="adminPanel">
+        <input type="password" id="adminPass" placeholder="KEY...">
+        <button onclick="loginAdmin()" style="background:#300; color:white; border:none; cursor:pointer;">OK</button>
+        <div id="adminTools" style="display:none; margin-top:10px;">
+            <button onclick="blockCurrentSketch()" style="background:red; color:white; border:none; width:100%; padding:5px; cursor:pointer;">BLOCK SOLD</button>
+        </div>
+    </div>
+
+    <script>
+        // 1. КОНФІГУРАЦІЯ FIREBASE
+        const firebaseConfig = {
+            apiKey: "ТВІЙ_API_KEY",
+            databaseURL: "ТВІЙ_DATABASE_URL",
+            projectId: "ТВІЙ_PROJECT_ID",
+            storageBucket: "ТВІЙ_STORAGE_BUCKET",
+            appId: "ТВІЙ_APP_ID"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // 2. СТАН
+        let state = {
+            race: localStorage.getItem('yokai_race') || '',
+            gender: localStorage.getItem('yokai_gender') || '',
+            part: 'forearm',
+            selectedID: null
+        };
+
+        // 3. ІНІЦІАЛІЗАЦІЯ
+        window.onload = () => {
+            if (state.race && state.gender) {
+                document.getElementById('step1').classList.add('hidden');
+                document.getElementById('main-ui').classList.remove('hidden');
+                updateModel();
+            }
+        };
+
+        function selectRace(r) {
+            state.race = r;
+            localStorage.setItem('yokai_race', r);
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+        }
+
+        function selectGender(g) {
+            state.gender = g;
+            localStorage.setItem('yokai_gender', g);
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('main-ui').classList.remove('hidden');
+            updateModel();
+        }
+
+        function resetSelection() {
+            localStorage.clear();
+            location.reload();
+        }
+
+        function setPart(p, btn) {
+            state.part = p;
+            document.querySelectorAll('.part-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            updateModel();
+        }
+
+        function updateModel() {
+            const imgPath = `assets/${state.race}_${state.gender}_${state.part}.png`;
+            document.getElementById('char-img').src = imgPath;
+        }
+
+        // 4. FIREBASE: ЕСКІЗИ
+        db.ref('sketches').on('value', (snap) => {
+            const data = snap.val();
+            const list = document.getElementById('sketch-list');
+            list.innerHTML = '';
+            for (let id in data) {
+                const s = data[id];
+                const div = document.createElement('div');
+                div.className = `sketch-item ${s.status === 'blocked' ? 'blocked' : ''}`;
+                div.innerHTML = `<img src="${s.url}">`;
+                div.onclick = () => {
+                    if(s.status === 'blocked') return;
+                    state.selectedID = id;
+                    document.getElementById('tattoo-img').src = s.url;
+                    document.querySelectorAll('.sketch-item').forEach(i => i.style.borderColor = '#222');
+                    div.style.borderColor = 'red';
+                };
+                list.appendChild(div);
+            }
+        });
+
+        // 5. АДМІНКА
+        function loginAdmin() {
+            if(document.getElementById('adminPass').value === "yokai123234") {
+                document.getElementById('adminTools').style.display = 'block';
+            }
+        }
+
+        function blockCurrentSketch() {
+            if(state.selectedID) {
+                db.ref('sketches/' + state.selectedID).update({ status: 'blocked' });
+            }
+        }
+
+        // 6. ФОН
+        const c = document.getElementById('matrix-bg');
+        const x = c.getContext('2d');
+        c.width = window.innerWidth; c.height = window.innerHeight;
+        const kanji = "死血魂侍鬼影闇殺龍獄";
+        const drops = Array(Math.floor(c.width / 20)).fill(1);
+        setInterval(() => {
+            x.fillStyle = "rgba(0, 0, 0, 0.05)"; x.fillRect(0, 0, c.width, c.height);
+            x.fillStyle = "#300"; x.font = "15px monospace";
+            drops.forEach((y, i) => {
+                x.fillText(kanji[Math.floor(Math.random() * kanji.length)], i * 20, y * 20);
+                if (y * 20 > c.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
+        }, 50);
+    </script>
+</body>
+</html>
