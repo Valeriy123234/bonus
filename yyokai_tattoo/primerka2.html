@@ -10,35 +10,39 @@
     <script src="https://gstatic.com"></script>
     <script src="https://gstatic.com"></script>
 
-    <style>
-        :root { 
-            --red-bright: #ff0000;
-            --red-glow: rgba(255, 0, 0, 0.5);
-            --font-main: 'Shippori Mincho', serif;
-        }
+ <style>
+    :root { 
+        --red-bright: #ff0000;
+        --red-glow: rgba(255, 0, 0, 0.5);
+        --font-main: 'Shippori Mincho', serif;
+    }
 
-        body, html { 
-            margin: 0; padding: 0; height: 100%; 
-            background: #000; color: #fff; 
-            font-family: var(--font-main); 
-            overflow: hidden; 
-        }
+    body, html { 
+        margin: 0; padding: 0; width: 100%; height: 100%; 
+        background: #000; color: #fff; 
+        font-family: var(--font-main); 
+        overflow-x: hidden; /* Дозволяємо прокрутку по вертикалі, якщо треба */
+    }
 
-        /* ВІДЕО ФОН */
-        <canvas id="matrix-canvas" class="video-bg"></canvas>
+    /* Стиль для фону */
+    .video-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1; 
+        pointer-events: none;
+        opacity: 0.15; /* Повернув 15%, як ти просив спочатку */
+        display: block;
+    }
 
-   .video-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1; /* Обов'язково мінус одиниця, щоб бути ПІД кнопками */
-    pointer-events: none;
-    opacity: 0.08; /* Зменшив до 8% — буде дуже м'яко */
-    background: transparent; /* Щоб не перекривати основний колір сайту */
-    display: block;
-}
+    /* Твоя головна обгортка для іконок (додай цей клас у HTML, якщо його немає) */
+    .content-wrapper {
+        position: relative;
+        z-index: 10; /* Це винесе іконки НАД ієрогліфами */
+    }
+
 
 
 
@@ -138,7 +142,13 @@
 <body>
 
    <!-- ЦЕ ВСТАВЛЯЙ -->
-<canvas id="matrix-canvas" class="video-bg"></canvas>
+<body>
+    <canvas id="matrix-canvas" class="video-bg"></canvas>
+
+    <div class="content-wrapper">
+        <!-- ТУТ УСІ ТВОЇ ІКОНКИ, ТЕКСТ ТА ІНШЕ -->
+   
+
 
 
     <!-- КРОК 1: РАСА -->
@@ -180,6 +190,7 @@
             <button onclick="toggleSold()" style="background:red; color:white; border:none; padding:8px; cursor:pointer; width:100%; font-size:10px;">TOGGLE SOLD</button>
         </div>
     </div>
+         </div>
 
     <script>
         const images = {
