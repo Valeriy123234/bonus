@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YOKAI TATTOO | INTERACTIVE UI</title>
+    <title>YOKAI TATTOO | CHARACTER SELECT</title>
     
     <link href="https://googleapis.com" rel="stylesheet">
     
@@ -13,7 +13,7 @@
 
     <style>
         :root { 
-            --red-bright: #ff0000;
+            --red: #ff0000;
             --red-glow: rgba(255, 0, 0, 0.5);
             --font-main: 'Shippori Mincho', serif;
             --font-title: 'Cinzel', serif;
@@ -21,12 +21,10 @@
 
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
-            background: #000; color: #fff; 
-            font-family: var(--font-main); 
-            overflow: hidden; 
+            background: #000; color: #fff; font-family: var(--font-main); overflow: hidden; 
         }
 
-        /* ПОСТІЙНИЙ ФОН МАТРИЦЯ (15%) */
+        /* МАТРИЦЯ (ФОН 15%) */
         #matrix-canvas {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: 1; pointer-events: none; opacity: 0.15;
@@ -37,26 +35,28 @@
         /* ЕКРАНИ */
         .step-container { 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            height: 100vh; width: 100%; animation: fadeIn 0.8s ease;
+            height: 100vh; width: 100%; animation: fadeIn 0.8s ease; padding: 0 15px;
         }
         .hidden { display: none !important; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .title-step { 
             font-family: var(--font-title); font-size: 2rem; letter-spacing: 12px; 
-            text-transform: uppercase; color: var(--red-bright); text-align: center;
-            margin-bottom: 60px; text-shadow: 0 0 15px var(--red-glow);
+            color: var(--red); text-align: center; margin-bottom: 50px;
+            text-shadow: 0 0 15px var(--red-glow);
         }
 
-        /* КАРТКИ-ПРЯМОКУТНИКИ ДЛЯ КЛАНІВ ТА ТІЛА */
-        .cards-wrapper { display: flex; gap: 40px; align-items: center; }
+        /* АДАПТИВНА СІТКА КАРТОК */
+        .cards-wrapper { 
+            display: flex; gap: 30px; align-items: center; justify-content: center; width: 100%;
+        }
 
         .rect-card {
-            width: 250px; height: 450px; border: 1px solid #222; position: relative;
+            width: 260px; height: 460px; border: 1px solid #222; position: relative;
             cursor: pointer; overflow: hidden; background: rgba(255,255,255,0.02); transition: 0.5s ease;
         }
 
-        /* МАГІЧНИЙ КРУГ (ТІЛЬКИ ДЛЯ ТІЛА І ФІНАЛУ) */
+        /* МАГІЧНИЙ КРУГ ЗА ПЕРСОНАЖЕМ */
         .magic-circle {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 140%; opacity: 0.2; pointer-events: none; z-index: 1;
@@ -65,72 +65,64 @@
         @keyframes magicSpin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
         @keyframes levitate { 0%, 100% { margin-top: -15px; } 50% { margin-top: 15px; } }
 
-        /* ЗОБРАЖЕННЯ ВСЕРЕДИНІ КАРТОК */
         .card-img { 
             position: relative; z-index: 5; width: 100%; height: 100%; 
             object-fit: contain; filter: grayscale(0); transition: 0.5s ease; opacity: 0.8;
         }
 
-        /* ЕФЕКТИ ДЛЯ КЛАНІВ (СІРИЙ/КОЛЬОРОВИЙ) */
-        .cards-wrapper:hover .rect-card:not(:hover) .card-img {
-            filter: grayscale(1); opacity: 0.1; transform: scale(0.95);
-        }
+        /* ЕФЕКТИ СЕЛЕКТУ */
+        .cards-wrapper:hover .rect-card:not(:hover) .card-img { filter: grayscale(1); opacity: 0.15; transform: scale(0.95); }
         .rect-card:hover .card-img { transform: scale(1.05); filter: grayscale(0); opacity: 1; }
-        .rect-card:hover { border-color: var(--red-bright); box-shadow: 0 0 30px var(--red-glow); }
+        .rect-card:hover { border-color: var(--red); box-shadow: 0 0 30px var(--red-glow); }
 
         .card-label { 
-            position: absolute; bottom: 30px; width: 100%; text-align: center;
-            font-family: var(--font-title); font-size: 1.2rem; letter-spacing: 5px; 
-            color: #fff; z-index: 10; text-shadow: 0 0 10px #000; transition: 0.5s;
+            position: absolute; bottom: 25px; width: 100%; text-align: center;
+            font-family: var(--font-title); font-size: 1.1rem; letter-spacing: 5px; 
+            color: #fff; z-index: 10; text-shadow: 0 0 10px #000;
         }
-        .cards-wrapper:hover .rect-card:not(:hover) .card-label { opacity: 0.2; }
 
-        /* ФІНАЛЬНИЙ ЕКРАН ПРИМІРКИ */
-        .model-container { height: 70vh; margin-bottom: 20px; position: relative; display: flex; align-items: center; justify-content: center; }
+        /* МОБІЛЬНА АДАПТАЦІЯ */
+        @media (max-width: 600px) {
+            .title-step { font-size: 1.3rem; letter-spacing: 5px; }
+            .cards-wrapper { gap: 15px; }
+            .rect-card { width: 44vw; height: 60vh; }
+            .card-label { font-size: 0.8rem; letter-spacing: 2px; bottom: 15px; }
+        }
+
+        /* ФІНАЛЬНИЙ ЕКРАН */
+        .model-container { height: 65vh; margin-bottom: 20px; position: relative; display: flex; align-items: center; justify-content: center; }
         #main-char-img { height: 100%; position: relative; z-index: 10; object-fit: contain; transition: 0.4s; }
 
-        .parts-nav { display: flex; gap: 15px; margin-bottom: 25px; }
-        .part-btn { 
-            background: #111; border: 1px solid #333; color: #555; 
-            padding: 12px 30px; cursor: pointer; font-family: var(--font-title);
-            text-transform: uppercase; font-size: 11px; letter-spacing: 2px; transition: 0.3s;
-        }
-        .part-btn.active { border-color: var(--red-bright); color: #fff; box-shadow: inset 0 0 10px var(--red-glow); }
+        .nav-btn { background: #111; border: 1px solid #333; color: #555; padding: 10px 20px; cursor: pointer; font-family: var(--font-title); font-size: 10px; margin: 3px; }
+        .nav-btn.active { border-color: var(--red); color: #fff; }
 
         .booking-btn {
-            background: var(--red-bright); color: white; border: none; 
-            padding: 20px 70px; font-family: var(--font-main); font-weight: bold;
-            font-size: 1.2rem; cursor: pointer; letter-spacing: 5px;
-            transition: 0.4s; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+            background: var(--red); color: white; border: none; padding: 18px 50px; 
+            font-weight: bold; font-size: 1rem; cursor: pointer; letter-spacing: 4px;
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
         }
-        .booking-btn:hover { background: #fff; color: #000; box-shadow: 0 0 40px var(--red-bright); }
 
-        /* SOLD OUT ЕФЕКТ */
-        .is-sold { filter: grayscale(1) brightness(0.2); pointer-events: none; }
-        #soldOverlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.8); z-index: 2000; display: none;
-            align-items: center; justify-content: center;
-        }
+        /* БЛОКУВАННЯ */
+        #soldOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; align-items: center; justify-content: center; flex-direction: column; }
+        .is-locked { filter: grayscale(1) brightness(0.2); pointer-events: none; }
 
         /* АДМІНКА */
-        .admin-panel { position: fixed; bottom: 10px; right: 10px; opacity: 0.05; background: #111; padding: 10px; z-index: 3000; transition: 0.3s; }
+        .admin-panel { position: fixed; bottom: 10px; right: 10px; opacity: 0.05; background: #111; padding: 5px; z-index: 3000; }
         .admin-panel:hover { opacity: 1; }
-        .admin-panel input { background: #000; border: 1px solid #333; color: red; padding: 5px; width: 80px; text-align: center; font-size: 10px; }
-        
-        .reset-btn { position: absolute; top: 35px; left: 35px; background: none; border: 1px solid #222; color: #444; padding: 6px 12px; cursor: pointer; font-size: 10px; }
+        .admin-panel input { background: #000; border: 1px solid #333; color: red; padding: 5px; width: 70px; text-align: center; font-size: 9px; }
     </style>
 </head>
 <body>
 
     <div id="soldOverlay">
-        <h1 style="color:red; font-family:var(--font-title); letter-spacing:15px; text-shadow:0 0 20px red;">RESERVED</h1>
+        <h1 style="color:red; font-family:var(--font-title); letter-spacing:10px;">RESERVED</h1>
+        <p style="font-size:10px; color:gray;">ACCESS DENIED</p>
     </div>
 
     <canvas id="matrix-canvas"></canvas>
 
     <div id="game-ui">
-        <!-- КРОК 1: КЛАНИ (ТЕПЕР ПРЯМОКУТНИКИ) -->
+        <!-- КРОК 1: КЛАНИ -->
         <div id="step1" class="step-container">
             <h1 class="title-step">Оберіть клан</h1>
             <div class="cards-wrapper">
@@ -145,125 +137,102 @@
             </div>
         </div>
 
-        <!-- КРОК 2: ТІЛО -->
+        <!-- КРОК 2: ТІЛО (ФІЛЬТРУЄТЬСЯ) -->
         <div id="step2" class="step-container hidden">
             <h1 class="title-step">Оберіть тіло</h1>
             <div class="cards-wrapper">
                 <div class="rect-card" onclick="selectGender('male')">
                     <img src="124.png" class="magic-circle">
-                    <img src="URL_MALE_BODY" class="card-img">
+                    <img id="body-male-img" src="" class="card-img">
                     <div class="card-label">MALE</div>
                 </div>
                 <div class="rect-card" onclick="selectGender('female')">
                     <img src="124.png" class="magic-circle">
-                    <img src="URL_FEMALE_BODY" class="card-img">
+                    <img id="body-female-img" src="" class="card-img">
                     <div class="card-label">FEMALE</div>
                 </div>
             </div>
-            <p onclick="location.reload()" style="margin-top:40px; cursor:pointer; opacity:0.3; font-size:10px;">[ BACK ]</p>
+            <p onclick="location.reload()" style="margin-top:30px; cursor:pointer; opacity:0.3; font-size:10px;">[ BACK ]</p>
         </div>
 
-        <!-- КРОК 3: ФІНАЛ -->
+        <!-- КРОК 3: ПРИМІРКА -->
         <div id="main-ui" class="step-container hidden">
-            <button class="reset-btn" onclick="resetAll()">[ RESET SOUL ]</button>
             <div class="model-container">
-                <img src="124.png" class="magic-circle" style="width:100vh; opacity:0.3;">
+                <img src="124.png" class="magic-circle" style="width:100vh; opacity:0.25;">
                 <img id="main-char-img" src="">
             </div>
-            <div class="parts-nav">
-                <button class="part-btn active" onclick="setPart('forearm', this)">Передпліччя</button>
-                <button class="part-btn" onclick="setPart('biceps', this)">Біцепс</button>
-                <button class="part-btn" onclick="setPart('calf', this)">Ікра</button>
+            <div style="margin-bottom:20px;">
+                <button class="nav-btn active" onclick="setPart('forearm', this)">Передпліччя</button>
+                <button class="nav-btn" onclick="setPart('biceps', this)">Біцепс</button>
+                <button class="nav-btn" onclick="setPart('calf', this)">Ікра</button>
             </div>
-            <button class="booking-btn" onclick="window.open('ТВІЙ_ТГ_ЛІНК')">ЗАБРОНЮВАТИ</button>
+            <button class="booking-btn" onclick="window.open('ТВІЙ_ТГ')">ЗАМОВИТИ</button>
+            <p onclick="localStorage.clear(); location.reload();" style="margin-top:15px; cursor:pointer; opacity:0.2; font-size:9px;">[ RESET ]</p>
         </div>
 
         <!-- АДМІНКА -->
         <div class="admin-panel">
             <input type="password" id="admPass" placeholder="KEY">
-            <button onclick="loginAdm()" style="background:#222; color:#fff; border:none; cursor:pointer; padding:5px 10px; font-size:10px;">OK</button>
-            <div id="admTools" style="display:none; margin-top:10px;">
-                <button onclick="toggleLock()" style="background:red; color:white; border:none; padding:8px; cursor:pointer; width:100%; font-size:10px;">TOGGLE LOCK</button>
+            <button onclick="loginAdm()" style="background:#222; color:#fff; border:none; cursor:pointer; padding:5px;">OK</button>
+            <div id="admTools" style="display:none; margin-top:5px;">
+                <button onclick="toggleLock()" style="background:red; color:white; border:none; padding:5px; cursor:pointer; width:100%; font-size:9px;">LOCK</button>
             </div>
         </div>
     </div>
 
     <script>
-        // --- 1. МАТРИЦЯ (ПОСТІЙНИЙ ФОН) ---
-        const canvas = document.getElementById('matrix-canvas');
-        const ctx = canvas.getContext('2d');
-        let w, h, cols, drops;
-        const fSize = 16;
-        const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプ';
+        // 1. ПІДСТАВ СВОЇ КАРТИНКИ ТУТ
+        const bodyPreviews = {
+            tauren: { male: "tauren_male_rect.png", female: "tauren_female_rect.png" },
+            elf: { male: "elf_male_rect.png", female: "elf_female_rect.png" }
+        };
 
-        function initM() { w=canvas.width=window.innerWidth; h=canvas.height=window.innerHeight; cols=Math.floor(w/fSize); drops=new Array(cols).fill(1); }
-        function drawM() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-            ctx.fillRect(0, 0, w, h);
-            ctx.fillStyle = '#ff0000'; ctx.font = fSize + 'px monospace';
-            for (let i = 0; i < drops.length; i++) {
-                ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*fSize, drops[i]*fSize);
-                if (drops[i]*fSize > h && Math.random() > 0.985) drops[i] = 0;
-                drops[i]++;
-            }
-        }
-        window.onresize = initM; initM(); setInterval(drawM, 80);
-
-        // --- 2. FIREBASE ТА ДАНІ ---
-        const images = {
+        const charImages = {
             tauren_male_forearm: "TMF.png", tauren_male_biceps: "TMB.png", tauren_male_calf: "TMC.png",
             tauren_female_forearm: "TFF.png", tauren_female_biceps: "TFB.png", tauren_female_calf: "TFC.png",
             elf_male_forearm: "EMF.png", elf_male_biceps: "EMB.png", elf_male_calf: "EMC.png",
             elf_female_forearm: "EFF.png", elf_female_biceps: "EFB.png", elf_female_calf: "EFC.png"
         };
 
-        const firebaseConfig = { databaseURL: "ТВІЙ_FIREBASE_URL" };
+        // 2. FIREBASE CONFIG
+        const firebaseConfig = { databaseURL: "https://firebaseio.com" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        let state = { 
-            race: localStorage.getItem('race') || '', 
-            gender: localStorage.getItem('gender') || '', 
-            part: 'forearm' 
-        };
+        // 3. МАТРИЦЯ (ФОН)
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        let w, h, cols, drops;
+        const fSize = 16;
+        const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピ';
+        function initM() { w=canvas.width=window.innerWidth; h=canvas.height=window.innerHeight; cols=Math.floor(w/fSize); drops=new Array(cols).fill(1); }
+        function drawM() { ctx.fillStyle='rgba(0,0,0,0.1)'; ctx.fillRect(0,0,w,h); ctx.fillStyle='#f00'; ctx.font=fSize+'px monospace'; for(let i=0;i<drops.length;i++){ ctx.fillText(chars[Math.floor(Math.random()*chars.length)],i*fSize,drops[i]*fSize); if(drops[i]*fSize>h&&Math.random()>0.985)drops[i]=0; drops[i]++; } }
+        window.onresize=initM; initM(); setInterval(drawM, 80);
 
-        // Статус блокування через Firebase
+        // 4. ЛОГІКА
+        let state = { race: localStorage.getItem('race') || '', gender: localStorage.getItem('gender') || '', part: 'forearm' };
+
         db.ref('site_status').on('value', (snap) => {
-            const status = snap.val();
-            const ui = document.getElementById('game-ui');
-            const overlay = document.getElementById('soldOverlay');
-            if (status === 'blocked') {
-                ui.classList.add('is-sold');
-                overlay.style.display = 'flex';
-            } else {
-                ui.classList.remove('is-sold');
-                overlay.style.display = 'none';
-            }
+            const locked = snap.val() === 'blocked';
+            document.getElementById('game-ui').classList.toggle('is-locked', locked);
+            document.getElementById('soldOverlay').style.display = locked ? 'flex' : 'none';
         });
 
-        window.onload = () => {
-            if (state.race && state.gender) {
-                show('main-ui');
-                updateView();
-            }
-        };
+        window.onload = () => { if (state.race && state.gender) { show('main-ui'); updateView(); } };
 
-        // --- 3. ЛОГІКА ---
         function selectRace(r) { 
             state.race = r; localStorage.setItem('race', r); 
+            document.getElementById('body-male-img').src = bodyPreviews[r].male;
+            document.getElementById('body-female-img').src = bodyPreviews[r].female;
             show('step2');
         }
 
-        function selectGender(g) { 
-            state.gender = g; localStorage.setItem('gender', g); 
-            show('main-ui');
-            updateView(); 
-        }
-
+        function selectGender(g) { state.gender = g; localStorage.setItem('gender', g); show('main-ui'); updateView(); }
+        
         function setPart(p, btn) { 
             state.part = p; 
-            document.querySelectorAll('.part-btn').forEach(b => b.classList.remove('active')); 
-            btn.classList.add('active'); 
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
             updateView(); 
         }
 
@@ -271,29 +240,12 @@
             const key = `${state.race}_${state.gender}_${state.part}`;
             const img = document.getElementById('main-char-img');
             img.style.opacity = 0;
-            setTimeout(() => { 
-                if(images[key]) img.src = images[key]; 
-                img.style.opacity = 1; 
-            }, 300);
+            setTimeout(() => { if(charImages[key]) img.src = charImages[key]; img.style.opacity = 1; }, 250);
         }
 
-        function show(id) {
-            document.querySelectorAll('.step-container').forEach(s => s.classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
-        }
-
-        function resetAll() { localStorage.clear(); location.reload(); }
-
-        // --- 4. АДМІНКА ---
-        function loginAdm() { 
-            if(document.getElementById('admPass').value === "yokai123234") {
-                document.getElementById('admTools').style.display='block'; 
-            }
-        }
-        function toggleLock() {
-            const isBlocked = document.getElementById('game-ui').classList.contains('is-sold');
-            db.ref('site_status').set(isBlocked ? 'active' : 'blocked');
-        }
+        function show(id) { document.querySelectorAll('.step-container').forEach(s => s.classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); }
+        function loginAdm() { if(document.getElementById('admPass').value === "yokai123234") document.getElementById('admTools').style.display='block'; }
+        function toggleLock() { const isB = document.getElementById('game-ui').classList.contains('is-locked'); db.ref('site_status').set(isB ? 'active' : 'blocked'); }
     </script>
 </body>
 </html>
