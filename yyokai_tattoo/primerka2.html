@@ -25,14 +25,20 @@
         }
 
         /* ВІДЕО ФОН */
-        .video-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -5; pointer-events: none; }
-        #bg-video { 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
-    object-position: center; /* Це змусить відео триматися центру */
-    opacity: 0.15; 
+        <canvas id="matrix-canvas" class="video-bg"></canvas>
+
+      .video-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -5;
+    pointer-events: none;
+    opacity: 0.15; /* Твої 15% прозорості */
+    background: #000;
 }
+
 
 
         /* ЛЕВІТАЦІЯ ЗА СПИНОЮ */
@@ -247,6 +253,55 @@
             const isBlocked = document.getElementById('step1').classList.contains('is-sold');
             db.ref('project_status').set(isBlocked ? 'active' : 'blocked');
         }
+        const canvas = document.getElementById('matrix-canvas');
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+// Японські ієрогліфи (катакана)
+const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+const characters = katakana.split('');
+
+const fontSize = 16;
+const columns = canvas.width / fontSize;
+
+const drops = [];
+for (let x = 0; x < columns; x++) {
+    drops[x] = 1;
+}
+
+function draw() {
+    // Напівпрозорий чорний фон, щоб створювати ефект шлейфу
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#ff0000'; // Чистий червоний колір
+    ctx.font = fontSize + 'px monospace';
+    ctx.shadowBlur = 8; // Ефект неонового сяйва
+    ctx.shadowColor = '#ff0000';
+
+    for (let i = 0; i < drops.length; i++) {
+        const text = characters[Math.floor(Math.random() * characters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+        }
+        drops[i]++;
+    }
+}
+
+// Оновлення розміру при зміні вікна
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
+setInterval(draw, 33);
+
     </script>
+    
+
 </body>
 </html>
