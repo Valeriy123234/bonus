@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YOKAI TATTOO | CHARACTER SELECT</title>
+    <title>YOKAI TATTOO | REFINED UI</title>
     
     <link href="https://googleapis.com" rel="stylesheet">
     
@@ -12,7 +12,8 @@
 
     <style>
         :root { 
-            --red: #ff0000; 
+            --red-bright: #ff0000;
+            --red-glow: rgba(255, 0, 0, 0.5);
             --font-main: 'Shippori Mincho', serif;
         }
 
@@ -23,90 +24,95 @@
             overflow: hidden; 
         }
 
-        /* ФОНОВЕ ВІДЕО */
+        /* ВІДЕО ФОН */
         .video-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -5; pointer-events: none; }
         #bg-video { width: 100%; height: 100%; object-fit: cover; opacity: 0.15; }
 
-        /* ЛЕВІТУЮЧИЙ ОБ'ЄКТ ЗА СПИНОЮ */
+        /* ЛЕВІТАЦІЯ ЗА СПИНОЮ */
         .floating-bg {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 80vh; height: 80vh;
+            width: 70vh; height: 70vh;
             background: url('URL_ТВОЄЇ_ПНГ_ЗА_СПИНОЮ') center/contain no-repeat;
-            z-index: -4; opacity: 0.3;
+            z-index: -4; opacity: 0.25;
             animation: levitate 12s infinite ease-in-out;
             pointer-events: none;
         }
 
         @keyframes levitate {
-            0%, 100% { transform: translate(-50%, -50%) translateY(-20px); }
-            50% { transform: translate(-50%, -50%) translateY(20px) translateX(10px); }
+            0%, 100% { transform: translate(-50%, -50%) translateY(-15px); }
+            50% { transform: translate(-50%, -50%) translateY(15px) translateX(5px); }
         }
 
-        /* СИСТЕМА КРОКІВ */
+        /* ЗАГОЛОВОК З ЕФЕКТОМ ДИХАННЯ */
+        .title-step { 
+            font-size: 1.8rem; /* Зменшено */
+            letter-spacing: 12px; 
+            text-transform: uppercase;
+            color: var(--red-bright);
+            text-align: center;
+            margin-bottom: 40px;
+            animation: breath 3s infinite ease-in-out; /* Ефект дихання */
+        }
+
+        @keyframes breath {
+            0%, 100% { opacity: 0.6; text-shadow: 0 0 10px var(--red-glow); transform: scale(0.98); }
+            50% { opacity: 1; text-shadow: 0 0 25px var(--red-bright), 0 0 40px var(--red-glow); transform: scale(1.02); }
+        }
+
         .step-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; width: 100%; transition: opacity 0.6s; }
         .hidden { display: none !important; }
 
-        .title-step { 
-            font-size: 3rem; letter-spacing: 10px; text-transform: uppercase;
-            text-shadow: 0 0 10px rgba(255,255,255,0.2); margin-bottom: 60px; text-align: center;
-        }
-
-        /* ОНОВЛЕНІ ЕМБЛЕМИ (ПРЕМІУМ СТИЛЬ) */
+        /* ОНОВЛЕНІ ІКОНКИ (МЕНШІ) */
         .icon-select { 
-            width: 250px; height: 250px; cursor: pointer; margin: 30px; 
-            opacity: 0.6;
-            filter: grayscale(0.4);
+            width: 140px; /* Значно зменшено */
+            height: 140px; 
+            cursor: pointer; 
+            margin: 25px; 
+            opacity: 0.5;
+            filter: grayscale(0.8);
             transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
             object-fit: contain;
         }
         .icon-select:hover { 
             opacity: 1;
             filter: grayscale(0);
-            transform: scale(1.1) translateY(-15px); /* Підняття замість сяйва */
+            transform: scale(1.1) translateY(-10px);
         }
 
-        /* БЛОКУВАННЯ САЙТУ (SOLD OUT) */
-        .step-container.is-sold { filter: grayscale(1) brightness(0.3); pointer-events: none; }
-        #soldLabel { color: red; font-size: 1.8rem; position: absolute; top: 15%; display: none; letter-spacing: 5px; }
+        /* БЛОКУВАННЯ (SOLD OUT) */
+        .step-container.is-sold { filter: grayscale(1) brightness(0.2); pointer-events: none; }
+        #soldLabel { color: red; font-size: 1.2rem; position: absolute; top: 15%; display: none; letter-spacing: 4px; animation: breath 2s infinite; }
 
-        /* ГОЛОВНИЙ ІНТЕРФЕЙС ПРИМІРКИ */
+        /* ГОЛОВНИЙ ЕКРАН */
         .main-ui { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: relative; }
-        .model-container { height: 72vh; margin-bottom: 20px; position: relative; }
+        .model-container { height: 75vh; margin-bottom: 15px; position: relative; }
         #main-char-img { height: 100%; object-fit: contain; transition: 0.4s; }
 
-        /* НАВІГАЦІЯ ПО ЗОНАХ ТІЛА */
-        .parts-nav { display: flex; gap: 15px; margin-bottom: 25px; }
+        .parts-nav { display: flex; gap: 12px; margin-bottom: 20px; }
         .part-btn { 
-            background: rgba(255,255,255,0.05); border: 1px solid #333; color: #777; 
-            padding: 15px 35px; cursor: pointer; font-family: var(--font-main);
-            text-transform: uppercase; font-size: 13px; letter-spacing: 2px; transition: 0.3s;
+            background: rgba(255,255,255,0.03); border: 1px solid #222; color: #666; 
+            padding: 12px 30px; cursor: pointer; font-family: var(--font-main);
+            text-transform: uppercase; font-size: 11px; letter-spacing: 2px; transition: 0.3s;
         }
-        .part-btn:hover { border-color: #777; color: #fff; }
-        .part-btn.active { border-color: var(--red); color: #fff; background: rgba(255, 0, 0, 0.1); box-shadow: 0 0 15px rgba(255, 0, 0, 0.2); }
+        .part-btn.active { border-color: var(--red-bright); color: #fff; background: rgba(255, 0, 0, 0.05); }
 
-        /* КНОПКА ЗАПИСУ */
         .booking-btn {
-            background: var(--red); color: white; border: none; 
-            padding: 20px 60px; font-family: var(--font-main);
-            font-size: 1.3rem; cursor: pointer; letter-spacing: 4px;
-            transition: 0.4s; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            background: var(--red-bright); color: white; border: none; 
+            padding: 18px 55px; font-family: var(--font-main);
+            font-size: 1.1rem; cursor: pointer; letter-spacing: 4px;
+            transition: 0.4s;
         }
-        .booking-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px var(--red); }
+        .booking-btn:hover { transform: scale(1.03); box-shadow: 0 0 30px var(--red-bright); }
 
-        /* АДМІН-ПАНЕЛЬ (5%) */
-        .admin-panel { 
-            position: fixed; bottom: 0; right: 0; opacity: 0.05; 
-            background: #111; padding: 10px; z-index: 1000; transition: 0.3s; 
-        }
+        .admin-panel { position: fixed; bottom: 0; right: 0; opacity: 0.05; background: #111; padding: 10px; z-index: 1000; transition: 0.3s; }
         .admin-panel:hover { opacity: 1; }
-        .admin-panel input { background: #000; border: 1px solid #333; color: red; padding: 5px; width: 70px; }
-
-        .reset-btn { position: absolute; top: 40px; left: 40px; background: none; border: 1px solid #222; color: #444; padding: 5px 12px; cursor: pointer; font-size: 11px; letter-spacing: 1px; }
+        .admin-panel input { background: #000; border: 1px solid #333; color: red; padding: 5px; width: 60px; font-size: 10px; }
+        
+        .reset-btn { position: absolute; top: 30px; left: 30px; background: none; border: 1px solid #222; color: #333; padding: 5px 10px; cursor: pointer; font-size: 10px; }
     </style>
 </head>
 <body>
 
-    <!-- ФОНОВІ ЕЛЕМЕНТИ -->
     <div class="video-bg">
         <video autoplay loop muted playsinline id="bg-video">
             <source src="033.mp4" type="video/mp4">
@@ -114,26 +120,26 @@
     </div>
     <div class="floating-bg"></div>
 
-    <!-- КРОК 1: КЛАН -->
+    <!-- КРОК 1: РАСА -->
     <div id="step1" class="step-container">
-        <div id="soldLabel">ARCHIVE LOCKED: REPLICA CLAIMED</div>
-        <h1 class="title-step">ОБЕРИ КЛАН</h1>
+        <div id="soldLabel">RESTRICTED ACCESS</div>
+        <h1 class="title-step">Обери клан</h1>
         <div style="display:flex;">
             <img src="122.PNG" class="icon-select" onclick="selectRace('tauren')">
             <img src="123.PNG" class="icon-select" onclick="selectRace('elf')">
         </div>
     </div>
 
-    <!-- КРОК 2: ТІЛО -->
+    <!-- КРОК 2: СТАТЬ -->
     <div id="step2" class="step-container hidden">
-        <h1 class="title-step">ОБЕРИ ТІЛО</h1>
+        <h1 class="title-step">Обери тіло</h1>
         <div style="display:flex;">
             <img src="URL_ICON_MALE" class="icon-select" onclick="selectGender('male')">
             <img src="URL_ICON_FEMALE" class="icon-select" onclick="selectGender('female')">
         </div>
     </div>
 
-    <!-- КРОК 3: ПЕРСОНАЖ (ГОЛОВНИЙ ЕКРАН) -->
+    <!-- КРОК 3: ПЕРСОНАЖ -->
     <div id="main-ui" class="main-ui hidden">
         <button class="reset-btn" onclick="resetAll()">[ RESET SOUL ]</button>
         <div class="model-container"><img id="main-char-img" src=""></div>
@@ -142,7 +148,7 @@
             <button class="part-btn" onclick="setPart('biceps', this)">Біцепс</button>
             <button class="part-btn" onclick="setPart('calf', this)">Ікра</button>
         </div>
-        <button class="booking-btn" onclick="window.open('ТВІЙ_ТЕЛЕГРАМ_ЛІНК')">ЗАБРОНЮВАТИ</button>
+        <button class="booking-btn" onclick="window.open('ТВІЙ_ТЕЛЕГРАМ')">ЗАБРОНЮВАТИ</button>
     </div>
 
     <!-- АДМІНКА -->
@@ -150,12 +156,11 @@
         <input type="password" id="admPass" placeholder="KEY">
         <button onclick="loginAdm()" style="background:#222; color:#fff; border:none; cursor:pointer; padding:5px 10px;">OK</button>
         <div id="admTools" style="display:none; margin-top:10px;">
-            <button onclick="toggleSold()" style="background:red; color:white; border:none; padding:10px; cursor:pointer; width:100%;">TOGGLE SOLD</button>
+            <button onclick="toggleSold()" style="background:red; color:white; border:none; padding:8px; cursor:pointer; width:100%; font-size:10px;">TOGGLE SOLD</button>
         </div>
     </div>
 
     <script>
-        // ДАНІ КАРТИНОК
         const images = {
             tauren_male_forearm: "URL", tauren_male_biceps: "URL", tauren_male_calf: "URL",
             tauren_female_forearm: "URL", tauren_female_biceps: "URL", tauren_female_calf: "URL",
@@ -163,7 +168,7 @@
             elf_female_forearm: "URL", elf_female_biceps: "URL", elf_female_calf: "URL"
         };
 
-        const firebaseConfig = { databaseURL: "ТВІЙ_URL_FIREBASE" };
+        const firebaseConfig = { databaseURL: "ТВІЙ_FIREBASE_URL" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
@@ -173,7 +178,6 @@
             part: 'forearm' 
         };
 
-        // ПЕРЕВІРКА ГЛОБАЛЬНОГО БЛОКУВАННЯ
         db.ref('project_status').on('value', (snap) => {
             const status = snap.val();
             const s1 = document.getElementById('step1');
@@ -223,10 +227,7 @@
         }
 
         function resetAll() { localStorage.clear(); location.reload(); }
-
-        // АДМІНКА
         function loginAdm() { if(document.getElementById('admPass').value === "yokai123234") document.getElementById('admTools').style.display='block'; }
-        
         function toggleSold() {
             const isBlocked = document.getElementById('step1').classList.contains('is-sold');
             db.ref('project_status').set(isBlocked ? 'active' : 'blocked');
