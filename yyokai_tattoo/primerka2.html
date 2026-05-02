@@ -27,17 +27,19 @@
         /* ВІДЕО ФОН */
         <canvas id="matrix-canvas" class="video-bg"></canvas>
 
-      .video-bg {
-    position: fixed;
+     .video-bg {
+    position: fixed; /* Фіксує на фоні, щоб не заважати іконкам */
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: -5;
+    z-index: -1; /* Ставимо за всі елементи */
     pointer-events: none;
-    opacity: 0.15; /* Твої 15% прозорості */
-    background: #000;
+    opacity: 0.15;
+    background: black;
+    display: block;
 }
+
 
 
 
