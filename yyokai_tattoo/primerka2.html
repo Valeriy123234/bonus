@@ -7,7 +7,7 @@
     
     <link href="https://googleapis.com" rel="stylesheet">
     
-    <!-- Firebase -->
+    <!-- Firebase SDK -->
     <script src="https://gstatic.com"></script>
     <script src="https://gstatic.com"></script>
 
@@ -24,18 +24,19 @@
             background: #000; color: #fff; font-family: var(--font-main); overflow: hidden; 
         }
 
-        /* МАТРИЦЯ (ФОН 15%) */
+        /* ПОСТІЙНА МАТРИЦЯ (15% ПРОЗОРІСТЬ) */
         #matrix-canvas {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: 1; pointer-events: none; opacity: 0.15;
         }
 
-        #game-ui { position: relative; z-index: 10; width: 100%; height: 100%; transition: 0.5s; }
+        #game-ui { position: relative; z-index: 10; width: 100%; height: 100%; background: transparent; }
 
         /* ЕКРАНИ */
         .step-container { 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
             height: 100vh; width: 100%; animation: fadeIn 0.8s ease; padding: 0 15px;
+            background: transparent;
         }
         .hidden { display: none !important; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -46,17 +47,14 @@
             text-shadow: 0 0 15px var(--red-glow);
         }
 
-        /* АДАПТИВНА СІТКА КАРТОК */
-        .cards-wrapper { 
-            display: flex; gap: 30px; align-items: center; justify-content: center; width: 100%;
-        }
-
+        /* АДАПТИВНІ ПРЯМОКУТНИКИ */
+        .cards-wrapper { display: flex; gap: 30px; align-items: center; justify-content: center; width: 100%; }
         .rect-card {
             width: 260px; height: 460px; border: 1px solid #222; position: relative;
             cursor: pointer; overflow: hidden; background: rgba(255,255,255,0.02); transition: 0.5s ease;
         }
 
-        /* МАГІЧНИЙ КРУГ ЗА ПЕРСОНАЖЕМ */
+        /* МАГІЧНИЙ КРУГ */
         .magic-circle {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 140%; opacity: 0.2; pointer-events: none; z-index: 1;
@@ -70,7 +68,7 @@
             object-fit: contain; filter: grayscale(0); transition: 0.5s ease; opacity: 0.8;
         }
 
-        /* ЕФЕКТИ СЕЛЕКТУ */
+        /* ЕФЕКТ СІРОГО ДЛЯ НЕАКТИВНИХ */
         .cards-wrapper:hover .rect-card:not(:hover) .card-img { filter: grayscale(1); opacity: 0.15; transform: scale(0.95); }
         .rect-card:hover .card-img { transform: scale(1.05); filter: grayscale(0); opacity: 1; }
         .rect-card:hover { border-color: var(--red); box-shadow: 0 0 30px var(--red-glow); }
@@ -81,33 +79,38 @@
             color: #fff; z-index: 10; text-shadow: 0 0 10px #000;
         }
 
-        /* МОБІЛЬНА АДАПТАЦІЯ */
+        /* МОБІЛЬНА ВЕРСІЯ */
         @media (max-width: 600px) {
             .title-step { font-size: 1.3rem; letter-spacing: 5px; }
             .cards-wrapper { gap: 15px; }
             .rect-card { width: 44vw; height: 60vh; }
-            .card-label { font-size: 0.8rem; letter-spacing: 2px; bottom: 15px; }
+            .card-label { font-size: 0.8rem; bottom: 15px; }
         }
 
-        /* ФІНАЛЬНИЙ ЕКРАН */
+        /* ПРИМІРКА */
         .model-container { height: 65vh; margin-bottom: 20px; position: relative; display: flex; align-items: center; justify-content: center; }
         #main-char-img { height: 100%; position: relative; z-index: 10; object-fit: contain; transition: 0.4s; }
 
         .nav-btn { background: #111; border: 1px solid #333; color: #555; padding: 10px 20px; cursor: pointer; font-family: var(--font-title); font-size: 10px; margin: 3px; }
-        .nav-btn.active { border-color: var(--red); color: #fff; }
+        .nav-btn.active { border-color: var(--red); color: #fff; box-shadow: inset 0 0 5px var(--red-glow); }
 
         .booking-btn {
             background: var(--red); color: white; border: none; padding: 18px 50px; 
             font-weight: bold; font-size: 1rem; cursor: pointer; letter-spacing: 4px;
-            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); transition: 0.3s;
         }
+        .booking-btn:hover { background: #fff; color: #000; }
 
-        /* БЛОКУВАННЯ */
-        #soldOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; align-items: center; justify-content: center; flex-direction: column; }
+        /* БЛОКУВАННЯ RESERVED */
+        #soldOverlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.95); z-index: 2000; display: none; 
+            align-items: center; justify-content: center; flex-direction: column; 
+        }
         .is-locked { filter: grayscale(1) brightness(0.2); pointer-events: none; }
 
         /* АДМІНКА */
-        .admin-panel { position: fixed; bottom: 10px; right: 10px; opacity: 0.05; background: #111; padding: 5px; z-index: 3000; }
+        .admin-panel { position: fixed; bottom: 10px; right: 10px; opacity: 0.05; background: #111; padding: 5px; z-index: 3000; transition: 0.3s; }
         .admin-panel:hover { opacity: 1; }
         .admin-panel input { background: #000; border: 1px solid #333; color: red; padding: 5px; width: 70px; text-align: center; font-size: 9px; }
     </style>
@@ -116,13 +119,13 @@
 
     <div id="soldOverlay">
         <h1 style="color:red; font-family:var(--font-title); letter-spacing:10px;">RESERVED</h1>
-        <p style="font-size:10px; color:gray;">ACCESS DENIED</p>
+        <p style="font-size:10px; color:gray; letter-spacing:3px;">SYSTEM ACCESS DENIED</p>
     </div>
 
     <canvas id="matrix-canvas"></canvas>
 
     <div id="game-ui">
-        <!-- КРОК 1: КЛАНИ -->
+        <!-- КРОК 1 -->
         <div id="step1" class="step-container">
             <h1 class="title-step">Оберіть клан</h1>
             <div class="cards-wrapper">
@@ -137,7 +140,7 @@
             </div>
         </div>
 
-        <!-- КРОК 2: ТІЛО (ФІЛЬТРУЄТЬСЯ) -->
+        <!-- КРОК 2 -->
         <div id="step2" class="step-container hidden">
             <h1 class="title-step">Оберіть тіло</h1>
             <div class="cards-wrapper">
@@ -155,7 +158,7 @@
             <p onclick="location.reload()" style="margin-top:30px; cursor:pointer; opacity:0.3; font-size:10px;">[ BACK ]</p>
         </div>
 
-        <!-- КРОК 3: ПРИМІРКА -->
+        <!-- КРОК 3 -->
         <div id="main-ui" class="step-container hidden">
             <div class="model-container">
                 <img src="124.png" class="magic-circle" style="width:100vh; opacity:0.25;">
@@ -175,16 +178,16 @@
             <input type="password" id="admPass" placeholder="KEY">
             <button onclick="loginAdm()" style="background:#222; color:#fff; border:none; cursor:pointer; padding:5px;">OK</button>
             <div id="admTools" style="display:none; margin-top:5px;">
-                <button onclick="toggleLock()" style="background:red; color:white; border:none; padding:5px; cursor:pointer; width:100%; font-size:9px;">LOCK</button>
+                <button onclick="toggleLock()" id="lockBtn" style="background:red; color:white; border:none; padding:5px; cursor:pointer; width:100%; font-size:9px;">LOCK SITE</button>
             </div>
         </div>
     </div>
 
     <script>
-        // 1. ПІДСТАВ СВОЇ КАРТИНКИ ТУТ
+        // 1. НАЛАШТУВАННЯ КАРТИНОК
         const bodyPreviews = {
-            tauren: { male: "tauren_male_rect.png", female: "tauren_female_rect.png" },
-            elf: { male: "elf_male_rect.png", female: "elf_female_rect.png" }
+            tauren: { male: "tauren_male_preview.png", female: "tauren_female_preview.png" },
+            elf: { male: "elf_male_preview.png", female: "elf_female_preview.png" }
         };
 
         const charImages = {
@@ -194,28 +197,49 @@
             elf_female_forearm: "EFF.png", elf_female_biceps: "EFB.png", elf_female_calf: "EFC.png"
         };
 
-        // 2. FIREBASE CONFIG
+        // 2. FIREBASE (ЗАМІНИ URL НИЖЧЕ)
         const firebaseConfig = { databaseURL: "https://firebaseio.com" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // 3. МАТРИЦЯ (ФОН)
+        // 3. СКРИПТ МАТРИЦІ
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
-        let w, h, cols, drops;
-        const fSize = 16;
-        const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピ';
-        function initM() { w=canvas.width=window.innerWidth; h=canvas.height=window.innerHeight; cols=Math.floor(w/fSize); drops=new Array(cols).fill(1); }
-        function drawM() { ctx.fillStyle='rgba(0,0,0,0.1)'; ctx.fillRect(0,0,w,h); ctx.fillStyle='#f00'; ctx.font=fSize+'px monospace'; for(let i=0;i<drops.length;i++){ ctx.fillText(chars[Math.floor(Math.random()*chars.length)],i*fSize,drops[i]*fSize); if(drops[i]*fSize>h&&Math.random()>0.985)drops[i]=0; drops[i]++; } }
-        window.onresize=initM; initM(); setInterval(drawM, 80);
+        let w, h, columns, drops;
+        const fontSize = 16;
+        const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプ';
 
-        // 4. ЛОГІКА
+        function initMatrix() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+            columns = Math.floor(w / fontSize);
+            drops = new Array(columns).fill(1);
+        }
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, w, h);
+            ctx.fillStyle = '#ff0000';
+            ctx.font = fontSize + 'px monospace';
+            ctx.shadowBlur = 8; ctx.shadowColor = '#ff0000';
+            for (let i = 0; i < drops.length; i++) {
+                ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > h && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        window.addEventListener('resize', initMatrix);
+        initMatrix(); setInterval(drawMatrix, 35);
+
+        // 4. ЛОГІКА САЙТУ
         let state = { race: localStorage.getItem('race') || '', gender: localStorage.getItem('gender') || '', part: 'forearm' };
+        let isBlocked = false;
 
+        // Firebase Sync
         db.ref('site_status').on('value', (snap) => {
-            const locked = snap.val() === 'blocked';
-            document.getElementById('game-ui').classList.toggle('is-locked', locked);
-            document.getElementById('soldOverlay').style.display = locked ? 'flex' : 'none';
+            isBlocked = snap.val() === 'blocked';
+            document.getElementById('game-ui').classList.toggle('is-locked', isBlocked);
+            document.getElementById('soldOverlay').style.display = isBlocked ? 'flex' : 'none';
+            document.getElementById('lockBtn').innerText = isBlocked ? "UNLOCK SITE" : "LOCK SITE";
         });
 
         window.onload = () => { if (state.race && state.gender) { show('main-ui'); updateView(); } };
@@ -245,7 +269,7 @@
 
         function show(id) { document.querySelectorAll('.step-container').forEach(s => s.classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); }
         function loginAdm() { if(document.getElementById('admPass').value === "yokai123234") document.getElementById('admTools').style.display='block'; }
-        function toggleLock() { const isB = document.getElementById('game-ui').classList.contains('is-locked'); db.ref('site_status').set(isB ? 'active' : 'blocked'); }
+        function toggleLock() { db.ref('site_status').set(isBlocked ? 'active' : 'blocked'); }
     </script>
 </body>
 </html>
