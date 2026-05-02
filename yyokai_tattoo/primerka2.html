@@ -27,18 +27,19 @@
         /* ВІДЕО ФОН */
         <canvas id="matrix-canvas" class="video-bg"></canvas>
 
-     .video-bg {
-    position: fixed; /* Фіксує на фоні, щоб не заважати іконкам */
+   .video-bg {
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: -1; /* Ставимо за всі елементи */
+    z-index: -1; /* Обов'язково мінус одиниця, щоб бути ПІД кнопками */
     pointer-events: none;
-    opacity: 0.15;
-    background: black;
+    opacity: 0.08; /* Зменшив до 8% — буде дуже м'яко */
+    background: transparent; /* Щоб не перекривати основний колір сайту */
     display: block;
 }
+
 
 
 
@@ -277,7 +278,10 @@
         const drops = new Array(columns).fill(1);
 
         function draw() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            // Це зробить "хвости" ієрогліфів значно коротшими і прозорішими
+            ctx.clearRect(0, 0, canvas.width, canvas.height); 
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.01)'; 
+
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             ctx.fillStyle = '#ff0000'; 
