@@ -10,7 +10,7 @@
     <script src="https://gstatic.com"></script>
     <script src="https://gstatic.com"></script>
 
- <style>
+<style>
     :root { 
         --red-bright: #ff0000;
         --red-glow: rgba(255, 0, 0, 0.5);
@@ -18,32 +18,40 @@
     }
 
     body, html { 
-        margin: 0; padding: 0; width: 100%; height: 100%; 
-        background: #000; color: #fff; 
+        margin: 0; 
+        padding: 0; 
+        width: 100%; 
+        height: 100%; 
+        background: #000; 
+        color: #fff; 
         font-family: var(--font-main); 
-        overflow-x: hidden; /* Дозволяємо прокрутку по вертикалі, якщо треба */
+        overflow: hidden; /* Прибирає зайву прокрутку */
     }
 
-    /* Стиль для фону */
-    .video-bg {
+    /* Магічний фон з ієрогліфами */
+    #matrix-canvas {
         position: fixed;
         top: 0;
         left: 0;
         width: 100vw;
         height: 100vh;
-        z-index: -1; 
+        z-index: -1; /* Завжди під контентом */
         pointer-events: none;
-        opacity: 0.15; /* Повернув 15%, як ти просив спочатку */
+        opacity: 0.12; /* Ледь помітний ефект (12%) */
         display: block;
     }
 
-    /* Твоя головна обгортка для іконок (додай цей клас у HTML, якщо його немає) */
+    /* Шар для твоїх іконок та тексту */
     .content-wrapper {
         position: relative;
-        z-index: 10; /* Це винесе іконки НАД ієрогліфами */
+        z-index: 10; /* Виносить іконки НА передній план */
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
-
-
 
 
 
@@ -143,12 +151,7 @@
 
    <!-- ЦЕ ВСТАВЛЯЙ -->
 <body>
-    <canvas id="matrix-canvas" class="video-bg"></canvas>
-
-    <div class="content-wrapper">
-        <!-- ТУТ УСІ ТВОЇ ІКОНКИ, ТЕКСТ ТА ІНШЕ -->
-   
-
+  <canvas id="matrix-canvas"></canvas>
 
 
     <!-- КРОК 1: РАСА -->
@@ -190,7 +193,7 @@
             <button onclick="toggleSold()" style="background:red; color:white; border:none; padding:8px; cursor:pointer; width:100%; font-size:10px;">TOGGLE SOLD</button>
         </div>
     </div>
-         </div>
+    
 
     <script>
         const images = {
@@ -270,54 +273,46 @@
         <!-- Твій контент (іконки, текст тощо) -->
 
     <!-- ВСТАВЛЯЙ СЮДИ -->
-    <script>
-        const canvas = document.getElementById('matrix-canvas');
-const ctx = canvas.getContext('2d');
+  <script>
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
 
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
+    let width, height, columns, drops;
+    const fontSize = 16;
+    const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプ';
 
-const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
-const chars = katakana.split('');
-const fontSize = 18; // Трохи більший шрифт краще виглядає
-const columns = Math.floor(canvas.width / fontSize);
-const drops = new Array(columns).fill(1);
-
-function draw() {
-    // Малюємо напівпрозорий прямокутник, щоб старі символи згасали поступово
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; 
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Колір ієрогліфів (тьмяно-червоний для м'якості)
-    ctx.fillStyle = '#990000'; 
-    ctx.font = fontSize + 'px monospace';
-    
-    // Слабке неонове сяйво
-    ctx.shadowBlur = 4;
-    ctx.shadowColor = '#ff0000';
-
-    for (let i = 0; i < drops.length; i++) {
-        const text = chars[Math.floor(Math.random() * chars.length)];
-        
-        // Малюємо символ
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        // Шанс повернення наверх (зменшено, щоб вони падали рідше)
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.985) {
-            drops[i] = 0;
-        }
-        drops[i]++;
+    function init() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        columns = Math.floor(width / fontSize);
+        drops = new Array(columns).fill(1);
     }
-}
 
-// Збільшуємо число до 50-70 мс (чим більше число, тим повільніше анімація)
-setInterval(draw, 60); 
+    function draw() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; 
+        ctx.fillRect(0, 0, width, height);
 
-    </script>
+        ctx.fillStyle = '#ff3333'; 
+        ctx.font = fontSize + 'px monospace';
+        ctx.shadowBlur = 10; 
+        ctx.shadowColor = '#ff0000';
+
+        for (let i = 0; i < drops.length; i++) {
+            const text = katakana[Math.floor(Math.random() * katakana.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+            if (drops[i] * fontSize > height && Math.random() > 0.99) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        }
+    }
+
+    window.addEventListener('resize', init);
+    init();
+    setInterval(draw, 80); 
+</script>
+
 </body>
 
 
