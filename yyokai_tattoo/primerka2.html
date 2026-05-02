@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YOKAI TATTOO | REFINED UI</title>
+    <title>YOKAI TATTOO | INTERACTIVE UI</title>
     
     <link href="https://googleapis.com" rel="stylesheet">
     
@@ -31,7 +31,7 @@
         /* ЛЕВІТАЦІЯ ЗА СПИНОЮ */
         .floating-bg {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 70vh; height: 70vh;
+            width: 75vh; height: 75vh;
             background: url('URL_ТВОЄЇ_ПНГ_ЗА_СПИНОЮ') center/contain no-repeat;
             z-index: -4; opacity: 0.25;
             animation: levitate 12s infinite ease-in-out;
@@ -40,75 +40,83 @@
 
         @keyframes levitate {
             0%, 100% { transform: translate(-50%, -50%) translateY(-15px); }
-            50% { transform: translate(-50%, -50%) translateY(15px) translateX(5px); }
+            50% { transform: translate(-50%, -50%) translateY(15px) translateX(10px); }
         }
 
-        /* ЗАГОЛОВОК З ЕФЕКТОМ ДИХАННЯ */
+        /* ЗАГОЛОВОК "ДИХАННЯ" */
         .title-step { 
-            font-size: 1.8rem; /* Зменшено */
-            letter-spacing: 12px; 
+            font-size: 1.6rem;
+            letter-spacing: 10px; 
             text-transform: uppercase;
             color: var(--red-bright);
             text-align: center;
-            margin-bottom: 40px;
-            animation: breath 3s infinite ease-in-out; /* Ефект дихання */
+            margin-bottom: 50px;
+            animation: breath 3s infinite ease-in-out;
         }
 
         @keyframes breath {
-            0%, 100% { opacity: 0.6; text-shadow: 0 0 10px var(--red-glow); transform: scale(0.98); }
-            50% { opacity: 1; text-shadow: 0 0 25px var(--red-bright), 0 0 40px var(--red-glow); transform: scale(1.02); }
+            0%, 100% { opacity: 0.5; text-shadow: 0 0 10px var(--red-glow); }
+            50% { opacity: 1; text-shadow: 0 0 20px var(--red-bright); }
         }
 
-        .step-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; width: 100%; transition: opacity 0.6s; }
+        .step-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; width: 100%; }
         .hidden { display: none !important; }
 
-        /* ОНОВЛЕНІ ІКОНКИ (МЕНШІ) */
+        /* ГРУПА ЕМБЛЕМ */
+        .icons-wrapper { display: flex; gap: 40px; }
+
+        /* ЕМБЛЕМИ: НАТУРАЛЬНИЙ ВИГЛЯД */
         .icon-select { 
-            width: 140px; /* Значно зменшено */
-            height: 140px; 
+            width: 180px; /* Трохи більше */
+            height: 180px; 
             cursor: pointer; 
-            margin: 25px; 
-            opacity: 0.5;
-            filter: grayscale(0.8);
-            transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             object-fit: contain;
+            filter: grayscale(0) opacity(1);
         }
+
+        /* ЕФЕКТ ПРИ НАВЕДЕННІ: ТА ЩО ПІД МИШКОЮ - РОСТЕ, ІНША - СІРІЄ */
+        .icons-wrapper:hover .icon-select:not(:hover) {
+            filter: grayscale(1) opacity(0.3); /* Інша емблема стає сірою та прозорою */
+            transform: scale(0.9);
+        }
+
         .icon-select:hover { 
-            opacity: 1;
-            filter: grayscale(0);
-            transform: scale(1.1) translateY(-10px);
+            transform: scale(1.15) translateY(-10px); /* Вибрана збільшується */
+            filter: grayscale(0) opacity(1);
         }
 
         /* БЛОКУВАННЯ (SOLD OUT) */
         .step-container.is-sold { filter: grayscale(1) brightness(0.2); pointer-events: none; }
-        #soldLabel { color: red; font-size: 1.2rem; position: absolute; top: 15%; display: none; letter-spacing: 4px; animation: breath 2s infinite; }
+        #soldLabel { color: red; font-size: 1.2rem; position: absolute; top: 15%; display: none; letter-spacing: 4px; }
 
-        /* ГОЛОВНИЙ ЕКРАН */
+        /* ГОЛОВНИЙ ЕКРАН ПРИМІРКИ */
         .main-ui { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; position: relative; }
-        .model-container { height: 75vh; margin-bottom: 15px; position: relative; }
+        .model-container { height: 75vh; margin-bottom: 20px; position: relative; }
         #main-char-img { height: 100%; object-fit: contain; transition: 0.4s; }
 
-        .parts-nav { display: flex; gap: 12px; margin-bottom: 20px; }
+        .parts-nav { display: flex; gap: 12px; margin-bottom: 25px; }
         .part-btn { 
-            background: rgba(255,255,255,0.03); border: 1px solid #222; color: #666; 
-            padding: 12px 30px; cursor: pointer; font-family: var(--font-main);
-            text-transform: uppercase; font-size: 11px; letter-spacing: 2px; transition: 0.3s;
+            background: rgba(255,255,255,0.03); border: 1px solid #222; color: #555; 
+            padding: 12px 35px; cursor: pointer; font-family: var(--font-main);
+            text-transform: uppercase; font-size: 12px; letter-spacing: 2px; transition: 0.3s;
         }
         .part-btn.active { border-color: var(--red-bright); color: #fff; background: rgba(255, 0, 0, 0.05); }
 
         .booking-btn {
             background: var(--red-bright); color: white; border: none; 
-            padding: 18px 55px; font-family: var(--font-main);
-            font-size: 1.1rem; cursor: pointer; letter-spacing: 4px;
+            padding: 20px 60px; font-family: var(--font-main);
+            font-size: 1.2rem; cursor: pointer; letter-spacing: 4px;
             transition: 0.4s;
         }
-        .booking-btn:hover { transform: scale(1.03); box-shadow: 0 0 30px var(--red-bright); }
+        .booking-btn:hover { transform: scale(1.05); box-shadow: 0 0 35px var(--red-bright); }
 
+        /* АДМІНКА */
         .admin-panel { position: fixed; bottom: 0; right: 0; opacity: 0.05; background: #111; padding: 10px; z-index: 1000; transition: 0.3s; }
         .admin-panel:hover { opacity: 1; }
-        .admin-panel input { background: #000; border: 1px solid #333; color: red; padding: 5px; width: 60px; font-size: 10px; }
+        .admin-panel input { background: #000; border: 1px solid #333; color: red; padding: 5px; width: 65px; font-size: 10px; }
         
-        .reset-btn { position: absolute; top: 30px; left: 30px; background: none; border: 1px solid #222; color: #333; padding: 5px 10px; cursor: pointer; font-size: 10px; }
+        .reset-btn { position: absolute; top: 35px; left: 35px; background: none; border: 1px solid #222; color: #444; padding: 6px 12px; cursor: pointer; font-size: 10px; }
     </style>
 </head>
 <body>
@@ -124,16 +132,16 @@
     <div id="step1" class="step-container">
         <div id="soldLabel">RESTRICTED ACCESS</div>
         <h1 class="title-step">Обери клан</h1>
-        <div style="display:flex;">
-            <img src="122.PNG" class="icon-select" onclick="selectRace('tauren')">
-            <img src="123.PNG" class="icon-select" onclick="selectRace('elf')">
+        <div class="icons-wrapper">
+            <img src="URL_ICON_TAUREN" class="icon-select" onclick="selectRace('tauren')">
+            <img src="URL_ICON_ELF" class="icon-select" onclick="selectRace('elf')">
         </div>
     </div>
 
     <!-- КРОК 2: СТАТЬ -->
     <div id="step2" class="step-container hidden">
         <h1 class="title-step">Обери тіло</h1>
-        <div style="display:flex;">
+        <div class="icons-wrapper">
             <img src="URL_ICON_MALE" class="icon-select" onclick="selectGender('male')">
             <img src="URL_ICON_FEMALE" class="icon-select" onclick="selectGender('female')">
         </div>
@@ -148,7 +156,7 @@
             <button class="part-btn" onclick="setPart('biceps', this)">Біцепс</button>
             <button class="part-btn" onclick="setPart('calf', this)">Ікра</button>
         </div>
-        <button class="booking-btn" onclick="window.open('ТВІЙ_ТЕЛЕГРАМ')">ЗАБРОНЮВАТИ</button>
+        <button class="booking-btn" onclick="window.open('ТВІЙ_ТЕЛЕГРАМ')">ЗАБРОНЮВАТИ СЕАНС</button>
     </div>
 
     <!-- АДМІНКА -->
