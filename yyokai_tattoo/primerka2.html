@@ -7,8 +7,8 @@
     <link href="https://googleapis.com" rel="stylesheet">
     
     <!-- Firebase Compat SDK -->
-    <script src="https://gstatic.com"></script>
-    <script src="https://gstatic.com"></script>
+      <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <style>
         :root { --red: #ff0000; --red-glow: rgba(255, 0, 0, 0.5); }
@@ -94,10 +94,10 @@
             <h1 class="title-step">Оберіть тіло</h1>
             <div class="cards-wrapper">
                 <div class="rect-card" onclick="selectGender('male')">
-                    <img src="124.png" class="magic-circle"><img id="body-male-img" src="" class="card-img"><div class="card-label">MALE</div>
+                    <img src="124.PNG" class="magic-circle"><img id="body-male-img" src="" class="card-img"><div class="card-label">MALE</div>
                 </div>
                 <div class="rect-card" onclick="selectGender('female')">
-                    <img src="124.png" class="magic-circle"><img id="body-female-img" src="" class="card-img"><div class="card-label">FEMALE</div>
+                    <img src="124.PNG" class="magic-circle"><img id="body-female-img" src="" class="card-img"><div class="card-label">FEMALE</div>
                 </div>
             </div>
             <p onclick="location.reload()" style="margin-top:30px; cursor:pointer; opacity:0.3; font-size:10px;">[ BACK ]</p>
@@ -106,7 +106,7 @@
         <!-- КРОК 3 -->
         <div id="main-ui" class="step-container hidden">
             <div class="model-container">
-                <img src="124.png" class="magic-circle" style="width: 65vh; opacity: 0.2;"> <!-- Зменшений круг для фіналу -->
+                <img src="124.PNG" class="magic-circle" style="width: 65vh; opacity: 0.2;"> <!-- Зменшений круг для фіналу -->
                 <img id="main-char-img" src="">
             </div>
             <div style="margin-bottom:20px;">
@@ -129,15 +129,15 @@
 
     <script>
         // --- 1. НАЛАШТУВАННЯ (ВСТАВ СВОЇ ПОСИЛАННЯ) ---
-        const firebaseConfig = { databaseURL: "https://firebasedatabase.app" };
+        const firebaseConfig = { databaseURL: "https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/" };
         
         const bodyPreviews = {
             tauren: { male: "URL_TAUREN_MALE", female: "URL_TAUREN_FEMALE" },
             elf: { male: "URL_ELF_MALE", female: "URL_ELF_FEMALE" }
         };
 
-        const charImages = {
-            tauren_male_forearm: "TMF.png", tauren_male_biceps: "TMB.png", tauren_male_calf: "TMC.png",
+        const charImages = 
+            tauren_male_forearm: "taurenm.PNG", tauren_male_biceps: "TMB.png", tauren_male_calf: "TMC.png",
             tauren_female_forearm: "TFF.png", tauren_female_biceps: "TFB.png", tauren_female_calf: "TFC.png",
             elf_male_forearm: "EMF.png", elf_male_biceps: "EMB.png", elf_male_calf: "EMC.png",
             elf_female_forearm: "EFF.png", elf_female_biceps: "EFB.png", elf_female_calf: "EFC.png"
