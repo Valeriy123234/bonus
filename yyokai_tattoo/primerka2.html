@@ -65,19 +65,73 @@
         .is-locked .step-container { display: none !important; }
 
         /* АДМІНКА-ДРАБИНКА */
-        .admin-panel { 
-            position: fixed; bottom: 10px; right: 10px; width: 40px; height: 40px; 
-            z-index: 10000 !important; background: #333; opacity: 0.15; cursor: pointer; 
-            display: flex; align-items: center; justify-content: center; transition: 0.3s;
-            pointer-events: auto !important;
-        }
-        .admin-panel::before { content: 'Ξ'; color: #fff; font-size: 20px; }
-        .admin-panel:hover { opacity: 1; background: #111; border: 1px solid red; width: auto; height: auto; padding: 15px; }
-        .admin-panel:hover::before { display: none; }
-        
-        .admin-content { display: none; }
-        .admin-panel:hover .admin-content { display: flex; align-items: center; gap: 5px; }
-        .admin-panel input { background: #000; border: 1px solid #333; color: red; padding: 5px; width: 80px; text-align: center; }
+       /* АДМІН-ПАНЕЛЬ: ФІНАЛЬНИЙ ФІКС */
+.admin-panel { 
+    position: fixed !important; 
+    bottom: 0 !important; 
+    right: 0 !important; 
+    width: 60px !important; 
+    height: 60px !important; 
+    z-index: 999999 !important; /* Максимально високий рівень */
+    background: rgba(51, 51, 51, 0.15) !important; /* Сіра зона 15% */
+    cursor: pointer !important; 
+    display: flex !important; 
+    align-items: center !important; 
+    justify-content: center !important; 
+    transition: 0.3s !important;
+    pointer-events: auto !important; /* Дозволяє кліки завжди */
+}
+
+/* Знак драбинки */
+.admin-panel::before { 
+    content: 'Ξ'; 
+    color: #fff; 
+    font-size: 24px; 
+    opacity: 0.4; 
+}
+
+/* Розгортання при наведенні */
+.admin-panel:hover { 
+    width: auto !important; 
+    height: auto !important; 
+    background: #111 !important; 
+    border-left: 1px solid red !important; 
+    border-top: 1px solid red !important; 
+    padding: 15px 25px !important; 
+    opacity: 1 !important;
+}
+
+.admin-panel:hover::before { display: none !important; }
+
+/* Контент всередині (інпут та кнопка) */
+.admin-content { 
+    display: none; 
+    align-items: center; 
+    gap: 10px; 
+}
+
+.admin-panel:hover .admin-content { 
+    display: flex !important; 
+}
+
+.admin-panel input { 
+    background: #000 !important; 
+    border: 1px solid #333 !important; 
+    color: red !important; 
+    padding: 8px !important; 
+    width: 90px !important; 
+    text-align: center !important;
+    font-size: 12px !important;
+}
+
+.admin-panel button {
+    background: #222 !important;
+    color: #fff !important;
+    border: none !important;
+    padding: 8px 15px !important;
+    cursor: pointer !important;
+}
+
     </style>
 </head>
 <body>
