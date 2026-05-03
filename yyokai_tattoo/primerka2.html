@@ -116,6 +116,12 @@
         .admin-panel { position: fixed; bottom: 10px; right: 10px; opacity: 0.05; background: #111; padding: 5px; z-index: 3000; }
         .admin-panel:hover { opacity: 1; }
         .admin-panel input { background: #000; border: 1px solid #333; color: red; padding: 5px; width: 70px; text-align: center; font-size: 9px; }
+        /* Дозволяємо кліки в адмінці, навіть якщо все інше заблоковано */
+.admin-panel, .admin-modal { 
+    pointer-events: auto !important; 
+    z-index: 9999 !important; 
+}
+
     </style>
 </head>
 <body>
