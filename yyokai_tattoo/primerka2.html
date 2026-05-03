@@ -7,8 +7,8 @@
     
     <link href="https://googleapis.com" rel="stylesheet">
     
-    <script src="https://gstatic.com"></script>
-    <script src="https://gstatic.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js">
 
     <style>
         :root { 
@@ -227,14 +227,14 @@
         };
 
         const charImages = {
-            tauren_male_forearm: "taurenm.PNG", tauren_male_biceps: "TMB.png", tauren_male_calf: "TMC.png",
-            tauren_female_forearm: "taureng.PNG", tauren_female_biceps: "TFB.png", tauren_female_calf: "TFC.png",
-            elf_male_forearm: "taurenm.PNG", elf_male_biceps: "EMB.png", elf_male_calf: "EMC.png",
-            elf_female_forearm: "taureng.PNG", elf_female_biceps: "EFB.png", elf_female_calf: "EFC.png"
+            tauren_male_forearm: "taurenm.PNG", tauren_male_biceps: "taurenm.PNG", tauren_male_calf: "taurenm.PNG",
+            tauren_female_forearm: "taureng.PNG", tauren_female_biceps: "taurenm.PNG", tauren_female_calf: "taurenm.PNG",
+            elf_male_forearm: "taurenm.PNG", elf_male_biceps: "taurenm.PNG", elf_male_calf: "taurenm.PNG",
+            elf_female_forearm: "taureng.PNG", elf_female_biceps: "taurenm.PNG", elf_female_calf: "taurenm.PNG"
         };
 
         // ТУТ ПІДКЛЮЧИ FirebaseURL
-        const firebaseConfig = { databaseURL: "https://firebaseio.com" };
+        const firebaseConfig = { databaseURL: "https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
