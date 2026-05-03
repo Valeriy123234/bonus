@@ -147,12 +147,12 @@
             <h1 class="title-step">Оберіть тіло</h1>
             <div class="cards-wrapper">
                 <div class="rect-card" onclick="selectGender('male')">
-                    <img src="124.png" class="magic-circle">
+                    <img src="124.PNG" class="magic-circle">
                     <img id="body-male-img" src="" class="card-img">
                     <div class="card-label">MALE</div>
                 </div>
                 <div class="rect-card" onclick="selectGender('female')">
-                    <img src="124.png" class="magic-circle">
+                    <img src="124.PNG" class="magic-circle">
                     <img id="body-female-img" src="" class="card-img">
                     <div class="card-label">FEMALE</div>
                 </div>
@@ -163,7 +163,7 @@
         <!-- КРОК 3: ПРИМІРКА -->
         <div id="main-ui" class="step-container hidden">
             <div class="model-container">
-                <img src="124.png" class="magic-circle" style="width:100vh; opacity:0.25;">
+                <img src="124.PNG" class="magic-circle" style="width:100vh; opacity:0.25;">
                 <img id="main-char-img" src="">
             </div>
             <div style="margin-bottom:20px;">
@@ -222,15 +222,15 @@
 
         // 2. ДАНІ ТА ЛОГІКА
         const bodyPreviews = {
-            tauren: { male: "URL_TM", female: "URL_TF" },
-            elf: { male: "URL_EM", female: "URL_EF" }
+            tauren: { male: "taurenm.PNG", female: "taureng.PNG" },
+            elf: { male: "taurenm.PNG", female: "taureng.PNG" }
         };
 
         const charImages = {
-            tauren_male_forearm: "TMF.png", tauren_male_biceps: "TMB.png", tauren_male_calf: "TMC.png",
-            tauren_female_forearm: "TFF.png", tauren_female_biceps: "TFB.png", tauren_female_calf: "TFC.png",
-            elf_male_forearm: "EMF.png", elf_male_biceps: "EMB.png", elf_male_calf: "EMC.png",
-            elf_female_forearm: "EFF.png", elf_female_biceps: "EFB.png", elf_female_calf: "EFC.png"
+            tauren_male_forearm: "taurenm.PNG", tauren_male_biceps: "TMB.png", tauren_male_calf: "TMC.png",
+            tauren_female_forearm: "taureng.PNG", tauren_female_biceps: "TFB.png", tauren_female_calf: "TFC.png",
+            elf_male_forearm: "taurenm.PNG", elf_male_biceps: "EMB.png", elf_male_calf: "EMC.png",
+            elf_female_forearm: "taureng.PNG", elf_female_biceps: "EFB.png", elf_female_calf: "EFC.png"
         };
 
         // ТУТ ПІДКЛЮЧИ FirebaseURL
