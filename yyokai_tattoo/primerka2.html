@@ -107,30 +107,36 @@
 
         /* SOLD OUT */
   /* Робимо оверлей прозорим для мишки */
-#soldOverlay {
-    pointer-events: none !important;
+#soldOverlay { 
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    background: rgba(0,0,0,0.95); z-index: 5000; /* Підняв вище */
+    display: none; 
+    align-items: center; justify-content: center; flex-direction: column; 
+    pointer-events: none; /* Кліки проходять крізь напис */
 }
 
-/* Адмінка: завжди зверху, завжди видима */
-.admin-panel {
-    position: fixed !important;
-    bottom: 20px !important;
-    right: 20px !important;
-    z-index: 9999 !important;
-    background: #111 !important;
-    border: 1px solid red !important;
-    padding: 15px !important;
-    opacity: 1 !important;
-    pointer-events: auto !important; /* Дозволяє кліки! */
+.is-locked { filter: grayscale(1) brightness(0.2); pointer-events: none; }
+
+.admin-panel { 
+    position: fixed !important; 
+    bottom: 15px !important; 
+    right: 15px !important; 
+    background: #1a1a1a !important; 
+    border: 1px solid #ff0000 !important; /* ЧЕРВОНА РАМКА, щоб бачити її */
+    padding: 10px !important; 
+    z-index: 9999 !important; 
+    pointer-events: auto !important; 
+    opacity: 0.8 !important; /* ТЕПЕР ЇЇ ВИДНО (80%) */
     display: block !important;
 }
 
-/* Кнопки всередині адмінки теж мають бути клікабельними */
-.admin-panel button, .admin-panel input {
-    pointer-events: auto !important;
-    position: relative;
-    z-index: 10000;
+.admin-panel:hover { opacity: 1 !important; }
+
+.admin-panel input { 
+    background: #000; border: 1px solid #333; color: red; 
+    padding: 8px; width: 80px; text-align: center; font-size: 11px; 
 }
+
 
 
 
