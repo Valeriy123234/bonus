@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YOKAI TATTOO | CHARACTER SELECT</title>
+    <title>YOKAI TATTOO | INTERACTIVE UI</title>
     <link href="https://googleapis.com" rel="stylesheet">
     
-    <!-- Firebase Compat SDK -->
+    <!-- Firebase SDK -->
     <script src="https://gstatic.com"></script>
     <script src="https://gstatic.com"></script>
 
     <style>
-        :root { --red: #ff0000; --red-glow: rgba(255, 0, 0, 0.5); }
+        :root { --red: #ff0000; --red-glow: rgba(255, 0, 0, 0.6); }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; color: #fff; font-family: 'Shippori Mincho', serif; overflow: hidden; }
 
-        /* МАТРИЦЯ (ПОСТІЙНИЙ ФОН 15%) */
+        /* МАТРИЦЯ (ФОН 15%) */
         #matrix-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; opacity: 0.15; }
 
-        /* UI КОНТЕЙНЕР */
         #game-ui { position: relative; z-index: 10; width: 100%; height: 100%; background: transparent; }
         .step-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; width: 100%; padding: 0 15px; }
         .hidden { display: none !important; }
@@ -25,31 +24,54 @@
 
         .title-step { font-family: 'Cinzel', serif; font-size: 2rem; letter-spacing: 12px; color: var(--red); text-align: center; margin-bottom: 50px; text-shadow: 0 0 15px var(--red-glow); }
 
-        /* КАРТКИ-ПРЯМОКУТНИКИ */
-        .cards-wrapper { display: flex; gap: 30px; align-items: center; justify-content: center; width: 100%; }
-        .rect-card { width: 260px; height: 460px; border: 1px solid #222; position: relative; cursor: pointer; overflow: hidden; background: rgba(0,0,0,0.5); transition: 0.5s ease; }
+        /* КАРТКИ (ПРЯМОКУТНИКИ) */
+        .cards-wrapper { display: flex; gap: 40px; align-items: center; justify-content: center; width: 100%; }
         
-        /* МАГІЧНЕ КОЛО (ЗМЕНШЕНО В 1.5 РАЗА) */
+        .rect-card { 
+            width: 260px; height: 460px; border: 1px solid #333; position: relative; 
+            cursor: pointer; overflow: hidden; background: rgba(20, 20, 20, 0.4); 
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+
+        .card-img { 
+            position: relative; z-index: 5; width: 100%; height: 100%; 
+            object-fit: contain; transition: all 0.5s ease; 
+            filter: grayscale(0); opacity: 1; /* Спочатку все кольорове і чітке */
+        }
+
+        /* МАГІЧНЕ КОЛО (ЗА СПИНОЮ) */
         .magic-circle { 
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            width: 90%; /* Було 140%, зменшено для ефекту "за спиною" */
-            opacity: 0.2; pointer-events: none; z-index: 1; 
+            width: 85%; opacity: 0.2; pointer-events: none; z-index: 1; 
             animation: magicSpin 25s infinite linear, levitate 6s infinite ease-in-out; 
         }
         @keyframes magicSpin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
         @keyframes levitate { 0%, 100% { margin-top: -10px; } 50% { margin-top: 10px; } }
 
-        .card-img { position: relative; z-index: 5; width: 100%; height: 100%; object-fit: contain; transition: 0.5s; opacity: 0.8; }
-        
-        /* ЕФЕКТ СІРОГО ДЛЯ НЕОБРАНИХ */
-        .cards-wrapper:hover .rect-card:not(:hover) .card-img { filter: grayscale(1); opacity: 0.1; }
-        .rect-card:hover .card-img { transform: scale(1.05); opacity: 1; }
-        .rect-card:hover { border-color: var(--red); box-shadow: 0 0 30px var(--red-glow); }
-        .card-label { position: absolute; bottom: 25px; width: 100%; text-align: center; font-family: 'Cinzel', serif; letter-spacing: 5px; z-index: 10; }
+        /* ЕФЕКТ ВИБОРУ (HOVER) */
+        /* При наведенні на обгортку: та карта, що НЕ під курсором - сіріє */
+        .cards-wrapper:hover .rect-card:not(:hover) { 
+            filter: grayscale(1); 
+            opacity: 0.2; 
+            transform: scale(0.95); 
+        }
+
+        /* Карта під курсором - збільшується */
+        .rect-card:hover { 
+            border-color: var(--red); 
+            box-shadow: 0 0 35px var(--red-glow); 
+            transform: scale(1.08); 
+            z-index: 15;
+        }
+        .rect-card:hover .card-img { opacity: 1; }
+
+        .card-label { position: absolute; bottom: 25px; width: 100%; text-align: center; font-family: 'Cinzel', serif; letter-spacing: 5px; z-index: 10; transition: 0.5s; }
+        .cards-wrapper:hover .rect-card:not(:hover) .card-label { opacity: 0.3; }
 
         @media (max-width: 600px) { 
-            .rect-card { width: 44vw; height: 60vh; } 
-            .title-step { font-size: 1.4rem; letter-spacing: 5px; }
+            .rect-card { width: 44vw; height: 55vh; } 
+            .cards-wrapper { gap: 12px; }
+            .title-step { font-size: 1.3rem; letter-spacing: 5px; }
         }
 
         /* ПРИМІРКА */
@@ -59,24 +81,22 @@
         .nav-btn.active { border-color: var(--red); color: #fff; box-shadow: 0 0 10px var(--red-glow); }
         .booking-btn { background: var(--red); color: white; border: none; padding: 18px 50px; font-weight: bold; cursor: pointer; letter-spacing: 4px; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); }
 
-        /* ЕКРАН БЛОКУВАННЯ */
+        /* БЛОКУВАННЯ */
         #soldOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9000; display: none; align-items: center; justify-content: center; pointer-events: none; }
 
-        /* ПРИХОВАНА АДМІНКА */
-        .admin-panel { position: fixed; bottom: 0; right: 0; width: 50px; height: 50px; z-index: 9999; background: transparent; transition: 0.3s; cursor: pointer; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-        .admin-panel:hover { width: auto; height: auto; padding: 15px; background: #111; border: 1px solid red; opacity: 1 !important; pointer-events: auto !important; }
+        /* АДМІНКА-НЕВИДИМКА */
+        .admin-panel { position: fixed; bottom: 0; right: 0; width: 40px; height: 40px; z-index: 9999; background: transparent; transition: 0.3s; cursor: pointer; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .admin-panel:hover { width: auto; height: auto; padding: 15px; background: #111; border: 1px solid red; }
         .admin-panel input { background: #000; border: 1px solid #333; color: red; padding: 5px; width: 80px; text-align: center; }
     </style>
 </head>
 <body>
 
     <canvas id="matrix-canvas"></canvas>
-    <div id="soldOverlay">
-        <h1 style="color:red; font-family:'Cinzel'; letter-spacing:15px; text-shadow: 0 0 20px red; text-align: center;">RESERVED</h1>
-    </div>
+    <div id="soldOverlay"><h1 style="color:red; font-family:'Cinzel'; letter-spacing:15px; text-shadow: 0 0 20px red;">RESERVED</h1></div>
 
     <div id="game-ui">
-        <!-- КРОК 1 -->
+        <!-- КРОК 1: КЛАНИ -->
         <div id="step1" class="step-container">
             <h1 class="title-step">Оберіть клан</h1>
             <div class="cards-wrapper">
@@ -89,24 +109,28 @@
             </div>
         </div>
 
-        <!-- КРОК 2 -->
+        <!-- КРОК 2: ТІЛО -->
         <div id="step2" class="step-container hidden">
             <h1 class="title-step">Оберіть тіло</h1>
             <div class="cards-wrapper">
                 <div class="rect-card" onclick="selectGender('male')">
-                    <img src="124.png" class="magic-circle"><img id="body-male-img" src="" class="card-img"><div class="card-label">MALE</div>
+                    <img src="124.png" class="magic-circle">
+                    <img id="body-male-img" src="" class="card-img">
+                    <div class="card-label">MALE</div>
                 </div>
                 <div class="rect-card" onclick="selectGender('female')">
-                    <img src="124.png" class="magic-circle"><img id="body-female-img" src="" class="card-img"><div class="card-label">FEMALE</div>
+                    <img src="124.png" class="magic-circle">
+                    <img id="body-female-img" src="" class="card-img">
+                    <div class="card-label">FEMALE</div>
                 </div>
             </div>
             <p onclick="location.reload()" style="margin-top:30px; cursor:pointer; opacity:0.3; font-size:10px;">[ BACK ]</p>
         </div>
 
-        <!-- КРОК 3 -->
+        <!-- КРОК 3: ПРИМІРКА -->
         <div id="main-ui" class="step-container hidden">
             <div class="model-container">
-                <img src="124.png" class="magic-circle" style="width: 65vh; opacity: 0.2;"> <!-- Зменшений круг для фіналу -->
+                <img src="124.png" class="magic-circle" style="width: 70vh; opacity: 0.2;"> 
                 <img id="main-char-img" src="">
             </div>
             <div style="margin-bottom:20px;">
@@ -128,12 +152,12 @@
     </div>
 
     <script>
-        // --- 1. НАЛАШТУВАННЯ (ВСТАВ СВОЇ ПОСИЛАННЯ) ---
+        // --- КОНФІГУРАЦІЯ ---
         const firebaseConfig = { databaseURL: "https://firebasedatabase.app" };
         
         const bodyPreviews = {
-            tauren: { male: "URL_TAUREN_MALE", female: "URL_TAUREN_FEMALE" },
-            elf: { male: "URL_ELF_MALE", female: "URL_ELF_FEMALE" }
+            tauren: { male: "URL_TM", female: "URL_TF" },
+            elf: { male: "URL_EM", female: "URL_EF" }
         };
 
         const charImages = {
@@ -143,37 +167,34 @@
             elf_female_forearm: "EFF.png", elf_female_biceps: "EFB.png", elf_female_calf: "EFC.png"
         };
 
-        // --- 2. ІНІЦІАЛІЗАЦІЯ Firebase ---
+        // --- ЛОГІКА ---
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         let state = { race: localStorage.getItem('race') || '', gender: localStorage.getItem('gender') || '', part: 'forearm' };
         let isBlocked = false;
 
-        // --- 3. МАТРИЦЯ (ФОН) ---
+        // Matrix
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         let w, h, columns, drops;
         function initM() { w=canvas.width=window.innerWidth; h=canvas.height=window.innerHeight; columns=Math.floor(w/16); drops=new Array(columns).fill(1); }
         function drawM() {
-            ctx.fillStyle='rgba(0,0,0,0.08)'; ctx.fillRect(0,0,w,h); 
+            ctx.fillStyle='rgba(0,0,0,0.05)'; ctx.fillRect(0,0,w,h); 
             ctx.fillStyle='#f00'; ctx.font='16px monospace';
-            ctx.shadowBlur = 5; ctx.shadowColor = 'red';
             for(let i=0; i<drops.length; i++) {
                 ctx.fillText('アァカサタナハマヤャラワガザダバ'[Math.floor(Math.random()*15)], i*16, drops[i]*16);
                 if(drops[i]*16 > h && Math.random() > 0.975) drops[i]=0; drops[i]++;
             }
         }
-        window.onresize=initM; initM(); setInterval(drawM, 40);
+        window.onresize=initM; initM(); setInterval(drawM, 35);
 
-        // --- 4. FIREBASE СИНХРОНІЗАЦІЯ ---
+        // Firebase Sync
         db.ref('site_status').on('value', (snap) => {
             isBlocked = snap.val() === 'blocked';
             document.getElementById('game-ui').classList.toggle('is-locked', isBlocked);
             document.getElementById('soldOverlay').style.display = isBlocked ? 'flex' : 'none';
-            document.getElementById('lockBtn').innerText = isBlocked ? "UNLOCK" : "LOCK";
         });
 
-        // --- 5. ЛОГІКА ІНТЕРФЕЙСУ ---
         function show(id) { document.querySelectorAll('.step-container').forEach(s => s.classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); }
         
         function selectRace(r) { 
