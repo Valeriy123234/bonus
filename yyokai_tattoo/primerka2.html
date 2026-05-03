@@ -297,9 +297,46 @@
             setTimeout(() => { if(charImages[key]) img.src = charImages[key]; img.style.opacity = 1; }, 250);
         }
 
-        function show(id) { document.querySelectorAll('.step-container').forEach(s => s.classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); }
-        function loginAdm() { if(document.getElementById('admPass').value === "yokai123234") document.getElementById('admTools').style.display='block'; }
-        function toggleLock() { db.ref('site_status').set(isBlocked ? 'active' : 'blocked'); }
+        // 1. Глобальна змінна для стану (важливо!)
+let isBlocked = false; 
+
+// 2. Твої функції (залишаємо, але трохи покращуємо)
+function show(id) { 
+    document.querySelectorAll('.step-container, .main-ui').forEach(s => s.classList.add('hidden')); 
+    document.getElementById(id).classList.remove('hidden'); 
+}
+
+function loginAdm() { 
+    if(document.getElementById('admPass').value === "yokai123234") {
+        document.getElementById('admTools').style.display = 'block'; 
+    } else {
+        alert("ACCESS DENIED");
+    }
+}
+
+function toggleLock() { 
+    // Відправляємо в базу протилежний стан
+    db.ref('site_status').set(isBlocked ? 'active' : 'blocked'); 
+}
+
+// 3. СЛУХАЧ (ДОДАЙ ЦЕЙ БЛОК ОБОВ'ЯЗКОВО)
+// Він автоматично ховає раси, коли в базі статус "blocked"
+db.ref('site_status').on('value', (snap) => {
+    const status = snap.val();
+    isBlocked = (status === 'blocked');
+
+    const ui = document.getElementById('game-ui');
+    const overlay = document.getElementById('soldOverlay');
+
+    if (isBlocked) {
+        ui.classList.add('is-locked'); // Це сховає вибір раси через CSS
+        overlay.style.display = 'flex'; // Це покаже чорний екран RESERVED
+    } else {
+        ui.classList.remove('is-locked');
+        overlay.style.display = 'none';
+    }
+});
+
         
         window.onload = () => { if (state.race && state.gender) { show('main-ui'); updateView(); } };
     </script>
