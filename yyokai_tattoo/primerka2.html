@@ -107,39 +107,56 @@
 
         /* SOLD OUT */
   /* Робимо оверлей прозорим для мишки */
+/* ГОЛОВНИЙ ОВЕРЛЕЙ (RESERVED) - ПЕРЕКРИВАЄ ВСЕ */
 #soldOverlay { 
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-    background: rgba(0,0,0,0.95); z-index: 5000; /* Підняв вище */
+    position: fixed; 
+    top: 0; left: 0; 
+    width: 100vw; height: 100vh; 
+    background: #000; /* Глухий чорний колір */
+    z-index: 10000 !important; /* Найвищий шар, перекриває раси і все інше */
     display: none; 
-    align-items: center; justify-content: center; flex-direction: column; 
-    pointer-events: none; /* Кліки проходять крізь напис */
+    align-items: center; 
+    justify-content: center; 
+    flex-direction: column; 
+    pointer-events: none; /* Пропускає кліки до адмінки, але візуально все ховає */
 }
 
-.is-locked { filter: grayscale(1) brightness(0.2); pointer-events: none; }
+/* СТАН БЛОКУВАННЯ ДЛЯ КОНТЕНТУ */
+.is-locked { 
+    display: none !important; /* Повністю видаляємо видимість кланів при блоці */
+}
 
+/* АДМІНКА-НЕВИДИМКА (В ПРАВОМУ НИЖНЬОМУ КУТКУ) */
 .admin-panel { 
     position: fixed !important; 
-    bottom: 15px !important; 
-    right: 15px !important; 
-    background: #1a1a1a !important; 
-    border: 1px solid #ff0000 !important; /* ЧЕРВОНА РАМКА, щоб бачити її */
-    padding: 10px !important; 
-    z-index: 9999 !important; 
+    bottom: 0; 
+    right: 0; 
+    width: 100px; 
+    height: 50px;
+    background: transparent; 
+    z-index: 10001 !important; /* Вище за RESERVED */
+    opacity: 0; /* ПОВНІСТЮ НЕВИДИМА ДЛЯ КЛІЄНТА */
+    transition: 0.3s;
     pointer-events: auto !important; 
-    opacity: 0.8 !important; /* ТЕПЕР ЇЇ ВИДНО (80%) */
-    display: block !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.admin-panel:hover { opacity: 1 !important; }
+/* ПРОЯВЛЯЄТЬСЯ ТІЛЬКИ ПРИ НАВЕДЕННІ (ДЛЯ ТЕБЕ) */
+.admin-panel:hover { 
+    opacity: 1; 
+    background: #111; 
+    border: 1px solid red; 
+    width: auto; 
+    height: auto;
+    padding: 10px;
+}
 
 .admin-panel input { 
     background: #000; border: 1px solid #333; color: red; 
-    padding: 8px; width: 80px; text-align: center; font-size: 11px; 
+    padding: 5px; width: 80px; text-align: center; font-size: 10px; 
 }
-
-
-
-
 
     </style>
 </head>
