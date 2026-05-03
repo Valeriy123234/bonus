@@ -7,8 +7,8 @@
     <link href="https://googleapis.com" rel="stylesheet">
     
     <!-- Firebase SDK -->
-    <script src="https://gstatic.com"></script>
-    <script src="https://gstatic.com"></script>
+       <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <style>
         :root { --red: #ff0000; --red-glow: rgba(255, 0, 0, 0.8); }
@@ -100,12 +100,12 @@
             <h1 class="title-step">Оберіть тіло</h1>
             <div class="cards-wrapper">
                 <div class="rect-card" onclick="handleSelect(this, 'male', 'gender')">
-                    <img src="124.png" class="magic-circle">
+                    <img src="124.PNG" class="magic-circle">
                     <img id="body-male-img" src="" class="card-img">
                     <div class="card-label">MALE</div>
                 </div>
                 <div class="rect-card" onclick="handleSelect(this, 'female', 'gender')">
-                    <img src="124.png" class="magic-circle">
+                    <img src="124.PNG" class="magic-circle">
                     <img id="body-female-img" src="" class="card-img">
                     <div class="card-label">FEMALE</div>
                 </div>
@@ -115,7 +115,7 @@
         <!-- КРОК 3 -->
         <div id="main-ui" class="step-container hidden">
             <div class="model-container">
-                <img src="124.png" class="magic-circle" style="width: 75vh; opacity: 0.4;"> 
+                <img src="124.PNG" class="magic-circle" style="width: 75vh; opacity: 0.4;"> 
                 <img id="main-char-img" src="">
             </div>
             <div style="margin-bottom:20px;">
@@ -129,7 +129,7 @@
     </div>
 
     <div class="admin-panel">
-        <input type="password" id="admPass" placeholder="KEY">
+        <input type="password" id="admPass" placeholder="key">
         <button onclick="loginAdm()" style="background:#222; color:#fff; border:none; padding:5px; cursor:pointer;">OK</button>
         <div id="admTools">
             <button id="lockBtn" onclick="toggleLock()" style="background:red; color:white; border:none; padding:8px; cursor:pointer; margin-left:5px;">LOCK</button>
@@ -139,19 +139,19 @@
     <script>
         // --- НАЛАШТУВАННЯ КАРТИНОК ---
         const bodyPreviews = {
-            tauren: { male: "URL_ТАУРЕН_М", female: "URL_ТАУРЕН_Ж" },
-            elf: { male: "URL_ЕЛЬФ_М", female: "URL_ЕЛЬФ_Ж" }
+            tauren: { male: "taurenm.PNG", female: "taureng.PNG" },
+            elf: { male: "taurenm.PNG", female: "taureng.PNG" }
         };
 
         const charImages = {
-            tauren_male_forearm: "TMF.png", tauren_male_biceps: "TMB.png", tauren_male_calf: "TMC.png",
-            tauren_female_forearm: "TFF.png", tauren_female_biceps: "TFB.png", tauren_female_calf: "TFC.png",
-            elf_male_forearm: "EMF.png", elf_male_biceps: "EMB.png", elf_male_calf: "EMC.png",
-            elf_female_forearm: "EFF.png", elf_female_biceps: "EFB.png", elf_female_calf: "EFC.png"
+            tauren_male_forearm: "taurenm.PNG", tauren_male_biceps: "taurenm.PNG", tauren_male_calf: "taurenm.PNG",
+            tauren_female_forearm: "taureng.PNG", tauren_female_biceps: "taureng.PNG", tauren_female_calf: "taureng.PNG",
+            elf_male_forearm: "taurenm.PNG", elf_male_biceps: "taurenm.PNG", elf_male_calf: "taurenm.PNG",
+            elf_female_forearm: "taureng.PNG", elf_female_biceps: "taureng.PNG", elf_female_calf: "taureng.PNG"
         };
 
         // --- FIREBASE ---
-        const firebaseConfig = { databaseURL: "https://firebasedatabase.app" };
+        const firebaseConfig = { databaseURL: "https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/" };
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         let state = { race: localStorage.getItem('race') || '', gender: localStorage.getItem('gender') || '', part: 'forearm' };
