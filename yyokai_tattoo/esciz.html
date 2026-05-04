@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Yokai Digital Archive — Ultra Edition</title>
+    <title>Yokai Archive — God Mode</title>
     <style>
         @import url('https://googleapis.com');
 
         :root {
-            /* Градієнти для плашок рідкості */
-            --legendary-foil: linear-gradient(110deg, #ff0000 0%, #4d0000 25%, #ff4d4d 50%, #4d0000 75%, #ff0000 100%);
-            --mythic-foil: linear-gradient(110deg, #bf953f 0%, #aa771c 25%, #fcf6ba 50%, #b38728 75%, #bf953f 100%);
-            --rare-foil: linear-gradient(110deg, #00d4ff 0%, #001a4d 25%, #0055ff 50%, #001a4d 75%, #00d4ff 100%);
+            /* Епічні градієнти з переливом */
+            --legendary-glow: linear-gradient(90deg, #ff0000, #ff7b7b, #ff0000);
+            --mythic-glow: linear-gradient(90deg, #ffac00, #fff700, #ffac00);
+            --rare-glow: linear-gradient(90deg, #0066ff, #00d4ff, #0066ff);
         }
 
         body { 
@@ -23,123 +23,137 @@
             perspective: 2000px;
         }
 
-        /* --- ЯПОНСЬКА МАТРИЦЯ НА ФОНІ --- */
+        /* --- МИТТЄВА МАТРИЦЯ --- */
         .matrix-bg {
             position: fixed;
             inset: 0;
             font-family: 'Noto Sans JP';
-            font-size: 20px;
+            font-size: 22px;
             color: #fff;
-            opacity: 0.15; /* Твоя прозорість 15-20% */
+            opacity: 0.2; /* 20% прозорості */
             display: flex;
             justify-content: space-around;
-            overflow: hidden;
             z-index: -1;
             pointer-events: none;
-            user-select: none;
         }
 
         .matrix-column {
             display: flex;
             flex-direction: column;
-            animation: matrixDrop 15s linear infinite;
+            animation: matrixDrop 12s linear infinite;
+            white-space: nowrap;
         }
 
         @keyframes matrixDrop {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
+            from { transform: translateY(-50%); }
+            to { transform: translateY(0%); }
         }
 
-        /* --- UI: HEADER --- */
+        /* --- HEADER --- */
         header {
-            position: fixed; top: 0; width: 100%; padding: 50px 35px;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 5000; box-sizing: border-box;
+            position: fixed; top: 0; width: 100%; padding: 45px 35px;
+            display: flex; justify-content: flex-end; z-index: 5000;
         }
-        .menu-btn { 
-            width: 25px; height: 15px; display: flex; flex-direction: column; 
-            justify-content: space-between; cursor: pointer; 
-        }
-        .menu-btn span { height: 1px; width: 100%; background: #fff; }
+        .menu-btn { width: 30px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
+        .menu-btn span { height: 2px; width: 100%; background: #fff; box-shadow: 0 0 10px #fff; }
 
-        /* --- COLLECTION GRID --- */
-        .viewport { display: flex; flex-direction: column; gap: 200px; padding: 150px 0; width: 100%; }
+        /* --- GRID --- */
+        .viewport { display: flex; flex-direction: column; gap: 200px; padding: 120px 0; width: 100%; }
 
-        /* КЛІКАБЕЛЬНА КАРТКА */
+        /* КАРТКА */
         .nft-item { 
             width: 320px; margin: 0 auto; transform-style: preserve-3d; 
-            text-decoration: none; display: block;
+            text-decoration: none; display: block; color: #fff;
         }
 
         .book-stack { width: 100%; height: 460px; position: relative; transform-style: preserve-3d; }
+        
         .layer {
             position: absolute; inset: 0; background-size: contain; 
             background-repeat: no-repeat; background-position: center;
         }
 
-        /* --- БІБЛІОТЕКА АНІМАЦІЙ --- */
-        .anim-1 { animation: a1 8s infinite ease-in-out; }
-        @keyframes a1 { 0%, 100% { transform: rotateY(-12deg); } 50% { transform: rotateY(12deg) rotateX(4deg); } }
-        
-        .anim-2 { animation: a2 6s infinite ease-in-out; }
-        @keyframes a2 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-25px) translateZ(40px); } }
+        /* АНІМАЦІЇ */
+        .anim-swing { animation: swing 8s infinite ease-in-out; }
+        @keyframes swing { 0%, 100% { transform: rotateY(-14deg) rotateX(3deg); } 50% { transform: rotateY(14deg) rotateX(-2deg); } }
 
-        /* --- ПЛАШКА РІДКОСТІ (Glow Foil) --- */
+        .anim-float { animation: float 6s infinite ease-in-out; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
+
+        /* --- ЕПІЧНА ПЛАШКА РІДКОСТІ --- */
         .rarity-badge {
-            width: fit-content;
-            margin: -20px auto 30px;
-            padding: 6px 20px;
+            width: 100%;
+            margin: -10px 0 35px;
+            padding: 10px 0;
             font-family: 'Cinzel';
-            font-size: 10px;
-            letter-spacing: 5px;
+            font-size: 14px;
+            letter-spacing: 12px;
             font-weight: 900;
-            color: #fff;
+            text-align: center;
             position: relative;
-            background-size: 200% auto;
-            animation: foilShine 4s linear infinite;
-            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-            transform: translateZ(50px);
+            background: rgba(255,255,255,0.05);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+            transform: translateZ(60px);
         }
 
-        @keyframes foilShine {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 200% 50%; }
+        .rarity-badge::before {
+            content: ''; position: absolute; inset: 0;
+            background-size: 200% 100%;
+            animation: foilMove 3s infinite linear;
+            opacity: 0.8;
+            z-index: -1;
         }
 
-        .legendary { background-image: var(--legendary-foil); }
-        .mythic { background-image: var(--mythic-foil); }
-        .rare { background-image: var(--rare-foil); }
+        @keyframes foilMove {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
+        }
 
-        /* ТЕКСТ */
-        .meta { text-align: center; }
-        .title { font-size: 24px; font-weight: 800; letter-spacing: 4px; margin: 0; color: #fff; }
-        .sub { font-family: 'Noto Sans JP'; font-size: 10px; color: rgba(255,255,255,0.2); margin-top: 10px; display: block; letter-spacing: 5px; }
+        .legendary::before { background-image: var(--legendary-glow); }
+        .mythic::before { background-image: var(--mythic-glow); }
 
-        /* КНОПКА */
+        /* --- ТЕКСТ (БІЛЬШ ВИДИМИЙ) --- */
+        .meta { text-align: center; transform: translateZ(40px); }
+        .title { 
+            font-size: 32px; font-weight: 900; letter-spacing: 6px; margin: 0; 
+            text-shadow: 0 5px 15px rgba(0,0,0,1);
+            color: #fff;
+        }
+        .sub { 
+            font-family: 'Noto Sans JP'; font-size: 12px; color: rgba(255,255,255,0.4); 
+            margin-top: 12px; display: block; letter-spacing: 8px;
+        }
+
+        /* --- КНОПКА (ЯСКРАВА) --- */
         .btn {
-            margin-top: 40px; display: inline-block; padding: 15px 50px;
-            border: 1px solid rgba(255,255,255,0.1); background: transparent;
-            color: #fff; font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
+            margin-top: 40px; display: block; width: 100%; padding: 20px 0;
+            background: #fff; color: #000; font-size: 12px; font-weight: 900;
+            letter-spacing: 5px; text-transform: uppercase;
+            box-shadow: 0 0 30px rgba(255,255,255,0.2);
+            transition: 0.3s;
         }
+        .btn:active { transform: scale(0.95); opacity: 0.8; }
 
     </style>
 </head>
 <body>
 
-    <!-- ЯПОНСЬКА МАТРИЦЯ -->
+    <!-- МИТТЄВА МАТРИЦЯ -->
     <div class="matrix-bg" id="matrix"></div>
 
     <header>
-        <div style="font-size: 9px; letter-spacing: 5px; opacity: 0.5;">YOKAI / ARCHIVE</div>
-        <div class="menu-btn"><span></span><span></span></div>
+        <div class="menu-btn">
+            <span></span><span></span><span></span>
+        </div>
     </header>
 
     <div class="viewport">
 
-        <!-- КАРТКА 01: LEGENDARY -->
+        <!-- КАРТКА 01 -->
         <a href="https://t.me" class="nft-item">
-            <div class="book-stack anim-1">
+            <div class="book-stack anim-swing">
                 <div class="layer" style="transform: translateZ(0px); background-image: url('01.PNG');"></div>
                 <div class="layer" style="transform: translateZ(3px); background-image: url('01.PNG'); opacity: 0.3;"></div>
                 <div class="layer" style="transform: translateZ(6px); background-image: url('02.PNG');"></div>
@@ -150,13 +164,13 @@
             <div class="meta">
                 <h2 class="title">ONI MASK</h2>
                 <span class="sub">般若 № 001</span>
-                <div class="btn">REQUEST ACCESS</div>
+                <div class="btn">BOOK SESSION</div>
             </div>
         </a>
 
-        <!-- КАРТКА 02: MYTHIC -->
+        <!-- КАРТКА 02 -->
         <a href="https://t.me" class="nft-item">
-            <div class="book-stack anim-2">
+            <div class="book-stack anim-float">
                 <div class="layer" style="transform: translateZ(0px); background-image: url('03.PNG');"></div>
                 <div class="layer" style="transform: translateZ(3px); background-image: url('03.PNG'); opacity: 0.3;"></div>
                 <div class="layer" style="transform: translateZ(6px); background-image: url('04.PNG');"></div>
@@ -167,27 +181,29 @@
             <div class="meta">
                 <h2 class="title">KITSUNE</h2>
                 <span class="sub">狐 № 042</span>
-                <div class="btn">REQUEST ACCESS</div>
+                <div class="btn">BOOK SESSION</div>
             </div>
         </a>
 
     </div>
 
     <script>
-        // Скрипт для генерації матричного фону
+        // Скрипт для миттєвої матриці
         const matrixContainer = document.getElementById('matrix');
         const chars = "般若狐霊魂天人地龍神鬼";
-        const columnCount = 15;
+        const columnCount = 12;
 
         for (let i = 0; i < columnCount; i++) {
             const col = document.createElement('div');
             col.className = 'matrix-column';
-            col.style.animationDelay = (Math.random() * 5) + 's';
+            col.style.animationDuration = (8 + Math.random() * 10) + 's';
+            
+            // Заповнюємо колонку так, щоб вона вже була повною
             let content = "";
-            for (let j = 0; j < 50; j++) {
+            for (let j = 0; j < 100; j++) {
                 content += chars[Math.floor(Math.random() * chars.length)] + "<br>";
             }
-            col.innerHTML = content;
+            col.innerHTML = content + content; // Подвійний контент для безшовності
             matrixContainer.appendChild(col);
         }
     </script>
