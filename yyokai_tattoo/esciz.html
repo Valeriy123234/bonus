@@ -2,299 +2,218 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yokai Archive — Premium Collection</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Yokai Tattoo Archive</title>
     <style>
         @import url('https://googleapis.com');
 
         :root {
             --accent-red: #ff1a1a;
             --accent-gold: #d4af37;
-            --bg-dark: #030303;
+            --bg: #000000;
         }
 
         body { 
-            background: var(--bg-dark); 
+            background: var(--bg); 
             margin: 0; 
             color: #fff;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* --- LUXURY NAVIGATION --- */
-        .header {
+        /* --- HEADER & NAVIGATION --- */
+        header {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 40px;
+            padding: 20px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
             box-sizing: border-box;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
         }
 
-        .logo {
-            font-size: 14px;
-            letter-spacing: 0.5em;
-            font-weight: 300;
-            text-transform: uppercase;
-        }
+        .logo { font-size: 12px; letter-spacing: 4px; font-weight: 200; }
 
-        .burger-container {
+        .menu-trigger {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 12px;
             cursor: pointer;
         }
 
-        .burger-label {
-            font-size: 10px;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            opacity: 0.5;
+        .menu-trigger span { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.6; }
+        
+        .burger { width: 22px; height: 8px; position: relative; }
+        .burger::before, .burger::after {
+            content: ''; width: 100%; height: 1px; background: #fff; position: absolute; transition: 0.3s;
         }
+        .burger::before { top: 0; }
+        .burger::after { bottom: 0; }
+        .open .burger::before { transform: translateY(3.5px) rotate(45deg); }
+        .open .burger::after { transform: translateY(-3.5px) rotate(-45deg); }
 
-        .burger-icon {
-            width: 25px;
-            height: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .burger-icon span {
-            display: block;
-            height: 1px;
-            width: 100%;
-            background: #fff;
-            transition: 0.4s;
-        }
-
-        .open .burger-icon span:nth-child(1) { transform: translateY(4.5px) rotate(45deg); }
-        .open .burger-icon span:nth-child(2) { transform: translateY(-4.5px) rotate(-45deg); }
-
-        /* --- MENU OVERLAY --- */
-        .menu-nav {
+        /* --- FULLSCREEN MENU --- */
+        .nav-overlay {
             position: fixed;
-            top: 0;
-            right: -100%;
-            width: 100%;
-            height: 100vh;
+            top: 0; right: -100%;
+            width: 100%; height: 100vh;
             background: #000;
-            z-index: 998;
+            z-index: 999;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 10%;
-            transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+            padding: 40px;
+            box-sizing: border-box;
+            transition: 0.5s cubic-bezier(0.8, 0, 0.2, 1);
+        }
+        .nav-overlay.active { right: 0; }
+        .nav-overlay a {
+            font-size: 40px; font-weight: 200; color: #fff; text-decoration: none;
+            margin: 15px 0; text-transform: uppercase; letter-spacing: 5px;
         }
 
-        .menu-nav.active { transform: translateX(-100%); }
-
-        .menu-nav a {
-            font-size: clamp(40px, 10vw, 80px);
-            font-weight: 100;
-            color: #fff;
-            text-decoration: none;
-            margin: 10px 0;
-            transition: 0.5s;
-            text-transform: uppercase;
-        }
-
-        .menu-nav a:hover { padding-left: 30px; color: var(--accent-red); }
-
-        /* --- NFT COLLECTION GRID --- */
+        /* --- COLLECTION GRID --- */
         .container {
-            padding: 150px 20px;
+            padding: 100px 20px;
             display: flex;
             flex-direction: column;
+            gap: 120px; /* Відстань між картками на мобілці */
             align-items: center;
-            gap: 200px;
         }
 
         .nft-card {
+            width: 100%;
+            max-width: 340px;
             position: relative;
-            width: 380px;
-            height: 520px;
-            perspective: 1500px;
             text-decoration: none;
         }
 
-        .card-wrapper {
+        .visual-box {
             width: 100%;
-            height: 100%;
+            height: 450px;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        .nft-card:hover .card-wrapper {
-            transform: scale(1.02) rotateX(5deg);
-        }
-
-        /* ЕФЕКТ СКЛЯНОГО КЕЙСУ */
-        .glass-case {
+        /* РАМКА (01.PNG / 03.PNG) */
+        .frame-layer {
             position: absolute;
             inset: 0;
-            border: 1px solid rgba(255,255,255,0.05);
-            background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 100%);
-            box-shadow: 0 50px 100px rgba(0,0,0,0.8);
-            z-index: 5;
-            transform: translateZ(30px);
-            overflow: hidden;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: 1;
+            /* Можеш додати translateZ(0) для стабільності */
         }
 
-        /* Живий відблиск на склі */
-        .glass-case::after {
-            content: '';
-            position: absolute;
-            top: -100%; left: -100%;
-            width: 300%; height: 300%;
-            background: linear-gradient(45deg, transparent 45%, rgba(255,255,255,0.08) 50%, transparent 55%);
-            animation: shine 8s infinite linear;
-        }
-
-        @keyframes shine {
-            0% { transform: translate(-30%, -30%); }
-            100% { transform: translate(30%, 30%); }
-        }
-
-        .visual-content {
+        /* ЕСКІЗ (02.PNG / 04.PNG) */
+        .sketch-layer {
             position: absolute;
             inset: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background-size: 75%; /* Щоб ескіз був точно всередині рамки */
+            background-repeat: no-repeat;
+            background-position: center;
             z-index: 2;
+            transform: translateZ(30px); /* Ефект виходу ескізу вперед */
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));
         }
 
-        .visual-content img {
-            width: 85%;
-            height: 85%;
-            object-fit: contain;
-            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5));
-        }
-
-        /* --- TYPOGRAPHY & INFO --- */
-        .nft-info {
-            position: absolute;
-            bottom: -80px;
-            left: 0;
-            width: 100%;
+        /* --- INFO BLOCK --- */
+        .item-meta {
+            margin-top: 25px;
             display: flex;
             justify-content: space-between;
-            align-items: flex-end;
+            align-items: flex-start;
         }
 
-        .rarity-tag {
-            font-size: 10px;
-            letter-spacing: 0.3em;
-            color: var(--accent-red);
-            margin-bottom: 5px;
-            display: block;
+        .rarity-label {
+            font-size: 9px; letter-spacing: 3px; font-weight: 800; display: block; margin-bottom: 5px;
         }
+        .neon-red .rarity-label { color: var(--accent-red); }
+        .neon-gold .rarity-label { color: var(--accent-gold); }
 
-        .item-name {
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            margin: 0;
-        }
+        .item-title { font-size: 20px; letter-spacing: 2px; margin: 0; font-weight: 500; }
+        .item-id { font-family: 'Noto Sans JP'; font-size: 10px; opacity: 0.3; margin-top: 4px; }
 
-        .jp-title {
-            font-family: 'Noto Sans JP';
-            font-size: 12px;
-            opacity: 0.2;
-            margin-top: 5px;
-        }
-
-        .action-btn {
-            font-size: 10px;
-            letter-spacing: 0.2em;
-            padding: 15px 30px;
-            border: 1px solid rgba(255,255,255,0.1);
+        .book-btn {
             background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
             color: #fff;
-            transition: 0.4s;
+            padding: 10px 20px;
+            font-size: 10px;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+        .book-btn:active { background: #fff; color: #000; }
+
+        /* --- ANIMATIONS (Більш динамічні для мобільних) --- */
+        .anim-tilt { animation: tilt-mobile 6s infinite ease-in-out; }
+        .anim-float { animation: float-mobile 5s infinite ease-in-out; }
+
+        @keyframes tilt-mobile {
+            0%, 100% { transform: rotateY(-8deg) rotateX(2deg); }
+            50% { transform: rotateY(8deg) rotateX(-2deg); }
         }
 
-        .action-btn:hover {
-            background: #fff;
-            color: #000;
-        }
-
-        /* Анімації плавання */
-        .float-1 { animation: float 10s infinite ease-in-out; }
-        .float-2 { animation: float 12s infinite ease-in-out reverse; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotateY(-5deg); }
-            50% { transform: translateY(-20px) rotateY(5deg); }
+        @keyframes float-mobile {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
 
     </style>
 </head>
 <body>
 
-    <header class="header">
-        <div class="logo">YOKAI / ARCHIVE</div>
-        <div class="burger-container" id="menuToggle">
-            <span class="burger-label">Menu</span>
-            <div class="burger-icon">
-                <span></span>
-                <span></span>
-            </div>
+    <header>
+        <div class="logo">YOKAI / STUDIO</div>
+        <div class="menu-trigger" id="menuToggle">
+            <span>Menu</span>
+            <div class="burger"></div>
         </div>
     </header>
 
-    <nav class="menu-nav" id="mainMenu">
-        <a href="#">Gallery</a>
-        <a href="#">Reservation</a>
-        <a href="#">Philosophy</a>
-        <a href="#">Studio</a>
+    <nav class="nav-overlay" id="navMenu">
+        <a href="#">ГОЛОВНА</a>
+        <a href="#">ЗАПИСАТИСЯ</a>
+        <a href="#">АРХІВ ЕСКІЗІВ</a>
+        <a href="#">КОНТАКТИ</a>
     </nav>
 
     <div class="container">
 
-        <!-- КАРТКА 1 -->
-        <div class="nft-card float-1">
-            <div class="card-wrapper">
-                <div class="glass-case"></div>
-                <div class="visual-content">
-                    <!-- Заміни на свої PNG -->
-                    <img src="02.PNG" alt="Yokai Sketch">
-                </div>
-                <!-- Рамка як декоративний елемент на фоні -->
-                <div class="layer" style="position:absolute; inset:0; border:20px solid #111; opacity:0.5;"></div>
+        <!-- КАРТКА 1: HANNYA (RED) -->
+        <div class="nft-card neon-red">
+            <div class="visual-box anim-tilt">
+                <div class="frame-layer" style="background-image: url('01.PNG');"></div>
+                <div class="sketch-layer" style="background-image: url('02.PNG');"></div>
             </div>
-            <div class="nft-info">
+            <div class="item-meta">
                 <div>
-                    <span class="rarity-tag">// LEGENDARY</span>
-                    <h2 class="item-name">HANNYA MASK</h2>
-                    <div class="jp-title">般若の面 - ARCHIVE №001</div>
+                    <span class="rarity-label">LEGENDARY</span>
+                    <h2 class="item-title">ONI MASK</h2>
+                    <div class="item-id">般若 - ARCHIVE №01</div>
                 </div>
-                <button class="action-btn">BOOKING</button>
+                <button class="book-btn">ЗАПИС</button>
             </div>
         </div>
 
-        <!-- КАРТКА 2 -->
-        <div class="nft-card float-2" style="margin-top: 100px;">
-            <div class="card-wrapper">
-                <div class="glass-case"></div>
-                <div class="visual-content">
-                    <img src="04.PNG" alt="Yokai Sketch">
-                </div>
-                <div class="layer" style="position:absolute; inset:0; border:20px solid #111; opacity:0.5;"></div>
+        <!-- КАРТКА 2: KITSUNE (GOLD) -->
+        <div class="nft-card neon-gold">
+            <div class="visual-box anim-float">
+                <div class="frame-layer" style="background-image: url('03.PNG');"></div>
+                <div class="sketch-layer" style="background-image: url('04.PNG');"></div>
             </div>
-            <div class="nft-info">
+            <div class="item-meta">
                 <div>
-                    <span class="rarity-tag" style="color:var(--accent-gold)">// MYTHIC</span>
-                    <h2 class="item-name">KITSUNE SPIRIT</h2>
-                    <div class="jp-title">狐の霊 - ARCHIVE №042</div>
+                    <span class="rarity-label">MYTHIC</span>
+                    <h2 class="item-title">KITSUNE</h2>
+                    <div class="item-id">狐 - ARCHIVE №42</div>
                 </div>
-                <button class="action-btn">BOOKING</button>
+                <button class="book-btn">ЗАПИС</button>
             </div>
         </div>
 
@@ -302,13 +221,23 @@
 
     <script>
         const toggle = document.getElementById('menuToggle');
-        const menu = document.getElementById('mainMenu');
-        
+        const menu = document.getElementById('navMenu');
+
         toggle.onclick = () => {
             toggle.classList.toggle('open');
             menu.classList.toggle('active');
+            // Запобігаємо скролу при відкритому меню
             document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : 'auto';
         };
+
+        // Клік по посиланню закриває меню
+        document.querySelectorAll('.nav-overlay a').forEach(link => {
+            link.onclick = () => {
+                toggle.classList.remove('open');
+                menu.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            };
+        });
     </script>
 
 </body>
