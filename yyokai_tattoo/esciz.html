@@ -3,166 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Yokai Archive — Hearthstone Style</title>
     <style>
         @import url('https://googleapis.com');
 
         body { 
-            background: #000; 
+            background: #020202; 
             margin: 0; 
             color: #fff;
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            perspective: 2000px;
+            -webkit-tap-highlight-color: transparent;
         }
 
         /* --- МАТРИЦЯ (12%) --- */
         .matrix-bg {
             position: fixed; inset: 0; font-family: 'Noto Sans JP';
-            font-size: 15px; color: #fff; opacity: 0.12;
+            font-size: 18px; color: #fff; opacity: 0.12;
             display: flex; justify-content: space-around; z-index: -1;
+            pointer-events: none;
         }
-        .matrix-column { display: flex; flex-direction: column; animation: matrixDrop 18s linear infinite; white-space: nowrap; }
+        .matrix-column { display: flex; flex-direction: column; animation: matrixDrop 12s linear infinite; }
         @keyframes matrixDrop { from { transform: translateY(-50%); } to { transform: translateY(0%); } }
 
-        /* --- РОБОЧЕ МЕНЮ --- */
-        header { position: fixed; top: 25px; right: 25px; z-index: 5000; }
-        .menu-btn { width: 30px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
-        .menu-btn span { height: 2px; width: 100%; background: #fff; transition: 0.3s; }
+        /* --- PREMIUM MENU --- */
+        .menu-trigger {
+            position: fixed; top: 35px; right: 25px;
+            width: 30px; height: 18px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            z-index: 7000;
+        }
+        .menu-trigger span { display: block; height: 2px; width: 100%; background: #fff; transition: 0.3s; box-shadow: 0 0 10px rgba(255,255,255,0.3); }
+
+        .nav-fs {
+            position: fixed; inset: 0; background: #000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transform: translateY(-100%); transition: 0.6s cubic-bezier(0.85, 0, 0.15, 1); z-index: 6000;
+        }
+        .nav-fs.active { transform: translateY(0); }
+        .nav-label { position: absolute; top: 40px; font-family: 'Cinzel'; letter-spacing: 10px; opacity: 0.3; font-size: 14px; }
+        .nav-fs a { font-size: 32px; color: #fff; text-decoration: none; margin: 15px; font-weight: 200; letter-spacing: 8px; text-transform: uppercase; }
+
+        /* --- NFT VIEWPORT --- */
+        .grid { display: flex; flex-direction: column; gap: 140px; padding: 120px 0; align-items: center; }
+
+        .nft-unit { width: 330px; transform-style: preserve-3d; perspective: 1200px; }
+
+        /* УНІКАЛЬНІ АНІМАЦІЇ */
+        .stack { width: 100%; height: 460px; position: relative; transform-style: preserve-3d; }
         
-        .nav-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.95);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transform: translateX(100%); transition: 0.5s cubic-bezier(0.8, 0, 0.2, 1); z-index: 4500;
+        /* 1. Діагональний маятник (Велика амплітуда) */
+        .anim-oni { animation: oniMove 7s infinite ease-in-out; }
+        @keyframes oniMove {
+            0%, 100% { transform: rotateY(-18deg) rotateX(8deg) translateY(0); }
+            50% { transform: rotateY(18deg) rotateX(-5deg) translateY(-10px); }
         }
-        .nav-overlay.active { transform: translateX(0); }
-        .nav-overlay a { font-size: 35px; color: #fff; text-decoration: none; margin: 20px; font-weight: 900; letter-spacing: 5px; }
 
-        /* --- КАРТКИ --- */
-        .viewport { display: flex; flex-direction: column; gap: 150px; padding: 100px 0; width: 100%; }
-        .nft-item { width: 320px; margin: 0 auto; transform-style: preserve-3d; text-decoration: none; display: block; color: #fff; }
+        /* 2. Глибоке занурення */
+        .anim-kitsune { animation: kitsuneMove 6s infinite ease-in-out; }
+        @keyframes kitsuneMove {
+            0%, 100% { transform: translateZ(0) rotateY(5deg); }
+            50% { transform: translateZ(60px) rotateY(-15deg); }
+        }
 
-        .book-stack { width: 100%; height: 460px; position: relative; transform-style: preserve-3d; animation: swing 8s infinite ease-in-out; }
-        .layer { position: absolute; inset: 0; background-size: contain; background-repeat: no-repeat; background-position: center; pointer-events: none;}
-        @keyframes swing { 0%, 100% { transform: rotateY(-8deg); } 50% { transform: rotateY(8deg); } }
+        .layer { position: absolute; inset: 0; background-size: contain; background-repeat: no-repeat; background-position: center; pointer-events: none; }
 
-        /* --- HEARTHSTONE STYLE RARITY (ПЕРЕЛИВ) --- */
-        .rarity-container {
-            margin: 10px 0 30px;
+        /* --- ЕПІЧНА РІДКІСТЬ --- */
+        .rarity-wrap {
+            margin: 20px 0;
+            position: relative;
+            transform: translateZ(80px);
             text-align: center;
-            transform: translateZ(60px);
         }
 
-        .rarity-magic {
+        .rarity-badge {
             font-family: 'Cinzel';
-            font-size: 20px;
+            font-size: 18px;
+            letter-spacing: 12px;
             font-weight: 900;
-            letter-spacing: 8px;
-            text-transform: uppercase;
-            background: linear-gradient(90deg, #ff0000, #ffbb00, #00ff00, #00ffff, #0022ff, #ff00ff, #ff0000);
+            padding: 10px 20px;
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(90deg, #ff0000, #ffbb00, #ff00ff, #ff0000);
             background-size: 300% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: hsShine 5s linear infinite;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+            animation: chrome 4s linear infinite;
         }
 
-        @keyframes hsShine {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 300% 50%; }
+        /* Бліки за текстом */
+        .rarity-badge::before {
+            content: 'LEGENDARY';
+            position: absolute; inset: 0;
+            filter: blur(15px);
+            opacity: 0.5;
+            z-index: -1;
+            -webkit-text-fill-color: initial;
+            background: inherit; -webkit-background-clip: text;
         }
 
-        /* --- ТЕКСТ ТА КНОПКА --- */
-        .meta { text-align: center; }
-        .title { font-size: 26px; font-weight: 900; letter-spacing: 5px; margin: 0; }
-        .btn {
-            margin-top: 30px; display: block; width: 100%; padding: 20px 0;
-            background: #fff; color: #000; font-size: 14px; font-weight: 900;
-            letter-spacing: 5px; text-transform: uppercase; text-align: center;
-            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        @keyframes chrome { to { background-position: 300% center; } }
+
+        /* --- КНОПКА ПРИМІРЯТИ --- */
+        .btn-action {
+            margin-top: 30px;
+            display: block;
+            width: 100%;
+            padding: 22px 0;
+            background: #fff;
+            color: #000;
+            font-size: 14px;
+            font-weight: 900;
+            letter-spacing: 6px;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.15);
+            transition: 0.2s;
         }
+        .btn-action:active { transform: scale(0.94); background: #ccc; }
+
     </style>
 </head>
 <body>
 
     <div class="matrix-bg" id="matrix"></div>
 
-    <header>
-        <div class="menu-btn" id="menuToggle">
-            <span></span><span></span><span></span>
-        </div>
-    </header>
+    <!-- ТРИ ПАЛОЧКИ -->
+    <div class="menu-trigger" id="menuToggle">
+        <span></span><span></span><span></span>
+    </div>
 
-    <nav class="nav-overlay" id="navMenu">
+    <!-- НАПИС МЕНЮ ТА ЗАПИСАТИСЬ -->
+    <nav class="nav-fs" id="navMenu">
+        <div class="nav-label">MENU ARCHIVE</div>
         <a href="#">ГОЛОВНА</a>
         <a href="#">ЗАПИСАТИСЬ</a>
+        <a href="#">МАГАЗИН</a>
     </nav>
 
-    <div class="viewport">
+    <div class="grid">
 
         <!-- КАРТКА 01 -->
-        <a href="primerka.html" class="nft-item">
-            <div class="book-stack">
+        <div class="nft-unit">
+            <a href="primerka.html" class="stack anim-oni">
                 <div class="layer" style="transform: translateZ(0px); background-image: url('01.PNG');"></div>
-                <div class="layer" style="transform: translateZ(3px); background-image: url('01.PNG'); opacity: 0.3;"></div>
-                <div class="layer" style="transform: translateZ(6px); background-image: url('02.PNG');"></div>
-                <div class="layer" style="transform: translateZ(9px); background-image: url('01.PNG'); opacity: 0.5;"></div>
-                <div class="layer" style="transform: translateZ(12px); background-image: url('01.PNG');"></div>
-            </div>
+                <div class="layer" style="transform: translateZ(4px); background-image: url('01.PNG'); opacity: 0.2;"></div>
+                <div class="layer" style="transform: translateZ(10px); background-image: url('02.PNG'); filter: brightness(1.2);"></div>
+                <div class="layer" style="transform: translateZ(14px); background-image: url('01.PNG'); opacity: 0.4;"></div>
+                <div class="layer" style="transform: translateZ(18px); background-image: url('01.PNG');"></div>
+            </a>
             
-            <div class="rarity-container">
-                <span class="rarity-magic">LEGENDARY</span>
+            <div class="rarity-wrap">
+                <span class="rarity-badge">LEGENDARY</span>
             </div>
 
-            <div class="meta">
-                <h2 class="title">ONI MASK</h2>
-                <div class="btn">ПРИМІРЯТИ</div>
+            <div style="text-align: center;">
+                <h2 style="font-size: 26px; letter-spacing: 5px; margin: 0; font-weight: 900;">ONI MASK</h2>
+                <a href="primerka.html" class="btn-action">ПРИМІРЯТИ</a>
             </div>
-        </a>
+        </div>
 
         <!-- КАРТКА 02 -->
-        <a href="primerka.html" class="nft-item">
-            <div class="book-stack" style="animation-delay: -3s;">
+        <div class="nft-unit">
+            <a href="primerka.html" class="stack anim-kitsune">
                 <div class="layer" style="transform: translateZ(0px); background-image: url('03.PNG');"></div>
-                <div class="layer" style="transform: translateZ(3px); background-image: url('03.PNG'); opacity: 0.3;"></div>
-                <div class="layer" style="transform: translateZ(6px); background-image: url('04.PNG');"></div>
-                <div class="layer" style="transform: translateZ(9px); background-image: url('03.PNG'); opacity: 0.5;"></div>
-                <div class="layer" style="transform: translateZ(12px); background-image: url('03.PNG');"></div>
+                <div class="layer" style="transform: translateZ(4px); background-image: url('03.PNG'); opacity: 0.2;"></div>
+                <div class="layer" style="transform: translateZ(10px); background-image: url('04.PNG'); filter: brightness(1.2);"></div>
+                <div class="layer" style="transform: translateZ(14px); background-image: url('03.PNG'); opacity: 0.4;"></div>
+                <div class="layer" style="transform: translateZ(18px); background-image: url('03.PNG');"></div>
+            </a>
+
+            <div class="rarity-wrap">
+                <span class="rarity-badge" style="background: linear-gradient(90deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c); background-size: 200% auto;">MYTHIC</span>
             </div>
 
-            <div class="rarity-container">
-                <span class="rarity-magic">MYTHIC</span>
+            <div style="text-align: center;">
+                <h2 style="font-size: 26px; letter-spacing: 5px; margin: 0; font-weight: 900;">KITSUNE</h2>
+                <a href="primerka.html" class="btn-action">ПРИМІРЯТИ</a>
             </div>
-
-            <div class="meta">
-                <h2 class="title">KITSUNE</h2>
-                <div class="btn">ПРИМІРЯТИ</div>
-            </div>
-        </a>
+        </div>
 
     </div>
 
     <script>
         // Матриця
-        const matrixContainer = document.getElementById('matrix');
+        const matrix = document.getElementById('matrix');
         const chars = "般若狐霊魂天人地龍神鬼";
-        for (let i = 0; i < 15; i++) {
+        for (let i = 0; i < 12; i++) {
             const col = document.createElement('div');
             col.className = 'matrix-column';
-            col.style.animationDuration = (15 + Math.random() * 10) + 's';
+            col.style.animationDuration = (10 + Math.random() * 10) + 's';
             let content = "";
-            for (let j = 0; j < 70; j++) { content += chars[Math.floor(Math.random() * chars.length)] + "<br>"; }
+            for (let j = 0; j < 60; j++) { content += chars[Math.floor(Math.random() * chars.length)] + "<br>"; }
             col.innerHTML = content + content;
-            matrixContainer.appendChild(col);
+            matrix.appendChild(col);
         }
 
-        // Логіка меню
-        const btn = document.getElementById('menuToggle');
-        const menu = document.getElementById('navMenu');
-        btn.onclick = (e) => {
-            e.preventDefault();
-            menu.classList.toggle('active');
-            btn.classList.toggle('open');
+        // Меню
+        const trigger = document.getElementById('menuToggle');
+        const nav = document.getElementById('navMenu');
+        trigger.onclick = () => {
+            nav.classList.toggle('active');
+            document.body.style.overflow = nav.classList.contains('active') ? 'hidden' : 'auto';
         }
     </script>
 </body>
