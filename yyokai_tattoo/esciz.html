@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yokai Tattoo Collection</title>
+    <title>Yokai Tattoo Studio</title>
     <style>
         @import url('https://googleapis.com');
 
         body { 
-            /* Глибокий фон з градієнтом та ефектом віньєтки */
-            background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%); 
+            background: #050505; 
             margin: 0; 
             display: flex; 
             flex-direction: column;
@@ -18,76 +17,80 @@
             perspective: 2000px; 
             overflow-x: hidden;
             font-family: 'Bebas Neue', cursive;
+            color: #fff;
         }
 
-        /* МЕНЮ (Три риски) */
+        /* --- МЕНЮ --- */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+        .menu-overlay.active { right: 0; }
+        .menu-overlay a {
+            color: #fff;
+            text-decoration: none;
+            font-size: clamp(30px, 8vw, 50px);
+            letter-spacing: 15px;
+            margin: 15px 0;
+            transition: 0.4s;
+            opacity: 0.5;
+        }
+        .menu-overlay a:hover { opacity: 1; color: #ff0000; transform: scale(1.1); }
+
         .burger-menu {
             position: fixed;
-            top: 30px;
-            right: 30px;
-            width: 35px;
-            height: 24px;
+            top: 40px;
+            right: 40px;
+            width: 32px;
+            height: 22px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             cursor: pointer;
             z-index: 1000;
         }
+        .burger-menu span { height: 2px; width: 100%; background: #fff; transition: 0.3s; }
+        .burger-menu.open span:nth-child(1) { transform: translateY(10px) rotate(45deg); }
+        .burger-menu.open span:nth-child(2) { opacity: 0; }
+        .burger-menu.open span:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
 
-        .burger-menu span {
-            display: block;
-            width: 100%;
-            height: 2px;
-            background: #fff;
-            box-shadow: 0 0 10px rgba(255,255,255,0.5);
-            transition: 0.3s;
-        }
-
+        /* --- КАРТКИ --- */
         .collection-grid {
             display: flex;
             flex-direction: column;
-            gap: 120px;
+            gap: 140px;
             padding: 120px 0;
-            width: 100%;
         }
 
         .artifact-item {
             position: relative;
             width: 360px;
-            height: 520px;
+            height: 500px;
             margin: 0 auto;
             transform-style: preserve-3d;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-decoration: none;
-            -webkit-tap-highlight-color: transparent;
         }
 
-        /* ТІЛО КАРТКИ */
         .artifact-body {
             width: 100%;
-            height: 420px;
+            height: 100%;
             position: relative;
             transform-style: preserve-3d;
-            will-change: transform;
         }
 
-        /* ЕФЕКТ СКЛА (Glassmorphism) */
-        .artifact-body::before {
-            content: '';
-            position: absolute;
-            inset: -5px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.05) 100%);
-            border: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(2px);
-            z-index: 10;
-            pointer-events: none;
-            transform: translateZ(20px);
-            border-radius: 4px;
-        }
-
-        /* ШАРИ */
         .layer {
             position: absolute;
             inset: 0;
@@ -97,151 +100,133 @@
             pointer-events: none;
         }
 
-        /* --- АНІМАЦІЇ --- */
-        /* Маятник для Red */
-        .neon-red .artifact-body { animation: swing 7s infinite ease-in-out; }
-        @keyframes swing {
-            0%, 100% { transform: rotateY(-15deg) rotateX(5deg); }
-            50% { transform: rotateY(15deg) rotateX(-5deg); }
-        }
-
-        /* Дихання для Gold */
-        .neon-gold .artifact-body { animation: breathe 5s infinite ease-in-out; }
-        @keyframes breathe {
-            0%, 100% { transform: translateZ(0) scale(1); }
-            50% { transform: translateZ(50px) scale(1.05); }
-        }
-
-        /* КОЛЬОРИ РІДКІСНОСТІ */
-        .neon-red .rarity-text { color: #ff3c3c; text-shadow: 0 0 20px #ff0000; }
-        .neon-red .details-btn { border-color: #ff3c3c; color: #ff3c3c; box-shadow: inset 0 0 10px rgba(255, 60, 60, 0.2); }
-        .neon-red .rarity-text::after { background: linear-gradient(90deg, transparent, #ff0000, transparent); }
-
-        .neon-gold .rarity-text { color: #ffcc00; text-shadow: 0 0 20px #ffaa00; }
-        .neon-gold .details-btn { border-color: #ffcc00; color: #ffcc00; box-shadow: inset 0 0 10px rgba(255, 204, 0, 0.2); }
-        .neon-gold .rarity-text::after { background: linear-gradient(90deg, transparent, #ffcc00, transparent); }
-
-        /* БЛОК РІДКОСТІ */
-        .rarity-box {
-            margin-top: 35px;
-            text-align: center;
-            transform: translateZ(30px);
-        }
-
-        .rarity-text {
-            font-size: 28px;
-            letter-spacing: 10px;
-            margin: 0;
-            position: relative;
-            font-weight: bold;
-        }
-
-        .rarity-text::after {
-            content: '';
+        /* СКЛО ВПИСАНЕ В ЦЕНТР */
+        .glass-layer {
             position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            animation: underlinePulse 2s infinite ease-in-out;
+            /* Вписуємо чітко під розмір середнього об'єкта */
+            top: 15%;
+            left: 15%;
+            right: 15%;
+            bottom: 15%;
+            
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.15) 0%, 
+                rgba(255, 255, 255, 0) 50%, 
+                rgba(255, 255, 255, 0.05) 100%);
+            
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateZ(8px);
+            z-index: 5;
+            /* Ефект грані скла */
+            box-shadow: 
+                0 0 15px rgba(0,0,0,0.5),
+                inset 0 0 10px rgba(255,255,255,0.05);
         }
+
+        /* Анімації */
+        .neon-red .artifact-body { animation: swing-slow 10s infinite ease-in-out; }
+        @keyframes swing-slow {
+            0%, 100% { transform: rotateY(-10deg) rotateX(2deg); }
+            50% { transform: rotateY(10deg) rotateX(-2deg); }
+        }
+
+        .neon-gold .artifact-body { animation: pulse-depth 7s infinite ease-in-out; }
+        @keyframes pulse-depth {
+            0%, 100% { transform: scale(1) translateZ(0); }
+            50% { transform: scale(1.03) translateZ(30px); }
+        }
+
+        /* РІДКІСТЬ */
+        .rarity-box { margin-top: 45px; text-align: center; z-index: 10; }
+        .rarity-text { font-size: clamp(24px, 5vw, 30px); letter-spacing: 12px; margin: 0; }
+        
+        .neon-red .rarity-text { color: #ff0000; text-shadow: 0 0 20px rgba(255,0,0,0.4); }
+        .neon-gold .rarity-text { color: #ffaa00; text-shadow: 0 0 20px rgba(255,170,0,0.4); }
 
         .rarity-jp {
             font-family: 'Noto Sans JP', sans-serif;
-            color: rgba(255,255,255,0.3);
+            color: #333;
             font-size: 10px;
-            letter-spacing: 4px;
-            margin-top: 8px;
+            letter-spacing: 5px;
+            margin-top: 10px;
             display: block;
-            text-transform: uppercase;
         }
 
         /* КНОПКА DETAILS */
         .details-btn {
-            margin-top: 25px;
-            padding: 10px 50px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid;
-            font-size: 14px;
-            letter-spacing: 5px;
-            border-radius: 0; /* Гострі кути для стилю Японії */
+            margin-top: 30px;
+            padding: 12px 50px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-size: 13px;
+            letter-spacing: 6px;
+            color: #fff;
             transition: 0.3s;
-            position: relative;
-            overflow: hidden;
+            cursor: pointer;
         }
-
         .details-btn:hover {
-            background: white;
-            color: black !important;
+            background: #fff;
+            color: #000;
+            border-color: #fff;
         }
 
-        .glow-bottom {
-            position: absolute;
-            bottom: 60px;
-            width: 200px;
-            height: 20px;
-            filter: blur(35px);
-            z-index: -1;
-            opacity: 0.5;
-        }
-        
-        .neon-red .glow-bottom { background: #ff0000; }
-        .neon-gold .glow-bottom { background: #ffcc00; }
-
-        @keyframes underlinePulse {
-            0%, 100% { opacity: 0.3; transform: scaleX(0.7); }
-            50% { opacity: 1; transform: scaleX(1); }
-        }
     </style>
 </head>
 <body>
 
-    <!-- Три риски (Меню) -->
-    <div class="burger-menu">
-        <span></span>
-        <span></span>
-        <span></span>
+    <div class="menu-overlay" id="menuOverlay">
+        <a href="#">ГОЛОВНА</a>
+        <a href="#">ЗАПИСАТИСЯ</a>
+        <a href="#">ЙОКАЇ</a>
+        <a href="#">ПОРТФОЛІО</a>
+    </div>
+
+    <div class="burger-menu" id="burgerBtn">
+        <span></span><span></span><span></span>
     </div>
 
     <div class="collection-grid">
 
-        <!-- КАРТКА 1 (RED) -->
-        <a href="primerka.html" class="artifact-item neon-red">
+        <!-- КАРТКА 1 -->
+        <a href="#" class="artifact-item neon-red">
             <div class="artifact-body">
                 <div class="layer" style="transform: translateZ(0px); background-image: url('01.PNG');"></div>
-                <div class="layer" style="transform: translateZ(5px); background-image: url('01.PNG'); opacity: 0.5;"></div>
-                <!-- Ескіз під склом -->
-                <div class="layer" style="transform: translateZ(12px); background-image: url('02.PNG'); filter: brightness(1.2);"></div>
-                <div class="layer" style="transform: translateZ(18px); background-image: url('01.PNG');"></div>
+                <!-- СКЛО ВПИСАНЕ ПО ЦЕНТРУ -->
+                <div class="glass-layer"></div>
+                <div class="layer" style="transform: translateZ(12px); background-image: url('02.PNG');"></div>
+                <div class="layer" style="transform: translateZ(20px); background-image: url('01.PNG'); opacity: 0.6;"></div>
             </div>
-
             <div class="rarity-box">
                 <p class="rarity-text">LEGENDARY</p>
-                <span class="rarity-jp">伝説の妖怪 — КРОВАВИЙ ДЕМОН</span>
+                <span class="rarity-jp">伝説の妖怪 — ONI MASK</span>
             </div>
-
-            <div class="details-btn">DETAILS</div>
-            <div class="glow-bottom"></div>
+            <div class="details-btn">ЗАПИСАТИСЯ</div>
         </a>
 
-        <!-- КАРТКА 2 (GOLD) -->
-        <a href="primerka.html" class="artifact-item neon-gold">
+        <!-- КАРТКА 2 -->
+        <a href="#" class="artifact-item neon-gold">
             <div class="artifact-body">
                 <div class="layer" style="transform: translateZ(0px); background-image: url('03.PNG');"></div>
-                <div class="layer" style="transform: translateZ(12px); background-image: url('04.PNG'); filter: brightness(1.2);"></div>
-                <div class="layer" style="transform: translateZ(20px); background-image: url('03.PNG');"></div>
+                <div class="glass-layer"></div>
+                <div class="layer" style="transform: translateZ(12px); background-image: url('04.PNG');"></div>
+                <div class="layer" style="transform: translateZ(20px); background-image: url('03.PNG'); opacity: 0.6;"></div>
             </div>
-
             <div class="rarity-box">
                 <p class="rarity-text">MYTHIC</p>
-                <span class="rarity-jp">神話の存在 — ЗОЛОТИЙ ЙОКАЙ</span>
+                <span class="rarity-jp">神話の存在 — KITSUNE</span>
             </div>
-
-            <div class="details-btn">DETAILS</div>
-            <div class="glow-bottom"></div>
+            <div class="details-btn">ЗАПИСАТИСЯ</div>
         </a>
 
     </div>
 
+    <script>
+        const btn = document.getElementById('burgerBtn');
+        const menu = document.getElementById('menuOverlay');
+        btn.onclick = () => {
+            btn.classList.toggle('open');
+            menu.classList.toggle('active');
+        };
+    </script>
 </body>
 </html>
