@@ -7,7 +7,7 @@
         @import url('https://googleapis.com');
 
         body { 
-            background: #050505; 
+            background: #030303; 
             margin: 0; 
             display: flex; 
             flex-direction: column;
@@ -15,67 +15,63 @@
             min-height: 100vh; 
             perspective: 2000px; 
             overflow-x: hidden;
-            font-family: 'Bebas Neue', cursive;
+            font-family: 'Inter', sans-serif;
             color: #fff;
         }
 
-        /* --- МЕНЮ (БУТЕРБРОД) --- */
+        /* --- UI: HEADER & MENU --- */
         header {
             position: fixed;
             top: 0; width: 100%;
-            padding: 45px 35px; /* Гарний відступ від кутів */
+            padding: 40px 30px; /* Преміальний відступ */
             display: flex;
-            justify-content: flex-end; /* Бутерброд справа */
+            justify-content: space-between;
+            align-items: center;
             z-index: 5000;
             box-sizing: border-box;
         }
 
+        .logo { font-size: 10px; letter-spacing: 5px; font-weight: 200; opacity: 0.6; }
+
         .menu-btn {
-            width: 30px; height: 18px;
+            width: 25px; height: 14px;
             display: flex; flex-direction: column; justify-content: space-between;
             cursor: pointer;
         }
-        .menu-btn span { display: block; height: 2px; width: 100%; background: #fff; transition: 0.4s; }
-        
-        .open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .menu-btn span { display: block; height: 1px; width: 100%; background: #fff; transition: 0.4s; }
+        .open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
         .open span:nth-child(2) { opacity: 0; }
-        .open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+        .open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
         .nav-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 4000;
+            position: fixed; inset: 0; background: #000; z-index: 4000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transform: translateX(100%); transition: 0.5s cubic-bezier(0.8, 0, 0.2, 1);
+            transform: translateX(100%); transition: 0.6s cubic-bezier(0.8, 0, 0.2, 1);
         }
         .nav-overlay.active { transform: translateX(0); }
-        .nav-overlay a { font-size: 40px; color: #fff; text-decoration: none; margin: 15px; letter-spacing: 5px; }
+        .nav-overlay a { font-size: 32px; color: #fff; text-decoration: none; margin: 15px; letter-spacing: 8px; font-weight: 200; }
 
-        /* --- КОЛЕКЦІЯ --- */
-        .collection-grid {
+        /* --- NFT GALLERY --- */
+        .nft-grid {
             display: flex; flex-direction: column;
-            gap: 120px; padding: 120px 0;
+            gap: 150px; padding: 120px 0;
             width: 100%;
         }
 
-        .artifact-item {
-            position: relative;
-            width: 340px;
-            height: 480px;
+        .nft-card {
+            width: 330px;
             margin: 0 auto;
             transform-style: preserve-3d;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: inherit;
+            position: relative;
         }
 
-        /* ТВІЙ ОРИГІНАЛЬНИЙ БУТЕРБРОД З 5 ШАРІВ (01.PNG та 02.PNG) */
-        .artifact-body {
+        /* ТВІЙ БУТЕРБРОД З 5 ШАРІВ */
+        .visual-block {
             width: 100%;
-            height: 100%;
+            height: 460px;
             position: relative;
             transform-style: preserve-3d;
-            pointer-events: auto;
+            cursor: pointer;
         }
 
         .layer {
@@ -87,110 +83,116 @@
             pointer-events: none;
         }
 
-        /* АНІМАЦІЇ ЯК ТИ ПРОСИВ (НЕ КРУГОВІ) */
-        .anim-swing { animation: swing 7s infinite ease-in-out; }
-        @keyframes swing {
-            0%, 100% { transform: rotateY(-15deg) rotateX(5deg); }
-            50% { transform: rotateY(15deg) rotateX(-3deg); }
+        /* АНІМАЦІЇ */
+        .anim-swing { animation: nftSwing 8s infinite ease-in-out; }
+        @keyframes nftSwing {
+            0%, 100% { transform: rotateY(-12deg) rotateX(3deg); }
+            50% { transform: rotateY(12deg) rotateX(-3deg); }
         }
 
-        .anim-float { animation: float 6s infinite ease-in-out; }
-        @keyframes float {
-            0%, 100% { transform: translateZ(0) translateY(0); }
-            50% { transform: translateZ(40px) translateY(-20px); }
+        .anim-float { animation: nftFloat 6s infinite ease-in-out; }
+        @keyframes nftFloat {
+            0%, 100% { transform: translateY(0) translateZ(0); }
+            50% { transform: translateY(-20px) translateZ(40px); }
         }
 
-        /* --- UI ДЕТАЛІ --- */
-        .rarity-box {
-            margin-top: 35px;
-            text-align: center;
-            transform: translateZ(50px);
+        /* --- NFT INFO PANEL --- */
+        .nft-meta {
+            margin-top: 30px;
+            padding: 0 10px;
+            text-align: left;
         }
 
-        .rarity-text {
-            font-size: 28px;
-            letter-spacing: 8px;
+        .rarity {
+            font-size: 9px;
+            letter-spacing: 5px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .neon-red .rarity { color: #ff0000; text-shadow: 0 0 10px rgba(255,0,0,0.5); }
+        .neon-gold .rarity { color: #d4af37; text-shadow: 0 0 10px rgba(212,175,55,0.5); }
+
+        .nft-name {
+            font-size: 24px;
+            font-weight: 400;
             margin: 0;
-            position: relative;
-            display: inline-block;
+            letter-spacing: 1px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .neon-red .rarity-text { color: #ff0000; text-shadow: 0 0 15px #ff0000; }
-        .neon-gold .rarity-text { color: #ffac00; text-shadow: 0 0 15px #ffac00; }
-
-        .rarity-text::after {
-            content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 2px;
-            background: currentColor; box-shadow: 0 0 10px currentColor;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0%, 100% { opacity: 0.3; transform: scaleX(0.8); } 50% { opacity: 1; transform: scaleX(1.1); } }
+        .nft-name span { font-size: 10px; opacity: 0.3; font-family: 'Noto Sans JP'; }
 
         /* КНОПКА ЗАПИСУ */
-        .details-btn {
-            margin-top: 25px;
-            padding: 12px 60px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        .btn-booking {
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+            padding: 15px 0;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: transparent;
             color: #fff;
-            font-size: 16px;
-            letter-spacing: 4px;
             text-align: center;
             text-decoration: none;
+            font-size: 10px;
+            letter-spacing: 3px;
+            font-weight: 700;
             transition: 0.3s;
-            z-index: 100;
-            position: relative;
         }
-        .neon-red .details-btn { border-color: #ff0000; color: #ff0000; }
-        .neon-gold .details-btn { border-color: #ffac00; color: #ffac00; }
-        .details-btn:active { background: #fff; color: #000; }
+        .btn-booking:active { background: #fff; color: #000; border-color: #fff; }
 
     </style>
 </head>
 <body>
 
     <header>
+        <div class="logo">YOKAI / ARCHIVE</div>
         <div class="menu-btn" id="menuToggle">
             <span></span><span></span><span></span>
         </div>
     </header>
 
     <nav class="nav-overlay" id="navMenu">
-        <a href="#">ГОЛОВНА</a>
-        <a href="#">ЗАПИСАТИСЯ</a>
-        <a href="#">ПОРТФОЛІО</a>
+        <a href="#">COLLECTION</a>
+        <a href="#">BOOKING</a>
+        <a href="#">STUDIO</a>
     </nav>
 
-    <div class="collection-grid">
+    <div class="nft-grid">
 
-        <!-- КАРТКА 1: ВИКОРИСТОВУЄМО ТВОЇ 01.PNG ТА 02.PNG -->
-        <div class="artifact-item neon-red">
-            <a href="primerka.html" class="artifact-body anim-swing">
+        <!-- NFT 01: RED -->
+        <div class="nft-card neon-red">
+            <a href="primerka.html" class="visual-block anim-swing">
                 <div class="layer" style="transform: translateZ(0px); background-image: url('01.PNG');"></div>
-                <div class="layer" style="transform: translateZ(5px); background-image: url('01.PNG'); opacity: 0.4;"></div>
-                <div class="layer" style="transform: translateZ(12px); background-image: url('02.PNG');"></div> <!-- ТВІЙ ЕСКІЗ -->
-                <div class="layer" style="transform: translateZ(20px); background-image: url('01.PNG'); opacity: 0.6;"></div>
-                <div class="layer" style="transform: translateZ(28px); background-image: url('01.PNG');"></div>
+                <div class="layer" style="transform: translateZ(8px); background-image: url('01.PNG'); opacity: 0.4;"></div>
+                <div class="layer" style="transform: translateZ(18px); background-image: url('02.PNG');"></div> <!-- ЕСКІЗ -->
+                <div class="layer" style="transform: translateZ(28px); background-image: url('01.PNG'); opacity: 0.7;"></div>
+                <div class="layer" style="transform: translateZ(38px); background-image: url('01.PNG');"></div>
             </a>
-
-            <div class="rarity-box">
-                <p class="rarity-text">LEGENDARY</p>
-                <a href="https://t.me" class="details-btn">ЗАПИСАТИСЯ</a>
+            
+            <div class="nft-meta">
+                <span class="rarity">LEGENDARY</span>
+                <h2 class="nft-name">HANNYA CORE <span>般若 №01</span></h2>
+                <a href="https://t.me" class="btn-booking">BOOKING SESSION</a>
             </div>
         </div>
 
-        <!-- КАРТКА 2: ВИКОРИСТОВУЄМО ТВОЇ 03.PNG ТА 04.PNG -->
-        <div class="artifact-item neon-gold">
-            <a href="primerka.html" class="artifact-body anim-float">
+        <!-- NFT 02: GOLD -->
+        <div class="nft-card neon-gold">
+            <a href="primerka.html" class="visual-block anim-float">
                 <div class="layer" style="transform: translateZ(0px); background-image: url('03.PNG');"></div>
-                <div class="layer" style="transform: translateZ(5px); background-image: url('03.PNG'); opacity: 0.4;"></div>
-                <div class="layer" style="transform: translateZ(12px); background-image: url('04.PNG');"></div>
-                <div class="layer" style="transform: translateZ(20px); background-image: url('03.PNG'); opacity: 0.6;"></div>
-                <div class="layer" style="transform: translateZ(28px); background-image: url('03.PNG');"></div>
+                <div class="layer" style="transform: translateZ(8px); background-image: url('03.PNG'); opacity: 0.4;"></div>
+                <div class="layer" style="transform: translateZ(18px); background-image: url('04.PNG');"></div>
+                <div class="layer" style="transform: translateZ(28px); background-image: url('03.PNG'); opacity: 0.7;"></div>
+                <div class="layer" style="transform: translateZ(38px); background-image: url('03.PNG');"></div>
             </a>
-
-            <div class="rarity-box">
-                <p class="rarity-text">MYTHIC</p>
-                <a href="https://t.me" class="details-btn">ЗАПИСАТИСЯ</a>
+            
+            <div class="nft-meta">
+                <span class="rarity">MYTHIC</span>
+                <h2 class="nft-name">KITSUNE SOUL <span>狐 №42</span></h2>
+                <a href="https://t.me" class="btn-booking">BOOKING SESSION</a>
             </div>
         </div>
 
@@ -198,11 +200,12 @@
 
     <script>
         const btn = document.getElementById('menuToggle');
-        const menu = document.getElementById('navMenu');
+        const nav = document.getElementById('navMenu');
+        
         btn.onclick = () => {
             btn.classList.toggle('open');
-            menu.classList.toggle('active');
-            document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : 'auto';
+            nav.classList.toggle('active');
+            document.body.style.overflow = nav.classList.contains('active') ? 'hidden' : 'auto';
         };
     </script>
 </body>
