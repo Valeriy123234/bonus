@@ -6,16 +6,8 @@
     <style>
         @import url('https://googleapis.com');
 
-        :root {
-            --red: #ff003c;
-            --gold: #ffac00;
-            --bg: #050505;
-        }
-
         body { 
-            background-color: var(--bg);
-            /* Текстура рисового паперу на фоні */
-            background-image: url('https://transparenttextures.com');
+            background: #050505; 
             margin: 0; 
             display: flex; 
             flex-direction: column;
@@ -23,52 +15,67 @@
             min-height: 100vh; 
             perspective: 2000px; 
             overflow-x: hidden;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Bebas Neue', cursive;
             color: #fff;
         }
 
-        /* --- UI: HEADER --- */
+        /* --- МЕНЮ (БУТЕРБРОД) --- */
         header {
             position: fixed;
             top: 0; width: 100%;
-            padding: 30px;
+            padding: 45px 35px; /* Гарний відступ від кутів */
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            justify-content: flex-end; /* Бутерброд справа */
             z-index: 5000;
-            mix-blend-mode: difference;
+            box-sizing: border-box;
         }
 
-        .logo { font-family: 'Syncopate'; font-weight: 700; font-size: 14px; letter-spacing: 5px; }
-
-        .burger {
-            width: 30px; height: 12px;
+        .menu-btn {
+            width: 30px; height: 18px;
             display: flex; flex-direction: column; justify-content: space-between;
             cursor: pointer;
         }
-        .burger span { display: block; height: 1px; width: 100%; background: #fff; transition: 0.4s; }
-        .open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
-        .open span:nth-child(2) { transform: translateY(-5.5px) rotate(-45deg); }
+        .menu-btn span { display: block; height: 2px; width: 100%; background: #fff; transition: 0.4s; }
+        
+        .open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .open span:nth-child(2) { opacity: 0; }
+        .open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-        /* --- NFT CARD --- */
+        .nav-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 4000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transform: translateX(100%); transition: 0.5s cubic-bezier(0.8, 0, 0.2, 1);
+        }
+        .nav-overlay.active { transform: translateX(0); }
+        .nav-overlay a { font-size: 40px; color: #fff; text-decoration: none; margin: 15px; letter-spacing: 5px; }
+
+        /* --- КОЛЕКЦІЯ --- */
         .collection-grid {
             display: flex; flex-direction: column;
-            gap: 160px; padding: 120px 0;
+            gap: 120px; padding: 120px 0;
+            width: 100%;
         }
 
-        .nft-container {
+        .artifact-item {
             position: relative;
             width: 340px;
+            height: 480px;
+            margin: 0 auto;
             transform-style: preserve-3d;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
         }
 
-        /* Стек шарів з жорстким паралаксом */
-        .artifact-box {
-            position: relative;
+        /* ТВІЙ ОРИГІНАЛЬНИЙ БУТЕРБРОД З 5 ШАРІВ (01.PNG та 02.PNG) */
+        .artifact-body {
             width: 100%;
-            height: 480px;
+            height: 100%;
+            position: relative;
             transform-style: preserve-3d;
-            transition: 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            pointer-events: auto;
         }
 
         .layer {
@@ -80,191 +87,123 @@
             pointer-events: none;
         }
 
-        /* Анімації */
-        .anim-float { animation: nftFloat 6s infinite ease-in-out; }
-        @keyframes nftFloat {
-            0%, 100% { transform: translateY(0) rotateX(2deg); }
-            50% { transform: translateY(-25px) rotateX(-5deg); }
+        /* АНІМАЦІЇ ЯК ТИ ПРОСИВ (НЕ КРУГОВІ) */
+        .anim-swing { animation: swing 7s infinite ease-in-out; }
+        @keyframes swing {
+            0%, 100% { transform: rotateY(-15deg) rotateX(5deg); }
+            50% { transform: rotateY(15deg) rotateX(-3deg); }
         }
 
-        .anim-glitch { animation: nftGlitch 8s infinite ease-in-out; }
-        @keyframes nftGlitch {
-            0%, 100% { transform: rotateY(-10deg); }
-            50% { transform: rotateY(10deg) scale(1.05); }
+        .anim-float { animation: float 6s infinite ease-in-out; }
+        @keyframes float {
+            0%, 100% { transform: translateZ(0) translateY(0); }
+            50% { transform: translateZ(40px) translateY(-20px); }
         }
 
-        /* --- INFO PANEL (UI) --- */
-        .info-panel {
-            margin-top: -20px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-top: none;
-            position: relative;
-            z-index: 10;
+        /* --- UI ДЕТАЛІ --- */
+        .rarity-box {
+            margin-top: 35px;
+            text-align: center;
+            transform: translateZ(50px);
         }
 
-        .rarity-badge {
-            font-family: 'Syncopate';
-            font-size: 8px;
-            padding: 4px 8px;
-            border: 1px solid;
-            display: inline-block;
-            margin-bottom: 15px;
-            letter-spacing: 2px;
-        }
-
-        .neon-red .rarity-badge { color: var(--red); border-color: var(--red); box-shadow: 0 0 10px rgba(255,0,60,0.3); }
-        .neon-gold .rarity-badge { color: var(--gold); border-color: var(--gold); box-shadow: 0 0 10px rgba(255,172,0,0.3); }
-
-        .title-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
-
-        .nft-title {
-            font-family: 'Inter';
-            font-weight: 900;
-            font-size: 24px;
+        .rarity-text {
+            font-size: 28px;
+            letter-spacing: 8px;
             margin: 0;
-            text-transform: uppercase;
-        }
-
-        .jp-id {
-            font-family: 'Noto Sans JP';
-            font-size: 14px;
-            opacity: 0.1;
-            position: absolute;
-            right: 10px; top: 10px;
-        }
-
-        /* --- КНОПКА ЗАПИСУ --- */
-        .cta-button {
-            margin-top: 20px;
-            width: 100%;
-            height: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-decoration: none;
-            font-family: 'Syncopate';
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 3px;
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
-            overflow: hidden;
-            transition: 0.4s;
+            display: inline-block;
         }
 
-        .cta-button::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: 0.5s;
-        }
+        .neon-red .rarity-text { color: #ff0000; text-shadow: 0 0 15px #ff0000; }
+        .neon-gold .rarity-text { color: #ffac00; text-shadow: 0 0 15px #ffac00; }
 
-        .cta-button:active::before { left: 100%; }
-        .cta-button:active { background: #fff; color: #000; }
+        .rarity-text::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 2px;
+            background: currentColor; box-shadow: 0 0 10px currentColor;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 0.3; transform: scaleX(0.8); } 50% { opacity: 1; transform: scaleX(1.1); } }
 
-        /* МЕНЮ НАВІГАЦІЇ */
-        .nav-fs {
-            position: fixed;
-            inset: 0; background: #000;
-            z-index: 4000;
-            display: flex; flex-direction: column;
-            justify-content: center; padding: 40px;
-            transform: translateY(-100%);
-            transition: 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+        /* КНОПКА ЗАПИСУ */
+        .details-btn {
+            margin-top: 25px;
+            padding: 12px 60px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 16px;
+            letter-spacing: 4px;
+            text-align: center;
+            text-decoration: none;
+            transition: 0.3s;
+            z-index: 100;
+            position: relative;
         }
-        .nav-fs.active { transform: translateY(0); }
-        .nav-fs a {
-            font-family: 'Syncopate';
-            font-size: clamp(24px, 8vw, 40px);
-            color: #fff; text-decoration: none;
-            margin: 15px 0; font-weight: 700;
-            opacity: 0.5; transition: 0.3s;
-        }
-        .nav-fs a:hover { opacity: 1; padding-left: 20px; color: var(--red); }
+        .neon-red .details-btn { border-color: #ff0000; color: #ff0000; }
+        .neon-gold .details-btn { border-color: #ffac00; color: #ffac00; }
+        .details-btn:active { background: #fff; color: #000; }
 
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">YOKAI.NFT</div>
-        <div class="burger" id="menuToggle">
-            <span></span><span></span>
+        <div class="menu-btn" id="menuToggle">
+            <span></span><span></span><span></span>
         </div>
     </header>
 
-    <nav class="nav-fs" id="navFs">
-        <a href="#">ARCHIVE</a>
-        <a href="#">BOOKING</a>
-        <a href="#">COLLECTION</a>
-        <a href="#">STORY</a>
+    <nav class="nav-overlay" id="navMenu">
+        <a href="#">ГОЛОВНА</a>
+        <a href="#">ЗАПИСАТИСЯ</a>
+        <a href="#">ПОРТФОЛІО</a>
     </nav>
 
     <div class="collection-grid">
 
-        <!-- NFT ITEM 1 (RED) -->
-        <div class="nft-container neon-red">
-            <div class="jp-id">般若 №001</div>
-            <a href="primerka.html" class="artifact-box anim-float">
-                <!-- 5 ШАРІВ ОДНАКОВОГО РОЗМІРУ -->
+        <!-- КАРТКА 1: ВИКОРИСТОВУЄМО ТВОЇ 01.PNG ТА 02.PNG -->
+        <div class="artifact-item neon-red">
+            <a href="primerka.html" class="artifact-body anim-swing">
                 <div class="layer" style="transform: translateZ(0px); background-image: url('01.PNG');"></div>
-                <div class="layer" style="transform: translateZ(10px); background-image: url('01.PNG'); opacity: 0.4;"></div>
-                <div class="layer" style="transform: translateZ(30px); background-image: url('02.PNG'); filter: drop-shadow(0 20px 40px rgba(0,0,0,0.9));"></div>
-                <div class="layer" style="transform: translateZ(45px); background-image: url('01.PNG');"></div>
-                <div class="layer" style="transform: translateZ(60px); background-image: url('01.PNG'); opacity: 0.8;"></div>
+                <div class="layer" style="transform: translateZ(5px); background-image: url('01.PNG'); opacity: 0.4;"></div>
+                <div class="layer" style="transform: translateZ(12px); background-image: url('02.PNG');"></div> <!-- ТВІЙ ЕСКІЗ -->
+                <div class="layer" style="transform: translateZ(20px); background-image: url('01.PNG'); opacity: 0.6;"></div>
+                <div class="layer" style="transform: translateZ(28px); background-image: url('01.PNG');"></div>
             </a>
-            
-            <div class="info-panel">
-                <div class="rarity-badge">LEGENDARY ARTIFACT</div>
-                <div class="title-row">
-                    <h2 class="nft-title">HANNYA CORE</h2>
-                </div>
-                <a href="https://t.me" class="cta-button">ЗАПИСАТИСЯ</a>
+
+            <div class="rarity-box">
+                <p class="rarity-text">LEGENDARY</p>
+                <a href="https://t.me" class="details-btn">ЗАПИСАТИСЯ</a>
             </div>
         </div>
 
-        <!-- NFT ITEM 2 (GOLD) -->
-        <div class="nft-container neon-gold">
-            <div class="jp-id">狐 №042</div>
-            <a href="primerka.html" class="artifact-box anim-glitch">
+        <!-- КАРТКА 2: ВИКОРИСТОВУЄМО ТВОЇ 03.PNG ТА 04.PNG -->
+        <div class="artifact-item neon-gold">
+            <a href="primerka.html" class="artifact-body anim-float">
                 <div class="layer" style="transform: translateZ(0px); background-image: url('03.PNG');"></div>
-                <div class="layer" style="transform: translateZ(10px); background-image: url('03.PNG'); opacity: 0.4;"></div>
-                <div class="layer" style="transform: translateZ(30px); background-image: url('04.PNG'); filter: drop-shadow(0 20px 40px rgba(0,0,0,0.9));"></div>
-                <div class="layer" style="transform: translateZ(45px); background-image: url('03.PNG');"></div>
-                <div class="layer" style="transform: translateZ(60px); background-image: url('03.PNG'); opacity: 0.8;"></div>
+                <div class="layer" style="transform: translateZ(5px); background-image: url('03.PNG'); opacity: 0.4;"></div>
+                <div class="layer" style="transform: translateZ(12px); background-image: url('04.PNG');"></div>
+                <div class="layer" style="transform: translateZ(20px); background-image: url('03.PNG'); opacity: 0.6;"></div>
+                <div class="layer" style="transform: translateZ(28px); background-image: url('03.PNG');"></div>
             </a>
-            
-            <div class="info-panel">
-                <div class="rarity-badge">MYTHIC POSSESSION</div>
-                <div class="title-row">
-                    <h2 class="nft-title">GOLD KITSUNE</h2>
-                </div>
-                <a href="https://t.me" class="cta-button">ЗАПИСАТИСЯ</a>
+
+            <div class="rarity-box">
+                <p class="rarity-text">MYTHIC</p>
+                <a href="https://t.me" class="details-btn">ЗАПИСАТИСЯ</a>
             </div>
         </div>
 
     </div>
 
     <script>
-        const toggle = document.getElementById('menuToggle');
-        const nav = document.getElementById('navFs');
-        
-        toggle.onclick = () => {
-            toggle.classList.toggle('open');
-            nav.classList.toggle('active');
-            document.body.style.overflow = nav.classList.contains('active') ? 'hidden' : 'auto';
+        const btn = document.getElementById('menuToggle');
+        const menu = document.getElementById('navMenu');
+        btn.onclick = () => {
+            btn.classList.toggle('open');
+            menu.classList.toggle('active');
+            document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : 'auto';
         };
     </script>
-
 </body>
 </html>
