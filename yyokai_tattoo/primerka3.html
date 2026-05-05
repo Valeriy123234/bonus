@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Yokai Tattoo System</title>
     <style>
         @import url('https://googleapis.com');
 
@@ -21,27 +22,39 @@
             padding: 4px 20px; font-size: 16px; letter-spacing: 4px;
             border-radius: 2px; margin-bottom: 10px; transition: 0.4s;
             text-shadow: 0 0 10px currentColor;
+            z-index: 20;
         }
         .status-free { background: rgba(0, 255, 100, 0.1); color: #00ff64; border: 1px solid #00ff64; }
         .status-sold { background: rgba(255, 0, 0, 0.1); color: #ff0000; border: 1px solid #ff0000; }
 
-        /* РАМКА АРТЕФАКТУ */
+        /* КОНТЕЙНЕР АРТЕФАКТУ */
         .artifact-container { 
             position: relative; 
             width: 280px; 
             height: 400px; 
             transform-style: preserve-3d;
             will-change: transform;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
+        /* СКЛАДНА АНІМАЦІЯ (5 похитувань + пауза 15-20 сек) */
         .artifact { 
             width: 100%; height: 100%; 
             position: relative; transform-style: preserve-3d; 
-            animation: swing 8s infinite ease-in-out; 
+            animation: artifact_complex 30s infinite ease-in-out; 
         }
 
-        @keyframes swing {
-            0%, 100% { transform: rotateY(-18deg) rotateX(4deg); }
-            50% { transform: rotateY(18deg) rotateX(-2deg); }
+        @keyframes artifact_complex {
+            /* 5 похитувань */
+            0%, 8%, 16%, 24%, 32% { transform: rotateY(-15deg) rotateX(4deg); }
+            4%, 12%, 20%, 28%, 36% { transform: rotateY(15deg) rotateX(-2deg); }
+            /* Пауза - стоїть прямо */
+            40%, 90% { transform: rotateY(0deg) rotateX(0deg); }
+            /* Невеликий перехід до циклу */
+            95% { transform: rotateY(-5deg); }
+            100% { transform: rotateY(0deg); }
         }
 
         .layer { 
@@ -55,16 +68,52 @@
 
         #main-glow { 
             position: absolute; bottom: 40px; left: 50%;
-            width: 200px; height: 40px; 
-            filter: blur(40px); z-index: -1; 
+            width: 250px; height: 60px; 
+            filter: blur(50px); z-index: -2; 
             transform: translateX(-50%) translateZ(-50px);
             transition: 0.8s ease; 
         }
 
-        /* КНОПКИ ВИБОРУ */
+        /* ЕФЕКТ ДИМУ */
+        .smoke-wrap {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 100px;
+            pointer-events: none;
+        }
+        .smoke-back { z-index: -1; }
+        .smoke-front { z-index: 5; }
+
+        .smoke-particle {
+            position: absolute;
+            bottom: 0;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.12);
+            filter: blur(20px);
+            border-radius: 50%;
+            animation: smoke_flow 7s infinite ease-out;
+            opacity: 0;
+        }
+
+        @keyframes smoke_flow {
+            0% { transform: translate(0, 0) scale(1); opacity: 0; }
+            20% { opacity: 0.3; }
+            100% { transform: translate(var(--dir-x), -220px) scale(4); opacity: 0; }
+        }
+
+        .p1 { left: 15%; --dir-x: -50px; animation-delay: 0s; }
+        .p2 { left: 40%; --dir-x: -80px; animation-delay: 2.5s; } /* Передні розходяться */
+        .p3 { left: 60%; --dir-x: 80px; animation-delay: 1.2s; }  /* в сторони */
+        .p4 { left: 80%; --dir-x: 50px; animation-delay: 4s; }
+
+        /* КНОПКИ ТА МЕНЮ */
         .selector-menu { 
             display: grid; grid-template-columns: repeat(3, 1fr); 
-            gap: 10px; width: 90%; max-width: 360px; 
+            gap: 10px; width: 90%; max-width: 360px; z-index: 20;
         }
         .zone-btn { 
             background: rgba(255, 255, 255, 0.03); 
@@ -79,25 +128,20 @@
             box-shadow: 0 0 15px rgba(0, 255, 100, 0.2);
         }
 
-        /* КНОПКА ЗАПИСУ */
         .book-btn { 
             width: 90%; max-width: 360px; padding: 18px; 
             font-size: 22px; letter-spacing: 5px; cursor: pointer; 
             transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             border: none; border-radius: 4px;
             font-family: 'Bebas Neue', cursive;
+            z-index: 20;
         }
         .book-btn:active { transform: scale(0.95); }
 
-        /* НЕПОМІТНИЙ ВІДСТУП ВНИЗУ (АДМІН-ТОЧКА) */
+        /* НЕПОМІТНА АДМІН-ТОЧКА */
         .admin-trigger { 
-            width: 100%; 
-            padding: 15px 0; 
-            margin-top: 20px; 
-            opacity: 0.05; 
-            cursor: pointer; 
-            text-align: center; 
-            font-size: 10px;
+            width: 100%; padding: 15px 0; margin-top: 10px; 
+            opacity: 0.03; cursor: pointer; text-align: center; font-size: 10px;
         }
 
         body.is-sold .layer { filter: grayscale(1) brightness(0.3); }
@@ -106,19 +150,33 @@
 </head>
 <body id="main-body" class="is-free">
 
-    <!-- Аудіо (Заміни посилання на своє) -->
+    <!-- Прихована музика (ВСТАВ СВОЄ ПОСИЛАННЯ ТУТ) -->
     <audio id="bg-music" loop>
-        <source src="URL_ПІСНІ.mp3" type="audio/mpeg">
+        <source src="URL_ТВОЄЇ_ПІСНІ.mp3" type="audio/mpeg">
     </audio>
 
     <div id="badge" class="status-badge status-free">AVAILABLE</div>
 
     <div class="artifact-container">
         <div id="main-glow" style="background: radial-gradient(circle, #00ff64, transparent 70%);"></div>
+        
+        <!-- ДИМ ЗА РАМКОЮ -->
+        <div class="smoke-wrap smoke-back">
+            <div class="smoke-particle p1"></div>
+            <div class="smoke-particle p3"></div>
+        </div>
+
+        <!-- САМА РАМКА -->
         <div class="artifact">
             <div class="layer" style="transform: translateZ(0px); background-image: url('01.PNG');"></div>
             <div class="layer" id="target-sketch" style="transform: translateZ(4px); background-image: url('04.PNG');"></div>
             <div class="layer" style="transform: translateZ(8px); background-image: url('01.PNG');"></div>
+        </div>
+
+        <!-- ДИМ ПЕРЕД РАМКОЮ -->
+        <div class="smoke-wrap smoke-front">
+            <div class="smoke-particle p2"></div>
+            <div class="smoke-particle p4"></div>
         </div>
     </div>
 
@@ -135,38 +193,38 @@
             style="background: #00ff64; color: black; box-shadow: 0 10px 30px rgba(0,255,100,0.3);" 
             onclick="window.location.href='booking.html'">ЗАБРОНЮВАТИ</button>
 
-    <!-- Непомітна адмін-точка в самому низу -->
+    <!-- Твій секретний вхід -->
     <div class="admin-trigger" onclick="adminLogin()">.</div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <!-- Firebase -->
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
 
     <script>
-        // --- МУЗИКА ПРИ КАСАННІ ---
-        function playMusic() {
+        // 1. МУЗИКА ПРИ КАСАННІ
+        function initAudio() {
             const audio = document.getElementById('bg-music');
-            if (audio.paused) {
-                audio.play().catch(e => console.log("Чекаємо взаємодії..."));
-            }
+            audio.play().catch(() => {});
+            // Видаляємо слухачі після активації
+            document.removeEventListener('click', initAudio);
+            document.removeEventListener('touchstart', initAudio);
         }
-        document.addEventListener('touchstart', playMusic, { once: true });
-        document.addEventListener('click', playMusic, { once: true });
+        document.addEventListener('click', initAudio);
+        document.addEventListener('touchstart', initAudio);
 
-        // --- FIREBASE КОНФІГ ---
+        // 2. FIREBASE ТА АДМІНКА
         const firebaseConfig = { 
-            databaseURL: "https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/" 
+            databaseURL: "https://firebasedatabase.app" 
         };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         const sketchID = "kumiho_01"; 
 
-        // Слухаємо статус
         database.ref('sketches/' + sketchID).on('value', (snapshot) => {
             const status = snapshot.val();
             setSold(status === 'sold');
         });
 
-        // Функція адміна
         function adminLogin() {
             const pass = prompt("Yokai Admin:");
             if (pass === "yokai123234") {
@@ -177,6 +235,7 @@
             }
         }
 
+        // 3. ЛОГІКА ІНТЕРФЕЙСУ
         function setSold(sold) {
             const body = document.getElementById('main-body');
             const badge = document.getElementById('badge');
@@ -191,7 +250,6 @@
                 btn.innerText = "RESERVED";
                 btn.style.background = "#111";
                 btn.style.color = "#333";
-                btn.style.boxShadow = "none";
                 btn.disabled = true;
             } else {
                 body.classList.remove('is-sold');
@@ -201,7 +259,6 @@
                 btn.innerText = "RESERVE SLOT";
                 btn.style.background = "#00ff64";
                 btn.style.color = "black";
-                btn.style.boxShadow = "0 10px 30px rgba(0,255,100,0.3)";
                 btn.disabled = false;
             }
         }
