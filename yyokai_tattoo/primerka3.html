@@ -84,29 +84,28 @@
         <source src="мелодия.mp3" type="audio/mpeg">
     </audio>
 
-    <div id="badge" class="status-badge status-free">AVAILABLE</div>
+    <div id="badge" class="status-badge status-free">ВІЛЬНИЙ ЕСКІЗ</div>
 
     <div class="artifact-container">
         <div id="main-glow" style="background: radial-gradient(circle, #00ff64, transparent 70%);"></div>
         <div class="artifact">
-            <div class="layer" style="background-image: url('01.PNG');"></div>
-            <div class="layer" id="target-sketch" style="transform: translateZ(20px); background-image: url('04.PNG');"></div>
+            <div class="layer" style="background-image: url('01.PNG');"></div> 
+            <div class="layer" id="target-sketch" style="transform: translateZ(20px); background-image: url('02.PNG');"></div>
             <div class="layer" style="transform: translateZ(40px); background-image: url('01.PNG');"></div>
         </div>
     </div>
 
     <div class="selector-menu">
-        <button class="zone-btn active" onclick="updateImg('02.PNG', this)">ORIGINAL</button>
-        <button class="zone-btn" onclick="updateImg('Pred1.png', this)">FOREARM</button>
-        <button class="zone-btn" onclick="updateImg('ikra1.PNG', this)">CALF</button>
-        <button class="zone-btn" onclick="updateImg('023_bicep.PNG', this)">BICEP</button>
-        <button class="zone-btn" onclick="updateImg('023_quad.PNG', this)">SIDE VIEW</button>
-        <button class="zone-btn" onclick="updateImg('023_back.PNG', this)">BACK VIEW</button>
+        <button class="zone-btn active" onclick="updateImg('02.PNG', this)">ЕСКІЗ</button>
+        <button class="zone-btn" onclick="updateImg('Pred1.png', this)">ПЕРЕДПЛІЧЧЯ</button>
+        <button class="zone-btn" onclick="updateImg('ikra1.PNG', this)">ГОМІЛКА</button>
+        <button class="zone-btn" onclick="updateImg('023_bicep.PNG', this)">БІЦЕПС</button>
+        
     </div>
 
     <button id="main-book-btn" class="book-btn" 
             style="background: #00ff64; color: black; box-shadow: 0 10px 40px rgba(0,255,100,0.4);" 
-            onclick="handleBookClick()">RESERVE NOW</button>
+            onclick="handleBookClick()">ВЖЕ ЗАРЕЗЕРВОВАНИЙ</button>
 
     <div class="admin-trigger" onclick="adminLogin()">.</div>
 
