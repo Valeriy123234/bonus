@@ -5,118 +5,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Yokai Tattoo System</title>
     <style>
-        /* ПІДКЛЮЧЕННЯ ПРЕМІАЛЬНОГО ШРИФТУ */
         @import url('https://googleapis.com');
 
         html { scroll-behavior: smooth; height: 100%; }
         body { 
             background: #000; margin: 0; display: flex; flex-direction: column;
             align-items: center; justify-content: space-around; min-height: 100vh; 
-            perspective: 1500px; font-family: 'Montserrat', sans-serif; color: white;
-            overflow-x: hidden; padding: 20px 0; box-sizing: border-box;
+            perspective: 2000px; font-family: 'Montserrat', sans-serif; color: white;
+            overflow-x: hidden; padding: 10px 0; box-sizing: border-box;
         }
 
-        /* ПЛАШКА СТАТУСУ */
         .status-badge {
             padding: 6px 24px; font-size: 11px; font-weight: 700; letter-spacing: 5px;
-            border-radius: 4px; margin-bottom: 10px; transition: 0.4s;
+            border-radius: 4px; margin-bottom: 5px; transition: 0.4s;
             text-shadow: 0 0 10px currentColor; z-index: 20; text-transform: uppercase;
         }
         .status-free { background: rgba(0, 255, 100, 0.05); color: #00ff64; border: 1px solid rgba(0, 255, 100, 0.3); }
         .status-sold { background: rgba(255, 0, 0, 0.05); color: #ff0000; border: 1px solid rgba(255, 0, 0, 0.3); }
 
-        /* КОНТЕЙНЕР АРТЕФАКТУ */
+        /* ЗБІЛЬШЕНА РАМКА */
         .artifact-container { 
-            position: relative; width: 280px; height: 400px; 
-            transform-style: preserve-3d; display: flex; align-items: center; justify-content: center;
+            position: relative; 
+            width: 380px;  /* Збільшено */
+            height: 540px; /* Збільшено */
+            transform-style: preserve-3d; 
+            display: flex; align-items: center; justify-content: center;
         }
 
-        /* М'ЯКЕ ПОГОЙДУВАННЯ */
+        /* МАКСИМАЛЬНО ПЛАВНЕ ПОГОЙДУВАННЯ */
         .artifact { 
             width: 100%; height: 100%; position: relative; transform-style: preserve-3d; 
-            animation: artifact_smooth 25s infinite ease-in-out; 
+            animation: artifact_float 20s infinite ease-in-out; 
         }
 
-        @keyframes artifact_smooth {
-            0%, 10%, 20%, 30% { transform: rotateY(-7deg) rotateX(2deg); }
-            5%, 15%, 25%, 35% { transform: rotateY(7deg) rotateX(-1deg); }
-            40%, 95% { transform: rotateY(0deg) rotateX(0deg); } /* ПРЯМОСТОЯННЯ */
-            100% { transform: rotateY(0deg); }
+        @keyframes artifact_float {
+            0%, 100% { transform: rotateY(-3deg) rotateX(1deg); }
+            50% { transform: rotateY(3deg) rotateX(-1deg); }
         }
 
         .layer { 
-            position: absolute; inset: 0; background-size: 101% 101%; 
+            position: absolute; inset: 0; background-size: contain; 
             background-repeat: no-repeat; background-position: center; 
-            transition: opacity 0.3s ease; backface-visibility: hidden; 
+            transition: opacity 0.4s ease; backface-visibility: hidden; 
         }
 
         #main-glow { 
-            position: absolute; bottom: 40px; left: 50%; width: 250px; height: 60px; 
-            filter: blur(50px); z-index: -2; transform: translateX(-50%) translateZ(-50px);
+            position: absolute; bottom: 10%; left: 50%; width: 300px; height: 80px; 
+            filter: blur(60px); z-index: -2; transform: translateX(-50%) translateZ(-50px);
         }
 
-        /* ЕФЕКТ ДИМУ */
-        .smoke-wrap {
-            position: absolute; bottom: -30px; left: 50%;
-            transform: translateX(-50%); width: 200px; height: 100px; pointer-events: none;
-        }
-        .smoke-back { z-index: -1; }
-        .smoke-front { z-index: 15; }
-
-        .smoke-particle {
-            position: absolute; bottom: 0; width: 80px; height: 80px;
-            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
-            filter: blur(20px); border-radius: 50%;
-            animation: smoke_flow 8s infinite ease-out; opacity: 0;
-        }
-
-        @keyframes smoke_flow {
-            0% { transform: translate(0, 0) scale(1); opacity: 0; }
-            30% { opacity: 0.5; }
-            100% { transform: translate(var(--dir-x), -250px) scale(4); opacity: 0; }
-        }
-
-        .p1 { left: 10%; --dir-x: -60px; animation-delay: 0s; }
-        .p2 { left: 30%; --dir-x: -90px; animation-delay: 3s; }
-        .p3 { left: 70%; --dir-x: 90px; animation-delay: 1.5s; }
-        .p4 { left: 90%; --dir-x: 60px; animation-delay: 5s; }
-
-        /* КНОПКИ ВИБОРУ */
         .selector-menu { 
             display: grid; grid-template-columns: repeat(3, 1fr); 
-            gap: 10px; width: 90%; max-width: 360px; z-index: 20;
+            gap: 8px; width: 95%; max-width: 400px; z-index: 20;
         }
         .zone-btn { 
             background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); 
-            color: #888; padding: 12px 5px; font-size: 10px; font-weight: 700;
-            letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: 0.3s;
+            color: #666; padding: 12px 2px; font-size: 9px; font-weight: 700;
+            letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: 0.3s;
             font-family: 'Montserrat', sans-serif;
         }
         .zone-btn.active { 
             background: rgba(255, 255, 255, 0.1); border-color: #00ff64; color: #00ff64;
         }
 
-        /* ГОЛОВНА КНОПКА */
         .book-btn { 
-            width: 90%; max-width: 360px; padding: 20px; font-size: 15px; 
+            width: 90%; max-width: 400px; padding: 22px; font-size: 15px; 
             font-weight: 900; letter-spacing: 3px; text-transform: uppercase;
             cursor: pointer; border: none; border-radius: 8px;
-            font-family: 'Montserrat', sans-serif; z-index: 20; transition: 0.3s;
+            font-family: 'Montserrat', sans-serif; z-index: 20;
         }
 
-        /* ПРИХОВАНА АДМІН-ТОЧКА */
-        .admin-trigger { 
-            width: 100%; padding: 25px 0; margin-top: 10px; 
-            opacity: 0.02; cursor: pointer; text-align: center; 
-        }
+        .admin-trigger { width: 100%; padding: 20px 0; opacity: 0.01; cursor: pointer; }
 
-        body.is-sold .layer { filter: grayscale(1) brightness(0.3); }
-        body.is-sold .zone-btn { opacity: 0.1; pointer-events: none; }
+        body.is-sold .layer { filter: grayscale(1) brightness(0.2); }
     </style>
 </head>
 <body id="main-body">
 
-    <!-- МУЗИКА -->
     <audio id="bg-music" loop>
         <source src="URL_ТВОЄЇ_ПІСНІ.mp3" type="audio/mpeg">
     </audio>
@@ -126,20 +91,10 @@
     <div class="artifact-container">
         <div id="main-glow" style="background: radial-gradient(circle, #00ff64, transparent 70%);"></div>
         
-        <div class="smoke-wrap smoke-back">
-            <div class="smoke-particle p1"></div>
-            <div class="smoke-particle p3"></div>
-        </div>
-
         <div class="artifact">
             <div class="layer" style="background-image: url('01.PNG');"></div>
-            <div class="layer" id="target-sketch" style="transform: translateZ(5px); background-image: url('04.PNG');"></div>
-            <div class="layer" style="transform: translateZ(10px); background-image: url('01.PNG');"></div>
-        </div>
-
-        <div class="smoke-wrap smoke-front">
-            <div class="smoke-particle p2"></div>
-            <div class="smoke-particle p4"></div>
+            <div class="layer" id="target-sketch" style="transform: translateZ(15px); background-image: url('04.PNG');"></div>
+            <div class="layer" style="transform: translateZ(30px); background-image: url('01.PNG');"></div>
         </div>
     </div>
 
@@ -156,27 +111,21 @@
             style="background: #00ff64; color: black; box-shadow: 0 10px 40px rgba(0,255,100,0.4);" 
             onclick="window.location.href='booking.html'">RESERVE NOW</button>
 
-    <!-- Твій секретний вхід -->
     <div class="admin-trigger" onclick="adminLogin()">.</div>
 
     <script src="https://gstatic.com"></script>
     <script src="https://gstatic.com"></script>
 
     <script>
-        // АКТИВАЦІЯ МУЗИКИ ПРИ ТОРКАННІ
         function startMusic() {
-            const audio = document.getElementById('bg-music');
-            audio.play().catch(e => console.log("Music ready"));
-            document.removeEventListener('click', startMusic);
+            document.getElementById('bg-music').play().catch(() => {});
             document.removeEventListener('touchstart', startMusic);
+            document.removeEventListener('click', startMusic);
         }
-        document.addEventListener('click', startMusic);
         document.addEventListener('touchstart', startMusic);
+        document.addEventListener('click', startMusic);
 
-        // FIREBASE КОНФІГУРАЦІЯ
-        const firebaseConfig = { 
-            databaseURL: "https://firebasedatabase.app" 
-        };
+        const firebaseConfig = { databaseURL: "https://firebasedatabase.app" };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         const sketchID = "kumiho_01";
@@ -188,37 +137,21 @@
         function adminLogin() {
             const pass = prompt("Yokai Admin:");
             if (pass === "yokai123234") {
-                const currentStatus = document.getElementById('main-body').classList.contains('is-sold');
-                const action = confirm(currentStatus ? "ЗРОБИТИ ВІЛЬНИМ?" : "ЗАБРОНЮВАТИ?");
-                const newStatus = action ? (currentStatus ? 'free' : 'sold') : (currentStatus ? 'sold' : 'free');
-                database.ref('sketches/' + sketchID).set(newStatus);
+                const current = document.getElementById('main-body').classList.contains('is-sold');
+                database.ref('sketches/' + sketchID).set(current ? 'free' : 'sold');
             }
         }
 
         function setSold(sold) {
-            const b = document.getElementById('main-body');
-            const badge = document.getElementById('badge');
-            const btn = document.getElementById('main-book-btn');
-            const glow = document.getElementById('main-glow');
-
+            const b = document.getElementById('main-body'), badge = document.getElementById('badge'), btn = document.getElementById('main-book-btn'), glow = document.getElementById('main-glow');
             if (sold) {
-                b.classList.add('is-sold');
-                badge.innerText = "RESERVED";
-                badge.className = "status-badge status-sold";
+                b.classList.add('is-sold'); badge.innerText = "RESERVED"; badge.className = "status-badge status-sold";
                 glow.style.background = "radial-gradient(circle, #ff0000, transparent 70%)";
-                btn.innerText = "SOLD OUT";
-                btn.style.background = "#111";
-                btn.style.color = "#444";
-                btn.disabled = true;
+                btn.innerText = "SOLD OUT"; btn.style.background = "#111"; btn.style.color = "#444"; btn.disabled = true;
             } else {
-                b.classList.remove('is-sold');
-                badge.innerText = "AVAILABLE";
-                badge.className = "status-badge status-free";
+                b.classList.remove('is-sold'); badge.innerText = "AVAILABLE"; badge.className = "status-badge status-free";
                 glow.style.background = "radial-gradient(circle, #00ff64, transparent 70%)";
-                btn.innerText = "RESERVE NOW";
-                btn.style.background = "#00ff64";
-                btn.style.color = "black";
-                btn.disabled = false;
+                btn.innerText = "RESERVE NOW"; btn.style.background = "#00ff64"; btn.style.color = "black"; btn.disabled = false;
             }
         }
 
