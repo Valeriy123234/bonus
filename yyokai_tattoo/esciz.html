@@ -39,11 +39,10 @@
             opacity: 0; visibility: hidden; transition: 0.4s; z-index: 6000;
         }
         .nav-overlay.active { opacity: 1; visibility: visible; }
-        .nav-overlay a { font-size: 32px; color: #fff; text-decoration: none; margin: 15px; font-weight: 900; letter-spacing: 5px; transition: 0.3s; }
-        .nav-overlay a:active { color: #ff0000; }
+        .nav-overlay a { font-size: 32px; color: #fff; text-decoration: none; margin: 15px; font-weight: 900; letter-spacing: 5px; }
 
         /* --- КАРТКИ --- */
-        .container { display: flex; flex-direction: column; gap: 120px; padding: 100px 0; align-items: center; }
+        .container { display: flex; flex-direction: column; gap: 100px; padding: 100px 0; align-items: center; }
 
         .nft-card {
             width: 320px; height: 450px;
@@ -59,45 +58,25 @@
             background-repeat: no-repeat; background-position: center;
         }
 
-        /* --- РІДКІСТЬ ТЕКСТОМ ПІД РАМКОЮ --- */
-        .rarity-simple {
-            margin: 25px 0 10px;
+        /* --- ІНФО БЛОК --- */
+        .meta { 
+            margin-top: 30px; 
             text-align: center;
             transform: translateZ(50px);
         }
 
-        .rarity-text {
-            font-family: 'Cinzel';
-            font-size: 24px;
-            font-weight: 900;
-            letter-spacing: 12px;
-            position: relative;
-            display: inline-block;
+        .title { 
+            font-size: 26px; 
+            font-weight: 900; 
+            letter-spacing: 6px; 
+            margin: 0; 
+            color: #fff; 
+            text-transform: uppercase;
+            text-shadow: 0 0 15px rgba(255,255,255,0.2);
         }
-
-        /* Неонова аура для тексту */
-        .rarity-text::before {
-            content: attr(data-text);
-            position: absolute; inset: 0;
-            filter: blur(12px);
-            animation: breath 2s infinite alternate;
-            z-index: -1;
-        }
-
-        .red-rarity { color: #fff; }
-        .red-rarity::before { color: #ff0000; }
         
-        .gold-rarity { color: #fff; }
-        .gold-rarity::before { color: #ffcc00; }
-
-        @keyframes breath {
-            from { opacity: 0.4; transform: scale(1); }
-            to { opacity: 1; transform: scale(1.15); }
-        }
-
-        /* --- КНОПКА ПРИМІРЯТИ --- */
         .btn-try {
-            margin-top: 25px; display: block; width: 100%; padding: 22px 0;
+            margin-top: 30px; display: block; width: 100%; padding: 22px 0;
             background: #fff; color: #000; font-size: 16px; font-weight: 900;
             letter-spacing: 6px; text-transform: uppercase; text-align: center;
             text-decoration: none; box-shadow: 0 0 25px rgba(255,255,255,0.2);
@@ -117,14 +96,13 @@
     </header>
 
     <nav class="nav-overlay" id="nav">
-        <!-- Посилання в меню -->
         <a href="index.html">ГОЛОВНА</a>
         <a href="https://t.me">ЗАПИСАТИСЬ</a>
     </nav>
 
     <div class="container">
 
-        <!-- КАРТКА 01: LEGENDARY -->
+        <!-- КАРТКА 01 -->
         <div style="width: 320px;">
             <a href="primerka.html" class="nft-card anim-oni">
                 <div class="layer" style="transform: translateZ(0px); background-image: url('01.PNG');"></div>
@@ -134,17 +112,13 @@
                 <div class="layer" style="transform: translateZ(8px); background-image: url('01.PNG');"></div>
             </a>
             
-            <div class="rarity-simple">
-                <span class="rarity-text red-rarity" data-text="LEGENDARY">LEGENDARY</span>
-            </div>
-
-            <div style="text-align: center;">
-                <h2 style="margin:0; letter-spacing:4px; font-size:24px; color: #fff;">ONI MASK</h2>
+            <div class="meta">
+                <h2 class="title">ONI MASK</h2>
                 <a href="primerka.html" class="btn-try">ПРИМІРЯТИ</a>
             </div>
         </div>
 
-        <!-- КАРТКА 02: MYTHIC -->
+        <!-- КАРТКА 02 -->
         <div style="width: 320px;">
             <a href="primerka.html" class="nft-card anim-oni" style="animation-delay: -3s;">
                 <div class="layer" style="transform: translateZ(0px); background-image: url('03.PNG');"></div>
@@ -154,12 +128,8 @@
                 <div class="layer" style="transform: translateZ(8px); background-image: url('03.PNG');"></div>
             </a>
             
-            <div class="rarity-simple">
-                <span class="rarity-text gold-rarity" data-text="MYTHIC">MYTHIC</span>
-            </div>
-
-            <div style="text-align: center;">
-                <h2 style="margin:0; letter-spacing:4px; font-size:24px; color: #fff;">KITSUNE</h2>
+            <div class="meta">
+                <h2 class="title">KITSUNE</h2>
                 <a href="primerka.html" class="btn-try">ПРИМІРЯТИ</a>
             </div>
         </div>
@@ -167,7 +137,6 @@
     </div>
 
     <script>
-        // Матриця 12%
         const matrix = document.getElementById('matrix');
         const chars = "般若狐霊魂天人地龍神鬼";
         for (let i = 0; i < 12; i++) {
@@ -180,7 +149,6 @@
             matrix.appendChild(col);
         }
 
-        // Меню
         const burger = document.getElementById('burger');
         const nav = document.getElementById('nav');
         burger.onclick = () => {
