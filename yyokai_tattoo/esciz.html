@@ -15,28 +15,57 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* --- ЧЕРВОНА МАТРИЦЯ (20% ПРОЗОРІСТЬ) --- */
+        /* --- ЧЕРВОНА МАТРИЦЯ (11%) --- */
         .matrix-bg {
             position: fixed; inset: 0; font-family: 'Noto Sans JP';
-            font-size: 18px; color: #ff0000; opacity: 0.2; 
+            font-size: 18px; color: #ff0000; opacity: 0.11; 
             display: flex; justify-content: space-around; z-index: -1;
             pointer-events: none;
         }
-        .matrix-column { display: flex; flex-direction: column; animation: matrixDrop 10s linear infinite; }
+        .matrix-column { display: flex; flex-direction: column; animation: matrixDrop 12s linear infinite; }
         @keyframes matrixDrop { from { transform: translateY(-50%); } to { transform: translateY(0%); } }
 
-        /* --- UI: MENU (БУТЕРБРОД) --- */
-        header { position: fixed; top: 35px; right: 25px; z-index: 7000; }
-        .burger { 
-            width: 32px; height: 18px; 
-            display: flex; flex-direction: column; justify-content: space-between; 
-            cursor: pointer; 
+        /* --- ФІКСОВАНА РІДКІСТЬ ПО ЦЕНТРУ --- */
+        .fixed-rarity-center {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            pointer-events: none; /* Щоб не заважало клікати по кнопках */
+            text-align: center;
+            width: 100%;
         }
-        .burger span { 
-            display: block; height: 2px; width: 100%; 
-            background: #fff; transition: 0.4s; 
-            box-shadow: 0 0 10px #ff0000;
+
+        .rarity-text-global {
+            font-family: 'Cinzel';
+            font-size: 45px;
+            letter-spacing: 20px;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.05); /* Ледь помітна база */
+            text-transform: uppercase;
+            position: relative;
         }
+
+        /* Ефект "спалаху" при скролі */
+        .rarity-text-global::before {
+            content: 'LEGENDARY';
+            position: absolute; inset: 0;
+            color: #ff0000;
+            filter: blur(15px);
+            animation: pulseAura 3s infinite ease-in-out;
+            opacity: 0.3;
+        }
+
+        @keyframes pulseAura {
+            0%, 100% { opacity: 0.1; transform: scale(0.95); }
+            50% { opacity: 0.5; transform: scale(1.05); }
+        }
+
+        /* --- UI: MENU --- */
+        header { position: fixed; top: 25px; right: 25px; z-index: 7000; }
+        .burger { width: 30px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
+        .burger span { height: 2px; width: 100%; background: #fff; transition: 0.4s; }
         .burger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
         .burger.active span:nth-child(2) { opacity: 0; }
         .burger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
@@ -50,7 +79,7 @@
         .nav-overlay a { font-size: 32px; color: #fff; text-decoration: none; margin: 20px; font-weight: 900; letter-spacing: 5px; }
 
         /* --- КАРТКИ --- */
-        .container { display: flex; flex-direction: column; gap: 140px; padding: 120px 0; align-items: center; }
+        .container { display: flex; flex-direction: column; gap: 250px; padding: 150px 0; align-items: center; }
 
         .nft-card {
             width: 320px; height: 450px;
@@ -58,83 +87,34 @@
             display: block; text-decoration: none;
         }
 
-        .anim-oni { animation: moveOni 7s infinite ease-in-out; }
-        @keyframes moveOni { 0%, 100% { transform: rotateY(-22deg) rotateX(8deg); } 50% { transform: rotateY(22deg) rotateX(-4deg); } }
+        .anim-oni { animation: moveOni 8s infinite ease-in-out; }
+        @keyframes moveOni { 0%, 100% { transform: rotateY(-20deg) rotateX(5deg); } 50% { transform: rotateY(20deg) rotateX(-3deg); } }
 
         .layer {
             position: absolute; inset: 0; background-size: contain; 
             background-repeat: no-repeat; background-position: center;
         }
 
-        /* --- НОВА ЕПІЧНА ЛЕГЕНДАРНІСТЬ (ЯК У ГРІ) --- */
-        .rarity-container {
-            margin: 20px 0 40px;
-            perspective: 1000px;
-            transform: translateZ(100px);
-        }
+        /* --- ІНФО ТА КНОПКА --- */
+        .meta { margin-top: 40px; text-align: center; position: relative; z-index: 20; }
+        .title { font-size: 28px; font-weight: 900; letter-spacing: 5px; margin-bottom: 20px; }
 
-        .rarity-plate {
-            position: relative;
-            display: inline-block;
-            padding: 10px 40px;
-            background: #000;
-            border: 1px solid rgba(255,255,255,0.2);
-            overflow: hidden;
-            box-shadow: 0 0 20px rgba(0,0,0,1);
-        }
-
-        .rarity-text {
-            font-family: 'Cinzel';
-            font-size: 22px;
-            font-weight: 900;
-            letter-spacing: 10px;
-            position: relative;
-            z-index: 2;
-            /* Ефект рідкого металу */
-            background: linear-gradient(90deg, #fff, #888, #fff, #888, #fff);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: metalShine 3s infinite linear;
-        }
-
-        /* Анімоване неонове сяйво за текстом */
-        .rarity-glow {
-            position: absolute;
-            inset: -50%;
-            z-index: 1;
-            background: conic-gradient(from 0deg, transparent, #ff0000, transparent, #ff0000, transparent);
-            animation: rotateGlow 4s linear infinite;
-            filter: blur(15px);
-            opacity: 0.8;
-        }
-
-        .mythic-glow {
-            background: conic-gradient(from 0deg, transparent, #ffcc00, transparent, #ffcc00, transparent) !important;
-        }
-
-        @keyframes rotateGlow {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes metalShine {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
-        }
-
-        /* --- КНОПКА --- */
         .btn-try {
-            margin-top: 30px; display: block; width: 100%; padding: 22px 0;
-            background: #fff; color: #000; font-size: 14px; font-weight: 900;
+            display: block; width: 100%; padding: 22px 0;
+            background: #fff; color: #000; font-size: 16px; font-weight: 900;
             letter-spacing: 6px; text-transform: uppercase; text-align: center;
-            text-decoration: none; box-shadow: 0 0 30px rgba(255,255,255,0.3);
+            text-decoration: none; box-shadow: 0 0 30px rgba(255,255,255,0.2);
         }
     </style>
 </head>
 <body>
 
     <div class="matrix-bg" id="matrix"></div>
+
+    <!-- ФІКСОВАНИЙ ТЕКСТ ПО ЦЕНТРУ -->
+    <div class="fixed-rarity-center">
+        <div class="rarity-text-global">LEGENDARY</div>
+    </div>
 
     <header>
         <div class="burger" id="burger">
@@ -150,7 +130,7 @@
     <div class="container">
 
         <!-- КАРТКА 1 -->
-        <div style="width: 320px;">
+        <div class="nft-card-wrapper">
             <a href="primerka.html" class="nft-card anim-oni">
                 <div class="layer" style="transform: translateZ(0px); background-image: url('01.PNG');"></div>
                 <div class="layer" style="transform: translateZ(5px); background-image: url('01.PNG'); opacity: 0.2;"></div>
@@ -158,37 +138,25 @@
                 <div class="layer" style="transform: translateZ(18px); background-image: url('01.PNG'); opacity: 0.5;"></div>
                 <div class="layer" style="transform: translateZ(25px); background-image: url('01.PNG');"></div>
             </a>
-            
-            <div class="rarity-container">
-                <div class="rarity-plate">
-                    <div class="rarity-glow"></div>
-                    <span class="rarity-text">LEGENDARY</span>
-                </div>
+            <div class="meta">
+                <h2 class="title">ONI MASK</h2>
+                <a href="primerka.html" class="btn-try">ПРИМІРЯТИ</a>
             </div>
-
-            <h2 style="text-align:center; letter-spacing:5px; font-size:26px; margin:0; font-weight:900;">ONI CORE</h2>
-            <a href="primerka.html" class="btn-try">ПРИМІРЯТИ</a>
         </div>
 
         <!-- КАРТКА 2 -->
-        <div style="width: 320px;">
-            <a href="primerka.html" class="nft-card anim-oni" style="animation-delay: -2s;">
+        <div class="nft-card-wrapper">
+            <a href="primerka.html" class="nft-card anim-oni" style="animation-delay: -3s;">
                 <div class="layer" style="transform: translateZ(0px); background-image: url('03.PNG');"></div>
                 <div class="layer" style="transform: translateZ(5px); background-image: url('03.PNG'); opacity: 0.2;"></div>
                 <div class="layer" style="transform: translateZ(12px); background-image: url('04.PNG');"></div>
                 <div class="layer" style="transform: translateZ(18px); background-image: url('03.PNG'); opacity: 0.5;"></div>
                 <div class="layer" style="transform: translateZ(25px); background-image: url('03.PNG');"></div>
             </a>
-            
-            <div class="rarity-container">
-                <div class="rarity-plate">
-                    <div class="rarity-glow mythic-glow"></div>
-                    <span class="rarity-text">MYTHIC</span>
-                </div>
+            <div class="meta">
+                <h2 class="title">KITSUNE</h2>
+                <a href="primerka.html" class="btn-try">ПРИМІРЯТИ</a>
             </div>
-
-            <h2 style="text-align:center; letter-spacing:5px; font-size:26px; margin:0; font-weight:900;">KITSUNE</h2>
-            <a href="primerka.html" class="btn-try">ПРИМІРЯТИ</a>
         </div>
 
     </div>
@@ -199,7 +167,7 @@
         for (let i = 0; i < 12; i++) {
             const col = document.createElement('div');
             col.className = 'matrix-column';
-            col.style.animationDuration = (8 + Math.random() * 10) + 's';
+            col.style.animationDuration = (10 + Math.random() * 8) + 's';
             let content = "";
             for (let j = 0; j < 60; j++) { content += chars[Math.floor(Math.random() * chars.length)] + "<br>"; }
             col.innerHTML = content + content;
