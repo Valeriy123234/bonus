@@ -5,152 +5,118 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Yokai Tattoo System</title>
     <style>
+        /* ПІДКЛЮЧЕННЯ ПРЕМІАЛЬНОГО ШРИФТУ */
         @import url('https://googleapis.com');
 
-        /* Плавний скрол та GPU прискорення */
         html { scroll-behavior: smooth; height: 100%; }
         body { 
             background: #000; margin: 0; display: flex; flex-direction: column;
             align-items: center; justify-content: space-around; min-height: 100vh; 
-            perspective: 1500px; font-family: 'Bebas Neue', cursive; color: white;
+            perspective: 1500px; font-family: 'Montserrat', sans-serif; color: white;
             overflow-x: hidden; padding: 20px 0; box-sizing: border-box;
-            -webkit-overflow-scrolling: touch; 
         }
 
         /* ПЛАШКА СТАТУСУ */
         .status-badge {
-            padding: 4px 20px; font-size: 16px; letter-spacing: 4px;
-            border-radius: 2px; margin-bottom: 10px; transition: 0.4s;
-            text-shadow: 0 0 10px currentColor;
-            z-index: 20;
+            padding: 6px 24px; font-size: 11px; font-weight: 700; letter-spacing: 5px;
+            border-radius: 4px; margin-bottom: 10px; transition: 0.4s;
+            text-shadow: 0 0 10px currentColor; z-index: 20; text-transform: uppercase;
         }
-        .status-free { background: rgba(0, 255, 100, 0.1); color: #00ff64; border: 1px solid #00ff64; }
-        .status-sold { background: rgba(255, 0, 0, 0.1); color: #ff0000; border: 1px solid #ff0000; }
+        .status-free { background: rgba(0, 255, 100, 0.05); color: #00ff64; border: 1px solid rgba(0, 255, 100, 0.3); }
+        .status-sold { background: rgba(255, 0, 0, 0.05); color: #ff0000; border: 1px solid rgba(255, 0, 0, 0.3); }
 
         /* КОНТЕЙНЕР АРТЕФАКТУ */
         .artifact-container { 
-            position: relative; 
-            width: 280px; 
-            height: 400px; 
-            transform-style: preserve-3d;
-            will-change: transform;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: relative; width: 280px; height: 400px; 
+            transform-style: preserve-3d; display: flex; align-items: center; justify-content: center;
         }
 
-        /* СКЛАДНА АНІМАЦІЯ (5 похитувань + пауза 15-20 сек) */
+        /* М'ЯКЕ ПОГОЙДУВАННЯ */
         .artifact { 
-            width: 100%; height: 100%; 
-            position: relative; transform-style: preserve-3d; 
-            animation: artifact_complex 30s infinite ease-in-out; 
+            width: 100%; height: 100%; position: relative; transform-style: preserve-3d; 
+            animation: artifact_smooth 25s infinite ease-in-out; 
         }
 
-        @keyframes artifact_complex {
-            /* 5 похитувань */
-            0%, 8%, 16%, 24%, 32% { transform: rotateY(-15deg) rotateX(4deg); }
-            4%, 12%, 20%, 28%, 36% { transform: rotateY(15deg) rotateX(-2deg); }
-            /* Пауза - стоїть прямо */
-            40%, 90% { transform: rotateY(0deg) rotateX(0deg); }
-            /* Невеликий перехід до циклу */
-            95% { transform: rotateY(-5deg); }
+        @keyframes artifact_smooth {
+            0%, 10%, 20%, 30% { transform: rotateY(-7deg) rotateX(2deg); }
+            5%, 15%, 25%, 35% { transform: rotateY(7deg) rotateX(-1deg); }
+            40%, 95% { transform: rotateY(0deg) rotateX(0deg); } /* ПРЯМОСТОЯННЯ */
             100% { transform: rotateY(0deg); }
         }
 
         .layer { 
-            position: absolute; inset: 0; 
-            background-size: 101% 101%; 
-            background-repeat: no-repeat; 
-            background-position: center; 
-            transition: opacity 0.3s ease;
-            backface-visibility: hidden; 
+            position: absolute; inset: 0; background-size: 101% 101%; 
+            background-repeat: no-repeat; background-position: center; 
+            transition: opacity 0.3s ease; backface-visibility: hidden; 
         }
 
         #main-glow { 
-            position: absolute; bottom: 40px; left: 50%;
-            width: 250px; height: 60px; 
-            filter: blur(50px); z-index: -2; 
-            transform: translateX(-50%) translateZ(-50px);
-            transition: 0.8s ease; 
+            position: absolute; bottom: 40px; left: 50%; width: 250px; height: 60px; 
+            filter: blur(50px); z-index: -2; transform: translateX(-50%) translateZ(-50px);
         }
 
         /* ЕФЕКТ ДИМУ */
         .smoke-wrap {
-            position: absolute;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 100px;
-            pointer-events: none;
+            position: absolute; bottom: -30px; left: 50%;
+            transform: translateX(-50%); width: 200px; height: 100px; pointer-events: none;
         }
         .smoke-back { z-index: -1; }
-        .smoke-front { z-index: 5; }
+        .smoke-front { z-index: 15; }
 
         .smoke-particle {
-            position: absolute;
-            bottom: 0;
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.12);
-            filter: blur(20px);
-            border-radius: 50%;
-            animation: smoke_flow 7s infinite ease-out;
-            opacity: 0;
+            position: absolute; bottom: 0; width: 80px; height: 80px;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+            filter: blur(20px); border-radius: 50%;
+            animation: smoke_flow 8s infinite ease-out; opacity: 0;
         }
 
         @keyframes smoke_flow {
             0% { transform: translate(0, 0) scale(1); opacity: 0; }
-            20% { opacity: 0.3; }
-            100% { transform: translate(var(--dir-x), -220px) scale(4); opacity: 0; }
+            30% { opacity: 0.5; }
+            100% { transform: translate(var(--dir-x), -250px) scale(4); opacity: 0; }
         }
 
-        .p1 { left: 15%; --dir-x: -50px; animation-delay: 0s; }
-        .p2 { left: 40%; --dir-x: -80px; animation-delay: 2.5s; } /* Передні розходяться */
-        .p3 { left: 60%; --dir-x: 80px; animation-delay: 1.2s; }  /* в сторони */
-        .p4 { left: 80%; --dir-x: 50px; animation-delay: 4s; }
+        .p1 { left: 10%; --dir-x: -60px; animation-delay: 0s; }
+        .p2 { left: 30%; --dir-x: -90px; animation-delay: 3s; }
+        .p3 { left: 70%; --dir-x: 90px; animation-delay: 1.5s; }
+        .p4 { left: 90%; --dir-x: 60px; animation-delay: 5s; }
 
-        /* КНОПКИ ТА МЕНЮ */
+        /* КНОПКИ ВИБОРУ */
         .selector-menu { 
             display: grid; grid-template-columns: repeat(3, 1fr); 
             gap: 10px; width: 90%; max-width: 360px; z-index: 20;
         }
         .zone-btn { 
-            background: rgba(255, 255, 255, 0.03); 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            color: #555; padding: 10px 5px; 
-            font-size: 13px; cursor: pointer;
-            letter-spacing: 1px; transition: 0.3s;
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); 
+            color: #888; padding: 12px 5px; font-size: 10px; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: 0.3s;
+            font-family: 'Montserrat', sans-serif;
         }
         .zone-btn.active { 
-            background: rgba(255, 255, 255, 0.1); 
-            border-color: #00ff64; color: #00ff64;
-            box-shadow: 0 0 15px rgba(0, 255, 100, 0.2);
+            background: rgba(255, 255, 255, 0.1); border-color: #00ff64; color: #00ff64;
         }
 
+        /* ГОЛОВНА КНОПКА */
         .book-btn { 
-            width: 90%; max-width: 360px; padding: 18px; 
-            font-size: 22px; letter-spacing: 5px; cursor: pointer; 
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            border: none; border-radius: 4px;
-            font-family: 'Bebas Neue', cursive;
-            z-index: 20;
+            width: 90%; max-width: 360px; padding: 20px; font-size: 15px; 
+            font-weight: 900; letter-spacing: 3px; text-transform: uppercase;
+            cursor: pointer; border: none; border-radius: 8px;
+            font-family: 'Montserrat', sans-serif; z-index: 20; transition: 0.3s;
         }
-        .book-btn:active { transform: scale(0.95); }
 
-        /* НЕПОМІТНА АДМІН-ТОЧКА */
+        /* ПРИХОВАНА АДМІН-ТОЧКА */
         .admin-trigger { 
-            width: 100%; padding: 15px 0; margin-top: 10px; 
-            opacity: 0.03; cursor: pointer; text-align: center; font-size: 10px;
+            width: 100%; padding: 25px 0; margin-top: 10px; 
+            opacity: 0.02; cursor: pointer; text-align: center; 
         }
 
         body.is-sold .layer { filter: grayscale(1) brightness(0.3); }
         body.is-sold .zone-btn { opacity: 0.1; pointer-events: none; }
     </style>
 </head>
-<body id="main-body" class="is-free">
+<body id="main-body">
 
-    <!-- Прихована музика (ВСТАВ СВОЄ ПОСИЛАННЯ ТУТ) -->
+    <!-- МУЗИКА -->
     <audio id="bg-music" loop>
         <source src="URL_ТВОЄЇ_ПІСНІ.mp3" type="audio/mpeg">
     </audio>
@@ -160,20 +126,17 @@
     <div class="artifact-container">
         <div id="main-glow" style="background: radial-gradient(circle, #00ff64, transparent 70%);"></div>
         
-        <!-- ДИМ ЗА РАМКОЮ -->
         <div class="smoke-wrap smoke-back">
             <div class="smoke-particle p1"></div>
             <div class="smoke-particle p3"></div>
         </div>
 
-        <!-- САМА РАМКА -->
         <div class="artifact">
-            <div class="layer" style="transform: translateZ(0px); background-image: url('01.PNG');"></div>
-            <div class="layer" id="target-sketch" style="transform: translateZ(4px); background-image: url('04.PNG');"></div>
-            <div class="layer" style="transform: translateZ(8px); background-image: url('01.PNG');"></div>
+            <div class="layer" style="background-image: url('01.PNG');"></div>
+            <div class="layer" id="target-sketch" style="transform: translateZ(5px); background-image: url('04.PNG');"></div>
+            <div class="layer" style="transform: translateZ(10px); background-image: url('01.PNG');"></div>
         </div>
 
-        <!-- ДИМ ПЕРЕД РАМКОЮ -->
         <div class="smoke-wrap smoke-front">
             <div class="smoke-particle p2"></div>
             <div class="smoke-particle p4"></div>
@@ -181,48 +144,45 @@
     </div>
 
     <div class="selector-menu">
-        <button class="zone-btn active" onclick="updateImg('02.PNG', this)">ОРИГІНАЛ</button>
-        <button class="zone-btn" onclick="updateImg('023_arm.PNG', this)">ПЕРЕДПЛІЧЧЯ</button>
-        <button class="zone-btn" onclick="updateImg('023_calf.PNG', this)">ІКРА</button>
-        <button class="zone-btn" onclick="updateImg('023_bicep.PNG', this)">БІЦЕПС</button>
-        <button class="zone-btn" onclick="updateImg('023_quad.PNG', this)">ВИД ЗБОКУ</button>
-        <button class="zone-btn" onclick="updateImg('023_back.PNG', this)">ВИД ЗЗАДУ</button>
+        <button class="zone-btn active" onclick="updateImg('02.PNG', this)">ORIGINAL</button>
+        <button class="zone-btn" onclick="updateImg('023_arm.PNG', this)">FOREARM</button>
+        <button class="zone-btn" onclick="updateImg('023_calf.PNG', this)">CALF</button>
+        <button class="zone-btn" onclick="updateImg('023_bicep.PNG', this)">BICEP</button>
+        <button class="zone-btn" onclick="updateImg('023_quad.PNG', this)">SIDE VIEW</button>
+        <button class="zone-btn" onclick="updateImg('023_back.PNG', this)">BACK VIEW</button>
     </div>
 
     <button id="main-book-btn" class="book-btn" 
-            style="background: #00ff64; color: black; box-shadow: 0 10px 30px rgba(0,255,100,0.3);" 
-            onclick="window.location.href='booking.html'">ЗАБРОНЮВАТИ</button>
+            style="background: #00ff64; color: black; box-shadow: 0 10px 40px rgba(0,255,100,0.4);" 
+            onclick="window.location.href='booking.html'">RESERVE NOW</button>
 
     <!-- Твій секретний вхід -->
     <div class="admin-trigger" onclick="adminLogin()">.</div>
 
-    <!-- Firebase -->
     <script src="https://gstatic.com"></script>
     <script src="https://gstatic.com"></script>
 
     <script>
-        // 1. МУЗИКА ПРИ КАСАННІ
-        function initAudio() {
+        // АКТИВАЦІЯ МУЗИКИ ПРИ ТОРКАННІ
+        function startMusic() {
             const audio = document.getElementById('bg-music');
-            audio.play().catch(() => {});
-            // Видаляємо слухачі після активації
-            document.removeEventListener('click', initAudio);
-            document.removeEventListener('touchstart', initAudio);
+            audio.play().catch(e => console.log("Music ready"));
+            document.removeEventListener('click', startMusic);
+            document.removeEventListener('touchstart', startMusic);
         }
-        document.addEventListener('click', initAudio);
-        document.addEventListener('touchstart', initAudio);
+        document.addEventListener('click', startMusic);
+        document.addEventListener('touchstart', startMusic);
 
-        // 2. FIREBASE ТА АДМІНКА
+        // FIREBASE КОНФІГУРАЦІЯ
         const firebaseConfig = { 
             databaseURL: "https://firebasedatabase.app" 
         };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
-        const sketchID = "kumiho_01"; 
+        const sketchID = "kumiho_01";
 
         database.ref('sketches/' + sketchID).on('value', (snapshot) => {
-            const status = snapshot.val();
-            setSold(status === 'sold');
+            setSold(snapshot.val() === 'sold');
         });
 
         function adminLogin() {
@@ -235,28 +195,27 @@
             }
         }
 
-        // 3. ЛОГІКА ІНТЕРФЕЙСУ
         function setSold(sold) {
-            const body = document.getElementById('main-body');
+            const b = document.getElementById('main-body');
             const badge = document.getElementById('badge');
             const btn = document.getElementById('main-book-btn');
             const glow = document.getElementById('main-glow');
 
             if (sold) {
-                body.classList.add('is-sold');
-                badge.innerText = "SOLD / MINTED";
+                b.classList.add('is-sold');
+                badge.innerText = "RESERVED";
                 badge.className = "status-badge status-sold";
                 glow.style.background = "radial-gradient(circle, #ff0000, transparent 70%)";
-                btn.innerText = "RESERVED";
+                btn.innerText = "SOLD OUT";
                 btn.style.background = "#111";
-                btn.style.color = "#333";
+                btn.style.color = "#444";
                 btn.disabled = true;
             } else {
-                body.classList.remove('is-sold');
+                b.classList.remove('is-sold');
                 badge.innerText = "AVAILABLE";
                 badge.className = "status-badge status-free";
                 glow.style.background = "radial-gradient(circle, #00ff64, transparent 70%)";
-                btn.innerText = "RESERVE SLOT";
+                btn.innerText = "RESERVE NOW";
                 btn.style.background = "#00ff64";
                 btn.style.color = "black";
                 btn.disabled = false;
