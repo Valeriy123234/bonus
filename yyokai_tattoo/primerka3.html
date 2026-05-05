@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+        @import url('https://googleapis.com');
+
+        /* Плавний скрол та GPU прискорення */
+        html { scroll-behavior: smooth; height: 100%; }
+        body { 
+            background: #000; margin: 0; display: flex; flex-direction: column;
+            align-items: center; justify-content: space-around; min-height: 100vh; 
+            perspective: 1500px; font-family: 'Bebas Neue', cursive; color: white;
+            overflow-x: hidden; padding: 20px 0; box-sizing: border-box;
+            -webkit-overflow-scrolling: touch; /* Плавність для iOS */
+        }
+
+        /* ПЛАШКА СТАТУСУ */
+        .status-badge {
+            padding: 4px 20px; font-size: 16px; letter-spacing: 4px;
+            border-radius: 2px; margin-bottom: 10px; transition: 0.4s;
+            text-shadow: 0 0 10px currentColor;
+        }
+        .status-free { background: rgba(0, 255, 100, 0.1); color: #00ff64; border: 1px solid #00ff64; }
+        .status-sold { background: rgba(255, 0, 0, 0.1); color: #ff0000; border: 1px solid #ff0000; }
+
+        /* ЗБІЛЬШЕНА РАМКА */
+        .artifact-container { 
+            position: relative; 
+            width: 280px; /* Трохи збільшено */
+            height: 400px; 
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+        .artifact { 
+            width: 100%; height: 100%; 
+            position: relative; transform-style: preserve-3d; 
+            animation: swing 8s infinite ease-in-out; 
+        }
+
+        @keyframes swing {
+            0%, 100% { transform: rotateY(-18deg) rotateX(4deg); }
+            50% { transform: rotateY(18deg) rotateX(-2deg); }
+        }
+
+        .layer { 
+            position: absolute; inset: 0; 
+            background-size: 101% 101%; /* Фікс білих артефактів по боках */
+            background-repeat: no-repeat; 
+            background-position: center; 
+            transition: opacity 0.3s ease;
+            backface-visibility: hidden; /* Фікс мигтіння */
+        }
+
+        #main-glow { 
+            position: absolute; bottom: 40px; left: 50%;
+            width: 200px; height: 40px; 
+            filter: blur(40px); z-index: -1; 
+            transform: translateX(-50%) translateZ(-50px);
+            transition: 0.8s ease; 
+        }
+
+        /* КНОПКИ ВИБОРУ МІСЦЯ (Стиль "Скло") */
+        .selector-menu { 
+            display: grid; grid-template-columns: repeat(3, 1fr); 
+            gap: 10px; width: 90%; max-width: 360px; 
+        }
+        .zone-btn { 
+            background: rgba(255, 255, 255, 0.03); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            color: #555; padding: 10px 5px; 
+            font-size: 13px; cursor: pointer;
+            letter-spacing: 1px; transition: 0.3s;
+        }
+        .zone-btn.active { 
+            background: rgba(255, 255, 255, 0.1); 
+            border-color: #00ff64; color: #00ff64;
+            box-shadow: 0 0 15px rgba(0, 255, 100, 0.2);
+        }
+
+        /* КНОПКА ЗАПИСУ */
+        .book-btn { 
+            width: 90%; max-width: 360px; padding: 18px; 
+            font-size: 22px; letter-spacing: 5px; cursor: pointer; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            border: none; border-radius: 4px;
+            font-family: 'Bebas Neue', cursive;
+        }
+        .book-btn:active { transform: scale(0.95); }
+
+        /* АДМІН-ТОЧКА */
+        .admin-trigger { position: absolute; bottom: 15px; opacity: 0.05; cursor: pointer; font-size: 10px; }
+
+        /* РЕЖИМ SOLD */
+        body.is-sold .layer { filter: grayscale(1) brightness(0.3); }
+        body.is-sold .zone-btn { opacity: 0.1; pointer-events: none; }
+    </style>
+</head>
+<body id="main-body" class="is-free">
+
+    <div id="badge" class="status-badge status-free">AVAILABLE</div>
+
+    <div class="artifact-container">
+        <div id="main-glow" style="background: radial-gradient(circle, #00ff64, transparent 70%);"></div>
+        <div class="artifact">
+            <div class="layer" style="transform: translateZ(0px); background-image: url('01.PNG');"></div>
+            <div class="layer" id="target-sketch" style="transform: translateZ(4px); background-image: url('04.PNG');"></div>
+            <div class="layer" style="transform: translateZ(8px); background-image: url('01.PNG');"></div>
+        </div>
+    </div>
+
+    <div class="selector-menu">
+        <button class="zone-btn active" onclick="updateImg('02.PNG', this)">ОРИГІНАЛ</button>
+        <button class="zone-btn" onclick="updateImg('023_arm.PNG', this)">ПЕРЕДПЛІЧЧЯ</button>
+        <button class="zone-btn" onclick="updateImg('023_calf.PNG', this)">ІКРА</button>
+        <button class="zone-btn" onclick="updateImg('023_bicep.PNG', this)">БІЦЕПС</button>
+        <button class="zone-btn" onclick="updateImg('023_quad.PNG', this)">ВИД ЗБОКУ</button>
+        <button class="zone-btn" onclick="updateImg('023_back.PNG', this)">ВИД ЗЗАДУ</button>
+    </div>
+
+    <button id="main-book-btn" class="book-btn" 
+            style="background: #00ff64; color: black; box-shadow: 0 10px 30px rgba(0,255,100,0.3);" 
+            onclick="window.location.href='booking.html'">ЗАБРОНЮВАТИ</button>
+
+    <div class="admin-trigger" onclick="adminLogin()">.</div>
+
+   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+<script>
+    // Твоя конфігурація
+    const firebaseConfig = { 
+        databaseURL: "https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/" 
+    };
+    
+    // Ініціалізація
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // Унікальний ID цього ескізу (міняй його для кожної нової сторінки, напр: kumiho_01, dragon_02)
+    const sketchID = "kumiho_01"; 
+
+    // 1. СЛУХАЄМО БАЗУ (це бачать всі клієнти в реальному часі)
+    database.ref('sketches/' + sketchID).on('value', (snapshot) => {
+        const status = snapshot.val();
+        if (status === 'sold') {
+            setSold(true);
+        } else {
+            setSold(false);
+        }
+    });
+
+    // 2. ФУНКЦІЯ ПЕРЕМИКАННЯ СТАТУСУ (для тебе як адміна)
+    function adminLogin() {
+        const pass = prompt("Yokai Admin:");
+        if (pass === "yokai123234") {
+            const currentStatus = document.getElementById('main-body').classList.contains('is-sold');
+            const action = confirm(currentStatus ? "ЗРОБИТИ ВІЛЬНИМ?" : "ЗАБРОНЮВАТИ?");
+            
+            const newStatus = action ? (currentStatus ? 'free' : 'sold') : (currentStatus ? 'sold' : 'free');
+
+            // Оновлюємо Firebase
+            database.ref('sketches/' + sketchID).set(newStatus)
+                .catch(err => alert("Помилка Firebase: " + err.message));
+        }
+    }
+
+    // 3. ВІЗУАЛЬНЕ ВІДОБРАЖЕННЯ
+    function setSold(sold) {
+        const body = document.getElementById('main-body');
+        const badge = document.getElementById('badge');
+        const btn = document.getElementById('main-book-btn');
+        const glow = document.getElementById('main-glow');
+
+        if (sold) {
+            body.classList.add('is-sold');
+            badge.innerText = "SOLD / MINTED";
+            badge.className = "status-badge status-sold";
+            glow.style.background = "radial-gradient(circle, #ff0000, transparent 70%)";
+            btn.innerText = "RESERVED";
+            btn.style.background = "#111";
+            btn.style.color = "#333";
+            btn.style.boxShadow = "none";
+            btn.disabled = true;
+        } else {
+            body.classList.remove('is-sold');
+            badge.innerText = "AVAILABLE";
+            badge.className = "status-badge status-free";
+            glow.style.background = "radial-gradient(circle, #00ff64, transparent 70%)";
+            btn.innerText = "RESERVE SLOT";
+            btn.style.background = "#00ff64";
+            btn.style.color = "black";
+            btn.style.boxShadow = "0 10px 30px rgba(0,255,100,0.3)";
+            btn.disabled = false;
+        }
+    }
+
+    // Функція зміни картинок (примірка)
+    function updateImg(img, btn) {
+        const sketch = document.getElementById('target-sketch');
+        sketch.style.opacity = '0';
+        setTimeout(() => {
+            sketch.style.backgroundImage = `url('${img}')`;
+            sketch.style.opacity = '1';
+        }, 150);
+        document.querySelectorAll('.zone-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+</script>
+
+</body>
+</html>
