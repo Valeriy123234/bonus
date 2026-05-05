@@ -15,7 +15,7 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* --- ЧЕРВОНА МАТРИЦЯ (13% ПРОЗОРІСТЬ) --- */
+        /* --- ЧЕРВОНА МАТРИЦЯ (13%) --- */
         .matrix-bg {
             position: fixed; inset: 0; font-family: 'Noto Sans JP';
             font-size: 16px; color: #ff0000; opacity: 0.13; 
@@ -25,16 +25,38 @@
         .matrix-column { display: flex; flex-direction: column; animation: matrixDrop 15s linear infinite; }
         @keyframes matrixDrop { from { transform: translateY(-50%); } to { transform: translateY(0%); } }
 
-        /* --- МЕНЮ (БУТЕРБРОД З АНІМАЦІЄЮ) --- */
-        header { position: fixed; top: 30px; right: 25px; z-index: 8000; }
+        /* --- UI: ВЕРХНЯ ПАНЕЛЬ (ЗВУК ТА МЕНЮ) --- */
+        header { 
+            position: fixed; top: 0; width: 100%; 
+            padding: 30px 25px; display: flex; 
+            justify-content: space-between; align-items: center; 
+            z-index: 8000; box-sizing: border-box;
+        }
+
+        /* ІКОНКА ЗВУКУ */
+        .sound-toggle {
+            width: 20px; height: 20px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            opacity: 0.4;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .sound-toggle svg { fill: #fff; width: 100%; height: 100%; transition: 0.4s; }
+
+        /* Коли звук активний: горить червоним і збільшується */
+        .sound-toggle.active {
+            opacity: 1;
+            transform: scale(1.3);
+            filter: drop-shadow(0 0 10px #ff0000);
+        }
+        .sound-toggle.active svg { fill: #ff0000; }
+
         .burger { 
             width: 30px; height: 18px; 
             display: flex; flex-direction: column; justify-content: space-between; 
             cursor: pointer; 
         }
-        .burger span { display: block; height: 2px; width: 100%; background: #fff; transition: 0.3s ease; }
-        
-        /* Анімація перетворення в Хрестик */
+        .burger span { display: block; height: 2px; width: 100%; background: #fff; transition: 0.3s; }
         .burger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
         .burger.active span:nth-child(2) { opacity: 0; }
         .burger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
@@ -47,43 +69,34 @@
         .nav-overlay.active { opacity: 1; visibility: visible; }
         .nav-overlay a { font-size: 32px; color: #fff; text-decoration: none; margin: 15px; font-weight: 900; letter-spacing: 5px; }
 
-        /* --- КАРТКИ (ТВОЯ СТРУКТУРА) --- */
-        .container { display: flex; flex-direction: column; gap: 110px; padding: 100px 0; align-items: center; }
-
-        .nft-card {
-            width: 320px; height: 450px;
-            position: relative; transform-style: preserve-3d;
-            display: block; text-decoration: none;
-        }
-
+        /* --- КАРТКИ --- */
+        .container { display: flex; flex-direction: column; gap: 110px; padding: 120px 0; align-items: center; }
+        .nft-card { width: 320px; height: 450px; position: relative; transform-style: preserve-3d; display: block; text-decoration: none; }
         .anim-oni { animation: swingOni 8s infinite ease-in-out; }
         @keyframes swingOni { 0%, 100% { transform: rotateY(-15deg); } 50% { transform: rotateY(15deg); } }
+        .layer { position: absolute; inset: 0; background-size: contain; background-repeat: no-repeat; background-position: center; pointer-events: none; }
 
-        .layer {
-            position: absolute; inset: 0; 
-            background-size: contain; background-repeat: no-repeat; background-position: center;
-            pointer-events: none;
-        }
-
-        /* --- ІНФО ТА КНОПКИ --- */
         .meta { margin-top: 30px; text-align: center; }
         .title { font-size: 26px; font-weight: 900; letter-spacing: 5px; margin: 0; text-transform: uppercase; color: #fff; }
-        
-        .btn-try {
-            margin-top: 25px; display: block; width: 100%; padding: 20px 0;
-            background: #fff; color: #000; font-size: 16px; font-weight: 900;
-            letter-spacing: 5px; text-transform: uppercase; text-align: center;
-            text-decoration: none; position: relative; z-index: 10;
-        }
-        .btn-try:active { background: #ff0000; color: #fff; }
-
+        .btn-try { margin-top: 25px; display: block; width: 100%; padding: 20px 0; background: #fff; color: #000; font-size: 16px; font-weight: 900; letter-spacing: 5px; text-transform: uppercase; text-align: center; text-decoration: none; position: relative; z-index: 10; }
     </style>
 </head>
 <body>
 
+    <!-- МАТРИЦЯ -->
     <div class="matrix-bg" id="matrix"></div>
 
+    <!-- АУДІО ТЕГ (Тут має бути твій файл music.mp3) -->
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
     <header>
+        <!-- КНОПКА ЗВУКУ -->
+        <div class="sound-toggle" id="soundBtn">
+            <svg viewBox="0 0 24 24"><path d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.85 14,18.71V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16.02C15.5,15.29 16.5,13.77 16.5,12M3,9V15H7L12,20V4L7,9H3Z"/></svg>
+        </div>
+        
         <div class="burger" id="burgerBtn">
             <span></span><span></span><span></span>
         </div>
@@ -95,22 +108,21 @@
     </nav>
 
     <div class="container">
-
         <!-- КАРТКА 01 -->
         <div style="width: 320px;">
-            <a href="primerka3.html" class="nft-card anim-oni">
+            <a href="primerka.html" class="nft-card anim-oni">
                 <div class="layer" style="transform: translateZ(0px); background-image: url('01.PNG');"></div>
                 <div class="layer" style="transform: translateZ(2px); background-image: url('01.PNG'); opacity: 0.2;"></div>
-                <div class="layer" style="transform: translateZ(5px); background-image: url('02.PNG');"></div> <!-- ТВІЙ ЕСКІЗ -->
+                <div class="layer" style="transform: translateZ(5px); background-image: url('02.PNG');"></div>
                 <div class="layer" style="transform: translateZ(8px); background-image: url('01.PNG'); opacity: 0.4;"></div>
                 <div class="layer" style="transform: translateZ(11px); background-image: url('01.PNG');"></div>
             </a>
             <div class="meta">
-                <h2 class="title">(Shugo Yōkai) 守護妖怪</h2>
+                <h2 class="title">ONI MASK</h2>
                 <a href="primerka.html" class="btn-try">ПРИМІРЯТИ</a>
             </div>
         </div>
-
+        
         <!-- КАРТКА 02 -->
         <div style="width: 320px;">
             <a href="primerka.html" class="nft-card anim-oni" style="animation-delay: -3s;">
@@ -125,7 +137,6 @@
                 <a href="primerka.html" class="btn-try">ПРИМІРЯТИ</a>
             </div>
         </div>
-
     </div>
 
     <script>
@@ -145,17 +156,25 @@
         // Логіка Меню
         const burger = document.getElementById('burgerBtn');
         const menu = document.getElementById('navMenu');
-
-        burger.addEventListener('click', function() {
-            this.classList.toggle('active');
+        burger.onclick = () => {
+            burger.classList.toggle('active');
             menu.classList.toggle('active');
-            // Щоб сайт не скролився при відкритому меню
-            if(menu.classList.contains('active')) {
-                document.body.style.overflow = 'hidden';
+            document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : 'auto';
+        };
+
+        // ЛОГІКА ЗВУКУ
+        const soundBtn = document.getElementById('soundBtn');
+        const music = document.getElementById('bgMusic');
+
+        soundBtn.onclick = () => {
+            if (music.paused) {
+                music.play();
+                soundBtn.classList.add('active');
             } else {
-                document.body.style.overflow = 'auto';
+                music.pause();
+                soundBtn.classList.remove('active');
             }
-        });
+        };
     </script>
 </body>
 </html>
