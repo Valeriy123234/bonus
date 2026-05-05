@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Yokai Archive — Ultra Premium</title>
+    <title>Yokai Archive — Grand Final</title>
     <style>
         @import url('https://googleapis.com');
 
@@ -16,30 +16,30 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* --- ЧЕРВОНА МАТРИЦЯ (12%) --- */
+        /* --- ЧЕРВОНА МАТРИЦЯ (14%) --- */
         .matrix-bg {
             position: fixed; inset: 0; font-family: 'Noto Sans JP';
-            font-size: 16px; color: #ff0000; opacity: 0.12; 
+            font-size: 16px; color: #ff0000; opacity: 0.14; 
             display: flex; justify-content: space-around; z-index: -1;
             pointer-events: none;
         }
         .matrix-column { display: flex; flex-direction: column; animation: matrixDrop 15s linear infinite; }
         @keyframes matrixDrop { from { transform: translateY(-50%); } to { transform: translateY(0%); } }
 
-        /* --- HEADER: ЗВУК ПО ЦЕНТРУ, МЕНЮ СПРАВА --- */
+        /* --- HEADER (ABSOLUTE - УЇЖДЖАЄ ПРИ СКРОЛІ) --- */
         header { 
-            position: fixed; top: 0; width: 100%; 
-            padding: 30px 25px; display: flex; 
+            position: absolute; top: 0; width: 100%; 
+            padding: 40px 25px; display: flex; 
             justify-content: center; align-items: center; 
             z-index: 8000; box-sizing: border-box;
         }
 
         .burger-wrapper { position: absolute; right: 25px; }
 
-        /* ДИНАМІЧНИЙ ЗВУКОВИЙ ПЛЕЄР */
+        /* --- РАНДОМНИЙ ЕКВАЛАЙЗЕР ПО ЦЕНТРУ --- */
         .sound-wrapper {
             position: relative;
-            width: 40px; height: 40px;
+            width: 50px; height: 40px;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer;
         }
@@ -50,42 +50,44 @@
         }
 
         .equalizer {
-            display: flex; align-items: center; gap: 3px;
-            height: 18px; opacity: 0; transform: scale(0.5); transition: 0.3s;
+            display: flex; align-items: flex-end; gap: 3px;
+            height: 25px; opacity: 0; transform: scale(0.5); transition: 0.3s;
         }
 
-        .bar { width: 3px; height: 100%; background: #ff0000; box-shadow: 0 0 10px #ff0000; }
+        .bar { width: 3px; background: #ff0000; box-shadow: 0 0 10px #ff0000; }
 
-        /* СТАН: ПІД ЧАС ГРИ */
         .sound-wrapper.active .speaker-icon { opacity: 0; transform: scale(0); }
         .sound-wrapper.active .equalizer { opacity: 1; transform: scale(1); }
-        .sound-wrapper.active .bar { animation: equalize 0.8s infinite ease-in-out; }
 
-        .bar:nth-child(1) { animation-delay: -0.4s; }
-        .bar:nth-child(2) { animation-delay: -0.2s; }
-        .bar:nth-child(3) { animation-delay: -0.6s; }
-        .bar:nth-child(4) { animation-delay: -0.1s; }
+        /* Анімації для рандомного руху паличок */
+        .sound-wrapper.active .bar:nth-child(1) { animation: eq1 0.6s infinite alternate; }
+        .sound-wrapper.active .bar:nth-child(2) { animation: eq2 0.4s infinite alternate; }
+        .sound-wrapper.active .bar:nth-child(3) { animation: eq3 0.7s infinite alternate; }
+        .sound-wrapper.active .bar:nth-child(4) { animation: eq1 0.5s infinite alternate-reverse; }
+        .sound-wrapper.active .bar:nth-child(5) { animation: eq2 0.8s infinite alternate; }
+        .sound-wrapper.active .bar:nth-child(6) { animation: eq3 0.3s infinite alternate-reverse; }
 
-        @keyframes equalize { 0%, 100% { height: 4px; } 50% { height: 18px; } }
+        @keyframes eq1 { 0% { height: 4px; } 100% { height: 22px; } }
+        @keyframes eq2 { 0% { height: 10px; } 100% { height: 25px; } }
+        @keyframes eq3 { 0% { height: 6px; } 100% { height: 18px; } }
 
-        /* БУТЕРБРОД */
+        /* МЕНЮ */
         .burger { width: 30px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
         .burger span { display: block; height: 2px; width: 100%; background: #fff; transition: 0.4s; }
         .burger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
         .burger.active span:nth-child(2) { opacity: 0; }
         .burger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-        /* МЕНЮ НА ВЕСЬ ЕКРАН */
         .nav-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.98);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            opacity: 0; visibility: hidden; transition: 0.4s; z-index: 7000;
+            opacity: 0; visibility: hidden; transition: 0.4s; z-index: 9000;
         }
         .nav-overlay.active { opacity: 1; visibility: visible; }
         .nav-overlay a { font-size: 32px; color: #fff; text-decoration: none; margin: 15px; font-weight: 900; letter-spacing: 5px; text-transform: uppercase; }
 
-        /* --- КОНТЕНТ --- */
-        .container { display: flex; flex-direction: column; gap: 110px; padding: 120px 0; align-items: center; }
+        /* --- КОНТЕЙНЕР КАРТОК --- */
+        .container { display: flex; flex-direction: column; gap: 120px; padding: 140px 0 100px; align-items: center; }
 
         .nft-card {
             width: 320px; height: 450px;
@@ -93,16 +95,19 @@
             display: block; text-decoration: none;
         }
 
+        /* Різні анімації */
         .anim-oni { animation: swingOni 8s infinite ease-in-out; }
-        @keyframes swingOni { 0%, 100% { transform: rotateY(-18deg) rotateX(4deg); } 50% { transform: rotateY(18deg) rotateX(-2deg); } }
+        @keyframes swingOni { 0%, 100% { transform: rotateY(-15deg) rotateX(4deg); } 50% { transform: rotateY(15deg) rotateX(-2deg); } }
+
+        .anim-kitsune { animation: swingKitsune 6s infinite ease-in-out; }
+        @keyframes swingKitsune { 0%, 100% { transform: translateZ(0) rotateY(10deg); } 50% { transform: translateZ(30px) rotateY(-10deg); } }
 
         .layer {
             position: absolute; inset: 0; background-size: contain; 
-            background-repeat: no-repeat; background-position: center;
-            pointer-events: none;
+            background-repeat: no-repeat; background-position: center; pointer-events: none;
         }
 
-        /* --- ТЕКСТ ТА КНОПКА --- */
+        /* ТЕКСТ ТА КНОПКА */
         .meta { margin-top: 30px; text-align: center; }
         .title { font-size: 26px; font-weight: 900; letter-spacing: 6px; margin: 0; text-transform: uppercase; color: #fff; }
         
@@ -110,7 +115,8 @@
             margin-top: 25px; display: block; width: 100%; padding: 22px 0;
             background: #fff; color: #000; font-size: 16px; font-weight: 900;
             letter-spacing: 5px; text-transform: uppercase; text-align: center;
-            text-decoration: none; box-shadow: 0 0 25px rgba(255,255,255,0.2);
+            text-decoration: none; position: relative; z-index: 10;
+            box-shadow: 0 0 25px rgba(255,255,255,0.2);
             transition: 0.2s;
         }
         .btn-try:active { background: #ff0000; color: #fff; transform: scale(0.95); }
@@ -125,7 +131,7 @@
     </audio>
 
     <header>
-        <!-- ЗВУК ПО ЦЕНТРУ -->
+        <!-- РАНДОМНИЙ ЕКВАЛАЙЗЕР -->
         <div class="sound-wrapper" id="soundBtn">
             <svg class="speaker-icon" viewBox="0 0 24 24"><path d="M3,9V15H7L12,20V4L7,9H3Z"/></svg>
             <div class="equalizer">
@@ -133,10 +139,11 @@
                 <div class="bar"></div>
                 <div class="bar"></div>
                 <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
             </div>
         </div>
         
-        <!-- БУТЕРБРОД СПРАВА -->
         <div class="burger-wrapper">
             <div class="burger" id="burgerBtn">
                 <span></span><span></span><span></span>
@@ -152,7 +159,7 @@
 
     <div class="container">
 
-        <!-- КАРТКА 01: ONI -->
+        <!-- КАРТКА 01 -->
         <div style="width: 320px;">
             <a href="primerka.html" class="nft-card anim-oni">
                 <div class="layer" style="transform: translateZ(0px); background-image: url('01.PNG');"></div>
@@ -167,9 +174,9 @@
             </div>
         </div>
 
-        <!-- КАРТКА 02: KITSUNE -->
+        <!-- КАРТКА 02 -->
         <div style="width: 320px;">
-            <a href="primerka.html" class="nft-card anim-oni" style="animation-delay: -3s;">
+            <a href="primerka.html" class="nft-card anim-kitsune" style="animation-delay: -3s;">
                 <div class="layer" style="transform: translateZ(0px); background-image: url('03.PNG');"></div>
                 <div class="layer" style="transform: translateZ(2px); background-image: url('03.PNG'); opacity: 0.2;"></div>
                 <div class="layer" style="transform: translateZ(4px); background-image: url('04.PNG');"></div>
@@ -185,7 +192,7 @@
     </div>
 
     <script>
-        // Матриця 12%
+        // Матриця
         const matrix = document.getElementById('matrix');
         const chars = "般若狐霊魂天人地龍神鬼";
         for (let i = 0; i < 12; i++) {
