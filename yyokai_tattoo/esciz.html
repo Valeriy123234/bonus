@@ -15,18 +15,18 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* ЧЕРВОНА МАТРИЦЯ (11%) */
+        /* --- ЧЕРВОНА МАТРИЦЯ (12%) --- */
         .matrix-bg {
             position: fixed; inset: 0; font-family: 'Noto Sans JP';
-            font-size: 16px; color: #ff0000; opacity: 0.11; 
+            font-size: 16px; color: #ff0000; opacity: 0.12; 
             display: flex; justify-content: space-around; z-index: -1;
             pointer-events: none;
         }
         .matrix-column { display: flex; flex-direction: column; animation: matrixDrop 15s linear infinite; }
         @keyframes matrixDrop { from { transform: translateY(-50%); } to { transform: translateY(0%); } }
 
-        /* МЕНЮ В КУТКУ */
-        header { position: fixed; top: 25px; right: 25px; z-index: 7000; }
+        /* --- МЕНЮ ТА ПОСИЛАННЯ --- */
+        header { position: fixed; top: 30px; right: 25px; z-index: 7000; }
         .burger { width: 30px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
         .burger span { display: block; height: 2px; width: 100%; background: #fff; transition: 0.4s; }
         .burger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
@@ -39,10 +39,11 @@
             opacity: 0; visibility: hidden; transition: 0.4s; z-index: 6000;
         }
         .nav-overlay.active { opacity: 1; visibility: visible; }
-        .nav-overlay a { font-size: 32px; color: #fff; text-decoration: none; margin: 15px; font-weight: 900; letter-spacing: 5px; }
+        .nav-overlay a { font-size: 32px; color: #fff; text-decoration: none; margin: 15px; font-weight: 900; letter-spacing: 5px; transition: 0.3s; }
+        .nav-overlay a:active { color: #ff0000; }
 
-        /* КАРТКИ */
-        .container { display: flex; flex-direction: column; gap: 140px; padding: 100px 0; align-items: center; }
+        /* --- КАРТКИ --- */
+        .container { display: flex; flex-direction: column; gap: 120px; padding: 100px 0; align-items: center; }
 
         .nft-card {
             width: 320px; height: 450px;
@@ -50,68 +51,59 @@
             display: block; text-decoration: none;
         }
 
-        .anim-oni { animation: moveOni 8s infinite ease-in-out; }
-        @keyframes moveOni { 0%, 100% { transform: rotateY(-15deg) rotateX(4deg); } 50% { transform: rotateY(15deg) rotateX(-2deg); } }
+        .anim-oni { animation: swingOni 8s infinite ease-in-out; }
+        @keyframes swingOni { 0%, 100% { transform: rotateY(-18deg) rotateX(6deg); } 50% { transform: rotateY(18deg) rotateX(-4deg); } }
 
         .layer {
             position: absolute; inset: 0; background-size: contain; 
             background-repeat: no-repeat; background-position: center;
         }
 
-        /* --- НОВА ПРЕМІАЛЬНА ЛЕГЕНДАРНІСТЬ --- */
-        .rarity-container {
-            margin: 20px 0;
-            display: flex;
-            justify-content: center;
-            transform: translateZ(60px);
-        }
-
-        .rarity-plate {
-            position: relative;
-            padding: 8px 35px;
-            background: linear-gradient(180deg, #1a1a1a 0%, #000 100%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); /* Скошені краї як в UI */
-            overflow: hidden;
+        /* --- РІДКІСТЬ ТЕКСТОМ ПІД РАМКОЮ --- */
+        .rarity-simple {
+            margin: 25px 0 10px;
+            text-align: center;
+            transform: translateZ(50px);
         }
 
         .rarity-text {
             font-family: 'Cinzel';
-            font-size: 18px;
+            font-size: 24px;
             font-weight: 900;
-            letter-spacing: 8px;
-            text-transform: uppercase;
+            letter-spacing: 12px;
             position: relative;
-            z-index: 2;
+            display: inline-block;
         }
 
-        /* Анімоване неонове підсвічування */
-        .neon-glow {
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            opacity: 0.8;
-            animation: flowGlow 3s infinite alternate;
+        /* Неонова аура для тексту */
+        .rarity-text::before {
+            content: attr(data-text);
+            position: absolute; inset: 0;
+            filter: blur(12px);
+            animation: breath 2s infinite alternate;
+            z-index: -1;
         }
 
-        .legendary .neon-glow { background: radial-gradient(circle, #ff0000 0%, transparent 70%); }
-        .mythic .neon-glow { background: radial-gradient(circle, #ffcc00 0%, transparent 70%); }
-
-        @keyframes flowGlow {
-            from { transform: translateX(-50%) scale(1); opacity: 0.4; }
-            to { transform: translateX(50%) scale(1.5); opacity: 0.9; }
-        }
-
-        /* ТЕКСТ ТА КНОПКА */
-        .meta { text-align: center; }
-        .title { font-size: 26px; font-weight: 900; letter-spacing: 4px; margin: 0; color: #fff; }
+        .red-rarity { color: #fff; }
+        .red-rarity::before { color: #ff0000; }
         
+        .gold-rarity { color: #fff; }
+        .gold-rarity::before { color: #ffcc00; }
+
+        @keyframes breath {
+            from { opacity: 0.4; transform: scale(1); }
+            to { opacity: 1; transform: scale(1.15); }
+        }
+
+        /* --- КНОПКА ПРИМІРЯТИ --- */
         .btn-try {
-            margin-top: 30px; display: block; width: 100%; padding: 22px 0;
-            background: #fff; color: #000; font-size: 15px; font-weight: 900;
-            letter-spacing: 5px; text-transform: uppercase; text-align: center;
+            margin-top: 25px; display: block; width: 100%; padding: 22px 0;
+            background: #fff; color: #000; font-size: 16px; font-weight: 900;
+            letter-spacing: 6px; text-transform: uppercase; text-align: center;
             text-decoration: none; box-shadow: 0 0 25px rgba(255,255,255,0.2);
         }
+        .btn-try:active { background: #ff0000; color: #fff; }
+
     </style>
 </head>
 <body>
@@ -125,8 +117,9 @@
     </header>
 
     <nav class="nav-overlay" id="nav">
-        <a href="#">ГОЛОВНА</a>
-        <a href="#">ЗАПИСАТИСЬ</a>
+        <!-- Посилання в меню -->
+        <a href="index.html">ГОЛОВНА</a>
+        <a href="https://t.me">ЗАПИСАТИСЬ</a>
     </nav>
 
     <div class="container">
@@ -141,15 +134,12 @@
                 <div class="layer" style="transform: translateZ(8px); background-image: url('01.PNG');"></div>
             </a>
             
-            <div class="rarity-container">
-                <div class="rarity-plate legendary">
-                    <div class="neon-glow"></div>
-                    <span class="rarity-text">LEGENDARY</span>
-                </div>
+            <div class="rarity-simple">
+                <span class="rarity-text red-rarity" data-text="LEGENDARY">LEGENDARY</span>
             </div>
 
-            <div class="meta">
-                <h2 class="title">ONI MASK</h2>
+            <div style="text-align: center;">
+                <h2 style="margin:0; letter-spacing:4px; font-size:24px; color: #fff;">ONI MASK</h2>
                 <a href="primerka.html" class="btn-try">ПРИМІРЯТИ</a>
             </div>
         </div>
@@ -164,15 +154,12 @@
                 <div class="layer" style="transform: translateZ(8px); background-image: url('03.PNG');"></div>
             </a>
             
-            <div class="rarity-container">
-                <div class="rarity-plate mythic">
-                    <div class="neon-glow"></div>
-                    <span class="rarity-text">MYTHIC</span>
-                </div>
+            <div class="rarity-simple">
+                <span class="rarity-text gold-rarity" data-text="MYTHIC">MYTHIC</span>
             </div>
 
-            <div class="meta">
-                <h2 class="title">KITSUNE</h2>
+            <div style="text-align: center;">
+                <h2 style="margin:0; letter-spacing:4px; font-size:24px; color: #fff;">KITSUNE</h2>
                 <a href="primerka.html" class="btn-try">ПРИМІРЯТИ</a>
             </div>
         </div>
@@ -180,7 +167,7 @@
     </div>
 
     <script>
-        // Матриця
+        // Матриця 12%
         const matrix = document.getElementById('matrix');
         const chars = "般若狐霊魂天人地龍神鬼";
         for (let i = 0; i < 12; i++) {
@@ -199,6 +186,7 @@
         burger.onclick = () => {
             burger.classList.toggle('active');
             nav.classList.toggle('active');
+            document.body.style.overflow = nav.classList.contains('active') ? 'hidden' : 'auto';
         };
     </script>
 </body>
