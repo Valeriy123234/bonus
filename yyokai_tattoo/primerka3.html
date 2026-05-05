@@ -13,7 +13,7 @@
             align-items: center; justify-content: space-around; min-height: 100vh; 
             perspective: 1500px; font-family: 'Bebas Neue', cursive; color: white;
             overflow-x: hidden; padding: 20px 0; box-sizing: border-box;
-            -webkit-overflow-scrolling: touch; /* Плавність для iOS */
+            -webkit-overflow-scrolling: touch; 
         }
 
         /* ПЛАШКА СТАТУСУ */
@@ -25,10 +25,10 @@
         .status-free { background: rgba(0, 255, 100, 0.1); color: #00ff64; border: 1px solid #00ff64; }
         .status-sold { background: rgba(255, 0, 0, 0.1); color: #ff0000; border: 1px solid #ff0000; }
 
-        /* ЗБІЛЬШЕНА РАМКА */
+        /* РАМКА АРТЕФАКТУ */
         .artifact-container { 
             position: relative; 
-            width: 280px; /* Трохи збільшено */
+            width: 280px; 
             height: 400px; 
             transform-style: preserve-3d;
             will-change: transform;
@@ -46,11 +46,11 @@
 
         .layer { 
             position: absolute; inset: 0; 
-            background-size: 101% 101%; /* Фікс білих артефактів по боках */
+            background-size: 101% 101%; 
             background-repeat: no-repeat; 
             background-position: center; 
             transition: opacity 0.3s ease;
-            backface-visibility: hidden; /* Фікс мигтіння */
+            backface-visibility: hidden; 
         }
 
         #main-glow { 
@@ -61,7 +61,7 @@
             transition: 0.8s ease; 
         }
 
-        /* КНОПКИ ВИБОРУ МІСЦЯ (Стиль "Скло") */
+        /* КНОПКИ ВИБОРУ */
         .selector-menu { 
             display: grid; grid-template-columns: repeat(3, 1fr); 
             gap: 10px; width: 90%; max-width: 360px; 
@@ -89,15 +89,27 @@
         }
         .book-btn:active { transform: scale(0.95); }
 
-        /* АДМІН-ТОЧКА */
-        .admin-trigger { position: absolute; bottom: 15px; opacity: 0.05; cursor: pointer; font-size: 10px; }
+        /* НЕПОМІТНИЙ ВІДСТУП ВНИЗУ (АДМІН-ТОЧКА) */
+        .admin-trigger { 
+            width: 100%; 
+            padding: 15px 0; 
+            margin-top: 20px; 
+            opacity: 0.05; 
+            cursor: pointer; 
+            text-align: center; 
+            font-size: 10px;
+        }
 
-        /* РЕЖИМ SOLD */
         body.is-sold .layer { filter: grayscale(1) brightness(0.3); }
         body.is-sold .zone-btn { opacity: 0.1; pointer-events: none; }
     </style>
 </head>
 <body id="main-body" class="is-free">
+
+    <!-- Аудіо (Заміни посилання на своє) -->
+    <audio id="bg-music" loop>
+        <source src="URL_ПІСНІ.mp3" type="audio/mpeg">
+    </audio>
 
     <div id="badge" class="status-badge status-free">AVAILABLE</div>
 
@@ -123,91 +135,87 @@
             style="background: #00ff64; color: black; box-shadow: 0 10px 30px rgba(0,255,100,0.3);" 
             onclick="window.location.href='booking.html'">ЗАБРОНЮВАТИ</button>
 
+    <!-- Непомітна адмін-точка в самому низу -->
     <div class="admin-trigger" onclick="adminLogin()">.</div>
 
-   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
-<script>
-    // Твоя конфігурація
-    const firebaseConfig = { 
-        databaseURL: "https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/" 
-    };
-    
-    // Ініціалізація
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
-
-    // Унікальний ID цього ескізу (міняй його для кожної нової сторінки, напр: kumiho_01, dragon_02)
-    const sketchID = "kumiho_01"; 
-
-    // 1. СЛУХАЄМО БАЗУ (це бачать всі клієнти в реальному часі)
-    database.ref('sketches/' + sketchID).on('value', (snapshot) => {
-        const status = snapshot.val();
-        if (status === 'sold') {
-            setSold(true);
-        } else {
-            setSold(false);
+    <script>
+        // --- МУЗИКА ПРИ КАСАННІ ---
+        function playMusic() {
+            const audio = document.getElementById('bg-music');
+            if (audio.paused) {
+                audio.play().catch(e => console.log("Чекаємо взаємодії..."));
+            }
         }
-    });
+        document.addEventListener('touchstart', playMusic, { once: true });
+        document.addEventListener('click', playMusic, { once: true });
 
-    // 2. ФУНКЦІЯ ПЕРЕМИКАННЯ СТАТУСУ (для тебе як адміна)
-    function adminLogin() {
-        const pass = prompt("Yokai Admin:");
-        if (pass === "yokai123234") {
-            const currentStatus = document.getElementById('main-body').classList.contains('is-sold');
-            const action = confirm(currentStatus ? "ЗРОБИТИ ВІЛЬНИМ?" : "ЗАБРОНЮВАТИ?");
-            
-            const newStatus = action ? (currentStatus ? 'free' : 'sold') : (currentStatus ? 'sold' : 'free');
+        // --- FIREBASE КОНФІГ ---
+        const firebaseConfig = { 
+            databaseURL: "https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/" 
+        };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const sketchID = "kumiho_01"; 
 
-            // Оновлюємо Firebase
-            database.ref('sketches/' + sketchID).set(newStatus)
-                .catch(err => alert("Помилка Firebase: " + err.message));
+        // Слухаємо статус
+        database.ref('sketches/' + sketchID).on('value', (snapshot) => {
+            const status = snapshot.val();
+            setSold(status === 'sold');
+        });
+
+        // Функція адміна
+        function adminLogin() {
+            const pass = prompt("Yokai Admin:");
+            if (pass === "yokai123234") {
+                const currentStatus = document.getElementById('main-body').classList.contains('is-sold');
+                const action = confirm(currentStatus ? "ЗРОБИТИ ВІЛЬНИМ?" : "ЗАБРОНЮВАТИ?");
+                const newStatus = action ? (currentStatus ? 'free' : 'sold') : (currentStatus ? 'sold' : 'free');
+                database.ref('sketches/' + sketchID).set(newStatus);
+            }
         }
-    }
 
-    // 3. ВІЗУАЛЬНЕ ВІДОБРАЖЕННЯ
-    function setSold(sold) {
-        const body = document.getElementById('main-body');
-        const badge = document.getElementById('badge');
-        const btn = document.getElementById('main-book-btn');
-        const glow = document.getElementById('main-glow');
+        function setSold(sold) {
+            const body = document.getElementById('main-body');
+            const badge = document.getElementById('badge');
+            const btn = document.getElementById('main-book-btn');
+            const glow = document.getElementById('main-glow');
 
-        if (sold) {
-            body.classList.add('is-sold');
-            badge.innerText = "SOLD / MINTED";
-            badge.className = "status-badge status-sold";
-            glow.style.background = "radial-gradient(circle, #ff0000, transparent 70%)";
-            btn.innerText = "RESERVED";
-            btn.style.background = "#111";
-            btn.style.color = "#333";
-            btn.style.boxShadow = "none";
-            btn.disabled = true;
-        } else {
-            body.classList.remove('is-sold');
-            badge.innerText = "AVAILABLE";
-            badge.className = "status-badge status-free";
-            glow.style.background = "radial-gradient(circle, #00ff64, transparent 70%)";
-            btn.innerText = "RESERVE SLOT";
-            btn.style.background = "#00ff64";
-            btn.style.color = "black";
-            btn.style.boxShadow = "0 10px 30px rgba(0,255,100,0.3)";
-            btn.disabled = false;
+            if (sold) {
+                body.classList.add('is-sold');
+                badge.innerText = "SOLD / MINTED";
+                badge.className = "status-badge status-sold";
+                glow.style.background = "radial-gradient(circle, #ff0000, transparent 70%)";
+                btn.innerText = "RESERVED";
+                btn.style.background = "#111";
+                btn.style.color = "#333";
+                btn.style.boxShadow = "none";
+                btn.disabled = true;
+            } else {
+                body.classList.remove('is-sold');
+                badge.innerText = "AVAILABLE";
+                badge.className = "status-badge status-free";
+                glow.style.background = "radial-gradient(circle, #00ff64, transparent 70%)";
+                btn.innerText = "RESERVE SLOT";
+                btn.style.background = "#00ff64";
+                btn.style.color = "black";
+                btn.style.boxShadow = "0 10px 30px rgba(0,255,100,0.3)";
+                btn.disabled = false;
+            }
         }
-    }
 
-    // Функція зміни картинок (примірка)
-    function updateImg(img, btn) {
-        const sketch = document.getElementById('target-sketch');
-        sketch.style.opacity = '0';
-        setTimeout(() => {
-            sketch.style.backgroundImage = `url('${img}')`;
-            sketch.style.opacity = '1';
-        }, 150);
-        document.querySelectorAll('.zone-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-    }
-</script>
-
+        function updateImg(img, btn) {
+            const sketch = document.getElementById('target-sketch');
+            sketch.style.opacity = '0';
+            setTimeout(() => {
+                sketch.style.backgroundImage = `url('${img}')`;
+                sketch.style.opacity = '1';
+            }, 150);
+            document.querySelectorAll('.zone-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+    </script>
 </body>
 </html>
