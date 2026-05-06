@@ -24,17 +24,18 @@
         .status-sold { background: rgba(255, 0, 0, 0.05); color: #ff0000; border: 1px solid rgba(255, 0, 0, 0.3); }
 
         /* РАМКА З ПІДСИЛЕНОЮ АМПЛІТУДОЮ */
-       .artifact-container { 
+     .artifact-container { 
     position: relative; 
     width: 377px; 
     height: 545px; 
-    /* 10px зверху, auto по боках, 0px знизу */
-    margin: 10px auto 0 auto; 
+    /* ПІДНІМАЄМО ВГОРУ: -20px зверху, 0 знизу */
+    margin: -20px auto 0 auto; 
     transform-style: preserve-3d; 
     display: flex; 
     align-items: center; 
     justify-content: center;
 }
+
 
 .artifact { 
     width: 100%; 
