@@ -195,11 +195,11 @@
             if (sold) {
                 b.classList.add('is-sold'); badge.innerText = "RESERVED"; badge.className = "status-badge status-sold";
                 glow.style.background = "radial-gradient(circle, #ff0000, transparent 70%)";
-                btn.innerText = "SOLD OUT"; btn.style.background = "#111"; btn.style.color = "#444"; btn.disabled = true;
+                btn.innerText = "ЗАБРОНЬОВАНО КЛІЄНТОМ"; btn.style.background = "#111"; btn.style.color = "#444"; btn.disabled = true;
             } else {
                 b.classList.remove('is-sold'); badge.innerText = "AVAILABLE"; badge.className = "status-badge status-free";
                 glow.style.background = "radial-gradient(circle, #00ff64, transparent 70%)";
-                btn.innerText = "RESERVE NOW"; btn.style.background = "#00ff64"; btn.style.color = "black"; btn.disabled = false;
+                btn.innerText = "ЗАБРОНЮВАТИ ЗАРАЗ"; btn.style.background = "#00ff64"; btn.style.color = "black"; btn.disabled = false;
             }
         }
 
