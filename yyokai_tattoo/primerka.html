@@ -205,7 +205,7 @@
         function setSold(sold) {
             const b = document.getElementById('main-body'), badge = document.getElementById('badge'), btn = document.getElementById('main-book-btn'), glow = document.getElementById('main-glow');
             if (sold) {
-                b.classList.add('is-sold'); badge.innerText = "RESERVED"; badge.className = "status-badge status-sold";
+                b.classList.add('is-sold'); badge.innerText = "ЗАБРОНЬОВАНО"; badge.className = "status-badge status-sold";
                 glow.style.background = "radial-gradient(circle, #ff0000, transparent 70%)";
                 btn.innerText = "ЗАБРОНЬОВАНО КЛІЄНТОМ"; btn.style.background = "#111"; btn.style.color = "#444"; btn.disabled = true;
             } else {
