@@ -11,114 +11,153 @@
     <style>
         :root {
             --neon: #ff0000;
-            --glass: rgba(20, 0, 0, 0.6);
+            --glass: rgba(15, 0, 0, 0.8);
             --border: rgba(255, 0, 0, 0.4);
+            --glitch-blue: #00f0ff;
         }
 
-        * { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; box-sizing: border-box; outline: none; }
+        /* ПОВНИЙ ЗАХИСТ ТА БАЗОВІ НАЛАШТУВАННЯ */
+        * { 
+            -webkit-user-select: none; 
+            user-select: none; 
+            -webkit-touch-callout: none; 
+            box-sizing: border-box; 
+            outline: none; 
+        }
 
         body, html {
             margin: 0; padding: 0; height: 100%; width: 100%;
             background: #000; font-family: 'Montserrat', sans-serif;
-            color: white; overflow: hidden;
+            color: white; overflow: hidden; transition: filter 0.4s, opacity 0.4s;
         }
 
-        /* МАТРИЦЯ */
+        /* CRT ТА SCANLINES */
+        body::before {
+            content: " "; position: fixed; inset: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none;
+        }
+        body::after {
+            content: " "; position: fixed; inset: 0;
+            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.9) 150%);
+            z-index: 998; pointer-events: none;
+        }
+
         #matrix-canvas { position: fixed; inset: 0; opacity: 0.12; z-index: 1; pointer-events: none; }
+
+        /* ВОДЯНИЙ ЗНАК */
+        .watermark {
+            position: absolute; font-size: 10px; color: var(--neon); opacity: 0.08;
+            white-space: nowrap; pointer-events: none; z-index: 5;
+            text-transform: uppercase; letter-spacing: 2px;
+            animation: float-watermark 15s infinite linear;
+        }
+        @keyframes float-watermark {
+            0% { transform: translate(-100%, -100%) rotate(-45deg); }
+            100% { transform: translate(100vw, 100vh) rotate(-45deg); }
+        }
 
         .ui-wrapper {
             position: relative; z-index: 10; height: 100vh;
             display: flex; flex-direction: column; align-items: center;
-            padding: 20px; justify-content: flex-start;
+            padding: 20px; justify-content: space-between;
         }
 
-        /* TOP BAR */
+        /* TOP PANEL */
         .top-bar {
-            position: absolute; top: 25px; width: 100%;
+            position: fixed; top: 25px; width: 100%;
             display: flex; justify-content: space-between;
-            padding: 0 25px; z-index: 1000;
+            padding: 0 25px; box-sizing: border-box; z-index: 1000;
         }
-        .sound-toggle { width: 35px; height: 35px; display: flex; align-items: center; cursor: pointer; }
-        .eq-container { display: flex; align-items: flex-end; justify-content: space-between; width: 20px; height: 14px; display: none; }
+        .sound-toggle { width: 40px; height: 40px; display: flex; align-items: center; cursor: pointer; }
+        .eq-container { display: flex; align-items: flex-end; justify-content: space-between; width: 22px; height: 16px; display: none; }
         .eq-bar { width: 2px; background: var(--neon); animation: eq-anim 0.5s infinite ease-in-out; }
-        @keyframes eq-anim { 0%, 100% { height: 3px; } 50% { height: 14px; } }
+        @keyframes eq-anim { 0%, 100% { height: 4px; } 50% { height: 16px; } }
 
         .menu-trigger { width: 30px; height: 30px; cursor: pointer; }
         .bar { width: 30px; height: 2px; background: var(--neon); margin: 6px 0; transition: 0.4s; }
+        .open .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .open .bar:nth-child(2) { opacity: 0; }
+        .open .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-        /* LOGO - ЧИСТИЙ ГЛІТЧ */
-        .header { text-align: center; margin-top: 60px; margin-bottom: 20px; }
+        /* HEADER & GLITCH LOGO */
+        .header { text-align: center; margin-top: 60px; margin-bottom: 25px; }
         .glitch {
-            font-size: 48px; font-weight: 900; letter-spacing: 12px;
+            font-size: 50px; font-weight: 900; letter-spacing: 14px;
             text-transform: uppercase; position: relative; color: white;
         }
         .glitch::before, .glitch::after {
             content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
         }
         .glitch::before { color: var(--neon); z-index: -1; animation: glitch-anim 0.3s infinite; }
-        .glitch::after { color: #00f0ff; z-index: -2; animation: glitch-anim 0.3s infinite reverse; }
+        .glitch::after { color: var(--glitch-blue); z-index: -2; animation: glitch-anim 0.3s infinite reverse; }
         @keyframes glitch-anim {
             0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
+            20% { transform: translate(-3px, 2px); }
+            40% { transform: translate(-3px, -2px); }
             100% { transform: translate(0); }
         }
-        .sub-logo { display: block; font-size: 16px; letter-spacing: 14px; color: var(--neon); text-align: center; margin-top: 5px; font-weight: 900; }
+        .sub-logo { display: block; font-size: 18px; letter-spacing: 16px; color: var(--neon); text-align: center; margin-top: 8px; font-weight: 900; }
 
-        /* DISPLAY - БЕЗ СВІТІННЯ */
+        /* MAIN DISPLAY */
         #main-display {
-            font-size: 34px; min-height: 80px; width: 100%;
+            font-size: 36px; min-height: 110px; width: 100%;
             display: flex; align-items: center; justify-content: center;
-            color: #fff; text-align: center; padding: 0 15px; margin-bottom: 15px;
+            color: #fff; text-align: center; cursor: copy; padding: 0 15px;
             border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
         }
 
-        /* CONTROLS */
+        /* CONTROLS AREA */
         .controls-wrap { 
-            width: 100%; max-width: 360px;
+            width: 100%; max-width: 370px; flex: 1; 
             display: flex; flex-direction: column; gap: 15px;
         }
 
         .input-box { width: 100%; }
         #user-input {
-            width: 100%; background: #111; border: 1px solid var(--border);
-            color: #fff; font-family: 'Montserrat'; font-size: 13px;
-            text-align: center; padding: 12px; border-radius: 2px;
-            letter-spacing: 2px; text-transform: uppercase;
+            width: 100%; background: #0a0000; border: 1px solid var(--border);
+            color: #fff; font-family: 'Montserrat'; font-size: 14px;
+            text-align: center; padding: 15px; border-radius: 2px;
+            letter-spacing: 3px; text-transform: uppercase; transition: 0.3s;
         }
+        #user-input:focus { border-color: #fff; background: #111; }
 
-        /* СКРОЛ СПИСКУ (ВИПРАВЛЕНО) */
+        /* SCROLLABLE LIBRARY */
         .font-library {
-            width: 100%; height: 180px; /* Обмежена висота щоб кнопка влізла */
-            background: rgba(10, 10, 10, 0.8); border: 1px solid var(--border);
-            overflow-y: auto; -webkit-overflow-scrolling: touch;
-            pointer-events: all; /* Дозволяє свайп */
+            width: 100%; flex-grow: 1; min-height: 150px; max-height: 24vh;
+            background: var(--glass); border: 1px solid var(--border);
+            overflow-y: auto; -webkit-overflow-scrolling: touch; pointer-events: all;
         }
         .font-library::-webkit-scrollbar { width: 2px; }
         .font-library::-webkit-scrollbar-thumb { background: var(--neon); }
 
         .font-item {
-            padding: 14px; border-bottom: 1px solid rgba(255,0,0,0.1);
+            padding: 16px; border-bottom: 1px solid rgba(255,0,0,0.1);
             cursor: pointer; display: flex; justify-content: space-between; align-items: center;
             pointer-events: all;
         }
         .font-item.active { background: var(--neon); color: black; }
         .font-item.active .font-meta { color: black; }
 
-        .font-style-preview { font-size: 18px; }
-        .font-meta { font-size: 8px; color: var(--neon); opacity: 0.7; }
+        .font-style-preview { font-size: 20px; }
+        .font-meta { font-size: 8px; color: var(--neon); font-weight: 900; }
 
-        /* КНОПКА ЗАПИСУ */
+        /* FINAL ACTION BUTTON */
         .book-btn {
-            width: 100%; padding: 18px; background: var(--neon); 
-            border: none; color: black;
-            font-weight: 900; letter-spacing: 3px; text-transform: uppercase;
-            cursor: pointer; font-size: 13px; transition: 0.2s;
+            width: 100%; padding: 20px; background: var(--neon); 
+            border: none; color: black; font-weight: 900; 
+            letter-spacing: 4px; text-transform: uppercase;
+            cursor: pointer; font-size: 14px; margin-bottom: 10px;
         }
-        .book-btn:active { transform: scale(0.98); opacity: 0.8; }
 
-        /* NAV */
+        #copy-notice {
+            position: fixed; top: 130px; background: #fff; color: black;
+            padding: 6px 18px; font-size: 10px; font-weight: 900;
+            letter-spacing: 2px; display: none; z-index: 1000;
+        }
+
         .nav-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.98);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -126,16 +165,18 @@
             z-index: 900;
         }
         .nav-overlay.active { transform: translateY(0); }
-        .nav-link { font-size: 20px; font-weight: 900; letter-spacing: 5px; color: white; text-decoration: none; margin: 15px 0; text-transform: uppercase; }
+        .nav-link { font-size: 24px; font-weight: 900; letter-spacing: 6px; color: white; text-decoration: none; margin: 18px 0; text-transform: uppercase; }
     </style>
 </head>
 <body id="main-body">
 
     <canvas id="matrix-canvas"></canvas>
+    <div class="watermark">YOKAI SYSTEM // NO COPY // DATA ENCRYPTED</div>
+    <div id="copy-notice">[ COPIED_TO_CLIPBOARD ]</div>
 
     <div class="top-bar">
         <div class="sound-toggle" onclick="toggleBgMusic()">
-            <span id="sound-icon" style="color: var(--neon); font-size: 18px;">🔈</span>
+            <span id="sound-icon" style="color: var(--neon); font-size: 20px;">🔈</span>
             <div id="eq" class="eq-container">
                 <div class="eq-bar" style="animation-duration: 0.4s;"></div>
                 <div class="eq-bar" style="animation-duration: 0.6s;"></div>
@@ -169,7 +210,7 @@
 
     <nav class="nav-overlay" id="nav">
         <a href="index.html" class="nav-link">SKETCH_VOID</a>
-        <a href="#" class="nav-link">ARCHIVE</a>
+        <a href="#" class="nav-link">MISS_ARCHIVE</a>
         <a href="https://instagram.com" class="nav-link">INSTAGRAM</a>
         <a href="https://t.me" class="nav-link" style="color:var(--neon);">INIT_RESERVE</a>
     </nav>
@@ -184,20 +225,21 @@
 
         function playClick() { uiClick.currentTime = 0; uiClick.play().catch(()=>{}); }
 
+        // ШРИФТИ (БАЗА)
         const tattooFonts = [
             {id: 'UnifrakturMaguntia', type: 'Gothic'}, {id: 'Great Vibes', type: 'Script'},
             {id: 'Cinzel', type: 'Roman'}, {id: 'Noto Sans JP', type: 'Asian'},
             {id: 'MedievalSharp', type: 'Dark'}, {id: 'Charm', type: 'Calligraphy'},
-            {id: 'Pirata One', type: 'Vintage'}, {id: 'Metal Mania', type: 'Metal'},
-            {id: 'Montserrat', type: 'Minimal'}
+            {id: 'Pirata One', type: 'Vintage'}, {id: 'Kelly Slab', type: 'Tech'},
+            {id: 'Metal Mania', type: 'Metal'}, {id: 'Montserrat', type: 'Minimal'}
         ];
 
         const listContainer = document.getElementById('font-list');
         tattooFonts.forEach(font => {
             const item = document.createElement('div');
             item.className = 'font-item';
-            item.innerHTML = `<span style="font-family:'${font.id}'; font-size: 18px;">Style</span>
-                              <span class="font-meta">${font.id}</span>`;
+            item.innerHTML = `<span style="font-family:'${font.id}'; font-size: 20px;">Style</span>
+                              <span class="font-meta">${font.id.toUpperCase()}</span>`;
             item.onclick = (e) => {
                 e.stopPropagation();
                 playClick();
@@ -211,6 +253,16 @@
 
         function syncText() { document.getElementById('main-display').innerText = document.getElementById('user-input').value || "MEMENTO MORI"; }
 
+        // КОПІЮВАННЯ ТЕКСТУ ПРИ КЛІКУ
+        document.getElementById('main-display').addEventListener('click', function() {
+            navigator.clipboard.writeText(this.innerText).then(() => {
+                playClick();
+                const n = document.getElementById('copy-notice');
+                n.style.display = 'block'; setTimeout(() => n.style.display = 'none', 2000);
+            });
+        });
+
+        // MATRIX BACKGROUND
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -228,12 +280,32 @@
         }
         setInterval(drawMatrix, 50);
 
+        // ЗАХИСТ ВІД СКРІНШОТІВ ТА ЗГОРТАННЯ
+        document.addEventListener('visibilitychange', () => {
+            const body = document.getElementById('main-body');
+            if (document.hidden) {
+                body.style.opacity = "0";
+                body.style.filter = "blur(50px) grayscale(1)";
+            } else {
+                setTimeout(() => {
+                    body.style.opacity = "1";
+                    body.style.filter = "none";
+                }, 300);
+            }
+        });
+
+        document.addEventListener('contextmenu', e => e.preventDefault());
+
         function toggleMenu(x) { playClick(); x.classList.toggle("open"); document.getElementById('nav').classList.toggle('active'); }
+        
         function toggleBgMusic() {
             const icon = document.getElementById('sound-icon');
             const eq = document.getElementById('eq');
-            if(!musicPlaying){ bgMusic.play(); icon.style.display="none"; eq.style.display="flex"; musicPlaying=true; }
-            else { bgMusic.pause(); icon.style.display="block"; eq.style.display="none"; musicPlaying=false; }
+            if(!musicPlaying){
+                bgMusic.play(); icon.style.display="none"; eq.style.display="flex"; musicPlaying=true;
+            } else {
+                bgMusic.pause(); icon.style.display="block"; eq.style.display="none"; musicPlaying=false;
+            }
             playClick();
         }
     </script>
