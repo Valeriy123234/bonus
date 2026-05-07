@@ -3,11 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>YOKAI OS // RED_PROTOCOL_MAX</title>
-    
-    <!-- ДИНАМІЧНІ ШРИФТИ -->
+    <title>YOKAI OS // RED_PROTOCOL</title>
     <link id="dynamic-fonts" rel="stylesheet">
-
     <style>
         :root { 
             --red: #ff0000; 
@@ -15,152 +12,203 @@
             --glitch-cyan: #00fff0;
         }
 
-        * { 
-            -webkit-user-select: none; 
-            user-select: none; 
-            box-sizing: border-box; 
-            outline: none; 
-        }
+        * { -webkit-user-select: none; user-select: none; box-sizing: border-box; outline: none; }
+        body, html { margin: 0; padding: 0; height: 100%; width: 100%; background: #000; font-family: 'Montserrat', sans-serif; color: white; overflow: hidden; }
 
-        body, html {
-            margin: 0; padding: 0; height: 100%; width: 100%;
-            background: #000; font-family: 'Montserrat', sans-serif;
-            color: white; overflow: hidden;
-        }
-
+        /* МАТРИЦЯ +4% ТЕМНІШЕ */
         #matrix-canvas { position: fixed; inset: 0; opacity: 0.25; z-index: 1; pointer-events: none; }
-        
-        body::before {
-            content: ""; position: fixed; inset: 0;
-            background: linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.2) 50%), 
-                        linear-gradient(90deg, rgba(255,0,0,0.03), rgba(0,255,0,0.01), rgba(0,0,255,0.03));
-            z-index: 999; background-size: 100% 3px, 3px 100%; pointer-events: none;
-        }
 
-        .header { position: absolute; top: 85px; width: 100%; text-align: center; z-index: 10; }
-
+        /* ЛОГО ТА ГЛІТЧ (ПОСИЛЕНИЙ) */
+        .header { position: absolute; top: 85px; width: 100%; text-align: center; z-index: 1010; }
         .logo-main {
-            font-weight: 900; font-size: 54px; letter-spacing: 14px;
-            color: #fff; position: relative; display: inline-block;
-            line-height: 1; text-shadow: 0.5px 0.5px 2px rgba(255,255,255,0.2);
-            padding-left: 14px; /* Корекція центрування */
+            font-weight: 900; font-size: 54px; letter-spacing: 14px; color: #fff;
+            position: relative; display: inline-block; line-height: 1;
+            padding-left: 14px; text-shadow: 0 0 10px rgba(255,255,255,0.3);
         }
-
         .logo-main::before, .logo-main::after {
-            content: 'YYO'; position: absolute; top: 0; left: 14px;
-            width: 100%; height: 100%; background: transparent; opacity: 0;
+            content: 'YYO'; position: absolute; top: 0; left: 14px; width: 100%; height: 100%; opacity: 0;
         }
-
-        .logo-main::before { text-shadow: -2px 0 var(--red); animation: glitch-1 3.1s infinite; }
-        .logo-main::after { text-shadow: 2px 0 var(--glitch-cyan); animation: glitch-2 4.3s infinite; }
+        .logo-main::before { text-shadow: -3px 0 var(--red); animation: glitch-1 3s infinite; }
+        .logo-main::after { text-shadow: 3px 0 var(--glitch-cyan); animation: glitch-2 4s infinite; }
 
         @keyframes glitch-1 {
-            0%, 15%, 100% { opacity: 0; clip-path: inset(100% 0 0 0); transform: translate(0); }
-            1% { opacity: 1; clip-path: inset(10% 0 85% 0); transform: translate(-4px, -1px); }
-            2% { clip-path: inset(60% 0 20% 0); transform: translate(4px, 1px); }
-            4% { opacity: 0; }
+            0%, 18%, 100% { opacity: 0; transform: translate(0); }
+            1% { opacity: 1; clip-path: inset(10% 0 80% 0); transform: translate(-5px, -2px); }
+            3% { opacity: 1; clip-path: inset(50% 0 20% 0); transform: translate(5px, 2px); }
+            5% { opacity: 0; }
         }
-
         @keyframes glitch-2 {
-            0%, 20%, 100% { opacity: 0; clip-path: inset(100% 0 0 0); transform: translate(0); }
-            1% { opacity: 0.8; clip-path: inset(80% 0 5% 0); transform: translate(3px, 2px); }
-            2% { clip-path: inset(40% 0 45% 0); transform: translate(-3px, -2px); }
-            4% { opacity: 0; }
+            0%, 25%, 100% { opacity: 0; transform: translate(0); }
+            1% { opacity: 1; clip-path: inset(70% 0 5% 0); transform: translate(4px, 1px); }
+            3% { opacity: 1; clip-path: inset(20% 0 60% 0); transform: translate(-4px, -1px); }
+            5% { opacity: 0; }
         }
 
-        .logo-sub {
-            display: block; font-size: 20px; color: var(--red);
-            letter-spacing: 18px; padding-left: 18px; margin-top: 5px;
-            font-weight: 900; animation: flicker 5s infinite;
-        }
-
-        @keyframes flicker {
-            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
-            20%, 24%, 55% { opacity: 0.6; }
-        }
-
+        /* ГОЛОВНИЙ ДИСПЛЕЙ (ДЛЯ ДОВГИХ РЕЧЕНЬ) */
         #main-display {
-            position: absolute; top: 240px; width: 100%;
-            font-size: 34px; text-align: center; font-weight: 900;
-            z-index: 10; padding: 0 25px; word-break: break-all;
+            position: absolute; top: 200px; width: 100%; height: 140px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px; text-align: center; font-weight: 900;
+            z-index: 10; padding: 0 30px; word-wrap: break-word; overflow-y: auto;
+            text-transform: uppercase; line-height: 1.2;
         }
 
+        /* МЕНЮ-БУТЕРБРОД (ТРАНСФОРМАЦІЯ) */
+        .menu-trigger { 
+            position: fixed; top: 35px; right: 30px; width: 30px; height: 24px; 
+            z-index: 2000; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .menu-trigger span { display: block; width: 100%; height: 2px; background: var(--red); transition: 0.4s; }
+        .menu-trigger.open span:nth-child(1) { transform: translateY(11px) rotate(45deg); }
+        .menu-trigger.open span:nth-child(2) { opacity: 0; transform: translateX(-10px); }
+        .menu-trigger.open span:nth-child(3) { transform: translateY(-11px) rotate(-45deg); }
+
+        .nav-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transform: translateY(-100%); transition: 0.6s cubic-bezier(0.7, 0, 0.3, 1); z-index: 1500;
+        }
+        .nav-overlay.active { transform: translateY(0); }
+        .nav-link { font-size: 20px; font-weight: 900; color: white; text-decoration: none; margin: 15px 0; letter-spacing: 4px; text-transform: uppercase; transition: 0.3s; }
+        .nav-link:hover { color: var(--red); }
+
+        /* ІНПУТ ТА СПИСОК */
         .input-wrap { position: absolute; top: 350px; width: 100%; padding: 0 45px; z-index: 10; }
-        #user-input {
-            width: 100%; background: rgba(255,0,0,0.03); border: none;
-            border-bottom: 1px solid rgba(255,0,0,0.4); color: #fff;
-            padding: 12px; font-size: 15px; letter-spacing: 3px;
-            text-transform: uppercase; text-align: center;
-        }
-
-        .font-selector-wrap {
-            position: absolute; top: 430px; bottom: 120px;
-            width: 100%; overflow: hidden; padding: 0 30px; z-index: 10;
-        }
-        .scroll-area { height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-        .font-node {
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 12px 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: 0.3s;
-        }
-        .font-node.active { color: var(--red); background: rgba(255,0,0,0.05); border-left: 2px solid var(--red); }
-        .f-preview { font-size: 18px; }
-        .f-name { font-size: 9px; opacity: 0.5; letter-spacing: 1px; }
-
-        .btn-init {
-            position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%);
-            width: calc(100% - 60px); padding: 20px; background: none;
-            border: 1px solid var(--red); color: var(--red); font-weight: 900;
-            letter-spacing: 4px; text-transform: uppercase; z-index: 10;
-        }
-
-        /* Тимчасовий фікс для меню та іншого */
-        .top-bar { position: absolute; top: 30px; width: 100%; display: flex; justify-content: space-between; padding: 0 30px; z-index: 1002; }
-        #protection-layer { position: fixed; inset: 0; background: #000; z-index: 9999; display: none; }
+        #user-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--red); color: #fff; padding: 10px; text-align: center; letter-spacing: 2px; }
+        
+        .font-selector-wrap { position: absolute; top: 420px; bottom: 100px; width: 100%; padding: 0 30px; z-index: 10; }
+        .scroll-area { height: 100%; overflow-y: auto; }
+        .font-node { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1); cursor: pointer; }
+        .font-node.active { color: var(--red); }
     </style>
 </head>
-<body id="main-body">
+<body>
 
-    <div id="protection-layer"></div>
     <canvas id="matrix-canvas"></canvas>
-    <div id="copy-notice" style="display:none; position:fixed; top:20px; left:50%; transform:translateX(-50%); background:var(--red); color:#000; padding:10px; z-index:10000;">DATA COPIED</div>
 
-    <div class="top-bar">
-        <div id="sound-trigger" onclick="toggleBgMusic()" style="cursor:pointer; color:var(--red);">SOUND: OFF</div>
-        <div id="burger" onclick="toggleMenu()" style="cursor:pointer; color:var(--red);">MENU</div>
+    <div class="menu-trigger" id="burger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
     </div>
+
+    <nav class="nav-overlay" id="nav">
+        <a href="#" class="nav-link">власні ескізи</a>
+        <a href="#" class="nav-link">портфоліо</a>
+        <a href="#" class="nav-link" style="color:var(--red)">записатись</a>
+        <a href="#" class="nav-link">консультація</a>
+    </nav>
 
     <div class="header">
         <div class="logo-main">YYO</div>
         <div class="logo-sub">KAI</div>
     </div>
 
-    <div id="main-display" onclick="copyText()">MEMENTO MORI</div>
+    <div id="main-display">MEMENTO MORI</div>
 
     <div class="input-wrap">
-        <input type="text" id="user-input" placeholder="Впиши текст..." oninput="syncText()" maxlength="20">
+        <input type="text" id="user-input" placeholder="ВВЕДІТЬ ТЕКСТ..." oninput="syncText()" maxlength="100">
     </div>
 
     <div class="font-selector-wrap">
         <div class="scroll-area" id="font-list"></div>
     </div>
 
-    <button class="btn-init" onclick="window.open('https://t.me', '_blank')">Записатись</button>
-
-    <audio id="bg-music" loop><source src="RED_AMBIENT.mp3" type="audio/mpeg"></audio>
-
     <script>
         const tattooFonts = [
-            {id: 'UnifrakturMaguntia', tag: 'GOTHIC'}, {id: 'MedievalSharp', tag: 'GOTHIC'},
-            {id: 'Ponomar', tag: 'GOTHIC'}, {id: 'Monomakh', tag: 'GOTHIC'},
-            {id: 'Ballet', tag: 'SCRIPT'}, {id: 'Great Vibes', tag: 'SCRIPT'},
-            {id: 'Pinyon Script', tag: 'SCRIPT'}, {id: 'Monsieur La Doulaise', tag: 'SCRIPT'},
-            {id: 'Whisper', tag: 'SCRIPT'}, {id: 'Creepster', tag: 'HORROR'},
-            {id: 'Rampart One', tag: 'DISPLAY'}, {id: 'Bangers', tag: 'COMIC'},
-            {id: 'Press Start 2P', tag: 'PIXEL'}, {id: 'Silkscreen', tag: 'PIXEL'}
-            // ... можна додати решту з твого списку
-        ];
+    // --- GOTHIC & MEDIEVAL ---
+    {id: 'UnifrakturMaguntia', tag: 'GOTHIC'},
+    {id: 'MedievalSharp', tag: 'GOTHIC'},
+    {id: 'Ponomar', tag: 'GOTHIC'},
+    {id: 'Monomakh', tag: 'GOTHIC'},
+    {id: 'Shafarik', tag: 'GOTHIC'},
 
-        // 1. ЗАВАНТАЖЕННЯ ПРЕВ'Ю ДЛЯ ВСІХ ШРИФТІВ
+    // --- SCRIPT & CALLIGRAPHY ---
+    {id: 'Ballet', tag: 'SCRIPT'},
+    {id: 'Great Vibes', tag: 'SCRIPT'},
+    {id: 'Pinyon Script', tag: 'SCRIPT'},
+    {id: 'Monsieur La Doulaise', tag: 'SCRIPT'},
+    {id: 'Mr De Haviland', tag: 'SCRIPT'},
+    {id: 'Herr Von Muellerhoff', tag: 'SCRIPT'},
+    {id: 'Mrs Saint Delafield', tag: 'SCRIPT'},
+    {id: 'Tangerine', tag: 'SCRIPT'},
+    {id: 'Allison', tag: 'SCRIPT'},
+    {id: 'Sacramento', tag: 'SCRIPT'},
+    {id: 'Allura', tag: 'SCRIPT'},
+    {id: 'Whisper', tag: 'SCRIPT'},
+    {id: 'Parisienne', tag: 'SCRIPT'},
+    {id: 'Playball', tag: 'SCRIPT'},
+    {id: 'Mr Dafoe', tag: 'SCRIPT'},
+    {id: 'Ephesis', tag: 'SCRIPT'},
+    {id: 'Quintessential', tag: 'SCRIPT'},
+    {id: 'Corinthia', tag: 'SCRIPT'},
+    {id: 'Montez', tag: 'SCRIPT'},
+    {id: 'League Script', tag: 'SCRIPT'},
+    {id: 'Meie Script', tag: 'SCRIPT'},
+    {id: 'Lavishly Yours', tag: 'SCRIPT'},
+    {id: 'Stalemate', tag: 'SCRIPT'},
+    {id: 'Imperial Script', tag: 'SCRIPT'},
+    {id: 'Mea Culpa', tag: 'SCRIPT'},
+    {id: 'Mr Bedfort', tag: 'SCRIPT'},
+    {id: 'Miss Fajardose', tag: 'SCRIPT'},
+    {id: 'Fleur De Leah', tag: 'SCRIPT'},
+    {id: 'Updock', tag: 'SCRIPT'},
+
+    // --- ASIAN STYLE ---
+    {id: 'Noto Sans TC', tag: 'ASIA'},
+    {id: 'Nanum Myeongjo', tag: 'ASIA'},
+
+    // --- DECORATIVE & VINTAGE ---
+    {id: 'Lobster Two', tag: 'VINTAGE'},
+    {id: 'Jacques Francois Shadow', tag: 'VINTAGE'},
+    {id: 'Emblema One', tag: 'VINTAGE'},
+    {id: 'Ewert', tag: 'VINTAGE'},
+    {id: 'Jacquard 24 Charted', tag: 'VINTAGE'},
+    {id: 'Creepster', tag: 'HORROR'},
+    {id: 'Rampart One', tag: 'DISPLAY'},
+    {id: 'Sonsie One', tag: 'DISPLAY'},
+    {id: 'Joti One', tag: 'DISPLAY'},
+    {id: 'Sankofa Display', tag: 'DISPLAY'},
+
+    // --- HANDWRITTEN ---
+    {id: 'Dancing Script', tag: 'HAND'},
+    {id: 'Caveat', tag: 'HAND'},
+    {id: 'Kaushan Script', tag: 'HAND'},
+    {id: 'Homemade Apple', tag: 'HAND'},
+    {id: 'Nothing You Could Do', tag: 'HAND'},
+    {id: 'Amatic SC', tag: 'HAND'},
+    {id: 'Cookie', tag: 'HAND'},
+    {id: 'Caramel', tag: 'HAND'},
+    {id: 'Molle', tag: 'HAND'},
+    {id: 'Playwrite ES', tag: 'HAND'}, 
+    {id: 'Playwrite NZ Guides', tag: 'HAND'},
+
+    // --- ROMAN & SERIF ---
+    {id: 'Libre Baskerville', tag: 'ROMAN'},
+    {id: 'DM Serif Display', tag: 'ROMAN'},
+    {id: 'Quattrocento', tag: 'ROMAN'},
+    {id: 'Quando', tag: 'ROMAN'},
+    {id: 'Belleza', tag: 'ROMAN'},
+    {id: 'Bona Nova SC', tag: 'ROMAN'},
+    {id: 'Italiana', tag: 'ROMAN'},
+    {id: 'Libre Caslon Display', tag: 'ROMAN'},
+    {id: 'Bodoni Moda SC', tag: 'ROMAN'},
+    {id: 'Elsie Swash Caps', tag: 'ROMAN'},
+    {id: 'Diplomata SC', tag: 'ROMAN'},
+
+    // --- TECH & MODERN ---
+    {id: 'Saira Stencil One', tag: 'TECH'},
+    {id: 'Russo One', tag: 'TECH'},
+    {id: 'Gruppo', tag: 'TECH'},
+    {id: 'Contrail One', tag: 'TECH'},
+    {id: 'Dorsa', tag: 'TECH'},
+    {id: 'Bungee Outline', tag: 'TECH'},
+    {id: 'Josefin Slab', tag: 'MODERN'},
+    {id: 'Press Start 2P', tag: 'PIXEL'},
+    {id: 'Silkscreen', tag: 'PIXEL'},
+    {id: 'Sedgwick Ave Display', tag: 'STREET'},
+    {id: 'Bangers', tag: 'COMIC'}
+];
+
+        // Ініціалізація списку
         const allNames = tattooFonts.map(f => f.id.replace(/ /g, '+')).join('|');
         const link = document.createElement('link');
         link.rel = 'stylesheet';
@@ -196,31 +244,22 @@
             n.style.display = 'block'; setTimeout(() => n.style.display='none', 1000);
         }
 
-        // МАТРИЦЯ (Спрощено)
+        // Матриця +4% прозорості фону (0.14)
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         const drops = Array(Math.floor(canvas.width/20)).fill(1);
         function draw() {
-            ctx.fillStyle = "rgba(0,0,0,0.1)"; ctx.fillRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle = "rgba(0, 0, 0, 0.14)"; 
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "#f00";
             drops.forEach((y, i) => {
-                ctx.fillText("01", i*20, y*20);
-                if(y*20 > canvas.height && Math.random() > 0.95) drops[i] = 0;
+                ctx.fillText("YOKAI", i*20, y*20);
+                if(y*20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
                 drops[i]++;
             });
         }
         setInterval(draw, 50);
-        
-        let musicPlaying = false;
-        function toggleBgMusic() {
-            const m = document.getElementById('bg-music');
-            const t = document.getElementById('sound-trigger');
-            if(!musicPlaying) { m.play(); t.innerText = "SOUND: ON"; }
-            else { m.pause(); t.innerText = "SOUND: OFF"; }
-            musicPlaying = !musicPlaying;
-        }
-        function toggleMenu() { alert("Меню в розробці"); }
     </script>
 </body>
 </html>
