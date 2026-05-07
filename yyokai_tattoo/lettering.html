@@ -28,7 +28,6 @@
         }
         
         .sound-container, .menu-trigger { pointer-events: auto; cursor: pointer; }
-
         .sound-container { display: flex; align-items: center; gap: 10px; height: 24px; }
         .eq { display: none; align-items: flex-end; gap: 2px; height: 18px; }
         .eq-bar { width: 2px; background: var(--red); height: 2px; }
@@ -43,8 +42,8 @@
         .menu-trigger.open span:nth-child(2) { opacity: 0; }
         .menu-trigger.open span:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
 
-        /* LOGO SECTION */
-        .header { position: absolute; top: 70px; width: 100%; text-align: center; z-index: 10; }
+        /* LOGO */
+        .header { position: absolute; top: 60px; width: 100%; text-align: center; z-index: 10; }
         .logo-main {
             font-weight: 900; font-size: 64px; letter-spacing: 12px; color: #fff;
             position: relative; display: inline-block; line-height: 0.8; padding-left: 12px;
@@ -56,38 +55,35 @@
             width: 100%; height: 100%; opacity: 0; pointer-events: none;
         }
         .logo-main::before { text-shadow: -4px 0 var(--red); animation: glitch-1 3s infinite; }
-        .logo-main::after { text-shadow: 4px 0 var(--glitch-cyan); animation: glitch-2 4s infinite; }
+        .logo-main::after { text-shadow: 4px 0 var(--glitch-cyan); animation: glitch-2 4.3s infinite; }
 
-        @keyframes glitch-1 { 
-            0%, 18%, 100% { opacity: 0; } 
-            1% { opacity: 1; clip-path: inset(10% 0 70% 0); transform: translate(-5px, -2px); } 
-            5% { opacity: 0; } 
-        }
-        @keyframes glitch-2 { 
-            0%, 25%, 100% { opacity: 0; } 
-            1% { opacity: 1; clip-path: inset(60% 0 5% 0); transform: translate(5px, 2px); } 
-            5% { opacity: 0; } 
-        }
+        @keyframes glitch-1 { 0%, 18%, 100% { opacity: 0; } 1% { opacity: 1; clip-path: inset(10% 0 70% 0); transform: translate(-5px, -2px); } 5% { opacity: 0; } }
+        @keyframes glitch-2 { 0%, 25%, 100% { opacity: 0; } 1% { opacity: 1; clip-path: inset(60% 0 5% 0); transform: translate(5px, 2px); } 5% { opacity: 0; } }
 
-        /* DISPLAY */
+        /* БІЛА ПЛАШКА (ДЛЯ СКРІНШОТІВ) */
         #main-display {
-            position: absolute; top: 220px; width: 100%; max-height: 140px;
+            position: absolute; top: 210px; left: 50%; transform: translateX(-50%);
+            width: auto; max-width: calc(100% - 50px); min-width: 220px;
+            background: #fff; color: #000; padding: 20px 30px;
             font-size: 32px; text-align: center; font-weight: 900; z-index: 10; 
-            padding: 0 25px; overflow-y: auto; word-wrap: break-word; cursor: pointer;
+            box-shadow: 0 0 40px rgba(255,255,255,0.15); word-wrap: break-word; cursor: pointer;
         }
-        #main-display::-webkit-scrollbar { width: 0; }
 
-        .input-wrap { position: absolute; top: 360px; width: 100%; padding: 0 45px; z-index: 10; }
+        /* ІНПУТ ТА СПИСОК */
+        .input-wrap { position: absolute; top: 375px; width: 100%; padding: 0 45px; z-index: 10; }
         #user-input { 
             width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--red); 
             color: #fff; padding: 10px; text-align: center; font-size: 16px;
         }
 
-        .font-selector-wrap { position: absolute; top: 420px; bottom: 110px; width: 100%; padding: 0 30px; z-index: 10; }
+        .font-selector-wrap { position: absolute; top: 430px; bottom: 110px; width: 100%; padding: 0 30px; z-index: 10; }
         .scroll-area { height: 100%; overflow-y: auto; }
+        .scroll-area::-webkit-scrollbar { width: 0; }
         .font-node { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1); cursor: pointer; }
-        .font-node.active { color: var(--red); border-left: 2px solid var(--red); padding-left: 10px; }
+        .font-node.active { color: var(--red); border-left: 3px solid var(--red); padding-left: 15px; }
+        .f-preview { font-size: 18px; }
 
+        /* КНОПКИ */
         .btn-action {
             position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
             width: calc(100% - 60px); padding: 18px; background: transparent;
@@ -101,7 +97,7 @@
             transform: translateY(-100%); transition: 0.5s cubic-bezier(0.7, 0, 0.3, 1); z-index: 4000;
         }
         .nav-overlay.active { transform: translateY(0); }
-        .nav-link { font-size: 22px; color: #fff; text-decoration: none; margin: 15px; font-weight: 900; text-transform: uppercase; }
+        .nav-link { font-size: 24px; color: #fff; text-decoration: none; margin: 15px; font-weight: 900; text-transform: uppercase; letter-spacing: 4px; }
 
         #copy-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--red); color: #000; padding: 8px 20px; font-weight: 900; display: none; z-index: 6000; font-size: 12px; }
     </style>
@@ -157,19 +153,21 @@
 <audio id="bg-music" loop><source src="RED_AMBIENT.mp3" type="audio/mpeg"></audio>
 
 <script>
-    // ВСТАВ СЮДИ СВІЙ ПОВНИЙ СПИСОК (79 ШРИФТІВ)
+    // ВСТАВ СЮДИ ПОВНИЙ МАСИВ З 79 ШРИФТІВ
     const tattooFonts = [
         {id: 'UnifrakturMaguntia', tag: 'GOTHIC'},
+        {id: 'MedievalSharp', tag: 'GOTHIC'},
         {id: 'Pinyon Script', tag: 'SCRIPT'},
         {id: 'Creepster', tag: 'HORROR'},
-        {id: 'Rampart One', tag: 'DISPLAY'}
+        {id: 'Rampart One', tag: 'DISPLAY'},
+        {id: 'Bangers', tag: 'COMIC'}
     ];
 
-    // Завантаження прев'ю (chunking)
+    // Завантаження прев'ю пачками
     function loadPreviews(fonts) {
-        const chunkSize = 20;
-        for (let i = 0; i < fonts.length; i += chunkSize) {
-            const chunk = fonts.slice(i, i + chunkSize);
+        const size = 20;
+        for (let i = 0; i < fonts.length; i += size) {
+            const chunk = fonts.slice(i, i + size);
             const names = chunk.map(f => f.id.replace(/ /g, '+')).join('|');
             const link = document.createElement('link');
             link.rel = 'stylesheet';
@@ -198,7 +196,11 @@
         const val = document.getElementById('user-input').value;
         const display = document.getElementById('main-display');
         display.innerText = val || "MEMENTO MORI";
-        display.style.fontSize = val.length > 20 ? "22px" : "32px";
+        
+        // Авто-розмір для білої плашки
+        if(val.length > 40) display.style.fontSize = "18px";
+        else if(val.length > 20) display.style.fontSize = "24px";
+        else display.style.fontSize = "32px";
     }
 
     function toggleMenu() {
@@ -222,7 +224,7 @@
         setTimeout(() => toast.style.display = 'none', 1500);
     }
 
-    // Матриця з темнішим фоном (0.17)
+    // Матриця з контрастом +3% (0.17)
     const canvas = document.getElementById('matrix-canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth; canvas.height = window.innerHeight;
