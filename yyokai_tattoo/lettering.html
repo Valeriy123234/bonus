@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>YOKAI OS // RED_PROTOCOL</title>
     
     <link href="https://googleapis.com" rel="stylesheet">
@@ -10,210 +10,144 @@
 
     <style>
         :root {
-            --neon: #ff0000;
-            --glass: rgba(15, 0, 0, 0.8);
-            --border: rgba(255, 0, 0, 0.4);
-            --glitch-blue: #00f0ff;
+            --red: #ff0015;
+            --ui-bg: rgba(10, 0, 0, 0.95);
+            --line: rgba(255, 0, 21, 0.4);
         }
 
-        /* ПОВНИЙ ЗАХИСТ ТА БАЗОВІ НАЛАШТУВАННЯ */
-        * { 
-            -webkit-user-select: none; 
-            user-select: none; 
-            -webkit-touch-callout: none; 
-            box-sizing: border-box; 
-            outline: none; 
-        }
+        /* ЗАХИСТ ВІД ВИДІЛЕННЯ */
+        * { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; box-sizing: border-box; outline: none; }
 
         body, html {
             margin: 0; padding: 0; height: 100%; width: 100%;
             background: #000; font-family: 'Montserrat', sans-serif;
-            color: white; overflow: hidden; transition: filter 0.4s, opacity 0.4s;
+            color: white; overflow: hidden;
         }
 
-        /* CRT ТА SCANLINES */
-        body::before {
-            content: " "; position: fixed; inset: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-            z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none;
-        }
-        body::after {
-            content: " "; position: fixed; inset: 0;
-            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.9) 150%);
-            z-index: 998; pointer-events: none;
-        }
+        #matrix-canvas { position: fixed; inset: 0; opacity: 0.15; z-index: 1; pointer-events: none; }
 
-        #matrix-canvas { position: fixed; inset: 0; opacity: 0.12; z-index: 1; pointer-events: none; }
-
-        /* ВОДЯНИЙ ЗНАК */
-        .watermark {
-            position: absolute; font-size: 10px; color: var(--neon); opacity: 0.08;
-            white-space: nowrap; pointer-events: none; z-index: 5;
-            text-transform: uppercase; letter-spacing: 2px;
-            animation: float-watermark 15s infinite linear;
-        }
-        @keyframes float-watermark {
-            0% { transform: translate(-100%, -100%) rotate(-45deg); }
-            100% { transform: translate(100vw, 100vh) rotate(-45deg); }
+        /* ЕФЕКТ CRT ТА ЗАХИСТ */
+        .screen-overlay {
+            position: fixed; inset: 0; pointer-events: none; z-index: 999;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+                        radial-gradient(circle, transparent 30%, rgba(0,0,0,0.5) 100%);
+            background-size: 100% 3px, 100% 100%;
+            transition: 0.3s;
         }
 
         .ui-wrapper {
             position: relative; z-index: 10; height: 100vh;
-            display: flex; flex-direction: column; align-items: center;
-            padding: 20px; justify-content: space-between;
+            display: flex; flex-direction: column; 
+            padding: env(safe-area-inset-top) 25px env(safe-area-inset-bottom);
+            justify-content: space-between;
         }
 
-        /* TOP PANEL */
+        /* HEADER */
         .top-bar {
-            position: fixed; top: 25px; width: 100%;
-            display: flex; justify-content: space-between;
-            padding: 0 25px; box-sizing: border-box; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center; padding: 20px 0;
         }
-        .sound-toggle { width: 40px; height: 40px; display: flex; align-items: center; cursor: pointer; }
-        .eq-container { display: flex; align-items: flex-end; justify-content: space-between; width: 22px; height: 16px; display: none; }
-        .eq-bar { width: 2px; background: var(--neon); animation: eq-anim 0.5s infinite ease-in-out; }
-        @keyframes eq-anim { 0%, 100% { height: 4px; } 50% { height: 16px; } }
+        .system-id { font-size: 9px; letter-spacing: 4px; color: var(--red); font-weight: 900; }
 
-        .menu-trigger { width: 30px; height: 30px; cursor: pointer; }
-        .bar { width: 30px; height: 2px; background: var(--neon); margin: 6px 0; transition: 0.4s; }
-        .open .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-        .open .bar:nth-child(2) { opacity: 0; }
-        .open .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+        .logo-wrap { text-align: center; padding: 10px 0; }
+        .logo-main { font-weight: 900; font-size: 52px; letter-spacing: 12px; color: #fff; text-shadow: 0 0 20px var(--red); }
+        .logo-main::after { content: 'KAI'; display: block; font-size: 16px; letter-spacing: 15px; color: var(--red); margin-top: -5px; text-shadow: none; }
 
-        /* HEADER & GLITCH LOGO */
-        .header { text-align: center; margin-top: 60px; margin-bottom: 25px; }
-        .glitch {
-            font-size: 50px; font-weight: 900; letter-spacing: 14px;
-            text-transform: uppercase; position: relative; color: white;
-        }
-        .glitch::before, .glitch::after {
-            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        }
-        .glitch::before { color: var(--neon); z-index: -1; animation: glitch-anim 0.3s infinite; }
-        .glitch::after { color: var(--glitch-blue); z-index: -2; animation: glitch-anim 0.3s infinite reverse; }
-        @keyframes glitch-anim {
-            0% { transform: translate(0); }
-            20% { transform: translate(-3px, 2px); }
-            40% { transform: translate(-3px, -2px); }
-            100% { transform: translate(0); }
-        }
-        .sub-logo { display: block; font-size: 18px; letter-spacing: 16px; color: var(--neon); text-align: center; margin-top: 8px; font-weight: 900; }
-
-        /* MAIN DISPLAY */
-        #main-display {
-            font-size: 36px; min-height: 110px; width: 100%;
+        /* PREVIEW UNIT */
+        .preview-unit {
+            position: relative; width: 100%; height: 25vh;
             display: flex; align-items: center; justify-content: center;
-            color: #fff; text-align: center; cursor: copy; padding: 0 15px;
-            border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-            margin-bottom: 20px;
+            background: var(--ui-bg); border: 1px solid var(--line);
+            overflow: hidden; cursor: copy;
+        }
+        .preview-unit::before { content: ''; position: absolute; top: 0; left: 0; width: 10px; height: 10px; border-top: 3px solid var(--red); border-left: 3px solid var(--red); }
+        .preview-unit::after { content: ''; position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; border-bottom: 3px solid var(--red); border-right: 3px solid var(--red); }
+
+        #main-display {
+            font-size: 38px; text-align: center; color: #fff;
+            max-width: 90%; word-break: break-all; font-weight: 900;
         }
 
-        /* CONTROLS AREA */
-        .controls-wrap { 
-            width: 100%; max-width: 370px; flex: 1; 
-            display: flex; flex-direction: column; gap: 15px;
-        }
-
-        .input-box { width: 100%; }
+        /* INPUT BLOCK */
+        .input-section { padding: 10px 0; }
+        .label { font-size: 8px; letter-spacing: 3px; color: var(--red); margin-bottom: 10px; text-transform: uppercase; font-weight: 900; }
         #user-input {
-            width: 100%; background: #0a0000; border: 1px solid var(--border);
-            color: #fff; font-family: 'Montserrat'; font-size: 14px;
-            text-align: center; padding: 15px; border-radius: 2px;
-            letter-spacing: 3px; text-transform: uppercase; transition: 0.3s;
-        }
-        #user-input:focus { border-color: #fff; background: #111; }
-
-        /* SCROLLABLE LIBRARY */
-        .font-library {
-            width: 100%; flex-grow: 1; min-height: 150px; max-height: 24vh;
-            background: var(--glass); border: 1px solid var(--border);
-            overflow-y: auto; -webkit-overflow-scrolling: touch; pointer-events: all;
-        }
-        .font-library::-webkit-scrollbar { width: 2px; }
-        .font-library::-webkit-scrollbar-thumb { background: var(--neon); }
-
-        .font-item {
-            padding: 16px; border-bottom: 1px solid rgba(255,0,0,0.1);
-            cursor: pointer; display: flex; justify-content: space-between; align-items: center;
-            pointer-events: all;
-        }
-        .font-item.active { background: var(--neon); color: black; }
-        .font-item.active .font-meta { color: black; }
-
-        .font-style-preview { font-size: 20px; }
-        .font-meta { font-size: 8px; color: var(--neon); font-weight: 900; }
-
-        /* FINAL ACTION BUTTON */
-        .book-btn {
-            width: 100%; padding: 20px; background: var(--neon); 
-            border: none; color: black; font-weight: 900; 
-            letter-spacing: 4px; text-transform: uppercase;
-            cursor: pointer; font-size: 14px; margin-bottom: 10px;
+            width: 100%; background: rgba(255, 0, 0, 0.05); border: 1px solid var(--line);
+            color: #fff; padding: 15px; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; text-align: center;
         }
 
+        /* FONT SELECTOR */
+        .font-selector-wrap { flex: 1; overflow: hidden; display: flex; flex-direction: column; margin-top: 10px; }
+        .scroll-area { overflow-y: auto; flex: 1; -webkit-overflow-scrolling: touch; }
+        .scroll-area::-webkit-scrollbar { width: 0px; }
+
+        .font-node {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 22px 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.2s;
+        }
+        .font-node.active { background: var(--red); color: #000; }
+        .f-preview { font-size: 24px; }
+        .f-name { font-size: 10px; font-weight: 900; letter-spacing: 1px; }
+
+        /* BUTTONS */
+        .btn-init {
+            width: 100%; padding: 25px; margin: 15px 0;
+            background: var(--red); border: none; color: #000;
+            font-weight: 900; letter-spacing: 6px; text-transform: uppercase;
+            font-size: 16px; clip-path: polygon(0 0, 100% 0, 100% 75%, 95% 100%, 0 100%);
+        }
+
+        /* NOTICE */
         #copy-notice {
-            position: fixed; top: 130px; background: #fff; color: black;
-            padding: 6px 18px; font-size: 10px; font-weight: 900;
-            letter-spacing: 2px; display: none; z-index: 1000;
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: var(--red); color: black; padding: 10px 20px;
+            font-weight: 900; font-size: 12px; letter-spacing: 3px;
+            z-index: 1001; display: none;
         }
 
-        .nav-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.98);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transform: translateY(-100%); transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-            z-index: 900;
-        }
-        .nav-overlay.active { transform: translateY(0); }
-        .nav-link { font-size: 24px; font-weight: 900; letter-spacing: 6px; color: white; text-decoration: none; margin: 18px 0; text-transform: uppercase; }
+        /* SOUND */
+        .eq-btn { width: 40px; height: 30px; cursor: pointer; display: flex; align-items: flex-end; gap: 3px; }
+        .eq-bar { width: 4px; height: 6px; background: var(--red); transition: 0.3s; }
+        .eq-active .eq-bar { animation: eq-play 0.6s infinite alternate; }
+        @keyframes eq-play { from { height: 6px; } to { height: 22px; } }
     </style>
 </head>
 <body id="main-body">
 
+    <div class="screen-overlay"></div>
     <canvas id="matrix-canvas"></canvas>
-    <div class="watermark">YOKAI SYSTEM // NO COPY // DATA ENCRYPTED</div>
-    <div id="copy-notice">[ COPIED_TO_CLIPBOARD ]</div>
-
-    <div class="top-bar">
-        <div class="sound-toggle" onclick="toggleBgMusic()">
-            <span id="sound-icon" style="color: var(--neon); font-size: 20px;">🔈</span>
-            <div id="eq" class="eq-container">
-                <div class="eq-bar" style="animation-duration: 0.4s;"></div>
-                <div class="eq-bar" style="animation-duration: 0.6s;"></div>
-                <div class="eq-bar" style="animation-duration: 0.3s;"></div>
-                <div class="eq-bar" style="animation-duration: 0.5s;"></div>
-            </div>
-        </div>
-        <div class="menu-trigger" onclick="toggleMenu(this)">
-            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-        </div>
-    </div>
+    <div id="copy-notice">[ DATA_EXTRACTED ]</div>
 
     <div class="ui-wrapper">
-        <div class="header">
-            <div class="glitch" data-text="YYO">YYO</div>
-            <div class="sub-logo">KAI</div>
-        </div>
-
-        <div id="main-display">MEMENTO MORI</div>
-
-        <div class="controls-wrap">
-            <div class="input-box">
-                <input type="text" id="user-input" placeholder="ВПИШИ СВІЙ ТЕКСТ..." maxlength="22" oninput="syncText()">
+        <div class="top-bar">
+            <div class="eq-btn" id="sound-trigger" onclick="toggleBgMusic()">
+                <div class="eq-bar" style="animation-delay: 0.1s;"></div>
+                <div class="eq-bar" style="animation-delay: 0.3s;"></div>
+                <div class="eq-bar" style="animation-delay: 0.2s;"></div>
             </div>
-
-            <div class="font-library" id="font-list"></div>
-
-            <button class="book-btn" onclick="window.location.href='https://t.me'">ЗАПИСАТИСЬ НА СЕАНС</button>
+            <div class="system-id">YOKAI_OS // SECURE_MODE</div>
         </div>
-    </div>
 
-    <nav class="nav-overlay" id="nav">
-        <a href="index.html" class="nav-link">SKETCH_VOID</a>
-        <a href="#" class="nav-link">MISS_ARCHIVE</a>
-        <a href="https://instagram.com" class="nav-link">INSTAGRAM</a>
-        <a href="https://t.me" class="nav-link" style="color:var(--neon);">INIT_RESERVE</a>
-    </nav>
+        <div class="logo-wrap">
+            <div class="logo-main">YYO</div>
+        </div>
+
+        <div class="preview-unit" onclick="copyText()">
+            <div id="main-display">MEMENTO MORI</div>
+        </div>
+
+        <div class="input-section">
+            <div class="label">> USER_INPUT_FIELD</div>
+            <input type="text" id="user-input" placeholder="Впиши свій текст..." oninput="syncText()" maxlength="20">
+        </div>
+
+        <div class="font-selector-wrap">
+            <div class="label">> STYLE_DATABASE</div>
+            <div class="scroll-area" id="font-list"></div>
+        </div>
+
+        <button class="btn-init" onclick="window.location.href='https://t.me'">ЗАПИСАТИСЬ</button>
+    </div>
 
     <audio id="bg-music" loop><source src="RED_AMBIENT.mp3" type="audio/mpeg"></audio>
     <audio id="ui-click"><source src="RED_CLICK.mp3" type="audio/mpeg"></audio>
@@ -225,89 +159,86 @@
 
         function playClick() { uiClick.currentTime = 0; uiClick.play().catch(()=>{}); }
 
-        // ШРИФТИ (БАЗА)
+        // КОПІЮВАННЯ
+        function copyText() {
+            const text = document.getElementById('main-display').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                playClick();
+                const notice = document.getElementById('copy-notice');
+                notice.style.display = 'block';
+                setTimeout(() => notice.style.display = 'none', 1500);
+            });
+        }
+
         const tattooFonts = [
-            {id: 'UnifrakturMaguntia', type: 'Gothic'}, {id: 'Great Vibes', type: 'Script'},
-            {id: 'Cinzel', type: 'Roman'}, {id: 'Noto Sans JP', type: 'Asian'},
-            {id: 'MedievalSharp', type: 'Dark'}, {id: 'Charm', type: 'Calligraphy'},
-            {id: 'Pirata One', type: 'Vintage'}, {id: 'Kelly Slab', type: 'Tech'},
-            {id: 'Metal Mania', type: 'Metal'}, {id: 'Montserrat', type: 'Minimal'}
+            {id: 'UnifrakturMaguntia', tag: 'GOTHIC_01'}, 
+            {id: 'Great Vibes', tag: 'SCRIPT_02'},
+            {id: 'Cinzel', tag: 'ROMAN_03'}, 
+            {id: 'Noto Sans JP', tag: 'ASIA_04'},
+            {id: 'MedievalSharp', tag: 'DARK_05'},
+            {id: 'Charm', tag: 'HAND_06'},
+            {id: 'Metal Mania', tag: 'CORE_07'},
+            {id: 'Pirata One', tag: 'OLD_08'}
         ];
 
         const listContainer = document.getElementById('font-list');
         tattooFonts.forEach(font => {
-            const item = document.createElement('div');
-            item.className = 'font-item';
-            item.innerHTML = `<span style="font-family:'${font.id}'; font-size: 20px;">Style</span>
-                              <span class="font-meta">${font.id.toUpperCase()}</span>`;
-            item.onclick = (e) => {
-                e.stopPropagation();
+            const node = document.createElement('div');
+            node.className = 'font-node';
+            node.innerHTML = `
+                <span class="f-preview" style="font-family:'${font.id}'">Style</span>
+                <span class="f-name">${font.tag}</span>
+            `;
+            node.onclick = () => {
                 playClick();
                 document.getElementById('dynamic-fonts').href = `https://googleapis.com{font.id.replace(/ /g, '+')}&display=swap`;
                 document.getElementById('main-display').style.fontFamily = font.id;
-                document.querySelectorAll('.font-item').forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
+                document.querySelectorAll('.font-node').forEach(n => n.classList.remove('active'));
+                node.classList.add('active');
             };
-            listContainer.appendChild(item);
+            listContainer.appendChild(node);
         });
 
-        function syncText() { document.getElementById('main-display').innerText = document.getElementById('user-input').value || "MEMENTO MORI"; }
-
-        // КОПІЮВАННЯ ТЕКСТУ ПРИ КЛІКУ
-        document.getElementById('main-display').addEventListener('click', function() {
-            navigator.clipboard.writeText(this.innerText).then(() => {
-                playClick();
-                const n = document.getElementById('copy-notice');
-                n.style.display = 'block'; setTimeout(() => n.style.display = 'none', 2000);
-            });
-        });
-
-        // MATRIX BACKGROUND
-        const canvas = document.getElementById('matrix-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        const chars = "ヨカイ0123456789";
-        const drops = Array(Math.floor(canvas.width/14)).fill(1);
-        function drawMatrix() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#ff0000"; ctx.font = "14px monospace";
-            drops.forEach((y, i) => {
-                const text = chars[Math.floor(Math.random()*chars.length)];
-                ctx.fillText(text, i*14, y*14);
-                if(y*14 > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
-            });
+        function syncText() {
+            document.getElementById('main-display').innerText = document.getElementById('user-input').value || "MEMENTO MORI";
         }
-        setInterval(drawMatrix, 50);
 
-        // ЗАХИСТ ВІД СКРІНШОТІВ ТА ЗГОРТАННЯ
-        document.addEventListener('visibilitychange', () => {
-            const body = document.getElementById('main-body');
-            if (document.hidden) {
-                body.style.opacity = "0";
-                body.style.filter = "blur(50px) grayscale(1)";
-            } else {
-                setTimeout(() => {
-                    body.style.opacity = "1";
-                    body.style.filter = "none";
-                }, 300);
-            }
-        });
-
-        document.addEventListener('contextmenu', e => e.preventDefault());
-
-        function toggleMenu(x) { playClick(); x.classList.toggle("open"); document.getElementById('nav').classList.toggle('active'); }
-        
         function toggleBgMusic() {
-            const icon = document.getElementById('sound-icon');
-            const eq = document.getElementById('eq');
+            const btn = document.getElementById('sound-trigger');
             if(!musicPlaying){
-                bgMusic.play(); icon.style.display="none"; eq.style.display="flex"; musicPlaying=true;
+                bgMusic.play(); btn.classList.add('eq-active'); musicPlaying = true;
             } else {
-                bgMusic.pause(); icon.style.display="block"; eq.style.display="none"; musicPlaying=false;
+                bgMusic.pause(); btn.classList.remove('eq-active'); musicPlaying = false;
             }
             playClick();
         }
+
+        // ЗАХИСТ ВІД СКРІНУ (BLUR)
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                document.getElementById('main-body').style.filter = "brightness(0) blur(100px)";
+            } else {
+                document.getElementById('main-body').style.filter = "none";
+            }
+        });
+
+        // MATRIX CANVAS
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const chars = "01ヨカイ";
+        const drops = Array(Math.floor(canvas.width/15)).fill(1);
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#ff0000"; ctx.font = "12px monospace";
+            drops.forEach((y, i) => {
+                const text = chars[Math.floor(Math.random()*chars.length)];
+                ctx.fillText(text, i*15, y*15);
+                if(y*15 > canvas.height && Math.random() > 0.98) drops[i] = 0;
+                drops[i]++;
+            });
+        }
+        setInterval(drawMatrix, 60);
     </script>
 </body>
 </html>
