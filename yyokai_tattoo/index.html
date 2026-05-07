@@ -64,15 +64,15 @@
         .scroll-indicator.show { opacity: 0.6; visibility: visible; animation: arrowFloat 2s infinite ease-in-out; }
         @keyframes arrowFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(12px); } }
 
-        /* --- GRID (1080x600 + 4px gap) --- */
+        /* --- GRID (1080 ШИРИНА, 600 ВИСОТА) --- */
         .grid { 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
             width: 100%; 
-            gap: 4px; /* Відступ 4 пікселя між усіма кнопками */
+            gap: 4px; /* Відступ між кнопками */
             background: #000; 
-            padding-bottom: 50px;
+            padding-bottom: 80px;
         }
         
         .grid-item { 
@@ -85,11 +85,21 @@
             text-decoration: none; 
             color: #fff; 
             background-color: #111;
-            /* Жорсткі розміри кнопки */
-            width: 1080px; 
-            height: 600px; 
-            max-width: 95vw; /* Щоб кнопка не була більшою за екран телефону */
+            
+            /* Налаштування розміру */
+            width: 100%;
+            max-width: 1080px; 
+            height: 600px; /* Фіксована висота */
+            
             margin: 0 auto;
+        }
+
+        /* Адаптація для маленьких екранів: якщо екран вузький, зменшуємо висоту пропорційно */
+        @media (max-width: 1080px) {
+            .grid-item {
+                height: auto;
+                aspect-ratio: 1080 / 600;
+            }
         }
 
         .grid-item::before { 
@@ -100,17 +110,17 @@
             z-index: 1; 
         }
 
-        /* ФОТО ДЛЯ КНОПОК (Всі в режимі cover) */
-        .img-1 { background: url('1.jpg') center/cover; }
-        .img-2 { background: url('2.JPG') center/cover; }
-        .img-4 { background: url('lettering.jpg') center/cover; }
-        .img-3 { background: url('18.jpg') center/cover; }
-        .img-price { background: url('5.jpg') center/cover; }
-        .img-sketches { background: url('14.jpg') center/cover; } /* Постав тут назву фото для ескізів */
-        .img-care { background: url('14.jpg') center/cover; }
+        /* ФОТО */
+        .img-1 { background: url('1.jpg') center/cover no-repeat; }
+        .img-2 { background: url('2.JPG') center/cover no-repeat; }
+        .img-4 { background: url('lettering.jpg') center/cover no-repeat; }
+        .img-3 { background: url('18.jpg') center/cover no-repeat; }
+        .img-price { background: url('5.jpg') center/cover no-repeat; }
+        .img-sketches { background: url('033.jpg') center/cover no-repeat; }
+        .img-care { background: url('14.jpg') center/cover no-repeat; }
 
-        .grid-item h2 { font-family: 'Unbounded', sans-serif; font-size: 26px; text-transform: uppercase; z-index: 2; position: relative; }
-        .grid-item span.label { font-size: 10px; letter-spacing: 4px; margin-bottom: 8px; opacity: 0.4; z-index: 2; position: relative; }
+        .grid-item h2 { font-family: 'Unbounded', sans-serif; font-size: 28px; text-transform: uppercase; z-index: 2; position: relative; }
+        .grid-item span.label { font-size: 10px; letter-spacing: 4px; margin-bottom: 8px; opacity: 0.5; z-index: 2; position: relative; }
 
         /* --- ПРАЙС --- */
         .price-container { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.5s ease-in-out; z-index: 2; position: relative; overflow: hidden; }
@@ -119,7 +129,7 @@
         .price-row { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; text-transform: uppercase; }
         .price-row span:last-child { color: var(--red); font-weight: 900; }
 
-        footer { padding: 100px 40px; background: #000; font-size: 9px; letter-spacing: 2px; color: #222; line-height: 2.5; border-top: 1px solid #111; text-align: center; }
+        footer { padding: 100px 40px; background: #000; font-size: 9px; letter-spacing: 2px; color: #333; line-height: 2.5; border-top: 1px solid #111; text-align: center; }
         .footer-year { font-family: 'Unbounded', sans-serif; font-size: 12px; color: var(--red); margin-top: 25px; }
 
         .cta-fixed { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--red); color: #fff; padding: 22px 60px; border-radius: 100px; text-decoration: none; font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 900; z-index: 1000; box-shadow: 0 10px 40px rgba(255,0,0,0.4); white-space: nowrap; }
@@ -154,31 +164,26 @@
         </section>
 
         <section class="grid">
-            <!-- 01 // INSTA -->
             <a href="https://instagram.com" id="instagram" class="grid-item img-1">
                 <span class="label">01 // INSTA</span>
                 <h2>Instagram</h2>
             </a>
 
-            <!-- 02 // TG -->
             <a href="https://t.me" id="telegram" class="grid-item img-2">
                 <span class="label">02 // TG</span>
                 <h2>Telegram Bot</h2>
             </a>
 
-            <!-- 03 // LETTERING -->
             <a href="lettering.html" id="lettering" class="grid-item img-4">
                 <span class="label">03 // ART</span>
                 <h2>Обери власний надпис</h2>
             </a>
 
-            <!-- 03.5 // PORTFOLIO -->
             <a href="portfolio.html" id="portfolio" class="grid-item img-3">
                 <span class="label">03 // ART</span>
                 <h2>Портфоліо</h2>
             </a>
 
-            <!-- 04 // PRICE -->
             <div id="price" class="grid-item img-price" onclick="this.classList.toggle('open-price')">
                 <span class="label">04 // SYSTEM</span>
                 <h2>Ціна за Послугу</h2>
@@ -191,13 +196,11 @@
                 </div>
             </div>
 
-            <!-- 05 // SKETCHES (ФОТО) -->
             <a href="esciz.html" id="sketches" class="grid-item img-sketches">
                 <span class="label">05 // FLASH</span>
                 <h2>Вільні Ескізи</h2>
             </a>
 
-            <!-- 06 // CARE -->
             <a href="zagoenya.html" id="aftercare" class="grid-item img-care">
                 <span class="label">06 // CARE</span>
                 <h2>Картка Загоєння</h2>
