@@ -9,13 +9,8 @@
     <link id="dynamic-fonts" rel="stylesheet">
 
     <style>
-        :root {
-            --red: #ff0015;
-            --ui-bg: rgba(10, 0, 0, 0.95);
-            --line: rgba(255, 0, 21, 0.4);
-        }
+        :root { --red: #ff0000; --ui-bg: rgba(10, 0, 0, 0.9); }
 
-        /* ЗАХИСТ ВІД ВИДІЛЕННЯ */
         * { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; box-sizing: border-box; outline: none; }
 
         body, html {
@@ -24,112 +19,119 @@
             color: white; overflow: hidden;
         }
 
-        #matrix-canvas { position: fixed; inset: 0; opacity: 0.15; z-index: 1; pointer-events: none; }
-
-        /* ЕФЕКТ CRT ТА ЗАХИСТ */
-        .screen-overlay {
-            position: fixed; inset: 0; pointer-events: none; z-index: 999;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
-                        radial-gradient(circle, transparent 30%, rgba(0,0,0,0.5) 100%);
-            background-size: 100% 3px, 100% 100%;
-            transition: 0.3s;
-        }
+        #matrix-canvas { position: fixed; inset: 0; opacity: 0.25; z-index: 1; pointer-events: none; }
 
         .ui-wrapper {
             position: relative; z-index: 10; height: 100vh;
             display: flex; flex-direction: column; 
-            padding: env(safe-area-inset-top) 25px env(safe-area-inset-bottom);
+            padding: env(safe-area-inset-top) 25px calc(env(safe-area-inset-bottom) + 20px);
             justify-content: space-between;
         }
 
-        /* HEADER */
-        .top-bar {
-            display: flex; justify-content: space-between; align-items: center; padding: 20px 0;
-        }
-        .system-id { font-size: 9px; letter-spacing: 4px; color: var(--red); font-weight: 900; }
+        /* TOP BAR */
+        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; width: 100%; }
+        
+        .sound-wrap { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .sound-icon { font-size: 18px; color: var(--red); }
+        .eq { display: none; align-items: flex-end; gap: 2px; height: 18px; }
+        .eq-bar { width: 2px; background: var(--red); height: 4px; }
+        .eq-active .eq { display: flex; }
+        .eq-active .sound-icon { display: none; }
+        .eq-active .eq-bar { animation: eq-play 0.6s infinite alternate; }
+        @keyframes eq-play { from { height: 4px; } to { height: 18px; } }
 
-        .logo-wrap { text-align: center; padding: 10px 0; }
-        .logo-main { font-weight: 900; font-size: 52px; letter-spacing: 12px; color: #fff; text-shadow: 0 0 20px var(--red); }
-        .logo-main::after { content: 'KAI'; display: block; font-size: 16px; letter-spacing: 15px; color: var(--red); margin-top: -5px; text-shadow: none; }
+        .menu-trigger { width: 28px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
+        .menu-trigger span { width: 100%; height: 2px; background: var(--red); transition: 0.3s; }
+        .open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .open span:nth-child(2) { opacity: 0; }
+        .open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-        /* PREVIEW UNIT */
+        /* LOGO YYO KAI */
+        .header { text-align: center; margin-top: 10px; }
+        .glitch-logo { font-weight: 900; font-size: 48px; letter-spacing: 12px; color: #fff; line-height: 1; position: relative; }
+        .glitch-logo span { display: block; font-size: 18px; color: var(--red); letter-spacing: 15px; margin-top: 5px; }
+
+        /* PREVIEW - NO BORDERS */
         .preview-unit {
-            position: relative; width: 100%; height: 25vh;
+            width: 100%; height: 20vh;
             display: flex; align-items: center; justify-content: center;
-            background: var(--ui-bg); border: 1px solid var(--line);
-            overflow: hidden; cursor: copy;
+            cursor: copy;
         }
-        .preview-unit::before { content: ''; position: absolute; top: 0; left: 0; width: 10px; height: 10px; border-top: 3px solid var(--red); border-left: 3px solid var(--red); }
-        .preview-unit::after { content: ''; position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; border-bottom: 3px solid var(--red); border-right: 3px solid var(--red); }
-
         #main-display {
             font-size: 38px; text-align: center; color: #fff;
-            max-width: 90%; word-break: break-all; font-weight: 900;
+            font-weight: 900; text-transform: uppercase;
+            animation: text-float 4s infinite ease-in-out;
         }
+        @keyframes text-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        /* INPUT BLOCK */
-        .input-section { padding: 10px 0; }
-        .label { font-size: 8px; letter-spacing: 3px; color: var(--red); margin-bottom: 10px; text-transform: uppercase; font-weight: 900; }
+        /* INPUT */
+        .input-section { width: 100%; }
         #user-input {
-            width: 100%; background: rgba(255, 0, 0, 0.05); border: 1px solid var(--line);
-            color: #fff; padding: 15px; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; text-align: center;
+            width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,0,0,0.3);
+            color: #fff; padding: 15px; font-size: 15px; letter-spacing: 3px; 
+            text-transform: uppercase; text-align: center;
         }
 
-        /* FONT SELECTOR */
-        .font-selector-wrap { flex: 1; overflow: hidden; display: flex; flex-direction: column; margin-top: 10px; }
-        .scroll-area { overflow-y: auto; flex: 1; -webkit-overflow-scrolling: touch; }
+        /* FONT LIST */
+        .font-selector-wrap { flex: 1; overflow: hidden; margin: 20px 0; }
+        .scroll-area { height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; }
         .scroll-area::-webkit-scrollbar { width: 0px; }
-
         .font-node {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 22px 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            transition: 0.2s;
+            padding: 18px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .font-node.active { background: var(--red); color: #000; }
-        .f-preview { font-size: 24px; }
-        .f-name { font-size: 10px; font-weight: 900; letter-spacing: 1px; }
+        .font-node.active { color: var(--red); border-bottom: 1px solid var(--red); }
+        .f-preview { font-size: 22px; }
+        .f-name { font-size: 9px; font-weight: 900; opacity: 0.5; }
 
-        /* BUTTONS */
+        /* BUTTON - RAISED */
         .btn-init {
-            width: 100%; padding: 25px; margin: 15px 0;
-            background: var(--red); border: none; color: #000;
-            font-weight: 900; letter-spacing: 6px; text-transform: uppercase;
-            font-size: 16px; clip-path: polygon(0 0, 100% 0, 100% 75%, 95% 100%, 0 100%);
+            width: 100%; padding: 22px; background: var(--red); 
+            border: none; color: #000; font-weight: 900; letter-spacing: 5px;
+            text-transform: uppercase; font-size: 14px;
+            box-shadow: 0 0 20px rgba(255,0,0,0.3);
         }
 
-        /* NOTICE */
+        .nav-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.98);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transform: translateX(100%); transition: 0.5s; z-index: 900;
+        }
+        .nav-overlay.active { transform: translateX(0); }
+        .nav-link { font-size: 22px; font-weight: 900; color: white; text-decoration: none; margin: 15px 0; text-transform: uppercase; }
+
         #copy-notice {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: var(--red); color: black; padding: 10px 20px;
-            font-weight: 900; font-size: 12px; letter-spacing: 3px;
-            z-index: 1001; display: none;
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            background: var(--red); color: black; padding: 8px 20px;
+            font-weight: 900; font-size: 10px; z-index: 2000; display: none;
         }
-
-        /* SOUND */
-        .eq-btn { width: 40px; height: 30px; cursor: pointer; display: flex; align-items: flex-end; gap: 3px; }
-        .eq-bar { width: 4px; height: 6px; background: var(--red); transition: 0.3s; }
-        .eq-active .eq-bar { animation: eq-play 0.6s infinite alternate; }
-        @keyframes eq-play { from { height: 6px; } to { height: 22px; } }
     </style>
 </head>
 <body id="main-body">
 
-    <div class="screen-overlay"></div>
     <canvas id="matrix-canvas"></canvas>
     <div id="copy-notice">[ DATA_EXTRACTED ]</div>
 
     <div class="ui-wrapper">
         <div class="top-bar">
-            <div class="eq-btn" id="sound-trigger" onclick="toggleBgMusic()">
-                <div class="eq-bar" style="animation-delay: 0.1s;"></div>
-                <div class="eq-bar" style="animation-delay: 0.3s;"></div>
-                <div class="eq-bar" style="animation-delay: 0.2s;"></div>
+            <div class="sound-wrap" id="sound-trigger" onclick="toggleBgMusic()">
+                <div class="sound-icon">🔈</div>
+                <div class="eq">
+                    <div class="eq-bar" style="animation-duration: 0.4s;"></div>
+                    <div class="eq-bar" style="animation-duration: 0.7s;"></div>
+                    <div class="eq-bar" style="animation-duration: 0.5s;"></div>
+                    <div class="eq-bar" style="animation-duration: 0.8s;"></div>
+                    <div class="eq-bar" style="animation-duration: 0.6s;"></div>
+                    <div class="eq-bar" style="animation-duration: 0.4s;"></div>
+                </div>
             </div>
-            <div class="system-id">YOKAI_OS // SECURE_MODE</div>
+            <div class="menu-trigger" onclick="toggleMenu(this)">
+                <span></span><span></span><span></span>
+            </div>
         </div>
 
-        <div class="logo-wrap">
-            <div class="logo-main">YYO</div>
+        <div class="header">
+            <div class="glitch-logo">YYO<span>KAI</span></div>
         </div>
 
         <div class="preview-unit" onclick="copyText()">
@@ -137,17 +139,22 @@
         </div>
 
         <div class="input-section">
-            <div class="label">> USER_INPUT_FIELD</div>
-            <input type="text" id="user-input" placeholder="Впиши свій текст..." oninput="syncText()" maxlength="20">
+            <input type="text" id="user-input" placeholder="ВПИШИ СВІЙ ТЕКСТ..." oninput="syncText()" maxlength="20">
         </div>
 
         <div class="font-selector-wrap">
-            <div class="label">> STYLE_DATABASE</div>
             <div class="scroll-area" id="font-list"></div>
         </div>
 
         <button class="btn-init" onclick="window.location.href='https://t.me'">ЗАПИСАТИСЬ</button>
     </div>
+
+    <nav class="nav-overlay" id="nav">
+        <a href="index.html" class="nav-link">SKETCHES</a>
+        <a href="#" class="nav-link">ARCHIVE</a>
+        <a href="https://instagram.com" class="nav-link">INSTAGRAM</a>
+        <a href="https://t.me" class="nav-link" style="color:var(--red);">RESERVE</a>
+    </nav>
 
     <audio id="bg-music" loop><source src="RED_AMBIENT.mp3" type="audio/mpeg"></audio>
     <audio id="ui-click"><source src="RED_CLICK.mp3" type="audio/mpeg"></audio>
@@ -159,7 +166,6 @@
 
         function playClick() { uiClick.currentTime = 0; uiClick.play().catch(()=>{}); }
 
-        // КОПІЮВАННЯ
         function copyText() {
             const text = document.getElementById('main-display').innerText;
             navigator.clipboard.writeText(text).then(() => {
@@ -171,24 +177,17 @@
         }
 
         const tattooFonts = [
-            {id: 'UnifrakturMaguntia', tag: 'GOTHIC_01'}, 
-            {id: 'Great Vibes', tag: 'SCRIPT_02'},
-            {id: 'Cinzel', tag: 'ROMAN_03'}, 
-            {id: 'Noto Sans JP', tag: 'ASIA_04'},
-            {id: 'MedievalSharp', tag: 'DARK_05'},
-            {id: 'Charm', tag: 'HAND_06'},
-            {id: 'Metal Mania', tag: 'CORE_07'},
-            {id: 'Pirata One', tag: 'OLD_08'}
+            {id: 'UnifrakturMaguntia', tag: 'GOTHIC'}, {id: 'Great Vibes', tag: 'SCRIPT'},
+            {id: 'Cinzel', tag: 'ROMAN'}, {id: 'Noto Sans JP', tag: 'JAPANESE'},
+            {id: 'MedievalSharp', tag: 'MEDIEVAL'}, {id: 'Charm', tag: 'HAND'},
+            {id: 'Metal Mania', tag: 'METAL'}, {id: 'Pirata One', tag: 'VINTAGE'}
         ];
 
         const listContainer = document.getElementById('font-list');
         tattooFonts.forEach(font => {
             const node = document.createElement('div');
             node.className = 'font-node';
-            node.innerHTML = `
-                <span class="f-preview" style="font-family:'${font.id}'">Style</span>
-                <span class="f-name">${font.tag}</span>
-            `;
+            node.innerHTML = `<span class="f-preview" style="font-family:'${font.id}'">Style</span><span class="f-name">${font.tag}</span>`;
             node.onclick = () => {
                 playClick();
                 document.getElementById('dynamic-fonts').href = `https://googleapis.com{font.id.replace(/ /g, '+')}&display=swap`;
@@ -199,30 +198,17 @@
             listContainer.appendChild(node);
         });
 
-        function syncText() {
-            document.getElementById('main-display').innerText = document.getElementById('user-input').value || "MEMENTO MORI";
-        }
+        function syncText() { document.getElementById('main-display').innerText = document.getElementById('user-input').value || "MEMENTO MORI"; }
 
         function toggleBgMusic() {
             const btn = document.getElementById('sound-trigger');
-            if(!musicPlaying){
-                bgMusic.play(); btn.classList.add('eq-active'); musicPlaying = true;
-            } else {
-                bgMusic.pause(); btn.classList.remove('eq-active'); musicPlaying = false;
-            }
+            if(!musicPlaying){ bgMusic.play(); btn.classList.add('eq-active'); musicPlaying = true; }
+            else { bgMusic.pause(); btn.classList.remove('eq-active'); musicPlaying = false; }
             playClick();
         }
 
-        // ЗАХИСТ ВІД СКРІНУ (BLUR)
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                document.getElementById('main-body').style.filter = "brightness(0) blur(100px)";
-            } else {
-                document.getElementById('main-body').style.filter = "none";
-            }
-        });
+        function toggleMenu(x) { playClick(); x.classList.toggle("open"); document.getElementById('nav').classList.toggle('active'); }
 
-        // MATRIX CANVAS
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -234,11 +220,15 @@
             drops.forEach((y, i) => {
                 const text = chars[Math.floor(Math.random()*chars.length)];
                 ctx.fillText(text, i*15, y*15);
-                if(y*15 > canvas.height && Math.random() > 0.98) drops[i] = 0;
+                if(y*14 > canvas.height && Math.random() > 0.98) drops[i] = 0;
                 drops[i]++;
             });
         }
         setInterval(drawMatrix, 60);
+
+        document.addEventListener('visibilitychange', () => {
+            document.body.style.filter = document.hidden ? "brightness(0) blur(100px)" : "none";
+        });
     </script>
 </body>
 </html>
