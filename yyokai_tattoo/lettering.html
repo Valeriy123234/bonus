@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>YOKAI OS // RED_PROTOCOL_FULL</title>
+    <title>YOKAI OS // RED_PROTOCOL_MAX</title>
     
-    <!-- ШРИФТИ -->
+    <!-- ПІДКЛЮЧЕННЯ ШРИФТІВ -->
     <link href="https://googleapis.com" rel="stylesheet">
     <link id="dynamic-fonts" rel="stylesheet">
 
@@ -16,7 +16,7 @@
             --glitch-cyan: #00fff0;
         }
 
-        /* ПОВНИЙ ЗАХИСТ ТА БАЗОВІ НАЛАШТУВАННЯ */
+        /* 1. БАЗОВИЙ ЗАХИСТ */
         * { 
             -webkit-user-select: none; 
             user-select: none; 
@@ -29,26 +29,19 @@
             margin: 0; padding: 0; height: 100%; width: 100%;
             background: #000; font-family: 'Montserrat', sans-serif;
             color: white; overflow: hidden;
-            transition: opacity 0.5s ease, filter 0.5s ease;
         }
 
-        /* МАТРИЧНИЙ ФОН */
+        /* 2. ЕФЕКТИ ЕКРАНА */
         #matrix-canvas { position: fixed; inset: 0; opacity: 0.25; z-index: 1; pointer-events: none; }
-
-        /* CRT ТА SCANLINES */
+        
         body::before {
-            content: " "; position: fixed; inset: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(255, 0, 0, 0.01), rgba(255, 0, 0, 0.03));
-            z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none;
-        }
-        body::after {
-            content: " "; position: fixed; inset: 0;
-            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.9) 150%);
-            z-index: 998; pointer-events: none;
+            content: ""; position: fixed; inset: 0;
+            background: linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.2) 50%), 
+                        linear-gradient(90deg, rgba(255,0,0,0.03), rgba(0,255,0,0.01), rgba(0,0,255,0.03));
+            z-index: 999; background-size: 100% 3px, 3px 100%; pointer-events: none;
         }
 
-        /* ЛІТАЮЧИЙ ВОДЯНИЙ ЗНАК (ЗАХИСТ) */
+        /* 3. ЛІТАЮЧИЙ ВОДЯНИЙ ЗНАК (ЗАХИСТ ВІД СКРІНІВ) */
         .watermark {
             position: absolute; font-size: 10px; color: var(--red); opacity: 0.08;
             white-space: nowrap; pointer-events: none; z-index: 5;
@@ -60,114 +53,124 @@
             100% { transform: translate(100vw, 100vh) rotate(-45deg); }
         }
 
-        /* ЗАХИСНИЙ ШАР ПРИ ЗГОРТАННІ */
+        /* 4. ШАР ЗАХИСТУ ПРИ ЗГОРТАННІ */
         #protection-layer {
             position: fixed; inset: 0; background: #000; z-index: 9999; display: none;
         }
 
-        /* ОСНОВНА ОБОРТКА */
-        .ui-wrapper {
-            position: relative; z-index: 10; height: 100vh;
-            display: flex; flex-direction: column; 
-            padding: env(safe-area-inset-top) 25px calc(env(safe-area-inset-bottom) + 35px);
-            justify-content: space-between;
+        /* 5. TOP BAR (ЗВУК ТА МЕНЮ) */
+        .top-bar {
+            position: absolute; top: 30px; width: 100%;
+            display: flex; justify-content: space-between;
+            padding: 0 30px; z-index: 1002;
         }
 
-        /* ВЕРХНЯ ПАНЕЛЬ */
-        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; width: 100%; position: relative; z-index: 1001; }
-        
-        .sound-wrap { display: flex; align-items: center; cursor: pointer; height: 30px; min-width: 50px; }
+        .sound-wrap { display: flex; align-items: center; cursor: pointer; min-width: 60px; height: 30px; }
         .sound-icon { font-size: 18px; color: var(--red); }
         .eq { display: none; align-items: flex-end; gap: 2px; height: 18px; }
-        .eq-bar { width: 2px; background: var(--red); height: 4px; }
+        .eq-bar { width: 2px; background: var(--red); height: 4px; animation: eq-play 0.6s infinite alternate; }
         .eq-active .eq { display: flex; }
         .eq-active .sound-icon { display: none; }
-        .eq-active .eq-bar { animation: eq-play 0.6s infinite alternate; }
         @keyframes eq-play { from { height: 4px; } to { height: 18px; } }
 
-        /* ГАМБУРГЕР -> ХРЕСТИК */
-        .menu-trigger { width: 30px; height: 24px; position: relative; cursor: pointer; }
-        .menu-trigger span { 
-            display: block; position: absolute; height: 2px; width: 100%; 
-            background: var(--red); transition: transform .3s ease, top .3s ease, opacity .3s ease; left: 0;
+        /* ХРЕСТИК (ВИПРАВЛЕНО) */
+        .menu-trigger { width: 30px; height: 30px; position: relative; cursor: pointer; }
+        .menu-trigger span {
+            position: absolute; left: 0; width: 100%; height: 2px;
+            background: var(--red); transition: all 0.3s ease-in-out; top: 14px;
         }
-        .menu-trigger span:nth-child(1) { top: 2px; }
-        .menu-trigger span:nth-child(2) { top: 11px; }
-        .menu-trigger span:nth-child(3) { top: 20px; }
+        .menu-trigger span:nth-child(1) { transform: translateY(-10px); }
+        .menu-trigger span:nth-child(2) { opacity: 1; }
+        .menu-trigger span:nth-child(3) { transform: translateY(10px); }
 
-        .menu-trigger.open span:nth-child(1) { top: 11px; transform: rotate(45deg); }
+        .menu-trigger.open span:nth-child(1) { transform: translateY(0) rotate(45deg); }
         .menu-trigger.open span:nth-child(2) { opacity: 0; transform: translateX(-20px); }
-        .menu-trigger.open span:nth-child(3) { top: 11px; transform: rotate(-45deg); }
+        .menu-trigger.open span:nth-child(3) { transform: translateY(0) rotate(-45deg); }
 
-        /* СКЛАДНИЙ ГЛІТЧ ЛОГОТИП */
-        .header { text-align: center; margin-top: 10px; }
-        .logo-main { 
-            font-weight: 900; font-size: 52px; letter-spacing: 14px; color: #fff; 
-            line-height: 1; position: relative; display: inline-block;
+        /* 6. LOGO SECTION */
+        .header { position: absolute; top: 85px; width: 100%; text-align: center; z-index: 10; }
+        .logo-main {
+            font-weight: 900; font-size: 54px; letter-spacing: 14px; color: #fff;
+            position: relative; display: inline-block; line-height: 1;
         }
         .logo-main::before, .logo-main::after {
-            content: 'YYO'; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: black;
+            content: 'YYO'; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: black; clip: rect(0, 0, 0, 0);
         }
-        .logo-main::before { left: 2px; text-shadow: -2px 0 var(--glitch-pink); animation: glitch-1 2s infinite linear alternate-reverse; }
-        .logo-main::after { left: -2px; text-shadow: -2px 0 var(--glitch-cyan); animation: glitch-2 3s infinite linear alternate-reverse; }
+        .logo-main::before { left: 3px; text-shadow: -3px 0 var(--glitch-pink); animation: g1 2.5s infinite linear alternate-reverse; }
+        .logo-main::after { left: -3px; text-shadow: -3px 0 var(--glitch-cyan); animation: g2 3.5s infinite linear alternate-reverse; }
 
-        @keyframes glitch-1 { 0% { clip: rect(20px, 9999px, 10px, 0); } 20% { clip: rect(80px, 9999px, 30px, 0); } 100% { clip: rect(10px, 9999px, 90px, 0); } }
-        @keyframes glitch-2 { 0% { clip: rect(60px, 9999px, 50px, 0); } 30% { clip: rect(10px, 9999px, 80px, 0); } 100% { clip: rect(90px, 9999px, 20px, 0); } }
-        .logo-sub { display: block; font-size: 20px; color: var(--red); letter-spacing: 18px; margin-top: 5px; font-weight: 900; }
+        @keyframes g1 { 0% { clip: rect(15px, 999px, 45px, 0); } 100% { clip: rect(40px, 999px, 85px, 0); } }
+        @keyframes g2 { 0% { clip: rect(65px, 999px, 55px, 0); } 100% { clip: rect(15px, 999px, 95px, 0); } }
+        
+        .logo-sub { display: block; font-size: 20px; color: var(--red); letter-spacing: 18px; margin-top: 5px; font-weight: 900; text-shadow: 0 0 10px var(--red); }
 
-        /* ПРЕВ'Ю ТЕКСТУ (+30px відступ) */
-        #main-display { 
-            font-size: 36px; text-align: center; color: #fff; font-weight: 900; 
-            min-height: 100px; display: flex; align-items: center; justify-content: center; 
-            margin-top: 30px; text-shadow: 0 0 15px rgba(255,255,255,0.3);
-            cursor: copy;
+        /* 7. ПРЕВ'Ю ТЕКСТУ (30px НИЖЧЕ) */
+        #main-display {
+            position: absolute; top: 240px; width: 100%;
+            font-size: 34px; text-align: center; font-weight: 900;
+            z-index: 10; cursor: copy; padding: 0 25px;
+            text-shadow: 0 0 15px rgba(255,255,255,0.2);
+            word-break: break-all;
         }
 
-        /* ПОЛЕ ВВОДУ (+30px відступ) */
+        /* 8. ВВОД ТЕКСТУ (30px НИЖЧЕ) */
+        .input-wrap { position: absolute; top: 350px; width: 100%; padding: 0 45px; z-index: 10; }
         #user-input {
-            width: 100%; background: rgba(255,0,0,0.05); border: none; border-bottom: 1px solid rgba(255,0,0,0.3);
-            color: #fff; padding: 15px; font-size: 15px; letter-spacing: 3px; 
+            width: 100%; background: rgba(255,0,0,0.03); border: none;
+            border-bottom: 1px solid rgba(255,0,0,0.4);
+            color: #fff; padding: 12px; font-size: 15px; letter-spacing: 3px;
             text-transform: uppercase; text-align: center;
-            margin-top: 30px; border-radius: 0;
         }
 
-        /* СПИСОК ШРИФТІВ */
-        .font-selector-wrap { flex: 1; overflow: hidden; margin: 20px 0; }
+        /* 9. СПИСОК ШРИФТІВ (ШИРОКИЙ ТА КОМПАКТНИЙ) */
+        .font-selector-wrap {
+            position: absolute; top: 430px; bottom: 120px;
+            width: 100%; overflow: hidden; padding: 0 30px; z-index: 10;
+        }
         .scroll-area { height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; }
         .scroll-area::-webkit-scrollbar { width: 0px; }
-        
-        .font-node { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 12px 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); 
-        }
-        .font-node.active { color: var(--red); border-left: 2px solid var(--red); background: rgba(255,0,0,0.05); }
-        .f-preview { font-size: 22px; }
-        .f-name { font-size: 9px; font-weight: 900; opacity: 0.5; letter-spacing: 2px; }
 
-        /* КНОПКА ЗАПИСУ (опущена на 35px від краю) */
-        .btn-init { 
-            width: 100%; padding: 22px; background: rgba(255, 0, 0, 0.02); 
-            border: 1px solid var(--red); color: var(--red); 
-            font-weight: 900; letter-spacing: 6px; 
-            text-transform: uppercase; font-size: 14px; margin-bottom: 35px;
-            transition: .3s;
+        .font-node {
+            display: flex; 
+            justify-content: space-between; /* Максимальна відстань 80-100px */
+            align-items: center; 
+            padding: 10px 10px; /* Вузька строка */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.3s;
         }
-        .btn-init:active { background: var(--red); color: #000; }
+        .font-node.active { color: var(--red); border-left: 2px solid var(--red); padding-left: 15px; background: rgba(255,0,0,0.05); }
+        .f-preview { font-size: 20px; }
+        .f-name { font-size: 9px; font-weight: 900; opacity: 0.5; letter-spacing: 2px; text-transform: uppercase; }
 
-        /* МЕНЮ НАВІГАЦІЇ */
-        .nav-overlay { 
-            position: fixed; inset: 0; background: #000; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            transform: translateX(100%); transition: 0.4s cubic-bezier(0.77, 0, 0.175, 1); z-index: 900; 
+        /* 10. КНОПКА ЗАПИСУ */
+        .btn-init {
+            position: absolute; bottom: 35px; left: 50%;
+            transform: translateX(-50%); width: calc(100% - 60px);
+            padding: 22px; background: rgba(255,0,0,0.02);
+            border: 1px solid var(--red); color: var(--red);
+            font-weight: 900; letter-spacing: 6px;
+            text-transform: uppercase; font-size: 14px; z-index: 10;
+            transition: 0.3s;
+        }
+        .btn-init:active { background: var(--red); color: #000; box-shadow: 0 0 30px var(--red); }
+
+        /* 11. НАВІГАЦІЯ */
+        .nav-overlay {
+            position: fixed; inset: 0; background: #000;
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; transform: translateX(100%);
+            transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1); z-index: 1001;
         }
         .nav-overlay.active { transform: translateX(0); }
-        .nav-link { font-size: 22px; font-weight: 900; color: white; text-decoration: none; margin: 15px 0; text-transform: uppercase; }
+        .nav-link { font-size: 24px; font-weight: 900; color: white; text-decoration: none; margin: 18px 0; text-transform: uppercase; }
 
-        /* СПОВІЩЕННЯ */
-        #copy-notice { 
-            position: fixed; top: 30px; left: 50%; transform: translateX(-50%); 
-            background: var(--red); color: black; padding: 8px 20px; 
-            font-weight: 900; font-size: 10px; z-index: 2000; display: none; box-shadow: 0 0 20px var(--red); 
+        /* 12. ПОВІДОМЛЕННЯ */
+        #copy-notice {
+            position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+            background: var(--red); color: black; padding: 10px 20px;
+            font-weight: 900; font-size: 10px; z-index: 2000; display: none;
+            box-shadow: 0 0 20px var(--red);
         }
     </style>
 </head>
@@ -175,52 +178,51 @@
 
     <div id="protection-layer"></div>
     <canvas id="matrix-canvas"></canvas>
-    <div class="watermark">YOKAI SYSTEM // NO COPY // DATA ENCRYPTED</div>
+    <div class="watermark">YOKAI SYSTEM // SECURE // NO_COPY</div>
     <div id="copy-notice">[ DATA_EXTRACTED ]</div>
 
-    <div class="ui-wrapper">
-        <div class="top-bar">
-            <div class="sound-wrap" id="sound-trigger" onclick="toggleBgMusic()">
-                <div class="sound-icon">🔈</div>
-                <div class="eq">
-                    <div class="eq-bar" style="animation-duration: 0.4s;"></div>
-                    <div class="eq-bar" style="animation-duration: 0.7s;"></div>
-                    <div class="eq-bar" style="animation-duration: 0.5s;"></div>
-                    <div class="eq-bar" style="animation-duration: 0.4s;"></div>
-                </div>
-            </div>
-            <div class="menu-trigger" onclick="toggleMenu(this)">
-                <span></span><span></span><span></span>
+    <!-- ТІЛО ІНТЕРФЕЙСУ -->
+    <div class="top-bar">
+        <div class="sound-wrap" id="sound-trigger" onclick="toggleBgMusic()">
+            <div class="sound-icon">🔈</div>
+            <div class="eq">
+                <div class="eq-bar" style="animation-duration: 0.4s;"></div>
+                <div class="eq-bar" style="animation-duration: 0.7s;"></div>
+                <div class="eq-bar" style="animation-duration: 0.5s;"></div>
+                <div class="eq-bar" style="animation-duration: 0.8s;"></div>
             </div>
         </div>
-
-        <div class="header">
-            <div class="logo-main">YYO</div>
-            <div class="logo-sub">KAI</div>
+        <div class="menu-trigger" id="burger" onclick="toggleMenu()">
+            <span></span><span></span><span></span>
         </div>
-
-        <div onclick="copyText()">
-            <div id="main-display">MEMENTO MORI</div>
-        </div>
-
-        <div class="input-section">
-            <input type="text" id="user-input" placeholder="Впиши свій текст..." oninput="syncText()" maxlength="20">
-        </div>
-
-        <div class="font-selector-wrap">
-            <div class="scroll-area" id="font-list"></div>
-        </div>
-
-        <button class="btn-init" onclick="window.location.href='https://t.me'">Записатись</button>
     </div>
 
+    <div class="header">
+        <div class="logo-main">YYO</div>
+        <div class="logo-sub">KAI</div>
+    </div>
+
+    <div id="main-display" onclick="copyText()">MEMENTO MORI</div>
+
+    <div class="input-wrap">
+        <input type="text" id="user-input" placeholder="Впиши свій текст..." oninput="syncText()" maxlength="20">
+    </div>
+
+    <div class="font-selector-wrap">
+        <div class="scroll-area" id="font-list"></div>
+    </div>
+
+    <button class="btn-init" onclick="window.location.href='https://t.me'">Записатись</button>
+
+    <!-- МЕНЮ -->
     <nav class="nav-overlay" id="nav">
-        <a href="index.html" class="nav-link" onclick="toggleMenu(document.querySelector('.menu-trigger'))">Sketches</a>
-        <a href="#" class="nav-link" onclick="toggleMenu(document.querySelector('.menu-trigger'))">Archive</a>
-        <a href="https://instagram.com" class="nav-link">Instagram</a>
-        <a href="https://t.me" class="nav-link" style="color:var(--red);">Reserve</a>
+        <a href="index.html" class="nav-link" onclick="toggleMenu()">SKETCHES</a>
+        <a href="#" class="nav-link" onclick="toggleMenu()">ARCHIVE</a>
+        <a href="https://instagram.com" class="nav-link">INSTAGRAM</a>
+        <a href="https://t.me" class="nav-link" style="color:var(--red);">RESERVE NOW</a>
     </nav>
 
+    <!-- АУДІО -->
     <audio id="bg-music" loop><source src="RED_AMBIENT.mp3" type="audio/mpeg"></audio>
     <audio id="ui-click"><source src="RED_CLICK.mp3" type="audio/mpeg"></audio>
 
@@ -231,6 +233,14 @@
 
         function playClick() { uiClick.currentTime = 0; uiClick.play().catch(()=>{}); }
 
+        // 1. ЛОГІКА МЕНЮ
+        function toggleMenu() {
+            playClick();
+            document.getElementById('burger').classList.toggle('open');
+            document.getElementById('nav').classList.toggle('active');
+        }
+
+        // 2. КОПІЮВАННЯ
         function copyText() {
             const text = document.getElementById('main-display').innerText;
             navigator.clipboard.writeText(text).then(() => {
@@ -241,17 +251,26 @@
             });
         }
 
+        // 3. ГЕНЕРАЦІЯ ШРИФТІВ
         const tattooFonts = [
-            {id: 'UnifrakturMaguntia', tag: 'GOTH'}, {id: 'Great Vibes', tag: 'LETTER'},
-            {id: 'Cinzel', tag: 'ROMAN'}, {id: 'Noto Sans JP', tag: 'ASIA'},
-            {id: 'MedievalSharp', tag: 'METAL'}, {id: 'Charm', tag: 'HAND'}
+            {id: 'UnifrakturMaguntia', tag: 'GOTHIC'}, 
+            {id: 'Great Vibes', tag: 'SCRIPT'},
+            {id: 'Cinzel', tag: 'ROMAN'}, 
+            {id: 'Noto Sans JP', tag: 'ASIA'},
+            {id: 'MedievalSharp', tag: 'METAL'}, 
+            {id: 'Charm', tag: 'HAND'},
+            {id: 'Pirata One', tag: 'VINTAGE'},
+            {id: 'Kelly Slab', tag: 'TECH'}
         ];
 
         const listContainer = document.getElementById('font-list');
         tattooFonts.forEach(font => {
             const node = document.createElement('div');
             node.className = 'font-node';
-            node.innerHTML = `<span class="f-preview" style="font-family:'${font.id}'">Style</span><span class="f-name">${font.tag}</span>`;
+            node.innerHTML = `
+                <span class="f-preview" style="font-family:'${font.id}'">Style</span>
+                <span class="f-name">${font.tag}</span>
+            `;
             node.onclick = () => {
                 playClick();
                 document.getElementById('dynamic-fonts').href = `https://googleapis.com{font.id.replace(/ /g, '+')}&display=swap`;
@@ -262,22 +281,28 @@
             listContainer.appendChild(node);
         });
 
-        function syncText() { document.getElementById('main-display').innerText = document.getElementById('user-input').value || "MEMENTO MORI"; }
+        // 4. СИНХРОНІЗАЦІЯ ТЕКСТУ
+        function syncText() {
+            const val = document.getElementById('user-input').value;
+            document.getElementById('main-display').innerText = val || "MEMENTO MORI";
+        }
 
+        // 5. МУЗИКА ТА ЕКВАЛАЙЗЕР
         function toggleBgMusic() {
-            const btn = document.getElementById('sound-trigger');
-            if(!musicPlaying){ bgMusic.play(); btn.classList.add('eq-active'); musicPlaying = true; }
-            else { bgMusic.pause(); btn.classList.remove('eq-active'); musicPlaying = false; }
+            const trigger = document.getElementById('sound-trigger');
+            if(!musicPlaying){
+                bgMusic.play(); trigger.classList.add('eq-active'); musicPlaying = true;
+            } else {
+                bgMusic.pause(); trigger.classList.remove('eq-active'); musicPlaying = false;
+            }
             playClick();
         }
 
-        function toggleMenu(x) { playClick(); x.classList.toggle("open"); document.getElementById('nav').classList.toggle('active'); }
-
-        // МАТРИЦЯ
+        // 6. МАТРИЦЯ
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        const chars = "01ヨカイ";
+        const chars = "01ヨカイシステム";
         const drops = Array(Math.floor(canvas.width/15)).fill(1);
         function drawMatrix() {
             ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -291,14 +316,14 @@
         }
         setInterval(drawMatrix, 60);
 
-        // ЗАХИСТ ПРИ ЗГОРТАННІ
+        // 7. ЗАХИСТ (BLACK SCREEN)
         document.addEventListener('visibilitychange', () => {
             const prot = document.getElementById('protection-layer');
             const body = document.getElementById('main-body');
-            if (document.hidden) { 
-                prot.style.display = "block"; 
+            if (document.hidden) {
+                prot.style.display = "block";
                 body.style.opacity = "0";
-            } else { 
+            } else {
                 setTimeout(() => {
                     prot.style.display = "none";
                     body.style.opacity = "1";
