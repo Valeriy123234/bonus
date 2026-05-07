@@ -9,7 +9,7 @@
     <link id="dynamic-fonts" rel="stylesheet">
 
     <style>
-        :root { --red: #ff0000; --ui-bg: rgba(10, 0, 0, 0.9); }
+        :root { --red: #ff0000; --ui-bg: #000; }
 
         * { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; box-sizing: border-box; outline: none; }
 
@@ -24,14 +24,14 @@
         .ui-wrapper {
             position: relative; z-index: 10; height: 100vh;
             display: flex; flex-direction: column; 
-            padding: env(safe-area-inset-top) 25px calc(env(safe-area-inset-bottom) + 20px);
+            padding: env(safe-area-inset-top) 25px calc(env(safe-area-inset-bottom) + 40px);
             justify-content: space-between;
         }
 
         /* TOP BAR */
-        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; width: 100%; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; width: 100%; position: relative; z-index: 1001; }
         
-        .sound-wrap { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .sound-wrap { display: flex; align-items: center; cursor: pointer; height: 30px; min-width: 40px; }
         .sound-icon { font-size: 18px; color: var(--red); }
         .eq { display: none; align-items: flex-end; gap: 2px; height: 18px; }
         .eq-bar { width: 2px; background: var(--red); height: 4px; }
@@ -40,71 +40,63 @@
         .eq-active .eq-bar { animation: eq-play 0.6s infinite alternate; }
         @keyframes eq-play { from { height: 4px; } to { height: 18px; } }
 
-        .menu-trigger { width: 28px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
-        .menu-trigger span { width: 100%; height: 2px; background: var(--red); transition: 0.3s; }
-        .open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-        .open span:nth-child(2) { opacity: 0; }
-        .open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+        /* BURGER TO CROSS ANIMATION */
+        .menu-trigger { width: 30px; height: 20px; position: relative; cursor: pointer; }
+        .menu-trigger span { display: block; position: absolute; height: 2px; width: 100%; background: var(--red); transition: .25s ease-in-out; }
+        .menu-trigger span:nth-child(1) { top: 0px; }
+        .menu-trigger span:nth-child(2) { top: 9px; }
+        .menu-trigger span:nth-child(3) { top: 18px; }
+        .menu-trigger.open span:nth-child(1) { top: 9px; transform: rotate(135deg); }
+        .menu-trigger.open span:nth-child(2) { opacity: 0; left: -60px; }
+        .menu-trigger.open span:nth-child(3) { top: 9px; transform: rotate(-135deg); }
 
-        /* LOGO YYO KAI */
+        /* LOGO WITH GLITCH */
         .header { text-align: center; margin-top: 10px; }
-        .glitch-logo { font-weight: 900; font-size: 48px; letter-spacing: 12px; color: #fff; line-height: 1; position: relative; }
-        .glitch-logo span { display: block; font-size: 18px; color: var(--red); letter-spacing: 15px; margin-top: 5px; }
+        .logo-main { 
+            font-weight: 900; font-size: 48px; letter-spacing: 12px; color: #fff; 
+            line-height: 1; position: relative; 
+            text-shadow: 0.05em 0 0 rgba(255,0,0,.75), -0.025em -0.05em 0 rgba(0,255,255,.75);
+            animation: glitch 500ms infinite;
+        }
+        .logo-sub { display: block; font-size: 18px; color: var(--red); letter-spacing: 15px; margin-top: 5px; font-weight: 900; }
 
-        /* PREVIEW - NO BORDERS */
-        .preview-unit {
-            width: 100%; height: 20vh;
-            display: flex; align-items: center; justify-content: center;
-            cursor: copy;
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 rgba(255,0,0,.75), -0.05em -0.025em 0 rgba(0,255,255,.75); }
+            14% { text-shadow: 0.05em 0 0 rgba(255,0,0,.75), -0.05em -0.025em 0 rgba(0,255,255,.75); }
+            15% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,.75), 0.025em 0.025em 0 rgba(0,255,255,.75); }
+            49% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,.75), 0.025em 0.025em 0 rgba(0,255,255,.75); }
+            50% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,.75), 0.05em 0 0 rgba(0,255,255,.75); }
+            99% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,.75), 0.05em 0 0 rgba(0,255,255,.75); }
+            100% { text-shadow: -0.025em 0 0 rgba(255,0,0,.75), -0.025em -0.025em 0 rgba(0,255,255,.75); }
         }
-        #main-display {
-            font-size: 38px; text-align: center; color: #fff;
-            font-weight: 900; text-transform: uppercase;
-            animation: text-float 4s infinite ease-in-out;
-        }
-        @keyframes text-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        /* DISPLAY */
+        #main-display { font-size: 34px; text-align: center; color: #fff; font-weight: 900; min-height: 80px; display: flex; align-items: center; justify-content: center; }
 
         /* INPUT */
-        .input-section { width: 100%; }
         #user-input {
             width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,0,0,0.3);
-            color: #fff; padding: 15px; font-size: 15px; letter-spacing: 3px; 
-            text-transform: uppercase; text-align: center;
+            color: #fff; padding: 15px; font-size: 15px; letter-spacing: 3px; text-transform: uppercase; text-align: center;
         }
 
-        /* FONT LIST */
+        /* FONT NODES CENTERED */
         .font-selector-wrap { flex: 1; overflow: hidden; margin: 20px 0; }
         .scroll-area { height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; }
         .scroll-area::-webkit-scrollbar { width: 0px; }
-        .font-node {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 18px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .font-node.active { color: var(--red); border-bottom: 1px solid var(--red); }
+        .font-node { display: flex; justify-content: center; align-items: center; gap: 15px; padding: 20px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .font-node.active { color: var(--red); }
         .f-preview { font-size: 22px; }
-        .f-name { font-size: 9px; font-weight: 900; opacity: 0.5; }
+        .f-name { font-size: 9px; font-weight: 900; opacity: 0.5; margin-top: 4px; }
 
-        /* BUTTON - RAISED */
-        .btn-init {
-            width: 100%; padding: 22px; background: var(--red); 
-            border: none; color: #000; font-weight: 900; letter-spacing: 5px;
-            text-transform: uppercase; font-size: 14px;
-            box-shadow: 0 0 20px rgba(255,0,0,0.3);
-        }
+        /* BUTTON */
+        .btn-init { width: 100%; padding: 22px; background: var(--red); border: none; color: #000; font-weight: 900; letter-spacing: 5px; text-transform: uppercase; font-size: 14px; margin-bottom: 40px; }
 
-        .nav-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.98);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transform: translateX(100%); transition: 0.5s; z-index: 900;
-        }
+        /* NAV - NO BOTTOM LINE */
+        .nav-overlay { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: translateX(100%); transition: 0.4s; z-index: 900; }
         .nav-overlay.active { transform: translateX(0); }
-        .nav-link { font-size: 22px; font-weight: 900; color: white; text-decoration: none; margin: 15px 0; text-transform: uppercase; }
+        .nav-link { font-size: 22px; font-weight: 900; color: white; text-decoration: none; margin: 15px 0; text-transform: uppercase; border: none; }
 
-        #copy-notice {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            background: var(--red); color: black; padding: 8px 20px;
-            font-weight: 900; font-size: 10px; z-index: 2000; display: none;
-        }
+        #copy-notice { position: fixed; top: 30px; left: 50%; transform: translateX(-50%); background: var(--red); color: black; padding: 8px 20px; font-weight: 900; font-size: 10px; z-index: 2000; display: none; }
     </style>
 </head>
 <body id="main-body">
@@ -120,8 +112,6 @@
                     <div class="eq-bar" style="animation-duration: 0.4s;"></div>
                     <div class="eq-bar" style="animation-duration: 0.7s;"></div>
                     <div class="eq-bar" style="animation-duration: 0.5s;"></div>
-                    <div class="eq-bar" style="animation-duration: 0.8s;"></div>
-                    <div class="eq-bar" style="animation-duration: 0.6s;"></div>
                     <div class="eq-bar" style="animation-duration: 0.4s;"></div>
                 </div>
             </div>
@@ -131,29 +121,30 @@
         </div>
 
         <div class="header">
-            <div class="glitch-logo">YYO<span>KAI</span></div>
+            <div class="logo-main">YYO</div>
+            <div class="logo-sub">KAI</div>
         </div>
 
-        <div class="preview-unit" onclick="copyText()">
+        <div onclick="copyText()">
             <div id="main-display">MEMENTO MORI</div>
         </div>
 
         <div class="input-section">
-            <input type="text" id="user-input" placeholder="ВПИШИ СВІЙ ТЕКСТ..." oninput="syncText()" maxlength="20">
+            <input type="text" id="user-input" placeholder="Впиши свій текст..." oninput="syncText()" maxlength="20">
         </div>
 
         <div class="font-selector-wrap">
             <div class="scroll-area" id="font-list"></div>
         </div>
 
-        <button class="btn-init" onclick="window.location.href='https://t.me'">ЗАПИСАТИСЬ</button>
+        <button class="btn-init" onclick="window.location.href='https://t.me'">Записатись</button>
     </div>
 
     <nav class="nav-overlay" id="nav">
-        <a href="index.html" class="nav-link">SKETCHES</a>
-        <a href="#" class="nav-link">ARCHIVE</a>
-        <a href="https://instagram.com" class="nav-link">INSTAGRAM</a>
-        <a href="https://t.me" class="nav-link" style="color:var(--red);">RESERVE</a>
+        <a href="index.html" class="nav-link">Sketches</a>
+        <a href="#" class="nav-link">Archive</a>
+        <a href="https://instagram.com" class="nav-link">Instagram</a>
+        <a href="https://t.me" class="nav-link" style="color:var(--red);">Reserve</a>
     </nav>
 
     <audio id="bg-music" loop><source src="RED_AMBIENT.mp3" type="audio/mpeg"></audio>
@@ -177,17 +168,16 @@
         }
 
         const tattooFonts = [
-            {id: 'UnifrakturMaguntia', tag: 'GOTHIC'}, {id: 'Great Vibes', tag: 'SCRIPT'},
-            {id: 'Cinzel', tag: 'ROMAN'}, {id: 'Noto Sans JP', tag: 'JAPANESE'},
-            {id: 'MedievalSharp', tag: 'MEDIEVAL'}, {id: 'Charm', tag: 'HAND'},
-            {id: 'Metal Mania', tag: 'METAL'}, {id: 'Pirata One', tag: 'VINTAGE'}
+            {id: 'UnifrakturMaguntia', tag: 'Gothic'}, {id: 'Great Vibes', tag: 'Script'},
+            {id: 'Cinzel', tag: 'Roman'}, {id: 'Noto Sans JP', tag: 'Japan'},
+            {id: 'MedievalSharp', tag: 'Metal'}, {id: 'Charm', tag: 'Hand'}
         ];
 
         const listContainer = document.getElementById('font-list');
         tattooFonts.forEach(font => {
             const node = document.createElement('div');
             node.className = 'font-node';
-            node.innerHTML = `<span class="f-preview" style="font-family:'${font.id}'">Style</span><span class="f-name">${font.tag}</span>`;
+            node.innerHTML = `<span class="f-preview" style="font-family:'${font.id}'">Style</span><span class="f-name">[${font.tag}]</span>`;
             node.onclick = () => {
                 playClick();
                 document.getElementById('dynamic-fonts').href = `https://googleapis.com{font.id.replace(/ /g, '+')}&display=swap`;
@@ -216,18 +206,21 @@
         const drops = Array(Math.floor(canvas.width/15)).fill(1);
         function drawMatrix() {
             ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#ff0000"; ctx.font = "12px monospace";
+            ctx.fillStyle = "#ff0000"; ctx.font = "14px monospace";
             drops.forEach((y, i) => {
                 const text = chars[Math.floor(Math.random()*chars.length)];
                 ctx.fillText(text, i*15, y*15);
-                if(y*14 > canvas.height && Math.random() > 0.98) drops[i] = 0;
+                if(y*15 > canvas.height && Math.random() > 0.98) drops[i] = 0;
                 drops[i]++;
             });
         }
         setInterval(drawMatrix, 60);
 
+        // ЖОРСТКИЙ ЗАХИСТ ВІД СКРІНШОТІВ (При згортанні або зміні фокусу сторінка зникає)
+        window.onblur = function() { document.getElementById('main-body').style.opacity = "0"; };
+        window.onfocus = function() { document.getElementById('main-body').style.opacity = "1"; };
         document.addEventListener('visibilitychange', () => {
-            document.body.style.filter = document.hidden ? "brightness(0) blur(100px)" : "none";
+            document.getElementById('main-body').style.opacity = document.hidden ? "0" : "1";
         });
     </script>
 </body>
