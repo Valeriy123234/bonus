@@ -221,7 +221,7 @@
             const names = chunk.map(f => f.id.replace(/ /g, '+')).join('|');
             const link = document.createElement('link');
             link.rel = 'stylesheet';
-            link.href = `https://googleapis.com{names}&display=swap`;
+            link.href = `https://fonts.googleapis.com/css?family=${names}&display=swap`;
             document.head.appendChild(link);
         }
     }
