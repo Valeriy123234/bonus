@@ -88,22 +88,92 @@
         .menu-trigger.open span:nth-child(3) { transform: translateY(0) rotate(-45deg); }
 
         /* 6. LOGO SECTION */
-        .header { position: absolute; top: 85px; width: 100%; text-align: center; z-index: 10; }
-        .logo-main {
-            font-weight: 900; font-size: 54px; letter-spacing: 14px; color: #fff;
-            position: relative; display: inline-block; line-height: 1;
-        }
-        .logo-main::before, .logo-main::after {
-            content: 'YYO'; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: black; clip: rect(0, 0, 0, 0);
-        }
-        .logo-main::before { left: 3px; text-shadow: -3px 0 var(--glitch-pink); animation: g1 2.5s infinite linear alternate-reverse; }
-        .logo-main::after { left: -3px; text-shadow: -3px 0 var(--glitch-cyan); animation: g2 3.5s infinite linear alternate-reverse; }
+      /* ПОТУЖНИЙ СМИКАНИЙ ГЛІТЧ */
+.header { position: absolute; top: 85px; width: 100%; text-align: center; z-index: 10; }
 
-        @keyframes g1 { 0% { clip: rect(15px, 999px, 45px, 0); } 100% { clip: rect(40px, 999px, 85px, 0); } }
-        @keyframes g2 { 0% { clip: rect(65px, 999px, 55px, 0); } 100% { clip: rect(15px, 999px, 95px, 0); } }
-        
-        .logo-sub { display: block; font-size: 20px; color: var(--red); letter-spacing: 18px; margin-top: 5px; font-weight: 900; text-shadow: 0 0 10px var(--red); }
+.logo-main {
+    font-weight: 900;
+    font-size: 54px;
+    letter-spacing: 14px;
+    color: #fff;
+    position: relative;
+    display: inline-block;
+    line-height: 1;
+    /* Ефект роздвоєння */
+    text-shadow: 2px 0 var(--glitch-pink), -2px 0 var(--glitch-cyan);
+}
+
+.logo-main::before, .logo-main::after {
+    content: 'YYO';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    opacity: 0.8;
+}
+
+/* Верхній шар - червоні розриви */
+.logo-main::before {
+    left: 3px;
+    text-shadow: -3px 0 var(--red);
+    /* steps(2) робить рух різким */
+    animation: glitch-sharp 0.4s infinite steps(2) alternate-reverse;
+}
+
+/* Нижній шар - блакитні розриви */
+.logo-main::after {
+    left: -3px;
+    text-shadow: 3px 0 var(--glitch-cyan);
+    animation: glitch-sharp 0.7s infinite steps(3) alternate;
+}
+
+@keyframes glitch-sharp {
+    0% {
+        clip-path: inset(80% 0 5% 0);
+        transform: translate(-5px, 2px) skew(5deg);
+    }
+    20% {
+        clip-path: inset(10% 0 60% 0);
+        transform: translate(5px, -2px) skew(-10deg);
+    }
+    40% {
+        clip-path: inset(40% 0 40% 0);
+        transform: translate(-8px, 3px) rotate(2deg);
+    }
+    60% {
+        clip-path: inset(25% 0 58% 0);
+        transform: translate(8px, -1px) skew(15deg);
+    }
+    80% {
+        clip-path: inset(90% 0 2% 0);
+        transform: translate(-3px, 5px) scaleY(1.2);
+    }
+    100% {
+        clip-path: inset(5% 0 85% 0);
+        transform: translate(0);
+    }
+}
+
+.logo-sub { 
+    display: block; 
+    font-size: 20px; 
+    color: var(--red); 
+    letter-spacing: 18px; 
+    margin-top: 5px; 
+    font-weight: 900; 
+    /* Додав легке тремтіння для KAI */
+    animation: k-vibrate 0.1s infinite;
+}
+
+@keyframes k-vibrate {
+    0% { transform: translate(0); }
+    25% { transform: translate(1px, -1px); }
+    50% { transform: translate(-1px, 1px); }
+    75% { transform: translate(1px, 1px); }
+    100% { transform: translate(0); }
+}
 
         /* 7. ПРЕВ'Ю ТЕКСТУ (30px НИЖЧЕ) */
         #main-display {
