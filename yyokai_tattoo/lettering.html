@@ -11,157 +11,131 @@
     <style>
         :root {
             --neon: #ff0000;
-            --neon-bright: #ff3333;
-            --glass: rgba(255, 0, 0, 0.05);
-            --border: rgba(255, 0, 0, 0.3);
-            --glitch-blue: #00f0ff;
+            --glass: rgba(20, 0, 0, 0.6);
+            --border: rgba(255, 0, 0, 0.4);
         }
 
         * { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; box-sizing: border-box; outline: none; }
 
         body, html {
             margin: 0; padding: 0; height: 100%; width: 100%;
-            background: #050000; font-family: 'Montserrat', sans-serif;
-            color: white; overflow: hidden; transition: filter 0.4s, opacity 0.4s;
+            background: #000; font-family: 'Montserrat', sans-serif;
+            color: white; overflow: hidden;
         }
 
-        /* CRT ЕФЕКТИ */
-        body::before {
-            content: " "; position: fixed; inset: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(20, 0, 0, 0.2) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.05));
-            z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none;
-        }
-        body::after {
-            content: " "; position: fixed; inset: 0;
-            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.9) 150%);
-            z-index: 998; pointer-events: none;
-        }
+        /* МАТРИЦЯ */
+        #matrix-canvas { position: fixed; inset: 0; opacity: 0.12; z-index: 1; pointer-events: none; }
 
-        #matrix-canvas { position: fixed; inset: 0; opacity: 0.15; z-index: 1; pointer-events: none; }
-
-        /* UI WRAPPER */
         .ui-wrapper {
             position: relative; z-index: 10; height: 100vh;
             display: flex; flex-direction: column; align-items: center;
-            padding: 20px;
+            padding: 20px; justify-content: flex-start;
         }
 
         /* TOP BAR */
         .top-bar {
-            position: fixed; top: 25px; width: 100%;
+            position: absolute; top: 25px; width: 100%;
             display: flex; justify-content: space-between;
-            padding: 0 25px; box-sizing: border-box; z-index: 1000;
+            padding: 0 25px; z-index: 1000;
         }
-        .sound-toggle { width: 40px; height: 40px; display: flex; align-items: center; cursor: pointer; }
-        .eq-container { display: flex; align-items: flex-end; justify-content: space-between; width: 22px; height: 16px; display: none; }
-        .eq-bar { width: 2px; background: var(--neon); animation: eq-anim 0.5s infinite ease-in-out; box-shadow: 0 0 5px var(--neon); }
-        @keyframes eq-anim { 0%, 100% { height: 4px; } 50% { height: 16px; } }
+        .sound-toggle { width: 35px; height: 35px; display: flex; align-items: center; cursor: pointer; }
+        .eq-container { display: flex; align-items: flex-end; justify-content: space-between; width: 20px; height: 14px; display: none; }
+        .eq-bar { width: 2px; background: var(--neon); animation: eq-anim 0.5s infinite ease-in-out; }
+        @keyframes eq-anim { 0%, 100% { height: 3px; } 50% { height: 14px; } }
 
         .menu-trigger { width: 30px; height: 30px; cursor: pointer; }
-        .bar { width: 30px; height: 2px; background: var(--neon); margin: 6px 0; transition: 0.4s; box-shadow: 0 0 5px var(--neon); }
-        .open .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-        .open .bar:nth-child(2) { opacity: 0; }
-        .open .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+        .bar { width: 30px; height: 2px; background: var(--neon); margin: 6px 0; transition: 0.4s; }
 
-        /* LOGO З БІЛЬШИМ ВІДСТУПОМ */
-        .header { text-align: center; margin-top: 70px; margin-bottom: 30px; }
+        /* LOGO - ЧИСТИЙ ГЛІТЧ */
+        .header { text-align: center; margin-top: 60px; margin-bottom: 20px; }
         .glitch {
-            font-size: 52px; font-weight: 900; letter-spacing: 15px;
+            font-size: 48px; font-weight: 900; letter-spacing: 12px;
             text-transform: uppercase; position: relative; color: white;
-            text-shadow: 0 0 15px var(--neon), 0 0 30px var(--neon);
         }
         .glitch::before, .glitch::after {
-            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.9;
+            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
         }
-        .glitch::before { color: var(--neon); z-index: -1; animation: glitch-anim 0.2s infinite; }
-        .glitch::after { color: var(--glitch-blue); z-index: -2; animation: glitch-anim 0.2s infinite reverse; }
+        .glitch::before { color: var(--neon); z-index: -1; animation: glitch-anim 0.3s infinite; }
+        .glitch::after { color: #00f0ff; z-index: -2; animation: glitch-anim 0.3s infinite reverse; }
         @keyframes glitch-anim {
             0% { transform: translate(0); }
-            25% { transform: translate(-3px, 1px); }
-            50% { transform: translate(3px, -1px); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
             100% { transform: translate(0); }
         }
-        .sub-logo { display: block; font-size: 20px; letter-spacing: 16px; color: var(--neon); text-shadow: 0 0 10px var(--neon); text-align: center; margin-top: 10px; font-weight: 900; }
+        .sub-logo { display: block; font-size: 16px; letter-spacing: 14px; color: var(--neon); text-align: center; margin-top: 5px; font-weight: 900; }
 
-        /* DISPLAY */
+        /* DISPLAY - БЕЗ СВІТІННЯ */
         #main-display {
-            font-size: 40px; min-height: 130px; width: 100%;
+            font-size: 34px; min-height: 80px; width: 100%;
             display: flex; align-items: center; justify-content: center;
-            color: #fff; text-shadow: 0 0 20px var(--neon-bright), 0 0 40px var(--neon);
-            text-align: center; padding: 0 15px; margin-bottom: 20px;
+            color: #fff; text-align: center; padding: 0 15px; margin-bottom: 15px;
+            border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
         }
 
-        /* КОНТРОЛЕР ЗАЙМАЄ ВЕСЬ ЗАЛИШОК ЕКРАНА */
+        /* CONTROLS */
         .controls-wrap { 
-            width: 100%; max-width: 380px; flex: 1; 
-            display: flex; flex-direction: column; 
-            justify-content: flex-start; 
-            gap: 20px; /* Більше повітря між елементами */
+            width: 100%; max-width: 360px;
+            display: flex; flex-direction: column; gap: 15px;
         }
 
-        .input-box { width: 100%; margin-bottom: 10px; }
+        .input-box { width: 100%; }
         #user-input {
-            width: 100%; background: rgba(255,0,0,0.07); border: 1px solid var(--border);
-            color: #fff; font-family: 'Montserrat'; font-size: 14px;
-            text-align: center; padding: 16px; border-radius: 6px;
-            letter-spacing: 3px; text-transform: uppercase; transition: 0.3s;
+            width: 100%; background: #111; border: 1px solid var(--border);
+            color: #fff; font-family: 'Montserrat'; font-size: 13px;
+            text-align: center; padding: 12px; border-radius: 2px;
+            letter-spacing: 2px; text-transform: uppercase;
         }
-        #user-input:focus { border-color: var(--neon); box-shadow: 0 0 15px rgba(255,0,0,0.2); }
 
+        /* СКРОЛ СПИСКУ (ВИПРАВЛЕНО) */
         .font-library {
-            width: 100%; 
-            flex-grow: 1; /* Розтягується максимально в межах доступного місця */
-            min-height: 180px;
-            background: var(--glass); border: 1px solid var(--border);
-            border-radius: 6px; overflow-y: auto; backdrop-filter: blur(15px);
+            width: 100%; height: 180px; /* Обмежена висота щоб кнопка влізла */
+            background: rgba(10, 10, 10, 0.8); border: 1px solid var(--border);
+            overflow-y: auto; -webkit-overflow-scrolling: touch;
+            pointer-events: all; /* Дозволяє свайп */
         }
-        .font-library::-webkit-scrollbar { width: 0px; }
+        .font-library::-webkit-scrollbar { width: 2px; }
+        .font-library::-webkit-scrollbar-thumb { background: var(--neon); }
 
         .font-item {
-            padding: 18px; border-bottom: 1px solid rgba(255,0,0,0.1);
+            padding: 14px; border-bottom: 1px solid rgba(255,0,0,0.1);
             cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            pointer-events: all;
         }
-        .font-item.active { border-left: 5px solid var(--neon); background: rgba(255, 0, 0, 0.15); color: var(--neon); }
+        .font-item.active { background: var(--neon); color: black; }
+        .font-item.active .font-meta { color: black; }
 
-        /* КНОПКА ЗАПИСУ ПРИТИСНУТА ДОНИЗУ */
+        .font-style-preview { font-size: 18px; }
+        .font-meta { font-size: 8px; color: var(--neon); opacity: 0.7; }
+
+        /* КНОПКА ЗАПИСУ */
         .book-btn {
-            width: 100%; padding: 22px; background: transparent; 
-            border: 2px solid var(--neon); color: var(--neon);
-            font-weight: 900; letter-spacing: 4px; text-transform: uppercase;
-            cursor: pointer; margin-bottom: 20px; transition: 0.3s;
-            font-size: 15px; text-shadow: 0 0 5px var(--neon);
-            animation: pulse-btn 2s infinite;
+            width: 100%; padding: 18px; background: var(--neon); 
+            border: none; color: black;
+            font-weight: 900; letter-spacing: 3px; text-transform: uppercase;
+            cursor: pointer; font-size: 13px; transition: 0.2s;
         }
-        @keyframes pulse-btn { 
-            0%, 100% { opacity: 0.8; box-shadow: 0 0 15px var(--neon); } 
-            50% { opacity: 1; box-shadow: 0 0 35px var(--neon); transform: scale(1.02); } 
-        }
+        .book-btn:active { transform: scale(0.98); opacity: 0.8; }
 
-        #copy-notice {
-            position: fixed; top: 150px; background: var(--neon); color: black;
-            padding: 8px 20px; font-size: 10px; font-weight: 900;
-            letter-spacing: 2px; display: none; z-index: 1000; box-shadow: 0 0 25px var(--neon);
-        }
-
+        /* NAV */
         .nav-overlay {
-            position: fixed; inset: 0; background: rgba(5,0,0,0.98);
+            position: fixed; inset: 0; background: rgba(0,0,0,0.98);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transform: translateY(-100%); transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
-            z-index: 900; backdrop-filter: blur(35px);
+            transform: translateY(-100%); transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            z-index: 900;
         }
         .nav-overlay.active { transform: translateY(0); }
-        .nav-link { font-size: 24px; font-weight: 900; letter-spacing: 6px; color: white; text-decoration: none; margin: 18px 0; text-transform: uppercase; }
+        .nav-link { font-size: 20px; font-weight: 900; letter-spacing: 5px; color: white; text-decoration: none; margin: 15px 0; text-transform: uppercase; }
     </style>
 </head>
 <body id="main-body">
 
     <canvas id="matrix-canvas"></canvas>
-    <div id="copy-notice">[ ТЕКСТ СКОПІЙОВАНО ]</div>
 
     <div class="top-bar">
         <div class="sound-toggle" onclick="toggleBgMusic()">
-            <span id="sound-icon" style="color: var(--neon); font-size: 20px;">🔈</span>
+            <span id="sound-icon" style="color: var(--neon); font-size: 18px;">🔈</span>
             <div id="eq" class="eq-container">
                 <div class="eq-bar" style="animation-duration: 0.4s;"></div>
                 <div class="eq-bar" style="animation-duration: 0.6s;"></div>
@@ -185,7 +159,6 @@
         <div class="controls-wrap">
             <div class="input-box">
                 <input type="text" id="user-input" placeholder="ВПИШИ СВІЙ ТЕКСТ..." maxlength="22" oninput="syncText()">
-                <div class="input-line"></div>
             </div>
 
             <div class="font-library" id="font-list"></div>
@@ -196,7 +169,7 @@
 
     <nav class="nav-overlay" id="nav">
         <a href="index.html" class="nav-link">SKETCH_VOID</a>
-        <a href="#" class="nav-link">MISS_ARCHIVE</a>
+        <a href="#" class="nav-link">ARCHIVE</a>
         <a href="https://instagram.com" class="nav-link">INSTAGRAM</a>
         <a href="https://t.me" class="nav-link" style="color:var(--neon);">INIT_RESERVE</a>
     </nav>
@@ -215,17 +188,18 @@
             {id: 'UnifrakturMaguntia', type: 'Gothic'}, {id: 'Great Vibes', type: 'Script'},
             {id: 'Cinzel', type: 'Roman'}, {id: 'Noto Sans JP', type: 'Asian'},
             {id: 'MedievalSharp', type: 'Dark'}, {id: 'Charm', type: 'Calligraphy'},
-            {id: 'Pirata One', type: 'Vintage'}, {id: 'Kelly Slab', type: 'Tech'},
-            {id: 'Metal Mania', type: 'Metal'}, {id: 'Montserrat', type: 'Minimal'}
+            {id: 'Pirata One', type: 'Vintage'}, {id: 'Metal Mania', type: 'Metal'},
+            {id: 'Montserrat', type: 'Minimal'}
         ];
 
         const listContainer = document.getElementById('font-list');
         tattooFonts.forEach(font => {
             const item = document.createElement('div');
             item.className = 'font-item';
-            item.innerHTML = `<span style="font-family:'${font.id}'; font-size: 22px;">Style</span>
-                              <span style="font-size: 9px; opacity: 0.6; font-weight:900;">${font.id}</span>`;
-            item.onclick = () => {
+            item.innerHTML = `<span style="font-family:'${font.id}'; font-size: 18px;">Style</span>
+                              <span class="font-meta">${font.id}</span>`;
+            item.onclick = (e) => {
+                e.stopPropagation();
                 playClick();
                 document.getElementById('dynamic-fonts').href = `https://googleapis.com{font.id.replace(/ /g, '+')}&display=swap`;
                 document.getElementById('main-display').style.fontFamily = font.id;
@@ -237,21 +211,13 @@
 
         function syncText() { document.getElementById('main-display').innerText = document.getElementById('user-input').value || "MEMENTO MORI"; }
 
-        document.getElementById('main-display').addEventListener('click', function() {
-            navigator.clipboard.writeText(this.innerText).then(() => {
-                playClick();
-                const n = document.getElementById('copy-notice');
-                n.style.display = 'block'; setTimeout(() => n.style.display = 'none', 2000);
-            });
-        });
-
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         const chars = "ヨカイ0123456789";
         const drops = Array(Math.floor(canvas.width/14)).fill(1);
         function drawMatrix() {
-            ctx.fillStyle = "rgba(5, 0, 0, 0.05)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "#ff0000"; ctx.font = "14px monospace";
             drops.forEach((y, i) => {
                 const text = chars[Math.floor(Math.random()*chars.length)];
