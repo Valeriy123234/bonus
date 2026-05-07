@@ -82,18 +82,18 @@
         /* --- GRID --- */
         .grid { display: flex; flex-direction: column; width: 100%; gap: 1px; background: #111; }
         .grid-item { 
-            min-height: 60vh; position: relative; overflow: hidden; 
+            min-height: 30vh; position: relative; overflow: hidden; 
             display: flex; flex-direction: column; justify-content: flex-end; 
-            padding: 40px; text-decoration: none; color: #fff; background-color: var(--card-bg);
+            padding: 30px; text-decoration: none; color: #fff; background-color: #000;
         }
         .grid-item::before { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 20%, rgba(0,0,0,0.85) 100%); z-index: 1; }
 
-        .img-1 { background: url('1.jpg') center/cover; }
-        .img-2 { background: url('2.JPG') center/cover; }
-        .img-4 { background: url('lettering.png') center/cover; }
-        .img-3 { background: url('18.jpg') center/cover; }
-        .img-price { background: url('5.jpg') center/cover; }
-        .img-care { background: url('14.jpg') center/cover; }
+        .img-1 { background: url('1.jpg') center/contain; }
+        .img-2 { background: url('2.JPG') center/contain; }
+        .img-4 { background: url('lettering.png') center/contain; }
+        .img-3 { background: url('18.jpg') center/contain; }
+        .img-price { background: url('5.jpg') center/contain; }
+        .img-care { background: url('14.jpg') center/contain; }
         /* Це вставляєш у блок <style> */
 /* Знаходь свій .img-sketches і замінюй на цей */
 .img-sketches { 
@@ -132,11 +132,6 @@
     background: linear-gradient(to bottom, transparent 20%, rgba(0,0,0,0.85) 100%);
     z-index: 1;
 }
-
-
-
-
-
         .grid-item h2 { font-family: 'Unbounded', sans-serif; font-size: 26px; text-transform: uppercase; z-index: 2; position: relative; }
         .grid-item span.label { font-size: 10px; letter-spacing: 4px; margin-bottom: 8px; opacity: 0.4; z-index: 2; position: relative; }
 
