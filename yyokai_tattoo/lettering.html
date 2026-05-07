@@ -6,28 +6,16 @@
     <title>YOKAI OS // RED_PROTOCOL</title>
     <link id="dynamic-fonts" rel="stylesheet">
     <style>
-        :root { 
-            --red: #ff0000; 
-            --glitch-cyan: #00fff0;
-        }
-
+        :root { --red: #ff0000; --glitch-cyan: #00fff0; }
         * { -webkit-user-select: none; user-select: none; box-sizing: border-box; outline: none; }
-        body, html { 
-            margin: 0; padding: 0; height: 100%; width: 100%; 
-            background: #000; font-family: 'Montserrat', sans-serif; 
-            color: white; overflow: hidden; 
-        }
+        body, html { margin: 0; padding: 0; height: 100%; width: 100%; background: #000; font-family: 'Montserrat', sans-serif; color: white; overflow: hidden; }
 
-        #matrix-canvas { position: fixed; inset: 0; opacity: 0.25; z-index: 1; pointer-events: none; }
+        /* МАТРИЦЯ (ВИДИМІСТЬ +7%) */
+        #matrix-canvas { position: fixed; inset: 0; opacity: 0.5; z-index: 1; pointer-events: none; }
 
         /* TOP BAR */
-        .top-bar { 
-            position: fixed; top: 35px; width: 100%; padding: 0 30px; 
-            display: flex; justify-content: space-between; align-items: center; 
-            z-index: 5000; pointer-events: none;
-        }
-        
-        .sound-container, .menu-trigger { pointer-events: auto; cursor: pointer; }
+        .top-bar { position: fixed; top: 35px; width: 100%; padding: 0 30px; display: flex; justify-content: space-between; align-items: center; z-index: 5000; }
+        .sound-container, .menu-trigger { cursor: pointer; z-index: 5001; }
         .sound-container { display: flex; align-items: center; gap: 10px; height: 24px; }
         .eq { display: none; align-items: flex-end; gap: 2px; height: 18px; }
         .eq-bar { width: 2px; background: var(--red); height: 2px; }
@@ -44,60 +32,41 @@
 
         /* LOGO */
         .header { position: absolute; top: 60px; width: 100%; text-align: center; z-index: 10; }
-        .logo-main {
-            font-weight: 900; font-size: 64px; letter-spacing: 12px; color: #fff;
-            position: relative; display: inline-block; line-height: 0.8; padding-left: 12px;
-        }
+        .logo-main { font-weight: 900; font-size: 64px; letter-spacing: 12px; color: #fff; position: relative; display: inline-block; line-height: 0.8; padding-left: 12px; }
         .logo-kai { display: block; font-size: 28px; letter-spacing: 20px; color: var(--red); margin-top: 5px; }
-
-        .logo-main::before, .logo-main::after {
-            content: "YYO\A KAI"; white-space: pre; position: absolute; top: 0; left: 12px;
-            width: 100%; height: 100%; opacity: 0; pointer-events: none;
-        }
+        .logo-main::before, .logo-main::after { content: "YYO\A KAI"; white-space: pre; position: absolute; top: 0; left: 12px; width: 100%; height: 100%; opacity: 0; pointer-events: none; }
         .logo-main::before { text-shadow: -4px 0 var(--red); animation: glitch-1 3s infinite; }
         .logo-main::after { text-shadow: 4px 0 var(--glitch-cyan); animation: glitch-2 4.3s infinite; }
-
         @keyframes glitch-1 { 0%, 18%, 100% { opacity: 0; } 1% { opacity: 1; clip-path: inset(10% 0 70% 0); transform: translate(-5px, -2px); } 5% { opacity: 0; } }
         @keyframes glitch-2 { 0%, 25%, 100% { opacity: 0; } 1% { opacity: 1; clip-path: inset(60% 0 5% 0); transform: translate(5px, 2px); } 5% { opacity: 0; } }
 
-        /* БІЛА ПЛАШКА (ДЛЯ СКРІНШОТІВ) */
+        /* ПЛАШКА НА ВСЮ ДОВЖИНУ */
         #main-display {
-            position: absolute; top: 210px; left: 50%; transform: translateX(-50%);
-            width: auto; max-width: calc(100% - 50px); min-width: 220px;
-            background: #fff; color: #000; padding: 20px 30px;
+            position: absolute; top: 210px; left: 25px; right: 25px;
+            background: #fff; color: #000; padding: 25px 15px;
             font-size: 32px; text-align: center; font-weight: 900; z-index: 10; 
-            box-shadow: 0 0 40px rgba(255,255,255,0.15); word-wrap: break-word; cursor: pointer;
+            box-shadow: 0 0 40px rgba(255,255,255,0.2);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;
         }
+        #main-display.wrap-text { white-space: normal; overflow-y: auto; height: auto; min-height: 80px; }
 
-        /* ІНПУТ ТА СПИСОК */
+        /* INPUT & LIST */
         .input-wrap { position: absolute; top: 375px; width: 100%; padding: 0 45px; z-index: 10; }
-        #user-input { 
-            width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--red); 
-            color: #fff; padding: 10px; text-align: center; font-size: 16px;
-        }
-
+        #user-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--red); color: #fff; padding: 10px; text-align: center; font-size: 16px; }
         .font-selector-wrap { position: absolute; top: 430px; bottom: 110px; width: 100%; padding: 0 30px; z-index: 10; }
         .scroll-area { height: 100%; overflow-y: auto; }
-        .scroll-area::-webkit-scrollbar { width: 0; }
         .font-node { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1); cursor: pointer; }
         .font-node.active { color: var(--red); border-left: 3px solid var(--red); padding-left: 15px; }
-        .f-preview { font-size: 18px; }
 
-        /* КНОПКИ */
-        .btn-action {
-            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-            width: calc(100% - 60px); padding: 18px; background: transparent;
-            border: 1px solid var(--red); color: var(--red); font-weight: 900; 
-            text-transform: uppercase; letter-spacing: 4px; z-index: 10; text-align: center; text-decoration: none;
-        }
+        /* BUTTONS */
+        .btn-action { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); width: calc(100% - 60px); padding: 18px; background: transparent; border: 1px solid var(--red); color: var(--red); font-weight: 900; text-transform: uppercase; letter-spacing: 4px; z-index: 10; text-align: center; text-decoration: none; }
 
-        .nav-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.98);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transform: translateY(-100%); transition: 0.5s cubic-bezier(0.7, 0, 0.3, 1); z-index: 4000;
-        }
+        /* NAV MENU */
+        .nav-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.98); display: flex; flex-direction: column; align-items: center; justify-content: center; transform: translateY(-100%); transition: 0.5s cubic-bezier(0.7, 0, 0.3, 1); z-index: 4000; }
         .nav-overlay.active { transform: translateY(0); }
         .nav-link { font-size: 24px; color: #fff; text-decoration: none; margin: 15px; font-weight: 900; text-transform: uppercase; letter-spacing: 4px; }
+        .nav-link:hover { color: var(--red); }
 
         #copy-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--red); color: #000; padding: 8px 20px; font-weight: 900; display: none; z-index: 6000; font-size: 12px; }
     </style>
@@ -125,17 +94,14 @@
 </div>
 
 <nav class="nav-overlay" id="nav">
-    <a href="#" class="nav-link" onclick="toggleMenu()">власні ескізи</a>
-    <a href="#" class="nav-link" onclick="toggleMenu()">портфоліо</a>
+    <a href="https://example.com" class="nav-link">власні ескізи</a>
+    <a href="https://example.com" class="nav-link">портфоліо</a>
     <a href="https://t.me" class="nav-link" style="color:var(--red)">записатись</a>
-    <a href="#" class="nav-link" onclick="toggleMenu()">консультація</a>
+    <a href="https://t.me" class="nav-link">консультація</a>
 </nav>
 
 <div class="header">
-    <div class="logo-main">
-        YYO
-        <span class="logo-kai">KAI</span>
-    </div>
+    <div class="logo-main">YYO<span class="logo-kai">KAI</span></div>
 </div>
 
 <div id="main-display" onclick="copyText()">MEMENTO MORI</div>
@@ -153,7 +119,6 @@
 <audio id="bg-music" loop><source src="RED_AMBIENT.mp3" type="audio/mpeg"></audio>
 
 <script>
-    // ВСТАВ СЮДИ ПОВНИЙ МАСИВ З 79 ШРИФТІВ
     const tattooFonts = [
         {id: 'UnifrakturMaguntia', tag: 'GOTHIC'},
         {id: 'MedievalSharp', tag: 'GOTHIC'},
@@ -163,7 +128,6 @@
         {id: 'Bangers', tag: 'COMIC'}
     ];
 
-    // Завантаження прев'ю пачками
     function loadPreviews(fonts) {
         const size = 20;
         for (let i = 0; i < fonts.length; i += size) {
@@ -181,7 +145,7 @@
     tattooFonts.forEach(f => {
         const node = document.createElement('div');
         node.className = 'font-node';
-        node.innerHTML = `<span class="f-preview" style="font-family:'${f.id}'">Style</span><span>${f.tag}</span>`;
+        node.innerHTML = `<span style="font-family:'${f.id}'">Style</span><span>${f.tag}</span>`;
         node.onclick = () => {
             const fontUrl = `https://googleapis.com{f.id.replace(/ /g, '+')}&display=swap`;
             document.getElementById('dynamic-fonts').href = fontUrl;
@@ -197,10 +161,13 @@
         const display = document.getElementById('main-display');
         display.innerText = val || "MEMENTO MORI";
         
-        // Авто-розмір для білої плашки
-        if(val.length > 40) display.style.fontSize = "18px";
-        else if(val.length > 20) display.style.fontSize = "24px";
-        else display.style.fontSize = "32px";
+        if(val.length > 15) {
+            display.classList.add('wrap-text');
+            display.style.fontSize = val.length > 30 ? "18px" : "24px";
+        } else {
+            display.classList.remove('wrap-text');
+            display.style.fontSize = "32px";
+        }
     }
 
     function toggleMenu() {
@@ -219,24 +186,22 @@
         const display = document.getElementById('main-display');
         navigator.clipboard.writeText(display.innerText);
         const toast = document.getElementById('copy-toast');
-        toast.innerText = `EXTRACTED: ${display.style.fontFamily.split(',')[0]}`;
+        toast.innerText = "EXTRACTED";
         toast.style.display = 'block';
-        setTimeout(() => toast.style.display = 'none', 1500);
+        setTimeout(() => toast.style.display = 'none', 1000);
     }
 
-    // Матриця з контрастом +3% (0.17)
     const canvas = document.getElementById('matrix-canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth; canvas.height = window.innerHeight;
     const drops = Array(Math.floor(canvas.width/20)).fill(1);
     function draw() {
-        ctx.fillStyle = "rgba(0, 0, 0, 0.17)"; 
+        ctx.fillStyle = "rgba(0, 0, 0, 0.2)"; 
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = "#f00";
         ctx.font = "12px monospace";
         drops.forEach((y, i) => {
-            const char = Math.random() > 0.5 ? "0" : "1";
-            ctx.fillText(char, i*20, y*20);
+            ctx.fillText(Math.random() > 0.5 ? "0" : "1", i*20, y*20);
             if(y*20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
             drops[i]++;
         });
