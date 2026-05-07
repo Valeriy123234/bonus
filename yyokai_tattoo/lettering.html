@@ -398,23 +398,22 @@
 ];
 
 
-        const listContainer = document.getElementById('font-list');
-        tattooFonts.forEach(font => {
-            const node = document.createElement('div');
-            node.className = 'font-node';
-            node.innerHTML = `
-                <span class="f-preview" style="font-family:'${font.id}'">Style</span>
-                <span class="f-name">${font.tag}</span>
-            `;
-            node.onclick = () => {
-                playClick();
-                document.getElementById('dynamic-fonts').href = `https://googleapis.com{font.id.replace(/ /g, '+')}&display=swap`;
-                document.getElementById('main-display').style.fontFamily = font.id;
-                document.querySelectorAll('.font-node').forEach(n => n.classList.remove('active'));
-                node.classList.add('active');
-            };
-            listContainer.appendChild(node);
-        });
+        node.onclick = () => {
+    playClick();
+    
+    // Формуємо правильне посилання (додано /css2?family= та знак $)
+    const fontUrl = `https://fonts.googleapis.com/css2?family=${font.id.replace(/ /g, '+')}&display=swap`;
+    
+    // Оновлюємо href
+    document.getElementById('dynamic-fonts').href = fontUrl;
+    
+    // Застосовуємо шрифт
+    document.getElementById('main-display').style.fontFamily = `'${font.id}', sans-serif`;
+    
+    document.querySelectorAll('.font-node').forEach(n => n.classList.remove('active'));
+    node.classList.add('active');
+};
+
 
         // 4. СИНХРОНІЗАЦІЯ ТЕКСТУ
         function syncText() {
