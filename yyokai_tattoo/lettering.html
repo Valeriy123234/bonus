@@ -97,8 +97,13 @@
   position: relative;
   display: inline-block;
   line-height: 1;
-  text-shadow: 0.5px 0.5px 2px rgba(255,255,255,0.2); /* Легке світіння бази */
+  text-shadow: 0.5px 0.5px 2px rgba(255,255,255,0.2);
+  
+  /* ВИПРАВЛЕННЯ ЦЕНТРУВАННЯ */
+  margin-right: -14px; 
+  text-indent: 14px; /* Додатково компенсуємо відступ першої літери для ідеальної точності */
 }
+
 
 .logo-main::before, .logo-main::after {
   content: 'YYO';
