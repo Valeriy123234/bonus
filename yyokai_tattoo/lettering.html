@@ -13,17 +13,77 @@
         #matrix-canvas { position: fixed; inset: 0; opacity: 0.25; z-index: 1; pointer-events: none; }
 
         /* HEADER & LOGO */
-        .header { position: absolute; top: 85px; width: 100%; text-align: center; z-index: 10; }
-        .logo-main {
-            font-weight: 900; font-size: 54px; letter-spacing: 14px; color: #fff;
-            position: relative; display: inline-block; line-height: 1; padding-left: 14px;
-        }
-        .logo-main::before, .logo-main::after { content: 'YYO'; position: absolute; top: 0; left: 14px; width: 100%; height: 100%; opacity: 0; }
-        .logo-main::before { text-shadow: -3px 0 var(--red); animation: glitch-1 3s infinite; }
-        .logo-main::after { text-shadow: 3px 0 var(--glitch-cyan); animation: glitch-2 4s infinite; }
+     .header { 
+    position: absolute; 
+    top: 75px; /* Трохи підняв для балансу */
+    width: 100%; 
+    text-align: center; 
+    z-index: 10; 
+}
 
-        @keyframes glitch-1 { 0%, 18%, 100% { opacity:0; } 1% { opacity:1; clip-path:inset(10% 0 80% 0); transform:translate(-5px,-2px); } 5% { opacity:0; } }
-        @keyframes glitch-2 { 0%, 25%, 100% { opacity:0; } 1% { opacity:1; clip-path:inset(70% 0 5% 0); transform:translate(4px,1px); } 5% { opacity:0; } }
+.logo-main {
+    font-weight: 900; 
+    font-size: 54px; 
+    letter-spacing: 14px; 
+    color: #fff;
+    position: relative; 
+    display: inline-block; 
+    line-height: 0.85; /* Зближуємо YYO та KAI */
+    padding-left: 14px;
+    text-transform: uppercase;
+}
+
+/* Додаємо KAI як підрядок */
+.logo-main::after {
+    content: 'KAI';
+    display: block;
+    font-size: 22px;
+    letter-spacing: 18px;
+    color: var(--red);
+    margin-top: 5px;
+    animation: flicker 5s infinite; /* Твоє мерехтіння */
+}
+
+/* ГЛІТЧ-ШАРИ (тепер вони покривають весь логотип) */
+.logo-main::before, 
+.glitch-layer {
+    content: 'YYO';
+    position: absolute;
+    top: 0;
+    left: 14px;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Окремі шари для глітча, щоб вони не перекривали основний текст */
+.logo-main::before { 
+    text-shadow: -3px 0 var(--red); 
+    animation: glitch-1 3s infinite; 
+}
+
+/* Створюємо другий шар через псевдоелемент або окремий клас */
+/* Але щоб не міняти HTML, використаємо тінь для переднього шару */
+.logo-main::before {
+    box-shadow: 3px 0 var(--glitch-cyan); /* Додатковий ефект */
+}
+
+@keyframes glitch-1 { 
+    0%, 18%, 100% { opacity:0; transform: translate(0); } 
+    1% { opacity:1; clip-path:inset(10% 0 80% 0); transform:translate(-5px,-2px); } 
+    2% { clip-path:inset(40% 0 40% 0); transform:translate(5px, 2px); }
+    4% { opacity:1; clip-path:inset(70% 0 5% 0); transform:translate(-2px, -1px); }
+    5% { opacity:0; } 
+}
+
+@keyframes glitch-2 { 
+    0%, 25%, 100% { opacity:0; transform: translate(0); } 
+    1% { opacity:1; clip-path:inset(70% 0 5% 0); transform:translate(4px,1px); } 
+    3% { clip-path:inset(10% 0 60% 0); transform:translate(-4px, -1px); }
+    5% { opacity:0; } 
+}
 
         /* TOP BAR: SOUND & BURGER */
         .top-bar { position: fixed; top: 35px; width: 100%; padding: 0 30px; display: flex; justify-content: space-between; align-items: center; z-index: 3000; }
@@ -107,8 +167,13 @@
 </nav>
 
 <div class="header">
-    <div class="logo-main">YYO</div>
+    <div class="logo-container">
+        <div class="logo-main" data-text="YYOKAI">
+            YYO<br><span class="logo-kai">KAI</span>
+        </div>
+    </div>
 </div>
+
 
 <div id="main-display" onclick="copyText()">MEMENTO MORI</div>
 
