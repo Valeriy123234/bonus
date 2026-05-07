@@ -120,13 +120,99 @@
 
 <script>
     const tattooFonts = [
-        {id: 'UnifrakturMaguntia', tag: 'GOTHIC'},
-        {id: 'MedievalSharp', tag: 'GOTHIC'},
-        {id: 'Pinyon Script', tag: 'SCRIPT'},
-        {id: 'Creepster', tag: 'HORROR'},
-        {id: 'Rampart One', tag: 'DISPLAY'},
-        {id: 'Bangers', tag: 'COMIC'}
-    ];
+    // --- GOTHIC & MEDIEVAL ---
+    {id: 'UnifrakturMaguntia', tag: 'GOTHIC'},
+    {id: 'MedievalSharp', tag: 'GOTHIC'},
+    {id: 'Ponomar', tag: 'GOTHIC'},
+    {id: 'Monomakh', tag: 'GOTHIC'},
+    {id: 'Shafarik', tag: 'GOTHIC'},
+
+    // --- SCRIPT & CALLIGRAPHY ---
+    {id: 'Ballet', tag: 'SCRIPT'},
+    {id: 'Great Vibes', tag: 'SCRIPT'},
+    {id: 'Pinyon Script', tag: 'SCRIPT'},
+    {id: 'Monsieur La Doulaise', tag: 'SCRIPT'},
+    {id: 'Mr De Haviland', tag: 'SCRIPT'},
+    {id: 'Herr Von Muellerhoff', tag: 'SCRIPT'},
+    {id: 'Mrs Saint Delafield', tag: 'SCRIPT'},
+    {id: 'Tangerine', tag: 'SCRIPT'},
+    {id: 'Allison', tag: 'SCRIPT'},
+    {id: 'Sacramento', tag: 'SCRIPT'},
+    {id: 'Allura', tag: 'SCRIPT'},
+    {id: 'Whisper', tag: 'SCRIPT'},
+    {id: 'Parisienne', tag: 'SCRIPT'},
+    {id: 'Playball', tag: 'SCRIPT'},
+    {id: 'Mr Dafoe', tag: 'SCRIPT'},
+    {id: 'Ephesis', tag: 'SCRIPT'},
+    {id: 'Quintessential', tag: 'SCRIPT'},
+    {id: 'Corinthia', tag: 'SCRIPT'},
+    {id: 'Montez', tag: 'SCRIPT'},
+    {id: 'League Script', tag: 'SCRIPT'},
+    {id: 'Meie Script', tag: 'SCRIPT'},
+    {id: 'Lavishly Yours', tag: 'SCRIPT'},
+    {id: 'Stalemate', tag: 'SCRIPT'},
+    {id: 'Imperial Script', tag: 'SCRIPT'},
+    {id: 'Mea Culpa', tag: 'SCRIPT'},
+    {id: 'Mr Bedfort', tag: 'SCRIPT'},
+    {id: 'Miss Fajardose', tag: 'SCRIPT'},
+    {id: 'Fleur De Leah', tag: 'SCRIPT'},
+    {id: 'Updock', tag: 'SCRIPT'},
+
+    // --- ASIAN STYLE ---
+    {id: 'Noto Sans TC', tag: 'ASIA'},
+    {id: 'Nanum Myeongjo', tag: 'ASIA'},
+
+    // --- DECORATIVE & VINTAGE ---
+    {id: 'Lobster Two', tag: 'VINTAGE'},
+    {id: 'Jacques Francois Shadow', tag: 'VINTAGE'},
+    {id: 'Emblema One', tag: 'VINTAGE'},
+    {id: 'Ewert', tag: 'VINTAGE'},
+    {id: 'Jacquard 24 Charted', tag: 'VINTAGE'},
+    {id: 'Creepster', tag: 'HORROR'},
+    {id: 'Rampart One', tag: 'DISPLAY'},
+    {id: 'Sonsie One', tag: 'DISPLAY'},
+    {id: 'Joti One', tag: 'DISPLAY'},
+    {id: 'Sankofa Display', tag: 'DISPLAY'},
+
+    // --- HANDWRITTEN ---
+    {id: 'Dancing Script', tag: 'HAND'},
+    {id: 'Caveat', tag: 'HAND'},
+    {id: 'Kaushan Script', tag: 'HAND'},
+    {id: 'Homemade Apple', tag: 'HAND'},
+    {id: 'Nothing You Could Do', tag: 'HAND'},
+    {id: 'Amatic SC', tag: 'HAND'},
+    {id: 'Cookie', tag: 'HAND'},
+    {id: 'Caramel', tag: 'HAND'},
+    {id: 'Molle', tag: 'HAND'},
+    {id: 'Playwrite ES', tag: 'HAND'}, 
+    {id: 'Playwrite NZ Guides', tag: 'HAND'},
+
+    // --- ROMAN & SERIF ---
+    {id: 'Libre Baskerville', tag: 'ROMAN'},
+    {id: 'DM Serif Display', tag: 'ROMAN'},
+    {id: 'Quattrocento', tag: 'ROMAN'},
+    {id: 'Quando', tag: 'ROMAN'},
+    {id: 'Belleza', tag: 'ROMAN'},
+    {id: 'Bona Nova SC', tag: 'ROMAN'},
+    {id: 'Italiana', tag: 'ROMAN'},
+    {id: 'Libre Caslon Display', tag: 'ROMAN'},
+    {id: 'Bodoni Moda SC', tag: 'ROMAN'},
+    {id: 'Elsie Swash Caps', tag: 'ROMAN'},
+    {id: 'Diplomata SC', tag: 'ROMAN'},
+
+    // --- TECH & MODERN ---
+    {id: 'Saira Stencil One', tag: 'TECH'},
+    {id: 'Russo One', tag: 'TECH'},
+    {id: 'Gruppo', tag: 'TECH'},
+    {id: 'Contrail One', tag: 'TECH'},
+    {id: 'Dorsa', tag: 'TECH'},
+    {id: 'Bungee Outline', tag: 'TECH'},
+    {id: 'Josefin Slab', tag: 'MODERN'},
+    {id: 'Press Start 2P', tag: 'PIXEL'},
+    {id: 'Silkscreen', tag: 'PIXEL'},
+    {id: 'Sedgwick Ave Display', tag: 'STREET'},
+    {id: 'Bangers', tag: 'COMIC'}
+];
 
     function loadPreviews(fonts) {
         const size = 20;
