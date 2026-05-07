@@ -221,47 +221,82 @@
     {id: 'Bangers', tag: 'COMIC'}
 ];
 
-    const list = document.getElementById('font-list');
-    fonts.forEach(f => {
-        const node = document.createElement('div');
-        node.className = 'font-node';
-        node.innerHTML = `<span style="font-family:'${f.id}'">Style</span><span>${f.tag}</span>`;
-        node.onclick = () => {
-            document.getElementById('main-display').style.fontFamily = f.id;
-            document.querySelectorAll('.font-node').forEach(n => n.classList.remove('active'));
-            node.classList.add('active');
-            const l = document.createElement('link');
-            l.rel = 'stylesheet';
-            l.href = `https://fonts.googleapis.com/css2?family=${f.id.replace(/ /g, '+')}&display=swap`;
-            document.head.appendChild(l);
-        };
-        list.appendChild(node);
-    });
-
-    function syncText() {
-        const val = document.getElementById('user-input').value;
-        document.getElementById('main-display').innerText = val || "MEMENTO MORI";
+    // 1. ЗАВАНТАЖЕННЯ ПРЕВ'Ю (РОЗБИВАЄМО НА ЧАСТИНИ, ЩОБ ПРАЦЮВАЛО)
+function loadPreviews(fonts) {
+    const CHUNK_SIZE = 20; // Google не приймає більше ~25-30 шрифтів за раз
+    for (let i = 0; i < fonts.length; i += CHUNK_SIZE) {
+        const chunk = fonts.slice(i, i + CHUNK_SIZE);
+        const fontNames = chunk.map(f => f.id.replace(/ /g, '+')).join('|');
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = `https://fonts.googleapis.com/css?family=${fontNames}&display=swap`;
+        document.head.appendChild(link);
     }
+}
 
-    function toggleMenu() {
-        document.getElementById('burger').classList.toggle('open');
-        document.getElementById('nav').classList.toggle('active');
-    }
+// Запускаємо завантаження всіх прев'ю
+loadPreviews(tattooFonts);
 
-    function toggleMusic() {
-        const m = document.getElementById('bg-music');
-        const b = document.getElementById('sound-btn');
-        if(m.paused) { m.play(); b.classList.add('playing'); }
-        else { m.pause(); b.classList.remove('playing'); }
-    }
+// 2. ГЕНЕРАЦІЯ СПИСКУ
+const listContainer = document.getElementById('font-list');
 
-    function copyText() {
-        const t = document.getElementById('main-display').innerText;
-        navigator.clipboard.writeText(t);
-        const toast = document.getElementById('copy-toast');
-        toast.style.display = 'block';
-        setTimeout(() => toast.style.display = 'none', 1000);
+tattooFonts.forEach(font => {
+    const node = document.createElement('div');
+    node.className = 'font-node';
+    node.innerHTML = `
+        <span class="f-preview" style="font-family: '${font.id}';">Style</span>
+        <span class="f-name">${font.tag}</span>
+    `;
+
+    node.onclick = () => {
+        // Програємо звук, якщо функція playClick існує
+        if (typeof playClick === 'function') playClick();
+
+        // Формуємо правильне посилання для обраного шрифту
+        const fontUrl = `https://fonts.googleapis.com/css2?family=${font.id.replace(/ /g, '+')}&display=swap`;
+        
+        // Оновлюємо лінк у head (id="dynamic-fonts" має бути в HTML)
+        const dynamicLink = document.getElementById('dynamic-fonts');
+        if (dynamicLink) dynamicLink.href = fontUrl;
+
+        // Застосовуємо шрифт до головного дисплею
+        const mainDisplay = document.getElementById('main-display');
+        if (mainDisplay) {
+            mainDisplay.style.fontFamily = `'${font.id}', sans-serif`;
+        }
+
+        // Візуальна активація в списку
+        document.querySelectorAll('.font-node').forEach(n => n.classList.remove('active'));
+        node.classList.add('active');
+    };
+
+    listContainer.appendChild(node);
+});
+
+// 3. СИНХРОНІЗАЦІЯ ТЕКСТУ (ЗБЕРІГАЄМО РЕГІСТР)
+function syncText() {
+    const input = document.getElementById('user-input');
+    const display = document.getElementById('main-display');
+    if (input && display) {
+        display.innerText = input.value || "MEMENTO MORI";
     }
+}
+
+// 4. КОПІЮВАННЯ
+function copyText() {
+    const display = document.getElementById('main-display');
+    if (display) {
+        navigator.clipboard.writeText(display.innerText).then(() => {
+            if (typeof playClick === 'function') playClick();
+            const notice = document.getElementById('copy-notice') || document.getElementById('copy-toast');
+            if (notice) {
+                notice.style.display = 'block';
+                setTimeout(() => notice.style.display = 'none', 1500);
+            }
+        });
+    }
+}
+
 
     // Матриця
     const canvas = document.getElementById('matrix-canvas');
