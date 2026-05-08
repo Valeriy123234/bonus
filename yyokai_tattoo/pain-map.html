@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAIN PROTOCOL | YYOKAI</title>
+    <style>
+        :root { --red: #ff0000; --bg: #000; --white: #ffffff; }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background: var(--bg); 
+            color: var(--white); 
+            font-family: 'Inter', sans-serif; 
+            overflow: hidden; 
+            height: 100vh;
+        }
+
+        /* Ефект шуму на фоні */
+        .noise { position: fixed; inset: 0; z-index: 999; opacity: 0.03; pointer-events: none; background: url(https://vercel.app); }
+
+        /* --- ІНТЕРФЕЙС (Верхня панель) --- */
+        .ui-header { 
+            position: fixed; top: 30px; width: 100%; padding: 0 40px; 
+            display: flex; justify-content: space-between; align-items: center; z-index: 1000; 
+        }
+
+        .sound-toggle { cursor: pointer; opacity: 0.4; transition: 0.3s; display: flex; align-items: center; gap: 10px; font-size: 10px; letter-spacing: 2px; }
+        .sound-toggle.active { opacity: 1; color: var(--red); }
+        .sound-toggle svg { width: 20px; height: 20px; fill: currentColor; }
+
+        .menu-btn { width: 28px; height: 14px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
+        .menu-btn span { display: block; width: 100%; height: 1px; background: #fff; }
+
+        /* --- ОСНОВНИЙ КОНТЕНТ --- */
+        .main-wrapper { 
+            height: 100vh; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; position: relative; padding: 20px;
+        }
+
+        .map-section { 
+            display: flex; flex-direction: row; align-items: center; justify-content: center; 
+            gap: 60px; width: 100%; max-width: 1200px;
+        }
+
+        /* Стилізація силуету */
+        .body-container { height: 65vh; position: relative; }
+        .body-svg { height: 100%; fill: #111; stroke: #333; stroke-width: 0.5; transition: 0.3s; }
+        
+        /* Зони болю */
+        .zone { cursor: pointer; transition: all 0.3s ease; }
+        .zone:hover { 
+            fill: var(--red); 
+            stroke: var(--red);
+            filter: drop-shadow(0 0 15px var(--red));
+        }
+
+        /* Панель інформації */
+        .info-panel { width: 350px; text-align: left; }
+        .status-tag { font-size: 10px; letter-spacing: 3px; color: #444; margin-bottom: 10px; }
+        #pain-level { font-family: 'Unbounded', sans-serif; font-size: 38px; color: var(--red); margin-bottom: 20px; text-transform: uppercase; line-height: 1; }
+        #pain-desc { font-size: 13px; color: #888; line-height: 1.8; letter-spacing: 1px; text-transform: uppercase; border-left: 1px solid #222; padding-left: 20px; }
+
+        /* Кнопка запису */
+        .cta-container { margin-top: 50px; }
+        .cta-btn { 
+            border: 1px solid #333; color: #fff; padding: 20px 60px; 
+            text-decoration: none; font-family: 'Unbounded', sans-serif; 
+            font-size: 11px; letter-spacing: 2px; transition: 0.4s;
+            border-radius: 100px;
+        }
+        .cta-btn:hover { background: var(--red); border-color: var(--red); box-shadow: 0 0 30px rgba(255,0,0,0.3); }
+
+        /* Мобільна адаптація */
+        @media (max-width: 768px) {
+            .map-section { flex-direction: column; gap: 30px; }
+            .info-panel { width: 100%; text-align: center; }
+            #pain-desc { border-left: none; padding-left: 0; }
+            .body-container { height: 45vh; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="noise"></div>
+
+    <!-- Аудіо (Заміни на свої посилання) -->
+    <audio id="bg-noise" loop src="ambient.mp3"></audio>
+    <audio id="click-sound" src="click.mp3"></audio>
+
+    <div class="ui-header">
+        <div class="sound-toggle" id="soundBtn" onclick="toggleSound()">
+            <svg viewBox="0 0 24 24"><path d="M12 3v18l-6-6h-4v-6h4l6-6zm7 9c0-2.21-1.29-4.11-3.13-5l-1.46 1.46c.92.51 1.59 1.48 1.59 2.54s-.67 2.03-1.59 2.54l1.46 1.46c1.84-.89 3.13-2.79 3.13-5z"/></svg>
+            <span>AUDIO: OFF</span>
+        </div>
+        <div class="menu-btn" onclick="window.location.href='index.html'">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+
+    <main class="main-wrapper">
+        <div class="map-section">
+            <div class="body-container">
+                <svg class="body-svg" viewBox="0 0 100 210" xmlns="http://w3.org">
+                    <!-- Голова -->
+                    <path class="zone" d="M42,10 Q50,0 58,10 L60,25 Q50,30 40,25 Z" data-level="High" data-desc="Голова: Протокол болю 8/10. Близькість до кістки, висока вібрація." />
+                    <!-- Шия -->
+                    <path class="zone" d="M44,30 L56,30 L55,40 L45,40 Z" data-level="Extreme" data-desc="Шия: Протокол 9/10. Дуже тонка шкіра, критична зона." />
+                    <!-- Плечі -->
+                    <path class="zone" d="M25,45 Q50,35 75,45 L80,60 L20,60 Z" data-level="Low" data-desc="Плечі: Протокол 3/10. Ідеально для першого сеансу." />
+                    <!-- Груди -->
+                    <path class="zone" d="M30,65 L70,65 L70,95 L30,95 Z" data-level="Medium" data-desc="Груди: Протокол 6/10. Відчутно на ключицях та в центрі." />
+                    <!-- Ребра -->
+                    <path class="zone" d="M25,100 L35,100 L35,130 L25,130 Z" data-level="Extreme" data-desc="Ребра: Протокол 10/10. Максимальний рівень стресу системи." />
+                    <path class="zone" d="M65,100 L75,100 L75,130 L65,130 Z" data-level="Extreme" data-desc="Ребра: Протокол 10/10. Максимальний рівень стресу системи." />
+                    <!-- Живіт -->
+                    <path class="zone" d="M38,100 L62,100 L62,135 L38,135 Z" data-level="High" data-desc="Живіт: Протокол 8/10. Складна зона через м'якість шкіри." />
+                    <!-- Руки (Передпліччя) -->
+                    <path class="zone" d="M15,65 L25,120 L10,120 Z" data-level="Low" data-desc="Передпліччя: Протокол 2/10. Найкомфортніша зона." />
+                    <path class="zone" d="M85,65 L75,120 L90,120 Z" data-level="Low" data-desc="Передпліччя: Протокол 2/10. Найкомфортніша зона." />
+                    <!-- Стегна -->
+                    <path class="zone" d="M30,140 L70,140 L75,180 L25,180 Z" data-level="Medium" data-desc="Стегна: Протокол 5/10. Терпимо, велика м'язова маса." />
+                    <!-- Коліна -->
+                    <path class="zone" d="M30,185 L45,185 L45,200 L30,200 Z" data-level="Extreme" data-desc="Коліна: Протокол 9/10. Дуже боляче, суглобова зона." />
+                    <path class="zone" d="M55,185 L70,185 L70,200 L55,200 Z" data-level="Extreme" data-desc="Коліна: Протокол 9/10. Дуже боляче, суглобова зона." />
+                </svg>
+            </div>
+
+            <div class="info-panel">
+                <div class="status-tag">// SENSOR STATUS: ACTIVE</div>
+                <div id="pain-level">READY</div>
+                <div id="pain-desc">Натисніть на частину тіла для аналізу рівня дискомфорту за протоколом YYOKAI SYSTEM.</div>
+            </div>
+        </div>
+
+        <div class="cta-container">
+            <a href="https://t.me" class="cta-btn">ЗАПИСАТИСЯ</a>
+        </div>
+    </main>
+
+    <script>
+        const clickSound = document.getElementById('click-sound');
+        const bgAmbient = document.getElementById('bg-noise');
+        const soundBtn = document.getElementById('soundBtn');
+
+        // Логіка інтерактиву зон
+        document.querySelectorAll('.zone').forEach(zone => {
+            zone.addEventListener('click', function() {
+                // Відтворення звуку кліку
+                clickSound.currentTime = 0;
+                clickSound.play();
+
+                // Оновлення тексту
+                document.getElementById('pain-level').innerText = this.dataset.level;
+                document.getElementById('pain-desc').innerText = this.dataset.desc;
+
+                // Запуск ембієнту при першому кліку, якщо він вимкнений
+                if (bgAmbient.paused && !bgAmbient.muted) {
+                    bgAmbient.play().catch(e => console.log("Чекаємо на взаємодію"));
+                }
+            });
+        });
+
+        // Керування звуком
+        function toggleSound() {
+            if (bgAmbient.paused) {
+                bgAmbient.play();
+                bgAmbient.muted = false;
+                soundBtn.classList.add('active');
+                soundBtn.querySelector('span').innerText = "AUDIO: ON";
+            } else if (bgAmbient.muted) {
+                bgAmbient.muted = false;
+                soundBtn.classList.add('active');
+                soundBtn.querySelector('span').innerText = "AUDIO: ON";
+            } else {
+                bgAmbient.muted = true;
+                soundBtn.classList.remove('active');
+                soundBtn.querySelector('span').innerText = "AUDIO: OFF";
+            }
+        }
+    </script>
+</body>
+</html>
