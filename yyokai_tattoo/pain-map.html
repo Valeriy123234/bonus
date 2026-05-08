@@ -2,65 +2,65 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PAIN PROTOCOL | YYOKAI</title>
     <style>
         :root { --red: #ff0000; --bg: #000; --white: #ffffff; }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body { background: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; overflow: hidden; height: 100vh; }
 
-        /* --- ІНТЕРФЕЙС ПАНЕЛІ --- */
+        /* --- ВЕРХНЯ ПАНЕЛЬ --- */
         .header { position: fixed; top: 30px; width: 100%; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
         .sound-btn { cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 10px; letter-spacing: 2px; opacity: 0.5; transition: 0.3s; }
         .sound-btn.active { opacity: 1; color: var(--red); }
         .sound-btn svg { width: 18px; fill: currentColor; }
-        .back-btn { text-decoration: none; color: #fff; font-size: 10px; letter-spacing: 2px; border: 1px solid #222; padding: 8px 16px; border-radius: 4px; transition: 0.3s; }
+        .back-btn { text-decoration: none; color: #fff; font-size: 10px; letter-spacing: 2px; border: 1px solid #222; padding: 8px 16px; border-radius: 4px; transition: 0.3s; font-family: 'Unbounded', sans-serif; }
         .back-btn:hover { border-color: var(--red); color: var(--red); }
 
         /* --- ОСНОВНИЙ БЛОК КАРТИ --- */
         .main-ui { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .map-wrapper { display: flex; align-items: center; gap: 60px; max-width: 1200px; width: 100%; padding: 20px; }
+        .map-wrapper { display: flex; align-items: center; justify-content: center; gap: 60px; max-width: 1200px; width: 100%; padding: 20px; }
         
-        /* Контейнер для твого реального фото */
         .body-visual { flex: 1; display: flex; justify-content: center; align-items: center; position: relative; }
         
+        /* Фіксований контейнер для карти */
         .image-container {
             position: relative;
-            height: 75vh;
-            aspect-ratio: 1 / 1; /* Зберігає квадратні пропорції твого EPS/SVG */
+            width: 500px;
+            height: 600px;
+            background: #000;
         }
 
-        /* Твоє реальне векторне фото силуетів на фоні */
-        .body-image-svg {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none; /* Щоб фото не заважало клікам */
+        /* Зображення силуетів */
+        .body-image {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: contain;
+            filter: brightness(0.6) contrast(1.1);
         }
-        
-        /* Оновлюємо колір твого силуету через CSS, щоб він вписався в дарк-стиль */
-        .body-image-svg path { fill: #111 !important; stroke: #222 !important; stroke-width: 5px; }
 
-        /* НЕВИДИМІ КЛІКАБЕЛЬНІ МАСКИ ПОВЕРХ ФОТО */
-        .click-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; }
-        .hit-zone { fill: transparent; stroke: transparent; cursor: pointer; transition: 0.3s; }
-        
-        /* Ефект червоного неонового спалаху при наведенні */
-        .hit-zone:hover { fill: rgba(255, 0, 0, 0.15); stroke: var(--red); stroke-width: 4px; filter: drop-shadow(0 0 10px var(--red)); }
+        /* Теги area прозорі за замовчуванням */
+        area {
+            cursor: pointer;
+            outline: none;
+        }
 
         /* ІНФО ПАНЕЛЬ */
-        .side-panel { width: 350px; border-left: 1px solid #111; padding-left: 40px; }
+        .side-panel { width: 350px; border-left: 1px solid #111; padding-left: 40px; display: flex; flex-direction: column; justify-content: center; }
         .label { font-size: 9px; color: #444; letter-spacing: 4px; margin-bottom: 10px; }
         #pain-title { font-family: 'Unbounded', sans-serif; font-size: 32px; color: var(--red); margin-bottom: 20px; text-transform: uppercase; }
         #pain-text { font-size: 12px; color: #666; line-height: 1.8; text-transform: uppercase; letter-spacing: 1px; }
 
-        .btn-book { margin-top: 40px; display: inline-block; padding: 20px 50px; border: 1px solid var(--red); color: #fff; text-decoration: none; font-family: 'Unbounded', sans-serif; font-size: 10px; border-radius: 100px; transition: 0.4s; }
+        .btn-book { margin-top: 40px; display: inline-block; padding: 20px 50px; border: 1px solid var(--red); color: #fff; text-decoration: none; font-family: 'Unbounded', sans-serif; font-size: 10px; border-radius: 100px; transition: 0.4s; text-align: center; }
         .btn-book:hover { background: var(--red); box-shadow: 0 0 30px rgba(255,0,0,0.4); }
 
         @media (max-width: 900px) {
-            .map-wrapper { flex-direction: column; text-align: center; }
-            .side-panel { border: none; padding: 0; width: 100%; }
-            .image-container { height: 50vh; }
+            body { overflow-y: auto; height: auto; }
+            .main-ui { height: auto; padding: 100px 0; }
+            .map-wrapper { flex-direction: column; text-align: center; gap: 40px; }
+            .side-panel { border: none; padding: 0; width: 100%; align-items: center; }
+            .image-container { width: 320px; height: 384px; }
         }
     </style>
 </head>
@@ -82,27 +82,27 @@
         <div class="body-visual">
             <div class="image-container">
                 
-                <!-- 1. Твоє реальне детальне фото (хлопець + дівчина) з твого файлу -->
-                <svg class="body-image-svg" viewBox="0 0 2666 2666">
-                    <g transform="matrix(0.133,0,0,-0.133,0,2666)">
-                        <path d="m 18120,9806.5 c -225.5,207.7 -303.3,273.7 -377.2,254.6 -12.8,6.4 -13,17.4 -26.3,26.3 -15.4,8 -8.9,18 -175.4,237.1 -366,566.5 -125.9,845.9 -780.8,1598 7.9,507.8 -67,818.7 -210.5,1132.7 9.6,175.9 10.2,367.7 -35.1,640.9 -26.8,175 -112.4,439 -394.7,544.4 -247.7,76.1 -350.5,58.2 -543.9,96.6 -406.4,72.8 -450.3,269.4 -473.7,412.7 82.5,50.7 163.2,189.6 221.3,317.6 20.5,8.5 41.4,17.3 63.3,26.6 131.8,36.2 590.9,1631.3 -400.4,1870.8 -4.2,8.8 -8.8,17.3 -13.9,25.6 -9.3,63.2 -118.8,351.9 -692,404.2 -193.5,-4.5 -346.7,-7.1 -602.7,-204.7 -235.6,-174 -317.5,-673.7 -287.5,-842.6 18,-135.6 69.6,-588.1 60,-749.9 -28.7,-482.6 -385.2,-991.6 -342.4,-1206.5 11.9,-59.7 677.9,24.9 721.8,-20.6 21.6,-5.7 79.3,-11.6 144.9,-15.3 -25.9,-6.6 -53.4,-12.6 -83,-17.9 -193.4,-38.5 -296.1,-20.5 -543.8,-96.6 -282.4,-105.4 -368,-369.4 -394.8,-544.4 -45.3,-273.3 -44.6,-465 -35,-641 -143.6,-313.9 -218.5,-624.9 -210.6,-1132.6 -654.8,-752.1 -414.7,-1031.5 -780.7,-1598 -166.5,-219.2 -160.1,-229.2 -175.4,-237.1 -13.3,-8.9 -13.5,-20 -26.3,-26.3 -73.9,19 -151.7,-47 -377.2,-254.7 -255.1,-85.4 -224.4,-165.1 -228.1,-228.3 4.4,-13 14.7,-34.3 26.3,-35.1 77.5,-5 120.1,9.8 157.9,35.1 44,18.7 104.6,57.7 131.6,87.8 5.5,1.2 25.3,-13.2 26.3,-17.5 -101.5,-105.4 -117.1,-173.5 -131.6,-193.2 -25.5,-34.5 -158.7,-437.2 -105.2,-553.1 15.7,-20.9 59.2,-31.8 96.5,-17.6 -24.7,-46.9 -41.2,-114.5 -35.1,-140.5 3.9,-16.7 46.4,-52.6 87.7,-43.9 22.9,4.8 43.7,36.6 61.4,61.5 1.2,-3.1 6.9,3.9 8.8,0 0.4,-33.3 48.4,-76.8 114,-52.7 33.1,25.3 58,90.1 96.5,166.8 2.7,-1.8 8.8,-8.8 8.8,-8.8 0,0 -16.2,-50.1 35,-52.7 51.6,-9.3 239.1,195.8 394.8,869.3 20.8,81.4 36.3,152.2 78.9,254.6 372.2,547.2 1040,1163.2 1061.4,1677.1 -3.2,52.1 33,122.5 43.9,131.7 10.9,9.2 235.9,441.5 280.7,957 56.4,-223.8 141.6,-234.5 184.2,-307.3 -0.5,-74.9 10.6,-777.9 23.8,-1123.6 3.7,-96.6 -5.5,-121.6 -32.6,-184.6 -278.8,-352.7 -1053.7,-1374.1 -17.5,-4609.7 42.5,-241.2 112,-683.8 87.7,-781.5 -445.2,-1862.4 -51.4,-1329.4 219.3,-3029.2 -0.3,-225.6 13.2,-278.7 0,-316.1 -13.1,-43.6 -89.2,-184.8 -43.9,-298.5 8.2,-20.4 -4.4,-44.4 0,-70.3 -14.5,-42.8 -24.2,-65.2 -43.8,-105.3 -27.9,-24.6 -144.1,-215 -140.4,-272.2 -63.3,-81.3 -105.1,-134.9 -175.4,-166.8 -71.1,-53.3 -58.1,-172.2 -26.3,-184.4 64.5,-29.6 814.2,-35.2 885.9,0 87.1,67.9 70.1,327.1 8.8,579.5 -5.6,59.8 -26.1,136 -26.3,184.4 -0.4,104.4 22.5,165.7 -8.8,263.4 -2.2,245.4 18,1087.9 61.4,1194.1 59.3,248.8 209.4,804.7 87.8,1431.2 -11.6,89.6 -24.3,174.4 -35.1,245.8 -25.6,147.6 -40.4,247.9 -52.7,395.2 -1.6,114.6 8.4,229.3 8.8,289.7 1.7,234.6 9.5,330.7 0,403.9 2.7,51.2 8.3,61.5 17.6,122.9 43.2,251.7 234.8,2601.8 78.9,2721.9" />
-                    </g>
-                </svg>
+                <!-- Зображення з картою координат -->
+                <img src="silhouette.jpg" usemap="#image-map" class="body-image" id="map-img">
 
-                <!-- 2. ТОЧНІ НЕВИДИМІ КНОПКИ ДЛЯ КЛІКІВ ПОВЕРХ ТВОГО СИЛУЕТУ -->
-                <svg class="click-layer" viewBox="0 0 400 400">
-                    <!-- ЗОНИ ХЛОПЦЯ (Зліва) -->
-                    <circle class="hit-zone" cx="130" cy="55" r="22" data-l="ГОЛОВА (M)" data-d="Біль 8/10. Сильна вібрація, близько до кістки." />
-                    <path class="hit-zone" d="M105,85 L155,85 L150,180 L110,180 Z" data-l="ТОРС / РЕБРА (M)" data-d="Біль 7-10/10. Центр грудей та ребра — найбільш стресові ділянки." />
-                    <path class="hit-zone" d="M80,95 L105,95 L105,210 L85,210 Z M155,95 L180,95 L175,210 L155,210 Z" data-l="РУКИ (M)" data-d="Біль 3/10. Зовнішня частина плеча — найкомфортніше місце для старту." />
-                    <path class="hit-zone" d="M110,185 L150,185 L145,350 L115,350 Z" data-l="НОГИ (M)" data-d="Біль 5-9/10. Стегна терпимо, коліна та кісточки — екстремально." />
+                <!-- Точні координати для кліків під розмір 500x600 -->
+                <map name="image-map">
+                    <!-- ЧОЛОВІК (Ліва фігура) -->
+                    <area shape="circle" coords="145,55,20" data-l="ГОЛОВА (M)" data-d="Біль 8/10. Сильна вібрація, близько до кістки черепа.">
+                    <area shape="rect" coords="110,90,180,180" data-l="ТОРС / РЕБРА (M)" data-d="Біль 7-10/10. Центр грудей та ребра — найбільш стресові ділянки під великі проекти.">
+                    <area shape="rect" coords="75,95,110,240" data-l="ЛІВА РУКА (M)" data-d="Біль 3/10. Зовнішня частина плеча та передпліччя — найкраще місце для першого тату.">
+                    <area shape="rect" coords="180,95,215,240" data-l="ПРАВА РУКА (M)" data-d="Біль 3/10. Зовнішня частина, м'яз згладжує больові імпульси.">
+                    <area shape="rect" coords="115,180,175,340" data-l="ЖИВІТ / СТЕГНА (M)" data-d="Біль 5-8/10. Живіт вимагає контролю дихання, передня частина стегна терпима.">
+                    <area shape="rect" coords="110,340,180,550" data-l="КОЛІНА / ІКРИ (M)" data-d="Біль 9/10. Суглоби та гомілка — дуже гострий дискомфорт системи.">
 
-                    <!-- ЗОНИ ДІВЧИНИ (Справа) -->
-                    <circle class="hit-zone" cx="270" cy="55" r="20" data-l="ГОЛОВА (F)" data-d="Біль 8/10. Тонка шкіра, висока больова амплітуда." />
-                    <path class="hit-zone" d="M245,85 L295,85 L290,180 L250,180 Z" data-l="ТОРС / ЖИВІТ (F)" data-d="Біль 6-9/10. Ребра та низ живота вимагають правильного дихання." />
-                    <path class="hit-zone" d="M220,95 L245,95 L245,210 L225,210 Z M295,95 L320,95 L315,210 L295,210 Z" data-l="РУКИ (F)" data-d="Біль 2-4/10. Передпліччя та передня частина рук — повністю контрольований біль." />
-                    <path class="hit-zone" d="M250,185 L290,185 L285,350 L255,350 Z" data-l="НОГИ (F)" data-d="Біль 4-9/10. Стегна переносяться легко, підколінна западина — критично." />
-                </svg>
+                    <!-- ЖІНКА (Права фігура) -->
+                    <area shape="circle" coords="355,65,18" data-l="ГОЛОВА (F)" data-d="Біль 8/10. Тонка шкіра, висока чутливість нервових закінчень.">
+                    <area shape="rect" coords="320,100,390,190" data-l="ТОРС / ЖИВІТ (F)" data-d="Біль 6-9/10. Ребра та низ живота вимагають максимальної концентрації.">
+                    <area shape="rect" coords="285,105,320,240" data-l="ЛІВА РУКА (F)" data-d="Біль 2-4/10. Передпліччя — повністю контрольований та м'який рівень болю.">
+                    <area shape="rect" coords="390,105,425,240" data-l="ПРАВА РУКА (F)" data-d="Біль 2-4/10. Ідеально під тонкий деталізований японський надпис.">
+                    <area shape="rect" coords="325,190,385,340" data-l="СТЕГНА (F)" data-d="Біль 4/10. Переноситься легко, велика м'язова маса мінімізує стрес.">
+                    <area shape="rect" coords="320,340,390,550" data-l="КОЛІНА / ГОМІЛКА (F)" data-d="Біль 8/10. Підколінна западина та кістка — критичний рівень за протоколом YYOKAI.">
+                </map>
 
             </div>
         </div>
@@ -110,7 +110,7 @@
         <div class="side-panel">
             <div class="label">// SENSOR STATUS: READY</div>
             <div id="pain-title">SCANNING...</div>
-            <div id="pain-text">Натисніть на будь-яку ділянку тіла силуетів для запуску біометричного аналізу YYOKAI.</div>
+            <div id="pain-text">Натисніть на будь-яку ділянку тіла силуетів для запуску біометричного аналізу YYOKAI SYSTEM.</div>
             <a href="t.me" class="btn-book">ЗАПИСАТИСЯ</a>
         </div>
     </div>
@@ -119,26 +119,66 @@
 <script>
     const amb = document.getElementById('bg-amb');
     const clk = document.getElementById('click-sfx');
+    const sToggle = document.getElementById('sToggle');
+    const sText = document.getElementById('sText');
 
+    // Логіка стабільного перемикача звуку
     function toggleSnd() {
         if (amb.paused) {
-            amb.play(); amb.muted = false;
-            document.getElementById('sToggle').classList.add('active');
-            document.getElementById('sText').innerText = "AUDIO: ON";
+            amb.play().then(() => {
+                amb.muted = false;
+                sToggle.classList.add('active');
+                sText.innerText = "AUDIO: ON";
+            }).catch(e => console.log("Потрібна взаємодія"));
         } else {
             amb.pause();
-            document.getElementById('sToggle').classList.remove('active');
-            document.getElementById('sText').innerText = "AUDIO: OFF";
+            sToggle.classList.remove('active');
+            sText.innerText = "AUDIO: OFF";
         }
     }
 
-    document.querySelectorAll('.hit-zone').forEach(z => {
-        z.addEventListener('click', function() {
-            clk.currentTime = 0; clk.play();
+    // Обробка кліків по зонах карти
+    document.querySelectorAll('area').forEach(zone => {
+        zone.addEventListener('click', function(e) {
+            e.preventDefault(); // Вимикає стандартний перехід по href
+            clk.currentTime = 0; 
+            clk.play();
             document.getElementById('pain-title').innerText = this.dataset.l;
             document.getElementById('pain-text').innerText = this.dataset.d;
         });
     });
+
+    // Адаптація координат під мобільні екрани
+    window.addEventListener('resize', respondCanvas);
+    function respondCanvas() {
+        const img = document.getElementById('map-img');
+        const map = document.getElementsByName('image-map')[0];
+        const areas = map.getElementsByTagName('area');
+        const w = img.clientWidth;
+        const h = img.clientHeight;
+        
+        // Базові розміри, під які писалися координати (500x600)
+        const baseW = 500;
+        const baseH = 600;
+
+        // Масштабуємо кожну координату динамічно
+        for (let i = 0; i < areas.length; i++) {
+            if (!areas[i].dataset.coords) {
+                areas[i].dataset.coords = areas[i].getAttribute('coords');
+            }
+            let c = areas[i].dataset.coords.split(',');
+            let cN = [];
+            for (let j = 0; j < c.length; j++) {
+                if (j % 2 === 0) {
+                    cN[j] = Math.round((c[j] / baseW) * w);
+                } else {
+                    cN[j] = Math.round((c[j] / baseH) * h);
+                }
+            }
+            areas[i].setAttribute('coords', cN.join(','));
+        }
+    }
+    img.addEventListener('load', respondCanvas);
 </script>
 </body>
 </html>
