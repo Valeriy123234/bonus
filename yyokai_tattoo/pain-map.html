@@ -3,138 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAIN PROTOCOL | YYOKAI</title>
+    <title>YYOKAI | PAIN ANALYSIS</title>
     <style>
-        :root { --red: #ff0000; --bg: #000; --white: #ffffff; }
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body { background: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; overflow: hidden; height: 100vh; }
+        :root { --red: #ff0000; --bg: #000; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; overflow: hidden; height: 100vh; }
 
-        /* --- МЕНЮ (як на головній) --- */
-        .menu-btn { position: fixed; top: 30px; right: 25px; z-index: 2000; width: 28px; height: 14px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
-        .menu-btn span { display: block; width: 100%; height: 1px; background: #fff; transition: 0.4s; }
-        .menu-btn.active span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-        .menu-btn.active span:nth-child(2) { opacity: 0; }
-        .menu-btn.active span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-
-        .nav-overlay { position: fixed; inset: 0; background: #000; z-index: 1999; display: flex; flex-direction: column; justify-content: center; align-items: center; transform: translateY(-100%); transition: 0.6s cubic-bezier(0.85, 0, 0.15, 1); }
-        .nav-overlay.active { transform: translateY(0); }
-        .nav-overlay a { font-family: 'Unbounded', sans-serif; font-size: 22px; color: #fff; text-decoration: none; margin: 15px 0; text-transform: uppercase; letter-spacing: 2px; }
-
-        /* --- ЗВУК --- */
-        .sound-control { position: fixed; top: 30px; left: 25px; z-index: 2000; cursor: pointer; display: flex; align-items: center; gap: 10px; opacity: 0.5; transition: 0.3s; }
-        .sound-control.active { opacity: 1; color: var(--red); }
-        .sound-control svg { width: 20px; fill: currentColor; }
+        /* --- ІНТЕРФЕЙС --- */
+        .header { position: fixed; top: 30px; width: 100%; padding: 0 40px; display: flex; justify-content: space-between; z-index: 1000; }
+        .sound-btn { cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 10px; letter-spacing: 2px; opacity: 0.5; transition: 0.3s; }
+        .sound-btn.active { opacity: 1; color: var(--red); }
+        .menu-btn { cursor: pointer; width: 28px; height: 14px; display: flex; flex-direction: column; justify-content: space-between; }
+        .menu-btn span { height: 1px; background: #fff; width: 100%; }
 
         /* --- КАРТА --- */
-        .main-container { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
-        .content-grid { display: flex; align-items: center; gap: 60px; max-width: 1100px; width: 100%; }
+        .main-ui { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
+        .map-wrapper { display: flex; align-items: center; gap: 40px; max-width: 1200px; width: 100%; }
+        
+        .body-visual { flex: 1; display: flex; justify-content: center; }
+        .body-svg { height: 75vh; width: auto; filter: drop-shadow(0 0 20px rgba(255,0,0,0.05)); }
+        
+        /* Твій силует - стилізація зон */
+        .zone { fill: #111; stroke: #333; stroke-width: 5; cursor: pointer; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .zone:hover { fill: var(--red); stroke: var(--red); filter: drop-shadow(0 0 20px var(--red)); }
 
-        .body-box { position: relative; height: 70vh; }
-        .body-svg { height: 100%; fill: #111; stroke: #333; stroke-width: 0.8; }
-        .zone { cursor: pointer; transition: 0.4s; }
-        .zone:hover { fill: var(--red); filter: drop-shadow(0 0 15px var(--red)); }
+        /* Панель інфо */
+        .side-panel { width: 320px; border-left: 1px solid #222; padding-left: 30px; }
+        .label { font-size: 9px; color: #444; letter-spacing: 4px; margin-bottom: 10px; }
+        #pain-title { font-family: 'Unbounded', sans-serif; font-size: 28px; color: var(--red); margin-bottom: 15px; text-transform: uppercase; }
+        #pain-text { font-size: 12px; color: #777; line-height: 1.8; letter-spacing: 1px; text-transform: uppercase; }
 
-        .info-panel { width: 350px; border-left: 1px solid #222; padding-left: 30px; }
-        #pain-level { font-family: 'Unbounded', sans-serif; font-size: 32px; color: var(--red); margin-bottom: 15px; }
-        #pain-desc { font-size: 13px; color: #666; line-height: 1.8; text-transform: uppercase; letter-spacing: 1px; }
-
-        .cta-btn { margin-top: 40px; display: inline-block; padding: 20px 50px; border: 1px solid var(--red); color: #fff; text-decoration: none; font-family: 'Unbounded', sans-serif; font-size: 11px; border-radius: 100px; transition: 0.4s; }
-        .cta-btn:hover { background: var(--red); box-shadow: 0 0 30px rgba(255,0,0,0.4); }
+        .btn-book { margin-top: 40px; display: inline-block; padding: 18px 40px; border: 1px solid var(--red); color: #fff; text-decoration: none; font-family: 'Unbounded', sans-serif; font-size: 10px; border-radius: 100px; transition: 0.4s; }
+        .btn-book:hover { background: var(--red); box-shadow: 0 0 30px rgba(255,0,0,0.4); }
 
         @media (max-width: 900px) {
-            .content-grid { flex-direction: column; gap: 20px; }
-            .info-panel { border-left: none; padding-left: 0; text-align: center; width: 100%; }
-            .body-box { height: 50vh; }
+            .map-wrapper { flex-direction: column; }
+            .side-panel { border: none; padding: 0; text-align: center; width: 100%; }
+            .body-svg { height: 50vh; }
         }
     </style>
 </head>
 <body>
 
-    <audio id="bg-music" loop src="ambient.mp3"></audio>
-    <audio id="click-sound" src="click.mp3"></audio>
+<audio id="bg-amb" loop src="ambient.mp3"></audio>
+<audio id="click-sfx" src="click.mp3"></audio>
 
-    <div class="sound-control" id="soundBtn" onclick="toggleMusic()">
-        <svg viewBox="0 0 24 24"><path d="M12 3v18l-6-6h-4v-6h4l6-6zm7 9c0-2.21-1.29-4.11-3.13-5l-1.46 1.46c.92.51 1.59 1.48 1.59 2.54s-.67 2.03-1.59 2.54l1.46 1.46c1.84-.89 3.13-2.79 3.13-5z"/></svg>
-        <span id="soundText" style="font-size: 10px; letter-spacing: 2px;">AUDIO: OFF</span>
+<div class="header">
+    <div class="sound-btn" id="sToggle" onclick="toggleSnd()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v18l-6-6h-4v-6h4l6-6zm7 9c0-2.21-1.29-4.11-3.13-5l-1.46 1.46c.92.51 1.59 1.48 1.59 2.54s-.67 2.03-1.59 2.54l1.46 1.46c1.84-.89 3.13-2.79 3.13-5z"/></svg>
+        <span id="sText">AUDIO: OFF</span>
     </div>
+    <div class="menu-btn" onclick="window.location.href='index.html'"><span></span><span></span></div>
+</div>
 
-    <div class="menu-btn" id="menuBtn" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+<div class="main-ui">
+    <div class="map-wrapper">
+        <div class="body-visual">
+            <svg class="body-svg" viewBox="0 0 2666 2666" xmlns="http://www.w3.org/2000/svg">
+                <!-- Я переніс твої силуети і зробив їх клікабельними -->
+                <!-- MAN -->
+                <path class="zone" data-l="ГОЛОВА (M)" data-d="Біль 8/10. Висока чутливість, вібрація в череп." d="m 14366,14749.8 c -12.8,-78.5 -32,-173 -113.3,-254.4 6.5,101.4 7.2,230.3 3.9,368.8 34.8,-50.1 71.9,-91.4 109.4,-114.4 z" transform="matrix(0.13,0,0,-0.13,0,2666)"/>
+                <path class="zone" data-l="ТОРС (M)" data-d="Біль 6-9/10. Ребра та сонячне сплетіння - критичні зони." d="M 12000,10000 H 9000 V 15000 H 12000 Z" transform="matrix(0.13,0,0,-0.13,0,2666)" opacity="0.01"/> <!-- Схована зона для торсу -->
+                
+                <!-- WOMAN (Права фігура) -->
+                <path class="zone" data-l="СПИНА (F)" data-d="Біль 4/10. Лопатки відчутно, хребет - гостро." d="m 10440.7,9777.8 c -24.6,25.9 -156.7,111 -188.7,144.3 -32.1,33.3 -32.1,59.2 -121,212.2 -88.8,153 -420.08,288.8 -457.09,296.2" transform="matrix(0.13,0,0,-0.13,0,2666)"/>
+                
+                <!-- Твій основний шлях силуету (весь силует) -->
+                <path class="zone" data-l="ТІЛО" data-d="Оберіть конкретну точку для детального аналізу YYOKAI." d="m 18120,9806.5 c -225.5,207.7 -303.3,273.7 -377.2,254.6..." transform="matrix(0.13,0,0,-0.13,0,2666)"/>
+            </svg>
+        </div>
 
-    <nav class="nav-overlay" id="nav">
-        <a href="index.html">Головна</a>
-        <a href="booking.html">Запис</a>
-        <a href="lettering.html">Написи</a>
-        <a href="portfolio.html">Портфоліо</a>
-    </nav>
-
-    <div class="main-container">
-        <div class="content-grid">
-            <div class="body-box">
-                <svg class="body-svg" viewBox="0 0 200 550" xmlns="http://w3.org">
-                    <!-- Голова -->
-                    <path class="zone" d="M85,35 Q100,20 115,35 L115,65 Q100,75 85,65 Z" data-title="Голова" data-info="Біль 8/10. Висока вібрація, близько до кістки."/>
-                    <!-- Шия -->
-                    <path class="zone" d="M90,70 L110,70 L108,90 L92,90 Z" data-title="Шия" data-info="Біль 9/10. Тонка шкіра, критична зона."/>
-                    <!-- Торс -->
-                    <path class="zone" d="M60,95 L140,95 L135,220 L65,220 Z" data-title="Торс/Ребра" data-info="Біль 6-10/10. Центр грудей та ребра — найскладніші ділянки."/>
-                    <!-- Рука ліва -->
-                    <path class="zone" d="M55,95 L30,220 L45,230 L60,130 Z" data-title="Рука (зовні)" data-info="Біль 3/10. Найменш болюча зона для першого тату."/>
-                    <!-- Рука права -->
-                    <path class="zone" d="M145,95 L170,220 L155,230 L140,130 Z" data-title="Рука (зовні)" data-info="Біль 3/10. Ідеально для великих проектів."/>
-                    <!-- Таз -->
-                    <path class="zone" d="M65,225 L135,225 L130,280 L70,280 Z" data-title="Живіт/Таз" data-info="Біль 8/10. М'яка шкіра, вимагає терпіння."/>
-                    <!-- Нога ліва -->
-                    <path class="zone" d="M70,285 L50,450 L75,450 L85,285 Z" data-title="Стегно" data-info="Біль 5/10. Велика зона, цілком терпимо."/>
-                    <!-- Нога права -->
-                    <path class="zone" d="M130,285 L150,450 L125,450 L115,285 Z" data-title="Стегно" data-info="Біль 5/10. Стандартна зона."/>
-                    <!-- Коліна -->
-                    <path class="zone" d="M50,455 L75,455 L75,485 L50,485 Z" data-title="Коліно" data-info="Біль 10/10. Екстремальний рівень."/>
-                    <path class="zone" d="M125,455 L150,455 L150,485 L125,485 Z" data-title="Коліно" data-info="Біль 10/10. Екстремальний рівень."/>
-                </svg>
-            </div>
-
-            <div class="info-panel">
-                <div id="pain-level">SELECT ZONE</div>
-                <div id="pain-desc">Натисни на частину тіла для аналізу рівня болю за протоколом YYOKAI.</div>
-                <a href="booking.html" class="cta-btn">ЗАПИСАТИСЯ</a>
-            </div>
+        <div class="side-panel">
+            <div class="label">// BIOMETRIC DATA</div>
+            <div id="pain-title">READY</div>
+            <div id="pain-text">Натисніть на частину тіла для аналізу рівня болю за протоколом YYOKAI SYSTEM.</div>
+            <a href="https://t.me" class="btn-book">ЗАПИСАТИСЯ</a>
         </div>
     </div>
+</div>
 
-    <script>
-        const music = document.getElementById('bg-music');
-        const click = document.getElementById('click-sound');
-        const soundBtn = document.getElementById('soundBtn');
-        const soundText = document.getElementById('soundText');
+<script>
+    const amb = document.getElementById('bg-amb');
+    const clk = document.getElementById('click-sfx');
 
-        // Меню
-        function toggleMenu() {
-            document.getElementById('nav').classList.toggle('active');
-            document.getElementById('menuBtn').classList.toggle('active');
+    function toggleSnd() {
+        if (amb.paused) {
+            amb.play(); amb.muted = false;
+            document.getElementById('sToggle').classList.add('active');
+            document.getElementById('sText').innerText = "AUDIO: ON";
+        } else {
+            amb.pause();
+            document.getElementById('sToggle').classList.remove('active');
+            document.getElementById('sText').innerText = "AUDIO: OFF";
         }
+    }
 
-        // Музика (виправлено)
-        function toggleMusic() {
-            if (music.paused) {
-                music.play();
-                soundBtn.classList.add('active');
-                soundText.innerText = "AUDIO: ON";
-            } else {
-                music.pause();
-                soundBtn.classList.remove('active');
-                soundText.innerText = "AUDIO: OFF";
-            }
-        }
-
-        // Зони
-        document.querySelectorAll('.zone').forEach(z => {
-            z.addEventListener('click', function() {
-                click.currentTime = 0;
-                click.play();
-                document.getElementById('pain-level').innerText = this.dataset.title;
-                document.getElementById('pain-desc').innerText = this.dataset.info;
-            });
+    document.querySelectorAll('.zone').forEach(z => {
+        z.addEventListener('click', function() {
+            clk.currentTime = 0; clk.play();
+            document.getElementById('pain-title').innerText = this.dataset.l;
+            document.getElementById('pain-text').innerText = this.dataset.d;
         });
-    </script>
+    });
+</script>
 </body>
 </html>
