@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YYO KAI | Smart Transfer Studio</title>
+    <title>YYO KAI | Ultra-Fast Transfer Studio</title>
     <style>
         :root {
-            --bg-color: #08080a;
-            --panel-color: #111114;
+            --bg-color: #060608;
+            --panel-color: #0e0e11;
             --accent-color: #00ffcc;
             --accent-hover: #00cca3;
             --text-color: #ffffff;
@@ -28,7 +28,6 @@
             overflow-x: hidden;
         }
 
-        /* Хедер з глітч-логотипом та меню */
         header {
             width: 100%;
             max-width: 900px;
@@ -41,28 +40,33 @@
             z-index: 100;
         }
 
-        /* Преміальний Глітч-ефект для YYO KAI */
+        /* Виправлений вертикальний глітч-логотип YYO KAI */
+        .brand-block {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            cursor: pointer;
+        }
+
         .glitch-logo {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 900;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             text-transform: uppercase;
             position: relative;
             color: #fff;
-            cursor: pointer;
-            line-height: 1.1;
+            line-height: 0.9;
         }
 
-        .glitch-logo span {
-            display: block;
-            font-size: 14px;
+        .glitch-logo.sub {
+            font-size: 24px;
             color: var(--accent-color);
-            letter-spacing: 6px;
-            font-weight: 500;
+            letter-spacing: 7px;
+            margin-top: 2px;
         }
 
         .glitch-logo::before, .glitch-logo::after {
-            content: 'YYO';
+            content: attr(data-text);
             position: absolute;
             top: 0;
             left: 0;
@@ -74,33 +78,32 @@
         .glitch-logo::before {
             left: 2px;
             text-shadow: -2px 0 #ff00c1;
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim 5s infinite linear alternate-reverse;
+            clip: rect(10px, 450px, 30px, 0);
+            animation: glitch-anim 4s infinite linear alternate-reverse;
         }
 
         .glitch-logo::after {
             left: -2px;
             text-shadow: -2px 0 #00fff0, 0 2px #ff00c1;
-            clip: rect(85px, 450px, 140px, 0);
-            animation: glitch-anim2 5s infinite linear alternate-reverse;
+            clip: rect(25px, 450px, 55px, 0);
+            animation: glitch-anim2 4s infinite linear alternate-reverse;
         }
 
         @keyframes glitch-anim {
-            0% { clip: rect(15px, 9999px, 66px, 0); transform: skew(0.3deg); }
-            10% { clip: rect(34px, 9999px, 55px, 0); transform: skew(0.5deg); }
-            100% { clip: rect(12px, 9999px, 85px, 0); transform: skew(0.1deg); }
+            0% { clip: rect(5px, 9999px, 20px, 0); transform: skew(0.2deg); }
+            50% { clip: rect(15px, 9999px, 35px, 0); transform: skew(0.4deg); }
+            100% { clip: rect(2px, 9999px, 15px, 0); transform: skew(0.1deg); }
         }
 
         @keyframes glitch-anim2 {
-            0% { clip: rect(70px, 9999px, 105px, 0); transform: skew(-0.2deg); }
-            15% { clip: rect(12px, 9999px, 45px, 0); transform: skew(0.8deg); }
-            100% { clip: rect(90px, 9999px, 130px, 0); transform: skew(-0.1deg); }
+            0% { clip: rect(20px, 9999px, 45px, 0); transform: skew(-0.1deg); }
+            50% { clip: rect(8px, 9999px, 25px, 0); transform: skew(0.6deg); }
+            100% { clip: rect(30px, 9999px, 50px, 0); transform: skew(-0.2deg); }
         }
 
-        /* Бургер-меню з плавною трансформацією в хрестик */
         .burger-menu {
             width: 30px;
-            height: 24px;
+            height: 20px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -113,32 +116,20 @@
             height: 3px;
             background-color: #fff;
             border-radius: 2px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .burger-menu.active .burger-bar:nth-child(1) {
-            transform: translateY(10px) rotate(45deg);
-            background-color: var(--accent-color);
-        }
+        .burger-menu.active .burger-bar:nth-child(1) { transform: translateY(8px) rotate(45deg); background-color: var(--accent-color); }
+        .burger-menu.active .burger-bar:nth-child(2) { opacity: 0; transform: translateX(10px); }
+        .burger-menu.active .burger-bar:nth-child(3) { transform: translateY(-9px) rotate(-45deg); background-color: var(--accent-color); }
 
-        .burger-menu.active .burger-bar:nth-child(2) {
-            opacity: 0;
-            transform: translateX(20px);
-        }
-
-        .burger-menu.active .burger-bar:nth-child(3) {
-            transform: translateY(-11px) rotate(-45deg);
-            background-color: var(--accent-color);
-        }
-
-        /* Повноекранне меню */
         .nav-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(8, 8, 10, 0.98);
+            background: rgba(6, 6, 8, 0.98);
             z-index: 99;
             display: flex;
             flex-direction: column;
@@ -147,99 +138,58 @@
             gap: 25px;
             opacity: 0;
             pointer-events: none;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
         }
 
-        .nav-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .nav-overlay.active { opacity: 1; pointer-events: auto; }
+        .nav-link { font-size: 24px; color: #fff; text-decoration: none; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; transition: color 0.2s; }
+        .nav-link:hover { color: var(--accent-color); }
 
-        .nav-link {
-            font-size: 24px;
-            color: #fff;
-            text-decoration: none;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: color 0.3s;
-        }
-
-        .nav-link:hover {
-            color: var(--accent-color);
-        }
-
-        /* Головний контейнер */
         .container {
             max-width: 900px;
             width: 100%;
             background: var(--panel-color);
             padding: 25px;
             border-radius: var(--border-radius);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.02);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.01);
             box-sizing: border-box;
             margin-bottom: 40px;
         }
 
         .upload-zone {
-            border: 2px dashed #222227;
-            padding: 35px 20px;
+            border: 2px dashed #1c1c22;
+            padding: 30px 20px;
             text-align: center;
             border-radius: var(--border-radius);
             cursor: pointer;
-            transition: all 0.25s ease;
-            background: rgba(255, 255, 255, 0.01);
+            transition: all 0.2s ease;
+            background: rgba(255, 255, 255, 0.005);
         }
 
-        .upload-zone:hover {
-            border-color: var(--accent-color);
-            background: rgba(0, 255, 204, 0.02);
-        }
-
-        .upload-zone p {
-            margin: 0;
-            font-size: 15px;
-            color: #888893;
-            font-weight: 500;
-        }
-
+        .upload-zone:hover { border-color: var(--accent-color); background: rgba(0, 255, 204, 0.01); }
+        .upload-zone p { margin: 0; font-size: 15px; color: #6e6e77; font-weight: 500; }
         #file-input { display: none; }
 
-        /* Панель керування з 3 регуляторами */
         .controls {
             margin-top: 20px;
             display: grid;
             grid-template-columns: 1fr;
-            gap: 18px;
-            background: #16161a;
+            gap: 15px;
+            background: #121216;
             padding: 20px;
             border-radius: var(--border-radius);
-            border: 1px solid #222227;
+            border: 1px solid #1c1c22;
         }
 
-        .control-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        label {
-            font-size: 12px;
-            color: #888893;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: flex;
-            justify-content: space-between;
-        }
-
+        .control-group { display: flex; flex-direction: column; gap: 6px; }
+        label { font-size: 12px; color: #6e6e77; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: flex; justify-content: space-between; }
         label span { color: var(--accent-color); font-family: monospace; }
 
         input[type="range"] {
             -webkit-appearance: none;
             width: 100%;
-            background: #222227;
+            background: #1c1c22;
             height: 6px;
             border-radius: 3px;
             outline: none;
@@ -252,103 +202,44 @@
             border-radius: 50%;
             background: var(--accent-color);
             cursor: pointer;
-            box-shadow: 0 0 10px var(--accent-color);
-            transition: transform 0.1s;
+            box-shadow: 0 0 8px var(--accent-color);
         }
+        input[type="range"]:disabled { opacity: 0.1; }
 
-        input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
-        input[type="range"]:disabled { opacity: 0.2; cursor: not-allowed; }
-
-        /* Вікна перегляду */
-        .workspace {
-            margin-top: 20px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        @media (max-width: 650px) {
-            .workspace { grid-template-columns: 1fr; }
-        }
+        .workspace { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        @media (max-width: 650px) { .workspace { grid-template-columns: 1fr; } }
 
         .preview-box {
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: #16161a;
+            background: #121216;
             padding: 12px;
             border-radius: var(--border-radius);
-            border: 1px solid #222227;
+            border: 1px solid #1c1c22;
             box-sizing: border-box;
         }
 
-        .preview-box h3 {
-            margin: 0 0 12px 0;
-            font-size: 11px;
-            color: #55555f;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        img, canvas {
-            width: 100%;
-            height: auto;
-            max-height: 400px;
-            border-radius: 8px;
-            object-fit: contain;
-            background: #09090b;
-        }
-
-        /* Чисто білий трансферний папір */
+        .preview-box h3 { margin: 0 0 12px 0; font-size: 11px; color: #4b4b54; text-transform: uppercase; letter-spacing: 1px; }
+        img, canvas { width: 100%; height: auto; max-height: 400px; border-radius: 8px; object-fit: contain; background: #060608; }
         canvas { background: #ffffff; border: 1px solid #e4e4e7; }
 
-        /* Кнопки */
-        .btn-container {
-            margin-top: 25px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .btn {
-            border: none;
-            padding: 14px 35px;
-            font-size: 14px;
-            font-weight: 700;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            width: 100%;
-            max-width: 340px;
-            text-align: center;
-            box-sizing: border-box;
-        }
-
-        .btn-download {
-            background: var(--accent-color);
-            color: #08080a;
-            box-shadow: 0 4px 20px rgba(0, 255, 204, 0.2);
-        }
-
-        .btn-download:hover:not(:disabled) {
-            background: var(--accent-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(0, 255, 204, 0.4);
-        }
-
-        .btn-download:disabled { background: #222227; color: #55555f; box-shadow: none; cursor: not-allowed; }
-        .btn-booking { background: transparent; color: #fff; border: 2px solid #222227; }
-        .btn-booking:hover { border-color: #fff; background: rgba(255, 255, 255, 0.02); transform: translateY(-2px); }
+        .btn-container { margin-top: 25px; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+        .btn { border: none; padding: 14px 35px; font-size: 14px; font-weight: 700; border-radius: var(--border-radius); cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; letter-spacing: 1px; width: 100%; max-width: 340px; text-align: center; box-sizing: border-box; }
+        .btn-download { background: var(--accent-color); color: #060608; box-shadow: 0 4px 20px rgba(0, 255, 204, 0.15); }
+        .btn-download:hover:not(:disabled) { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 6px 25px rgba(0, 255, 204, 0.3); }
+        .btn-download:disabled { background: #1c1c22; color: #4b4b54; box-shadow: none; cursor: not-allowed; }
+        .btn-booking { background: transparent; color: #fff; border: 2px solid #1c1c22; }
+        .btn-booking:hover { border-color: #fff; background: rgba(255, 255, 255, 0.01); transform: translateY(-2px); }
     </style>
 </head>
 <body>
 
-    <!-- Хедер з фірмовим стилем -->
     <header>
-        <div class="glitch-logo" data-text="YYO">YYO<span>KAI</span></div>
+        <div class="brand-block">
+            <div class="glitch-logo" data-text="YYO">YYO</div>
+            <div class="glitch-logo sub" data-text="KAI">KAI</div>
+        </div>
         <div class="burger-menu" id="burger-menu" onclick="toggleMenu()">
             <div class="burger-bar"></div>
             <div class="burger-bar"></div>
@@ -356,33 +247,27 @@
         </div>
     </header>
 
-    <!-- Повноекранне адаптивне меню -->
     <div class="nav-overlay" id="nav-overlay">
         <a href="#" class="nav-link" onclick="toggleMenu()">Головна</a>
         <a href="#" class="nav-link" onclick="toggleMenu()">Трансфер-модуль</a>
         <a href="https://instagram.com" target="_blank" class="nav-link" onclick="toggleMenu()">Записатись на сеанс</a>
     </div>
 
-    <!-- Основний функціонал -->
     <div class="container">
         <div class="upload-zone" id="drop-zone">
-            <p id="upload-text">📸 Завантажте картинку для розумного прорахунку ліній</p>
+            <p id="upload-text">📸 Завантажте картинку для моментального прорахунку контурів</p>
             <input type="file" id="file-input" accept="image/*">
         </div>
 
-        <!-- 3 Розширені інтелектуальні регулятори -->
         <div class="controls">
             <div class="control-group">
-                <label for="detail-slider">Тонкі деталі та тіні (Радіус) <span id="detail-val">4</span></label>
-                <input type="range" id="detail-slider" min="1" max="15" value="4" step="0.5" disabled>
+                <label for="detail-slider">Фільтр мікро-деталей (Цятки/Тіні) <span id="detail-val">Максимум</span></label>
+                <!-- Міняємо крок на 1 і логіку для миттєвого рендеру -->
+                <input type="range" id="detail-slider" min="1" max="5" value="5" step="1" disabled>
             </div>
             <div class="control-group">
-                <label for="contrast-slider">Інтенсивність чорного (Контраст) <span id="contrast-val">2.0</span></label>
-                <input type="range" id="contrast-slider" min="0.5" max="5.0" value="2.0" step="0.1" disabled>
-            </div>
-            <div class="control-group">
-                <label for="clean-slider">Очищення фону від сміття (Поріг) <span id="clean-val">240</span></label>
-                <input type="range" id="clean-slider" min="180" max="254" value="240" step="1" disabled>
+                <label for="contrast-slider">Глибина ліній (Насичений чорний) <span id="contrast-val">Середня</span></label>
+                <input type="range" id="contrast-slider" min="1" max="5" value="3" step="1" disabled>
             </div>
         </div>
 
@@ -404,9 +289,8 @@
     </div>
 
 <script>
-    // Інтерфейсні аудіо-кліки
     const clickSound = new Audio('mixkit.co');
-    clickSound.volume = 0.2;
+    clickSound.volume = 0.15;
 
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('file-input');
@@ -416,17 +300,14 @@
     
     const detailSlider = document.getElementById('detail-slider');
     const contrastSlider = document.getElementById('contrast-slider');
-    const cleanSlider = document.getElementById('clean-slider');
     
     const detailVal = document.getElementById('detail-val');
     const contrastVal = document.getElementById('contrast-val');
-    const cleanVal = document.getElementById('clean-val');
     const btnDownload = document.getElementById('btn-download');
     const uploadText = document.getElementById('upload-text');
 
     let originalData = null;
 
-    // Плавна логіка меню
     function toggleMenu() {
         clickSound.play().catch(() => {});
         document.getElementById('burger-menu').classList.toggle('active');
@@ -434,7 +315,7 @@
     }
 
     dropZone.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', (e) => { if (e.target.files.length > 0) handleFile(e.target.files[0]); });
+    fileInput.addEventListener('change', (e) => { if (e.target.files.length > 0) handleFile(e.target.files); });
 
     function handleFile(file) {
         if (!file.type.startsWith('image/')) return;
@@ -452,97 +333,109 @@
         ctx.drawImage(sourceImg, 0, 0);
         originalData = ctx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
 
-        // Активація плавних повзунків
         detailSlider.disabled = false;
         contrastSlider.disabled = false;
-        cleanSlider.disabled = false;
         btnDownload.disabled = false;
 
-        processSmartTransfer();
+        updateSliderLabels();
+        processUltraFastTransfer();
     };
 
-    // Слухачі для ультраплавної зміни параметрів ліній
-    detailSlider.addEventListener('input', (e) => { detailVal.textContent = e.target.value; processSmartTransfer(); });
-    contrastSlider.addEventListener('input', (e) => { contrastVal.textContent = e.target.value; processSmartTransfer(); });
-    cleanSlider.addEventListener('input', (e) => { cleanVal.textContent = e.target.value; processSmartTransfer(); });
+    detailSlider.addEventListener('input', () => { updateSliderLabels(); processUltraFastTransfer(); });
+    contrastSlider.addEventListener('input', () => { updateSliderLabels(); processUltraFastTransfer(); });
 
-    // РОЗУМНИЙ АЛГОРИТМ: Емуляція Color Dodge змішування (як у Photoshop)
-    function processSmartTransfer() {
+    function updateSliderLabels() {
+        const dValues = ["Очищено", "Мінімум", "Легкі", "Стандарт", "Максимум"];
+        const cValues = ["Тонкі лінії", "М'які", "Середня", "Глибокі", "Ультра-Чорний"];
+        detailVal.textContent = dValues[parseInt(detailSlider.value) - 1];
+        contrastVal.textContent = cValues[parseInt(contrastSlider.value) - 1];
+    }
+
+    // ОПТИМІЗОВАНИЙ ЛІНІЙНИЙ АЛГОРИТМ БЕЗ ЛАГІВ ТА СМИКАНЬ
+    function processUltraFastTransfer() {
         if (!originalData) return;
 
         const w = outputCanvas.width;
         const h = outputCanvas.height;
-        const radius = parseFloat(detailSlider.value);
-        const contrast = parseFloat(contrastSlider.value);
-        const thresholdClean = parseInt(cleanSlider.value);
-
-        ctx.putImageData(originalData, 0, 0);
         
-        // 1. Створюємо масив чб версії ескізу
-        const imgData = ctx.getImageData(0, 0, w, h);
-        const d = imgData.data;
+        // Зчитуємо параметри повзунків
+        const detailLevel = parseInt(detailSlider.value); // 1 (чисто) до 5 (всі деталі)
+        const contrastLevel = parseInt(contrastSlider.value); // 1 (сіруваті) до 5 (ультра-чорні)
+
+        // Динамічні коефіцієнти математичного фільтру
+        const thresholds = [18, 14, 10, 7, 4];
+        const baseThreshold = thresholds[detailLevel - 1];
+        
+        const multipliers = [1.2, 2.0, 3.5, 6.0, 15.0];
+        const contrastMultiplier = multipliers[contrastLevel - 1];
+
+        const imgData = ctx.createImageData(w, h);
+        const src = originalData.data;
+        const dst = imgData.data;
+
+        // Переведення в Grayscale в один прохід для прискорення
         const gray = new Uint8Array(w * h);
-
-        for (let i = 0; i < d.length; i += 4) {
-            gray[i/4] = 0.299 * d[i] + 0.587 * d[i+1] + 0.114 * d[i+2];
+        for (let i = 0; i < src.length; i += 4) {
+            gray[i/4] = (src[i] + src[i+1] + src[i+2]) / 3;
         }
 
-        // 2. Створюємо інвертовану розмиту копію (Box Blur для імітації м'якого олівця)
-        const blurredInverted = new Uint8Array(w * h);
-        const r = Math.floor(radius);
+        // Швидке виявлення контурів без важкого математичного розмиття
+        for (let y = 1; y < h - 1; y++) {
+            const rowOffset = y * w;
+            const topOffset = (y - 1) * w;
+            const botOffset = (y + 1) * w;
 
-        for (let y = 0; y < h; y++) {
-            for (let x = 0; x < w; x++) {
-                let sum = 0;
-                let count = 0;
+            for (let x = 1; x < w - 1; x++) {
+                // Матриця пікселів навколо (Ядро Собеля для чітких ліній)
+                const g00 = gray[topOffset + x - 1];
+                const g02 = gray[topOffset + x + 1];
+                const g20 = gray[botOffset + x - 1];
+                const g22 = gray[botOffset + x + 1];
+                const g10 = gray[rowOffset + x - 1];
+                const g12 = gray[rowOffset + x + 1];
+
+                const v = Math.abs((g02 + 2 * g12 + g22) - (g00 + 2 * g10 + g20));
+                const h_val = Math.abs((g20 + 2 * gray[botOffset + x] + g22) - (g00 + 2 * gray[topOffset + x] + g02));
                 
-                for (let ky = -r; ky <= r; ky++) {
-                    for (let kx = -r; kx <= r; kx++) {
-                        const px = x + kx;
-                        const py = y + ky;
-                        if (px >= 0 && px < w && py >= 0 && py < h) {
-                            sum += gray[py * w + px];
-                            count++;
-                        }
+                // Разом сила перепаду кольору
+                let edge = v + h_val;
+
+                const pos = (rowOffset + x) * 4;
+
+                // Застосування інтелектуального контрасту та очищення фону
+                if (edge > baseThreshold) {
+                    // Розрахунок глибини чорного кольору
+                    let blackIntensity = 255 - (edge * contrastMultiplier);
+                    
+                    // Якщо вибрано Максимум чорного (рівень 5), примусово робимо лінії вугільними
+                    if (contrastLevel === 5) {
+                        blackIntensity = blackIntensity < 150 ? 0 : blackIntensity * 0.2;
                     }
+                    
+                    const finalColor = Math.max(0, Math.min(255, blackIntensity));
+
+                    dst[pos]     = finalColor;
+                    dst[pos + 1] = finalColor;
+                    dst[pos + 2] = finalColor;
+                    dst[pos + 3] = 255;
+                } else {
+                    // Тло залишається ідеально білим
+                    dst[pos]     = 255;
+                    dst[pos + 1] = 255;
+                    dst[pos + 2] = 255;
+                    dst[pos + 3] = 255;
                 }
-                // Записуємо розмите значення з одночасною інверсією (255 - колір)
-                blurredInverted[y * w + x] = 255 - (sum / count);
             }
         }
 
-        // 3. Розумне змішування Color Dodge + Контрастування чорних ліній
-        for (let i = 0; i < gray.length; i++) {
-            const a = gray[i];
-            const b = blurredInverted[i];
-            
-            // Формула Color Dodge змішування
-            let blend = (b === 255) ? 255 : Math.min(255, (a << 8) / (255 - b));
-            
-            // Налаштування насиченості ліній (розумний контраст)
-            if (blend < 255) {
-                blend = 255 * Math.pow(blend / 255, contrast);
-            }
-
-            // Очищення паперу від бруду
-            if (blend > thresholdClean) blend = 255;
-
-            const pos = i * 4;
-            dstColor = blend < 40 ? 0 : blend; // Робить глибокі лінії ультрачорними
-
-            d[pos]     = dstColor;
-            d[pos + 1] = dstColor;
-            d[pos + 2] = dstColor;
-            d[pos + 3] = 255;
-        }
-
+        // Миттєвий рендер на екран смартфона без затримок
         ctx.putImageData(imgData, 0, 0);
     }
 
     btnDownload.addEventListener('click', () => {
         clickSound.play().catch(() => {});
         const link = document.createElement('a');
-        link.download = 'yyokai-smart-stencil.png';
+        link.download = 'yyokai-fast-stencil.png';
         link.href = outputCanvas.toDataURL('image/png');
         link.click();
     });
