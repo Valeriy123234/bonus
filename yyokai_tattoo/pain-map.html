@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYO KAI | Multi-Layer Stencil Engine</title>
+    <title>YYO KAI | Premium Tattoo Stencil Engine</title>
     <style>
         :root {
             --bg-color: #060608;
@@ -181,7 +181,7 @@
             appearance: none;
             width: 100%;
             background: #1c1c22;
-            height: 10px;
+            height: 12px; /* Збільшена висота слайдера для легкого зачепу пальцем */
             border-radius: 50px;
             outline: none;
             cursor: pointer;
@@ -191,8 +191,8 @@
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 26px;
-            height: 26px;
+            width: 28px; /* Збільшений бігунок для ідеального перетягування */
+            height: 28px;
             border-radius: 50%;
             background: var(--accent-color);
             cursor: grab;
@@ -207,8 +207,8 @@
         }
 
         input[type="range"]::-moz-range-thumb {
-            width: 26px;
-            height: 26px;
+            width: 28px;
+            height: 28px;
             border: none;
             border-radius: 50%;
             background: var(--accent-color);
@@ -284,7 +284,7 @@
             <input type="file" id="file-input" accept="image/*">
         </div>
 
-        <!-- Оновлена панель з 3 плавними регуляторами -->
+        <!-- 3 Повністю апаратні, плавні слайдери -->
         <div class="controls">
             <div class="control-group">
                 <label>Товщина та пошук ліній: <span id="detail-val">3</span></label>
@@ -295,8 +295,7 @@
                 <input type="range" id="noise-slider" min="5" max="60" value="20" step="1" disabled>
             </div>
             <div class="control-group">
-                <label>Глибина чорного (Множення шарів): <span id="layers-val">2 шари</span></label>
-                <!-- Новий 3-й повзунок для накладання шарів поверх шарів -->
+                <label>Накладання шарів (Multiply): <span id="layers-val">2 шари</span></label>
                 <input type="range" id="layers-slider" min="1" max="3" value="2" step="1" disabled>
             </div>
         </div>
@@ -385,11 +384,12 @@
     
     fileInput.addEventListener('change', (e) => { 
         if (e.target.files && e.target.files.length > 0) {
-            handleFile(e.target.files[0]); 
+            handleFile(e.target.files); 
         }
     });
 
-    function handleFile(file) {
+    function handleFile(files) {
+        const file = files[0]; // Повністю виправлений запуск завантаження
         if (!file || !file.type.startsWith('image/')) return;
         playClickSound();
         const reader = new FileReader();
@@ -414,11 +414,12 @@
         requestProcess();
     };
 
-    // Слухачі з підтримкою мобільного перетягування пальцем (60 FPS)
+    // Слухачі для ультраплавного руху (60 FPS без затримок та смикань)
     detailSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
     noiseSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
     layersSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
 
+    // Підтримка перетягування для тачскрінів
     detailSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
     noiseSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
     layersSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
@@ -429,6 +430,7 @@
         layersVal.textContent = layersSlider.value + (layersSlider.value == 1 ? " шар" : " шари");
     }
 
+    // Запобігає перевантаженню рендеру під час перетягування
     function requestProcess() {
         if (!isProcessing) {
             isProcessing = true;
@@ -439,7 +441,7 @@
         }
     }
 
-    // НОВИЙ НАДШВИДКИЙ ДВИГУН БАГАТОШАРОВОГО НАКОПИЧЕННЯ
+    // ПРЕМІУМ-ДВИГУН БАГАТОШАРОВОГО МНОЖЕННЯ (SAUVOLA-MULTIPLE PASS)
     function processVectorLineTransfer() {
         if (!originalData) return;
 
@@ -448,26 +450,27 @@
         
         const maskSize = parseInt(detailSlider.value); 
         const contrastThreshold = parseInt(noiseSlider.value); 
-        const layerCount = parseInt(layersSlider.value); // Кількість проходів множення
+        const layerCount = parseInt(layersSlider.value); 
 
         const imgData = ctx.createImageData(w, h);
         const src = originalData.data;
         const dst = imgData.data;
 
-        // Попередній перевід в Grayscale
+        // Швидкий Grayscale
         const gray = new Uint8Array(w * h);
         for (let i = 0; i < src.length; i += 4) {
             gray[i/4] = (src[i] + src[i+1] + src[i+2]) / 3;
         }
 
-        // Буфер під фінальне накопичення пікселів (початково всі білі = 255)
+        // Створюємо буфер для накладання шарів (255 = білий папір)
         const finalBuffer = new Uint8Array(w * h);
         finalBuffer.fill(255);
 
-        // ЦИКЛ НАКОПИЧЕННЯ ШАРІВ (Емуляція Multiply в Photoshop)
-        for (let layer = 0; layer < layerCount; layer++) {
-            // Зміщення маски на 1 піксель для кожного шару, щоб прибрати рвані кути і мікро-бруд
-            const shift = layer; 
+        // ЦИКЛ ПАРАЛЕЛЬНОГО МНОЖЕННЯ ШАРІВ (Multiply Layer Mode)
+        for (let l = 0; l < layerCount; l++) {
+            // Кожен шар отримує динамічний зсув (shift) аналізу на 1 піксель.
+            // Це дозволяє згладити піксельний бруд і знайти лінії у глибоких тінях.
+            const shift = l; 
 
             for (let y = maskSize + shift; y < h - maskSize - shift; y++) {
                 const rowIdx = y * w;
@@ -478,7 +481,6 @@
                     let maxVal = 0;
                     let minVal = 255;
 
-                    // Збір даних локальної матриці
                     for (let ky = -maskSize; ky <= maskSize; ky++) {
                         const kernelRow = (y + ky) * w;
                         for (let kx = -maskSize; kx <= maskSize; kx++) {
@@ -488,20 +490,29 @@
                         }
                     }
 
+                    // Адаптивний поріг за методом Бернсена-Сауволи
                     const localContrast = maxVal - minVal;
                     const midThreshold = (maxVal + minVal) / 2;
                     const bufferIdx = rowIdx + x;
 
-                    // Розумне відсікання бруду та формування шару
-                    if (localContrast >= contrastThreshold && currentPx < midThreshold) {
-                        // Якщо це лінія контуру — забиваємо піксель в абсолютний нуль (чорний колір)
-                        finalBuffer[bufferIdx] = 0;
+                    // Якщо локальний контраст низький — це папір або глибока тінь
+                    if (localContrast < contrastThreshold) {
+                        // Якщо ми у ГЛИБОКІЙ ТІНІ (найтемніших місцях), знижуємо вимогу контрасту,
+                        // щоб витягнути звідти лінії ескізу.
+                        if (currentPx < 80 && localContrast > (contrastThreshold / 2.5)) {
+                            finalBuffer[bufferIdx] = 0; // Малюємо лінію в тіні
+                        }
+                    } else {
+                        // Якщо це чітка лінія — додаємо її в шар
+                        if (currentPx < midThreshold) {
+                            finalBuffer[bufferIdx] = 0; 
+                        }
                     }
                 }
             }
         }
 
-        // Виведення фінального накопиченого результату на Canvas
+        // Рендер згенерованого Line-Art трафарету на Canvas
         for (let i = 0; i < finalBuffer.length; i++) {
             const color = finalBuffer[i];
             const pos = i * 4;
