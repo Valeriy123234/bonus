@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYO KAI | Clean Multi-Layer Stencil Studio</title>
+    <title>YYO KAI | Premium Tattoo Stencil Engine</title>
     <style>
         :root {
             --bg-color: #060608;
@@ -280,21 +280,23 @@
 
     <div class="container">
         <div class="upload-zone" id="drop-zone">
-            <p id="upload-text">📸 Завантажте ескіз для отримання чітких векторних ліній</p>
+            <p id="upload-text">📸 Завантажте ескіз для преміальної підготовки ліній</p>
             <input type="file" id="file-input" accept="image/*">
         </div>
 
+        <!-- Повністю плавні бігунки без лагів -->
         <div class="controls">
             <div class="control-group">
-                <label>Товщина та пошук ліній: <span id="detail-val">3</span></label>
-                <input type="range" id="detail-slider" min="1" max="5" value="3" step="1" disabled>
+                <label>Чутливість до мікро-деталей: <span id="detail-val">50%</span></label>
+                <input type="range" id="detail-slider" min="5" max="95" value="50" step="1" disabled>
             </div>
             <div class="control-group">
-                <label>Очищення від бруду та шуму: <span id="noise-val">70%</span></label>
-                <input type="range" id="noise-slider" min="5" max="60" value="20" step="1" disabled>
+                <label>Очищення бруду та тіней: <span id="noise-val">70%</span></label>
+                <!-- Діапазон підкориговано для ідеального фокусування на 60%-80% -->
+                <input type="range" id="noise-slider" min="60" max="90" value="70" step="1" disabled>
             </div>
             <div class="control-group">
-                <label>Глибина чорного (Множення шарів): <span id="layers-val">2 шари</span></label>
+                <label>Покращення чорного (Мультиплай): <span id="layers-val">2 шари</span></label>
                 <input type="range" id="layers-slider" min="1" max="3" value="2" step="1" disabled>
             </div>
         </div>
@@ -305,7 +307,7 @@
                 <img id="source-img" src="data:image/svg+xml;utf8,<svg xmlns='w3.org' width='100' height='100'></svg>" alt="Оригінал">
             </div>
             <div class="preview-box">
-                <h3>Чистий Контурний Трафарет</h3>
+                <h3>Преміум Трафарет (HD)</h3>
                 <canvas id="output-canvas"></canvas>
             </div>
         </div>
@@ -383,7 +385,7 @@
     
     fileInput.addEventListener('change', (e) => { 
         if (e.target.files && e.target.files.length > 0) {
-            handleFile(e.target.files[0]); 
+            handleFile(e.target.files[0]); // Фікс: Передаємо перший файл з масиву
         }
     });
 
@@ -412,6 +414,7 @@
         requestProcess();
     };
 
+    // Слухачі для ультраплавного руху без лагів
     detailSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
     noiseSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
     layersSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
@@ -421,9 +424,8 @@
     layersSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
 
     function updateSliderLabels() {
-        detailVal.textContent = detailSlider.value;
-        const noisePercent = Math.round(50 + ((noiseSlider.value - 5) / 55) * 45);
-        noiseVal.textContent = noisePercent + "%";
+        detailVal.textContent = detailSlider.value + "%";
+        noiseVal.textContent = noiseSlider.value + "%";
         layersVal.textContent = layersSlider.value + (layersSlider.value == 1 ? " шар" : " шари");
     }
 
@@ -431,77 +433,65 @@
         if (!isProcessing) {
             isProcessing = true;
             window.requestAnimationFrame(() => {
-                processVectorLineTransfer();
+                processPremiumTransfer();
                 isProcessing = false;
             });
         }
     }
 
-    // НОВИЙ ПРЕМІУМ-ДВИГУН З ФІЛЬТРАЦІЄЮ ШУМУ ТА ФІЗИЧНИМ MULTIPLY
-    function processVectorLineTransfer() {
+    // НОВИЙ ПРЕМІУМ-ДВИГУН ДИНАМІЧНОГО КАНАЛУ ДЛЯ ДЕТАЛІЗОВАНИХ ЕСКІЗІВ
+    function processPremiumTransfer() {
         if (!originalData) return;
 
         const w = outputCanvas.width;
         const h = outputCanvas.height;
         
-        const maskSize = parseInt(detailSlider.value); 
-        const contrastThreshold = parseInt(noiseSlider.value); 
-        const layerCount = parseInt(layersSlider.value); 
+        const detailPercent = parseInt(detailSlider.value); 
+        const noisePercent = parseInt(noiseSlider.value);   
+        const layerCount = parseInt(layersSlider.value);     
+
+        // Мапуємо значення слайдерів у точні математичні параметри
+        // Чутливість до мікро-ліній (чим менший поріг локального контрасту, тим дрібніші деталі бачимо)
+        const localContrastThreshold = 2 + ( (100 - detailPercent) / 4 ); 
+        
+        // Рівень вибілювання паперу (максимальний зріз сірих градієнтів у тінях)
+        const paperBurnValue = Math.round(255 - (noisePercent * 1.5)); 
 
         const imgData = ctx.createImageData(w, h);
         const src = originalData.data;
         const dst = imgData.data;
 
-        // Крок 1. Переведення в Grayscale
+        // Швидкий перевід в Grayscale в один прохід
         const gray = new Uint8Array(w * h);
         for (let i = 0; i < src.length; i += 4) {
             gray[i/4] = (src[i] + src[i+1] + src[i+2]) / 3;
         }
 
-        // Крок 2. Розумне згладжування шуму (Медіанний фільтр 3х3 для усунення «піксельного пилу»)
-        const cleanGray = new Uint8Array(w * h);
-        for (let y = 1; y < h - 1; y++) {
-            const rowIdx = y * w;
-            const topIdx = (y - 1) * w;
-            const botIdx = (y + 1) * w;
+        // Початковий буфер для накопичення Multiply (255 = білий колір)
+        const finalBuffer = new Uint8Array(w * h);
+        finalBuffer.fill(255);
 
-            for (let x = 1; x < w - 1; x++) {
-                // Збираємо сусідні пікселі
-                const vals = [
-                    gray[topIdx + x - 1], gray[topIdx + x], gray[topIdx + x + 1],
-                    gray[rowIdx + x - 1], gray[rowIdx + x], gray[rowIdx + x + 1],
-                    gray[botIdx + x - 1], gray[botIdx + x], gray[botIdx + x + 1]
-                ];
-                // Сортуємо для пошуку медіани (це повністю прибирає дрібні поодинокі цятки бруду)
-                vals.sort((a, b) => a - b);
-                cleanGray[rowIdx + x] = vals[4]; // Медіанне значення
-            }
-        }
+        // ЦИКЛ ПОРІГОВОГО МНОЖЕННЯ ШАРІВ (РЕАЛЬНИЙ MULTIPLY З ЗСУВОМ ФАЗИ)
+        for (let layer = 0; layer < layerCount; layer++) {
+            // Зміщення для 2-го та 3-го шарів, щоб згладити рвані краї тонких ліній
+            const shiftX = (layer === 1) ? 1 : (layer === 2) ? -1 : 0;
+            const shiftY = (layer === 2) ? 1 : 0;
 
-        // Буфер під фінальне накладання шарів (255 = ідеально білий папір)
-        const accumulatedBuffer = new Uint8Array(w * h);
-        accumulatedBuffer.fill(255);
-
-        // Крок 3. Створення та фізичне множення (Multiply) шарів
-        for (let l = 0; l < layerCount; l++) {
-            // Кожен шар генерується з мікро-зсувом (shift) аналізу на 1 піксель.
-            const shiftX = (l === 1) ? 1 : (l === 2) ? -1 : 0;
-            const shiftY = (l === 2) ? 1 : 0;
-
-            for (let y = maskSize + 2; y < h - maskSize - 2; y++) {
+            for (let y = 2; y < h - 2; y++) {
                 const rowIdx = y * w;
                 const shiftedRowIdx = (y + shiftY) * w;
 
-                for (let x = maskSize + 2; x < w - maskSize - 2; x++) {
-                    const currentPx = cleanGray[shiftedRowIdx + x + shiftX];
+                for (let x = 2; x < w - 2; x++) {
+                    const currentPx = gray[shiftedRowIdx + x + shiftX];
 
+                    // Швидке сканування локального оточення 3х3 для виявлення мікро-піків
                     let maxVal = 0;
                     let minVal = 255;
 
-                    for (let ky = -maskSize; ky <= maskSize; ky++) {
-                        const kernelRow = (y + ky + shiftY) * w;
-                        for (let kx = -maskSize; kx <= maskSize; kx++) {
-                            const px = cleanGray[kernelRow + x + kx + shiftX];
+                    for (let ky = -1; ky <= 1; ky++) {
+                        const kRow = (y + ky + shiftY) * w;
+                        for (let kx = -1; kx <= 1; kx++) {
+                            const px = gray[kRow + x + kx + shiftX];
                             if (px > maxVal) maxVal = px;
                             if (px < minVal) minVal = px;
                         }
@@ -512,49 +502,35 @@
                     const bufferIdx = rowIdx + x;
 
                     let isLine = false;
-                    if (localContrast >= contrastThreshold) {
+
+                    // Якщо локальний перепад кольору достатній — це контурна деталь
+                    if (localContrast >= localContrastThreshold) {
                         if (currentPx < midThreshold) {
                             isLine = true;
                         }
                     } else {
-                        // Розумний аналіз глибоких тіней (витягуємо контур з темних зон)
-                        if (currentPx < 85 && localContrast > (contrastThreshold / 2.5)) {
+                        // Якщо ми у глибокій тіні, але є мікро-контур — витягуємо його
+                        if (currentPx < 100 && localContrast > (localContrastThreshold / 2)) {
                             isLine = true;
                         }
                     }
 
-                    // Реальне пошарове множення (якщо хоч на одному шарі є лінія — робимо піксель чорним)
+                    // Випалювання фону за допомогою жорсткої порогової фільтрації
+                    if (currentPx > paperBurnValue) {
+                        isLine = false; // Видаляємо лінії, які злилися з фоновим брудом або тінями
+                    }
+
+                    // Реальний Multiply: Множимо поточний прохід на накопичений буфер
                     if (isLine) {
-                        accumulatedBuffer[bufferIdx] = 0;
+                        finalBuffer[bufferIdx] = 0; // Накопичуємо глибокий чорний колір (0)
                     }
                 }
             }
         }
 
-        // Крок 4. Додаткове фінальне очищення фону від залишкового сірого пилу на високих рівнях (60%-100%)
-        // Якщо очищення вище 75%, примусово випалюємо дрібні поодинокі чорні пікселі
-        const noiseSliderVal = parseInt(noiseSlider.value);
-        if (noiseSliderVal > 35) { // Відповідає ~75% очищення на шкалі
-            for (let y = 1; y < h - 1; y++) {
-                const rowIdx = y * w;
-                for (let x = 1; x < w - 1; x++) {
-                    const idx = rowIdx + x;
-                    if (accumulatedBuffer[idx] === 0) {
-                        // Якщо чорний піксель повністю оточений білими — це шум, стираємо його
-                        const neighbors = 
-                            accumulatedBuffer[idx - 1] + accumulatedBuffer[idx + 1] +
-                            accumulatedBuffer[idx - w] + accumulatedBuffer[idx + w];
-                        if (neighbors === 1020) { // 255 * 4 сусідів
-                            accumulatedBuffer[idx] = 255;
-                        }
-                    }
-                }
-            }
-        }
-
-        // Рендер фінального трафарету на Canvas
-        for (let i = 0; i < accumulatedBuffer.length; i++) {
-            const color = accumulatedBuffer[i];
+        // Рендеримо чистий Line-Art трафарет на Canvas
+        for (let i = 0; i < finalBuffer.length; i++) {
+            const color = finalBuffer[i];
             const pos = i * 4;
             dst[pos]     = color;
             dst[pos + 1] = color;
@@ -568,7 +544,7 @@
     btnDownload.addEventListener('click', () => {
         playClickSound();
         const link = document.createElement('a');
-        link.download = 'yyokai-premium-stencil.png';
+        link.download = 'yyokai-multi-layer-stencil.png';
         link.href = outputCanvas.toDataURL('image/png');
         link.click();
     });
