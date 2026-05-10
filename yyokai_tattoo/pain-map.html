@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YYO KAI | Ultra-Fast Transfer Studio</title>
+    <title>YYO KAI | Premium Tattoo Stencil Engine</title>
     <style>
         :root {
             --bg-color: #060608;
@@ -40,7 +40,6 @@
             z-index: 100;
         }
 
-        /* Інтерактивний музичний еквалайзер ліворуч */
         .music-container {
             width: 40px;
             height: 40px;
@@ -54,30 +53,11 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .music-icon {
-            font-size: 16px;
-            color: #fff;
-            transition: all 0.3s ease;
-        }
-
-        .equalizer {
-            display: none;
-            align-items: flex-end;
-            justify-content: space-between;
-            width: 20px;
-            height: 16px;
-        }
-
-        .eq-bar {
-            width: 2px;
-            height: 3px;
-            background-color: var(--accent-color);
-            border-radius: 1px;
-        }
-
+        .music-icon { font-size: 16px; color: #fff; transition: all 0.3s ease; }
+        .equalizer { display: none; align-items: flex-end; justify-content: space-between; width: 20px; height: 16px; }
+        .eq-bar { width: 2px; height: 3px; background-color: var(--accent-color); border-radius: 1px; }
         .music-container.playing .music-icon { display: none; }
         .music-container.playing .equalizer { display: flex; }
-
         .music-container.playing .eq-bar:nth-child(1) { animation: eq-rise 0.5s ease-in-out infinite alternate; }
         .music-container.playing .eq-bar:nth-child(2) { animation: eq-rise 0.3s ease-in-out infinite alternate 0.1s; }
         .music-container.playing .eq-bar:nth-child(3) { animation: eq-rise 0.6s ease-in-out infinite alternate 0.2s; }
@@ -85,12 +65,8 @@
         .music-container.playing .eq-bar:nth-child(5) { animation: eq-rise 0.7s ease-in-out infinite alternate 0.15s; }
         .music-container.playing .eq-bar:nth-child(6) { animation: eq-rise 0.2s ease-in-out infinite alternate 0.25s; }
 
-        @keyframes eq-rise {
-            0% { height: 2px; }
-            100% { height: 16px; }
-        }
+        @keyframes eq-rise { 0% { height: 2px; } 100% { height: 16px; } }
 
-        /* Центрований бренд-блок YYO KAI */
         .brand-block {
             display: flex;
             flex-direction: column;
@@ -112,36 +88,10 @@
             line-height: 0.9;
         }
 
-        .glitch-logo.sub {
-            font-size: 22px;
-            color: var(--accent-color);
-            letter-spacing: 8px;
-            margin-top: 3px;
-        }
-
-        .glitch-logo::before, .glitch-logo::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-color);
-        }
-
-        .glitch-logo::before {
-            left: 2px;
-            text-shadow: -2px 0 #ff00c1;
-            clip: rect(10px, 450px, 30px, 0);
-            animation: glitch-anim 4s infinite linear alternate-reverse;
-        }
-
-        .glitch-logo::after {
-            left: -2px;
-            text-shadow: -2px 0 #00fff0, 0 2px #ff00c1;
-            clip: rect(25px, 450px, 55px, 0);
-            animation: glitch-anim2 4s infinite linear alternate-reverse;
-        }
+        .glitch-logo.sub { font-size: 22px; color: var(--accent-color); letter-spacing: 8px; margin-top: 3px; }
+        .glitch-logo::before, .glitch-logo::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); }
+        .glitch-logo::before { left: 2px; text-shadow: -2px 0 #ff00c1; clip: rect(10px, 450px, 30px, 0); animation: glitch-anim 4s infinite linear alternate-reverse; }
+        .glitch-logo::after { left: -2px; text-shadow: -2px 0 #00fff0, 0 2px #ff00c1; clip: rect(25px, 450px, 55px, 0); animation: glitch-anim2 4s infinite linear alternate-reverse; }
 
         @keyframes glitch-anim {
             0% { clip: rect(5px, 9999px, 20px, 0); transform: skew(0.2deg); }
@@ -155,25 +105,8 @@
             100% { clip: rect(30px, 9999px, 50px, 0); transform: skew(-0.2deg); }
         }
 
-        /* Бургер-меню праворуч */
-        .burger-menu {
-            width: 30px;
-            height: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            cursor: pointer;
-            z-index: 101;
-        }
-
-        .burger-bar {
-            width: 100%;
-            height: 3px;
-            background-color: #fff;
-            border-radius: 2px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
+        .burger-menu { width: 30px; height: 20px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; z-index: 101; }
+        .burger-bar { width: 100%; height: 3px; background-color: #fff; border-radius: 2px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .burger-menu.active .burger-bar:nth-child(1) { transform: translateY(8px) rotate(45deg); background-color: var(--accent-color); }
         .burger-menu.active .burger-bar:nth-child(2) { opacity: 0; transform: translateX(10px); }
         .burger-menu.active .burger-bar:nth-child(3) { transform: translateY(-9px) rotate(-45deg); background-color: var(--accent-color); }
@@ -292,7 +225,6 @@
 <body>
 
     <header>
-        <!-- Музична кнопка-еквалайзер ліворуч -->
         <div class="music-container" id="music-btn" onclick="toggleMusic()">
             <div class="music-icon">🎵</div>
             <div class="equalizer">
@@ -305,13 +237,11 @@
             </div>
         </div>
 
-        <!-- Центрований логотип -->
         <div class="brand-block" onclick="location.reload()">
             <div class="glitch-logo" data-text="YYO">YYO</div>
             <div class="glitch-logo sub" data-text="KAI">KAI</div>
         </div>
 
-        <!-- Бургер-меню праворуч -->
         <div class="burger-menu" id="burger-menu" onclick="toggleMenu()">
             <div class="burger-bar"></div>
             <div class="burger-bar"></div>
@@ -327,18 +257,18 @@
 
     <div class="container">
         <div class="upload-zone" id="drop-zone">
-            <p id="upload-text">📸 Завантажте картинку для моментального прорахунку контурів</p>
+            <p id="upload-text">📸 Завантажте ескіз для преміального виділення ліній</p>
             <input type="file" id="file-input" accept="image/*">
         </div>
 
         <div class="controls">
             <div class="control-group">
-                <label for="detail-slider">Фільтр мікро-деталей (Цятки/Тіні) <span id="detail-val">Максимум</span></label>
-                <input type="range" id="detail-slider" min="1" max="5" value="5" step="1" disabled>
+                <label for="detail-slider">Баланс мікро-деталей (Тонкі лінії / Штриховка) <span id="detail-val">Стандарт</span></label>
+                <input type="range" id="detail-slider" min="1" max="5" value="3" step="1" disabled>
             </div>
             <div class="control-group">
-                <label for="contrast-slider">Глибина ліній (Насичений чорний) <span id="contrast-val">Середня</span></label>
-                <input type="range" id="contrast-slider" min="1" max="5" value="3" step="1" disabled>
+                <label for="noise-slider">Придушення шуму та бруду в ескізі <span id="noise-val">Максимальне очищення</span></label>
+                <input type="range" id="noise-slider" min="1" max="5" value="4" step="1" disabled>
             </div>
         </div>
 
@@ -348,7 +278,7 @@
                 <img id="source-img" src="data:image/svg+xml;utf8,<svg xmlns='w3.org' width='100' height='100'></svg>" alt="Оригінал">
             </div>
             <div class="preview-box">
-                <h3>Розумний Скетч-Контур</h3>
+                <h3>Преміум Трафарет (Line-Art)</h3>
                 <canvas id="output-canvas"></canvas>
             </div>
         </div>
@@ -360,69 +290,36 @@
     </div>
 
 <script>
-    // Генератор звуків інтерфейсу через Web Audio API (Повна автономність від мережі)
     let audioCtx = null;
     let synthInterval = null;
 
-    function initAudio() {
-        if (!audioCtx) {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-    }
+    function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
 
     function playClickSound() {
-        initAudio();
-        if (!audioCtx) return;
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+        initAudio(); if (!audioCtx) return;
+        const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(800, audioCtx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.1);
-        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
         gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.1);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.1);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.1);
     }
 
-    // Синтезатор фонового кіберпанк-ритму (працює коли горить еквалайзер)
     function startMusicSynth() {
-        initAudio();
-        if (!audioCtx) return;
-        
+        initAudio(); if (!audioCtx) return;
         let step = 0;
         synthInterval = setInterval(() => {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            
-            // Простий електронний біт
-            if (step % 4 === 0) {
-                osc.frequency.setValueAtTime(60, audioCtx.currentTime); // Бочка
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-            } else {
-                osc.frequency.setValueAtTime(140, audioCtx.currentTime); // Мелодія
-                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-            }
-            
-            osc.type = 'triangle';
-            gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.2);
-            
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.2);
-            step++;
-        }, 250);
+            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+            if (step % 4 === 0) { osc.frequency.setValueAtTime(55, audioCtx.currentTime); gain.gain.setValueAtTime(0.25, audioCtx.currentTime); }
+            else { osc.frequency.setValueAtTime(130, audioCtx.currentTime); gain.gain.setValueAtTime(0.06, audioCtx.currentTime); }
+            osc.type = 'triangle'; gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.2);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.2); step++;
+        }, 260);
     }
 
-    function stopMusicSynth() {
-        if (synthInterval) {
-            clearInterval(synthInterval);
-            synthInterval = null;
-        }
-    }
+    function stopMusicSynth() { if (synthInterval) { clearInterval(synthInterval); synthInterval = null; } }
 
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('file-input');
@@ -431,25 +328,19 @@
     const ctx = outputCanvas.getContext('2d');
     
     const detailSlider = document.getElementById('detail-slider');
-    const contrastSlider = document.getElementById('contrast-slider');
+    const noiseSlider = document.getElementById('noise-slider');
     
     const detailVal = document.getElementById('detail-val');
-    const contrastVal = document.getElementById('contrast-val');
+    const noiseVal = document.getElementById('noise-val');
     const btnDownload = document.getElementById('btn-download');
     const uploadText = document.getElementById('upload-text');
 
     let originalData = null;
 
     function toggleMusic() {
-        const musicBtn = document.getElementById('music-btn');
-        initAudio();
-        if (!synthInterval) {
-            startMusicSynth();
-            musicBtn.classList.add('playing');
-        } else {
-            stopMusicSynth();
-            musicBtn.classList.remove('playing');
-        }
+        const musicBtn = document.getElementById('music-btn'); initAudio();
+        if (!synthInterval) { startMusicSynth(); musicBtn.classList.add('playing'); }
+        else { stopMusicSynth(); musicBtn.classList.remove('playing'); }
     }
 
     function toggleMenu() {
@@ -459,113 +350,111 @@
     }
 
     dropZone.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', (e) => { if (e.target.files.length > 0) handleFile(e.target.files); });
+    fileInput.addEventListener('change', (e) => { if (e.target.files.length > 0) handleFile(e.target.files[0]); });
 
-    function handleFile(files) {
-        const file = files[0];
+    function handleFile(file) {
         if (!file || !file.type.startsWith('image/')) return;
-        
         playClickSound();
         const reader = new FileReader();
-        reader.onload = (e) => { 
-            sourceImg.src = e.target.result; 
-            uploadText.textContent = "🔄 Змінити ескіз"; 
-        };
+        reader.onload = (e) => { sourceImg.src = e.target.result; uploadText.textContent = "🔄 Змінити ескіз"; };
         reader.readAsDataURL(file);
     }
 
     sourceImg.onload = function() {
         if (sourceImg.src.startsWith('data:image/svg+xml')) return;
         
-        // Відображаємо canvas та розраховуємо розміри ліній
         outputCanvas.width = sourceImg.naturalWidth;
         outputCanvas.height = sourceImg.naturalHeight;
         ctx.drawImage(sourceImg, 0, 0);
         originalData = ctx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
 
         detailSlider.disabled = false;
-        contrastSlider.disabled = false;
+        noiseSlider.disabled = false;
         btnDownload.disabled = false;
 
         updateSliderLabels();
-        processUltraFastTransfer();
+        processPremiumTransfer();
     };
 
-    detailSlider.addEventListener('input', () => { updateSliderLabels(); processUltraFastTransfer(); });
-    contrastSlider.addEventListener('input', () => { updateSliderLabels(); processUltraFastTransfer(); });
+    detailSlider.addEventListener('input', () => { updateSliderLabels(); processPremiumTransfer(); });
+    noiseSlider.addEventListener('input', () => { updateSliderLabels(); processPremiumTransfer(); });
 
     function updateSliderLabels() {
-        const dValues = ["Очищено", "Мінімум", "Легкі", "Стандарт", "Максимум"];
-        const cValues = ["Тонкі лінії", "М'які", "Середня", "Глибокі", "Ультра-Чорний"];
+        const dValues = ["Тільки контур", "Мінімум деталей", "Стандарт", "Глибока штриховка", "Максимум ліній"];
+        const nValues = ["Без очищення", "Слабке фільтрування", "Середнє випалювання", "Максимальне очищення", "Стерильний білий лист"];
         detailVal.textContent = dValues[parseInt(detailSlider.value) - 1];
-        contrastVal.textContent = cValues[parseInt(contrastSlider.value) - 1];
+        noiseVal.textContent = nValues[parseInt(noiseSlider.value) - 1];
     }
 
-    // НАДШВИДКИЙ АПАРАТНИЙ ФІЛЬТР КОНТУРІВ — ПЛАВНІСТЬ 60 FPS
-    function processUltraFastTransfer() {
+    // ПРЕМІУМ-ДВИГУН РОЗДІЛЕННЯ ЧАСТОТ ЕСКІЗУ (FREQUENCY SEPARATION STENCIL)
+    function processPremiumTransfer() {
         if (!originalData) return;
 
         const w = outputCanvas.width;
         const h = outputCanvas.height;
         
-        const detailLevel = parseInt(detailSlider.value);
-        const contrastLevel = parseInt(contrastSlider.value);
+        const detailLevel = parseInt(detailSlider.value); // 1 до 5
+        const noiseLevel = parseInt(noiseSlider.value);   // 1 до 5
 
-        // Матриця порогів для зрізання цяток і пилу
-        const thresholds = [100, 70, 45, 25, 10];
-        const baseThreshold = thresholds[detailLevel - 1];
-        
-        const multipliers = [1.2, 2.5, 4.5, 8.0, 25.0];
-        const contrastMultiplier = multipliers[contrastLevel - 1];
+        // Матриця чищення фону від тіней та паперу
+        const noiseCutoffs = [12, 25, 45, 75, 120];
+        const noiseCutoff = noiseCutoffs[noiseLevel - 1];
+
+        // Коефіцієнт чутливості до мікро-штрихів
+        const detailSensitivities = [90, 55, 30, 15, 5];
+        const detailSensitivity = detailSensitivities[detailLevel - 1];
 
         const imgData = ctx.createImageData(w, h);
         const src = originalData.data;
         const dst = imgData.data;
 
+        // Перевід в Grayscale
         const gray = new Uint8Array(w * h);
         for (let i = 0; i < src.length; i += 4) {
             gray[i/4] = (src[i] + src[i+1] + src[i+2]) / 3;
         }
 
-        // Алгоритм Sobel-Canny Edge для глибокого промальовування
-        for (let y = 1; y < h - 1; y++) {
+        // Частотний аналіз пікселів у два шари
+        for (let y = 2; y < h - 2; y++) {
             const rowOffset = y * w;
-            const topOffset = (y - 1) * w;
-            const botOffset = (y + 1) * w;
+            
+            for (let x = 2; x < w - 2; x++) {
+                const currentPx = gray[rowOffset + x];
 
-            for (let x = 1; x < w - 1; x++) {
-                const g00 = gray[topOffset + x - 1];
-                const g02 = gray[topOffset + x + 1];
-                const g20 = gray[botOffset + x - 1];
-                const g22 = gray[botOffset + x + 1];
-                const g10 = gray[rowOffset + x - 1];
-                const g12 = gray[rowOffset + x + 1];
+                // 1. ШАР МАКРО-КОНТУРУ (Ядро Собеля великого радіусу)
+                const g00 = gray[(y-2)*w + x - 2]; const g04 = gray[(y-2)*w + x + 2];
+                const g40 = gray[(y+2)*w + x - 2]; const g44 = gray[(y+2)*w + x + 2];
+                const macroV = Math.abs((g04 + 2*gray[y*w + x + 2] + g44) - (g00 + 2*gray[y*w + x - 2] + g40));
+                const macroH = Math.abs((g40 + 2*gray[(y+2)*w + x] + g44) - (g00 + 2*gray[(y-2)*w + x] + g04));
+                const macroEdge = macroV + macroH;
 
-                const v = Math.abs((g02 + 2 * g12 + g22) - (g00 + 2 * g10 + g20));
-                const h_val = Math.abs((g20 + 2 * gray[botOffset + x] + g22) - (g00 + 2 * gray[topOffset + x] + g02));
-                
-                let edge = v + h_val;
+                // 2. ШАР МІКРО-ДЕТАЛЕЙ ТА ШТРИХОВКИ (Близький аналіз 3х3)
+                const m00 = gray[(y-1)*w + x - 1]; const m02 = gray[(y-1)*w + x + 1];
+                const m20 = gray[(y+1)*w + x - 1]; const m22 = gray[(y+1)*w + x + 1];
+                const microV = Math.abs((m02 + 2*gray[rowOffset + x + 1] + m22) - (m00 + 2*gray[rowOffset + x - 1] + m20));
+                const microH = Math.abs((m20 + 2*gray[(y+1)*w + x] + m22) - (m00 + 2*gray[(y-1)*w + x] + m02));
+                const microEdge = microV + microH;
+
                 const pos = (rowOffset + x) * 4;
 
-                if (edge > baseThreshold) {
-                    let blackIntensity = 255 - (edge * contrastMultiplier);
-                    
-                    // Ультра-чорний режим примусово вичищає напівтони в нуль
-                    if (contrastLevel === 5) {
-                        blackIntensity = blackIntensity < 180 ? 0 : blackIntensity * 0.1;
+                // ЛОГІКА РОЗУМНОЇ ОБВОДКИ
+                // Якщо знайдено великий макро-контур — випалюємо глибоку чорну лінію
+                if (macroEdge > noiseCutoff) {
+                    dst[pos] = 0; dst[pos+1] = 0; dst[pos+2] = 0; dst[pos+3] = 255;
+                } 
+                // Якщо це не макро-шум, а тонкий штрих художньої деталі
+                else if (microEdge > detailSensitivity && detailLevel > 1) {
+                    // Тонка лінія робиться делікатною (напівпрозорість або чистий чорний, але тонкий)
+                    // Вираховуємо товщину через зріз інтенсивності
+                    if (currentPx < 200) {
+                        dst[pos] = 0; dst[pos+1] = 0; dst[pos+2] = 0; dst[pos+3] = 255;
+                    } else {
+                        dst[pos] = 255; dst[pos+1] = 255; dst[pos+2] = 255; dst[pos+3] = 255;
                     }
-                    
-                    const finalColor = Math.max(0, Math.min(255, blackIntensity));
-
-                    dst[pos]     = finalColor;
-                    dst[pos + 1] = finalColor;
-                    dst[pos + 2] = finalColor;
-                    dst[pos + 3] = 255;
-                } else {
-                    dst[pos]     = 255;
-                    dst[pos + 1] = 255;
-                    dst[pos + 2] = 255;
-                    dst[pos + 3] = 255;
+                } 
+                // Все інше (папір, градієнти, тінь, пил) — примусово у білий колір
+                else {
+                    dst[pos] = 255; dst[pos+1] = 255; dst[pos+2] = 255; dst[pos+3] = 255;
                 }
             }
         }
@@ -575,7 +464,7 @@
     btnDownload.addEventListener('click', () => {
         playClickSound();
         const link = document.createElement('a');
-        link.download = 'yyokai-transfer-stencil.png';
+        link.download = 'yyokai-premium-stencil.png';
         link.href = outputCanvas.toDataURL('image/png');
         link.click();
     });
