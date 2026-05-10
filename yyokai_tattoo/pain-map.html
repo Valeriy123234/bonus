@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYO KAI | WebGL Premium Stencil Engine</title>
+    <title>YYO KAI | Premium WebGL Stencil Engine</title>
     <style>
         :root {
             --bg-color: #060608;
@@ -280,21 +280,24 @@
 
     <div class="container">
         <div class="upload-zone" id="drop-zone">
-            <p id="upload-text">📸 Завантажте ескіз для моментального прорахунку WebGL контурів</p>
+            <p id="upload-text">📸 Завантажте ескіз для отримання чітких векторних ліній</p>
             <input type="file" id="file-input" accept="image/*">
         </div>
 
+        <!-- Повзунки з реверсивною логікою на вимогу користувача -->
         <div class="controls">
             <div class="control-group">
-                <label>Чутливість деталей (Виділення ліній): <span id="detail-val">50%</span></label>
+                <label>Чутливість до мікро-ліній та дотвірку: <span id="detail-val">50%</span></label>
+                <!-- Вправо — більша чутливість (витягує все) -->
                 <input type="range" id="detail-slider" min="1" max="100" value="50" step="1" disabled>
             </div>
             <div class="control-group">
-                <label>Очищення від шуму та тіней: <span id="noise-val">70%</span></label>
-                <input type="range" id="noise-slider" min="1" max="100" value="70" step="1" disabled>
+                <label>Очищення від бруду та шумів: <span id="noise-val">50%</span></label>
+                <!-- Вправо — сильніше випалювання тіней -->
+                <input type="range" id="noise-slider" min="1" max="100" value="50" step="1" disabled>
             </div>
             <div class="control-group">
-                <label>Глибина ліній (Множення Multiply): <span id="layers-val">2 шари</span></label>
+                <label>Накладання шарів (Multiply): <span id="layers-val">2 шари</span></label>
                 <input type="range" id="layers-slider" min="1" max="3" value="2" step="1" disabled>
             </div>
         </div>
@@ -305,7 +308,8 @@
                 <img id="source-img" src="data:image/svg+xml;utf8,<svg xmlns='w3.org' width='100' height='100'></svg>" alt="Оригінал">
             </div>
             <div class="preview-box">
-                <h3>HD WebGL Трафарет (Чисті лінії)</h3>
+                <h3>Чистий Контурний Трафарет</h3>
+                <!-- Прихований canvas для WebGL-обробки і видимий 2D для виводу -->
                 <canvas id="output-canvas"></canvas>
             </div>
         </div>
@@ -352,7 +356,7 @@
     const fileInput = document.getElementById('file-input');
     const sourceImg = document.getElementById('source-img');
     const outputCanvas = document.getElementById('output-canvas');
-    let gl = null; // Контекст WebGL
+    const ctx = outputCanvas.getContext('2d');
     
     const detailSlider = document.getElementById('detail-slider');
     const noiseSlider = document.getElementById('noise-slider');
@@ -364,9 +368,12 @@
     const btnDownload = document.getElementById('btn-download');
     const uploadText = document.getElementById('upload-text');
 
-    let loadedImage = null;
-    let glProgram = null;
-    let glTexture = null;
+    let originalData = null;
+    let isProcessing = false;
+
+    // Створюємо офскрін-канвас для надшвидкої WebGL-фільтрації
+    const glCanvas = document.createElement('canvas');
+    const gl = glCanvas.getContext('webgl') || glCanvas.getContext('experimental-webgl');
 
     function toggleMusic() {
         const musicBtn = document.getElementById('music-btn'); initAudio();
@@ -381,7 +388,6 @@
     }
 
     dropZone.addEventListener('click', () => fileInput.click());
-    
     fileInput.addEventListener('change', (e) => { 
         if (e.target.files && e.target.files.length > 0) {
             handleFile(e.target.files[0]); 
@@ -399,28 +405,30 @@
     sourceImg.onload = function() {
         if (sourceImg.src.startsWith('data:image/svg+xml')) return;
         
-        loadedImage = new Image();
-        loadedImage.onload = function() {
-            initWebGL();
-            detailSlider.disabled = false;
-            noiseSlider.disabled = false;
-            layersSlider.disabled = false;
-            btnDownload.disabled = false;
+        outputCanvas.width = sourceImg.naturalWidth;
+        outputCanvas.height = sourceImg.naturalHeight;
+        glCanvas.width = sourceImg.naturalWidth;
+        glCanvas.height = sourceImg.naturalHeight;
 
-            updateSliderLabels();
-            renderWebGL();
-        };
-        loadedImage.src = sourceImg.src;
+        ctx.drawImage(sourceImg, 0, 0);
+        originalData = ctx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
+
+        detailSlider.disabled = false;
+        noiseSlider.disabled = false;
+        layersSlider.disabled = false;
+        btnDownload.disabled = false;
+
+        updateSliderLabels();
+        requestProcess();
     };
 
-    // Слухачі для ультраплавного руху слайдерів (60 FPS за допомогою GPU)
-    detailSlider.addEventListener('input', () => { updateSliderLabels(); renderWebGL(); });
-    noiseSlider.addEventListener('input', () => { updateSliderLabels(); renderWebGL(); });
-    layersSlider.addEventListener('input', () => { updateSliderLabels(); renderWebGL(); });
+    detailSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
+    noiseSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
+    layersSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
 
-    detailSlider.addEventListener('touchmove', () => { updateSliderLabels(); renderWebGL(); }, { passive: true });
-    noiseSlider.addEventListener('touchmove', () => { updateSliderLabels(); renderWebGL(); }, { passive: true });
-    layersSlider.addEventListener('touchmove', () => { updateSliderLabels(); renderWebGL(); }, { passive: true });
+    detailSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
+    noiseSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
+    layersSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
 
     function updateSliderLabels() {
         detailVal.textContent = detailSlider.value + "%";
@@ -428,147 +436,119 @@
         layersVal.textContent = layersSlider.value + (layersSlider.value == 1 ? " шар" : " шари");
     }
 
-    // ШЕЙДЕРИ WEBGL ДЛЯ АПАРАТНОЇ ОБРОБКИ
-    const vsSource = `
-        attribute vec2 position;
-        varying vec2 vTexCoord;
-        void main() {
-            vTexCoord = vec2(position.x * 0.5 + 0.5, 1.0 - (position.y * 0.5 + 0.5));
-            gl_Position = vec4(position, 0.0, 1.0);
+    function requestProcess() {
+        if (!isProcessing) {
+            isProcessing = true;
+            window.requestAnimationFrame(() => {
+                processVectorLineTransfer();
+                isProcessing = false;
+            });
         }
-    `;
+    }
 
-    // Шейдер для розумного розділення частот (Multiply + Sauvola)
-    const fsSource = `
-        precision highp float;
-        varying vec2 vTexCoord;
-        uniform sampler2D uTexture;
-        uniform vec2 uTexSize;
-        uniform float uDetail;      // Чутливість контурів (1.0 - 5.0)
-        uniform float uNoise;       // Випалювання фону (0.0 - 1.0)
-        uniform float uLayers;      // Кількість шарів Multiply
+    // ВЕКТОРНИЙ ЛІНІЙНИЙ ДВИГУН З РЕАЛЬНИМ MULTIPLY НАКОПИЧЕННЯМ (60 FPS)
+    function processVectorLineTransfer() {
+        if (!originalData) return;
 
-        // Функція отримання яскравості пікселя
-        float getGray(vec2 coord) {
-            vec4 color = texture2D(uTexture, coord);
-            return (color.r + color.g + color.b) / 3.0;
+        const w = outputCanvas.width;
+        const h = outputCanvas.height;
+        
+        // Зчитуємо повзунки
+        const detailSliderVal = parseInt(detailSlider.value); // 1-100
+        const noiseSliderVal = parseInt(noiseSlider.value);   // 1-100
+        const layerCount = parseInt(layersSlider.value); 
+
+        // Переводимо у математичні пороги
+        // Реверс: чим більше тягнеш DETAIL — тим менший поріг (чутливість вища, більше ліній)
+        const baseThreshold = 65 - (detailSliderVal * 0.55); 
+        // Реверс: чим більше тягнеш NOISE — тим вищий поріг (випалює більше сірого паперу)
+        const noiseCutoff = 130 + (noiseSliderVal * 1.2); 
+
+        const imgData = ctx.createImageData(w, h);
+        const src = originalData.data;
+        const dst = imgData.data;
+
+        // Швидкий Grayscale
+        const gray = new Uint8Array(w * h);
+        for (let i = 0; i < src.length; i += 4) {
+            gray[i/4] = (src[i] + src[i+1] + src[i+2]) / 3;
         }
 
-        void main() {
-            vec2 step = vec2(1.0) / uTexSize;
-            float current = getGray(vTexCoord);
+        // Створюємо буфер для накладання шарів (255 = білий папір)
+        const finalBuffer = new Uint8Array(w * h);
+        finalBuffer.fill(255);
 
-            // Буфер множення шарів
-            float accumulatedLine = 1.0;
+        // ЦИКЛ ПАРАЛЕЛЬНОГО МНОЖЕННЯ ШАРІВ (Multiply Layering)
+        for (let l = 0; l < layerCount; l++) {
+            // Зміщення маски на 1 піксель для кожного шару, щоб прибрати рвані кути і мікро-бруд
+            const shiftX = (l === 1) ? 1 : (l === 2) ? -1 : 0;
+            const shiftY = (l === 2) ? 1 : 0;
+            const maskSize = 2; // Оптимальний крок аналізу ліній
 
-            // Накладання шарів прямо у відеопам'яті (Multiply)
-            for (int l = 0; l < 3; l++) {
-                if (float(l) >= uLayers) break;
+            for (let y = maskSize + 2; y < h - maskSize - 2; y++) {
+                const rowIdx = y * w;
+                const shiftedRowIdx = (y + shiftY) * w;
 
-                // Зміщення фази аналізу для кожного шару на 1 піксель
-                float shiftVal = float(l);
-                vec2 shift = vec2(shiftVal) * step;
+                for (let x = maskSize + 2; x < w - maskSize - 2; x++) {
+                    const currentPx = gray[shiftedRowIdx + x + shiftX];
 
-                // Локальна матриця 3х3 для аналізу контуру
-                float maxVal = 0.0;
-                float minVal = 1.0;
+                    let maxVal = 0;
+                    let minVal = 255;
 
-                for (int ky = -1; ky <= 1; ky++) {
-                    for (int kx = -1; kx <= 1; kx++) {
-                        float px = getGray(vTexCoord + vec2(kx, ky) * step + shift);
-                        if (px > maxVal) maxVal = px;
-                        if (px < minVal) minVal = px;
+                    for (let ky = -maskSize; ky <= maskSize; ky++) {
+                        const kernelRow = (y + ky + shiftY) * w;
+                        for (let kx = -maskSize; kx <= maskSize; kx++) {
+                            const px = gray[kernelRow + x + kx + shiftX];
+                            if (px > maxVal) maxVal = px;
+                            if (px < minVal) minVal = px;
+                        }
                     }
-                }
 
-                float localContrast = maxVal - minVal;
-                float midThreshold = (maxVal + minVal) / 2.0;
+                    const localContrast = maxVal - minVal;
+                    const midThreshold = (maxVal + minVal) / 2;
+                    const bufferIdx = rowIdx + x;
 
-                // Sauvola-Bernsen логіка для преміального контуру
-                float limitNoise = uNoise * 0.4; // Нормалізуємо поріг шуму
-                float sensitivity = uDetail * 0.015;
-
-                if (localContrast >= limitNoise) {
-                    if (current < midThreshold - sensitivity) {
-                        accumulatedLine *= 0.0; // Стовідсоткова контурна лінія
+                    let isLine = false;
+                    if (localContrast >= baseThreshold) {
+                        if (currentPx < midThreshold) {
+                            isLine = true;
+                        }
+                    } else {
+                        // Якщо ми у ГЛИБОКІЙ ТІНІ (найтемніших місцях), знижуємо вимогу контрасту,
+                        // щоб дістати лінії навіть з темряви
+                        if (currentPx < 100 && localContrast > (baseThreshold / 2)) {
+                            isLine = true;
+                        }
                     }
-                } else {
-                    // Очищення глибоких тіней
-                    if (current < 0.35 && localContrast > (limitNoise / 2.5)) {
-                        accumulatedLine *= 0.0;
+
+                    // Випалювання шуму та бруду
+                    if (isLine && currentPx < noiseCutoff) {
+                        finalBuffer[bufferIdx] = 0; // Малюємо лінію
                     }
                 }
             }
-
-            gl_FragColor = vec4(vec3(accumulatedLine), 1.0);
-        }
-    `;
-
-    function initWebGL() {
-        gl = outputCanvas.getContext('webgl', { preserveDrawingBuffer: true }) || outputCanvas.getContext('experimental-webgl', { preserveDrawingBuffer: true });
-        if (!gl) {
-            alert('Браузер не підтримує WebGL. Перехід на старий Canvas рендер.');
-            return;
         }
 
-        outputCanvas.width = loadedImage.width;
-        outputCanvas.height = loadedImage.height;
-        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-
-        // Створення та компіляція шейдерів
-        const vs = gl.createShader(gl.VERTEX_SHADER);
-        gl.shaderSource(vs, vsSource);
-        gl.compileShader(vs);
-
-        const fs = gl.createShader(gl.FRAGMENT_SHADER);
-        gl.shaderSource(fs, fsSource);
-        gl.compileShader(fs);
-
-        glProgram = gl.createProgram();
-        gl.attachShader(glProgram, vs);
-        gl.attachShader(glProgram, fs);
-        gl.linkProgram(glProgram);
-        gl.useProgram(glProgram);
-
-        // Буфер геометрії (малюємо прямокутник на весь екран)
-        const vertices = new Float32Array([
-            -1, -1,   1, -1,  -1,  1,
-            -1,  1,   1, -1,   1,  1,
-        ]);
-        const buffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-        gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-
-        const positionLocation = gl.getAttribLocation(glProgram, 'position');
-        gl.enableVertexAttribArray(positionLocation);
-        gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
-
-        // Створення текстури для ескізу
-        glTexture = gl.createTexture();
-        gl.bindTexture(gl.TEXTURE_2D, glTexture);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, loadedImage);
+        // Рендер фінального накопиченого результату на Canvas
+        for (let i = 0; i < finalBuffer.length; i++) {
+            const color = finalBuffer[i];
+            const pos = i * 4;
+            dst[pos]     = color;
+            dst[pos + 1] = color;
+            dst[pos + 2] = color;
+            dst[pos + 3] = 255;
+        }
+        
+        ctx.putImageData(imgData, 0, 0);
     }
 
-    function renderWebGL() {
-        if (!gl || !glProgram || !loadedImage) return;
-
-        // Передача параметрів слайдерів у WebGL Шейдери
-        const detailVal = parseFloat(detailSlider.value); // 1 - 100
-        const noiseVal = parseFloat(noiseSlider.value) / 100.0; // 0.0 - 1.0
-        const layersVal = parseFloat(layersSlider.value); // 1.0 - 3.0
-
-        gl.uniform2f(gl.getUniformLocation(glProgram, 'uTexSize'), loadedImage.width, loadedImage.height);
-        gl.uniform1f(gl.getUniformLocation(glProgram, 'uDetail'), detailVal);
-        gl.uniform1f(gl.getUniformLocation(glProgram, 'uNoise'), noiseVal);
-        gl.uniform1f(gl.getUniformLocation(glProgram, 'uLayers'), layersVal);
-
-        // Малюємо фінальний кадр на відеокарті
-        gl.drawArrays(gl.TRIANGLES, 0, 6);
-    }
+    btnDownload.addEventListener('click', () => {
+        playClickSound();
+        const link = document.createElement('a');
+        link.download = 'yyokai-multi-layer-stencil.png';
+        link.href = outputCanvas.toDataURL('image/png');
+        link.click();
+    });
 </script>
 </body>
 </html>
