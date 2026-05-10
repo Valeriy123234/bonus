@@ -26,7 +26,6 @@
             align-items: center;
             box-sizing: border-box;
             overflow-x: hidden;
-            /* Забороняємо випадковий скролл сторінки при перетягуванні повзунків */
             touch-action: manipulation;
         }
 
@@ -162,7 +161,6 @@
         .upload-zone p { margin: 0; font-size: 15px; color: #6e6e77; font-weight: 500; }
         #file-input { display: none; }
 
-        /* Збільшені тач-зони для комфортного перетягування повзунків */
         .controls {
             margin-top: 20px;
             display: grid;
@@ -178,24 +176,22 @@
         label { font-size: 12px; color: #6e6e77; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: flex; justify-content: space-between; }
         label span { color: var(--accent-color); font-family: monospace; font-size: 14px; }
 
-        /* Повністю адаптовані та чутливі мобільні слайдери */
         input[type="range"] {
             -webkit-appearance: none;
             appearance: none;
             width: 100%;
             background: #1c1c22;
-            height: 10px; /* Збільшена товщина лінії слайдера */
-            border-radius: 5px;
+            height: 10px;
+            border-radius: 50px;
             outline: none;
             cursor: pointer;
-            touch-action: none; /* Блокує жест скроллу сторінки під час перетягування */
+            touch-action: none;
         }
 
-        /* Збільшена кнопка-бігунок для пальця (iOS/Android) */
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 26px; /* Збільшено з 18px до 26px для ідеального зачепу */
+            width: 26px;
             height: 26px;
             border-radius: 50%;
             background: var(--accent-color);
@@ -210,7 +206,6 @@
             background-color: #ffffff;
         }
 
-        /* Підтримка для Firefox */
         input[type="range"]::-moz-range-thumb {
             width: 26px;
             height: 26px;
@@ -364,7 +359,7 @@
     const uploadText = document.getElementById('upload-text');
 
     let originalData = null;
-    let isProcessing = false; // Прапорець для запобігання перевантаженню процесора
+    let isProcessing = false;
 
     function toggleMusic() {
         const musicBtn = document.getElementById('music-btn'); initAudio();
@@ -379,13 +374,21 @@
     }
 
     dropZone.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', (e) => { if (e.target.files.length > 0) handleFile(e.target.files); });
+    
+    fileInput.addEventListener('change', (e) => { 
+        if (e.target.files && e.target.files.length > 0) {
+            handleFile(e.target.files[0]); 
+        }
+    });
 
     function handleFile(file) {
         if (!file || !file.type.startsWith('image/')) return;
         playClickSound();
         const reader = new FileReader();
-        reader.onload = (e) => { sourceImg.src = e.target.result; uploadText.textContent = "🔄 Змінити ескіз"; };
+        reader.onload = (e) => { 
+            sourceImg.src = e.target.result; 
+            uploadText.textContent = "🔄 Змінити ескіз"; 
+        };
         reader.readAsDataURL(file);
     }
 
@@ -405,11 +408,9 @@
         requestProcess();
     };
 
-    // Оптимізовані події зміни значень (використовують requestAnimationFrame)
     detailSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
     noiseSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
 
-    // Додаткові сенсорні слухачі для ідеального відгуку на тачскрінах iOS/Android
     detailSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
     noiseSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
 
@@ -418,7 +419,6 @@
         noiseVal.textContent = noiseSlider.value + "%";
     }
 
-    // Захисна функція від лагів: запускає рендер тільки тоді, коли відеокарта готова малювати новий кадр
     function requestProcess() {
         if (!isProcessing) {
             isProcessing = true;
