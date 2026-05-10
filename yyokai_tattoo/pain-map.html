@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYO KAI | Premium WebGL Stencil Engine</title>
+    <title>YYO KAI | Ultimate Tattoo Stencil Processor</title>
     <style>
         :root {
-            --bg-color: #060608;
-            --panel-color: #0e0e11;
+            --bg-color: #050507;
+            --panel-color: #0b0b0e;
             --accent-color: #00ffcc;
             --accent-hover: #00cca3;
             --text-color: #ffffff;
@@ -140,7 +140,7 @@
             background: var(--panel-color);
             padding: 25px;
             border-radius: var(--border-radius);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
             border: 1px solid rgba(255, 255, 255, 0.01);
             box-sizing: border-box;
             margin-top: 20px;
@@ -280,24 +280,23 @@
 
     <div class="container">
         <div class="upload-zone" id="drop-zone">
-            <p id="upload-text">📸 Завантажте ескіз для отримання чітких векторних ліній</p>
+            <p id="upload-text">📸 Завантажте ескіз будь-якої складності для розрахунку ліній</p>
             <input type="file" id="file-input" accept="image/*">
         </div>
 
-        <!-- Повзунки з реверсивною логікою на вимогу користувача -->
         <div class="controls">
             <div class="control-group">
-                <label>Чутливість до мікро-ліній та дотвірку: <span id="detail-val">50%</span></label>
-                <!-- Вправо — більша чутливість (витягує все) -->
-                <input type="range" id="detail-slider" min="1" max="100" value="50" step="1" disabled>
+                <label>Чутливість до мікро-деталей (Портрети / Тіні): <span id="detail-val">60%</span></label>
+                <!-- Більше деталей при тязі вперед -->
+                <input type="range" id="detail-slider" min="1" max="100" value="60" step="1" disabled>
             </div>
             <div class="control-group">
-                <label>Очищення від бруду та шумів: <span id="noise-val">50%</span></label>
-                <!-- Вправо — сильніше випалювання тіней -->
-                <input type="range" id="noise-slider" min="1" max="100" value="50" step="1" disabled>
+                <label>Чіткість та вираженість контурів: <span id="noise-val">70%</span></label>
+                <!-- Більш виразний контур при тязі вперед -->
+                <input type="range" id="noise-slider" min="1" max="100" value="70" step="1" disabled>
             </div>
             <div class="control-group">
-                <label>Накладання шарів (Multiply): <span id="layers-val">2 шари</span></label>
+                <label>Накладання шарів (Реальний Multiply): <span id="layers-val">2 шари</span></label>
                 <input type="range" id="layers-slider" min="1" max="3" value="2" step="1" disabled>
             </div>
         </div>
@@ -309,7 +308,6 @@
             </div>
             <div class="preview-box">
                 <h3>Чистий Контурний Трафарет</h3>
-                <!-- Прихований canvas для WebGL-обробки і видимий 2D для виводу -->
                 <canvas id="output-canvas"></canvas>
             </div>
         </div>
@@ -371,10 +369,6 @@
     let originalData = null;
     let isProcessing = false;
 
-    // Створюємо офскрін-канвас для надшвидкої WebGL-фільтрації
-    const glCanvas = document.createElement('canvas');
-    const gl = glCanvas.getContext('webgl') || glCanvas.getContext('experimental-webgl');
-
     function toggleMusic() {
         const musicBtn = document.getElementById('music-btn'); initAudio();
         if (!synthInterval) { startMusicSynth(); musicBtn.classList.add('playing'); }
@@ -388,6 +382,7 @@
     }
 
     dropZone.addEventListener('click', () => fileInput.click());
+    
     fileInput.addEventListener('change', (e) => { 
         if (e.target.files && e.target.files.length > 0) {
             handleFile(e.target.files[0]); 
@@ -407,9 +402,6 @@
         
         outputCanvas.width = sourceImg.naturalWidth;
         outputCanvas.height = sourceImg.naturalHeight;
-        glCanvas.width = sourceImg.naturalWidth;
-        glCanvas.height = sourceImg.naturalHeight;
-
         ctx.drawImage(sourceImg, 0, 0);
         originalData = ctx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
 
@@ -440,29 +432,28 @@
         if (!isProcessing) {
             isProcessing = true;
             window.requestAnimationFrame(() => {
-                processVectorLineTransfer();
+                processAdaptiveMultiScaleTransfer();
                 isProcessing = false;
             });
         }
     }
 
-    // ВЕКТОРНИЙ ЛІНІЙНИЙ ДВИГУН З РЕАЛЬНИМ MULTIPLY НАКОПИЧЕННЯМ (60 FPS)
-    function processVectorLineTransfer() {
+    // БАГАТОМАСШТАБНИЙ ПРЕМІУМ-ПРОЦЕСОР КОНТУРІВ (MULTI-SCALE SAUVOLA-RETI NEX ENGINE)
+    function processAdaptiveMultiScaleTransfer() {
         if (!originalData) return;
 
         const w = outputCanvas.width;
         const h = outputCanvas.height;
         
-        // Зчитуємо повзунки
-        const detailSliderVal = parseInt(detailSlider.value); // 1-100
-        const noiseSliderVal = parseInt(noiseSlider.value);   // 1-100
-        const layerCount = parseInt(layersSlider.value); 
+        // Нормалізація значень повзунків під реверсивну логіку
+        const detailPercent = parseInt(detailSlider.value); // 1 to 100% (більше = чутливіше)
+        const noisePercent = parseInt(noiseSlider.value);   // 1 to 100% (більше = чіткіший і жирніший контур)
+        const layerCount = parseInt(layersSlider.value);     // 1 to 3
 
-        // Переводимо у математичні пороги
-        // Реверс: чим більше тягнеш DETAIL — тим менший поріг (чутливість вища, більше ліній)
-        const baseThreshold = 65 - (detailSliderVal * 0.55); 
-        // Реверс: чим більше тягнеш NOISE — тим вищий поріг (випалює більше сірого паперу)
-        const noiseCutoff = 130 + (noiseSliderVal * 1.2); 
+        // Розрахунок чутливості до мікро-ліній (чим вище повзунок, тим чутливіший сенсор)
+        const detailSensitivity = 1.0 + ((100 - detailPercent) / 25); 
+        // Розрахунок жорсткості випалювання фону (чим вище повзунок чіткості, тим жорсткіше обробляються межі)
+        const noiseThreshold = 5 + ((100 - noisePercent) / 2.2); 
 
         const imgData = ctx.createImageData(w, h);
         const src = originalData.data;
@@ -474,64 +465,66 @@
             gray[i/4] = (src[i] + src[i+1] + src[i+2]) / 3;
         }
 
-        // Створюємо буфер для накладання шарів (255 = білий папір)
-        const finalBuffer = new Uint8Array(w * h);
-        finalBuffer.fill(255);
+        // Буфер для накладання Multiply шарів
+        const accumulatedBuffer = new Uint8Array(w * h);
+        accumulatedBuffer.fill(255);
 
-        // ЦИКЛ ПАРАЛЕЛЬНОГО МНОЖЕННЯ ШАРІВ (Multiply Layering)
+        // Кількість масштабів сканування (ядер аналізу)
+        const scales = [1, 2, 4]; // Малий (штрихи), Середній, Великий (жирний контур)
+
         for (let l = 0; l < layerCount; l++) {
-            // Зміщення маски на 1 піксель для кожного шару, щоб прибрати рвані кути і мікро-бруд
-            const shiftX = (l === 1) ? 1 : (l === 2) ? -1 : 0;
-            const shiftY = (l === 2) ? 1 : 0;
-            const maskSize = 2; // Оптимальний крок аналізу ліній
+            const shift = l; // Фізичний зсув Multiply-шару для згладжування ліній
 
-            for (let y = maskSize + 2; y < h - maskSize - 2; y++) {
+            for (let y = 4 + shift; y < h - 4 - shift; y++) {
                 const rowIdx = y * w;
-                const shiftedRowIdx = (y + shiftY) * w;
 
-                for (let x = maskSize + 2; x < w - maskSize - 2; x++) {
-                    const currentPx = gray[shiftedRowIdx + x + shiftX];
-
-                    let maxVal = 0;
-                    let minVal = 255;
-
-                    for (let ky = -maskSize; ky <= maskSize; ky++) {
-                        const kernelRow = (y + ky + shiftY) * w;
-                        for (let kx = -maskSize; kx <= maskSize; kx++) {
-                            const px = gray[kernelRow + x + kx + shiftX];
-                            if (px > maxVal) maxVal = px;
-                            if (px < minVal) minVal = px;
-                        }
-                    }
-
-                    const localContrast = maxVal - minVal;
-                    const midThreshold = (maxVal + minVal) / 2;
-                    const bufferIdx = rowIdx + x;
-
+                for (let x = 4 + shift; x < w - 4 - shift; x++) {
+                    const currentPx = gray[rowIdx + x];
                     let isLine = false;
-                    if (localContrast >= baseThreshold) {
-                        if (currentPx < midThreshold) {
-                            isLine = true;
+
+                    // Скануємо по трьох масштабах одночасно
+                    for (let s = 0; s < scales.length; s++) {
+                        const r = scales[s];
+                        
+                        let maxVal = 0;
+                        let minVal = 255;
+
+                        // Збираємо локальну статистику кольору в ядрі масштабу
+                        for (let ky = -r; ky <= r; ky++) {
+                            const kernelRow = (y + ky) * w;
+                            for (let kx = -r; kx <= r; kx++) {
+                                const px = gray[kernelRow + x + kx];
+                                if (px > maxVal) maxVal = px;
+                                if (px < minVal) minVal = px;
+                            }
                         }
-                    } else {
-                        // Якщо ми у ГЛИБОКІЙ ТІНІ (найтемніших місцях), знижуємо вимогу контрасту,
-                        // щоб дістати лінії навіть з темряви
-                        if (currentPx < 100 && localContrast > (baseThreshold / 2)) {
-                            isLine = true;
+
+                        const contrast = maxVal - minVal;
+                        const midThreshold = (maxVal + minVal) / 2;
+
+                        // Якщо локальний контраст вище порогового для цього масштабу
+                        if (contrast >= noiseThreshold) {
+                            // Логіка Sauvola: відзначаємо чорними лініями
+                            if (currentPx < (midThreshold - detailSensitivity)) {
+                                isLine = true;
+                                break; // Якщо хоч один масштаб виявив лінію — фіксуємо її
+                            }
                         }
                     }
 
-                    // Випалювання шуму та бруду
-                    if (isLine && currentPx < noiseCutoff) {
-                        finalBuffer[bufferIdx] = 0; // Малюємо лінію
+                    const bufferIdx = rowIdx + x;
+                    
+                    // Накладання шару (Multiply)
+                    if (isLine) {
+                        accumulatedBuffer[bufferIdx] = 0;
                     }
                 }
             }
         }
 
-        // Рендер фінального накопиченого результату на Canvas
-        for (let i = 0; i < finalBuffer.length; i++) {
-            const color = finalBuffer[i];
+        // Рендер фінального трафарету на Canvas
+        for (let i = 0; i < accumulatedBuffer.length; i++) {
+            const color = accumulatedBuffer[i];
             const pos = i * 4;
             dst[pos]     = color;
             dst[pos + 1] = color;
@@ -541,14 +534,6 @@
         
         ctx.putImageData(imgData, 0, 0);
     }
-
-    btnDownload.addEventListener('click', () => {
-        playClickSound();
-        const link = document.createElement('a');
-        link.download = 'yyokai-multi-layer-stencil.png';
-        link.href = outputCanvas.toDataURL('image/png');
-        link.click();
-    });
 </script>
 </body>
 </html>
