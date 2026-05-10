@@ -257,18 +257,20 @@
 
     <div class="container">
         <div class="upload-zone" id="drop-zone">
-            <p id="upload-text">📸 Завантажте ескіз для преміального виділення ліній</p>
+            <p id="upload-text">📸 Завантажте ескіз для плавного виділення ліній</p>
             <input type="file" id="file-input" accept="image/*">
         </div>
 
         <div class="controls">
             <div class="control-group">
-                <label for="detail-slider">Баланс мікро-деталей (Тонкі лінії / Штриховка) <span id="detail-val">Стандарт</span></label>
-                <input type="range" id="detail-slider" min="1" max="5" value="3" step="1" disabled>
+                <label data-slider-label>Чутливість до деталей (Мікро-тіні/Штрихи): <span id="detail-val">60%</span></label>
+                <!-- Плавний повзунок від 10 до 150 -->
+                <input type="range" id="detail-slider" min="10" max="150" value="60" step="1" disabled>
             </div>
             <div class="control-group">
-                <label for="noise-slider">Придушення шуму та бруду в ескізі <span id="noise-val">Максимальне очищення</span></label>
-                <input type="range" id="noise-slider" min="1" max="5" value="4" step="1" disabled>
+                <label data-slider-label>Випалювання фону та бруду: <span id="noise-val">85%</span></label>
+                <!-- Плавний повзунок від 150 до 254 -->
+                <input type="range" id="noise-slider" min="150" max="254" value="230" step="1" disabled>
             </div>
         </div>
 
@@ -350,7 +352,7 @@
     }
 
     dropZone.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', (e) => { if (e.target.files.length > 0) handleFile(e.target.files[0]); });
+    fileInput.addEventListener('change', (e) => { if (e.target.files.length > 0) handleFile(e.target.files); });
 
     function handleFile(file) {
         if (!file || !file.type.startsWith('image/')) return;
@@ -380,81 +382,69 @@
     noiseSlider.addEventListener('input', () => { updateSliderLabels(); processPremiumTransfer(); });
 
     function updateSliderLabels() {
-        const dValues = ["Тільки контур", "Мінімум деталей", "Стандарт", "Глибока штриховка", "Максимум ліній"];
-        const nValues = ["Без очищення", "Слабке фільтрування", "Середнє випалювання", "Максимальне очищення", "Стерильний білий лист"];
-        detailVal.textContent = dValues[parseInt(detailSlider.value) - 1];
-        noiseVal.textContent = nValues[parseInt(noiseSlider.value) - 1];
+        // Конвертуємо поточні позиції у відсотки для комфортного сприйняття користувачем
+        const detailPercent = Math.round(((detailSlider.value - 10) / 140) * 100);
+        const noisePercent = Math.round(((noiseSlider.value - 150) / 104) * 100);
+        
+        detailVal.textContent = detailPercent + "%";
+        noiseVal.textContent = noisePercent + "%";
     }
 
-    // ПРЕМІУМ-ДВИГУН РОЗДІЛЕННЯ ЧАСТОТ ЕСКІЗУ (FREQUENCY SEPARATION STENCIL)
+    // УЛЬТРА-ОПТИМІЗОВАНИЙ ДВИГУН ЧАСТОТНОЇ ФІЛЬТРАЦІЇ (60 FPS)
     function processPremiumTransfer() {
         if (!originalData) return;
 
         const w = outputCanvas.width;
         const h = outputCanvas.height;
         
-        const detailLevel = parseInt(detailSlider.value); // 1 до 5
-        const noiseLevel = parseInt(noiseSlider.value);   // 1 до 5
-
-        // Матриця чищення фону від тіней та паперу
-        const noiseCutoffs = [12, 25, 45, 75, 120];
-        const noiseCutoff = noiseCutoffs[noiseLevel - 1];
-
-        // Коефіцієнт чутливості до мікро-штрихів
-        const detailSensitivities = [90, 55, 30, 15, 5];
-        const detailSensitivity = detailSensitivities[detailLevel - 1];
+        const detailSens = parseInt(detailSlider.value); 
+        const noiseCutoff = parseInt(noiseSlider.value);   
 
         const imgData = ctx.createImageData(w, h);
         const src = originalData.data;
         const dst = imgData.data;
 
-        // Перевід в Grayscale
+        // Швидкий прохід Grayscale в один крок
         const gray = new Uint8Array(w * h);
         for (let i = 0; i < src.length; i += 4) {
             gray[i/4] = (src[i] + src[i+1] + src[i+2]) / 3;
         }
 
-        // Частотний аналіз пікселів у два шари
-        for (let y = 2; y < h - 2; y++) {
+        // Оптимізована матриця виділення ліній 
+        for (let y = 1; y < h - 1; y++) {
             const rowOffset = y * w;
-            
-            for (let x = 2; x < w - 2; x++) {
+            const topOffset = (y - 1) * w;
+            const botOffset = (y + 1) * w;
+
+            for (let x = 1; x < w - 1; x++) {
                 const currentPx = gray[rowOffset + x];
 
-                // 1. ШАР МАКРО-КОНТУРУ (Ядро Собеля великого радіусу)
-                const g00 = gray[(y-2)*w + x - 2]; const g04 = gray[(y-2)*w + x + 2];
-                const g40 = gray[(y+2)*w + x - 2]; const g44 = gray[(y+2)*w + x + 2];
-                const macroV = Math.abs((g04 + 2*gray[y*w + x + 2] + g44) - (g00 + 2*gray[y*w + x - 2] + g40));
-                const macroH = Math.abs((g40 + 2*gray[(y+2)*w + x] + g44) - (g00 + 2*gray[(y-2)*w + x] + g04));
-                const macroEdge = macroV + macroH;
-
-                // 2. ШАР МІКРО-ДЕТАЛЕЙ ТА ШТРИХОВКИ (Близький аналіз 3х3)
-                const m00 = gray[(y-1)*w + x - 1]; const m02 = gray[(y-1)*w + x + 1];
-                const m20 = gray[(y+1)*w + x - 1]; const m22 = gray[(y+1)*w + x + 1];
-                const microV = Math.abs((m02 + 2*gray[rowOffset + x + 1] + m22) - (m00 + 2*gray[rowOffset + x - 1] + m20));
-                const microH = Math.abs((m20 + 2*gray[(y+1)*w + x] + m22) - (m00 + 2*gray[(y-1)*w + x] + m02));
-                const microEdge = microV + microH;
-
+                // Ядро Собеля для аналізу перепадів товщини ліній
+                const g00 = gray[topOffset + x - 1]; const g02 = gray[topOffset + x + 1];
+                const g20 = gray[botOffset + x - 1]; const g22 = gray[botOffset + x + 1];
+                
+                const v = Math.abs((g02 + 2 * gray[rowOffset + x + 1] + g22) - (g00 + 2 * gray[rowOffset + x - 1] + g20));
+                const h_val = Math.abs((g20 + 2 * gray[botOffset + x] + g22) - (g00 + 2 * gray[topOffset + x] + g02));
+                
+                const edge = v + h_val;
                 const pos = (rowOffset + x) * 4;
 
-                // ЛОГІКА РОЗУМНОЇ ОБВОДКИ
-                // Якщо знайдено великий макро-контур — випалюємо глибоку чорну лінію
-                if (macroEdge > noiseCutoff) {
-                    dst[pos] = 0; dst[pos+1] = 0; dst[pos+2] = 0; dst[pos+3] = 255;
-                } 
-                // Якщо це не макро-шум, а тонкий штрих художньої деталі
-                else if (microEdge > detailSensitivity && detailLevel > 1) {
-                    // Тонка лінія робиться делікатною (напівпрозорість або чистий чорний, але тонкий)
-                    // Вираховуємо товщину через зріз інтенсивності
-                    if (currentPx < 200) {
-                        dst[pos] = 0; dst[pos+1] = 0; dst[pos+2] = 0; dst[pos+3] = 255;
+                // ІНТЕЛЕКТУАЛЬНЕ СОРТУВАННЯ КОНТУРІВ ТА ШУМУ
+                if (edge > detailSens) {
+                    // Розрахунок насиченості ліній: чим чіткіший край — тим глибший чорний колір
+                    let lineDepth = 255 - (edge * 5);
+                    
+                    // Якщо активовано повне очищення фону, випалюємо дрібний сірий пил
+                    if (currentPx > noiseCutoff) {
+                        dst[pos]=255; dst[pos+1]=255; dst[pos+2]=255; dst[pos+3]=255;
                     } else {
-                        dst[pos] = 255; dst[pos+1] = 255; dst[pos+2] = 255; dst[pos+3] = 255;
+                        // Робимо лінії глибокими, прибираючи сірі розмиті напівтони навколо контуру
+                        const finalColor = lineDepth < 120 ? 0 : lineDepth * 0.3;
+                        dst[pos]=finalColor; dst[pos+1]=finalColor; dst[pos+2]=finalColor; dst[pos+3]=255;
                     }
-                } 
-                // Все інше (папір, градієнти, тінь, пил) — примусово у білий колір
-                else {
-                    dst[pos] = 255; dst[pos+1] = 255; dst[pos+2] = 255; dst[pos+3] = 255;
+                } else {
+                    // Папір залишається ідеальним
+                    dst[pos]=255; dst[pos+1]=255; dst[pos+2]=255; dst[pos+3]=255;
                 }
             }
         }
