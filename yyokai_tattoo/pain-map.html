@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYO KAI | Ultra-Fast Multiply Stencil Engine</title>
+    <title>YYO KAI | Premium Tattoo Stencil Engine</title>
     <style>
         :root {
             --bg-color: #060608;
@@ -68,7 +68,6 @@
 
         @keyframes eq-rise { 0% { height: 2px; } 100% { height: 16px; } }
 
-        /* Вертикальний Глітч-логотип по центру */
         .brand-block {
             display: flex;
             flex-direction: column;
@@ -281,23 +280,23 @@
 
     <div class="container">
         <div class="upload-zone" id="drop-zone">
-            <p id="upload-text">📸 Завантажте ескіз для отримання чітких векторних ліній</p>
+            <p id="upload-text">📸 Завантажте ескіз для преміум-обробки контурів</p>
             <input type="file" id="file-input" accept="image/*">
         </div>
 
         <div class="controls">
             <div class="control-group">
-                <!-- Логіка розгорнута: чим більше значення, тим більше деталей і чіткіше -->
-                <label>Чіткість та пошук мікро-ліній: <span id="detail-val">50%</span></label>
+                <!-- Вправо — максимальна чіткість ліній -->
+                <label>Чіткість та товщина ліній: <span id="detail-val">50%</span></label>
                 <input type="range" id="detail-slider" min="1" max="100" value="50" step="1" disabled>
             </div>
             <div class="control-group">
-                <!-- Логіка розгорнута: чим більше значення, тим сильніше очищення бруду -->
-                <label>Фільтрація бруду та тіней (Очищення): <span id="noise-val">70%</span></label>
-                <input type="range" id="noise-slider" min="1" max="100" value="70" step="1" disabled>
+                <!-- Вправо — максимальне очищення від бруду -->
+                <label>Фільтрація бруду (Очищення фону): <span id="noise-val">50%</span></label>
+                <input type="range" id="noise-slider" min="1" max="100" value="50" step="1" disabled>
             </div>
             <div class="control-group">
-                <!-- Реальне накопичення Multiply -->
+                <!-- Накладання шарів Multiply -->
                 <label>Глибина чорного (Multiply): <span id="layers-val">2 шари</span></label>
                 <input type="range" id="layers-slider" min="1" max="3" value="2" step="1" disabled>
             </div>
@@ -387,7 +386,7 @@
     
     fileInput.addEventListener('change', (e) => { 
         if (e.target.files && e.target.files.length > 0) {
-            handleFile(e.target.files[0]); // Безпосередньо зчитуємо перший файл
+            handleFile(e.target.files[0]); // Фікс зчитування файлу
         }
     });
 
@@ -416,7 +415,6 @@
         requestProcess();
     };
 
-    // Слухачі з підтримкою мобільного перетягування (60 FPS без лагів)
     detailSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
     noiseSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
     layersSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
@@ -435,14 +433,14 @@
         if (!isProcessing) {
             isProcessing = true;
             window.requestAnimationFrame(() => {
-                processVectorLineTransfer();
+                processAdaptiveMeanTransfer();
                 isProcessing = false;
             });
         }
     }
 
-    // НОВИЙ НАДШВИДКИЙ ДВИГУН ЧАСТОТНОЇ ОБРОБКИ З РЕАЛЬНИМ MULTIPLY
-    function processVectorLineTransfer() {
+    // ПРОФЕСІЙНИЙ ДВОРІВНЕВИЙ ДВИГУН АДАПТИВНОЇ ОБРОБКИ (ADAPTIVE MEAN THRESHOLDING)
+    function processAdaptiveMeanTransfer() {
         if (!originalData) return;
 
         const w = outputCanvas.width;
@@ -452,80 +450,63 @@
         const noiseSliderVal = parseInt(noiseSlider.value);   // 1-100%
         const layerCount = parseInt(layersSlider.value);       // 1-3 шари
 
-        // Мапування значень під реальні фізичні коефіцієнти алгоритму Sauvola
-        // Чим більший повзунок деталей (вправо) -> тим менший поріг -> чутливіший пошук контурів
-        const sensitivity = 1.0 + ((100 - detailSliderVal) / 25); 
+        // Динамічний розмір маски адаптується під роздільну здатність ескізу
+        const maxBlockSize = Math.max(5, Math.floor(Math.min(w, h) / 100));
+        // Чим більший перший повзунок -> тим чіткіший і товстіший контур
+        const blockSize = Math.max(3, Math.floor((detailSliderVal / 100) * maxBlockSize)) | 1; // Завжди непарне
 
-        // Чим більший повзунок шуму (вправо) -> тим сильніше очищення (зрізаємо напівтони)
-        const backgroundBurn = 255 - (noiseSliderVal * 1.3);
+        // Чим більше другий повзунок -> тим більше константне зрізання сірого шуму паперу
+        const C = (noiseSliderVal / 100) * 35 - 10; 
 
         const imgData = ctx.createImageData(w, h);
         const src = originalData.data;
         const dst = imgData.data;
 
-        // Швидкий Grayscale в один прохід
+        // Швидке переведення в чб
         const gray = new Uint8Array(w * h);
         for (let i = 0; i < src.length; i += 4) {
             gray[i/4] = (src[i] + src[i+1] + src[i+2]) / 3;
         }
 
-        // Буфер для накладання Multiply (за замовчуванням 255 = білий папір)
+        // Головний буфер накопичення Multiply (255 = білий папір)
         const finalBuffer = new Uint8Array(w * h);
         finalBuffer.fill(255);
 
-        // Радіус локального аналізу матриці
-        const maskSize = 3; 
+        const radius = Math.floor(blockSize / 2);
 
         // ЦИКЛ ПАРАЛЕЛЬНОГО МНОЖЕННЯ ШАРІВ (Multiply Layer Mode)
         for (let l = 0; l < layerCount; l++) {
-            // Кожен шар обробляється з мікро-зсувом (shift) у протилежних напрямках.
-            // Це заповнює рвані пікселі та створює монолітну обводку.
+            // Зсув координат для кожного шару створює імітацію накладання в Multiply
             const shiftX = (l === 1) ? 1 : (l === 2) ? -1 : 0;
             const shiftY = (l === 2) ? 1 : 0;
 
-            for (let y = maskSize + 1; y < h - maskSize - 1; y++) {
+            for (let y = radius; y < h - radius; y++) {
                 const rowIdx = y * w;
                 const shiftedRowIdx = (y + shiftY) * w;
 
-                for (let x = maskSize + 1; x < w - maskSize - 1; x++) {
+                for (let x = radius; x < w - radius; x++) {
                     const currentPx = gray[shiftedRowIdx + x + shiftX];
 
-                    let maxVal = 0;
-                    let minVal = 255;
+                    // Інтеграл середнього значення яскравості навколо пікселя
+                    let sum = 0;
+                    let count = 0;
 
-                    // Збір даних локальної матриці навколо пікселя
-                    for (let ky = -maskSize; ky <= maskSize; ky++) {
+                    for (let ky = -radius; ky <= radius; ky++) {
                         const kernelRow = (y + ky + shiftY) * w;
-                        for (let kx = -maskSize; kx <= maskSize; kx++) {
-                            const px = gray[kernelRow + x + kx + shiftX];
-                            if (px > maxVal) maxVal = px;
-                            if (px < minVal) minVal = px;
+                        for (let kx = -radius; kx <= radius; kx++) {
+                            sum += gray[kernelRow + x + kx + shiftX];
+                            count++;
                         }
                     }
 
-                    const localContrast = maxVal - minVal;
-                    const midThreshold = (maxVal + minVal) / 2;
+                    const mean = sum / count;
                     const bufferIdx = rowIdx + x;
 
-                    // Виділення ліній за Sauvola-Bernsen логікою
-                    let isLine = false;
-                    if (localContrast >= sensitivity * 3) {
-                        if (currentPx < midThreshold) {
-                            isLine = true;
-                        }
-                    } else {
-                        // Якщо ми знаходимося в глибокій тіні, інтелектуально знижуємо поріг,
-                        // щоб дістати лінії навіть з темряви
-                        if (currentPx < 100 && localContrast > (sensitivity)) {
-                            isLine = true;
-                        }
-                    }
-
-                    // ФІЗИЧНИЙ MULTIPLY: Множимо поточний прохід на попередній
-                    if (isLine) {
-                        // Тіні та брудний фон випалюються за параметром очищення
-                        if (currentPx < backgroundBurn) {
-                            finalBuffer[bufferIdx] = 0; // Малюємо лінію
+                    // Адаптивний поріг Бернсена: якщо поточний піксель значно темніший за оточення — це лінія
+                    if (currentPx < mean - C) {
+                        // Тіні у найтемніших зонах відсікаються, щоб не утворювати брудну "кашу"
+                        if (currentPx < (255 - noiseSliderVal * 1.5)) {
+                            finalBuffer[bufferIdx] = 0; // Малюємо чорний піксель контуру
                         }
                     }
                 }
