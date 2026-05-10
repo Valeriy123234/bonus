@@ -2,178 +2,487 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PAIN PROTOCOL | YYOKAI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Трансфер-Конвертер Ескізів | Tattoo Studio</title>
     <style>
-        :root { --red: #ff0000; --bg: #000; --white: #ffffff; }
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body { background: var(--bg); color: var(--white); font-family: 'Inter', sans-serif; overflow: hidden; height: 100vh; }
-
-        /* --- ВЕРХНЯ ПАНЕЛЬ --- */
-        .header { position: fixed; top: 30px; width: 100%; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
-        .sound-btn { cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 10px; letter-spacing: 2px; opacity: 0.5; transition: 0.3s; }
-        .sound-btn.active { opacity: 1; color: var(--red); }
-        .sound-btn svg { width: 18px; fill: currentColor; }
-        .back-btn { text-decoration: none; color: #fff; font-size: 10px; letter-spacing: 2px; border: 1px solid #222; padding: 8px 16px; border-radius: 4px; transition: 0.3s; font-family: 'Unbounded', sans-serif; }
-        .back-btn:hover { border-color: var(--red); color: var(--red); }
-
-        /* --- ОСНОВНИЙ БЛОК КАРТИ --- */
-        .main-ui { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .map-wrapper { display: flex; align-items: center; justify-content: center; gap: 60px; max-width: 1200px; width: 100%; padding: 20px; }
-        
-        .body-visual { flex: 1; display: flex; justify-content: center; align-items: center; position: relative; }
-        
-        /* Фіксований контейнер для карти */
-        .image-container {
-            position: relative;
-            width: 500px;
-            height: 600px;
-            background: #000;
+        :root {
+            --bg-color: #0b0b0c;
+            --panel-color: #141416;
+            --accent-color: #00ffcc; /* Фірмовий неоновий бірюзовий */
+            --accent-hover: #00cca3;
+            --text-color: #ffffff;
+            --border-radius: 16px;
         }
 
-        /* Зображення силуетів */
-        .body-image {
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 900px;
             width: 100%;
-            height: 100%;
-            display: block;
-            object-fit: contain;
-            filter: brightness(0.7) contrast(1.2);
+            background: var(--panel-color);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 204, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
         }
 
-        area {
+        h1 {
+            text-align: center;
+            color: var(--text-color);
+            font-size: 26px;
+            margin: 0 0 8px 0;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 800;
+            background: linear-gradient(45deg, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: #71717a;
+            font-size: 14px;
+            margin: 0 0 25px 0;
+            line-height: 1.5;
+        }
+
+        .upload-zone {
+            border: 2px dashed #27272a;
+            padding: 35px 20px;
+            text-align: center;
+            border-radius: var(--border-radius);
             cursor: pointer;
-            outline: none;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.01);
+            position: relative;
+            overflow: hidden;
         }
 
-        /* ІНФО ПАНЕЛЬ */
-        .side-panel { width: 350px; border-left: 1px solid #111; padding-left: 40px; display: flex; flex-direction: column; justify-content: center; }
-        .label { font-size: 9px; color: #444; letter-spacing: 4px; margin-bottom: 10px; }
-        #pain-title { font-family: 'Unbounded', sans-serif; font-size: 32px; color: var(--red); margin-bottom: 20px; text-transform: uppercase; }
-        #pain-text { font-size: 12px; color: #666; line-height: 1.8; text-transform: uppercase; letter-spacing: 1px; }
+        .upload-zone:hover {
+            border-color: var(--accent-color);
+            background: rgba(0, 255, 204, 0.02);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.05);
+        }
 
-        .btn-book { margin-top: 40px; display: inline-block; padding: 20px 50px; border: 1px solid var(--red); color: #fff; text-decoration: none; font-family: 'Unbounded', sans-serif; font-size: 10px; border-radius: 100px; transition: 0.4s; text-align: center; }
-        .btn-book:hover { background: var(--red); box-shadow: 0 0 30px rgba(255,0,0,0.4); }
+        .upload-zone p {
+            margin: 0;
+            font-size: 15px;
+            color: #a1a1aa;
+            font-weight: 500;
+        }
 
-        @media (max-width: 900px) {
-            body { overflow-y: auto; height: auto; }
-            .main-ui { height: auto; padding: 100px 0; }
-            .map-wrapper { flex-direction: column; text-align: center; gap: 40px; }
-            .side-panel { border: none; padding: 0; width: 100%; align-items: center; }
-            .image-container { width: 320px; height: 384px; }
+        #file-input {
+            display: none;
+        }
+
+        .controls {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            background: #18181b;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            border: 1px solid #27272a;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        label {
+            font-size: 13px;
+            color: #a1a1aa;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        label span {
+            color: var(--accent-color);
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: #27272a;
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        input[type="range"]:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--accent-color);
+            transition: transform 0.1s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .workspace {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 650px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+            .controls {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .preview-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #18181b;
+            padding: 12px;
+            border-radius: var(--border-radius);
+            border: 1px solid #27272a;
+            box-sizing: border-box;
+        }
+
+        .preview-box h3 {
+            margin: 0 0 12px 0;
+            font-size: 12px;
+            color: #71717a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        img, canvas {
+            width: 100%;
+            height: auto;
+            max-height: 380px;
+            border-radius: 8px;
+            object-fit: contain;
+            background: #09090b;
+            border: 1px solid #27272a;
+        }
+
+        /* Контрастне біле поле для трансферного паперу */
+        canvas {
+            background: #ffffff; 
+            border-color: #e4e4e7;
+        }
+
+        .btn-container {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn {
+            border: none;
+            padding: 14px 35px;
+            font-size: 15px;
+            font-weight: 700;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .btn-download {
+            background: var(--accent-color);
+            color: #0b0b0c;
+            box-shadow: 0 4px 20px rgba(0, 255, 204, 0.2);
+        }
+
+        .btn-download:hover:not(:disabled) {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 255, 204, 0.4);
+        }
+
+        .btn-download:disabled {
+            background: #27272a;
+            color: #71717a;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        .btn-booking {
+            background: transparent;
+            color: #fff;
+            border: 2px solid #27272a;
+            margin-top: 5px;
+        }
+
+        .btn-booking:hover {
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.03);
+            transform: translateY(-2px);
         }
     </style>
 </head>
 <body>
 
-<audio id="bg-amb" loop src="ambient.mp3"></audio>
-<audio id="click-sfx" src="click.mp3"></audio>
+<div class="container">
+    <h1>Генератор Контуру для Трансферу</h1>
+    <p class="subtitle">Інтерактивний модуль підготовки ескізу. Перетворіть будь-яке зображення на чіткі лінії для татуювання.</p>
 
-<div class="header">
-    <div class="sound-btn" id="sToggle" onclick="toggleSnd()">
-        <svg viewBox="0 0 24 24"><path d="M12 3v18l-6-6h-4v-6h4l6-6zm7 9c0-2.21-1.29-4.11-3.13-5l-1.46 1.46c.92.51 1.59 1.48 1.59 2.54s-.67 2.03-1.59 2.54l1.46 1.46c1.84-.89 3.13-2.79 3.13-5z"/></svg>
-        <span id="sText">AUDIO: OFF</span>
+    <!-- Зона кліку/дропу файлу -->
+    <div class="upload-zone" id="drop-zone">
+        <p id="upload-text">📸 Завантажити ескіз (натисніть або перетягніть фото)</p>
+        <input type="file" id="file-input" accept="image/*">
     </div>
-    <a href="index.html" class="back-btn">ГОЛОВНА</a>
-</div>
 
-<div class="main-ui">
-    <div class="map-wrapper">
-        <div class="body-visual">
-            <div class="image-container">
-                
-                <!-- Пряме надійне посилання на силует із мережі -->
-                <img src="imgur.com" usemap="#image-map" class="body-image" id="map-img">
-
-                <!-- Точні координати для кліків під розмір 500x600 -->
-                <map name="image-map">
-                    <!-- ЧОЛОВІК (Ліва фігура) -->
-                    <area shape="circle" coords="145,75,22" data-l="ГОЛОВА (M)" data-d="Біль 8/10. Сильна вібрація, близько до кістки черепа.">
-                    <area shape="rect" coords="110,110,180,200" data-l="ТОРС / РЕБРА (M)" data-d="Біль 7-10/10. Центр грудей та ребра — найбільш стресові ділянки під великі роботи.">
-                    <area shape="rect" coords="65,115,110,260" data-l="ЛІВА РУКА (M)" data-d="Біль 3/10. Зовнішня частина плеча та передпліччя — найкраще місце для першого тату.">
-                    <area shape="rect" coords="180,115,225,260" data-l="ПРАВА РУКА (M)" data-d="Біль 3/10. Зовнішня частина, м'яз згладжує больові імпульси машинки.">
-                    <area shape="rect" coords="115,200,175,360" data-l="ЖИВІТ / СТЕГНА (M)" data-d="Біль 5-8/10. Живіт вимагає контролю дихання, передня частина стегна терпима.">
-                    <area shape="rect" coords="110,360,180,560" data-l="КОЛІНА / ІКРИ (M)" data-d="Біль 9/10. Суглоби та гомілка — дуже гострий дискомфорт системи YYOKAI.">
-
-                    <!-- ЖІНКА (Права фігура) -->
-                    <area shape="circle" coords="355,85,20" data-l="ГОЛОВА (F)" data-d="Біль 8/10. Тонка шкіра, висока чутливість нервових закінчень.">
-                    <area shape="rect" coords="320,120,390,210" data-l="ТОРС / ЖИВІТ (F)" data-d="Біль 6-9/10. Ребра та низ живота вимагають максимальної концентрації.">
-                    <area shape="rect" coords="275,125,320,260" data-l="ЛІВА РУКА (F)" data-d="Біль 2-4/10. Передпліччя — повністю контрольований та м'який рівень болю.">
-                    <area shape="rect" coords="390,125,435,260" data-l="ПРАВА РУКА (F)" data-d="Біль 2-4/10. Ідеально під тонкий деталізований японський надпис.">
-                    <area shape="rect" coords="325,210,385,360" data-l="СТЕГНА (F)" data-d="Біль 4/10. Переноситься легко, велика м'язова маса мінімізує стрес.">
-                    <area shape="rect" coords="320,360,390,560" data-l="КОЛІНА / ГОМІЛКА (F)" data-d="Біль 8/10. Підколінна западина та кістка — критичний рівень за протоколом.">
-                </map>
-
-            </div>
+    <!-- Регулятори контурів -->
+    <div class="controls">
+        <div class="control-group">
+            <label for="threshold-slider">Деталізація контуру <span id="threshold-val">60</span></label>
+            <input type="range" id="threshold-slider" min="15" max="140" value="60" disabled>
         </div>
-
-        <div class="side-panel">
-            <div class="label">// SENSOR STATUS: READY</div>
-            <div id="pain-title">SCANNING...</div>
-            <div id="pain-text">Натисніть на будь-яку ділянку тіла силуетів для запуску біометричного аналізу YYOKAI SYSTEM.</div>
-            <a href="t.me" class="btn-book">ЗАПИСАТИСЯ</a>
+        <div class="control-group">
+            <label for="thickness-slider">Товщина ліній трафарету <span id="thickness-val">1</span></label>
+            <input type="range" id="thickness-slider" min="1" max="3" value="1" step="1" disabled>
         </div>
+    </div>
+
+    <!-- Порівняння результату -->
+    <div class="workspace">
+        <div class="preview-box">
+            <h3>Початкове зображення</h3>
+            <!-- Прозора SVG заглушка на старт -->
+            <img id="source-img" src="data:image/svg+xml;utf8,<svg xmlns='w3.org' width='100' height='100'></svg>" alt="Оригінал">
+        </div>
+        <div class="preview-box">
+            <h3>Готовий трафарет</h3>
+            <canvas id="output-canvas"></canvas>
+        </div>
+    </div>
+
+    <!-- Кнопки дій -->
+    <div class="btn-container">
+        <button class="btn btn-download" id="btn-download" disabled>Завантажити контур</button>
+        <button class="btn btn-booking" id="btn-booking" onclick="goToBooking()">🎯 Онлайн-Запис на сеанс</button>
     </div>
 </div>
 
 <script>
-    const amb = document.getElementById('bg-amb');
-    const clk = document.getElementById('click-sfx');
-    const sToggle = document.getElementById('sToggle');
-    const sText = document.getElementById('sText');
-    const img = document.getElementById('map-img');
+    // Аудіо-ефекти інтерфейсу (працюють без додаткових файлів)
+    const soundUpload = new Audio('mixkit.co');
+    const soundProcess = new Audio('mixkit.co');
+    const soundClick = new Audio('mixkit.co');
+    
+    // Налаштування гучності звуків, щоб не били по вухах
+    soundUpload.volume = 0.3;
+    soundProcess.volume = 0.2;
+    soundClick.volume = 0.4;
 
-    function toggleSnd() {
-        if (amb.paused) {
-            amb.play().then(() => {
-                amb.muted = false;
-                sToggle.classList.add('active');
-                sText.innerText = "AUDIO: ON";
-            }).catch(e => console.log("Потрібна взаємодія"));
-        } else {
-            amb.pause();
-            sToggle.classList.remove('active');
-            sText.innerText = "AUDIO: OFF";
-        }
-    }
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const sourceImg = document.getElementById('source-img');
+    const outputCanvas = document.getElementById('output-canvas');
+    const ctx = outputCanvas.getContext('2d');
+    
+    const thresholdSlider = document.getElementById('threshold-slider');
+    const thicknessSlider = document.getElementById('thickness-slider');
+    const thresholdVal = document.getElementById('threshold-val');
+    const thicknessVal = document.getElementById('thickness-val');
+    const btnDownload = document.getElementById('btn-download');
+    const uploadText = document.getElementById('upload-text');
 
-    document.querySelectorAll('area').forEach(zone => {
-        zone.addEventListener('click', function(e) {
-            e.preventDefault();
-            clk.currentTime = 0; 
-            clk.play();
-            document.getElementById('pain-title').innerText = this.dataset.l;
-            document.getElementById('pain-text').innerText = this.dataset.d;
-        });
+    let originalData = null;
+
+    // Взаємодія з інтерфейсом
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = 'var(--accent-color)';
     });
 
-    function respondCanvas() {
-        const map = document.getElementsByName('image-map')[0];
-        const areas = map.getElementsByTagName('area');
-        const w = img.clientWidth;
-        const h = img.clientHeight;
-        const baseW = 500;
-        const baseH = 600;
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.style.borderColor = '#27272a';
+    });
 
-        for (let i = 0; i < areas.length; i++) {
-            if (!areas[i].dataset.coords) {
-                areas[i].dataset.coords = areas[i].getAttribute('coords');
-            }
-            let c = areas[i].dataset.coords.split(',');
-            let cN = [];
-            for (let j = 0; j < c.length; j++) {
-                if (j % 2 === 0) {
-                    cN[j] = Math.round((c[j] / baseW) * w);
-                } else {
-                    cN[j] = Math.round((c[j] / baseH) * h);
-                }
-            }
-            areas[i].setAttribute('coords', cN.join(','));
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = '#27272a';
+        if (e.dataTransfer.files.length > 0) {
+            handleFile(e.dataTransfer.files[0]);
         }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            handleFile(e.target.files[0]);
+        }
+    });
+
+    function handleFile(file) {
+        if (!file.type.startsWith('image/')) return;
+        
+        // Звук успішного вибору файлу
+        soundUpload.play().catch(() => {});
+        
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            sourceImg.src = event.target.result;
+            uploadText.textContent = "🔄 Змінити зображення ескізу";
+        };
+        reader.readAsDataURL(file);
     }
 
-    window.addEventListener('resize', respondCanvas);
-    img.addEventListener('load', respondCanvas);
-    if(img.complete) respondCanvas();
+    // Обробка зображення після завантаження в тег IMG
+    sourceImg.onload = function() {
+        if (sourceImg.src.startsWith('data:image/svg+xml')) return;
+
+        // Звук початку генерації контурів
+        soundProcess.play().catch(() => {});
+
+        // Масштабуємо canvas під завантажене фото
+        outputCanvas.width = sourceImg.naturalWidth;
+        outputCanvas.height = sourceImg.naturalHeight;
+
+        // Отримуємо масив пікселів
+        ctx.drawImage(sourceImg, 0, 0);
+        originalData = ctx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
+
+        // Вмикаємо інтерфейс
+        thresholdSlider.disabled = false;
+        thicknessSlider.disabled = false;
+        btnDownload.disabled = false;
+
+        // Рендеримо контур
+        processImage();
+    };
+
+    thresholdSlider.addEventListener('input', (e) => {
+        thresholdVal.textContent = e.target.value;
+        processImage();
+    });
+
+    thicknessSlider.addEventListener('input', (e) => {
+        thicknessVal.textContent = e.target.value;
+        processImage();
+    });
+
+    // Швидкий алгоритм Sobel Edge Detection для промальовки ліній трансферу
+    function processImage() {
+        if (!originalData) return;
+
+        const width = outputCanvas.width;
+        const height = outputCanvas.height;
+        const threshold = parseInt(thresholdSlider.value);
+        const thickness = parseInt(thicknessSlider.value);
+
+        const imgDataOut = ctx.createImageData(width, height);
+        const src = originalData.data;
+        const dst = imgDataOut.data;
+
+        // Швидкий перевід в Grayscale (чорно-білий масив)
+        const gray = new Uint8Array(width * height);
+        for (let i = 0; i < src.length; i += 4) {
+            gray[i / 4] = 0.299 * src[i] + 0.587 * src[i + 1] + 0.114 * src[i + 2];
+        }
+
+        const step = thickness;
+
+        for (let y = step; y < height - step; y++) {
+            for (let x = step; x < width - step; x++) {
+                
+                // Матриця точок навколо поточного пікселя
+                const idxTopLeft  = (y - step) * width + (x - step);
+                const idxTopRight = (y - step) * width + (x + step);
+                const idxBotLeft  = (y + step) * width + (x - step);
+                const idxBotRight = (y + step) * width + (x + step);
+                const idxLeft     = y * width + (x - step);
+                const idxRight    = y * width + (x + step);
+                const idxTop      = (y - step) * width + x;
+                const idxBot      = (y + step) * width + x;
+
+                // Градієнти змін кольору
+                const gx = (gray[idxTopRight] + (2 * gray[idxRight]) + gray[idxBotRight]) - 
+                           (gray[idxTopLeft] + (2 * gray[idxLeft]) + gray[idxBotLeft]);
+                
+                const gy = (gray[idxBotLeft] + (2 * gray[idxBot]) + gray[idxBotRight]) - 
+                           (gray[idxTopLeft] + (2 * gray[idxTop]) + gray[idxTopRight]);
+
+                const magnitude = Math.sqrt(gx * gx + gy * gy);
+                const pos = (y * width + x) * 4;
+
+                // Формування ліній: якщо градієнт вище порогу — малюємо чорний колір, інакше — чисто білий
+                if (magnitude > threshold) {
+                    dst[pos]     = 0;   // R
+                    dst[pos + 1] = 0;   // G
+                    dst[pos + 2] = 0;   // B
+                    dst[pos + 3] = 255; // Опція альфа-каналу (видимий)
+                } else {
+                    dst[pos]     = 255; // R
+                    dst[pos + 1] = 255; // G
+                    dst[pos + 2] = 255; // B
+                    dst[pos + 3] = 255; 
+                }
+            }
+        }
+        ctx.putImageData(imgDataOut, 0, 0);
+    }
+
+    // Скачування картинки контуру
+    btnDownload.addEventListener('click', () => {
+        soundClick.play().catch(() => {});
+        const link = document.createElement('a');
+        link.download = 'tattoo-stencil-contour.png';
+        link.href = outputCanvas.toDataURL('image/png');
+        link.click();
+    });
+
+    // Кнопка запису на сеанс
+    function goToBooking() {
+        soundClick.play().catch(() => {});
+        
+        // Сюди впиши посилання на свою основну сторінку або інстаграм
+        window.open('instagram.com', '_blank'); 
+    }
 </script>
+
 </body>
 </html>
