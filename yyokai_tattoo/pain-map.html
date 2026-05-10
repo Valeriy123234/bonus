@@ -263,13 +263,11 @@
 
         <div class="controls">
             <div class="control-group">
-                <label data-slider-label>Чутливість до деталей (Мікро-тіні/Штрихи): <span id="detail-val">60%</span></label>
-                <!-- Плавний повзунок від 10 до 150 -->
+                <label>Чутливість до деталей (Мікро-тіні/Штрихи): <span id="detail-val">60%</span></label>
                 <input type="range" id="detail-slider" min="10" max="150" value="60" step="1" disabled>
             </div>
             <div class="control-group">
-                <label data-slider-label>Випалювання фону та бруду: <span id="noise-val">85%</span></label>
-                <!-- Плавний повзунок від 150 до 254 -->
+                <label>Випалювання фону та бруду: <span id="noise-val">85%</span></label>
                 <input type="range" id="noise-slider" min="150" max="254" value="230" step="1" disabled>
             </div>
         </div>
@@ -352,7 +350,7 @@
     }
 
     dropZone.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', (e) => { if (e.target.files.length > 0) handleFile(e.target.files); });
+    fileInput.addEventListener('change', (e) => { if (e.target.files.length > 0) handleFile(e.target.files[0]); });
 
     function handleFile(file) {
         if (!file || !file.type.startsWith('image/')) return;
@@ -382,7 +380,6 @@
     noiseSlider.addEventListener('input', () => { updateSliderLabels(); processPremiumTransfer(); });
 
     function updateSliderLabels() {
-        // Конвертуємо поточні позиції у відсотки для комфортного сприйняття користувачем
         const detailPercent = Math.round(((detailSlider.value - 10) / 140) * 100);
         const noisePercent = Math.round(((noiseSlider.value - 150) / 104) * 100);
         
@@ -390,7 +387,6 @@
         noiseVal.textContent = noisePercent + "%";
     }
 
-    // УЛЬТРА-ОПТИМІЗОВАНИЙ ДВИГУН ЧАСТОТНОЇ ФІЛЬТРАЦІЇ (60 FPS)
     function processPremiumTransfer() {
         if (!originalData) return;
 
@@ -404,13 +400,11 @@
         const src = originalData.data;
         const dst = imgData.data;
 
-        // Швидкий прохід Grayscale в один крок
         const gray = new Uint8Array(w * h);
         for (let i = 0; i < src.length; i += 4) {
             gray[i/4] = (src[i] + src[i+1] + src[i+2]) / 3;
         }
 
-        // Оптимізована матриця виділення ліній 
         for (let y = 1; y < h - 1; y++) {
             const rowOffset = y * w;
             const topOffset = (y - 1) * w;
@@ -419,7 +413,6 @@
             for (let x = 1; x < w - 1; x++) {
                 const currentPx = gray[rowOffset + x];
 
-                // Ядро Собеля для аналізу перепадів товщини ліній
                 const g00 = gray[topOffset + x - 1]; const g02 = gray[topOffset + x + 1];
                 const g20 = gray[botOffset + x - 1]; const g22 = gray[botOffset + x + 1];
                 
@@ -429,21 +422,16 @@
                 const edge = v + h_val;
                 const pos = (rowOffset + x) * 4;
 
-                // ІНТЕЛЕКТУАЛЬНЕ СОРТУВАННЯ КОНТУРІВ ТА ШУМУ
                 if (edge > detailSens) {
-                    // Розрахунок насиченості ліній: чим чіткіший край — тим глибший чорний колір
                     let lineDepth = 255 - (edge * 5);
                     
-                    // Якщо активовано повне очищення фону, випалюємо дрібний сірий пил
                     if (currentPx > noiseCutoff) {
                         dst[pos]=255; dst[pos+1]=255; dst[pos+2]=255; dst[pos+3]=255;
                     } else {
-                        // Робимо лінії глибокими, прибираючи сірі розмиті напівтони навколо контуру
                         const finalColor = lineDepth < 120 ? 0 : lineDepth * 0.3;
                         dst[pos]=finalColor; dst[pos+1]=finalColor; dst[pos+2]=finalColor; dst[pos+3]=255;
                     }
                 } else {
-                    // Папір залишається ідеальним
                     dst[pos]=255; dst[pos+1]=255; dst[pos+2]=255; dst[pos+3]=255;
                 }
             }
