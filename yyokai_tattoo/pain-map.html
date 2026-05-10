@@ -2,8 +2,8 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YYO KAI | Premium Tattoo Stencil Engine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>YYO KAI | HD Stencil Engine</title>
     <style>
         :root {
             --bg-color: #060608;
@@ -26,6 +26,8 @@
             align-items: center;
             box-sizing: border-box;
             overflow-x: hidden;
+            /* Забороняємо випадковий скролл сторінки при перетягуванні повзунків */
+            touch-action: manipulation;
         }
 
         header {
@@ -160,40 +162,66 @@
         .upload-zone p { margin: 0; font-size: 15px; color: #6e6e77; font-weight: 500; }
         #file-input { display: none; }
 
+        /* Збільшені тач-зони для комфортного перетягування повзунків */
         .controls {
             margin-top: 20px;
             display: grid;
             grid-template-columns: 1fr;
-            gap: 15px;
+            gap: 20px;
             background: #121216;
             padding: 20px;
             border-radius: var(--border-radius);
             border: 1px solid #1c1c22;
         }
 
-        .control-group { display: flex; flex-direction: column; gap: 6px; }
+        .control-group { display: flex; flex-direction: column; gap: 10px; }
         label { font-size: 12px; color: #6e6e77; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: flex; justify-content: space-between; }
-        label span { color: var(--accent-color); font-family: monospace; }
+        label span { color: var(--accent-color); font-family: monospace; font-size: 14px; }
 
+        /* Повністю адаптовані та чутливі мобільні слайдери */
         input[type="range"] {
             -webkit-appearance: none;
+            appearance: none;
             width: 100%;
             background: #1c1c22;
-            height: 6px;
-            border-radius: 3px;
+            height: 10px; /* Збільшена товщина лінії слайдера */
+            border-radius: 5px;
             outline: none;
+            cursor: pointer;
+            touch-action: none; /* Блокує жест скроллу сторінки під час перетягування */
         }
 
+        /* Збільшена кнопка-бігунок для пальця (iOS/Android) */
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
+            appearance: none;
+            width: 26px; /* Збільшено з 18px до 26px для ідеального зачепу */
+            height: 26px;
             border-radius: 50%;
             background: var(--accent-color);
-            cursor: pointer;
-            box-shadow: 0 0 8px var(--accent-color);
+            cursor: grab;
+            box-shadow: 0 0 12px var(--accent-color), 0 2px 6px rgba(0,0,0,0.5);
+            transition: transform 0.1s, background-color 0.2s;
         }
-        input[type="range"]:disabled { opacity: 0.1; }
+
+        input[type="range"]::-webkit-slider-thumb:active {
+            cursor: grabbing;
+            transform: scale(1.15);
+            background-color: #ffffff;
+        }
+
+        /* Підтримка для Firefox */
+        input[type="range"]::-moz-range-thumb {
+            width: 26px;
+            height: 26px;
+            border: none;
+            border-radius: 50%;
+            background: var(--accent-color);
+            cursor: grab;
+            box-shadow: 0 0 12px var(--accent-color), 0 2px 6px rgba(0,0,0,0.5);
+        }
+        input[type="range"]::-moz-range-thumb:active { cursor: grabbing; transform: scale(1.15); }
+        input[type="range"]:disabled { opacity: 0.15; cursor: not-allowed; }
 
         .workspace { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         @media (max-width: 650px) { .workspace { grid-template-columns: 1fr; } }
@@ -257,18 +285,18 @@
 
     <div class="container">
         <div class="upload-zone" id="drop-zone">
-            <p id="upload-text">📸 Завантажте ескіз для плавного виділення ліній</p>
+            <p id="upload-text">📸 Завантажте ескіз для витягування мікро-деталей</p>
             <input type="file" id="file-input" accept="image/*">
         </div>
 
         <div class="controls">
             <div class="control-group">
-                <label>Чутливість до деталей (Мікро-тіні/Штрихи): <span id="detail-val">60%</span></label>
-                <input type="range" id="detail-slider" min="10" max="150" value="60" step="1" disabled>
+                <label>Чутливість до мікро-ліній та дотвірку: <span id="detail-val">50%</span></label>
+                <input type="range" id="detail-slider" min="1" max="100" value="50" step="1" disabled>
             </div>
             <div class="control-group">
-                <label>Випалювання фону та бруду: <span id="noise-val">85%</span></label>
-                <input type="range" id="noise-slider" min="150" max="254" value="230" step="1" disabled>
+                <label>Випалювання фонового шуму та паперу: <span id="noise-val">70%</span></label>
+                <input type="range" id="noise-slider" min="1" max="100" value="70" step="1" disabled>
             </div>
         </div>
 
@@ -278,7 +306,7 @@
                 <img id="source-img" src="data:image/svg+xml;utf8,<svg xmlns='w3.org' width='100' height='100'></svg>" alt="Оригінал">
             </div>
             <div class="preview-box">
-                <h3>Преміум Трафарет (Line-Art)</h3>
+                <h3>HD Трафарет (Розумні лінії)</h3>
                 <canvas id="output-canvas"></canvas>
             </div>
         </div>
@@ -336,6 +364,7 @@
     const uploadText = document.getElementById('upload-text');
 
     let originalData = null;
+    let isProcessing = false; // Прапорець для запобігання перевантаженню процесора
 
     function toggleMusic() {
         const musicBtn = document.getElementById('music-btn'); initAudio();
@@ -350,7 +379,7 @@
     }
 
     dropZone.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', (e) => { if (e.target.files.length > 0) handleFile(e.target.files[0]); });
+    fileInput.addEventListener('change', (e) => { if (e.target.files.length > 0) handleFile(e.target.files); });
 
     function handleFile(file) {
         if (!file || !file.type.startsWith('image/')) return;
@@ -373,18 +402,31 @@
         btnDownload.disabled = false;
 
         updateSliderLabels();
-        processPremiumTransfer();
+        requestProcess();
     };
 
-    detailSlider.addEventListener('input', () => { updateSliderLabels(); processPremiumTransfer(); });
-    noiseSlider.addEventListener('input', () => { updateSliderLabels(); processPremiumTransfer(); });
+    // Оптимізовані події зміни значень (використовують requestAnimationFrame)
+    detailSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
+    noiseSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
+
+    // Додаткові сенсорні слухачі для ідеального відгуку на тачскрінах iOS/Android
+    detailSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
+    noiseSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
 
     function updateSliderLabels() {
-        const detailPercent = Math.round(((detailSlider.value - 10) / 140) * 100);
-        const noisePercent = Math.round(((noiseSlider.value - 150) / 104) * 100);
-        
-        detailVal.textContent = detailPercent + "%";
-        noiseVal.textContent = noisePercent + "%";
+        detailVal.textContent = detailSlider.value + "%";
+        noiseVal.textContent = noiseSlider.value + "%";
+    }
+
+    // Захисна функція від лагів: запускає рендер тільки тоді, коли відеокарта готова малювати новий кадр
+    function requestProcess() {
+        if (!isProcessing) {
+            isProcessing = true;
+            window.requestAnimationFrame(() => {
+                processPremiumTransfer();
+                isProcessing = false;
+            });
+        }
     }
 
     function processPremiumTransfer() {
@@ -393,8 +435,11 @@
         const w = outputCanvas.width;
         const h = outputCanvas.height;
         
-        const detailSens = parseInt(detailSlider.value); 
-        const noiseCutoff = parseInt(noiseSlider.value);   
+        const detailSliderVal = parseInt(detailSlider.value);
+        const noiseSliderVal = parseInt(noiseSlider.value);
+
+        const sensitivity = 1.0 + (detailSliderVal / 20); 
+        const backgroundBurn = 255 - (noiseSliderVal * 1.2); 
 
         const imgData = ctx.createImageData(w, h);
         const src = originalData.data;
@@ -406,33 +451,40 @@
         }
 
         for (let y = 1; y < h - 1; y++) {
-            const rowOffset = y * w;
-            const topOffset = (y - 1) * w;
-            const botOffset = (y + 1) * w;
+            const rowIdx = y * w;
+            const topIdx = (y - 1) * w;
+            const botIdx = (y + 1) * w;
 
             for (let x = 1; x < w - 1; x++) {
-                const currentPx = gray[rowOffset + x];
+                const current = gray[rowIdx + x];
 
-                const g00 = gray[topOffset + x - 1]; const g02 = gray[topOffset + x + 1];
-                const g20 = gray[botOffset + x - 1]; const g22 = gray[botOffset + x + 1];
-                
-                const v = Math.abs((g02 + 2 * gray[rowOffset + x + 1] + g22) - (g00 + 2 * gray[rowOffset + x - 1] + g20));
-                const h_val = Math.abs((g20 + 2 * gray[botOffset + x] + g22) - (g00 + 2 * gray[topOffset + x] + g02));
-                
-                const edge = v + h_val;
-                const pos = (rowOffset + x) * 4;
+                const localAverage = (
+                    gray[topIdx + x - 1] + gray[topIdx + x] + gray[topIdx + x + 1] +
+                    gray[rowIdx + x - 1] + current          + gray[rowIdx + x + 1] +
+                    gray[botIdx + x - 1] + gray[botIdx + x] + gray[botIdx + x + 1]
+                ) / 9;
 
-                if (edge > detailSens) {
-                    let lineDepth = 255 - (edge * 5);
-                    
-                    if (currentPx > noiseCutoff) {
-                        dst[pos]=255; dst[pos+1]=255; dst[pos+2]=255; dst[pos+3]=255;
-                    } else {
-                        const finalColor = lineDepth < 120 ? 0 : lineDepth * 0.3;
-                        dst[pos]=finalColor; dst[pos+1]=finalColor; dst[pos+2]=finalColor; dst[pos+3]=255;
-                    }
+                const diff = localAverage - current;
+                const pos = (rowIdx + x) * 4;
+
+                if (diff > sensitivity) {
+                    let finalColor = 255 - (diff * 20);
+                    if (finalColor < 160) finalColor = 0;
+
+                    dst[pos]     = finalColor;
+                    dst[pos + 1] = finalColor;
+                    dst[pos + 2] = finalColor;
+                    dst[pos + 3] = 255;
                 } else {
-                    dst[pos]=255; dst[pos+1]=255; dst[pos+2]=255; dst[pos+3]=255;
+                    if (current > backgroundBurn) {
+                        dst[pos] = 255; dst[pos+1] = 255; dst[pos+2] = 255; dst[pos+3] = 255;
+                    } else {
+                        if (current < 100) {
+                            dst[pos] = 0; dst[pos+1] = 0; dst[pos+2] = 0; dst[pos+3] = 255;
+                        } else {
+                            dst[pos] = 255; dst[pos+1] = 255; dst[pos+2] = 255; dst[pos+3] = 255;
+                        }
+                    }
                 }
             }
         }
@@ -442,7 +494,7 @@
     btnDownload.addEventListener('click', () => {
         playClickSound();
         const link = document.createElement('a');
-        link.download = 'yyokai-premium-stencil.png';
+        link.download = 'yyokai-hd-stencil.png';
         link.href = outputCanvas.toDataURL('image/png');
         link.click();
     });
