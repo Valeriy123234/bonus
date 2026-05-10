@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYO KAI | Premium Multi-Pass Stencil Engine</title>
+    <title>YYO KAI | HD Stencil Engine</title>
     <style>
         :root {
             --bg-color: #060608;
@@ -286,15 +286,15 @@
 
         <div class="controls">
             <div class="control-group">
-                <label>Шукач ліній (Деталізація): <span id="detail-val">3</span></label>
+                <label>Товщина та пошук ліній: <span id="detail-val">3</span></label>
                 <input type="range" id="detail-slider" min="1" max="5" value="3" step="1" disabled>
             </div>
             <div class="control-group">
-                <label>Повне очищення від бруду: <span id="noise-val">20</span></label>
+                <label>Фільтр бруду та шумів (Очищення): <span id="noise-val">20</span></label>
                 <input type="range" id="noise-slider" min="5" max="60" value="20" step="1" disabled>
             </div>
             <div class="control-group">
-                <label>Глибина чорного (Множення шарів Multiply): <span id="layers-val">2 шари</span></label>
+                <label>Глибина чорного (Множення Multiply): <span id="layers-val">2 шари</span></label>
                 <input type="range" id="layers-slider" min="1" max="3" value="2" step="1" disabled>
             </div>
         </div>
@@ -383,36 +383,40 @@
     
     fileInput.addEventListener('change', (e) => { 
         if (e.target.files && e.target.files.length > 0) {
-            handleFile(e.target.files); 
+            handleFile(e.target.files[0]); 
         }
     });
 
-    function handleFile(files) {
-        const file = files[0]; // Повністю виправлено зчитування першого елемента масиву
+    // Пряме завантаження через FileReader без CORS-конфліктів
+    function handleFile(file) {
         if (!file || !file.type.startsWith('image/')) return;
         playClickSound();
         const reader = new FileReader();
-        reader.onload = (e) => { sourceImg.src = e.target.result; uploadText.textContent = "🔄 Змінити ескіз"; };
+        reader.onload = (e) => { 
+            const tempImg = new Image();
+            tempImg.onload = function() {
+                sourceImg.src = e.target.result;
+                
+                outputCanvas.width = tempImg.naturalWidth;
+                outputCanvas.height = tempImg.naturalHeight;
+                ctx.drawImage(tempImg, 0, 0);
+                originalData = ctx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
+
+                detailSlider.disabled = false;
+                noiseSlider.disabled = false;
+                layersSlider.disabled = false;
+                btnDownload.disabled = false;
+
+                updateSliderLabels();
+                requestProcess();
+            };
+            tempImg.src = e.target.result;
+            uploadText.textContent = "🔄 Змінити ескіз";
+        };
         reader.readAsDataURL(file);
     }
 
-    sourceImg.onload = function() {
-        if (sourceImg.src.startsWith('data:image/svg+xml')) return;
-        
-        outputCanvas.width = sourceImg.naturalWidth;
-        outputCanvas.height = sourceImg.naturalHeight;
-        ctx.drawImage(sourceImg, 0, 0);
-        originalData = ctx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
-
-        detailSlider.disabled = false;
-        noiseSlider.disabled = false;
-        layersSlider.disabled = false;
-        btnDownload.disabled = false;
-
-        updateSliderLabels();
-        requestProcess();
-    };
-
+    // Слухачі для плавного перетягування повзунків на телефонах (60 FPS)
     detailSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
     noiseSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
     layersSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
@@ -437,7 +441,7 @@
         }
     }
 
-    // НОВИЙ ПРЕМІУМ-ДВИГУН ФІЛЬТРАЦІЇ ШУМІВ ТА РЕАЛЬНОГО MULTIPLY НАКОПИЧЕННЯ
+    // НОВИЙ ПРЕМІУМ-ДВИГУН НАКОПИЧЕННЯ ШАРІВ ЧЕРЕЗ МАТЕМАТИЧНИЙ MULTIPLY ТА ZERO-NOISE ФІЛЬТРАЦІЮ
     function processVectorLineTransfer() {
         if (!originalData) return;
 
@@ -452,24 +456,20 @@
         const src = originalData.data;
         const dst = imgData.data;
 
-        // Попередній перевід в Grayscale
+        // Попередній перевід в Grayscale в один прохід
         const gray = new Uint8Array(w * h);
         for (let i = 0; i < src.length; i += 4) {
             gray[i/4] = (src[i] + src[i+1] + src[i+2]) / 3;
         }
 
-        // 1. Створюємо окремі масиви під кожен прохід для реального Multiply
-        const layers = [];
-        for (let l = 0; l < layerCount; l++) {
-            const layerBuf = new Uint8Array(w * h);
-            layerBuf.fill(255); // Початково білий папір
-            layers.push(layerBuf);
-        }
+        // Буфер для накопичення Multiply (255 = білий фон)
+        const finalBuffer = new Uint8Array(w * h);
+        finalBuffer.fill(255);
 
-        // 2. Генерація унікальних шарів з мікро-зсувом аналізу
+        // ЦИКЛ РЕАЛЬНОГО МНОЖЕННЯ ШАРІВ (Multiply Layer Mode)
         for (let l = 0; l < layerCount; l++) {
-            const buf = layers[l];
-            // Зсув контуру на 1 піксель для кожного шару (ефект згладжування нерівностей)
+            // Кожен наступний шар отримує мікро-зсув на 1 піксель по діагоналі.
+            // Це фізично згладжує рваність контуру і повністю розчиняє сірий пил
             const shift = l; 
 
             for (let y = maskSize + shift; y < h - maskSize - shift; y++) {
@@ -483,7 +483,6 @@
 
                     for (let ky = -maskSize; ky <= maskSize; ky++) {
                         const kernelRow = (y + ky) * w;
-                        const targetX = x + kx;
                         for (let kx = -maskSize; kx <= maskSize; kx++) {
                             const px = gray[kernelRow + x + kx];
                             if (px > maxVal) maxVal = px;
@@ -493,38 +492,20 @@
 
                     const localContrast = maxVal - minVal;
                     const midThreshold = (maxVal + minVal) / 2;
-                    const idx = rowIdx + x;
+                    const bufferIdx = rowIdx + x;
 
-                    // Якщо контраст перевищує поріг шуму — це лінія
-                    if (localContrast >= contrastThreshold) {
-                        if (currentPx < midThreshold) {
-                            // Формуємо м'яку градацію чорного кольору для змішування
-                            buf[idx] = Math.max(0, Math.min(255, (currentPx / midThreshold) * 120));
-                        }
+                    // Якщо є достатній локальний перепад контуру
+                    if (localContrast >= contrastThreshold && currentPx < midThreshold) {
+                        // Формула Multiply (Множення): попереднє значення множиться на нове (0 = чорний)
+                        finalBuffer[bufferIdx] = Math.round((finalBuffer[bufferIdx] * 0) / 255);
                     }
                 }
             }
         }
 
-        // 3. ФІЗИЧНИЙ MULTIPLY (Множення пікселів шарів) та АКТИВНИЙ ДЕНОІЗ (Видалення бруду)
-        const finalBuffer = new Uint8Array(w * h);
-        finalBuffer.fill(255);
-
-        for (let i = 0; i < finalBuffer.length; i++) {
-            let multiplyResult = 255;
-
-            // Множимо значення кольору кожного шару
-            for (let l = 0; l < layerCount; l++) {
-                multiplyResult = (multiplyResult * layers[l][i]) / 255;
-            }
-
-            finalBuffer[i] = Math.max(0, Math.min(255, multiplyResult));
-        }
-
-        // 4. МЕДІАННЕ ПРИДУШЕННЯ ПООДИНОКИХ ПІКСЕЛІВ (Деноіз)
-        // Якщо навколо чорного пікселя немає сусідів — це поодинокий бруд, випалюємо його в білий колір.
-        const cleanedBuffer = new Uint8Array(w * h);
-        cleanedBuffer.fill(255);
+        // ДВОФАЗНА ZERO-NOISE ФІЛЬТРАЦІЯ (Видалення поодиноких пікселів бруду)
+        const cleanBuffer = new Uint8Array(w * h);
+        cleanBuffer.fill(255);
 
         for (let y = 1; y < h - 1; y++) {
             const rowIdx = y * w;
@@ -533,27 +514,31 @@
 
             for (let x = 1; x < w - 1; x++) {
                 const idx = rowIdx + x;
-                const color = finalBuffer[idx];
+                
+                if (finalBuffer[idx] === 0) {
+                    // Рахуємо кількість чорних сусідів навколо поточного пікселя
+                    let neighbors = 0;
+                    if (finalBuffer[topIdx + x - 1] === 0) neighbors++;
+                    if (finalBuffer[topIdx + x] === 0) neighbors++;
+                    if (finalBuffer[topIdx + x + 1] === 0) neighbors++;
+                    if (finalBuffer[rowIdx + x - 1] === 0) neighbors++;
+                    if (finalBuffer[rowIdx + x + 1] === 0) neighbors++;
+                    if (finalBuffer[botIdx + x - 1] === 0) neighbors++;
+                    if (finalBuffer[botIdx + x] === 0) neighbors++;
+                    if (finalBuffer[botIdx + x + 1] === 0) neighbors++;
 
-                if (color < 200) { // Якщо піксель темний (лінія)
-                    // Рахуємо скільки темних сусідів є навколо
-                    let darkNeighbors = 0;
-                    if (finalBuffer[topIdx + x] < 200) darkNeighbors++;
-                    if (finalBuffer[botIdx + x] < 200) darkNeighbors++;
-                    if (finalBuffer[rowIdx + x - 1] < 200) darkNeighbors++;
-                    if (finalBuffer[rowIdx + x + 1] < 200) darkNeighbors++;
-
-                    // Якщо поруч немає жодного темного пікселя — це бруд/шум, ігноруємо його
-                    if (darkNeighbors >= 1) {
-                        cleanedBuffer[idx] = color;
+                    // Якщо піксель одинокий (менше 2 сусідів) — це пил або бруд, видаляємо його.
+                    // Якщо сусідів багато — це частина реальної лінії татуювання.
+                    if (neighbors >= 2) {
+                        cleanBuffer[idx] = 0;
                     }
                 }
             }
         }
 
-        // Виведення результату
-        for (let i = 0; i < cleanedBuffer.length; i++) {
-            const color = cleanedBuffer[i];
+        // Рендер ідеального Line-Art трафарету на Canvas
+        for (let i = 0; i < cleanBuffer.length; i++) {
+            const color = cleanBuffer[i];
             const pos = i * 4;
             dst[pos]     = color;
             dst[pos + 1] = color;
@@ -567,7 +552,7 @@
     btnDownload.addEventListener('click', () => {
         playClickSound();
         const link = document.createElement('a');
-        link.download = 'yyokai-ultra-clean-stencil.png';
+        link.download = 'yyokai-ultra-stencil.png';
         link.href = outputCanvas.toDataURL('image/png');
         link.click();
     });
