@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYO KAI | Clean Line-Art Engine</title>
+    <title>YYO KAI | Multi-Layer Stencil Engine</title>
     <style>
         :root {
             --bg-color: #060608;
@@ -284,16 +284,20 @@
             <input type="file" id="file-input" accept="image/*">
         </div>
 
+        <!-- Оновлена панель з 3 плавними регуляторами -->
         <div class="controls">
             <div class="control-group">
                 <label>Товщина та пошук ліній: <span id="detail-val">3</span></label>
-                <!-- Товщина ліній (розмір маски аналізу) -->
                 <input type="range" id="detail-slider" min="1" max="5" value="3" step="1" disabled>
             </div>
             <div class="control-group">
-                <label>Чутливість контуру (Прибрати бруд): <span id="noise-val">20</span></label>
-                <!-- Чутливість до ліній (поріг бінаризації) -->
+                <label>Фільтр бруду та шумів (Очищення): <span id="noise-val">20</span></label>
                 <input type="range" id="noise-slider" min="5" max="60" value="20" step="1" disabled>
+            </div>
+            <div class="control-group">
+                <label>Глибина чорного (Множення шарів): <span id="layers-val">2 шари</span></label>
+                <!-- Новий 3-й повзунок для накладання шарів поверх шарів -->
+                <input type="range" id="layers-slider" min="1" max="3" value="2" step="1" disabled>
             </div>
         </div>
 
@@ -354,9 +358,11 @@
     
     const detailSlider = document.getElementById('detail-slider');
     const noiseSlider = document.getElementById('noise-slider');
+    const layersSlider = document.getElementById('layers-slider');
     
     const detailVal = document.getElementById('detail-val');
     const noiseVal = document.getElementById('noise-val');
+    const layersVal = document.getElementById('layers-val');
     const btnDownload = document.getElementById('btn-download');
     const uploadText = document.getElementById('upload-text');
 
@@ -401,21 +407,26 @@
 
         detailSlider.disabled = false;
         noiseSlider.disabled = false;
+        layersSlider.disabled = false;
         btnDownload.disabled = false;
 
         updateSliderLabels();
         requestProcess();
     };
 
+    // Слухачі з підтримкою мобільного перетягування пальцем (60 FPS)
     detailSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
     noiseSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
+    layersSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
 
     detailSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
     noiseSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
+    layersSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
 
     function updateSliderLabels() {
         detailVal.textContent = detailSlider.value;
         noiseVal.textContent = noiseSlider.value;
+        layersVal.textContent = layersSlider.value + (layersSlider.value == 1 ? " шар" : " шари");
     }
 
     function requestProcess() {
@@ -428,75 +439,85 @@
         }
     }
 
-    // ВЕКТОРНИЙ ЛІНІЙНИЙ ДВИГУН (ВЕКТОРНА БІНАРИЗАЦІЯ БЕРНСЕНА)
+    // НОВИЙ НАДШВИДКИЙ ДВИГУН БАГАТОШАРОВОГО НАКОПИЧЕННЯ
     function processVectorLineTransfer() {
         if (!originalData) return;
 
         const w = outputCanvas.width;
         const h = outputCanvas.height;
         
-        const maskSize = parseInt(detailSlider.value); // Радіус аналізу контуру (товщина лінії)
-        const contrastThreshold = parseInt(noiseSlider.value); // Поріг чищення тіней
+        const maskSize = parseInt(detailSlider.value); 
+        const contrastThreshold = parseInt(noiseSlider.value); 
+        const layerCount = parseInt(layersSlider.value); // Кількість проходів множення
 
         const imgData = ctx.createImageData(w, h);
         const src = originalData.data;
         const dst = imgData.data;
 
-        // Крок 1. Переведення в Grayscale
+        // Попередній перевід в Grayscale
         const gray = new Uint8Array(w * h);
         for (let i = 0; i < src.length; i += 4) {
             gray[i/4] = (src[i] + src[i+1] + src[i+2]) / 3;
         }
 
-        // Крок 2. Адаптивне сканування ліній
-        for (let y = maskSize; y < h - maskSize; y++) {
-            const rowIdx = y * w;
+        // Буфер під фінальне накопичення пікселів (початково всі білі = 255)
+        const finalBuffer = new Uint8Array(w * h);
+        finalBuffer.fill(255);
 
-            for (let x = maskSize; x < w - maskSize; x++) {
-                const currentPx = gray[rowIdx + x];
+        // ЦИКЛ НАКОПИЧЕННЯ ШАРІВ (Емуляція Multiply в Photoshop)
+        for (let layer = 0; layer < layerCount; layer++) {
+            // Зміщення маски на 1 піксель для кожного шару, щоб прибрати рвані кути і мікро-бруд
+            const shift = layer; 
 
-                // Знаходимо локальний мінімум і максимум кольору в радіусі маски
-                let maxVal = 0;
-                let minVal = 255;
+            for (let y = maskSize + shift; y < h - maskSize - shift; y++) {
+                const rowIdx = y * w;
 
-                for (let ky = -maskSize; ky <= maskSize; ky++) {
-                    const kernelRow = (y + ky) * w;
-                    for (let kx = -maskSize; kx <= maskSize; kx++) {
-                        const px = gray[kernelRow + x + kx];
-                        if (px > maxVal) maxVal = px;
-                        if (px < minVal) minVal = px;
+                for (let x = maskSize + shift; x < w - maskSize - shift; x++) {
+                    const currentPx = gray[rowIdx + x];
+
+                    let maxVal = 0;
+                    let minVal = 255;
+
+                    // Збір даних локальної матриці
+                    for (let ky = -maskSize; ky <= maskSize; ky++) {
+                        const kernelRow = (y + ky) * w;
+                        for (let kx = -maskSize; kx <= maskSize; kx++) {
+                            const px = gray[kernelRow + x + kx];
+                            if (px > maxVal) maxVal = px;
+                            if (px < minVal) minVal = px;
+                        }
                     }
-                }
 
-                // Вираховуємо локальний середній контраст лінії
-                const localContrast = maxVal - minVal;
-                const midThreshold = (maxVal + minVal) / 2;
-                const pos = (rowIdx + x) * 4;
+                    const localContrast = maxVal - minVal;
+                    const midThreshold = (maxVal + minVal) / 2;
+                    const bufferIdx = rowIdx + x;
 
-                // ЛОГІКА СТЕРІЛЬНИХ ЛІНІЙ (БЕЗ ТІНЕЙ):
-                // Якщо локальний перепад кольору менший за поріг шуму — це просто папір або тінь, робимо білим
-                if (localContrast < contrastThreshold) {
-                    dst[pos] = 255; dst[pos+1] = 255; dst[pos+2] = 255; dst[pos+3] = 255;
-                } else {
-                    // Якщо поточний піксель темніший за середнє локальне — це 100% лінія контуру (абсолютно чорний)
-                    if (currentPx < midThreshold) {
-                        dst[pos] = 0; dst[pos+1] = 0; dst[pos+2] = 0; dst[pos+3] = 255;
-                    } else {
-                        // Все інше — ідеально біле тло
-                        dst[pos] = 255; dst[pos+1] = 255; dst[pos+2] = 255; dst[pos+3] = 255;
+                    // Розумне відсікання бруду та формування шару
+                    if (localContrast >= contrastThreshold && currentPx < midThreshold) {
+                        // Якщо це лінія контуру — забиваємо піксель в абсолютний нуль (чорний колір)
+                        finalBuffer[bufferIdx] = 0;
                     }
                 }
             }
         }
+
+        // Виведення фінального накопиченого результату на Canvas
+        for (let i = 0; i < finalBuffer.length; i++) {
+            const color = finalBuffer[i];
+            const pos = i * 4;
+            dst[pos]     = color;
+            dst[pos + 1] = color;
+            dst[pos + 2] = color;
+            dst[pos + 3] = 255;
+        }
         
-        // Крок 3. Заповнення країв екрану, які не увійшли в маску, білим кольором
         ctx.putImageData(imgData, 0, 0);
     }
 
     btnDownload.addEventListener('click', () => {
         playClickSound();
         const link = document.createElement('a');
-        link.download = 'yyokai-clean-vector-stencil.png';
+        link.download = 'yyokai-multi-layer-stencil.png';
         link.href = outputCanvas.toDataURL('image/png');
         link.click();
     });
