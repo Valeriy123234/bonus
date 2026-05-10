@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYO KAI | Premium Multi-Layer Stencil Studio</title>
+    <title>YYO KAI | Clean Multi-Layer Stencil Studio</title>
     <style>
         :root {
             --bg-color: #060608;
@@ -41,7 +41,6 @@
             z-index: 100;
         }
 
-        /* Кнопка музики з еквалайзером */
         .music-container {
             width: 40px;
             height: 40px;
@@ -69,7 +68,6 @@
 
         @keyframes eq-rise { 0% { height: 2px; } 100% { height: 16px; } }
 
-        /* Логотип YYO KAI строго по центру */
         .brand-block {
             display: flex;
             flex-direction: column;
@@ -108,7 +106,6 @@
             100% { clip: rect(30px, 9999px, 50px, 0); transform: skew(-0.2deg); }
         }
 
-        /* Бургер-меню */
         .burger-menu { width: 30px; height: 20px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; z-index: 101; }
         .burger-bar { width: 100%; height: 3px; background-color: #fff; border-radius: 2px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .burger-menu.active .burger-bar:nth-child(1) { transform: translateY(8px) rotate(45deg); background-color: var(--accent-color); }
@@ -293,12 +290,11 @@
                 <input type="range" id="detail-slider" min="1" max="5" value="3" step="1" disabled>
             </div>
             <div class="control-group">
-                <label>Фільтр бруду та шумів (Очищення фону): <span id="noise-val">70%</span></label>
-                <!-- Діапазон від 5 до 60 зміщено для фокусу на ідеальне очищення у зоні 60-80% -->
+                <label>Очищення від бруду та шуму: <span id="noise-val">70%</span></label>
                 <input type="range" id="noise-slider" min="5" max="60" value="20" step="1" disabled>
             </div>
             <div class="control-group">
-                <label>Накладання шарів (Реальний Multiply): <span id="layers-val">2 шари</span></label>
+                <label>Глибина чорного (Множення шарів): <span id="layers-val">2 шари</span></label>
                 <input type="range" id="layers-slider" min="1" max="3" value="2" step="1" disabled>
             </div>
         </div>
@@ -387,7 +383,7 @@
     
     fileInput.addEventListener('change', (e) => { 
         if (e.target.files && e.target.files.length > 0) {
-            handleFile(e.target.files[0]); // Передаємо перший файл з масиву
+            handleFile(e.target.files[0]); 
         }
     });
 
@@ -416,7 +412,6 @@
         requestProcess();
     };
 
-    // Слухачі для плавного перетягування (60 FPS)
     detailSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
     noiseSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
     layersSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
@@ -427,12 +422,8 @@
 
     function updateSliderLabels() {
         detailVal.textContent = detailSlider.value;
-        
-        // Мапуємо повзунок шуму (5-60) у зручний для користувача відсоток очищення (50%-95%)
-        // Зона 60-80% очищення від бруду тепер є центром шкали
         const noisePercent = Math.round(50 + ((noiseSlider.value - 5) / 55) * 45);
         noiseVal.textContent = noisePercent + "%";
-        
         layersVal.textContent = layersSlider.value + (layersSlider.value == 1 ? " шар" : " шари");
     }
 
@@ -446,7 +437,7 @@
         }
     }
 
-    // ДВИГУН ЧИСТИХ ВЕКТОРНИХ ЛІНІЙ З РЕАЛЬНИМ MULTIPLY НАКОПИЧЕННЯМ
+    // НОВИЙ ПРЕМІУМ-ДВИГУН З ФІЛЬТРАЦІЄЮ ШУМУ ТА ФІЗИЧНИМ MULTIPLY
     function processVectorLineTransfer() {
         if (!originalData) return;
 
@@ -461,20 +452,39 @@
         const src = originalData.data;
         const dst = imgData.data;
 
-        // Початковий перевід в Grayscale
+        // Крок 1. Переведення в Grayscale
         const gray = new Uint8Array(w * h);
         for (let i = 0; i < src.length; i += 4) {
             gray[i/4] = (src[i] + src[i+1] + src[i+2]) / 3;
+        }
+
+        // Крок 2. Розумне згладжування шуму (Медіанний фільтр 3х3 для усунення «піксельного пилу»)
+        const cleanGray = new Uint8Array(w * h);
+        for (let y = 1; y < h - 1; y++) {
+            const rowIdx = y * w;
+            const topIdx = (y - 1) * w;
+            const botIdx = (y + 1) * w;
+
+            for (let x = 1; x < w - 1; x++) {
+                // Збираємо сусідні пікселі
+                const vals = [
+                    gray[topIdx + x - 1], gray[topIdx + x], gray[topIdx + x + 1],
+                    gray[rowIdx + x - 1], gray[rowIdx + x], gray[rowIdx + x + 1],
+                    gray[botIdx + x - 1], gray[botIdx + x], gray[botIdx + x + 1]
+                ];
+                // Сортуємо для пошуку медіани (це повністю прибирає дрібні поодинокі цятки бруду)
+                vals.sort((a, b) => a - b);
+                cleanGray[rowIdx + x] = vals[4]; // Медіанне значення
+            }
         }
 
         // Буфер під фінальне накладання шарів (255 = ідеально білий папір)
         const accumulatedBuffer = new Uint8Array(w * h);
         accumulatedBuffer.fill(255);
 
-        // ЦИКЛ РЕАЛЬНОГО БАГАТОШАРОВОГО МНОЖЕННЯ (Multiply Layering)
+        // Крок 3. Створення та фізичне множення (Multiply) шарів
         for (let l = 0; l < layerCount; l++) {
-            // Кожен шар обробляється з мікро-зсувом (shift) у протилежних напрямках.
-            // Це заповнює рвані пікселі та створює монолітну обводку.
+            // Кожен шар генерується з мікро-зсувом (shift) аналізу на 1 піксель.
             const shiftX = (l === 1) ? 1 : (l === 2) ? -1 : 0;
             const shiftY = (l === 2) ? 1 : 0;
 
@@ -483,16 +493,15 @@
                 const shiftedRowIdx = (y + shiftY) * w;
 
                 for (let x = maskSize + 2; x < w - maskSize - 2; x++) {
-                    const currentPx = gray[shiftedRowIdx + x + shiftX];
+                    const currentPx = cleanGray[shiftedRowIdx + x + shiftX];
 
                     let maxVal = 0;
                     let minVal = 255;
 
-                    // Збір даних локальної матриці навколо пікселя
                     for (let ky = -maskSize; ky <= maskSize; ky++) {
                         const kernelRow = (y + ky + shiftY) * w;
                         for (let kx = -maskSize; kx <= maskSize; kx++) {
-                            const px = gray[kernelRow + x + kx + shiftX];
+                            const px = cleanGray[kernelRow + x + kx + shiftX];
                             if (px > maxVal) maxVal = px;
                             if (px < minVal) minVal = px;
                         }
@@ -502,30 +511,48 @@
                     const midThreshold = (maxVal + minVal) / 2;
                     const bufferIdx = rowIdx + x;
 
-                    // Виділення ліній за Sauvola-Bernsen логікою
                     let isLine = false;
                     if (localContrast >= contrastThreshold) {
                         if (currentPx < midThreshold) {
                             isLine = true;
                         }
                     } else {
-                        // Якщо ми знаходимося в глибокій тіні, інтелектуально знижуємо поріг,
-                        // щоб дістати лінії навіть з темряви
-                        if (currentPx < 90 && localContrast > (contrastThreshold / 2)) {
+                        // Розумний аналіз глибоких тіней (витягуємо контур з темних зон)
+                        if (currentPx < 85 && localContrast > (contrastThreshold / 2.5)) {
                             isLine = true;
                         }
                     }
 
-                    // ФІЗИЧНИЙ MULTIPLY: Множимо поточний прохід на попередній
+                    // Реальне пошарове множення (якщо хоч на одному шарі є лінія — робимо піксель чорним)
                     if (isLine) {
-                        // Якщо на цьому проході виявили лінію — робимо піксель чорним (0)
                         accumulatedBuffer[bufferIdx] = 0;
                     }
                 }
             }
         }
 
-        // Рендер фінального накопиченого результату на Canvas
+        // Крок 4. Додаткове фінальне очищення фону від залишкового сірого пилу на високих рівнях (60%-100%)
+        // Якщо очищення вище 75%, примусово випалюємо дрібні поодинокі чорні пікселі
+        const noiseSliderVal = parseInt(noiseSlider.value);
+        if (noiseSliderVal > 35) { // Відповідає ~75% очищення на шкалі
+            for (let y = 1; y < h - 1; y++) {
+                const rowIdx = y * w;
+                for (let x = 1; x < w - 1; x++) {
+                    const idx = rowIdx + x;
+                    if (accumulatedBuffer[idx] === 0) {
+                        // Якщо чорний піксель повністю оточений білими — це шум, стираємо його
+                        const neighbors = 
+                            accumulatedBuffer[idx - 1] + accumulatedBuffer[idx + 1] +
+                            accumulatedBuffer[idx - w] + accumulatedBuffer[idx + w];
+                        if (neighbors === 1020) { // 255 * 4 сусідів
+                            accumulatedBuffer[idx] = 255;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Рендер фінального трафарету на Canvas
         for (let i = 0; i < accumulatedBuffer.length; i++) {
             const color = accumulatedBuffer[i];
             const pos = i * 4;
