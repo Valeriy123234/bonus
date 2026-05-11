@@ -8,8 +8,8 @@
     <link rel="preconnect" href="gstatic.com" crossorigin>
     <link href="googleapis.com" rel="stylesheet">
     
-    <!-- Надійна та перевірена мобільна версія jspdf без блокування CORS -->
-       <script src="https://cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Перевірене робоче CDN посилання -->
+      <script src="https://cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
     <style>
         * {
@@ -40,7 +40,7 @@
         }
 
         header {
-            position: relative; z-index: 50;
+            position: relative; z-index: 99;
             display: flex; justify-content: space-between; align-items: center;
             width: 100%; height: 54px;
         }
@@ -49,7 +49,6 @@
             background: none; border: none; color: #a3a3a3; cursor: pointer;
             width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
         }
-        #audio-toggle:hover { color: #dc2626; }
         #icon-eq {
             display: none; align-items: flex-end; justify-content: space-between;
             width: 26px; height: 22px;
@@ -71,7 +70,7 @@
 
         .glitch-wrapper { text-align: center; user-select: none; }
         .glitch, .glitch-kai { position: relative; animation: glitch-skew 1s infinite linear alternate-reverse; }
-        .glitch { color: #fff; font-size: 26px; font-weight: 900; letter-spacing: 4px; line-none: 1; }
+        .glitch { color: #fff; font-size: 26px; font-weight: 900; letter-spacing: 4px; line-height: 1; }
         .glitch-kai { font-size: 11px; letter-spacing: 6px; color: #dc2626; display: block; margin-top: 3px; font-weight: bold; }
         .glitch::before, .glitch::after, .glitch-kai::before, .glitch-kai::after {
             content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #060606;
@@ -95,12 +94,13 @@
         #menu-toggle {
             background: none; border: none; width: 44px; height: 44px;
             display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; cursor: pointer;
+            position: relative; z-index: 99;
         }
         .burger-line { width: 26px; height: 2.5px; background-color: #a3a3a3; transition: all 0.3s ease; }
 
         #full-menu {
             position: fixed; inset: 0; background-color: rgba(6, 6, 6, 0.98);
-            z-index: 80; display: none; flex-direction: column; justify-content: center;
+            z-index: 90; display: none; flex-direction: column; justify-content: center;
             align-items: center; gap: 24px; font-size: 20px; letter-spacing: 4px; backdrop-filter: blur(8px);
         }
         #full-menu a { color: #a3a3a3; text-decoration: none; transition: color 0.3s; }
@@ -152,7 +152,7 @@
         .tech-text span { color: #d4d4d4; }
 
         #btn-split {
-            position: relative; z-index: 999;
+            position: relative; z-index: 99;
             width: 100%; background-color: #991b1b; color: #fff; font-weight: bold;
             padding: 14px; border: none; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
         }
@@ -276,12 +276,13 @@
         }
         setInterval(drawMatrix, 35);
 
-        // --- 2. ЕКВАЛАЙЗЕР ТА МЕНЮ ---
+        // --- 2. ЕКВАЛАЙЗЕР ТА МЕНЮ (ПОВНІСТЮ НАДІЙНІ ОБРОБНИКИ КЛІКУ) ---
         const audioBtn = document.getElementById('audio-toggle');
         const iconSound = document.getElementById('icon-sound');
         const iconEq = document.getElementById('icon-eq');
         let isPlaying = false;
-        audioBtn.addEventListener('click', () => {
+        
+        audioBtn.addEventListener('click', function() {
             isPlaying = !isPlaying;
             if (isPlaying) { iconSound.style.display = 'none'; iconEq.style.display = 'flex'; }
             else { iconSound.style.display = 'block'; iconEq.style.display = 'none'; }
@@ -291,16 +292,23 @@
         const fullMenu = document.getElementById('full-menu');
         const l1 = document.getElementById('line1'); const l2 = document.getElementById('line2'); const l3 = document.getElementById('line3');
         let menuOpen = false;
-        menuToggle.addEventListener('click', () => {
+        
+        menuToggle.addEventListener('click', function() {
             menuOpen = !menuOpen;
             if (menuOpen) {
-                fullMenu.style.display = 'flex'; l1.style.transform = 'rotate(45deg) translate(6px, 6px)'; l2.style.opacity = '0'; l3.style.transform = 'rotate(-45deg) translate(6px, -6px)';
+                fullMenu.style.display = 'flex';
+                l1.style.transform = 'rotate(45deg) translate(6px, 6px)';
+                l2.style.opacity = '0';
+                l3.style.transform = 'rotate(-45deg) translate(6px, -6px)';
             } else {
-                fullMenu.style.display = 'none'; l1.style.transform = 'none'; l2.style.opacity = '1'; l3.style.transform = 'none';
+                fullMenu.style.display = 'none';
+                l1.style.transform = 'none';
+                l2.style.opacity = '1';
+                l3.style.transform = 'none';
             }
         });
 
-        // --- 3. СУМІСНИЙ СКРИПТ НАРІЗКИ ---
+        // --- 3. СКРИПТ НАРІЗКИ З НАЙБІЛЬШ НАДІЙНИМ СИНТАКСИСОМ ДЛЯ МОБІЛОК ---
         const sketchUpload = document.getElementById('sketch-upload');
         const uploadStatus = document.getElementById('upload-status');
         const widthCmInput = document.getElementById('width-cm');
@@ -320,7 +328,7 @@
         const PRINT_W_MM = 170; 
         const PRINT_H_MM = 257; 
 
-        sketchUpload.addEventListener('change', (e) => {
+        sketchUpload.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if(file) {
                 uploadStatus.textContent = file.name.substring(0, 12) + '...';
@@ -350,26 +358,27 @@
             const total = cols * rows;
 
             countDisplay.textContent = total;
-            layoutDisplay.textContent = `${cols}x${rows}`;
+            layoutDisplay.textContent = cols + 'x' + rows;
 
             previewGrid.innerHTML = '';
             const gridContainer = document.createElement('div');
             gridContainer.className = 'grid-container-layout';
-            gridContainer.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
-            gridContainer.style.gridTemplateRows = `repeat(${rows}, minmax(0, 1fr))`;
+            gridContainer.style.gridTemplateColumns = 'repeat(' + cols + ', minmax(0, 1fr))';
+            gridContainer.style.gridTemplateRows = 'repeat(' + rows + ', minmax(0, 1fr))';
 
             for (let i = 1; i <= total; i++) {
                 const sheet = document.createElement('div');
-                sheet.className = 'preview-sheet'; sheet.textContent = `A4 #${i}`;
+                sheet.className = 'preview-sheet'; sheet.textContent = 'A4 #' + i;
                 gridContainer.appendChild(sheet);
             }
             previewGrid.appendChild(gridContainer);
         }
 
-        [widthCmInput, heightCmInput].forEach(input => input.addEventListener('input', () => { updatePreview(); }));
+        widthCmInput.addEventListener('input', updatePreview);
+        heightCmInput.addEventListener('input', updatePreview);
 
-        // НАЙБІЛЬШ СУМІСНИЙ НАДІЙНИЙ МЕТОД ГЕНЕРАЦІЇ (ВИКЛИК ПРЯМОГО КОНСТРУКТОРА ВІКНА)
-        btnSplit.addEventListener('click', (e) => {
+        // КНОПКА ГЕНЕРАЦІЇ PDF ЧЕРЕЗ БЕЗПЕЧНИЙ НАДІЙНИЙ ОБ'ЄКТ WINDOW
+        btnSplit.addEventListener('click', function(e) {
             e.preventDefault();
             if (!loadedImageDataUrl) { alert('Будь ласка, спочатку завантажте ескіз татуювання!'); return; }
             
@@ -377,8 +386,8 @@
             const hTarget = parseFloat(heightCmInput.value);
             if (!wTarget || !hTarget) return;
 
-            // Нативний мобільний виклик конструктора
-            const pdf = new window.jsPDF('p', 'mm', 'a4');
+            // Виклик строго за перевіреною мобільною схемою сховища скриптів
+            const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
             
             const wTargetMm = wTarget * 10;
             const hTargetMm = hTarget * 10;
@@ -398,7 +407,6 @@
                     const posX_mm = MARGIN_MM - chunkX_mm;
                     const posY_mm = MARGIN_MM - chunkY_mm;
 
-                    // Прямий імпорт без проміжних canvas елементів
                     pdf.addImage(
                         loadedImageDataUrl, 
                         'JPEG', 
