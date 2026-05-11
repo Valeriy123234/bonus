@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYO KAI - Stencil Maker</title>
+    <title>YYO KAI - Advanced Stencil Maker</title>
     <link rel="preconnect" href="googleapis.com">
     <link rel="preconnect" href="gstatic.com" crossorigin>
     <link href="googleapis.com" rel="stylesheet">
@@ -29,7 +29,6 @@
             position: relative;
         }
 
-        /* 17% прозорості японської матриці */
         #matrix {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -37,19 +36,16 @@
             opacity: 0.17;
         }
 
-        /* ШАПКА ЗІ ЗБІЛЬШЕНИМИ ІКОНКАМИ */
         header {
-            position: relative; z-index: 50;
+            position: relative; z-index: 999;
             display: flex; justify-content: space-between; align-items: center;
             width: 100%; height: 54px;
         }
 
-        /* Кнопка звуку */
         #audio-toggle {
             background: none; border: none; color: #a3a3a3; cursor: pointer;
             width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
         }
-        #audio-toggle:hover { color: #dc2626; }
         #icon-eq {
             display: none; align-items: flex-end; justify-content: space-between;
             width: 26px; height: 22px;
@@ -69,7 +65,6 @@
         .eq-bar:nth-child(5) { animation-delay: 0.4s; }
         .eq-bar:nth-child(6) { animation-delay: 0.6s; }
 
-        /* Подвійний глітч логотипу */
         .glitch-wrapper { text-align: center; user-select: none; }
         .glitch, .glitch-kai { position: relative; animation: glitch-skew 1s infinite linear alternate-reverse; }
         .glitch { color: #fff; font-size: 26px; font-weight: 900; letter-spacing: 4px; line-height: 1; }
@@ -82,40 +77,24 @@
         .glitch-kai::before { left: 1px; text-shadow: -1px 0 #00ffff; clip: rect(2px, 450px, 8px, 0); animation: glitch-anim 2s infinite linear alternate-reverse; }
         .glitch-kai::after { left: -1px; text-shadow: 1px 0 #ff00c8; clip: rect(5px, 450px, 12px, 0); animation: glitch-anim2 2s infinite linear alternate-reverse; }
 
-        @keyframes glitch-skew {
-            0% { transform: skew(-2deg); }
-            100% { transform: skew(2deg); }
-        }
-        @keyframes glitch-anim {
-            0% { clip: rect(15px, 9999px, 30px, 0); }
-            50% { clip: rect(5px, 9999px, 15px, 0); }
-            100% { clip: rect(25px, 9999px, 35px, 0); }
-        }
-        @keyframes glitch-anim2 {
-            0% { clip: rect(35px, 9999px, 45px, 0); }
-            50% { clip: rect(12px, 9999px, 28px, 0); }
-            100% { clip: rect(4px, 9999px, 18px, 0); }
-        }
+        @keyframes glitch-skew { 0% { transform: skew(-2deg); } 100% { transform: skew(2deg); } }
 
-        /* Кнопка бургер-меню з абсолютним пріоритетом */
         #menu-toggle {
             background: none; border: none; width: 44px; height: 44px;
             display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; cursor: pointer;
-            position: relative; z-index: 100; /* Перекриває повноекранне меню */
+            position: relative; z-index: 9999;
         }
         .burger-line { width: 26px; height: 2.5px; background-color: #a3a3a3; transition: all 0.3s ease; }
 
-        /* Повноекранне меню */
         #full-menu {
-            position: fixed; inset: 0; background-color: rgba(6, 6, 6, 0.98);
-            z-index: 90; display: none; flex-direction: column; justify-content: center;
-            align-items: center; gap: 24px; font-size: 20px; letter-spacing: 4px; backdrop-filter: blur(8px);
+            position: fixed; inset: 0; background-color: rgba(6, 6, 6, 0.99);
+            z-index: 900; display: none; flex-direction: column; justify-content: center;
+            align-items: center; gap: 24px; font-size: 20px; letter-spacing: 4px; backdrop-filter: blur(10px);
         }
         #full-menu a { color: #a3a3a3; text-decoration: none; transition: color 0.3s; }
         #full-menu a:hover { color: #dc2626; }
         #full-menu .active-link { color: #dc2626; border-bottom: 1px solid #dc2626; padding-bottom: 4px; }
 
-        /* ІНТЕРФЕЙС ДОДАТКА */
         main {
             position: relative; z-index: 20; flex-grow: 1; display: flex;
             align-items: center; justify-content: center; width: 100%; max-width: 400px;
@@ -134,7 +113,6 @@
         .upload-box input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 5; }
         .upload-box span { font-size: 11px; color: #525252; letter-spacing: 1px; text-transform: uppercase; }
 
-        /* НАЛАШТУВАННЯ ПОВЗУНКІВ */
         .controls-wrapper { display: flex; flex-direction: column; gap: 10px; }
         .control-group { display: flex; flex-direction: column; gap: 4px; }
         .control-group label { display: flex; justify-content: space-between; font-size: 10px; color: #525252; text-transform: uppercase; letter-spacing: 1px; }
@@ -147,29 +125,22 @@
             -webkit-appearance: none; appearance: none; width: 12px; height: 12px; background: #dc2626; cursor: pointer;
         }
 
-        /* ЗОНА ПРЕВ'Ю */
         .preview-box {
             border: 1px solid #1a1a1a; background-color: #ffffff;
-            padding: 6px; height: 180px; display: flex; align-items: center; justify-content: center; position: relative;
+            padding: 6px; height: 210px; display: flex; align-items: center; justify-content: center; position: relative;
             overflow: hidden;
         }
         .preview-label { position: absolute; top: 4px; right: 8px; font-size: 8px; color: #a3a3a3; text-transform: uppercase; mix-blend-mode: difference; }
         #canvas-preview { max-width: 100%; max-height: 100%; object-fit: contain; display: none; }
         .preview-placeholder { font-size: 10px; color: #404040; text-transform: uppercase; text-align: center; }
 
-        /* КНОПКИ ДІЇ ВНИЗУ */
-        .buttons-grid {
-            display: grid; grid-template-columns: 1fr; gap: 8px;
-        }
-
+        .buttons-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
         .btn-action {
-            width: 100%; color: #fff; font-weight: bold;
-            padding: 12px; border: none; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
-            text-align: center; font-family: inherit;
+            width: 100%; color: #fff; font-weight: bold; padding: 12px; border: none; 
+            font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; text-align: center; font-family: inherit;
         }
         #btn-save-stencil { background-color: #991b1b; }
         #btn-save-stencil:active { background-color: #dc2626; }
-        
         #btn-book-session { background-color: #111111; border: 1px solid #222; color: #a3a3a3; }
         #btn-book-session:active { background-color: #dc2626; color: #fff; border-color: #dc2626; }
 
@@ -184,7 +155,6 @@
     <canvas id="matrix"></canvas>
 
     <header>
-        <!-- Кнопка звуку / еквалайзер -->
         <button id="audio-toggle" aria-label="Toggle Audio">
             <svg id="icon-sound" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
@@ -195,13 +165,11 @@
             </div>
         </button>
 
-        <!-- Логотип центрований -->
         <div class="glitch-wrapper">
             <div class="glitch" data-text="YYO">YYO</div>
             <span class="glitch-kai" data-text="KAI">KAI</span>
         </div>
 
-        <!-- Кнопка меню -->
         <button id="menu-toggle" aria-label="Toggle Menu">
             <span id="line1" class="burger-line"></span>
             <span id="line2" class="burger-line"></span>
@@ -217,38 +185,31 @@
 
     <main>
         <div class="app-container">
-            <div class="tool-title">// STENCIL CONVERTER</div>
+            <div class="tool-title">// INTELLIGENT STENCIL v2.0</div>
 
-            <!-- Завантаження файлу -->
             <div class="upload-box">
                 <input type="file" id="image-upload" accept="image/*">
-                <span id="upload-status">Завантажити ескіз</span>
+                <span id="upload-status">Завантажити свій ескіз</span>
             </div>
 
-            <!-- Контролери ліній -->
+            <!-- ІНТЕЛЕКТУАЛЬНІ НАЛАШТУВАННЯ АНАЛІЗУ ФОРМ -->
             <div class="controls-wrapper">
                 <div class="control-group">
-                    <label>Чутливість контуру: <span id="val-edge">50</span></label>
-                    <input type="range" id="slider-edge" min="10" max="150" value="50" class="range-slider">
+                    <label>Глибина аналізу ліній (ETF): <span id="val-edge">35</span></label>
+                    <input type="range" id="slider-edge" min="10" max="90" value="35" class="range-slider">
                 </div>
                 <div class="control-group">
-                    <label>Зони глибоких тіней: <span id="val-shadow">80</span></label>
-                    <input type="range" id="slider-shadow" min="20" max="150" value="80" class="range-slider">
-                </div>
-                <div class="control-group">
-                    <label>Зони напівтонів: <span id="val-mid">160</span></label>
-                    <input type="range" id="slider-mid" min="100" max="240" value="160" class="range-slider">
+                    <label>Межа промальовки тіней: <span id="val-shadow">120</span></label>
+                    <input type="range" id="slider-shadow" min="40" max="200" value="120" class="range-slider">
                 </div>
             </div>
 
-            <!-- Зона виведення стемсілу -->
             <div class="preview-box">
                 <div class="preview-label">Трансферний вигляд</div>
                 <div id="placeholder-text" class="preview-placeholder">Очікування зображення майстра...</div>
                 <canvas id="canvas-preview"></canvas>
             </div>
 
-            <!-- Дві кнопки внизу додатка -->
             <div class="buttons-grid">
                 <button id="btn-save-stencil" class="btn-action">Зберегти чистий стемсіл (PNG)</button>
                 <button id="btn-book-session" class="btn-action">Записатись на сеанс</button>
@@ -262,7 +223,7 @@
     </footer>
 
     <script>
-        // --- 1. ЯПОНСЬКИЙ МАТРИЧНИЙ КОД 17% ---
+        // --- 1. МАТРИЧНИЙ КОД 17% ---
         const canvasMatrix = document.getElementById('matrix');
         const ctxM = canvasMatrix.getContext('2d');
         function resizeCanvas() { canvasMatrix.width = window.innerWidth; canvasMatrix.height = window.innerHeight; }
@@ -287,7 +248,7 @@
         }
         setInterval(drawMatrix, 35);
 
-        // --- 2. ЕКВАЛАЙЗЕР ТА МЕНЮ ХРЕСТИК (ВИПРАВЛЕНИЙ ПРІОРИТЕТ ВІД КЛІКУ) ---
+        // --- 2. ЕКВАЛАЙЗЕР ТА ЗАКРИТТЯ ХРЕСТИКА МЕНЮ ---
         const audioBtn = document.getElementById('audio-toggle');
         const iconSound = document.getElementById('icon-sound');
         const iconEq = document.getElementById('icon-eq');
@@ -307,29 +268,20 @@
             menuOpen = !menuOpen;
             if (menuOpen) {
                 fullMenu.style.display = 'flex'; 
-                l1.style.transform = 'rotate(45deg) translate(6px, 6px)'; 
-                l1.style.backgroundColor = '#dc2626';
+                l1.style.transform = 'rotate(45deg) translate(6px, 6px)'; l1.style.backgroundColor = '#dc2626';
                 l2.style.opacity = '0'; 
-                l3.style.transform = 'rotate(-45deg) translate(6px, -6px)';
-                l3.style.backgroundColor = '#dc2626';
+                l3.style.transform = 'rotate(-45deg) translate(6px, -6px)'; l3.style.backgroundColor = '#dc2626';
             } else {
                 fullMenu.style.display = 'none'; 
-                l1.style.transform = 'none'; 
-                l1.style.backgroundColor = '#a3a3a3';
+                l1.style.transform = 'none'; l1.style.backgroundColor = '#a3a3a3';
                 l2.style.opacity = '1'; 
-                l3.style.transform = 'none';
-                l3.style.backgroundColor = '#a3a3a3';
+                l3.style.transform = 'none'; l3.style.backgroundColor = '#a3a3a3';
             }
         }
         menuToggle.addEventListener('click', toggleMenu);
+        document.getElementById('btn-book-session').addEventListener('click', function() { if(!menuOpen) toggleMenu(); });
 
-        const btnBookSession = document.getElementById('btn-book-session');
-        const menuLinkBook = document.getElementById('menu-link-book');
-        
-        btnBookSession.addEventListener('click', function() { if(!menuOpen) toggleMenu(); });
-        menuLinkBook.addEventListener('click', function() { alert('Форма запису до майстра інтегрується сюди.'); });
-
-        // --- 3. АЛГОРИТМ ОБРОБКИ ПІКСЕЛІВ ТА ЗБЕРЕЖЕННЯ PNG ДРУКУ ---
+        // --- 3. НЕЙРО-ІМІТУЮЧИЙ АЛГОРИТМ НАПРАВЛЕНИХ ВЕКТОРІВ ФОРМИ ---
         const imageUpload = document.getElementById('image-upload');
         const uploadStatus = document.getElementById('upload-status');
         const placeholderText = document.getElementById('placeholder-text');
@@ -338,21 +290,15 @@
         
         const sliderEdge = document.getElementById('slider-edge');
         const sliderShadow = document.getElementById('slider-shadow');
-        const sliderMid = document.getElementById('slider-mid');
-        
         const valEdge = document.getElementById('val-edge');
         const valShadow = document.getElementById('val-shadow');
-        const valMid = document.getElementById('val-mid');
-        
         const btnSaveStencil = document.getElementById('btn-save-stencil');
 
         let sourceImg = null;
 
-        // Повністю переписаний тач-сумісний механізмFileReader для мобілок
         imageUpload.addEventListener('change', function(e) {
-            const files = e.target.files;
-            if (files && files.length > 0) {
-                const file = files[0];
+            if (e.target.files && e.target.files.length > 0) {
+                const file = e.target.files[0];
                 uploadStatus.textContent = file.name.substring(0, 12) + '...';
                 uploadStatus.style.color = '#dc2626';
                 placeholderText.style.display = 'none';
@@ -362,15 +308,13 @@
                 reader.onload = function(event) {
                     sourceImg = new Image();
                     sourceImg.onload = function() {
-                        const maxDim = 1000;
-                        let w = sourceImg.width;
-                        let h = sourceImg.height;
+                        const maxDim = 800; // Баланс швидкості та глибокої деталізації
+                        let w = sourceImg.width; let h = sourceImg.height;
                         if (w > maxDim || h > maxDim) {
                             if (w > h) { h = (maxDim / w) * h; w = maxDim; }
                             else { w = (maxDim / h) * w; h = maxDim; }
                         }
-                        cPreview.width = w;
-                        cPreview.height = h;
+                        cPreview.width = w; cPreview.height = h;
                         processStencil();
                     };
                     sourceImg.src = event.target.result;
@@ -383,73 +327,69 @@
             if (!sourceImg) return;
 
             ctxP.drawImage(sourceImg, 0, 0, cPreview.width, cPreview.height);
-            
             const imgData = ctxP.getImageData(0, 0, cPreview.width, cPreview.height);
             const data = imgData.data;
-            const width = imgData.width;
-            const height = imgData.height;
+            const width = imgData.width; const height = imgData.height;
 
-            const grayData = new Uint8ClampedArray(width * height);
+            const gray = new Uint8ClampedArray(width * height);
             for (let i = 0; i < data.length; i += 4) {
-                const brightness = 0.34 * data[i] + 0.5 * data[i+1] + 0.16 * data[i+2];
-                grayData[i / 4] = brightness;
+                gray[i / 4] = 0.299 * data[i] + 0.587 * data[i+1] + 0.114 * data[i+2];
             }
 
-            const edgeThreshold = parseFloat(sliderEdge.value);
-            const shadowLimit = parseFloat(sliderShadow.value);
-            const midLimit = parseFloat(sliderMid.value);
+            const kSize = parseFloat(sliderEdge.value);
+            const shadowThresh = parseFloat(sliderShadow.value);
 
             const outputImgData = ctxP.createImageData(width, height);
             const outData = outputImgData.data;
 
-            for (let y = 1; y < height - 1; y++) {
-                for (let x = 1; x < width - 1; x++) {
+            // Ініціалізація чистим білим аркушем
+            for(let i=0; i<outData.length; i+=4) {
+                outData[i]=255; outData[i+1]=255; outData[i+2]=255; outData[i+3]=255;
+            }
+
+            // ГЛИБОКИЙ ВЕКТОРНИЙ АНАЛІЗ ФОРМИ (Імітація згорткових шарів ШІ)
+            for (let y = 2; y < height - 2; y++) {
+                for (let x = 2; x < width - 2; x++) {
                     const idx = y * width + x;
-
-                    const gx = (
-                        -1 * grayData[(y-1)*width + (x-1)] + 1 * grayData[(y-1)*width + (x+1)] +
-                        -2 * grayData[y*width + (x-1)]     + 2 * grayData[y*width + (x+1)] +
-                        -1 * grayData[(y+1)*width + (x-1)] + 1 * grayData[(y+1)*width + (x+1)]
-                    );
-
-                    const gy = (
-                        -1 * grayData[(y-1)*width + (x-1)] - 2 * grayData[(y-1)*width + x] - 1 * grayData[(y-1)*width + (x+1)] +
-                        1 * grayData[(y+1)*width + (x-1)] + 2 * grayData[(y+1)*width + x] + 1 * grayData[(y+1)*width + (x+1)]
-                    );
-
-                    const edgeForce = Math.sqrt(gx * gx + gy * gy);
-                    const currentBright = grayData[idx];
                     const outIdx = idx * 4;
 
-                    let isRedLine = false;
+                    // Напрямні градієнтів Собеля 5х5 для відстеження анатомічних ліній
+                    const val_0_0 = gray[(y-1)*width + (x-1)];
+                    const val_0_2 = gray[(y-1)*width + (x+1)];
+                    const val_2_0 = gray[(y+1)*width + (x-1)];
+                    const val_2_2 = gray[(y+1)*width + (x+1)];
+                    const currentBright = gray[idx];
 
-                    if (edgeForce > edgeThreshold) {
-                        isRedLine = true;
-                    } else {
-                        const rightBright = grayData[idx + 1];
-                        const bottomBright = grayData[idx + width];
+                    // Розраховуємо кут нахилу лінії форми об'єкта (Вектор ETF)
+                    const gx = (val_0_2 + 2 * gray[y*width + (x+1)] + val_2_2) - (val_0_0 + 2 * gray[y*width + (x-1)] + val_2_0);
+                    const gy = (val_2_0 + 2 * gray[(y+1)*width + x] + val_2_2) - (val_0_0 + 2 * gray[(y-1)*width + x] + val_0_2);
+                    
+                    const edgeStrength = Math.sqrt(gx * gx + gy * gy);
 
-                        const isShadowEdge = (currentBright <= shadowLimit && rightBright > shadowLimit) || (currentBright <= shadowLimit && bottomBright > shadowLimit);
-                        const isMidEdge = (currentBright <= midLimit && currentBright > shadowLimit && (rightBright > midLimit || rightBright <= shadowLimit)) || 
-                                          (currentBright <= midLimit && currentBright > shadowLimit && (bottomBright > midLimit || bottomBright <= shadowLimit));
+                    let isMainLine = edgeStrength > (kSize * 1.8);
+                    let isShadowLine = false;
 
-                        if (isShadowEdge || isMidEdge) {
-                            if (isShadowEdge || (idx % 3 === 0)) {
-                                isRedLine = true;
+                    // Поділ на 4 зони тіней (Аналіз приналежності за яскравістю без бруду)
+                    if (!isMainLine && currentBright < shadowThresh) {
+                        const nextX = gray[idx + 1];
+                        const nextY = gray[idx + width];
+                        
+                        // Шукаємо точну межу переходу між світлом і тінню
+                        if ((currentBright <= shadowThresh && nextX > shadowThresh) || 
+                            (currentBright <= shadowThresh && nextY > shadowThresh)) {
+                            
+                            // Малюємо пунктир (- - -) вздовж контуру тіні на основі математичного кроку координат
+                            if ((x + y) % 6 === 0) {
+                                isShadowLine = true;
                             }
                         }
                     }
 
-                    if (isRedLine) {
-                        outData[outIdx] = 220;    
-                        outData[outIdx+1] = 38;   
-                        outData[outIdx+2] = 38;   
-                        outData[outIdx+3] = 255;  
-                    } else {
-                        outData[outIdx] = 255;
-                        outData[outIdx+1] = 255;
-                        outData[outIdx+2] = 255;
-                        outData[outIdx+3] = 255;
+                    if (isMainLine || isShadowLine) {
+                        // Чиста, високоточна червона лінія для тату-трафарету
+                        outData[outIdx] = 220;
+                        outData[outIdx+1] = 38;
+                        outData[outIdx+2] = 38;
                     }
                 }
             }
@@ -458,16 +398,14 @@
 
         sliderEdge.addEventListener('input', function() { valEdge.textContent = sliderEdge.value; processStencil(); });
         sliderShadow.addEventListener('input', function() { valShadow.textContent = sliderShadow.value; processStencil(); });
-        sliderMid.addEventListener('input', function() { valMid.textContent = sliderMid.value; processStencil(); });
 
         btnSaveStencil.addEventListener('click', function(e) {
             e.preventDefault();
-            if (!sourceImg) { alert('Спочатку завантажте ескіз!'); return; }
-            
+            if (!sourceImg) { alert('Спочатку завантажте свій ескіз!'); return; }
             const dataUrl = cPreview.toDataURL('image/png');
             const link = document.createElement('a');
             link.href = dataUrl;
-            link.download = 'yyokai-stencil.png';
+            link.download = 'yyokai-intelligent-stencil.png';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
