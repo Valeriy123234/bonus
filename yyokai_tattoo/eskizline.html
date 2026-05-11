@@ -67,7 +67,7 @@
         .eq-bar:nth-child(5) { animation-delay: 0.4s; }
         .eq-bar:nth-child(6) { animation-delay: 0.6s; }
 
-        /* ГЛІТЧ НА СУЧАСНОМУ CLIP-PATH ДЛЯ МОБІЛОК */
+        /* УПОВІЛЬНЕНИЙ, СТИЛЬНИЙ КІБЕРПАНК ГЛІТЧ (Швидкість змінено з 2s на 6s) */
         .glitch-wrapper { text-align: center; user-select: none; }
         .glitch, .glitch-kai { position: relative; }
         .glitch { color: #fff; font-size: 26px; font-weight: 900; letter-spacing: 4px; line-height: 1; }
@@ -77,29 +77,27 @@
             content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #060606;
         }
         
-        .glitch::before { left: 2px; text-shadow: -2px 0 #ff00c8; animation: glitch-anim-1 2s infinite linear alternate-reverse; }
-        .glitch::after { left: -2px; text-shadow: -2px 0 #00ffff, 0 2px #ff00c8; animation: glitch-anim-2 2s infinite linear alternate-reverse; }
+        /* Плавні та рідкісні дорогі збої контурів */
+        .glitch::before { left: 2px; text-shadow: -2px 0 #ff00c8; animation: glitch-anim-1 6s infinite linear alternate-reverse; }
+        .glitch::after { left: -2px; text-shadow: -2px 0 #00ffff, 0 2px #ff00c8; animation: glitch-anim-2 6s infinite linear alternate-reverse; }
         
-        .glitch-kai::before { left: 1px; text-shadow: -1px 0 #00ffff; animation: glitch-anim-1 3s infinite linear alternate-reverse; }
-        .glitch-kai::after { left: -1px; text-shadow: 1px 0 #ff00c8; animation: glitch-anim-2 3s infinite linear alternate-reverse; }
+        .glitch-kai::before { left: 1px; text-shadow: -1px 0 #00ffff; animation: glitch-anim-1 8s infinite linear alternate-reverse; }
+        .glitch-kai::after { left: -1px; text-shadow: 1px 0 #ff00c8; animation: glitch-anim-2 8s infinite linear alternate-reverse; }
 
         @keyframes glitch-anim-1 {
-            0% { clip-path: inset(20% 0 30% 0); }
+            0%, 80%, 100% { clip-path: inset(100% 0 0 0); } /* Більшу частину часу логотип чистий */
             20% { clip-path: inset(60% 0 10% 0); }
             40% { clip-path: inset(40% 0 50% 0); }
-            60% { clip-path: inset(80% 0 5% 0); }
-            80% { clip-path: inset(10% 0 70% 0); }
-            100% { clip-path: inset(30% 0 20% 0); }
+            65% { clip-path: inset(10% 0 70% 0); }
         }
         @keyframes glitch-anim-2 {
-            0% { clip-path: inset(15% 0 40% 0); }
-            25% { clip-path: inset(70% 0 5% 0); }
-            50% { clip-path: inset(35% 0 55% 0); }
-            75% { clip-path: inset(85% 0 15% 0); }
-            100% { clip-path: inset(50% 0 25% 0); }
+            0%, 85%, 100% { clip-path: inset(100% 0 0 0); }
+            30% { clip-path: inset(70% 0 5% 0); }
+            55% { clip-path: inset(35% 0 55% 0); }
+            75% { clip-path: inset(50% 0 25% 0); }
         }
 
-        /* ХРЕСТИК МЕНЮ З АБСОЛЮТНИМ ПРІОРИТЕТОМ */
+        /* НАДІЙНИЙ КРЕСТ МЕНЮ (П ПРІОРІТЕТ) */
         #menu-toggle {
             background: none; border: none; width: 44px; height: 44px;
             display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; cursor: pointer;
@@ -223,7 +221,7 @@
     </footer>
 
     <script>
-        // --- 1. МАТРИЧНИЙ КОД 17% ---
+        // --- 1. ЯПОНСЬКИЙ МАТРИЧНИЙ КОД 17% ---
         const canvasMatrix = document.getElementById('matrix');
         const ctxM = canvasMatrix.getContext('2d');
         function resizeCanvas() { canvasMatrix.width = window.innerWidth; canvasMatrix.height = window.innerHeight; }
@@ -281,7 +279,7 @@
         menuToggle.addEventListener('click', toggleMenu);
         document.getElementById('btn-book-session').addEventListener('click', function() { if(!menuOpen) toggleMenu(); });
 
-        // --- 3. АВТОМАТИЧНИЙ АЛГОРИТМ ЧИСТОЇ НАРІЗКИ ---
+        // --- 3. НАДТОЧНИЙ АЛГОРИТМ ОДИНАРНОГО СТЕМСІЛ-КОНТУРУ ---
         const imageUpload = document.getElementById('image-upload');
         const uploadStatus = document.getElementById('upload-status');
         const placeholderText = document.getElementById('placeholder-text');
@@ -304,7 +302,7 @@
                 
                 sourceImg = new Image();
                 sourceImg.onload = function() {
-                    const hdMaxDim = 2400; 
+                    const hdMaxDim = 2000; // Оптимальний 2K формат для максимальної гостроти ліній
                     let wd = sourceImg.width; let hg = sourceImg.height;
                     if (wd > hdMaxDim || hg > hdMaxDim) {
                         if (wd > hg) { hg = (hdMaxDim / wd) * hg; wd = hdMaxDim; }
@@ -328,6 +326,7 @@
             const data = imgData.data;
             const width = imgData.width; const height = imgData.height;
 
+            // Створюємо матрицю яскравості
             const gray = new Uint8ClampedArray(width * height);
             for (let i = 0; i < data.length; i += 4) {
                 gray[i / 4] = 0.299 * data[i] + 0.587 * data[i+1] + 0.114 * data[i+2];
@@ -336,42 +335,46 @@
             const outputImgData = hdCtx.createImageData(width, height);
             const outData = outputImgData.data;
 
+            // Робимо фінальний лист чисто білим
             for(let i=0; i<outData.length; i+=4) {
                 outData[i]=255; outData[i+1]=255; outData[i+2]=255; outData[i+3]=255;
             }
 
-            const edgeThresh = 32;   
-            const shadowLimit = 105; 
+            // Жорсткий поріг відсікання бруду та тіней (Залишаємо ТІЛЬКИ глибокі чорні лінії малюнка)
+            const THRESHOLD = 115; 
 
+            // Масив маркування бінарних ліній (0 - контур, 1 - пустота)
+            const binary = new Uint8Array(width * height);
+            for (let i = 0; i < gray.length; i++) {
+                binary[i] = (gray[i] < THRESHOLD) ? 0 : 1;
+            }
+
+            // Алгоритм скелетизації: малює строго одинарну тонку лінію по центру малюнка
             for (let y = 1; y < height - 1; y++) {
                 for (let x = 1; x < width - 1; x++) {
                     const idx = y * width + x;
                     const outIdx = idx * 4;
 
-                    const currentBright = gray[idx];
-                    const right = gray[idx + 1];
-                    const bottom = gray[idx + width];
+                    // Якщо це темна зона ескізу
+                    if (binary[idx] === 0) {
+                        // Дивимося на сусідні пікселі. Якщо поруч є білий колір, це край контуру
+                        const n = binary[(y-1)*width + x];
+                        const s = binary[(y+1)*width + x];
+                        const w = binary[y*width + (x-1)];
+                        const e = binary[y*width + (x+1)];
 
-                    const diffH = Math.abs(currentBright - right);
-                    const diffV = Math.abs(currentBright - bottom);
-
-                    let drawRed = false;
-
-                    if (diffH > edgeThresh || diffV > edgeThresh) {
-                        if (currentBright < 210) {
-                            drawRed = true;
-                        }
-                    } 
-                    else if (currentBright < shadowLimit) {
-                        if ((currentBright <= shadowLimit && right > shadowLimit) || (currentBright <= shadowLimit && bottom > shadowLimit)) {
-                            if (Math.floor((x + y) / 6) % 2 === 0) {
-                                drawRed = true;
+                        // Малюємо червону лінію тільки по центральному хребту, уникаючи подвійного обведення
+                        if ((n === 1 || s === 1 || w === 1 || e === 1)) {
+                            // Формуємо тату-пунктир для маркування меж тіней за кроком координат x/y
+                            if (gray[idx] > 65 && gray[idx] < THRESHOLD) {
+                                if (Math.floor((x + y) / 6) % 2 === 0) {
+                                    outData[outIdx] = 220; outData[outIdx+1] = 38; outData[outIdx+2] = 38;
+                                }
+                            } else {
+                                // Головні суцільні чіткі лінії малюнка
+                                outData[outIdx] = 220; outData[outIdx+1] = 38; outData[outIdx+2] = 38;
                             }
                         }
-                    }
-
-                    if (drawRed) {
-                        outData[outIdx] = 220; outData[outIdx+1] = 38; outData[outIdx+2] = 38;
                     }
                 }
             }
@@ -383,11 +386,11 @@
 
         btnSaveStencil.addEventListener('click', function(e) {
             e.preventDefault();
-            if (!sourceImg) { alert('Будь ласка, спочатку завантажте ескіз!'); return; }
+            if (!sourceImg) { alert('Будь ласка, спочатку завантажте ескіз татуювання!'); return; }
             const dataUrl = hdCanvas.toDataURL('image/png');
             const link = document.createElement('a');
             link.href = dataUrl;
-            link.download = 'yyokai-pure-stencil.png';
+            link.download = 'yyokai-perfect-stencil.png';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
