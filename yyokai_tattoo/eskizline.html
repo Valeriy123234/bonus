@@ -44,7 +44,7 @@
             width: 100%; height: 54px;
         }
 
-        /* Збільшена кнопка звуку */
+        /* Кнопка звуку */
         #audio-toggle {
             background: none; border: none; color: #a3a3a3; cursor: pointer;
             width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
@@ -97,11 +97,11 @@
             100% { clip: rect(4px, 9999px, 18px, 0); }
         }
 
-        /* Збільшене бургер-меню */
+        /* Кнопка бургер-меню з абсолютним пріоритетом */
         #menu-toggle {
             background: none; border: none; width: 44px; height: 44px;
             display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; cursor: pointer;
-            position: relative; z-index: 99;
+            position: relative; z-index: 100; /* Перекриває повноекранне меню */
         }
         .burger-line { width: 26px; height: 2.5px; background-color: #a3a3a3; transition: all 0.3s ease; }
 
@@ -184,7 +184,7 @@
     <canvas id="matrix"></canvas>
 
     <header>
-        <!-- Музична іконка / еквалайзер -->
+        <!-- Кнопка звуку / еквалайзер -->
         <button id="audio-toggle" aria-label="Toggle Audio">
             <svg id="icon-sound" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
@@ -201,7 +201,7 @@
             <span class="glitch-kai" data-text="KAI">KAI</span>
         </div>
 
-        <!-- Меню бургер -->
+        <!-- Кнопка меню -->
         <button id="menu-toggle" aria-label="Toggle Menu">
             <span id="line1" class="burger-line"></span>
             <span id="line2" class="burger-line"></span>
@@ -222,7 +222,7 @@
             <!-- Завантаження файлу -->
             <div class="upload-box">
                 <input type="file" id="image-upload" accept="image/*">
-                <span id="upload-status">Завантажити референс з Pinterest</span>
+                <span id="upload-status">Завантажити ескіз</span>
             </div>
 
             <!-- Контролери ліній -->
@@ -241,7 +241,7 @@
                 </div>
             </div>
 
-            <!-- Зона виведення чистого стемсілу -->
+            <!-- Зона виведення стемсілу -->
             <div class="preview-box">
                 <div class="preview-label">Трансферний вигляд</div>
                 <div id="placeholder-text" class="preview-placeholder">Очікування зображення майстра...</div>
@@ -287,7 +287,7 @@
         }
         setInterval(drawMatrix, 35);
 
-        // --- 2. ЕКВАЛАЙЗЕР ТА МЕНЮ ХРЕСТИК ---
+        // --- 2. ЕКВАЛАЙЗЕР ТА МЕНЮ ХРЕСТИК (ВИПРАВЛЕНИЙ ПРІОРИТЕТ ВІД КЛІКУ) ---
         const audioBtn = document.getElementById('audio-toggle');
         const iconSound = document.getElementById('icon-sound');
         const iconEq = document.getElementById('icon-eq');
@@ -306,9 +306,19 @@
         function toggleMenu() {
             menuOpen = !menuOpen;
             if (menuOpen) {
-                fullMenu.style.display = 'flex'; l1.style.transform = 'rotate(45deg) translate(6px, 6px)'; l2.style.opacity = '0'; l3.style.transform = 'rotate(-45deg) translate(6px, -6px)';
+                fullMenu.style.display = 'flex'; 
+                l1.style.transform = 'rotate(45deg) translate(6px, 6px)'; 
+                l1.style.backgroundColor = '#dc2626';
+                l2.style.opacity = '0'; 
+                l3.style.transform = 'rotate(-45deg) translate(6px, -6px)';
+                l3.style.backgroundColor = '#dc2626';
             } else {
-                fullMenu.style.display = 'none'; l1.style.transform = 'none'; l2.style.opacity = '1'; l3.style.transform = 'none';
+                fullMenu.style.display = 'none'; 
+                l1.style.transform = 'none'; 
+                l1.style.backgroundColor = '#a3a3a3';
+                l2.style.opacity = '1'; 
+                l3.style.transform = 'none';
+                l3.style.backgroundColor = '#a3a3a3';
             }
         }
         menuToggle.addEventListener('click', toggleMenu);
@@ -338,9 +348,11 @@
 
         let sourceImg = null;
 
+        // Повністю переписаний тач-сумісний механізмFileReader для мобілок
         imageUpload.addEventListener('change', function(e) {
-            const file = e.target.files;
-            if (file) {
+            const files = e.target.files;
+            if (files && files.length > 0) {
+                const file = files[0];
                 uploadStatus.textContent = file.name.substring(0, 12) + '...';
                 uploadStatus.style.color = '#dc2626';
                 placeholderText.style.display = 'none';
@@ -450,7 +462,7 @@
 
         btnSaveStencil.addEventListener('click', function(e) {
             e.preventDefault();
-            if (!sourceImg) { alert('Спочатку завантажте фотореференс!'); return; }
+            if (!sourceImg) { alert('Спочатку завантажте ескіз!'); return; }
             
             const dataUrl = cPreview.toDataURL('image/png');
             const link = document.createElement('a');
