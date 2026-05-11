@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>YYO KAI</title>
-    
-    <!-- Перевірені та 100% робочі шрифти кіберпанк -->
     <link rel="preconnect" href="googleapis.com">
     <link rel="preconnect" href="gstatic.com" crossorigin>
     <link href="googleapis.com" rel="stylesheet">
     
-    <!-- Офіційні, стабільні та сумісні з iOS/Android бібліотеки для збереження файлів -->
-    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <!-- Стабільна бібліотека jsPDF -->
+    <script src="unpkg.com"></script>
     
     <style>
         * {
@@ -34,51 +32,30 @@
             position: relative;
         }
 
-        /* МАТРИЧНИЙ ФОН: pointer-events: none та z-index: 0 ГАРАНТУЮТЬ, ЩО ВІН НЕ ПЕРЕКРИЄ КНОПКУ */
         #matrix {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.17; /* Точно 17% прозорості */
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+            opacity: 0.17;
         }
 
         header {
-            position: relative;
-            z-index: 50;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            height: 54px;
+            position: relative; z-index: 50;
+            display: flex; justify-content: space-between; align-items: center;
+            width: 100%; height: 54px;
         }
 
-        /* ЗБІЛЬШЕНА ІКОНКА ЗВУКУ ТА ЕКВАЛАЙЗЕР */
         #audio-toggle {
-            background: none;
-            border: none;
-            color: #a3a3a3;
-            cursor: pointer;
-            width: 46px;
-            height: 46px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: none; border: none; color: #a3a3a3; cursor: pointer;
+            width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
         }
         #audio-toggle:hover { color: #dc2626; }
         #icon-eq {
-            display: none;
-            align-items: flex-end;
-            justify-content: space-between;
-            width: 26px;
-            height: 22px;
+            display: none; align-items: flex-end; justify-content: space-between;
+            width: 26px; height: 22px;
         }
         .eq-bar {
-            width: 3px;
-            background-color: #dc2626;
+            width: 3px; background-color: #dc2626;
             animation: bounce 0.5s ease-in-out infinite;
         }
         @keyframes bounce {
@@ -92,34 +69,12 @@
         .eq-bar:nth-child(5) { animation-delay: 0.4s; }
         .eq-bar:nth-child(6) { animation-delay: 0.6s; }
 
-        /* ПОДВІЙНИЙ ГЛІТЧ НА YYO ТА KAI */
-        .glitch-wrapper {
-            text-align: center;
-            user-select: none;
-        }
-        .glitch, .glitch-kai {
-            position: relative;
-            animation: glitch-skew 1s infinite linear alternate-reverse;
-        }
-        .glitch {
-            color: #fff;
-            font-size: 26px;
-            font-weight: 900;
-            letter-spacing: 4px;
-            line-height: 1;
-        }
-        .glitch-kai {
-            font-size: 11px;
-            letter-spacing: 6px;
-            color: #dc2626;
-            display: block;
-            margin-top: 3px;
-            font-weight: bold;
-        }
+        .glitch-wrapper { text-align: center; user-select: none; }
+        .glitch, .glitch-kai { position: relative; animation: glitch-skew 1s infinite linear alternate-reverse; }
+        .glitch { color: #fff; font-size: 26px; font-weight: 900; letter-spacing: 4px; line-height: 1; }
+        .glitch-kai { font-size: 11px; letter-spacing: 6px; color: #dc2626; display: block; margin-top: 3px; font-weight: bold; }
         .glitch::before, .glitch::after, .glitch-kai::before, .glitch-kai::after {
-            content: attr(data-text);
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: #060606;
+            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #060606;
         }
         .glitch::before { left: 1px; text-shadow: -1px 0 #ff00c8; clip: rect(10px, 450px, 30px, 0); animation: glitch-anim 3s infinite linear alternate-reverse; }
         .glitch::after { left: -1px; text-shadow: -1px 0 #00ffff, 0 1px #ff00c8; clip: rect(40px, 450px, 70px, 0); animation: glitch-anim2 3s infinite linear alternate-reverse; }
@@ -137,96 +92,56 @@
             100% { clip: rect(4px, 9999px, 18px, 0); }
         }
 
-        /* ЗБІЛЬШЕНИЙ БУРГЕР */
         #menu-toggle {
-            background: none; border: none;
-            width: 46px; height: 46px;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            gap: 6px; cursor: pointer;
+            background: none; border: none; width: 44px; height: 44px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; cursor: pointer;
         }
-        .burger-line {
-            width: 28px; height: 2.5px;
-            background-color: #a3a3a3;
-            transition: all 0.3s ease;
-        }
+        .burger-line { width: 26px; height: 2.5px; background-color: #a3a3a3; transition: all 0.3s ease; }
 
         #full-menu {
-            position: fixed; inset: 0;
-            background-color: rgba(6, 6, 6, 0.98);
-            z-index: 80; display: none;
-            flex-direction: column; justify-content: center;
-            align-items: center; gap: 24px;
-            font-size: 20px; letter-spacing: 4px;
-            backdrop-filter: blur(8px);
+            position: fixed; inset: 0; background-color: rgba(6, 6, 6, 0.98);
+            z-index: 80; display: none; flex-direction: column; justify-content: center;
+            align-items: center; gap: 24px; font-size: 20px; letter-spacing: 4px; backdrop-filter: blur(8px);
         }
         #full-menu a { color: #a3a3a3; text-decoration: none; transition: color 0.3s; }
         #full-menu a:hover { color: #dc2626; }
         #full-menu .active-link { color: #dc2626; border-bottom: 1px solid #dc2626; padding-bottom: 4px; }
 
-        /* КОНТЕНТ */
         main {
-            position: relative; z-index: 10;
-            flex-grow: 1; display: flex;
-            align-items: center; justify-content: center;
-            width: 100%; max-width: 400px;
+            position: relative; z-index: 20; flex-grow: 1; display: flex;
+            align-items: center; justify-content: center; width: 100%; max-width: 400px;
             margin: 12px auto; overflow: hidden;
         }
         .app-container {
             width: 100%; height: 100%; max-height: 76vh;
-            background-color: rgba(10, 10, 10, 0.95);
-            border: 1px solid #1a1a1a;
-            padding: 16px; display: flex;
-            flex-direction: column; justify-content: space-between;
-            gap: 14px; overflow-y: auto;
+            background-color: rgba(10, 10, 10, 0.95); border: 1px solid #1a1a1a;
+            padding: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 14px; overflow-y: auto;
         }
         .app-container::-webkit-scrollbar { display: none; }
 
-        .tool-title {
-            font-size: 13px; color: #dc2626;
-            font-weight: bold; letter-spacing: 2px;
-            border-bottom: 1px solid #1a1a1a;
-            padding-bottom: 6px;
-        }
+        .tool-title { font-size: 13px; color: #dc2626; font-weight: bold; letter-spacing: 2px; border-bottom: 1px solid #1a1a1a; padding-bottom: 6px; }
 
-        .upload-box {
-            border: 1px dashed #262626;
-            background-color: #030303;
-            padding: 18px; text-align: center;
-            position: relative; cursor: pointer;
-        }
-        .upload-box input {
-            position: absolute; inset: 0;
-            width: 100%; height: 100%;
-            opacity: 0; cursor: pointer; z-index: 5;
-        }
+        .upload-box { border: 1px dashed #262626; background-color: #030303; padding: 18px; text-align: center; position: relative; cursor: pointer; }
+        .upload-box input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 5; }
         .upload-box span { font-size: 11px; color: #525252; letter-spacing: 1px; text-transform: uppercase; }
 
         .inputs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .input-group label {
-            display: block; font-size: 9px; color: #525252;
-            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;
-        }
+        .input-group label { display: block; font-size: 9px; color: #525252; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
         .dark-input {
-            width: 100%; background-color: #0c0c0c;
-            border: 1px solid #1f1f1f; color: #fff;
-            padding: 8px; font-size: 13px;
-            text-align: center; font-family: inherit;
+            width: 100%; background-color: #0c0c0c; border: 1px solid #1f1f1f; color: #fff;
+            padding: 8px; font-size: 13px; text-align: center; font-family: inherit;
         }
 
         .preview-box {
-            border: 1px solid #1a1a1a; background-color: #020202;
-            padding: 10px; height: 130px;
-            display: flex; flex-direction: column;
-            justify-content: space-between; position: relative;
+            border: 1px solid #1a1a1a; background-color: #020202; padding: 10px; height: 130px;
+            display: flex; flex-direction: column; justify-content: space-between; position: relative;
         }
         .preview-label { position: absolute; top: 4px; right: 8px; font-size: 8px; color: #404040; text-transform: uppercase; }
         #preview-grid { flex-grow: 1; display: flex; align-items: center; justify-content: center; padding: 4px; }
         .preview-placeholder { font-size: 10px; color: #404040; text-transform: uppercase; text-align: center; }
         
         .grid-info-footer {
-            border-top: 1px solid #1a1a1a; padding-top: 6px;
-            font-size: 9px; color: #525252;
+            border-top: 1px solid #1a1a1a; padding-top: 6px; font-size: 9px; color: #525252;
             display: flex; justify-content: space-between; text-transform: uppercase;
         }
         .grid-info-footer strong { color: #dc2626; }
@@ -236,36 +151,22 @@
         .tech-text { font-size: 10px; color: #525252; line-height: 1.4; text-transform: uppercase; }
         .tech-text span { color: #d4d4d4; }
 
-        /* НАЙВИЩИЙ ПРІОРИТЕТ КЛІКУ ДЛЯ ГОЛОВНОЇ КНОПКИ (z-index: 999) */
         #btn-split {
-            position: relative;
-            z-index: 999;
-            width: 100%; background-color: #991b1b;
-            color: #fff; font-weight: bold;
-            padding: 14px; border: none;
-            font-size: 11px; letter-spacing: 2px;
-            text-transform: uppercase; cursor: pointer;
-            outline: none;
+            position: relative; z-index: 999;
+            width: 100%; background-color: #991b1b; color: #fff; font-weight: bold;
+            padding: 14px; border: none; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
         }
         #btn-split:active { background-color: #dc2626; }
 
-        .grid-container-layout {
-            display: grid; gap: 2px; background-color: #000;
-            width: 100%; height: 100%; max-height: 90px; aspect-ratio: 16/9;
-        }
+        .grid-container-layout { display: grid; gap: 2px; background-color: #000; width: 100%; height: 100%; max-height: 90px; aspect-ratio: 16/9; }
         .preview-sheet {
             border: 1px solid #450a0a; background-color: rgba(69, 10, 10, 0.1);
-            color: #ef4444; font-size: 8px;
-            display: flex; align-items: center; justify-content: center; font-weight: bold;
+            color: #ef4444; font-size: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold;
         }
 
         footer {
-            position: relative; z-index: 20;
-            height: 24px; display: flex;
-            justify-content: space-between; align-items: center;
-            font-size: 8px; color: #404040;
-            letter-spacing: 2px; border-top: 1px solid #0f0f0f;
-            padding-top: 4px; text-transform: uppercase;
+            position: relative; z-index: 20; height: 24px; display: flex; justify-content: space-between; align-items: center;
+            font-size: 8px; color: #404040; letter-spacing: 2px; border-top: 1px solid #0f0f0f; padding-top: 4px; text-transform: uppercase;
         }
     </style>
 </head>
@@ -279,12 +180,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
             </svg>
             <div id="icon-eq">
-                <div class="eq-bar"></div>
-                <div class="eq-bar"></div>
-                <div class="eq-bar"></div>
-                <div class="eq-bar"></div>
-                <div class="eq-bar"></div>
-                <div class="eq-bar"></div>
+                <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+                <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
             </div>
         </button>
 
@@ -308,7 +205,6 @@
 
     <main>
         <div class="app-container">
-            
             <div class="tool-title">// SPLITTER A4</div>
 
             <div class="upload-box">
@@ -341,12 +237,11 @@
             <div class="tech-info-box">
                 <div class="tech-title">■ КЛІЄНТСЬКІ НАЛАШТУВАННЯ ДРУКУ:</div>
                 <p class="tech-text">
-                    Враховано технічні поля принтера <span>2 см</span>. Картинка дублюється на краях для зшивання трансферу стрічкою.
+                    Враховано технічні поля принтера <span>2 см</span>. Картинка зберігає пропорції та центрується на аркушах.
                 </p>
             </div>
 
             <button id="btn-split">Завантажити PDF для друку</button>
-
         </div>
     </main>
 
@@ -370,10 +265,8 @@
         let rainDrops = Array(Math.floor(columns)).fill(1);
 
         function drawMatrix() {
-            ctx.fillStyle = 'rgba(6, 6, 6, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#991b1b';
-            ctx.font = fontSize + 'px monospace';
+            ctx.fillStyle = 'rgba(6, 6, 6, 0.05)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#991b1b'; ctx.font = fontSize + 'px monospace';
             for (let i = 0; i < rainDrops.length; i++) {
                 const text = alphabet[Math.floor(Math.random() * alphabet.length)];
                 ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
@@ -383,42 +276,31 @@
         }
         setInterval(drawMatrix, 35);
 
-        // --- 2. ЕКВАЛАЙЗЕР ---
+        // --- 2. ЕКВАЛАЙЗЕР ТА МЕНЮ ---
         const audioBtn = document.getElementById('audio-toggle');
         const iconSound = document.getElementById('icon-sound');
         const iconEq = document.getElementById('icon-eq');
         let isPlaying = false;
-
         audioBtn.addEventListener('click', () => {
             isPlaying = !isPlaying;
             if (isPlaying) { iconSound.style.display = 'none'; iconEq.style.display = 'flex'; }
             else { iconSound.style.display = 'block'; iconEq.style.display = 'none'; }
         });
 
-        // --- 3. БУРГЕР МЕНЮ ---
         const menuToggle = document.getElementById('menu-toggle');
         const fullMenu = document.getElementById('full-menu');
-        const l1 = document.getElementById('line1');
-        const l2 = document.getElementById('line2');
-        const l3 = document.getElementById('line3');
+        const l1 = document.getElementById('line1'); const l2 = document.getElementById('line2'); const l3 = document.getElementById('line3');
         let menuOpen = false;
-
         menuToggle.addEventListener('click', () => {
             menuOpen = !menuOpen;
             if (menuOpen) {
-                fullMenu.style.display = 'flex';
-                l1.style.transform = 'rotate(45deg) translate(6px, 6px)';
-                l2.style.opacity = '0';
-                l3.style.transform = 'rotate(-45deg) translate(6px, -6px)';
+                fullMenu.style.display = 'flex'; l1.style.transform = 'rotate(45deg) translate(6px, 6px)'; l2.style.opacity = '0'; l3.style.transform = 'rotate(-45deg) translate(6px, -6px)';
             } else {
-                fullMenu.style.display = 'none';
-                l1.style.transform = 'none';
-                l2.style.opacity = '1';
-                l3.style.transform = 'none';
+                fullMenu.style.display = 'none'; l1.style.transform = 'none'; l2.style.opacity = '1'; l3.style.transform = 'none';
             }
         });
 
-        // --- 4. СКРИПТ НАРІЗКИ З НАТИВНИМ ВИКЛИКОМ СКАЧУВАННЯ ---
+        // --- 3. СКРИПТ НАРІЗКИ З ХАРДКОРНИМ ФІКСОМ ПРОПОРЦІЙ ТА ПРИМУСОВИМ СКАЧУВАННЯМ ---
         const sketchUpload = document.getElementById('sketch-upload');
         const uploadStatus = document.getElementById('upload-status');
         const widthCmInput = document.getElementById('width-cm');
@@ -430,16 +312,19 @@
 
         let loadedImage = null;
 
-        const PRINTER_MARGIN_CM = 2.0;
-        const A4_WIDTH_CM = 21.0;
-        const A4_HEIGHT_CM = 29.7;
-        const EFF_W_CM = A4_WIDTH_CM - PRINTER_MARGIN_CM; 
-        const EFF_H_CM = A4_HEIGHT_CM - PRINTER_MARGIN_CM; 
+        // Поля принтера (2 см з кожного боку)
+        const MARGIN_MM = 20; 
+        const A4_W_MM = 210; 
+        const A4_H_MM = 297;
+        
+        // Корисна зона друку всередині білих полів
+        const PRINT_W_MM = A4_W_MM - (MARGIN_MM * 2); // 170 мм
+        const PRINT_H_MM = A4_H_MM - (MARGIN_MM * 2); // 257 мм
 
         sketchUpload.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if(file) {
-                uploadStatus.textContent = file.name.substring(0, 14) + '...';
+                uploadStatus.textContent = file.name.substring(0, 12) + '...';
                 uploadStatus.style.color = '#dc2626';
                 const reader = new FileReader();
                 reader.onload = function(event) {
@@ -454,8 +339,9 @@
         function updatePreview() {
             const w = parseFloat(widthCmInput.value) || 40;
             const h = parseFloat(heightCmInput.value) || 30;
-            const cols = Math.ceil(w / EFF_W_CM); 
-            const rows = Math.ceil(h / EFF_H_CM);
+            
+            const cols = Math.ceil((w * 10) / PRINT_W_MM); 
+            const rows = Math.ceil((h * 10) / PRINT_H_MM);
             const total = cols * rows;
 
             countDisplay.textContent = total;
@@ -469,8 +355,7 @@
 
             for (let i = 1; i <= total; i++) {
                 const sheet = document.createElement('div');
-                sheet.className = 'preview-sheet';
-                sheet.textContent = `A4 #${i}`;
+                sheet.className = 'preview-sheet'; sheet.textContent = `A4 #${i}`;
                 gridContainer.appendChild(sheet);
             }
             previewGrid.appendChild(gridContainer);
@@ -478,55 +363,77 @@
 
         [widthCmInput, heightCmInput].forEach(input => input.addEventListener('input', () => { if(loadedImage) updatePreview(); }));
 
-        // 100% НАДІЙНИЙ ТАЧ-КЛІК З ВИКЛИКОМ UMD-МОДУЛЯ JSPDF
+        // КНОПКА ГЕНЕРАЦІЇ З ІДЕАЛЬНИМИ ПРОПОРЦІЯМИ ТА ЖОРСТКИМ СКАЧУВАННЯМ БЕЗ ПЕРЕНАПРАВЛЕННЯ
         btnSplit.addEventListener('click', (e) => {
             e.preventDefault();
-            e.stopPropagation();
-
-            if (!loadedImage) { alert('Спочатку завантажте ескіз!'); return; }
+            if (!loadedImage) { alert('Будь ласка, завантажте контур ескізу!'); return; }
             
             const wTarget = parseFloat(widthCmInput.value); 
             const hTarget = parseFloat(heightCmInput.value);
             if (!wTarget || !hTarget) return;
 
-            // Зміна синтаксису під глобальний мобільний UMD-пакет jsPDF
-            const { jsPDF } = window.jspdf; 
+            const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
             
-            const A4_W_MM = 210; const A4_H_MM = 297;
-            const EFF_W_MM = EFF_W_CM * 10; 
-            const EFF_H_MM = EFF_H_CM * 10; 
-            const wTargetMm = wTarget * 10; 
+            const wTargetMm = wTarget * 10;
             const hTargetMm = hTarget * 10;
             
-            const cols = Math.ceil(wTargetMm / EFF_W_MM); 
-            const rows = Math.ceil(hTargetMm / EFF_H_MM);
+            const cols = Math.ceil(wTargetMm / PRINT_W_MM); 
+            const rows = Math.ceil(hTargetMm / PRINT_H_MM);
+
+            // ВИРАХОВУЄМО ОРИГІНАЛЬНІ ПРОПОРЦІЇ КАРТИНКИ (ЩОБ НЕ РОЗТЯГУВАЛО В ШИРИНУ)
+            const imgRatio = loadedImage.width / loadedImage.height;
+            const targetRatio = wTargetMm / hTargetMm;
+            
+            let scaleFactorX = loadedImage.width / wTargetMm;
+            let scaleFactorY = loadedImage.height / hTargetMm;
 
             let pageCount = 0;
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
                     if (pageCount > 0) pdf.addPage();
                     pageCount++;
-                    
-                    const sx = (c * EFF_W_MM) * (loadedImage.width / wTargetMm);
-                    const sy = (r * EFF_H_MM) * (loadedImage.height / hTargetMm);
-                    const sWidth = A4_W_MM * (loadedImage.width / wTargetMm);
-                    const sHeight = A4_H_MM * (loadedImage.height / hTargetMm);
 
+                    // Координати шматка на оригінальній картинці
+                    const sx = (c * PRINT_W_MM) * scaleFactorX;
+                    const sy = (r * PRINT_H_MM) * scaleFactorY;
+                    const sWidth = PRINT_W_MM * scaleFactorX;
+                    const sHeight = PRINT_H_MM * scaleFactorY;
+
+                    // Створюємо біле полотно А4 з урахуванням 20мм (2см) полів
                     const tempCanvas = document.createElement('canvas');
-                    tempCanvas.width = 1000; tempCanvas.height = 1414;
+                    tempCanvas.width = 2100; 
+                    tempCanvas.height = 2970;
                     const tempCtx = tempCanvas.getContext('2d');
-                    tempCtx.fillStyle = '#FFFFFF'; tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
                     
-                    tempCtx.drawImage(loadedImage, sx, sy, sWidth, sHeight, 0, 0, tempCanvas.width, tempCanvas.height);
+                    // Робимо весь лист А4 чисто білим (це і є наші майбутні білі поля для принтера)
+                    tempCtx.fillStyle = '#FFFFFF'; 
+                    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+                    
+                    // Малюємо ескіз СУТЬ ВСЕРЕДИНІ корисного вікна друку (зміщення на 200 пікселів = 2 см)
+                    // Малюнок копіюється 1 в 1 без спотворення ширини
+                    tempCtx.drawImage(loadedImage, sx, sy, sWidth, sHeight, 200, 200, 1700, 2570);
 
-                    // Оптимальна компресія під мобільне скачування через Blob
-                    pdf.addImage(tempCanvas.toDataURL('image/jpeg', 0.75), 'JPEG', 0, 0, A4_W_MM, A4_H_MM);
+                    const imgData = tempCanvas.toDataURL('image/jpeg', 0.85);
+                    pdf.addImage(imgData, 'JPEG', 0, 0, A4_W_MM, A4_H_MM);
                 }
             }
             
-            // Найнадійніша назва під завантаження iOS/Android
-            pdf.save('yyokai-transfer.pdf'); 
+            // ЖОРСТКИЙ ФІКС ДЛЯ ПРИМУСОВОГО СКАЧУВАННЯ ФАЙЛУ НА ТЕЛЕФОНІ
+            try {
+                const blob = pdf.output('blob');
+                const blobUrl = URL.createObjectURL(blob);
+                const downloadLink = document.createElement('a');
+                downloadLink.href = blobUrl;
+                downloadLink.download = `yyokai-transfer-${wTarget}x${hTarget}.pdf`;
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+                URL.revokeObjectURL(blobUrl);
+            } catch (err) {
+                // Запасний варіант, якщо Blob не підтримується старим софтом
+                pdf.save(`yyokai-transfer-${wTarget}x${hTarget}.pdf`);
+            }
         });
     </script>
 </body>
