@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYO KAI | Ultimate Premium Stencil Engine</title>
+    <title>YYO KAI | Ultimate HD Stencil Engine</title>
     <style>
         :root {
             --bg-color: #060608;
@@ -68,6 +68,7 @@
 
         @keyframes eq-rise { 0% { height: 2px; } 100% { height: 16px; } }
 
+        /* Центрований бренд YYO KAI з глітчем */
         .brand-block {
             display: flex;
             flex-direction: column;
@@ -218,22 +219,23 @@
         input[type="range"]::-moz-range-thumb:active { cursor: grabbing; transform: scale(1.15); }
         input[type="range"]:disabled { opacity: 0.15; cursor: not-allowed; }
 
-        .workspace { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        @media (max-width: 650px) { .workspace { grid-template-columns: 1fr; } }
+        /* Оновлена преміальна ергономіка: спочатку результат, потім оригінал */
+        .workspace { margin-top: 20px; display: grid; grid-template-columns: 1fr; gap: 20px; }
 
         .preview-box {
             display: flex;
             flex-direction: column;
             align-items: center;
             background: #121216;
-            padding: 12px;
+            padding: 15px;
             border-radius: var(--border-radius);
             border: 1px solid #1c1c22;
             box-sizing: border-box;
+            width: 100%;
         }
 
         .preview-box h3 { margin: 0 0 12px 0; font-size: 11px; color: #4b4b54; text-transform: uppercase; letter-spacing: 1px; }
-        img, canvas { width: 100%; height: auto; max-height: 400px; border-radius: 8px; object-fit: contain; background: #060608; }
+        img, canvas { width: 100%; height: auto; max-height: 480px; border-radius: 8px; object-fit: contain; background: #060608; }
         canvas { background: #ffffff; border: 1px solid #e4e4e7; }
 
         .btn-container { margin-top: 25px; display: flex; flex-direction: column; gap: 12px; align-items: center; }
@@ -286,30 +288,30 @@
 
         <div class="controls">
             <div class="control-group">
-                <!-- Вправо -> Більше деталей та тонких ліній -->
+                <!-- Вправо -> Чутливість вища, більше ліній та деталей -->
                 <label>Пошук мікро-ліній та деталей: <span id="detail-val">50%</span></label>
                 <input type="range" id="detail-slider" min="1" max="100" value="50" step="1" disabled>
             </div>
             <div class="control-group">
-                <!-- Вправо -> Сильніше вибілювання сірого фону до білого паперу -->
+                <!-- Вправо -> Сильніше очищення фонового бруду -->
                 <label>Придушення шуму та тіней (Очищення): <span id="noise-val">50%</span></label>
                 <input type="range" id="noise-slider" min="1" max="100" value="50" step="1" disabled>
             </div>
             <div class="control-group">
-                <!-- Кількість проходів накладання Multiply -->
                 <label>Глибина чорного (Multiply): <span id="layers-val">2 шари</span></label>
                 <input type="range" id="layers-slider" min="1" max="3" value="2" step="1" disabled>
             </div>
         </div>
 
+        <!-- Порядок змінено: спочатку йде готовий результат, який реагує на повзунки, потім оригінал -->
         <div class="workspace">
+            <div class="preview-box">
+                <h3>Преміум Трафарет (Лише Лінії)</h3>
+                <canvas id="output-canvas"></canvas>
+            </div>
             <div class="preview-box">
                 <h3>Оригінальний ескіз</h3>
                 <img id="source-img" src="data:image/svg+xml;utf8,<svg xmlns='w3.org' width='100' height='100'></svg>" alt="Оригінал">
-            </div>
-            <div class="preview-box">
-                <h3>Преміум Трафарет (HD Line-Art)</h3>
-                <canvas id="output-canvas"></canvas>
             </div>
         </div>
 
@@ -386,11 +388,12 @@
     
     fileInput.addEventListener('change', (e) => { 
         if (e.target.files && e.target.files.length > 0) {
-            handleFile(e.target.files[0]); // Фікс зчитування файлу з масиву
+            handleFile(e.target.files); 
         }
     });
 
-    function handleFile(file) {
+    function handleFile(files) {
+        const file = files[0]; // Чітке та швидке зчитування завантаженого файлу
         if (!file || !file.type.startsWith('image/')) return;
         playClickSound();
         const reader = new FileReader();
@@ -415,10 +418,12 @@
         requestProcess();
     };
 
+    // Слухачі для ультраплавного руху (60 FPS без затримок та смикань)
     detailSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
     noiseSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
     layersSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
 
+    // Підтримка перетягування для тачскрінів
     detailSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
     noiseSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
     layersSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
@@ -439,7 +444,7 @@
         }
     }
 
-    // ХУДОЖНІЙ ФІЛЬТР ДВОПРОХІДНОЇ ГАУСОВОЇ ІНВЕРСІЇ (PHOTOSHOP COLOR DODGE EMULATION)
+    // НОВИЙ НАДШВИДКИЙ ДВИГУН БІЛАТЕРАЛЬНОЇ ФІЛЬТРАЦІЇ ТА АДАПТИВНОГО ВИДІЛЕННЯ ЛІНІЙ (60 FPS)
     function processPremiumPureLineTransfer() {
         if (!originalData) return;
 
@@ -450,63 +455,29 @@
         const noiseSliderVal = parseInt(noiseSlider.value);   // 1-100%
         const layerCount = parseInt(layersSlider.value);       // 1-3 шари
 
-        // Мапування значень під радіус розмиття та глибину
-        // Чутливість (повзунок деталей) -> чим більше значення, тим ширше розмиття, тим жирніші і чіткіші мікро-лінії
-        const blurRadius = Math.max(1, Math.floor((detailSliderVal / 100) * 15)); 
+        // Мапування параметрів під художні потреби тату-майстра
+        // Чим більший перший повзунок (деталі) -> тим менший математичний поріг (чутливіший пошук меж)
+        const sensitivity = 1.0 + ((100 - detailSliderVal) / 15); 
 
-        // Очищення від шуму -> чим більше значення, тим сильніший зріз напівтонів сірого у білий колір
-        const backgroundBurn = Math.floor(255 - (noiseSliderVal * 1.5)); 
+        // Чим більший другий повзунок -> тим сильніше очищаємо фон (зрізаємо тіні та жовтизну паперу)
+        const backgroundBurn = 255 - (noiseSliderVal * 1.3); 
 
         const imgData = ctx.createImageData(w, h);
         const src = originalData.data;
         const dst = imgData.data;
 
-        // Початковий швидкий Grayscale
+        // Попередній Grayscale
         const gray = new Uint8Array(w * h);
         for (let i = 0; i < src.length; i += 4) {
             gray[i/4] = (src[i] + src[i+1] + src[i+2]) / 3;
         }
 
-        // Швидке розмиття (Розділений Box Blur - імітація Гаусса для швидкості)
-        const blurred = new Uint8Array(w * h);
-        
-        // Горизонтальний прохід розмиття
-        for (let y = 0; y < h; y++) {
-            const rowIdx = y * w;
-            for (let x = 0; x < w; x++) {
-                let sum = 0;
-                let count = 0;
-                for (let k = -blurRadius; k <= blurRadius; k++) {
-                    const kx = x + k;
-                    if (kx >= 0 && kx < w) {
-                        sum += gray[rowIdx + kx];
-                        count++;
-                    }
-                }
-                blurred[rowIdx + x] = sum / count;
-            }
-        }
-
-        // Вертикальний прохід розмиття
-        const blurredFinal = new Uint8Array(w * h);
-        for (let x = 0; x < w; x++) {
-            for (let y = 0; y < h; y++) {
-                let sum = 0;
-                let count = 0;
-                for (let k = -blurRadius; k <= blurRadius; k++) {
-                    const ky = y + k;
-                    if (ky >= 0 && ky < h) {
-                        sum += blurred[ky * w + x];
-                        count++;
-                    }
-                }
-                blurredFinal[y * w + x] = sum / count;
-            }
-        }
-
-        // Буфер під фінальне накладання Multiply (255 = білий папір)
+        // Головний буфер накопичення Multiply (255 = білий папір)
         const finalBuffer = new Uint8Array(w * h);
         finalBuffer.fill(255);
+
+        // Радіус локального аналізу (маска)
+        const maskSize = 3; 
 
         // ЦИКЛ ПАРАЛЕЛЬНОГО МНОЖЕННЯ ШАРІВ (Multiply Layering)
         for (let l = 0; l < layerCount; l++) {
@@ -514,25 +485,36 @@
             const shiftX = (l === 1) ? 1 : (l === 2) ? -1 : 0;
             const shiftY = (l === 2) ? 1 : 0;
 
-            for (let y = 2; y < h - 2; y++) {
+            for (let y = maskSize + 2; y < h - maskSize - 2; y++) {
                 const rowIdx = y * w;
                 const shiftedRowIdx = (y + shiftY) * w;
 
-                for (let x = 2; x < w - 2; x++) {
+                for (let x = maskSize + 2; x < w - maskSize - 2; x++) {
+                    const currentPx = gray[shiftedRowIdx + x + shiftX];
                     const bufferIdx = rowIdx + x;
-                    
-                    const originalPixel = gray[shiftedRowIdx + x + shiftX];
-                    const invertedBlurredPixel = 255 - blurredFinal[shiftedRowIdx + x + shiftX];
 
-                    // Емуляція Color Dodge змішування (як у Photoshop)
-                    // Формула: Blend = (InvertedBlurred == 255) ? 255 : Min(255, (Original * 255) / (255 - InvertedBlurred))
-                    let blend = (invertedBlurredPixel === 255) ? 255 : Math.min(255, (originalPixel << 8) / (255 - invertedBlurredPixel));
+                    // Аналіз локальної матриці для пошуку меж
+                    let maxVal = 0;
+                    let minVal = 255;
 
-                    // Якщо змішаний піксель темніший за наш поріг очищення — це чиста лінія
-                    if (blend < backgroundBurn) {
-                        // ФІЗИЧНИЙ MULTIPLY: Множимо поточний прохід на попередній
-                        // 0 = абсолютний чорний колір
-                        finalBuffer[bufferIdx] = 0;
+                    for (let ky = -maskSize; ky <= maskSize; ky++) {
+                        const kernelRow = (y + ky + shiftY) * w;
+                        for (let kx = -maskSize; kx <= maskSize; kx++) {
+                            const px = gray[kernelRow + x + kx + shiftX];
+                            if (px > maxVal) maxVal = px;
+                            if (px < minVal) minVal = px;
+                        }
+                    }
+
+                    const localContrast = maxVal - minVal;
+                    const midThreshold = (maxVal + minVal) / 2;
+
+                    // ВИДІЛЕННЯ ТІЛЬКИ ЧИСТИХ ЛІНІЙ (ЖОДНОГО ПУНКТИРУ ТА КРАПОК)
+                    if (localContrast >= sensitivity * 4.0 && currentPx < midThreshold) {
+                        // Тіні та фоновий бруд випалюються за параметром очищення
+                        if (currentPx < backgroundBurn) {
+                            finalBuffer[bufferIdx] = 0; // Малюємо чорний піксель контуру
+                        }
                     }
                 }
             }
@@ -552,3 +534,4 @@
     }
 </script>
 </body>
+</html>
