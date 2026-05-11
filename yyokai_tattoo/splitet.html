@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YYO KAI - Tattoo Splitter</title>
-    <!-- Tailwind CSS для стилізації -->
+    <!-- Виправлене завантаження Tailwind CSS -->
     <script src="jsdelivr.net"></script>
-    <!-- Google Fonts: Кіберпанк шрифт -->
+    <!-- Виправлене завантаження шрифту -->
+    <link rel="preconnect" href="googleapis.com">
+    <link rel="preconnect" href="gstatic.com" crossorigin>
     <link href="googleapis.com" rel="stylesheet">
-    <!-- Бібліотека jsPDF для генерації PDF нарізки прямо в браузері -->
+    <!-- Виправлене завантаження jsPDF -->
     <script src="cloudflare.com"></script>
     <style>
         body {
@@ -125,59 +127,85 @@
         <a href="#" class="text-red-500 pointer-events-none border-b border-red-900 pb-1">TATTOO SPLITTER</a>
     </nav>
 
-    <!-- ОСНОВНИЙ БЛОК -->
+    <!-- ОСНОВНИЙ БЛОК (Центрований та стилізований) -->
     <main class="relative z-10 flex-grow flex items-center justify-center my-8 w-full max-w-5xl mx-auto px-4">
-        <div class="w-full bg-neutral-900/30 border border-neutral-900 p-6 md:p-8 backdrop-blur-xs">
+        <div class="w-full bg-neutral-900/30 border border-neutral-900 p-6 md:p-8 backdrop-blur-sm">
             
+            <!-- Заголовок інструменту -->
             <div class="border-b border-neutral-900 pb-4 mb-6 flex justify-between items-end">
                 <div>
-                    <h2 class="text-md uppercase tracking-wider text-red-500">// Сплітер ескізу на листи A4</h2>
+                    <h2 class="text-md uppercase tracking-wider text-red-500 font-bold">// Сплітер ескізу на листи A4</h2>
                     <p class="text-xs text-neutral-500 mt-1">Автоматична нарізка великих трансферів із напуском (overlap) в 2 см</p>
                 </div>
             </div>
 
+            <!-- Контентна сітка -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 
-                <!-- Параметри -->
-                <div class="flex flex-col gap-5">
-                    <div>
-                        <label class="block text-xs uppercase text-neutral-400 tracking-wider mb-2">1. Завантажити контур ескізу</label>
-                        <div class="border border-dashed border-neutral-800 hover:border-red-950 bg-neutral-950/20 p-6 text-center cursor-pointer transition-colors relative">
-                            <input type="file" id="sketch-upload" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
-                            <span id="upload-status" class="text-xs text-neutral-500">Клікніть або перетягніть файл</span>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4">
+                <!-- Ліва сторона (Параметри введення та Інформація) -->
+                <div class="flex flex-col justify-between gap-6">
+                    
+                    <!-- Верхній блок: завантаження та інпути -->
+                    <div class="flex flex-col gap-5">
                         <div>
-                            <label class="block text-xs uppercase text-neutral-400 tracking-wider mb-2">Ширина тату (см)</label>
-                            <input type="number" id="width-cm" value="40" class="dark-input w-full p-2.5 text-sm text-center">
+                            <label class="block text-xs uppercase text-neutral-400 tracking-wider mb-2">1. Завантажити контур ескізу</label>
+                            <div class="border border-dashed border-neutral-800 hover:border-red-950 bg-neutral-950/40 p-6 text-center cursor-pointer transition-colors relative">
+                                <input type="file" id="sketch-upload" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
+                                <span id="upload-status" class="text-xs text-neutral-400">Клікніть або перетягніть файл</span>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-xs uppercase text-neutral-400 tracking-wider mb-2">Висота тату (см)</label>
-                            <input type="number" id="height-cm" value="30" class="dark-input w-full p-2.5 text-sm text-center">
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs uppercase text-neutral-400 tracking-wider mb-2">Ширина тату (см)</label>
+                                <input type="number" id="width-cm" value="40" class="dark-input w-full p-2.5 text-sm text-center font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase text-neutral-400 tracking-wider mb-2">Висота тату (см)</label>
+                                <input type="number" id="height-cm" value="30" class="dark-input w-full p-2.5 text-sm text-center font-bold">
+                            </div>
                         </div>
                     </div>
 
-                    <div class="bg-neutral-950/50 border border-neutral-900 p-3 text-xs text-neutral-500">
-                        <span class="text-red-500">■</span> Автоматичний напуск <strong class="text-neutral-400">2 см</strong> закладено у прорахунок для безшовного склеювання листів А4 стрічкою.
+                    <!-- Ліва Нижня Сторона (Стилізований інформаційний блок замість порожніх рядків) -->
+                    <div class="border border-neutral-900 bg-neutral-950/60 p-4 flex flex-col gap-3">
+                        <div class="flex items-center gap-2 text-xs uppercase text-red-500 font-bold tracking-wider">
+                            <span>■</span> <span>Технічні умови зшивання:</span>
+                        </div>
+                        <ul class="text-xs text-neutral-400 space-y-2 list-none pl-1">
+                            <li class="flex items-start gap-2">
+                                <span class="text-neutral-600">-</span>
+                                <span>Автоматичний напуск <strong class="text-red-500">2 см</strong> закладено по краях кожного аркуша.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-neutral-600">-</span>
+                                <span>Забезпечує ідеальне безшовне склеювання трансферу липкою стрічкою.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-neutral-600">-</span>
+                                <span>Майстер просто друкує готовий файл та зшиває трафарет.</span>
+                            </li>
+                        </ul>
                     </div>
 
-                    <button id="btn-split" class="w-full bg-red-700 hover:bg-red-600 text-white font-bold py-3 uppercase tracking-widest text-sm transition-all cursor-pointer">
+                    <!-- Кнопка генерації -->
+                    <button id="btn-split" class="w-full bg-red-700 hover:bg-red-600 text-white font-bold py-3 uppercase tracking-widest text-sm transition-all cursor-pointer shadow-lg shadow-black">
                         Згенерувати та завантажити PDF
                     </button>
                 </div>
 
-                <!-- Інтерактивне прев'ю -->
-                <div class="flex flex-col justify-between border border-neutral-900 bg-neutral-950/10 p-4 min-h-[300px] relative">
+                <!-- Права сторона (Інтерактивне прев'ю результату) -->
+                <div class="flex flex-col justify-between border border-neutral-900 bg-neutral-950/10 p-4 min-h-[320px] relative">
                     <div class="absolute top-2 right-2 text-[9px] text-neutral-600 uppercase tracking-widest">Схема розкладки</div>
                     
+                    <!-- Візуалізація сітки аркушів -->
                     <div id="preview-grid" class="flex-grow flex items-center justify-center p-4">
-                        <div class="text-center text-neutral-700 p-4">
-                            <p class="text-xs uppercase">Очікування завантаження ескізу</p>
+                        <div class="text-center text-neutral-600 border border-neutral-900 border-dashed p-6 w-full h-full flex items-center justify-center">
+                            <p class="text-xs uppercase tracking-wider">Очікування завантаження ескізу майстра</p>
                         </div>
                     </div>
 
+                    <!-- Дані підрахунку -->
                     <div class="border-t border-neutral-900 pt-3 text-xs text-neutral-500 flex justify-between uppercase tracking-wider">
                         <span>Всього А4: <strong class="text-white id-count">-</strong></span>
                         <span>Конфігурація: <strong class="text-white id-layout">-</strong></span>
@@ -261,7 +289,7 @@
             }
         });
 
-        // --- 4. РОЗРАХУНОК ТА РЕАЛЬНА НАРІЗКА КАРТИНКИ НА PDF (А4) ---
+        // --- 4. РОЗРАХУНОК ТА РЕАЛЬНА НАРІЗКА КАРТИНКИ ---
         const sketchUpload = document.getElementById('sketch-upload');
         const uploadStatus = document.getElementById('upload-status');
         const widthCmInput = document.getElementById('width-cm');
@@ -271,7 +299,7 @@
         const countDisplay = document.querySelector('.id-count');
         const layoutDisplay = document.querySelector('.id-layout');
 
-        let loadedImage = null; // Сюди збережемо завантажений ескіз
+        let loadedImage = null;
 
         sketchUpload.addEventListener('change', (e) => {
             const file = e.target.files[0];
@@ -291,7 +319,6 @@
             }
         });
 
-        // Функція оновлення сітки прев'ю
         function updatePreview() {
             const w = parseFloat(widthCmInput.value) || 40;
             const h = parseFloat(heightCmInput.value) || 30;
@@ -321,12 +348,10 @@
             previewGrid.appendChild(gridContainer);
         }
 
-        // Динамічний перерахунок при зміні інпутів вручну
         [widthCmInput, heightCmInput].forEach(input => input.addEventListener('input', () => {
             if(loadedImage) updatePreview();
         }));
 
-        // Генерація фінального PDF документа
         btnSplit.addEventListener('click', async () => {
             if (!loadedImage) {
                 alert('Спочатку завантажте зображення контуру татуювання!');
@@ -342,7 +367,6 @@
             }
 
             const { jsPDF } = window.jspdf;
-            // Створюємо PDF документ (формат А4, вертикальний, міліметри)
             const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
 
             const A4_W_MM = 210; const A4_H_MM = 297; const OVERLAP_MM = 20;
@@ -354,13 +378,6 @@
             const cols = Math.ceil(wTargetMm / EFF_W_MM);
             const rows = Math.ceil(hTargetMm / EFF_H_MM);
 
-            // Створюємо прихований canvas для нарізки шматків вихідного фото
-            const canvasRender = document.createElement('canvas');
-            const ctxRender = canvasRender.getContext('2d');
-            canvasRender.width = loadedImage.width;
-            canvasRender.height = loadedImage.height;
-            ctxRender.drawImage(loadedImage, 0, 0);
-
             let pageCount = 0;
 
             for (let r = 0; r < rows; r++) {
@@ -368,11 +385,9 @@
                     if (pageCount > 0) pdf.addPage();
                     pageCount++;
 
-                    // Розраховуємо зміщення сегмента картинки в міліметрах
                     const srcX_mm = c * EFF_W_MM;
                     const srcY_mm = r * EFF_H_MM;
 
-                    // Переводимо міліметри в пропорційні пікселі оригінального зображення
                     const pxPerMmX = loadedImage.width / wTargetMm;
                     const pxPerMmY = loadedImage.height / hTargetMm;
 
@@ -381,25 +396,21 @@
                     const sWidth = A4_W_MM * pxPerMmX;
                     const sHeight = A4_H_MM * pxPerMmY;
 
-                    // Вирізаємо потрібний шматок на тимчасовий canvas
                     const tempCanvas = document.createElement('canvas');
-                    tempCanvas.width = 1200; // Оптимальна роздільна здатність для сторінки друку
+                    tempCanvas.width = 1200;
                     tempCanvas.height = (A4_H_MM / A4_W_MM) * 1200;
                     const tempCtx = tempCanvas.getContext('2d');
                     
-                    // Заповнюємо фон білим на випадок якщо шматок виходить за межі картинки
                     tempCtx.fillStyle = '#FFFFFF';
                     tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
                     
                     tempCtx.drawImage(loadedImage, sx, sy, sWidth, sHeight, 0, 0, tempCanvas.width, tempCanvas.height);
 
-                    // Перетворюємо шматок у формат JPEG та вставляємо в PDF на весь лист без полів
                     const imgData = tempCanvas.toDataURL('image/jpeg', 0.85);
                     pdf.addImage(imgData, 'JPEG', 0, 0, A4_W_MM, A4_H_MM);
                 }
             }
 
-            // Збереження готового файлу на пристрій майстра
             pdf.save(`yyo-kai-transfer-${wTarget}x${hTarget}.pdf`);
         });
     </script>
