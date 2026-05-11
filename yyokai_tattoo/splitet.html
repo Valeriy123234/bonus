@@ -8,9 +8,6 @@
     <link rel="preconnect" href="gstatic.com" crossorigin>
     <link href="googleapis.com" rel="stylesheet">
     
-    <!-- Перевірене робоче CDN посилання -->
-      <script src="https://cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    
     <style>
         * {
             box-sizing: border-box;
@@ -40,7 +37,7 @@
         }
 
         header {
-            position: relative; z-index: 99;
+            position: relative; z-index: 50;
             display: flex; justify-content: space-between; align-items: center;
             width: 100%; height: 54px;
         }
@@ -133,7 +130,7 @@
         }
 
         .preview-box {
-            border: 1px solid #1a1a1a; background-color: #020202; padding: 10px; height: 130px;
+            border: 1px solid #1a1a1a; background-color: #020202; padding: 10px; height: 110px;
             display: flex; flex-direction: column; justify-content: space-between; position: relative;
         }
         .preview-label { position: absolute; top: 4px; right: 8px; font-size: 8px; color: #404040; text-transform: uppercase; }
@@ -151,14 +148,27 @@
         .tech-text { font-size: 10px; color: #525252; line-height: 1.4; text-transform: uppercase; }
         .tech-text span { color: #d4d4d4; }
 
-        #btn-split {
-            position: relative; z-index: 99;
-            width: 100%; background-color: #991b1b; color: #fff; font-weight: bold;
-            padding: 14px; border: none; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+        /* СПИСОК КНОПОК ДЛЯ СКАЧУВАННЯ ЗОБРАЖЕНЬ */
+        #download-zone {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 160px;
+            overflow-y: auto;
+            padding-right: 2px;
         }
-        #btn-split:active { background-color: #dc2626; }
+        #download-zone::-webkit-scrollbar { width: 3px; }
+        #download-zone::-webkit-scrollbar-thumb { background-color: #991b1b; }
 
-        .grid-container-layout { display: grid; gap: 2px; background-color: #000; width: 100%; height: 100%; max-height: 90px; aspect-ratio: 16/9; }
+        .btn-png-download {
+            width: 100%; background-color: #111; color: #a3a3a3;
+            border: 1px solid #222; padding: 10px; font-size: 11px;
+            font-family: inherit; font-weight: bold; text-transform: uppercase;
+            letter-spacing: 1px; cursor: pointer; text-align: center;
+        }
+        .btn-png-download:active { background-color: #991b1b; color: #fff; border-color: #dc2626; }
+
+        .grid-container-layout { display: grid; gap: 2px; background-color: #000; width: 100%; height: 100%; max-height: 70px; aspect-ratio: 16/9; }
         .preview-sheet {
             border: 1px solid #450a0a; background-color: rgba(69, 10, 10, 0.1);
             color: #ef4444; font-size: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold;
@@ -235,13 +245,16 @@
             </div>
 
             <div class="tech-info-box">
-                <div class="tech-title">■ КЛІЄНТСЬКІ НАЛАШТУВАННЯ ДРУКУ:</div>
+                <div class="tech-title">■ НАЛАШТУВАННЯ ДРУКУ КАРТИНКАМИ:</div>
                 <p class="tech-text">
-                    Враховано технічні поля принтера <span>2 см</span>. Картинка зберігає пропорції та центрується на аркушах.
+                    Враховано поля принтера <span>2 см</span>. Кожен шматок автоматично отримає білу рамку для безпомилкового друку.
                 </p>
             </div>
 
-            <button id="btn-split">Завантажити PDF для друку</button>
+            <!-- ЗОНА ДИНАМІЧНИХ КНОПОК ДЛЯ PNG СКАЧУВАННЯ -->
+            <div id="download-zone">
+                <div class="text-center text-[10px] text-neutral-700 uppercase py-2">Кнопки завантаження з'являться після вибору файлу</div>
+            </div>
         </div>
     </main>
 
@@ -276,7 +289,7 @@
         }
         setInterval(drawMatrix, 35);
 
-        // --- 2. ЕКВАЛАЙЗЕР ТА МЕНЮ (ПОВНІСТЮ НАДІЙНІ ОБРОБНИКИ КЛІКУ) ---
+        // --- 2. ЕКВАЛАЙЗЕР ТА МЕНЮ ---
         const audioBtn = document.getElementById('audio-toggle');
         const iconSound = document.getElementById('icon-sound');
         const iconEq = document.getElementById('icon-eq');
@@ -296,35 +309,25 @@
         menuToggle.addEventListener('click', function() {
             menuOpen = !menuOpen;
             if (menuOpen) {
-                fullMenu.style.display = 'flex';
-                l1.style.transform = 'rotate(45deg) translate(6px, 6px)';
-                l2.style.opacity = '0';
-                l3.style.transform = 'rotate(-45deg) translate(6px, -6px)';
+                fullMenu.style.display = 'flex'; l1.style.transform = 'rotate(45deg) translate(6px, 6px)'; l2.style.opacity = '0'; l3.style.transform = 'rotate(-45deg) translate(6px, -6px)';
             } else {
-                fullMenu.style.display = 'none';
-                l1.style.transform = 'none';
-                l2.style.opacity = '1';
-                l3.style.transform = 'none';
+                fullMenu.style.display = 'none'; l1.style.transform = 'none'; l2.style.opacity = '1'; l3.style.transform = 'none';
             }
         });
 
-        // --- 3. СКРИПТ НАРІЗКИ З НАЙБІЛЬШ НАДІЙНИМ СИНТАКСИСОМ ДЛЯ МОБІЛОК ---
+        // --- 3. ЧИСТИЙ АЛГОРИТМ НАРІЗКИ НА КАРТИНКИ PNG ЧЕРЕЗ CANVAS ---
         const sketchUpload = document.getElementById('sketch-upload');
         const uploadStatus = document.getElementById('upload-status');
         const widthCmInput = document.getElementById('width-cm');
         const heightCmInput = document.getElementById('height-cm');
-        const btnSplit = document.getElementById('btn-split');
         const previewGrid = document.getElementById('preview-grid');
         const countDisplay = document.querySelector('.id-count');
         const layoutDisplay = document.querySelector('.id-layout');
+        const downloadZone = document.getElementById('download-zone');
 
-        let loadedImageDataUrl = null;
-        let imgWidth = 0;
-        let imgHeight = 0;
+        let originalImg = null;
 
-        const MARGIN_MM = 20; 
-        const A4_W_MM = 210; 
-        const A4_H_MM = 297;
+        // Чисті пропорції корисного друку (враховуючи білі поля 2 см з кожного боку)
         const PRINT_W_MM = 170; 
         const PRINT_H_MM = 257; 
 
@@ -333,23 +336,20 @@
             if(file) {
                 uploadStatus.textContent = file.name.substring(0, 12) + '...';
                 uploadStatus.style.color = '#dc2626';
+                
                 const reader = new FileReader();
                 reader.onload = function(event) {
-                    loadedImageDataUrl = event.target.result;
-                    const tempImg = new Image();
-                    tempImg.onload = function() {
-                        imgWidth = tempImg.width;
-                        imgHeight = tempImg.height;
-                        updatePreview();
-                    };
-                    tempImg.src = loadedImageDataUrl;
+                    originalImg = new Image();
+                    originalImg.onload = updatePreviewAndButtons;
+                    originalImg.src = event.target.result;
                 };
                 reader.readAsDataURL(file);
             }
         });
 
-        function updatePreview() {
-            if (!loadedImageDataUrl) return;
+        function updatePreviewAndButtons() {
+            if (!originalImg) return;
+            
             const w = parseFloat(widthCmInput.value) || 40;
             const h = parseFloat(heightCmInput.value) || 30;
             
@@ -360,6 +360,7 @@
             countDisplay.textContent = total;
             layoutDisplay.textContent = cols + 'x' + rows;
 
+            // 1. Оновлюємо сітку прев'ю
             previewGrid.innerHTML = '';
             const gridContainer = document.createElement('div');
             gridContainer.className = 'grid-container-layout';
@@ -372,53 +373,63 @@
                 gridContainer.appendChild(sheet);
             }
             previewGrid.appendChild(gridContainer);
-        }
 
-        widthCmInput.addEventListener('input', updatePreview);
-        heightCmInput.addEventListener('input', updatePreview);
-
-        // КНОПКА ГЕНЕРАЦІЇ PDF ЧЕРЕЗ БЕЗПЕЧНИЙ НАДІЙНИЙ ОБ'ЄКТ WINDOW
-        btnSplit.addEventListener('click', function(e) {
-            e.preventDefault();
-            if (!loadedImageDataUrl) { alert('Будь ласка, спочатку завантажте ескіз татуювання!'); return; }
+            // 2. ГЕНЕРУЄМО КНОПКИ ДЛЯ КОЖНОГО PNG АРКУША В ОКРЕМИЙ ТАЧ-КЛІК
+            downloadZone.innerHTML = '';
             
-            const wTarget = parseFloat(widthCmInput.value); 
-            const hTarget = parseFloat(heightCmInput.value);
-            if (!wTarget || !hTarget) return;
+            const wTargetMm = w * 10;
+            const hTargetMm = h * 10;
+            const scaleFactorX = originalImg.width / wTargetMm;
+            const scaleFactorY = originalImg.height / hTargetMm;
 
-            // Виклик строго за перевіреною мобільною схемою сховища скриптів
-            const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
-            
-            const wTargetMm = wTarget * 10;
-            const hTargetMm = hTarget * 10;
-            
-            const cols = Math.ceil(wTargetMm / PRINT_W_MM); 
-            const rows = Math.ceil(hTargetMm / PRINT_H_MM);
-
-            let pageCount = 0;
+            let count = 0;
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
-                    if (pageCount > 0) pdf.addPage();
-                    pageCount++;
+                    count++;
+                    const pageNum = count;
 
-                    const chunkX_mm = c * PRINT_W_MM;
-                    const chunkY_mm = r * PRINT_H_MM;
+                    const button = document.createElement('button');
+                    button.className = 'btn-png-download';
+                    button.textContent = 'ЗАВАНТАЖИТИ АРКУШ #' + pageNum;
+                    
+                    // Обробник кліку для генерації конкретного PNG аркуша
+                    button.addEventListener('click', function() {
+                        // Створюємо холст пропорцій стандартного А4 (300 DPI якості)
+                        const renderCanvas = document.createElement('canvas');
+                        renderCanvas.width = 2100; 
+                        renderCanvas.height = 2970;
+                        const rCtx = renderCanvas.getContext('2d');
 
-                    const posX_mm = MARGIN_MM - chunkX_mm;
-                    const posY_mm = MARGIN_MM - chunkY_mm;
+                        // Робимо фон білим — це поля нашого А4, які не продрукує трансферник
+                        rCtx.fillStyle = '#FFFFFF';
+                        rCtx.fillRect(0, 0, renderCanvas.width, renderCanvas.height);
 
-                    pdf.addImage(
-                        loadedImageDataUrl, 
-                        'JPEG', 
-                        posX_mm, 
-                        posY_mm, 
-                        wTargetMm, 
-                        hTargetMm
-                    );
+                        // Розраховуємо зміщення шматка на оригінальному малюнку
+                        const sx = (c * PRINT_W_MM) * scaleFactorX;
+                        const sy = (r * PRINT_H_MM) * scaleFactorY;
+                        const sWidth = PRINT_W_MM * scaleFactorX;
+                        const sHeight = PRINT_H_MM * scaleFactorY;
+
+                        // Вклеюємо ескіз СУТЬ ВСЕРЕДИНУ білих полів (відступ по 200px = 2см)
+                        rCtx.drawImage(originalImg, sx, sy, sWidth, sHeight, 200, 200, 1700, 2570);
+
+                        // Нативне мобільне скачування PNG
+                        const dataUrl = renderCanvas.toDataURL('image/png');
+                        const link = document.createElement('a');
+                        link.href = dataUrl;
+                        link.download = 'yyokai-page-' + pageNum + '.png';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    });
+
+                    downloadZone.appendChild(button);
                 }
             }
-            pdf.save('yyokai-transfer.pdf');
-        });
+        }
+
+        widthCmInput.addEventListener('input', updatePreviewAndButtons);
+        heightCmInput.addEventListener('input', updatePreviewAndButtons);
     </script>
 </body>
 </html>
