@@ -4,27 +4,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>YYO KAI</title>
-    <!-- Tailwind CSS -->
-    <script src="jsdelivr.net"></script>
-    <!-- Google Fonts -->
+    <!-- Шрифти Кіберпанк -->
     <link rel="preconnect" href="googleapis.com">
     <link rel="preconnect" href="gstatic.com" crossorigin>
     <link href="googleapis.com" rel="stylesheet">
-    <!-- jsPDF -->
+    <!-- Бібліотека нарізки PDF -->
     <script src="cloudflare.com"></script>
+    
     <style>
+        /* БАЗОВІ СТИЛІ І ФІКСАЦІЯ ЕКРАНУ М ОБІЛКИ */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
         body {
             font-family: 'Share Tech Mono', monospace;
             background-color: #060606;
             color: #a3a3a3;
-            /* Фіксуємо екран мобілки, щоб нічого не совалося */
             height: 100vh;
             height: 100dvh;
             overflow: hidden;
+            display: flex;
+            flex-col: column;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 16px;
+            position: relative;
         }
-        /* Глітч YYO */
-        .glitch-wrapper { position: relative; }
+
+        /* МАТРИЧНИЙ ФОН */
+        #matrix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.13;
+        }
+
+        /* ШАПКА */
+        header {
+            position: relative;
+            z-index: 50;
+            display: flex;
+            justify-content: space-between;
+            items-content: center;
+            align-items: center;
+            width: 100%;
+            height: 48px;
+        }
+
+        /* ІКОНКА ЗВУКУ ТА ЕКВАЛАЙЗЕР */
+        #audio-toggle {
+            background: none;
+            border: none;
+            color: #737373;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #audio-toggle:hover { color: #dc2626; }
+        #icon-eq {
+            display: none;
+            align-items: flex-end;
+            justify-content: space-between;
+            width: 20px;
+            height: 16px;
+        }
+        .eq-bar {
+            width: 2px;
+            background-color: #dc2626;
+            animation: bounce 0.5s ease-in-out infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { height: 3px; }
+            50% { height: 16px; }
+        }
+        .eq-bar:nth-child(1) { animation-delay: 0.1s; }
+        .eq-bar:nth-child(2) { animation-delay: 0.3s; }
+        .eq-bar:nth-child(3) { animation-delay: 0.5s; }
+        .eq-bar:nth-child(4) { animation-delay: 0.2s; }
+        .eq-bar:nth-child(5) { animation-delay: 0.4s; }
+        .eq-bar:nth-child(6) { animation-delay: 0.6s; }
+
+        /* ЛОГОТИП І ГЛІТЧ */
+        .glitch-wrapper {
+            text-align: center;
+            user-select: none;
+        }
         .glitch {
+            color: #fff;
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            line-height: 1;
             position: relative;
             animation: glitch-skew 1s infinite linear alternate-reverse;
         }
@@ -43,6 +123,14 @@
             clip: rect(85px, 450px, 140px, 0);
             animation: glitch-anim2 5s infinite linear alternate-reverse;
         }
+        .logo-sub {
+            font-size: 9px;
+            letter-spacing: 6px;
+            color: #dc2626;
+            display: block;
+            margin-top: 2px;
+            font-weight: bold;
+        }
         @keyframes glitch-anim {
             0% { clip: rect(31px, 9999px, 94px, 0); }
             50% { clip: rect(73px, 9999px, 29px, 0); }
@@ -53,144 +141,258 @@
             50% { clip: rect(111px, 9999px, 52px, 0); }
             100% { clip: rect(100px, 9999px, 118px, 0); }
         }
-        /* Еквалайзер */
-        @keyframes bounce {
-            0%, 100% { height: 3px; }
-            50% { height: 18px; }
-        }
-        .eq-bar { animation: bounce 0.5s ease-in-out infinite; }
-        .eq-bar:nth-child(1) { animation-delay: 0.1s; }
-        .eq-bar:nth-child(2) { animation-delay: 0.3s; }
-        .eq-bar:nth-child(3) { animation-delay: 0.5s; }
-        .eq-bar:nth-child(4) { animation-delay: 0.2s; }
-        .eq-bar:nth-child(5) { animation-delay: 0.4s; }
-        .eq-bar:nth-child(6) { animation-delay: 0.6s; }
 
+        /* БУРГЕР МЕНЮ */
+        #menu-toggle {
+            background: none; border: none;
+            width: 32px; height: 32px;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            gap: 5px; cursor: pointer;
+        }
+        .burger-line {
+            width: 22px; height: 2px;
+            background-color: #a3a3a3;
+            transition: all 0.3s ease;
+        }
+
+        /* ПОВНОЕКРАННЕ МЕНЮ */
+        #full-menu {
+            position: fixed; inset: 0;
+            background-color: rgba(6, 6, 6, 0.98);
+            z-index: 40; display: none;
+            flex-direction: column; justify-content: center;
+            align-items: center; gap: 24px;
+            font-size: 20px; letter-spacing: 4px;
+            backdrop-filter: blur(8px);
+        }
+        #full-menu a {
+            color: #a3a3a3; text-decoration: none; transition: color 0.3s;
+        }
+        #full-menu a:hover { color: #dc2626; }
+        #full-menu .active-link { color: #dc2626; border-b: 1px solid #dc2626; padding-bottom: 4px; }
+
+        /* ГОЛОВНИЙ КОНТЕНТНИЙ БЛОК */
+        main {
+            position: relative; z-index: 10;
+            flex-grow: 1; display: flex;
+            align-items: center; justify-content: center;
+            width: 100%; max-width: 400px;
+            margin: 12px auto; overflow: hidden;
+        }
+        .app-container {
+            width: 100%; height: 100%; max-height: 76vh;
+            background-color: rgba(10, 10, 10, 0.95);
+            border: 1px solid #1a1a1a;
+            padding: 16px; display: flex;
+            flex-direction: column; justify-content: space-between;
+            gap: 14px; overflow-y: auto;
+            scrollbar-width: none; /* Приховуємо скролл */
+        }
+        .app-container::-webkit-scrollbar { display: none; }
+
+        .tool-title {
+            font-size: 13px; color: #dc2626;
+            font-weight: bold; letter-spacing: 2px;
+            border-bottom: 1px solid #1a1a1a;
+            padding-bottom: 6px;
+        }
+
+        /* КНОПКА ЗАВАНТАЖЕННЯ ФАЙЛУ */
+        .upload-box {
+            border: 1px dashed #262626;
+            background-color: #030303;
+            padding: 16px; text-align: center;
+            position: relative; cursor: pointer;
+        }
+        .upload-box:hover { border-color: #dc2626; }
+        .upload-box input {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            opacity: 0; cursor: pointer;
+        }
+        .upload-box span { font-size: 11px; color: #525252; letter-spacing: 1px; text-transform: uppercase; }
+
+        /* ІНПУТИ РОЗМІРІВ */
+        .inputs-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+        }
+        .input-group label {
+            display: block; font-size: 9px; color: #525252;
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;
+        }
         .dark-input {
-            background: #0c0c0c;
-            border: 1px solid #1f1f1f;
-            color: #fff;
-            text-align: center;
+            width: 100%; background-color: #0c0c0c;
+            border: 1px solid #1f1f1f; color: #fff;
+            padding: 8px; font-size: 13px;
+            text-align: center; font-family: inherit;
         }
-        .dark-input:focus {
-            border-color: #dc2626;
-            outline: none;
+        .dark-input:focus { border-color: #dc2626; outline: none; }
+
+        /* ПРЕВ'Ю СХЕМИ ЛИСТІВ */
+        .preview-box {
+            border: 1px solid #1a1a1a; background-color: #020202;
+            padding: 10px; height: 130px;
+            display: flex; flex-direction: column;
+            justify-content: space-between; position: relative;
         }
-        /* Приховуємо дефолтний скроллбар */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .preview-label { position: absolute; top: 4px; right: 8px; font-size: 8px; color: #404040; text-transform: uppercase; }
+        #preview-grid {
+            flex-grow: 1; display: flex;
+            align-items: center; justify-content: center; padding: 4px;
+        }
+        .preview-placeholder { font-size: 10px; color: #404040; text-transform: uppercase; text-align: center; }
+        
+        /* СУМАРНА ІНФОРМАЦІЯ ПО СІТЦІ */
+        .grid-info-footer {
+            border-top: 1px solid #1a1a1a; pt: 6px; padding-top: 6px;
+            font-size: 9px; color: #525252;
+            display: flex; justify-content: space-between; text-transform: uppercase;
+        }
+        .grid-info-footer strong { color: #dc2626; }
+
+        /* ЛІВИЙ НИЖНІЙ ТЕХНІЧНИЙ БЛОК */
+        .tech-info-box {
+            background-color: #050505; border: 1px solid #121212; padding: 10px;
+        }
+        .tech-title { font-size: 10px; color: #dc2626; font-weight: bold; letter-spacing: 1px; margin-bottom: 4px; }
+        .tech-text { font-size: 10px; color: #525252; line-height: 1.4; text-transform: uppercase; }
+        .tech-text span { color: #d4d4d4; }
+
+        /* ГОЛОВНА КНОПКА ДІЇ */
+        #btn-split {
+            width: 100%; background-color: #991b1b;
+            color: #fff; font-weight: bold;
+            padding: 12px; border: none;
+            font-size: 11px; letter-spacing: 2px;
+            text-transform: uppercase; cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        #btn-split:active { transform: scale(0.99); background-color: #dc2626; }
+
+        /* ВІЗУАЛЬНА СІТКА А4 В ПРЕВ'Ю */
+        .grid-container-layout {
+            display: grid; gap: 2px; background-color: #000;
+            width: 100%; height: 100%; max-height: 90px; aspect-ratio: 16/9;
+        }
+        .preview-sheet {
+            border: 1px solid #450a0a; background-color: rgba(69, 10, 10, 0.1);
+            color: #ef4444; font-size: 8px;
+            display: flex; align-items: center; justify-content: center; font-weight: bold;
+        }
+
+        /* ФУТЕР СТОРІНКИ */
+        footer {
+            position: relative; z-index: 10;
+            height: 24px; display: flex;
+            justify-content: space-between; align-items: center;
+            font-size: 8px; color: #404040;
+            letter-spacing: 2px; border-top: 1px solid #0f0f0f;
+            padding-top: 4px; text-transform: uppercase;
+        }
     </style>
 </head>
-<body class="relative flex flex-col justify-between p-4 select-none touch-none">
+<body>
 
-    <!-- Матричний фон (Задній план) -->
-    <canvas id="matrix" class="absolute inset-0 w-full h-full pointer-events-none z-0" style="opacity: 0.13;"></canvas>
+    <!-- Матричний фон -->
+    <canvas id="matrix"></canvas>
 
-    <!-- ШАПКА -->
-    <header class="relative z-50 flex justify-between items-center w-full h-12">
-        <!-- ЛІВОРУЧ: Звук -->
-        <button id="audio-toggle" class="flex items-center justify-center w-8 h-8 text-neutral-500 hover:text-red-500 transition-colors focus:outline-none">
-            <svg id="icon-sound" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
+    <!-- НАВІГАЦІЙНА ШАПКА -->
+    <header>
+        <!-- Звук (Еквалайзер) -->
+        <button id="audio-toggle" aria-label="Toggle Audio">
+            <svg id="icon-sound" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
             </svg>
-            <div id="icon-eq" class="hidden flex items-end justify-between w-5 h-4 gap-[2px]">
-                <div class="eq-bar w-[2px] bg-red-600"></div>
-                <div class="eq-bar w-[2px] bg-red-600"></div>
-                <div class="eq-bar w-[2px] bg-red-600"></div>
-                <div class="eq-bar w-[2px] bg-red-600"></div>
-                <div class="eq-bar w-[2px] bg-red-600"></div>
-                <div class="eq-bar w-[2px] bg-red-600"></div>
+            <div id="icon-eq">
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
             </div>
         </button>
 
-        <!-- ПОСЕРЕДИНІ: Логотип -->
-        <div class="glitch-wrapper text-center">
-            <h1 class="glitch text-2xl font-black tracking-widest text-white leading-none" data-text="YYO">YYO</h1>
-            <span class="text-[9px] tracking-[0.6em] text-red-600 block mt-0.5 font-bold">KAI</span>
+        <!-- Логотип YYO KAI -->
+        <div class="glitch-wrapper">
+            <div class="glitch" data-text="YYO">YYO</div>
+            <span class="logo-sub">KAI</span>
         </div>
 
-        <!-- ПРАВОРУЧ: Бургер -->
-        <button id="menu-toggle" class="w-8 h-8 flex flex-col justify-center items-center gap-1 focus:outline-none">
-            <span id="line1" class="w-5 h-[2px] bg-neutral-400 transition-all duration-300"></span>
-            <span id="line2" class="w-5 h-[2px] bg-neutral-400 transition-all duration-300"></span>
-            <span id="line3" class="w-5 h-[2px] bg-neutral-400 transition-all duration-300"></span>
+        <!-- Анімований Бургер -->
+        <button id="menu-toggle" aria-label="Toggle Menu">
+            <span id="line1" class="burger-line"></span>
+            <span id="line2" class="burger-line"></span>
+            <span id="line3" class="burger-line"></span>
         </button>
     </header>
 
-    <!-- Меню -->
-    <nav id="full-menu" class="fixed inset-0 bg-neutral-950/98 z-40 hidden flex-col justify-center items-center gap-6 text-xl tracking-widest backdrop-blur-md">
-        <a href="#" class="hover:text-red-500 text-neutral-300">ГОЛОВНА</a>
-        <a href="#" class="hover:text-red-500 text-neutral-300">ЗАПИСАТИСЬ</a>
-        <a href="#" class="text-red-600 border-b border-red-950 pb-1">TATTOO SPLITTER</a>
+    <!-- Меню по кліку -->
+    <nav id="full-menu">
+        <a href="#">ГОЛОВНА</a>
+        <a href="#">ЗАПИСАТИСЬ</a>
+        <a href="#" class="active-link">TATTOO SPLITTER</a>
     </nav>
 
-    <!-- ГОЛОВНИЙ КОНТЕНТ (Строго в один екран) -->
-    <main class="relative z-10 flex-grow flex flex-col justify-center items-center w-full max-w-md mx-auto my-2 overflow-hidden touch-auto">
-        <div class="w-full bg-[#0a0a0a]/90 border border-neutral-900 p-4 flex flex-col justify-between gap-4 h-full max-h-[78vh] overflow-y-auto no-scrollbar">
+    <!-- ЦЕНТРАЛЬНИЙ РОБОЧИЙ ІНТЕРФЕЙС -->
+    <main>
+        <div class="app-container">
             
-            <!-- Шапка інструменту -->
-            <div class="border-b border-neutral-900 pb-2">
-                <h2 class="text-xs uppercase tracking-wider text-red-600 font-bold">// SPLITTER A4</h2>
+            <div class="tool-title">// SPLITTER A4</div>
+
+            <!-- Зона файлу -->
+            <div class="upload-box">
+                <input type="file" id="sketch-upload" accept="image/*">
+                <span id="upload-status">Завантажити контур ескізу</span>
             </div>
 
-            <!-- Завантаження -->
-            <div>
-                <div class="border border-dashed border-neutral-800 bg-[#040404] p-4 text-center relative rounded-sm">
-                    <input type="file" id="sketch-upload" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
-                    <span id="upload-status" class="text-[11px] text-neutral-500 uppercase tracking-wider">Завантажити контур ескізу</span>
+            <!-- Введення розмірів тату -->
+            <div class="inputs-grid">
+                <div class="input-group">
+                    <label>Ширина (см)</label>
+                    <input type="number" id="width-cm" value="40" class="dark-input">
                 </div>
-            </div>
-
-            <!-- Інпути розмірів -->
-            <div class="grid grid-cols-2 gap-3">
-                <div>
-                    <label class="block text-[10px] uppercase text-neutral-500 tracking-wider mb-1">Ширина (см)</label>
-                    <input type="number" id="width-cm" value="40" class="dark-input w-full p-2 text-xs rounded-sm">
-                </div>
-                <div>
-                    <label class="block text-[10px] uppercase text-neutral-500 tracking-wider mb-1">Висота (см)</label>
-                    <input type="number" id="height-cm" value="30" class="dark-input w-full p-2 text-xs rounded-sm">
+                <div class="input-group">
+                    <label>Висота (см)</label>
+                    <input type="number" id="height-cm" value="30" class="dark-input">
                 </div>
             </div>
 
-            <!-- Схема результату (Прев'ю) -->
-            <div class="border border-neutral-900 bg-[#030303] p-2 flex flex-col justify-between h-36 relative">
-                <div class="absolute top-1 right-2 text-[8px] text-neutral-600 uppercase">Схема листів</div>
-                
-                <div id="preview-grid" class="flex-grow flex items-center justify-center p-2">
-                    <p class="text-[10px] text-neutral-600 uppercase text-center">Очікування файлу...</p>
+            <!-- Інтерактивне прев'ю розкладки -->
+            <div class="preview-box">
+                <div class="preview-label">Схема сторінок</div>
+                <div id="preview-grid">
+                    <div class="preview-placeholder">Очікування завантаження контуру...</div>
                 </div>
-
-                <div class="border-t border-neutral-900 pt-1 text-[9px] text-neutral-500 flex justify-between uppercase">
-                    <span>Листів: <strong class="text-red-600 id-count">-</strong></span>
-                    <span>Сітка: <strong class="text-red-600 id-layout">-</strong></span>
+                <div class="grid-info-footer">
+                    <span>Листів: <strong class="id-count">-</strong></span>
+                    <span>Сітка: <strong class="id-layout">-</strong></span>
                 </div>
             </div>
 
-            <!-- Технічний опис (Нижній лівий текст, тепер чітко застилізований) -->
-            <div class="bg-[#050505] border border-neutral-950 p-2.5 rounded-sm">
-                <div class="text-[10px] text-red-600 font-bold uppercase tracking-wider mb-1">■ ТЕХНІЧНІ УМОВИ ЗШИВАННЯ:</div>
-                <p class="text-[10px] text-neutral-500 leading-normal uppercase">
-                    Автоматичний напуск <span class="text-neutral-300">2 см</span> додано по краях для безшовного склеювання трафарету липкою стрічкою.
+            <!-- Стилізований технічний текст ліворуч знизу -->
+            <div class="tech-info-box">
+                <div class="tech-title">■ ТЕХНІЧНІ УМОВИ ЗШИВАННЯ:</div>
+                <p class="tech-text">
+                    Автоматичний напуск <span>2 см</span> закладено по краях для безшовного склеювання трафарету стрічкою.
                 </p>
             </div>
 
-            <!-- Кнопка -->
-            <button id="btn-split" class="w-full bg-red-800 hover:bg-red-700 text-white font-bold py-2.5 uppercase tracking-widest text-xs rounded-sm transition-all active:scale-[0.98]">
-                Завантажити PDF
-            </button>
+            <!-- Кнопка генерації PDF -->
+            <button id="btn-split">Завантажити PDF для друку</button>
 
         </div>
     </main>
 
-    <!-- ФУТЕР -->
-    <footer class="relative z-10 w-full h-6 flex justify-between items-center text-[9px] text-neutral-600 uppercase tracking-widest border-t border-neutral-950 pt-2">
+    <!-- ФУТЕР СТОРІНКИ -->
+    <footer>
         <div>© YYO KAI</div>
-        <div>TATTOO TECH</div>
+        <div>STAY DARK // TATTOO TOOL</div>
     </footer>
 
     <script>
-        // --- 1. ЯПОНСЬКИЙ МАТРИЧНИЙ КОД ---
+        // --- 1. ЯПОНСЬКИЙ МАТРИЧНИЙ КОД (ВІДПРАЦЬОВУЄ НА ЧИСТОМУ CANVAS) ---
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -204,9 +406,9 @@
         let rainDrops = Array(Math.floor(columns)).fill(1);
 
         function drawMatrix() {
-            ctx.fillStyle = 'rgba(6, 6, 6, 0.06)';
+            ctx.fillStyle = 'rgba(6, 6, 6, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#991b1b';
+            ctx.fillStyle = '#991b1b'; // Темно-червоний маричний колір
             ctx.font = fontSize + 'px monospace';
             for (let i = 0; i < rainDrops.length; i++) {
                 const text = alphabet[Math.floor(Math.random() * alphabet.length)];
@@ -215,9 +417,9 @@
                 rainDrops[i]++;
             }
         }
-        setInterval(drawMatrix, 40);
+        setInterval(drawMatrix, 35);
 
-        // --- 2. ЕКВАЛАЙЗЕР ---
+        // --- 2. ЕКВАЛАЙЗЕР (БЕЗ ЖОДНИХ КВАДРАТІВ) ---
         const audioBtn = document.getElementById('audio-toggle');
         const iconSound = document.getElementById('icon-sound');
         const iconEq = document.getElementById('icon-eq');
@@ -225,11 +427,11 @@
 
         audioBtn.addEventListener('click', () => {
             isPlaying = !isPlaying;
-            if (isPlaying) { iconSound.classList.add('hidden'); iconEq.classList.remove('hidden'); }
-            else { iconSound.classList.remove('hidden'); iconEq.classList.add('hidden'); }
+            if (isPlaying) { iconSound.style.display = 'none'; iconEq.style.display = 'flex'; }
+            else { iconSound.style.display = 'block'; iconEq.style.display = 'none'; }
         });
 
-        // --- 3. БУРГЕР МЕНЮ ---
+        // --- 3. БУРГЕР МЕНЮ ПЛАВНИЙ ХРЕСТИК ---
         const menuToggle = document.getElementById('menu-toggle');
         const fullMenu = document.getElementById('full-menu');
         const l1 = document.getElementById('line1');
@@ -240,15 +442,19 @@
         menuToggle.addEventListener('click', () => {
             menuOpen = !menuOpen;
             if (menuOpen) {
-                fullMenu.classList.remove('hidden'); fullMenu.classList.add('flex');
-                l1.style.transform = 'rotate(45deg) translate(4px, 4px)'; l2.style.opacity = '0'; l3.style.transform = 'rotate(-45deg) translate(4px, -4px)';
+                fullMenu.style.display = 'flex';
+                l1.style.transform = 'rotate(45deg) translate(5px, 5px)';
+                l2.style.opacity = '0';
+                l3.style.transform = 'rotate(-45deg) translate(5px, -5px)';
             } else {
-                fullMenu.classList.add('hidden'); fullMenu.classList.remove('flex');
-                l1.style.transform = 'none'; l2.style.opacity = '1'; l3.style.transform = 'none';
+                fullMenu.style.display = 'none';
+                l1.style.transform = 'none';
+                l2.style.opacity = '1';
+                l3.style.transform = 'none';
             }
         });
 
-        // --- 4. СПЛІТЕР ---
+        // --- 4. МАТЕМАТИКА СПЛІТЕРА І ГЕНЕРАЦІЯ PDF ДОКУМЕНТА ---
         const sketchUpload = document.getElementById('sketch-upload');
         const uploadStatus = document.getElementById('upload-status');
         const widthCmInput = document.getElementById('width-cm');
@@ -264,7 +470,7 @@
             const file = e.target.files[0];
             if(file) {
                 uploadStatus.textContent = file.name.substring(0, 14) + '...';
-                uploadStatus.classList.add('text-red-500');
+                uploadStatus.style.color = '#dc2626';
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     loadedImage = new Image();
@@ -278,7 +484,7 @@
         function updatePreview() {
             const w = parseFloat(widthCmInput.value) || 40;
             const h = parseFloat(heightCmInput.value) || 30;
-            const EFF_W = 19.0; const EFF_H = 27.7;
+            const EFF_W = 19.0; const EFF_H = 27.7; // Розрахунок під корисну площу А4
             const cols = Math.ceil(w / EFF_W); const rows = Math.ceil(h / EFF_H);
             const total = cols * rows;
 
@@ -287,13 +493,13 @@
 
             previewGrid.innerHTML = '';
             const gridContainer = document.createElement('div');
-            gridContainer.className = 'grid gap-1 p-1 bg-black border border-neutral-900 w-full h-full max-h-[110px] aspect-video';
+            gridContainer.className = 'grid-container-layout';
             gridContainer.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
             gridContainer.style.gridTemplateRows = `repeat(${rows}, minmax(0, 1fr))`;
 
             for (let i = 1; i <= total; i++) {
                 const sheet = document.createElement('div');
-                sheet.className = 'border border-red-950 bg-red-950/10 text-red-500 text-[8px] flex items-center justify-center font-bold';
+                sheet.className = 'preview-sheet';
                 sheet.textContent = `A4 #${i}`;
                 gridContainer.appendChild(sheet);
             }
@@ -303,7 +509,7 @@
         [widthCmInput, heightCmInput].forEach(input => input.addEventListener('input', () => { if(loadedImage) updatePreview(); }));
 
         btnSplit.addEventListener('click', async () => {
-            if (!loadedImage) { alert('Завантажте контур!'); return; }
+            if (!loadedImage) { alert('Завантажте контур зображення!'); return; }
             const wTarget = parseFloat(widthCmInput.value); const hTarget = parseFloat(heightCmInput.value);
             if (!wTarget || !hTarget) return;
 
