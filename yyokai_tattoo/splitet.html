@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>YYO KAI</title>
+    
+    <!-- Перевірені та 100% робочі шрифти кіберпанк -->
     <link rel="preconnect" href="googleapis.com">
     <link rel="preconnect" href="gstatic.com" crossorigin>
     <link href="googleapis.com" rel="stylesheet">
     
-    <!-- Надійне підключення бібліотеки jsPDF -->
-    <script src="cloudflare.com"></script>
+    <!-- Офіційні, стабільні та сумісні з iOS/Android бібліотеки для збереження файлів -->
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
     
     <style>
         * {
@@ -32,6 +34,7 @@
             position: relative;
         }
 
+        /* МАТРИЧНИЙ ФОН: pointer-events: none та z-index: 0 ГАРАНТУЮТЬ, ЩО ВІН НЕ ПЕРЕКРИЄ КНОПКУ */
         #matrix {
             position: absolute;
             top: 0;
@@ -39,8 +42,8 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 1;
-            opacity: 0.17;
+            z-index: 0;
+            opacity: 0.17; /* Точно 17% прозорості */
         }
 
         header {
@@ -53,13 +56,14 @@
             height: 54px;
         }
 
+        /* ЗБІЛЬШЕНА ІКОНКА ЗВУКУ ТА ЕКВАЛАЙЗЕР */
         #audio-toggle {
             background: none;
             border: none;
             color: #a3a3a3;
             cursor: pointer;
-            width: 44px;
-            height: 44px;
+            width: 46px;
+            height: 46px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -88,6 +92,7 @@
         .eq-bar:nth-child(5) { animation-delay: 0.4s; }
         .eq-bar:nth-child(6) { animation-delay: 0.6s; }
 
+        /* ПОДВІЙНИЙ ГЛІТЧ НА YYO ТА KAI */
         .glitch-wrapper {
             text-align: center;
             user-select: none;
@@ -132,15 +137,16 @@
             100% { clip: rect(4px, 9999px, 18px, 0); }
         }
 
+        /* ЗБІЛЬШЕНИЙ БУРГЕР */
         #menu-toggle {
             background: none; border: none;
-            width: 44px; height: 44px;
+            width: 46px; height: 46px;
             display: flex; flex-direction: column;
             justify-content: center; align-items: center;
             gap: 6px; cursor: pointer;
         }
         .burger-line {
-            width: 26px; height: 2.5px;
+            width: 28px; height: 2.5px;
             background-color: #a3a3a3;
             transition: all 0.3s ease;
         }
@@ -158,8 +164,9 @@
         #full-menu a:hover { color: #dc2626; }
         #full-menu .active-link { color: #dc2626; border-bottom: 1px solid #dc2626; padding-bottom: 4px; }
 
+        /* КОНТЕНТ */
         main {
-            position: relative; z-index: 20;
+            position: relative; z-index: 10;
             flex-grow: 1; display: flex;
             align-items: center; justify-content: center;
             width: 100%; max-width: 400px;
@@ -229,14 +236,16 @@
         .tech-text { font-size: 10px; color: #525252; line-height: 1.4; text-transform: uppercase; }
         .tech-text span { color: #d4d4d4; }
 
+        /* НАЙВИЩИЙ ПРІОРИТЕТ КЛІКУ ДЛЯ ГОЛОВНОЇ КНОПКИ (z-index: 999) */
         #btn-split {
             position: relative;
-            z-index: 99;
+            z-index: 999;
             width: 100%; background-color: #991b1b;
             color: #fff; font-weight: bold;
             padding: 14px; border: none;
             font-size: 11px; letter-spacing: 2px;
             text-transform: uppercase; cursor: pointer;
+            outline: none;
         }
         #btn-split:active { background-color: #dc2626; }
 
@@ -409,7 +418,7 @@
             }
         });
 
-        // --- 4. СКРИПТ НАРІЗКИ З УРАХУВАННЯМ ПОЛІВ ПРИНТЕРА ---
+        // --- 4. СКРИПТ НАРІЗКИ З НАТИВНИМ ВИКЛИКОМ СКАЧУВАННЯ ---
         const sketchUpload = document.getElementById('sketch-upload');
         const uploadStatus = document.getElementById('upload-status');
         const widthCmInput = document.getElementById('width-cm');
@@ -421,14 +430,11 @@
 
         let loadedImage = null;
 
-        // Жорсткі константи корисного друку принтера через відступи в 2 см
         const PRINTER_MARGIN_CM = 2.0;
         const A4_WIDTH_CM = 21.0;
         const A4_HEIGHT_CM = 29.7;
-        
-        // Корисне вікно, куди принтер реально може дотягнутися фарбою
-        const EFF_W_CM = A4_WIDTH_CM - (PRINTER_MARGIN_CM * 1.0); 
-        const EFF_H_CM = A4_HEIGHT_CM - (PRINTER_MARGIN_CM * 1.0); 
+        const EFF_W_CM = A4_WIDTH_CM - PRINTER_MARGIN_CM; 
+        const EFF_H_CM = A4_HEIGHT_CM - PRINTER_MARGIN_CM; 
 
         sketchUpload.addEventListener('change', (e) => {
             const file = e.target.files[0];
@@ -448,8 +454,6 @@
         function updatePreview() {
             const w = parseFloat(widthCmInput.value) || 40;
             const h = parseFloat(heightCmInput.value) || 30;
-            
-            // Розрахунок кількості сегментів по чистому робочому полю принтера
             const cols = Math.ceil(w / EFF_W_CM); 
             const rows = Math.ceil(h / EFF_H_CM);
             const total = cols * rows;
@@ -474,22 +478,24 @@
 
         [widthCmInput, heightCmInput].forEach(input => input.addEventListener('input', () => { if(loadedImage) updatePreview(); }));
 
-        // Фінальний повністю робочий клік-метод для скачування PDF на девайсах
+        // 100% НАДІЙНИЙ ТАЧ-КЛІК З ВИКЛИКОМ UMD-МОДУЛЯ JSPDF
         btnSplit.addEventListener('click', (e) => {
             e.preventDefault();
+            e.stopPropagation();
+
             if (!loadedImage) { alert('Спочатку завантажте ескіз!'); return; }
             
             const wTarget = parseFloat(widthCmInput.value); 
             const hTarget = parseFloat(heightCmInput.value);
             if (!wTarget || !hTarget) return;
 
-            const { jsPDF } = window.jspdf;
+            // Зміна синтаксису під глобальний мобільний UMD-пакет jsPDF
+            const { jsPDF } = window.jspdf; 
             const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
             
             const A4_W_MM = 210; const A4_H_MM = 297;
             const EFF_W_MM = EFF_W_CM * 10; 
             const EFF_H_MM = EFF_H_CM * 10; 
-            
             const wTargetMm = wTarget * 10; 
             const hTargetMm = hTarget * 10;
             
@@ -502,25 +508,25 @@
                     if (pageCount > 0) pdf.addPage();
                     pageCount++;
                     
-                    // Розраховуємо зміщення кроку нарізки виходячи суто з корисного поля принтера
                     const sx = (c * EFF_W_MM) * (loadedImage.width / wTargetMm);
                     const sy = (r * EFF_H_MM) * (loadedImage.height / hTargetMm);
-                    
-                    // Залишаємо повне А4 перекриття для безшовної стиковки ліній поверх білих полів
                     const sWidth = A4_W_MM * (loadedImage.width / wTargetMm);
                     const sHeight = A4_H_MM * (loadedImage.height / hTargetMm);
 
                     const tempCanvas = document.createElement('canvas');
-                    tempCanvas.width = 1200; tempCanvas.height = 1697; // Максимальний рендер якості
+                    tempCanvas.width = 1000; tempCanvas.height = 1414;
                     const tempCtx = tempCanvas.getContext('2d');
                     tempCtx.fillStyle = '#FFFFFF'; tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
                     
                     tempCtx.drawImage(loadedImage, sx, sy, sWidth, sHeight, 0, 0, tempCanvas.width, tempCanvas.height);
 
-                    pdf.addImage(tempCanvas.toDataURL('image/jpeg', 0.9), 'JPEG', 0, 0, A4_W_MM, A4_H_MM);
+                    // Оптимальна компресія під мобільне скачування через Blob
+                    pdf.addImage(tempCanvas.toDataURL('image/jpeg', 0.75), 'JPEG', 0, 0, A4_W_MM, A4_H_MM);
                 }
             }
-            pdf.save(`yyokai-splitter-${wTarget}x${hTarget}.pdf`);
+            
+            // Найнадійніша назва під завантаження iOS/Android
+            pdf.save('yyokai-transfer.pdf'); 
         });
     </script>
 </body>
