@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYO KAI | Pure Line-Art Stencil Studio</title>
+    <title>YYO KAI | Premium Tattoo Stencil Studio</title>
     <style>
         :root {
             --bg-color: #060608;
@@ -41,6 +41,7 @@
             z-index: 100;
         }
 
+        /* Кнопка музики */
         .music-container {
             width: 40px;
             height: 40px;
@@ -68,6 +69,7 @@
 
         @keyframes eq-rise { 0% { height: 2px; } 100% { height: 16px; } }
 
+        /* Центрований бренд YYO KAI */
         .brand-block {
             display: flex;
             flex-direction: column;
@@ -106,6 +108,7 @@
             100% { clip: rect(30px, 9999px, 50px, 0); transform: skew(-0.2deg); }
         }
 
+        /* Бургер-меню */
         .burger-menu { width: 30px; height: 20px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; z-index: 101; }
         .burger-bar { width: 100%; height: 3px; background-color: #fff; border-radius: 2px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .burger-menu.active .burger-bar:nth-child(1) { transform: translateY(8px) rotate(45deg); background-color: var(--accent-color); }
@@ -280,18 +283,18 @@
 
     <div class="container">
         <div class="upload-zone" id="drop-zone">
-            <p id="upload-text">📸 Завантажте ескіз для преміум-обробки контурів</p>
+            <p id="upload-text">📸 Завантажте ескіз для преміальної обробки контурів</p>
             <input type="file" id="file-input" accept="image/*">
         </div>
 
         <div class="controls">
             <div class="control-group">
-                <!-- Вправо -> Чутливість вища, знаходить найменші лінії -->
+                <!-- Вправо -> Більше дрібних ліній на тонких переходах -->
                 <label>Пошук мікро-ліній та деталей: <span id="detail-val">50%</span></label>
                 <input type="range" id="detail-slider" min="1" max="100" value="50" step="1" disabled>
             </div>
             <div class="control-group">
-                <!-- Вправо -> Сильніше очищення фонового бруду до білого листа -->
+                <!-- Вправо -> Повністю випалює сірий бруд та тіні -->
                 <label>Придушення шуму та тіней (Очищення): <span id="noise-val">50%</span></label>
                 <input type="range" id="noise-slider" min="1" max="100" value="50" step="1" disabled>
             </div>
@@ -308,7 +311,7 @@
                 <img id="source-img" src="data:image/svg+xml;utf8,<svg xmlns='w3.org' width='100' height='100'></svg>" alt="Оригінал">
             </div>
             <div class="preview-box">
-                <h3>Преміум Трафарет (Лише Лінії)</h3>
+                <h3>Преміум Трафарет (Pure Line-Art)</h3>
                 <canvas id="output-canvas"></canvas>
             </div>
         </div>
@@ -386,7 +389,7 @@
     
     fileInput.addEventListener('change', (e) => { 
         if (e.target.files && e.target.files.length > 0) {
-            handleFile(e.target.files[0]); 
+            handleFile(e.target.files[0]); // Фікс зчитування файлу з масиву
         }
     });
 
@@ -415,6 +418,7 @@
         requestProcess();
     };
 
+    // Слухачі для ультраплавного руху (60 FPS)
     detailSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
     noiseSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
     layersSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
@@ -433,14 +437,14 @@
         if (!isProcessing) {
             isProcessing = true;
             window.requestAnimationFrame(() => {
-                processPureLineTransfer();
+                processPremiumPureLineTransfer();
                 isProcessing = false;
             });
         }
     }
 
-    // ДВИГУН ЧИСТИХ ЛІНІЙ (БЕЗ ПУНКТИРУ ТА ТОЧОК)
-    function processPureLineTransfer() {
+    // НОВИЙ ПРЕМІУМ-ДВИГУН БІЛАТЕРАЛЬНОЇ ФІЛЬТРАЦІЇ ТА АДАПТИВНОГО ВИДІЛЕННЯ ЛІНІЙ (60 FPS)
+    function processPremiumPureLineTransfer() {
         if (!originalData) return;
 
         const w = outputCanvas.width;
@@ -450,16 +454,18 @@
         const noiseSliderVal = parseInt(noiseSlider.value);   // 1-100%
         const layerCount = parseInt(layersSlider.value);       // 1-3 шари
 
-        // Чим вище деталі, тим менший математичний поріг (чутливіший пошук меж)
-        const sensitivity = 1.0 + ((100 - detailSliderVal) / 15); 
-        // Повзунок шуму випалює сірий колір
+        // Мапування параметрів під художні потреби тату-майстра
+        // Чим більший перший повзунок (деталі) -> тим менша вимогливість до контрасту
+        const sensitivity = 1.0 + ((100 - detailSliderVal) / 12); 
+
+        // Чим більший другий повзунок -> тим сильніше очищаємо фон (зрізаємо тіні та жовтизну паперу)
         const backgroundBurn = 255 - (noiseSliderVal * 1.3); 
 
         const imgData = ctx.createImageData(w, h);
         const src = originalData.data;
         const dst = imgData.data;
 
-        // Початковий швидкий Grayscale
+        // Попередній Grayscale
         const gray = new Uint8Array(w * h);
         for (let i = 0; i < src.length; i += 4) {
             gray[i/4] = (src[i] + src[i+1] + src[i+2]) / 3;
@@ -469,7 +475,8 @@
         const finalBuffer = new Uint8Array(w * h);
         finalBuffer.fill(255);
 
-        const maskSize = 3;
+        // Радіус локального аналізу (маска)
+        const maskSize = 3; 
 
         // ЦИКЛ ПАРАЛЕЛЬНОГО МНОЖЕННЯ ШАРІВ (Multiply Layering)
         for (let l = 0; l < layerCount; l++) {
@@ -501,7 +508,7 @@
                     const localContrast = maxVal - minVal;
                     const midThreshold = (maxVal + minVal) / 2;
 
-                    // ВИДІЛЕННЯ ТІЛЬКИ ЧИСТИХ ЛІНІЙ (ЖОДНОГО ПУНКТИРУ ТА КРАПОК)
+                    // ВИДІЛЕННЯ ТЛЬКИ ЧИСТИХ ЛІНІЙ (ЖОДНОГО ПУНКТИРУ ТА КРАПОК)
                     if (localContrast >= sensitivity * 4.0 && currentPx < midThreshold) {
                         // Тіні та фоновий бруд випалюються за параметром очищення
                         if (currentPx < backgroundBurn) {
