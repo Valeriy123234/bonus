@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYO KAI | Premium Tattoo Stencil Engine</title>
+    <title>YYO KAI | Ultimate Tattoo Stencil Engine</title>
     <style>
         :root {
             --bg-color: #060608;
@@ -317,11 +317,14 @@
     </div>
 
 <script>
+    // Твоя персональна фонова музика
+    const bgMusic = new Audio('track.mp3'); 
+    bgMusic.loop = true; 
+    bgMusic.volume = 0.3; // Гучність на 30%
+
+    // Звук кліку по інтерфейсу
     let audioCtx = null;
-    let synthInterval = null;
-
     function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
-
     function playClickSound() {
         initAudio(); if (!audioCtx) return;
         const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
@@ -332,21 +335,6 @@
         osc.connect(gain); gain.connect(audioCtx.destination);
         osc.start(); osc.stop(audioCtx.currentTime + 0.1);
     }
-
-    function startMusicSynth() {
-        initAudio(); if (!audioCtx) return;
-        let step = 0;
-        synthInterval = setInterval(() => {
-            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
-            if (step % 4 === 0) { osc.frequency.setValueAtTime(55, audioCtx.currentTime); gain.gain.setValueAtTime(0.25, audioCtx.currentTime); }
-            else { osc.frequency.setValueAtTime(130, audioCtx.currentTime); gain.gain.setValueAtTime(0.06, audioCtx.currentTime); }
-            osc.type = 'triangle'; gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.2);
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.start(); osc.stop(audioCtx.currentTime + 0.2); step++;
-        }, 260);
-    }
-
-    function stopMusicSynth() { if (synthInterval) { clearInterval(synthInterval); synthInterval = null; } }
 
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('file-input');
@@ -367,10 +355,16 @@
     let originalData = null;
     let isProcessing = false;
 
+    // Логіка запуску твоєї музики та еквалайзера
     function toggleMusic() {
-        const musicBtn = document.getElementById('music-btn'); initAudio();
-        if (!synthInterval) { startMusicSynth(); musicBtn.classList.add('playing'); }
-        else { stopMusicSynth(); musicBtn.classList.remove('playing'); }
+        const musicBtn = document.getElementById('music-btn');
+        if (bgMusic.paused) {
+            bgMusic.play().catch(() => {});
+            musicBtn.classList.add('playing');
+        } else {
+            bgMusic.pause();
+            musicBtn.classList.remove('playing');
+        }
     }
 
     function toggleMenu() {
@@ -380,12 +374,7 @@
     }
 
     dropZone.addEventListener('click', () => fileInput.click());
-    
-    fileInput.addEventListener('change', (e) => { 
-        if (e.target.files && e.target.files.length > 0) {
-            handleFile(e.target.files); 
-        }
-    });
+    fileInput.addEventListener('change', (e) => { if (e.target.files && e.target.files.length > 0) handleFile(e.target.files); });
 
     function handleFile(files) {
         const file = files[0];
@@ -512,26 +501,17 @@
         ctx.putImageData(imgData, 0, 0);
     }
 
-    // НОВА ПРЕМІУМ-ЛОГІКА ЗАВАНТАЖЕННЯ ЧЕРЕЗ HTML5 BLOB (ПРАЦЮЄ ВСЮДИ)
+    // Завантаження через Blob
     btnDownload.addEventListener('click', () => {
         playClickSound();
-        
-        // Конвертуємо поточний стан полотна (Canvas) у фізичний двійковий файл (Blob)
         outputCanvas.toBlob((blob) => {
             if (!blob) return;
-            
-            // Створюємо безпечне локальне ізольоване посилання на файл в пам'яті пристрою
             const blobUrl = URL.createObjectURL(blob);
-            
             const link = document.createElement('a');
             link.download = 'yyokai-premium-stencil.png';
             link.href = blobUrl;
-            
-            // Додаємо в тіло документа, щоб мобільний Safari не блокував клік
             document.body.appendChild(link);
             link.click();
-            
-            // Очищаємо оперативну пам'ять телефону після скачування
             document.body.removeChild(link);
             URL.revokeObjectURL(blobUrl);
         }, 'image/png');
