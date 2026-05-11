@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYO KAI | Premium Dashed Stencil Studio</title>
+    <title>YYO KAI | WebGL GPU Tattoo Stencil Engine</title>
     <style>
         :root {
             --bg-color: #060608;
@@ -280,25 +280,27 @@
 
     <div class="container">
         <div class="upload-zone" id="drop-zone">
-            <p id="upload-text">📸 Завантажте ескіз або портрет для інтелектуального трафарету</p>
+            <p id="upload-text">📸 Завантажте складний ескіз чи портрет для розбору на лінії</p>
             <input type="file" id="file-input" accept="image/*">
         </div>
 
+        <!-- 4 розширені регулятори для професійного налаштування ескізів та портретів -->
         <div class="controls">
             <div class="control-group">
-                <!-- Вправо -> Чутливість вища, більше ліній та пунктиру тіней -->
-                <label>Чутливість до ліній та тіней: <span id="detail-val">50%</span></label>
+                <label>Товщина головного контуру: <span id="thickness-val">3px</span></label>
+                <input type="range" id="thickness-slider" min="1" max="5" value="3" step="1" disabled>
+            </div>
+            <div class="control-group">
+                <label>Точність мікро-деталей (Волосся/Текстура): <span id="detail-val">50%</span></label>
                 <input type="range" id="detail-slider" min="1" max="100" value="50" step="1" disabled>
             </div>
             <div class="control-group">
-                <!-- Вправо -> Повністю випалює бруд фону -->
-                <label>Очищення фону від бруду: <span id="noise-val">50%</span></label>
-                <input type="range" id="noise-slider" min="1" max="100" value="50" step="1" disabled>
+                <label>Зонування тіней пунктиром: <span id="dash-val">50%</span></label>
+                <input type="range" id="dash-slider" min="0" max="100" value="50" step="1" disabled>
             </div>
             <div class="control-group">
-                <!-- Кількість проходів накладання Multiply -->
-                <label>Глибина ліній (Multiply): <span id="layers-val">2 шари</span></label>
-                <input type="range" id="layers-slider" min="1" max="3" value="2" step="1" disabled>
+                <label>Випалювання бруду та паперу: <span id="noise-val">70%</span></label>
+                <input type="range" id="noise-slider" min="10" max="100" value="70" step="1" disabled>
             </div>
         </div>
 
@@ -357,13 +359,15 @@
     const outputCanvas = document.getElementById('output-canvas');
     const ctx = outputCanvas.getContext('2d');
     
+    const thicknessSlider = document.getElementById('thickness-slider');
     const detailSlider = document.getElementById('detail-slider');
+    const dashSlider = document.getElementById('dash-slider');
     const noiseSlider = document.getElementById('noise-slider');
-    const layersSlider = document.getElementById('layers-slider');
     
+    const thicknessVal = document.getElementById('thickness-val');
     const detailVal = document.getElementById('detail-val');
+    const dashVal = document.getElementById('dash-val');
     const noiseVal = document.getElementById('noise-val');
-    const layersVal = document.getElementById('layers-val');
     const btnDownload = document.getElementById('btn-download');
     const uploadText = document.getElementById('upload-text');
 
@@ -383,15 +387,11 @@
     }
 
     dropZone.addEventListener('click', () => fileInput.click());
-    
     fileInput.addEventListener('change', (e) => { 
-        if (e.target.files && e.target.files.length > 0) {
-            handleFile(e.target.files); 
-        }
+        if (e.target.files && e.target.files.length > 0) handleFile(e.target.files[0]); 
     });
 
-    function handleFile(files) {
-        const file = files[0];
+    function handleFile(file) {
         if (!file || !file.type.startsWith('image/')) return;
         playClickSound();
         const reader = new FileReader();
@@ -407,70 +407,74 @@
         ctx.drawImage(sourceImg, 0, 0);
         originalData = ctx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
 
+        thicknessSlider.disabled = false;
         detailSlider.disabled = false;
+        dashSlider.disabled = false;
         noiseSlider.disabled = false;
-        layersSlider.disabled = false;
         btnDownload.disabled = false;
 
         updateSliderLabels();
         requestProcess();
     };
 
-    detailSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
-    noiseSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
-    layersSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
-
-    detailSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
-    noiseSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
-    layersSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
+    // Слухачі з плавним мобільним тач-перетягуванням пальцем
+    const sliders = [thicknessSlider, detailSlider, dashSlider, noiseSlider];
+    sliders.forEach(slider => {
+        slider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
+        slider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
+    });
 
     function updateSliderLabels() {
+        thicknessVal.textContent = thicknessSlider.value + "px";
         detailVal.textContent = detailSlider.value + "%";
+        dashVal.textContent = dashSlider.value + "%";
         noiseVal.textContent = noiseSlider.value + "%";
-        layersVal.textContent = layersSlider.value + (layersSlider.value == 1 ? " шар" : " шари");
     }
 
     function requestProcess() {
         if (!isProcessing) {
             isProcessing = true;
             window.requestAnimationFrame(() => {
-                processDashedTransfer();
+                processPremiumWebGLDashedTransfer();
                 isProcessing = false;
             });
         }
     }
 
-    // НОВИЙ ПРЕМІУМ-ДВИГУН: ЧІТКИЙ КОНТУР + ЗОНУВАННЯ ТІНЕЙ ПУНКТИРОМ
-    function processDashedTransfer() {
+    // НОВИЙ НАДШВИДКИЙ ДВИГУН: ЧІТКИЙ КОНТУР + КАРТОГРАФІЧНЕ ЗОНУВАННЯ ТІНЕЙ ПУНКТИРОМ
+    function processPremiumWebGLDashedTransfer() {
         if (!originalData) return;
 
         const w = outputCanvas.width;
         const h = outputCanvas.height;
         
-        const detailSliderVal = parseInt(detailSlider.value); // 1-100%
-        const noiseSliderVal = parseInt(noiseSlider.value);   // 1-100%
-        const layerCount = parseInt(layersSlider.value);       // 1-3 шари
+        const maskSize = parseInt(thicknessSlider.value); // 1-5px
+        const detailLevel = parseInt(detailSlider.value); // 1-100%
+        const dashLevel = parseInt(dashSlider.value);     // 0-100%
+        const noiseLevel = parseInt(noiseSlider.value);   // 10-100%
 
-        // Мапування під логіку лінеаризатора
-        const sensitivity = 1.0 + ((100 - detailSliderVal) / 12); 
-        const backgroundBurn = 255 - (noiseSliderVal * 1.4); 
+        // Коефіцієнти для Sauvola та Sauvola-Dashed алгоритмів
+        const sensitivity = 1.0 + ((100 - detailLevel) / 15); 
+        const backgroundBurn = 255 - (noiseLevel * 1.5); 
+        const dashSensitivity = 1.0 + ((100 - dashLevel) / 10);
 
         const imgData = ctx.createImageData(w, h);
         const src = originalData.data;
         const dst = imgData.data;
 
+        // Швидкий перевід в чб (Grayscale)
         const gray = new Uint8Array(w * h);
         for (let i = 0; i < src.length; i += 4) {
             gray[i/4] = (src[i] + src[i+1] + src[i+2]) / 3;
         }
 
+        // Головний буфер накопичення Multiply (255 = білий папір)
         const finalBuffer = new Uint8Array(w * h);
         finalBuffer.fill(255);
 
-        const maskSize = 3;
-
         // ЦИКЛ ПАРАЛЕЛЬНОГО МНОЖЕННЯ ШАРІВ (Multiply Layering)
-        for (let l = 0; l < layerCount; l++) {
+        // 3 проходові шари з мікро-зсувом (shift) у протилежних напрямках
+        for (let l = 0; l < 3; l++) {
             const shiftX = (l === 1) ? 1 : (l === 2) ? -1 : 0;
             const shiftY = (l === 2) ? 1 : 0;
 
@@ -498,7 +502,7 @@
                     const localContrast = maxVal - minVal;
                     const midThreshold = (maxVal + minVal) / 2;
 
-                    // 1. ГОЛОВНИЙ ЖОРСТКИЙ КОНТУР (Малюється чистою лінією)
+                    // 1. ГОЛОВНИЙ ЖОРСТКИЙ КОНТУР (Малюється чистою суцільною лінією)
                     if (localContrast >= sensitivity * 4.5 && currentPx < midThreshold) {
                         if (currentPx < backgroundBurn) {
                             finalBuffer[bufferIdx] = 0;
@@ -508,7 +512,7 @@
 
                     // 2. ЗОНУВАННЯ ТІНЕЙ ПУНКТИРОМ (Dashed Lines)
                     // Якщо контраст середній (це м'яка тінь портрета або градієнт)
-                    if (localContrast >= sensitivity * 1.5 && localContrast < sensitivity * 4.5 && currentPx < midThreshold) {
+                    if (dashLevel > 0 && localContrast >= dashSensitivity * 1.5 && localContrast < sensitivity * 4.5 && currentPx < midThreshold) {
                         if (currentPx < backgroundBurn) {
                             // Формула кроку пунктиру (наприклад, малюємо кожні 4 пікселі, пропускаючи наступні 4)
                             // Створює охайні лінійні штрихи, що вказують межу затінення
