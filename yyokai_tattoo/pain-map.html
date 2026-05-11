@@ -218,7 +218,6 @@
         input[type="range"]::-moz-range-thumb:active { cursor: grabbing; transform: scale(1.15); }
         input[type="range"]:disabled { opacity: 0.15; cursor: not-allowed; }
 
-        /* Ергономічний стек: спочатку результат, під ним оригінал */
         .workspace { margin-top: 20px; display: grid; grid-template-columns: 1fr; gap: 20px; }
 
         .preview-box {
@@ -389,7 +388,7 @@
     });
 
     function handleFile(files) {
-        const file = files[0]; // Надійний фікс зчитування файлу з індексом
+        const file = files[0];
         if (!file || !file.type.startsWith('image/')) return;
         playClickSound();
         const reader = new FileReader();
@@ -438,7 +437,6 @@
         }
     }
 
-    // ЛІНІЙНИЙ ДВИГУН ЧАСТОТНОЇ СИНХРОНІЗАЦІЇ ЛІНІЙ (60 FPS)
     function processPremiumPureLineTransfer() {
         if (!originalData) return;
 
@@ -513,6 +511,31 @@
         
         ctx.putImageData(imgData, 0, 0);
     }
+
+    // НОВА ПРЕМІУМ-ЛОГІКА ЗАВАНТАЖЕННЯ ЧЕРЕЗ HTML5 BLOB (ПРАЦЮЄ ВСЮДИ)
+    btnDownload.addEventListener('click', () => {
+        playClickSound();
+        
+        // Конвертуємо поточний стан полотна (Canvas) у фізичний двійковий файл (Blob)
+        outputCanvas.toBlob((blob) => {
+            if (!blob) return;
+            
+            // Створюємо безпечне локальне ізольоване посилання на файл в пам'яті пристрою
+            const blobUrl = URL.createObjectURL(blob);
+            
+            const link = document.createElement('a');
+            link.download = 'yyokai-premium-stencil.png';
+            link.href = blobUrl;
+            
+            // Додаємо в тіло документа, щоб мобільний Safari не блокував клік
+            document.body.appendChild(link);
+            link.click();
+            
+            // Очищаємо оперативну пам'ять телефону після скачування
+            document.body.removeChild(link);
+            URL.revokeObjectURL(blobUrl);
+        }, 'image/png');
+    });
 </script>
 </body>
 </html>
