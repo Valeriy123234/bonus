@@ -2,24 +2,27 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YYO KAI - Tattoo Splitter</title>
-    <!-- Виправлене завантаження Tailwind CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>YYO KAI</title>
+    <!-- Tailwind CSS -->
     <script src="jsdelivr.net"></script>
-    <!-- Виправлене завантаження шрифту -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="googleapis.com">
     <link rel="preconnect" href="gstatic.com" crossorigin>
     <link href="googleapis.com" rel="stylesheet">
-    <!-- Виправлене завантаження jsPDF -->
+    <!-- jsPDF -->
     <script src="cloudflare.com"></script>
     <style>
         body {
             font-family: 'Share Tech Mono', monospace;
             background-color: #060606;
-            color: #e5e5e5;
-            overflow-x: hidden;
+            color: #a3a3a3;
+            /* Фіксуємо екран мобілки, щоб нічого не совалося */
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
         }
-        /* Глітч ефект для логотипу YYO */
+        /* Глітч YYO */
         .glitch-wrapper { position: relative; }
         .glitch {
             position: relative;
@@ -31,34 +34,29 @@
             background: #060606;
         }
         .glitch::before {
-            left: 2px; text-shadow: -2px 0 #ff00c8;
+            left: 1px; text-shadow: -1px 0 #ff00c8;
             clip: rect(44px, 450px, 56px, 0);
             animation: glitch-anim 5s infinite linear alternate-reverse;
         }
         .glitch::after {
-            left: -2px; text-shadow: -2px 0 #00ffff, 0 2px #ff00c8;
+            left: -1px; text-shadow: -1px 0 #00ffff, 0 1px #ff00c8;
             clip: rect(85px, 450px, 140px, 0);
             animation: glitch-anim2 5s infinite linear alternate-reverse;
         }
         @keyframes glitch-anim {
             0% { clip: rect(31px, 9999px, 94px, 0); }
-            20% { clip: rect(85px, 9999px, 5px, 0); }
-            40% { clip: rect(73px, 9999px, 29px, 0); }
-            60% { clip: rect(18px, 9999px, 93px, 0); }
-            80% { clip: rect(111px, 9999px, 81px, 0); }
+            50% { clip: rect(73px, 9999px, 29px, 0); }
             100% { clip: rect(91px, 9999px, 147px, 0); }
         }
         @keyframes glitch-anim2 {
             0% { clip: rect(76px, 9999px, 116px, 0); }
-            25% { clip: rect(22px, 9999px, 92px, 0); }
             50% { clip: rect(111px, 9999px, 52px, 0); }
-            75% { clip: rect(130px, 9999px, 47px, 0); }
             100% { clip: rect(100px, 9999px, 118px, 0); }
         }
-        /* Анімація чистих паличок еквалайзера */
+        /* Еквалайзер */
         @keyframes bounce {
             0%, 100% { height: 3px; }
-            50% { height: 20px; }
+            50% { height: 18px; }
         }
         .eq-bar { animation: bounce 0.5s ease-in-out infinite; }
         .eq-bar:nth-child(1) { animation-delay: 0.1s; }
@@ -69,158 +67,126 @@
         .eq-bar:nth-child(6) { animation-delay: 0.6s; }
 
         .dark-input {
-            background: rgba(15, 15, 15, 0.9);
-            border: 1px solid #262626;
+            background: #0c0c0c;
+            border: 1px solid #1f1f1f;
             color: #fff;
-            transition: all 0.3s ease;
+            text-align: center;
         }
         .dark-input:focus {
             border-color: #dc2626;
-            box-shadow: 0 0 10px rgba(220, 38, 38, 0.2);
             outline: none;
         }
+        /* Приховуємо дефолтний скроллбар */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="relative min-h-screen flex flex-col justify-between p-6 bg-neutral-950 selection:bg-red-900 selection:text-white">
+<body class="relative flex flex-col justify-between p-4 select-none touch-none">
 
-    <!-- 13% Японський Матричний Код на бекграунді -->
-    <canvas id="matrix" class="absolute top-0 left-0 w-full h-full pointer-events-none z-0" style="opacity: 0.13;"></canvas>
+    <!-- Матричний фон (Задній план) -->
+    <canvas id="matrix" class="absolute inset-0 w-full h-full pointer-events-none z-0" style="opacity: 0.13;"></canvas>
 
-    <!-- НАВІГАЦІЯ -->
-    <header class="relative z-10 flex justify-between items-center w-full max-w-7xl mx-auto">
-        
-        <!-- ЛІВОРУЧ: Чиста іконка звуку (без квадратів та меж) -->
-        <button id="audio-toggle" class="flex items-center justify-center w-8 h-8 cursor-pointer text-neutral-400 hover:text-red-500 transition-colors duration-300 focus:outline-none">
-            <!-- Звичайна іконка звуку -->
-            <svg id="icon-sound" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <!-- ШАПКА -->
+    <header class="relative z-50 flex justify-between items-center w-full h-12">
+        <!-- ЛІВОРУЧ: Звук -->
+        <button id="audio-toggle" class="flex items-center justify-center w-8 h-8 text-neutral-500 hover:text-red-500 transition-colors focus:outline-none">
+            <svg id="icon-sound" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
             </svg>
-            <!-- 6 Смужок Еквалайзера -->
-            <div id="icon-eq" class="hidden flex items-end justify-between w-6 h-5 gap-[2px]">
-                <div class="eq-bar w-[2px] bg-red-500"></div>
-                <div class="eq-bar w-[2px] bg-red-500"></div>
-                <div class="eq-bar w-[2px] bg-red-500"></div>
-                <div class="eq-bar w-[2px] bg-red-500"></div>
-                <div class="eq-bar w-[2px] bg-red-500"></div>
-                <div class="eq-bar w-[2px] bg-red-500"></div>
+            <div id="icon-eq" class="hidden flex items-end justify-between w-5 h-4 gap-[2px]">
+                <div class="eq-bar w-[2px] bg-red-600"></div>
+                <div class="eq-bar w-[2px] bg-red-600"></div>
+                <div class="eq-bar w-[2px] bg-red-600"></div>
+                <div class="eq-bar w-[2px] bg-red-600"></div>
+                <div class="eq-bar w-[2px] bg-red-600"></div>
+                <div class="eq-bar w-[2px] bg-red-600"></div>
             </div>
         </button>
 
         <!-- ПОСЕРЕДИНІ: Логотип -->
-        <div class="glitch-wrapper text-center select-none">
-            <h1 class="glitch text-3xl font-black tracking-widest text-white leading-none" data-text="YYO">YYO</h1>
-            <span class="text-xs tracking-[0.5em] text-red-500 block mt-1 font-bold">KAI</span>
+        <div class="glitch-wrapper text-center">
+            <h1 class="glitch text-2xl font-black tracking-widest text-white leading-none" data-text="YYO">YYO</h1>
+            <span class="text-[9px] tracking-[0.6em] text-red-600 block mt-0.5 font-bold">KAI</span>
         </div>
 
-        <!-- ПРАВОРУЧ: Бургер Меню -->
-        <button id="menu-toggle" class="relative z-50 w-10 h-10 flex flex-col justify-center items-center gap-1.5 cursor-pointer focus:outline-none group">
-            <span id="line1" class="w-6 h-[2px] bg-neutral-400 group-hover:bg-red-500 transition-all duration-300"></span>
-            <span id="line2" class="w-6 h-[2px] bg-neutral-400 group-hover:bg-red-500 transition-all duration-300"></span>
-            <span id="line3" class="w-6 h-[2px] bg-neutral-400 group-hover:bg-red-500 transition-all duration-300"></span>
+        <!-- ПРАВОРУЧ: Бургер -->
+        <button id="menu-toggle" class="w-8 h-8 flex flex-col justify-center items-center gap-1 focus:outline-none">
+            <span id="line1" class="w-5 h-[2px] bg-neutral-400 transition-all duration-300"></span>
+            <span id="line2" class="w-5 h-[2px] bg-neutral-400 transition-all duration-300"></span>
+            <span id="line3" class="w-5 h-[2px] bg-neutral-400 transition-all duration-300"></span>
         </button>
     </header>
 
-    <!-- Повноекранне меню -->
-    <nav id="full-menu" class="fixed inset-0 bg-neutral-950/98 z-40 hidden flex-col justify-center items-center gap-8 text-2xl tracking-widest backdrop-blur-md">
-        <a href="#" class="hover:text-red-500 transition-colors">ГОЛОВНА</a>
-        <a href="#" class="hover:text-red-500 transition-colors">ЗАПИСАТИСЬ</a>
-        <a href="#" class="text-red-500 pointer-events-none border-b border-red-900 pb-1">TATTOO SPLITTER</a>
+    <!-- Меню -->
+    <nav id="full-menu" class="fixed inset-0 bg-neutral-950/98 z-40 hidden flex-col justify-center items-center gap-6 text-xl tracking-widest backdrop-blur-md">
+        <a href="#" class="hover:text-red-500 text-neutral-300">ГОЛОВНА</a>
+        <a href="#" class="hover:text-red-500 text-neutral-300">ЗАПИСАТИСЬ</a>
+        <a href="#" class="text-red-600 border-b border-red-950 pb-1">TATTOO SPLITTER</a>
     </nav>
 
-    <!-- ОСНОВНИЙ БЛОК (Центрований та стилізований) -->
-    <main class="relative z-10 flex-grow flex items-center justify-center my-8 w-full max-w-5xl mx-auto px-4">
-        <div class="w-full bg-neutral-900/30 border border-neutral-900 p-6 md:p-8 backdrop-blur-sm">
+    <!-- ГОЛОВНИЙ КОНТЕНТ (Строго в один екран) -->
+    <main class="relative z-10 flex-grow flex flex-col justify-center items-center w-full max-w-md mx-auto my-2 overflow-hidden touch-auto">
+        <div class="w-full bg-[#0a0a0a]/90 border border-neutral-900 p-4 flex flex-col justify-between gap-4 h-full max-h-[78vh] overflow-y-auto no-scrollbar">
             
-            <!-- Заголовок інструменту -->
-            <div class="border-b border-neutral-900 pb-4 mb-6 flex justify-between items-end">
+            <!-- Шапка інструменту -->
+            <div class="border-b border-neutral-900 pb-2">
+                <h2 class="text-xs uppercase tracking-wider text-red-600 font-bold">// SPLITTER A4</h2>
+            </div>
+
+            <!-- Завантаження -->
+            <div>
+                <div class="border border-dashed border-neutral-800 bg-[#040404] p-4 text-center relative rounded-sm">
+                    <input type="file" id="sketch-upload" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
+                    <span id="upload-status" class="text-[11px] text-neutral-500 uppercase tracking-wider">Завантажити контур ескізу</span>
+                </div>
+            </div>
+
+            <!-- Інпути розмірів -->
+            <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <h2 class="text-md uppercase tracking-wider text-red-500 font-bold">// Сплітер ескізу на листи A4</h2>
-                    <p class="text-xs text-neutral-500 mt-1">Автоматична нарізка великих трансферів із напуском (overlap) в 2 см</p>
+                    <label class="block text-[10px] uppercase text-neutral-500 tracking-wider mb-1">Ширина (см)</label>
+                    <input type="number" id="width-cm" value="40" class="dark-input w-full p-2 text-xs rounded-sm">
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase text-neutral-500 tracking-wider mb-1">Висота (см)</label>
+                    <input type="number" id="height-cm" value="30" class="dark-input w-full p-2 text-xs rounded-sm">
                 </div>
             </div>
 
-            <!-- Контентна сітка -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Схема результату (Прев'ю) -->
+            <div class="border border-neutral-900 bg-[#030303] p-2 flex flex-col justify-between h-36 relative">
+                <div class="absolute top-1 right-2 text-[8px] text-neutral-600 uppercase">Схема листів</div>
                 
-                <!-- Ліва сторона (Параметри введення та Інформація) -->
-                <div class="flex flex-col justify-between gap-6">
-                    
-                    <!-- Верхній блок: завантаження та інпути -->
-                    <div class="flex flex-col gap-5">
-                        <div>
-                            <label class="block text-xs uppercase text-neutral-400 tracking-wider mb-2">1. Завантажити контур ескізу</label>
-                            <div class="border border-dashed border-neutral-800 hover:border-red-950 bg-neutral-950/40 p-6 text-center cursor-pointer transition-colors relative">
-                                <input type="file" id="sketch-upload" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
-                                <span id="upload-status" class="text-xs text-neutral-400">Клікніть або перетягніть файл</span>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs uppercase text-neutral-400 tracking-wider mb-2">Ширина тату (см)</label>
-                                <input type="number" id="width-cm" value="40" class="dark-input w-full p-2.5 text-sm text-center font-bold">
-                            </div>
-                            <div>
-                                <label class="block text-xs uppercase text-neutral-400 tracking-wider mb-2">Висота тату (см)</label>
-                                <input type="number" id="height-cm" value="30" class="dark-input w-full p-2.5 text-sm text-center font-bold">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Ліва Нижня Сторона (Стилізований інформаційний блок замість порожніх рядків) -->
-                    <div class="border border-neutral-900 bg-neutral-950/60 p-4 flex flex-col gap-3">
-                        <div class="flex items-center gap-2 text-xs uppercase text-red-500 font-bold tracking-wider">
-                            <span>■</span> <span>Технічні умови зшивання:</span>
-                        </div>
-                        <ul class="text-xs text-neutral-400 space-y-2 list-none pl-1">
-                            <li class="flex items-start gap-2">
-                                <span class="text-neutral-600">-</span>
-                                <span>Автоматичний напуск <strong class="text-red-500">2 см</strong> закладено по краях кожного аркуша.</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <span class="text-neutral-600">-</span>
-                                <span>Забезпечує ідеальне безшовне склеювання трансферу липкою стрічкою.</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <span class="text-neutral-600">-</span>
-                                <span>Майстер просто друкує готовий файл та зшиває трафарет.</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Кнопка генерації -->
-                    <button id="btn-split" class="w-full bg-red-700 hover:bg-red-600 text-white font-bold py-3 uppercase tracking-widest text-sm transition-all cursor-pointer shadow-lg shadow-black">
-                        Згенерувати та завантажити PDF
-                    </button>
+                <div id="preview-grid" class="flex-grow flex items-center justify-center p-2">
+                    <p class="text-[10px] text-neutral-600 uppercase text-center">Очікування файлу...</p>
                 </div>
 
-                <!-- Права сторона (Інтерактивне прев'ю результату) -->
-                <div class="flex flex-col justify-between border border-neutral-900 bg-neutral-950/10 p-4 min-h-[320px] relative">
-                    <div class="absolute top-2 right-2 text-[9px] text-neutral-600 uppercase tracking-widest">Схема розкладки</div>
-                    
-                    <!-- Візуалізація сітки аркушів -->
-                    <div id="preview-grid" class="flex-grow flex items-center justify-center p-4">
-                        <div class="text-center text-neutral-600 border border-neutral-900 border-dashed p-6 w-full h-full flex items-center justify-center">
-                            <p class="text-xs uppercase tracking-wider">Очікування завантаження ескізу майстра</p>
-                        </div>
-                    </div>
-
-                    <!-- Дані підрахунку -->
-                    <div class="border-t border-neutral-900 pt-3 text-xs text-neutral-500 flex justify-between uppercase tracking-wider">
-                        <span>Всього А4: <strong class="text-white id-count">-</strong></span>
-                        <span>Конфігурація: <strong class="text-white id-layout">-</strong></span>
-                    </div>
+                <div class="border-t border-neutral-900 pt-1 text-[9px] text-neutral-500 flex justify-between uppercase">
+                    <span>Листів: <strong class="text-red-600 id-count">-</strong></span>
+                    <span>Сітка: <strong class="text-red-600 id-layout">-</strong></span>
                 </div>
-
             </div>
+
+            <!-- Технічний опис (Нижній лівий текст, тепер чітко застилізований) -->
+            <div class="bg-[#050505] border border-neutral-950 p-2.5 rounded-sm">
+                <div class="text-[10px] text-red-600 font-bold uppercase tracking-wider mb-1">■ ТЕХНІЧНІ УМОВИ ЗШИВАННЯ:</div>
+                <p class="text-[10px] text-neutral-500 leading-normal uppercase">
+                    Автоматичний напуск <span class="text-neutral-300">2 см</span> додано по краях для безшовного склеювання трафарету липкою стрічкою.
+                </p>
+            </div>
+
+            <!-- Кнопка -->
+            <button id="btn-split" class="w-full bg-red-800 hover:bg-red-700 text-white font-bold py-2.5 uppercase tracking-widest text-xs rounded-sm transition-all active:scale-[0.98]">
+                Завантажити PDF
+            </button>
 
         </div>
     </main>
 
     <!-- ФУТЕР -->
-    <footer class="relative z-10 w-full max-w-7xl mx-auto flex justify-between items-center text-[10px] text-neutral-600 uppercase tracking-widest border-t border-neutral-900 pt-4">
-        <div>© 2026 YYO KAI.</div>
-        <div>STAY DARK // TATTOO TOOL</div>
+    <footer class="relative z-10 w-full h-6 flex justify-between items-center text-[9px] text-neutral-600 uppercase tracking-widest border-t border-neutral-950 pt-2">
+        <div>© YYO KAI</div>
+        <div>TATTOO TECH</div>
     </footer>
 
     <script>
@@ -231,27 +197,27 @@
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
-        const katakana = "ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾜﾝ1234567890";
+        const katakana = "ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾜﾝ1234567890";
         const alphabet = katakana.split("");
-        const fontSize = 14;
+        const fontSize = 12;
         let columns = canvas.width / fontSize;
         let rainDrops = Array(Math.floor(columns)).fill(1);
 
         function drawMatrix() {
-            ctx.fillStyle = 'rgba(6, 6, 6, 0.05)';
+            ctx.fillStyle = 'rgba(6, 6, 6, 0.06)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#b91c1c';
+            ctx.fillStyle = '#991b1b';
             ctx.font = fontSize + 'px monospace';
             for (let i = 0; i < rainDrops.length; i++) {
                 const text = alphabet[Math.floor(Math.random() * alphabet.length)];
                 ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
-                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) rainDrops[i] = 0;
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.98) rainDrops[i] = 0;
                 rainDrops[i]++;
             }
         }
-        setInterval(drawMatrix, 35);
+        setInterval(drawMatrix, 40);
 
-        // --- 2. МІНІМАЛІСТИЧНИЙ ЗВУК / ЕКВАЛАЙЗЕР ---
+        // --- 2. ЕКВАЛАЙЗЕР ---
         const audioBtn = document.getElementById('audio-toggle');
         const iconSound = document.getElementById('icon-sound');
         const iconEq = document.getElementById('icon-eq');
@@ -259,13 +225,8 @@
 
         audioBtn.addEventListener('click', () => {
             isPlaying = !isPlaying;
-            if (isPlaying) {
-                iconSound.classList.add('hidden');
-                iconEq.classList.remove('hidden');
-            } else {
-                iconSound.classList.remove('hidden');
-                iconEq.classList.add('hidden');
-            }
+            if (isPlaying) { iconSound.classList.add('hidden'); iconEq.classList.remove('hidden'); }
+            else { iconSound.classList.remove('hidden'); iconEq.classList.add('hidden'); }
         });
 
         // --- 3. БУРГЕР МЕНЮ ---
@@ -280,16 +241,14 @@
             menuOpen = !menuOpen;
             if (menuOpen) {
                 fullMenu.classList.remove('hidden'); fullMenu.classList.add('flex');
-                l1.style.transform = 'rotate(45deg) translate(6px, 5px)';
-                l2.style.opacity = '0';
-                l3.style.transform = 'rotate(-45deg) translate(6px, -5px)';
+                l1.style.transform = 'rotate(45deg) translate(4px, 4px)'; l2.style.opacity = '0'; l3.style.transform = 'rotate(-45deg) translate(4px, -4px)';
             } else {
                 fullMenu.classList.add('hidden'); fullMenu.classList.remove('flex');
                 l1.style.transform = 'none'; l2.style.opacity = '1'; l3.style.transform = 'none';
             }
         });
 
-        // --- 4. РОЗРАХУНОК ТА РЕАЛЬНА НАРІЗКА КАРТИНКИ ---
+        // --- 4. СПЛІТЕР ---
         const sketchUpload = document.getElementById('sketch-upload');
         const uploadStatus = document.getElementById('upload-status');
         const widthCmInput = document.getElementById('width-cm');
@@ -304,15 +263,12 @@
         sketchUpload.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if(file) {
-                uploadStatus.textContent = `Файл: ${file.name.substring(0, 18)}...`;
+                uploadStatus.textContent = file.name.substring(0, 14) + '...';
                 uploadStatus.classList.add('text-red-500');
-                
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     loadedImage = new Image();
-                    loadedImage.onload = function() {
-                        updatePreview();
-                    };
+                    loadedImage.onload = updatePreview;
                     loadedImage.src = event.target.result;
                 };
                 reader.readAsDataURL(file);
@@ -322,96 +278,62 @@
         function updatePreview() {
             const w = parseFloat(widthCmInput.value) || 40;
             const h = parseFloat(heightCmInput.value) || 30;
-
-            const A4_W = 21.0; const A4_H = 29.7; const OVERLAP = 2.0;
-            const EFF_W = A4_W - OVERLAP; const EFF_H = A4_H - OVERLAP;
-
-            const cols = Math.ceil(w / EFF_W);
-            const rows = Math.ceil(h / EFF_H);
+            const EFF_W = 19.0; const EFF_H = 27.7;
+            const cols = Math.ceil(w / EFF_W); const rows = Math.ceil(h / EFF_H);
             const total = cols * rows;
 
             countDisplay.textContent = total;
-            layoutDisplay.textContent = `${cols} x ${rows}`;
+            layoutDisplay.textContent = `${cols}x${rows}`;
 
             previewGrid.innerHTML = '';
             const gridContainer = document.createElement('div');
-            gridContainer.className = 'grid gap-1 p-1 bg-neutral-950 border border-neutral-900 w-full max-h-[220px] aspect-video';
+            gridContainer.className = 'grid gap-1 p-1 bg-black border border-neutral-900 w-full h-full max-h-[110px] aspect-video';
             gridContainer.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
             gridContainer.style.gridTemplateRows = `repeat(${rows}, minmax(0, 1fr))`;
 
             for (let i = 1; i <= total; i++) {
                 const sheet = document.createElement('div');
-                sheet.className = 'border border-red-950 bg-red-950/10 text-red-500 text-[9px] flex flex-col justify-center items-center font-bold';
-                sheet.innerHTML = `<span>A4</span><span class="text-[8px] text-neutral-600">#${i}</span>`;
+                sheet.className = 'border border-red-950 bg-red-950/10 text-red-500 text-[8px] flex items-center justify-center font-bold';
+                sheet.textContent = `A4 #${i}`;
                 gridContainer.appendChild(sheet);
             }
             previewGrid.appendChild(gridContainer);
         }
 
-        [widthCmInput, heightCmInput].forEach(input => input.addEventListener('input', () => {
-            if(loadedImage) updatePreview();
-        }));
+        [widthCmInput, heightCmInput].forEach(input => input.addEventListener('input', () => { if(loadedImage) updatePreview(); }));
 
         btnSplit.addEventListener('click', async () => {
-            if (!loadedImage) {
-                alert('Спочатку завантажте зображення контуру татуювання!');
-                return;
-            }
-
-            const wTarget = parseFloat(widthCmInput.value);
-            const hTarget = parseFloat(heightCmInput.value);
-
-            if (!wTarget || !hTarget || wTarget <= 0 || hTarget <= 0) {
-                alert('Введіть коректні розміри в см.');
-                return;
-            }
+            if (!loadedImage) { alert('Завантажте контур!'); return; }
+            const wTarget = parseFloat(widthCmInput.value); const hTarget = parseFloat(heightCmInput.value);
+            if (!wTarget || !hTarget) return;
 
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
-
-            const A4_W_MM = 210; const A4_H_MM = 297; const OVERLAP_MM = 20;
-            const EFF_W_MM = A4_W_MM - OVERLAP_MM; const EFF_H_MM = A4_H_MM - OVERLAP_MM;
-
-            const wTargetMm = wTarget * 10;
-            const hTargetMm = hTarget * 10;
-
-            const cols = Math.ceil(wTargetMm / EFF_W_MM);
-            const rows = Math.ceil(hTargetMm / EFF_H_MM);
+            const A4_W_MM = 210; const A4_H_MM = 297;
+            const EFF_W_MM = 190; const EFF_H_MM = 277;
+            const wTargetMm = wTarget * 10; const hTargetMm = hTarget * 10;
+            const cols = Math.ceil(wTargetMm / EFF_W_MM); const rows = Math.ceil(hTargetMm / EFF_H_MM);
 
             let pageCount = 0;
-
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
                     if (pageCount > 0) pdf.addPage();
                     pageCount++;
-
-                    const srcX_mm = c * EFF_W_MM;
-                    const srcY_mm = r * EFF_H_MM;
-
-                    const pxPerMmX = loadedImage.width / wTargetMm;
-                    const pxPerMmY = loadedImage.height / hTargetMm;
-
-                    const sx = srcX_mm * pxPerMmX;
-                    const sy = srcY_mm * pxPerMmY;
-                    const sWidth = A4_W_MM * pxPerMmX;
-                    const sHeight = A4_H_MM * pxPerMmY;
+                    const sx = (c * EFF_W_MM) * (loadedImage.width / wTargetMm);
+                    const sy = (r * EFF_H_MM) * (loadedImage.height / hTargetMm);
+                    const sWidth = A4_W_MM * (loadedImage.width / wTargetMm);
+                    const sHeight = A4_H_MM * (loadedImage.height / hTargetMm);
 
                     const tempCanvas = document.createElement('canvas');
-                    tempCanvas.width = 1200;
-                    tempCanvas.height = (A4_H_MM / A4_W_MM) * 1200;
+                    tempCanvas.width = 1000; tempCanvas.height = 1414;
                     const tempCtx = tempCanvas.getContext('2d');
-                    
-                    tempCtx.fillStyle = '#FFFFFF';
-                    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-                    
+                    tempCtx.fillStyle = '#FFFFFF'; tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
                     tempCtx.drawImage(loadedImage, sx, sy, sWidth, sHeight, 0, 0, tempCanvas.width, tempCanvas.height);
 
-                    const imgData = tempCanvas.toDataURL('image/jpeg', 0.85);
-                    pdf.addImage(imgData, 'JPEG', 0, 0, A4_W_MM, A4_H_MM);
+                    pdf.addImage(tempCanvas.toDataURL('image/jpeg', 0.8), 'JPEG', 0, 0, A4_W_MM, A4_H_MM);
                 }
             }
-
-            pdf.save(`yyo-kai-transfer-${wTarget}x${hTarget}.pdf`);
+            pdf.save(`yyo-kai-${wTarget}x${hTarget}.pdf`);
         });
     </script>
 </body>
