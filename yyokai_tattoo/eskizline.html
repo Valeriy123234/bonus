@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYO KAI - HD Stencil Maker</title>
+    <title>YYO KAI - Professional Stencil</title>
     <link rel="preconnect" href="googleapis.com">
     <link rel="preconnect" href="gstatic.com" crossorigin>
     <link href="googleapis.com" rel="stylesheet">
@@ -29,6 +29,7 @@
             position: relative;
         }
 
+        /* 17% японської матриці */
         #matrix {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -36,6 +37,7 @@
             opacity: 0.17;
         }
 
+        /* ШАПКА З АБСОЛЮТНИМ ПРІОРИТЕТОМ */
         header {
             position: relative; z-index: 999;
             display: flex; justify-content: space-between; align-items: center;
@@ -79,6 +81,7 @@
 
         @keyframes glitch-skew { 0% { transform: skew(-2deg); } 100% { transform: skew(2deg); } }
 
+        /* НАДІЙНИЙ КРЕСТ МЕНЮ (ПОВНІСТЮ ВИДИМИЙ) */
         #menu-toggle {
             background: none; border: none; width: 44px; height: 44px;
             display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; cursor: pointer;
@@ -95,6 +98,7 @@
         #full-menu a:hover { color: #dc2626; }
         #full-menu .active-link { color: #dc2626; border-bottom: 1px solid #dc2626; padding-bottom: 4px; }
 
+        /* ІНТЕРФЕЙС ДОДАТКА */
         main {
             position: relative; z-index: 20; flex-grow: 1; display: flex;
             align-items: center; justify-content: center; width: 100%; max-width: 400px;
@@ -103,38 +107,27 @@
         .app-container {
             width: 100%; height: 100%; max-height: 76vh;
             background-color: rgba(10, 10, 10, 0.95); border: 1px solid #1a1a1a;
-            padding: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; overflow-y: auto;
+            padding: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 14px; overflow-y: auto;
         }
         .app-container::-webkit-scrollbar { display: none; }
 
         .tool-title { font-size: 13px; color: #dc2626; font-weight: bold; letter-spacing: 2px; border-bottom: 1px solid #1a1a1a; padding-bottom: 6px; }
 
-        .upload-box { border: 1px dashed #262626; background-color: #030303; padding: 18px; text-align: center; position: relative; cursor: pointer; }
+        .upload-box { border: 1px dashed #262626; background-color: #030303; padding: 22px; text-align: center; position: relative; cursor: pointer; }
         .upload-box input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 5; }
         .upload-box span { font-size: 11px; color: #525252; letter-spacing: 1px; text-transform: uppercase; }
 
-        .controls-wrapper { display: flex; flex-direction: column; gap: 10px; }
-        .control-group { display: flex; flex-direction: column; gap: 4px; }
-        .control-group label { display: flex; justify-content: space-between; font-size: 10px; color: #525252; text-transform: uppercase; letter-spacing: 1px; }
-        .control-group label span { color: #dc2626; font-weight: bold; }
-        
-        .range-slider {
-            -webkit-appearance: none; width: 100%; height: 4px; background: #1a1a1a; outline: none; border: none;
-        }
-        .range-slider::-webkit-slider-thumb {
-            -webkit-appearance: none; appearance: none; width: 12px; height: 12px; background: #dc2626; cursor: pointer;
-        }
-
-        /* Прев'ю бокс тепер відображає згладжений результат */
+        /* ЕКРАН ПРЕВ'Ю */
         .preview-box {
             border: 1px solid #1a1a1a; background-color: #ffffff;
-            padding: 6px; height: 210px; display: flex; align-items: center; justify-content: center; position: relative;
+            padding: 6px; height: 260px; display: flex; align-items: center; justify-content: center; position: relative;
             overflow: hidden;
         }
         .preview-label { position: absolute; top: 4px; right: 8px; font-size: 8px; color: #a3a3a3; text-transform: uppercase; mix-blend-mode: difference; }
-        #canvas-preview { max-width: 100%; max-height: 100%; object-fit: contain; display: none; image-rendering: -webkit-optimize-contrast; }
+        #canvas-preview { max-width: 100%; max-height: 100%; object-fit: contain; display: none; }
         .preview-placeholder { font-size: 10px; color: #404040; text-transform: uppercase; text-align: center; }
 
+        /* КНОПКИ */
         .buttons-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
         .btn-action {
             width: 100%; color: #fff; font-weight: bold; padding: 12px; border: none; 
@@ -186,27 +179,15 @@
 
     <main>
         <div class="app-container">
-            <div class="tool-title">// HD STENCIL GENERATOR v3.0</div>
+            <div class="tool-title">// AUTOMATIC STENCIL PRO</div>
 
             <div class="upload-box">
                 <input type="file" id="image-upload" accept="image/*">
                 <span id="upload-status">Завантажити свій ескіз</span>
             </div>
 
-            <!-- ТОЧНІ НАЛАШТУВАННЯ ВЕКТОРІВ -->
-            <div class="controls-wrapper">
-                <div class="control-group">
-                    <label>Чутливість контурних ліній: <span id="val-edge">40</span></label>
-                    <input type="range" id="slider-edge" min="15" max="95" value="40" class="range-slider">
-                </div>
-                <div class="control-group">
-                    <label>Поріг виділення пунктиру тіней: <span id="val-shadow">110</span></label>
-                    <input type="range" id="slider-shadow" min="50" max="180" value="110" class="range-slider">
-                </div>
-            </div>
-
             <div class="preview-box">
-                <div class="preview-label">Професійний трансфер</div>
+                <div class="preview-label">Чистий трансфер</div>
                 <div id="placeholder-text" class="preview-placeholder">Очікування зображення майстра...</div>
                 <canvas id="canvas-preview"></canvas>
             </div>
@@ -282,26 +263,21 @@
         menuToggle.addEventListener('click', toggleMenu);
         document.getElementById('btn-book-session').addEventListener('click', function() { if(!menuOpen) toggleMenu(); });
 
-        // --- 3. НАДВИСОКОТОЧНИЙ АЛГОРИТМ ТРАСУВАННЯ ВЕКТОРІВ (УЛЬТРА-ЧІТКІСТЬ) ---
+        // --- 3. АВТОМАТИЧНИЙ VE-TRACE АЛГОРИТМ (ФІЛЮТРАЦІЯ БРУДУ ТА ТІНЕЙ) ---
         const imageUpload = document.getElementById('image-upload');
         const uploadStatus = document.getElementById('upload-status');
         const placeholderText = document.getElementById('placeholder-text');
         const cPreview = document.getElementById('canvas-preview');
         const ctxP = cPreview.getContext('2d');
-        
-        const sliderEdge = document.getElementById('slider-edge');
-        const sliderShadow = document.getElementById('slider-shadow');
-        const valEdge = document.getElementById('val-edge');
-        const valShadow = document.getElementById('val-shadow');
         const btnSaveStencil = document.getElementById('btn-save-stencil');
 
         let sourceImg = null;
-        let hdCanvas = document.createElement('canvas'); // Приховане HD-полотно
+        let hdCanvas = document.createElement('canvas'); 
         let hdCtx = hdCanvas.getContext('2d');
 
         imageUpload.addEventListener('change', function(e) {
             if (e.target.files && e.target.files.length > 0) {
-                const file = e.target.files[0];
+                const file = e.target.files;
                 uploadStatus.textContent = file.name.substring(0, 12) + '...';
                 uploadStatus.style.color = '#dc2626';
                 placeholderText.style.display = 'none';
@@ -311,7 +287,7 @@
                 reader.onload = function(event) {
                     sourceImg = new Image();
                     sourceImg.onload = function() {
-                        // ХАРДКОРНИЙ АПСКЕЙЛІНГ: Фіксуємо надвисоку роздільну здатність для ідеальних ліній
+                        // Жорстка фіксація 2.5K роздільної здатності для ідеальних векторних ліній
                         const hdMaxDim = 2400; 
                         let wd = sourceImg.width; let hg = sourceImg.height;
                         if (wd > hdMaxDim || hg > hdMaxDim) {
@@ -319,10 +295,7 @@
                             else { wd = (hdMaxDim / hg) * wd; hg = hdMaxDim; }
                         }
                         hdCanvas.width = wd; hdCanvas.height = hg;
-                        
-                        // Розмір прев'ю на екрані мобілки
-                        cPreview.width = hdCanvas.width;
-                        cPreview.height = hdCanvas.height;
+                        cPreview.width = hdCanvas.width; cPreview.height = hdCanvas.height;
                         
                         processStencil();
                     };
@@ -335,97 +308,77 @@
         function processStencil() {
             if (!sourceImg) return;
 
-            // Рендеримо оригінал на прихований HD-холст
             hdCtx.drawImage(sourceImg, 0, 0, hdCanvas.width, hdCanvas.height);
             const imgData = hdCtx.getImageData(0, 0, hdCanvas.width, hdCanvas.height);
             const data = imgData.data;
             const width = imgData.width; const height = imgData.height;
 
-            // Створення супер-точного масиву чорно-білої карти яскравості
             const gray = new Uint8ClampedArray(width * height);
             for (let i = 0; i < data.length; i += 4) {
-                // Математично точний коефіцієнт відтінків сірого під друк стемсілів
-                gray[i / 4] = 0.2126 * data[i] + 0.7152 * data[i+1] + 0.0722 * data[i+2];
+                gray[i / 4] = 0.299 * data[i] + 0.587 * data[i+1] + 0.114 * data[i+2];
             }
-
-            const edgeThresh = parseFloat(sliderEdge.value);
-            const shadowLimit = parseFloat(sliderShadow.value);
 
             const outputImgData = hdCtx.createImageData(width, height);
             const outData = outputImgData.data;
 
-            // Заливка HD-листа білим кольором за замовчуванням
+            // Чисте біле тло
             for(let i=0; i<outData.length; i+=4) {
                 outData[i]=255; outData[i+1]=255; outData[i+2]=255; outData[i+3]=255;
             }
 
-            // МАТРИЧНИЙ ВЕКТОРНИЙ СУБПІКСЕЛЬНИЙ АНАЛІЗ (Видалення "сходинок" пікселів)
+            // Професійні захардкоджені коефіцієнти відсікання бруду
+            const edgeThresh = 32;   
+            const shadowLimit = 105; 
+
             for (let y = 1; y < height - 1; y++) {
                 for (let x = 1; x < width - 1; x++) {
                     const idx = y * width + x;
                     const outIdx = idx * 4;
 
                     const currentBright = gray[idx];
-                    
-                    // Яскравість сусідніх точок для вектора напрямку лінії
                     const right = gray[idx + 1];
                     const bottom = gray[idx + width];
-                    const topLeft = gray[(y-1)*width + (x-1)];
-                    const bottomRight = gray[(y+1)*width + (x+1)];
 
-                    // Алгоритм тривимірного зсуву меж (Трасування контурів)
                     const diffH = Math.abs(currentBright - right);
                     const diffV = Math.abs(currentBright - bottom);
-                    const diffD = Math.abs(topLeft - bottomRight);
 
                     let drawRed = false;
 
-                    // 1. УЛЬТРА-ЧІТКІ ГОЛОВНІ ЛІНІЇ (Векторне згладжування Multi-Pass)
-                    if (diffH > edgeThresh || diffV > edgeThresh || diffD > (edgeThresh * 1.2)) {
-                        drawRed = true;
+                    // 1. КОНТУР: Тільки чіткі лінії малюнка
+                    if (diffH > edgeThresh || diffV > edgeThresh) {
+                        // Відсікаємо слабкий шум фону та пори шкіри
+                        if (currentBright < 210) {
+                            drawRed = true;
+                        }
                     } 
-                    // 2. ОРГАНІЧНИЙ ТОНКИЙ ПУНКТИР ТІНЕЙ (- - - -) ЯК У PROCREATE
+                    // 2. ЧІТКИЙ ПУНКТИР: Тільки на межі глибоких контурних перепадів тіні
                     else if (currentBright < shadowLimit) {
-                        const isBoundaryX = (currentBright <= shadowLimit && right > shadowLimit);
-                        const isBoundaryY = (currentBright <= shadowLimit && bottom > shadowLimit);
-
-                        if (isBoundaryX || isBoundaryY) {
-                            // Математичний синусоїдний крок: малює чіткі переривчасті штрихи без піксельного розмиття
-                            // За рахунок великої щільності HD-полотна, лінії виглядають як тонка заправка рапідографа
-                            if (Math.floor((x + y) / 8) % 2 === 0) {
+                        if ((currentBright <= shadowLimit && right > shadowLimit) || (currentBright <= shadowLimit && bottom > shadowLimit)) {
+                            // Ефект тонкого Procreate-пунктиру за рахунок математичного кроку
+                            if (Math.floor((x + y) / 6) % 2 === 0) {
                                 drawRed = true;
                             }
                         }
                     }
 
                     if (drawRed) {
-                        // Насичений червоний пігмент (Stencil Ultra-Red)
                         outData[outIdx] = 220; outData[outIdx+1] = 38; outData[outIdx+2] = 38;
                     }
                 }
             }
 
-            // Записуємо HD-дані назад у приховане полотно
             hdCtx.putImageData(outputImgData, 0, 0);
-
-            // Виводимо згладжений результат на екранне прев'ю
             ctxP.clearRect(0, 0, cPreview.width, cPreview.height);
             ctxP.drawImage(hdCanvas, 0, 0);
         }
 
-        sliderEdge.addEventListener('input', function() { valEdge.textContent = sliderEdge.value; processStencil(); });
-        sliderShadow.addEventListener('input', function() { valShadow.textContent = sliderShadow.value; processStencil(); });
-
-        // ФУНКЦІЯ ВИВЕДЕННЯ ОРИГІНАЛЬНОГО НАДЧІТКОГО UHD PNG ЗБЕРЕЖЕННЯ
         btnSaveStencil.addEventListener('click', function(e) {
             e.preventDefault();
-            if (!sourceImg) { alert('Будь ласка, завантажте ескіз татуювання!'); return; }
-            
-            // Беремо зображення не з дрібного екранного прев'ю, а з нашого HD-холста
+            if (!sourceImg) { alert('Будь ласка, завантажте ескіз!'); return; }
             const dataUrl = hdCanvas.toDataURL('image/png');
             const link = document.createElement('a');
             link.href = dataUrl;
-            link.download = 'yyokai-ultra-hd-stencil.png';
+            link.download = 'yyokai-pure-stencil.png';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
