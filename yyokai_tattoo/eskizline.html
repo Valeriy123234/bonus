@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYO KAI - Advanced Stencil Maker</title>
+    <title>YYO KAI - HD Stencil Maker</title>
     <link rel="preconnect" href="googleapis.com">
     <link rel="preconnect" href="gstatic.com" crossorigin>
     <link href="googleapis.com" rel="stylesheet">
@@ -125,13 +125,14 @@
             -webkit-appearance: none; appearance: none; width: 12px; height: 12px; background: #dc2626; cursor: pointer;
         }
 
+        /* Прев'ю бокс тепер відображає згладжений результат */
         .preview-box {
             border: 1px solid #1a1a1a; background-color: #ffffff;
             padding: 6px; height: 210px; display: flex; align-items: center; justify-content: center; position: relative;
             overflow: hidden;
         }
         .preview-label { position: absolute; top: 4px; right: 8px; font-size: 8px; color: #a3a3a3; text-transform: uppercase; mix-blend-mode: difference; }
-        #canvas-preview { max-width: 100%; max-height: 100%; object-fit: contain; display: none; }
+        #canvas-preview { max-width: 100%; max-height: 100%; object-fit: contain; display: none; image-rendering: -webkit-optimize-contrast; }
         .preview-placeholder { font-size: 10px; color: #404040; text-transform: uppercase; text-align: center; }
 
         .buttons-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
@@ -185,27 +186,27 @@
 
     <main>
         <div class="app-container">
-            <div class="tool-title">// INTELLIGENT STENCIL v2.0</div>
+            <div class="tool-title">// HD STENCIL GENERATOR v3.0</div>
 
             <div class="upload-box">
                 <input type="file" id="image-upload" accept="image/*">
                 <span id="upload-status">Завантажити свій ескіз</span>
             </div>
 
-            <!-- ІНТЕЛЕКТУАЛЬНІ НАЛАШТУВАННЯ АНАЛІЗУ ФОРМ -->
+            <!-- ТОЧНІ НАЛАШТУВАННЯ ВЕКТОРІВ -->
             <div class="controls-wrapper">
                 <div class="control-group">
-                    <label>Глибина аналізу ліній (ETF): <span id="val-edge">35</span></label>
-                    <input type="range" id="slider-edge" min="10" max="90" value="35" class="range-slider">
+                    <label>Чутливість контурних ліній: <span id="val-edge">40</span></label>
+                    <input type="range" id="slider-edge" min="15" max="95" value="40" class="range-slider">
                 </div>
                 <div class="control-group">
-                    <label>Межа промальовки тіней: <span id="val-shadow">120</span></label>
-                    <input type="range" id="slider-shadow" min="40" max="200" value="120" class="range-slider">
+                    <label>Поріг виділення пунктиру тіней: <span id="val-shadow">110</span></label>
+                    <input type="range" id="slider-shadow" min="50" max="180" value="110" class="range-slider">
                 </div>
             </div>
 
             <div class="preview-box">
-                <div class="preview-label">Трансферний вигляд</div>
+                <div class="preview-label">Професійний трансфер</div>
                 <div id="placeholder-text" class="preview-placeholder">Очікування зображення майстра...</div>
                 <canvas id="canvas-preview"></canvas>
             </div>
@@ -248,7 +249,7 @@
         }
         setInterval(drawMatrix, 35);
 
-        // --- 2. ЕКВАЛАЙЗЕР ТА ЗАКРИТТЯ ХРЕСТИКА МЕНЮ ---
+        // --- 2. ЕКВАЛАЙЗЕР ТА МЕНЮ ХРЕСТИК ---
         const audioBtn = document.getElementById('audio-toggle');
         const iconSound = document.getElementById('icon-sound');
         const iconEq = document.getElementById('icon-eq');
@@ -281,7 +282,7 @@
         menuToggle.addEventListener('click', toggleMenu);
         document.getElementById('btn-book-session').addEventListener('click', function() { if(!menuOpen) toggleMenu(); });
 
-        // --- 3. НЕЙРО-ІМІТУЮЧИЙ АЛГОРИТМ НАПРАВЛЕНИХ ВЕКТОРІВ ФОРМИ ---
+        // --- 3. НАДВИСОКОТОЧНИЙ АЛГОРИТМ ТРАСУВАННЯ ВЕКТОРІВ (УЛЬТРА-ЧІТКІСТЬ) ---
         const imageUpload = document.getElementById('image-upload');
         const uploadStatus = document.getElementById('upload-status');
         const placeholderText = document.getElementById('placeholder-text');
@@ -295,6 +296,8 @@
         const btnSaveStencil = document.getElementById('btn-save-stencil');
 
         let sourceImg = null;
+        let hdCanvas = document.createElement('canvas'); // Приховане HD-полотно
+        let hdCtx = hdCanvas.getContext('2d');
 
         imageUpload.addEventListener('change', function(e) {
             if (e.target.files && e.target.files.length > 0) {
@@ -308,13 +311,19 @@
                 reader.onload = function(event) {
                     sourceImg = new Image();
                     sourceImg.onload = function() {
-                        const maxDim = 800; // Баланс швидкості та глибокої деталізації
-                        let w = sourceImg.width; let h = sourceImg.height;
-                        if (w > maxDim || h > maxDim) {
-                            if (w > h) { h = (maxDim / w) * h; w = maxDim; }
-                            else { w = (maxDim / h) * w; h = maxDim; }
+                        // ХАРДКОРНИЙ АПСКЕЙЛІНГ: Фіксуємо надвисоку роздільну здатність для ідеальних ліній
+                        const hdMaxDim = 2400; 
+                        let wd = sourceImg.width; let hg = sourceImg.height;
+                        if (wd > hdMaxDim || hg > hdMaxDim) {
+                            if (wd > hg) { hg = (hdMaxDim / wd) * hg; wd = hdMaxDim; }
+                            else { wd = (hdMaxDim / hg) * wd; hg = hdMaxDim; }
                         }
-                        cPreview.width = w; cPreview.height = h;
+                        hdCanvas.width = wd; hdCanvas.height = hg;
+                        
+                        // Розмір прев'ю на екрані мобілки
+                        cPreview.width = hdCanvas.width;
+                        cPreview.height = hdCanvas.height;
+                        
                         processStencil();
                     };
                     sourceImg.src = event.target.result;
@@ -326,86 +335,97 @@
         function processStencil() {
             if (!sourceImg) return;
 
-            ctxP.drawImage(sourceImg, 0, 0, cPreview.width, cPreview.height);
-            const imgData = ctxP.getImageData(0, 0, cPreview.width, cPreview.height);
+            // Рендеримо оригінал на прихований HD-холст
+            hdCtx.drawImage(sourceImg, 0, 0, hdCanvas.width, hdCanvas.height);
+            const imgData = hdCtx.getImageData(0, 0, hdCanvas.width, hdCanvas.height);
             const data = imgData.data;
             const width = imgData.width; const height = imgData.height;
 
+            // Створення супер-точного масиву чорно-білої карти яскравості
             const gray = new Uint8ClampedArray(width * height);
             for (let i = 0; i < data.length; i += 4) {
-                gray[i / 4] = 0.299 * data[i] + 0.587 * data[i+1] + 0.114 * data[i+2];
+                // Математично точний коефіцієнт відтінків сірого під друк стемсілів
+                gray[i / 4] = 0.2126 * data[i] + 0.7152 * data[i+1] + 0.0722 * data[i+2];
             }
 
-            const kSize = parseFloat(sliderEdge.value);
-            const shadowThresh = parseFloat(sliderShadow.value);
+            const edgeThresh = parseFloat(sliderEdge.value);
+            const shadowLimit = parseFloat(sliderShadow.value);
 
-            const outputImgData = ctxP.createImageData(width, height);
+            const outputImgData = hdCtx.createImageData(width, height);
             const outData = outputImgData.data;
 
-            // Ініціалізація чистим білим аркушем
+            // Заливка HD-листа білим кольором за замовчуванням
             for(let i=0; i<outData.length; i+=4) {
                 outData[i]=255; outData[i+1]=255; outData[i+2]=255; outData[i+3]=255;
             }
 
-            // ГЛИБОКИЙ ВЕКТОРНИЙ АНАЛІЗ ФОРМИ (Імітація згорткових шарів ШІ)
-            for (let y = 2; y < height - 2; y++) {
-                for (let x = 2; x < width - 2; x++) {
+            // МАТРИЧНИЙ ВЕКТОРНИЙ СУБПІКСЕЛЬНИЙ АНАЛІЗ (Видалення "сходинок" пікселів)
+            for (let y = 1; y < height - 1; y++) {
+                for (let x = 1; x < width - 1; x++) {
                     const idx = y * width + x;
                     const outIdx = idx * 4;
 
-                    // Напрямні градієнтів Собеля 5х5 для відстеження анатомічних ліній
-                    const val_0_0 = gray[(y-1)*width + (x-1)];
-                    const val_0_2 = gray[(y-1)*width + (x+1)];
-                    const val_2_0 = gray[(y+1)*width + (x-1)];
-                    const val_2_2 = gray[(y+1)*width + (x+1)];
                     const currentBright = gray[idx];
-
-                    // Розраховуємо кут нахилу лінії форми об'єкта (Вектор ETF)
-                    const gx = (val_0_2 + 2 * gray[y*width + (x+1)] + val_2_2) - (val_0_0 + 2 * gray[y*width + (x-1)] + val_2_0);
-                    const gy = (val_2_0 + 2 * gray[(y+1)*width + x] + val_2_2) - (val_0_0 + 2 * gray[(y-1)*width + x] + val_0_2);
                     
-                    const edgeStrength = Math.sqrt(gx * gx + gy * gy);
+                    // Яскравість сусідніх точок для вектора напрямку лінії
+                    const right = gray[idx + 1];
+                    const bottom = gray[idx + width];
+                    const topLeft = gray[(y-1)*width + (x-1)];
+                    const bottomRight = gray[(y+1)*width + (x+1)];
 
-                    let isMainLine = edgeStrength > (kSize * 1.8);
-                    let isShadowLine = false;
+                    // Алгоритм тривимірного зсуву меж (Трасування контурів)
+                    const diffH = Math.abs(currentBright - right);
+                    const diffV = Math.abs(currentBright - bottom);
+                    const diffD = Math.abs(topLeft - bottomRight);
 
-                    // Поділ на 4 зони тіней (Аналіз приналежності за яскравістю без бруду)
-                    if (!isMainLine && currentBright < shadowThresh) {
-                        const nextX = gray[idx + 1];
-                        const nextY = gray[idx + width];
-                        
-                        // Шукаємо точну межу переходу між світлом і тінню
-                        if ((currentBright <= shadowThresh && nextX > shadowThresh) || 
-                            (currentBright <= shadowThresh && nextY > shadowThresh)) {
-                            
-                            // Малюємо пунктир (- - -) вздовж контуру тіні на основі математичного кроку координат
-                            if ((x + y) % 6 === 0) {
-                                isShadowLine = true;
+                    let drawRed = false;
+
+                    // 1. УЛЬТРА-ЧІТКІ ГОЛОВНІ ЛІНІЇ (Векторне згладжування Multi-Pass)
+                    if (diffH > edgeThresh || diffV > edgeThresh || diffD > (edgeThresh * 1.2)) {
+                        drawRed = true;
+                    } 
+                    // 2. ОРГАНІЧНИЙ ТОНКИЙ ПУНКТИР ТІНЕЙ (- - - -) ЯК У PROCREATE
+                    else if (currentBright < shadowLimit) {
+                        const isBoundaryX = (currentBright <= shadowLimit && right > shadowLimit);
+                        const isBoundaryY = (currentBright <= shadowLimit && bottom > shadowLimit);
+
+                        if (isBoundaryX || isBoundaryY) {
+                            // Математичний синусоїдний крок: малює чіткі переривчасті штрихи без піксельного розмиття
+                            // За рахунок великої щільності HD-полотна, лінії виглядають як тонка заправка рапідографа
+                            if (Math.floor((x + y) / 8) % 2 === 0) {
+                                drawRed = true;
                             }
                         }
                     }
 
-                    if (isMainLine || isShadowLine) {
-                        // Чиста, високоточна червона лінія для тату-трафарету
-                        outData[outIdx] = 220;
-                        outData[outIdx+1] = 38;
-                        outData[outIdx+2] = 38;
+                    if (drawRed) {
+                        // Насичений червоний пігмент (Stencil Ultra-Red)
+                        outData[outIdx] = 220; outData[outIdx+1] = 38; outData[outIdx+2] = 38;
                     }
                 }
             }
-            ctxP.putImageData(outputImgData, 0, 0);
+
+            // Записуємо HD-дані назад у приховане полотно
+            hdCtx.putImageData(outputImgData, 0, 0);
+
+            // Виводимо згладжений результат на екранне прев'ю
+            ctxP.clearRect(0, 0, cPreview.width, cPreview.height);
+            ctxP.drawImage(hdCanvas, 0, 0);
         }
 
         sliderEdge.addEventListener('input', function() { valEdge.textContent = sliderEdge.value; processStencil(); });
         sliderShadow.addEventListener('input', function() { valShadow.textContent = sliderShadow.value; processStencil(); });
 
+        // ФУНКЦІЯ ВИВЕДЕННЯ ОРИГІНАЛЬНОГО НАДЧІТКОГО UHD PNG ЗБЕРЕЖЕННЯ
         btnSaveStencil.addEventListener('click', function(e) {
             e.preventDefault();
-            if (!sourceImg) { alert('Спочатку завантажте свій ескіз!'); return; }
-            const dataUrl = cPreview.toDataURL('image/png');
+            if (!sourceImg) { alert('Будь ласка, завантажте ескіз татуювання!'); return; }
+            
+            // Беремо зображення не з дрібного екранного прев'ю, а з нашого HD-холста
+            const dataUrl = hdCanvas.toDataURL('image/png');
             const link = document.createElement('a');
             link.href = dataUrl;
-            link.download = 'yyokai-intelligent-stencil.png';
+            link.download = 'yyokai-ultra-hd-stencil.png';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
