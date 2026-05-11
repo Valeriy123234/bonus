@@ -8,7 +8,7 @@
     <link rel="preconnect" href="gstatic.com" crossorigin>
     <link href="googleapis.com" rel="stylesheet">
     
-    <!-- Надійна та стабільна версія jsPDF для мобільних пристроїв -->
+    <!-- Надійна та перевірена мобільна версія jspdf без блокування CORS -->
     <script src="cloudflare.com"></script>
     
     <style>
@@ -71,7 +71,7 @@
 
         .glitch-wrapper { text-align: center; user-select: none; }
         .glitch, .glitch-kai { position: relative; animation: glitch-skew 1s infinite linear alternate-reverse; }
-        .glitch { color: #fff; font-size: 26px; font-weight: 900; letter-spacing: 4px; line-height: 1; }
+        .glitch { color: #fff; font-size: 26px; font-weight: 900; letter-spacing: 4px; line-none: 1; }
         .glitch-kai { font-size: 11px; letter-spacing: 6px; color: #dc2626; display: block; margin-top: 3px; font-weight: bold; }
         .glitch::before, .glitch::after, .glitch-kai::before, .glitch-kai::after {
             content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #060606;
@@ -80,6 +80,17 @@
         .glitch::after { left: -1px; text-shadow: -1px 0 #00ffff, 0 1px #ff00c8; clip: rect(40px, 450px, 70px, 0); animation: glitch-anim2 3s infinite linear alternate-reverse; }
         .glitch-kai::before { left: 1px; text-shadow: -1px 0 #00ffff; clip: rect(2px, 450px, 8px, 0); animation: glitch-anim 2s infinite linear alternate-reverse; }
         .glitch-kai::after { left: -1px; text-shadow: 1px 0 #ff00c8; clip: rect(5px, 450px, 12px, 0); animation: glitch-anim2 2s infinite linear alternate-reverse; }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(15px, 9999px, 30px, 0); }
+            50% { clip: rect(5px, 9999px, 15px, 0); }
+            100% { clip: rect(25px, 9999px, 35px, 0); }
+        }
+        @keyframes glitch-anim2 {
+            0% { clip: rect(35px, 9999px, 45px, 0); }
+            50% { clip: rect(12px, 9999px, 28px, 0); }
+            100% { clip: rect(4px, 9999px, 18px, 0); }
+        }
 
         #menu-toggle {
             background: none; border: none; width: 44px; height: 44px;
@@ -140,7 +151,6 @@
         .tech-text { font-size: 10px; color: #525252; line-height: 1.4; text-transform: uppercase; }
         .tech-text span { color: #d4d4d4; }
 
-        /* ОНОВЛЕНА КНОПКА З НАЙВИЩИМ РІВНЕМ КЛІКАБЕЛЬНОСТІ */
         #btn-split {
             position: relative; z-index: 999;
             width: 100%; background-color: #991b1b; color: #fff; font-weight: bold;
@@ -290,7 +300,7 @@
             }
         });
 
-        // --- 3. СКРИПТ НАДІЙНОЇ НАРІЗКИ ЗБЕРЕЖЕННЯ ПРОПОРЦІЙ ---
+        // --- 3. СУМІСНИЙ СКРИПТ НАРІЗКИ ---
         const sketchUpload = document.getElementById('sketch-upload');
         const uploadStatus = document.getElementById('upload-status');
         const widthCmInput = document.getElementById('width-cm');
@@ -304,12 +314,11 @@
         let imgWidth = 0;
         let imgHeight = 0;
 
-        // Корисне вікно друку А4 з урахуванням 2 см відступів принтера з кожного боку
         const MARGIN_MM = 20; 
         const A4_W_MM = 210; 
         const A4_H_MM = 297;
-        const PRINT_W_MM = 170; // 210 - 40
-        const PRINT_H_MM = 257; // 297 - 40
+        const PRINT_W_MM = 170; 
+        const PRINT_H_MM = 257; 
 
         sketchUpload.addEventListener('change', (e) => {
             const file = e.target.files[0];
@@ -359,7 +368,7 @@
 
         [widthCmInput, heightCmInput].forEach(input => input.addEventListener('input', () => { updatePreview(); }));
 
-        // 100% СУМІСНИЙ НАДІЙНИЙ МЕТОД ГЕНЕРАЦІЇ ПДФ НА МОБІЛЦІ БЕЗ ПЕРЕГРУЗУ CANVAS
+        // НАЙБІЛЬШ СУМІСНИЙ НАДІЙНИЙ МЕТОД ГЕНЕРАЦІЇ (ВИКЛИК ПРЯМОГО КОНСТРУКТОРА ВІКНА)
         btnSplit.addEventListener('click', (e) => {
             e.preventDefault();
             if (!loadedImageDataUrl) { alert('Будь ласка, спочатку завантажте ескіз татуювання!'); return; }
@@ -368,8 +377,8 @@
             const hTarget = parseFloat(heightCmInput.value);
             if (!wTarget || !hTarget) return;
 
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+            // Нативний мобільний виклик конструктора
+            const pdf = new window.jsPDF('p', 'mm', 'a4');
             
             const wTargetMm = wTarget * 10;
             const hTargetMm = hTarget * 10;
@@ -377,26 +386,19 @@
             const cols = Math.ceil(wTargetMm / PRINT_W_MM); 
             const rows = Math.ceil(hTargetMm / PRINT_H_MM);
 
-            // Вираховуємо коефіцієнт реального розміру зображення щодо цілі
-            const mmToPxX = imgWidth / wTargetMm;
-            const mmToPxY = imgHeight / hTargetMm;
-
             let pageCount = 0;
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
                     if (pageCount > 0) pdf.addPage();
                     pageCount++;
 
-                    // Розраховуємо зміщення для поточного фрагмента А4 в міліметрах
                     const chunkX_mm = c * PRINT_W_MM;
                     const chunkY_mm = r * PRINT_H_MM;
 
-                    // Початковий масштаб нарізки картинки з урахуванням білих відступів (MARGIN)
                     const posX_mm = MARGIN_MM - chunkX_mm;
                     const posY_mm = MARGIN_MM - chunkY_mm;
 
-                    // Додаємо оригінальне фото на сторінку А4 за координатами зміщення. 
-                    // jsPDF сам відріже зайве за межами сторінки А4, сформувавши ідеальні 2 см білі поля!
+                    // Прямий імпорт без проміжних canvas елементів
                     pdf.addImage(
                         loadedImageDataUrl, 
                         'JPEG', 
@@ -407,21 +409,7 @@
                     );
                 }
             }
-            
-            // Найнадійніший кросбраузерний метод примусового скачування
-            try {
-                const blob = pdf.output('blob');
-                const blobUrl = URL.createObjectURL(blob);
-                const downloadLink = document.createElement('a');
-                downloadLink.href = blobUrl;
-                downloadLink.download = `yyokai-transfer-${wTarget}x${hTarget}.pdf`;
-                document.body.appendChild(downloadLink);
-                downloadLink.click();
-                document.body.removeChild(downloadLink);
-                URL.revokeObjectURL(blobUrl);
-            } catch (err) {
-                pdf.save(`yyokai-transfer-${wTarget}x${hTarget}.pdf`);
-            }
+            pdf.save('yyokai-transfer.pdf');
         });
     </script>
 </body>
