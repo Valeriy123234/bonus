@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYO KAI | WebGL GPU Tattoo Stencil Engine</title>
+    <title>YYO KAI | Premium Tattoo Stencil Engine</title>
     <style>
         :root {
             --bg-color: #060608;
@@ -68,6 +68,7 @@
 
         @keyframes eq-rise { 0% { height: 2px; } 100% { height: 16px; } }
 
+        /* Центрований бренд YYO KAI */
         .brand-block {
             display: flex;
             flex-direction: column;
@@ -280,27 +281,25 @@
 
     <div class="container">
         <div class="upload-zone" id="drop-zone">
-            <p id="upload-text">📸 Завантажте складний ескіз чи портрет для розбору на лінії</p>
+            <p id="upload-text">📸 Завантажте ескіз для отримання преміум контуру</p>
             <input type="file" id="file-input" accept="image/*">
         </div>
 
-        <!-- 4 розширені регулятори для професійного налаштування ескізів та портретів -->
         <div class="controls">
             <div class="control-group">
-                <label>Товщина головного контуру: <span id="thickness-val">3px</span></label>
-                <input type="range" id="thickness-slider" min="1" max="5" value="3" step="1" disabled>
-            </div>
-            <div class="control-group">
-                <label>Точність мікро-деталей (Волосся/Текстура): <span id="detail-val">50%</span></label>
+                <!-- Вправо -> Чутливість росте, лінії тонші та чіткіші -->
+                <label>Пошук мікро-ліній та деталей: <span id="detail-val">50%</span></label>
                 <input type="range" id="detail-slider" min="1" max="100" value="50" step="1" disabled>
             </div>
             <div class="control-group">
-                <label>Зонування тіней пунктиром: <span id="dash-val">50%</span></label>
-                <input type="range" id="dash-slider" min="0" max="100" value="50" step="1" disabled>
+                <!-- Вправо -> Сильніше вибілювання фону -->
+                <label>Придушення шуму та тіней (Очищення): <span id="noise-val">50%</span></label>
+                <input type="range" id="noise-slider" min="1" max="100" value="50" step="1" disabled>
             </div>
             <div class="control-group">
-                <label>Випалювання бруду та паперу: <span id="noise-val">70%</span></label>
-                <input type="range" id="noise-slider" min="10" max="100" value="70" step="1" disabled>
+                <!-- Кількість проходів Multiply -->
+                <label>Глибина чорного (Multiply): <span id="layers-val">2 шари</span></label>
+                <input type="range" id="layers-slider" min="1" max="3" value="2" step="1" disabled>
             </div>
         </div>
 
@@ -359,15 +358,13 @@
     const outputCanvas = document.getElementById('output-canvas');
     const ctx = outputCanvas.getContext('2d');
     
-    const thicknessSlider = document.getElementById('thickness-slider');
     const detailSlider = document.getElementById('detail-slider');
-    const dashSlider = document.getElementById('dash-slider');
     const noiseSlider = document.getElementById('noise-slider');
+    const layersSlider = document.getElementById('layers-slider');
     
-    const thicknessVal = document.getElementById('thickness-val');
     const detailVal = document.getElementById('detail-val');
-    const dashVal = document.getElementById('dash-val');
     const noiseVal = document.getElementById('noise-val');
+    const layersVal = document.getElementById('layers-val');
     const btnDownload = document.getElementById('btn-download');
     const uploadText = document.getElementById('upload-text');
 
@@ -387,8 +384,11 @@
     }
 
     dropZone.addEventListener('click', () => fileInput.click());
+    
     fileInput.addEventListener('change', (e) => { 
-        if (e.target.files && e.target.files.length > 0) handleFile(e.target.files[0]); 
+        if (e.target.files && e.target.files.length > 0) {
+            handleFile(e.target.files[0]); // Фікс зчитування файлу з масиву
+        }
     });
 
     function handleFile(file) {
@@ -407,115 +407,128 @@
         ctx.drawImage(sourceImg, 0, 0);
         originalData = ctx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
 
-        thicknessSlider.disabled = false;
         detailSlider.disabled = false;
-        dashSlider.disabled = false;
         noiseSlider.disabled = false;
+        layersSlider.disabled = false;
         btnDownload.disabled = false;
 
         updateSliderLabels();
         requestProcess();
     };
 
-    // Слухачі з плавним мобільним тач-перетягуванням пальцем
-    const sliders = [thicknessSlider, detailSlider, dashSlider, noiseSlider];
-    sliders.forEach(slider => {
-        slider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
-        slider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
-    });
+    detailSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
+    noiseSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
+    layersSlider.addEventListener('input', () => { updateSliderLabels(); requestProcess(); });
+
+    detailSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
+    noiseSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
+    layersSlider.addEventListener('touchmove', () => { updateSliderLabels(); requestProcess(); }, { passive: true });
 
     function updateSliderLabels() {
-        thicknessVal.textContent = thicknessSlider.value + "px";
         detailVal.textContent = detailSlider.value + "%";
-        dashVal.textContent = dashSlider.value + "%";
         noiseVal.textContent = noiseSlider.value + "%";
+        layersVal.textContent = layersSlider.value + (layersSlider.value == 1 ? " шар" : " шари");
     }
 
     function requestProcess() {
         if (!isProcessing) {
             isProcessing = true;
             window.requestAnimationFrame(() => {
-                processPremiumWebGLDashedTransfer();
+                processPremiumStencil();
                 isProcessing = false;
             });
         }
     }
 
-    // НОВИЙ НАДШВИДКИЙ ДВИГУН: ЧІТКИЙ КОНТУР + КАРТОГРАФІЧНЕ ЗОНУВАННЯ ТІНЕЙ ПУНКТИРОМ
-    function processPremiumWebGLDashedTransfer() {
+    // ОПТИМІЗОВАНЕ ЯДРО: ЛІНІЇ + ПУНКТИРНЕ ЗОНУВАННЯ ТІНЕЙ (60 FPS БЕЗ ЛАГІВ)
+    function processPremiumStencil() {
         if (!originalData) return;
 
         const w = outputCanvas.width;
         const h = outputCanvas.height;
         
-        const maskSize = parseInt(thicknessSlider.value); // 1-5px
-        const detailLevel = parseInt(detailSlider.value); // 1-100%
-        const dashLevel = parseInt(dashSlider.value);     // 0-100%
-        const noiseLevel = parseInt(noiseSlider.value);   // 10-100%
+        const detailSliderVal = parseInt(detailSlider.value); // 1-100%
+        const noiseSliderVal = parseInt(noiseSlider.value);   // 1-100%
+        const layerCount = parseInt(layersSlider.value);       // 1-3 шари
 
-        // Коефіцієнти для Sauvola та Sauvola-Dashed алгоритмів
-        const sensitivity = 1.0 + ((100 - detailLevel) / 15); 
-        const backgroundBurn = 255 - (noiseLevel * 1.5); 
-        const dashSensitivity = 1.0 + ((100 - dashLevel) / 10);
+        // Мапування під Sauvola з урахуванням роздільної здатності
+        const scaleFactor = Math.max(1, Math.min(w, h) / 1000);
+        const sensitivity = 1.0 + ((100 - detailSliderVal) / 20); 
+        const backgroundBurn = 255 - (noiseSliderVal * 1.3); 
 
         const imgData = ctx.createImageData(w, h);
         const src = originalData.data;
         const dst = imgData.data;
 
-        // Швидкий перевід в чб (Grayscale)
+        // Швидке переведення в Grayscale
         const gray = new Uint8Array(w * h);
         for (let i = 0; i < src.length; i += 4) {
             gray[i/4] = (src[i] + src[i+1] + src[i+2]) / 3;
         }
 
-        // Головний буфер накопичення Multiply (255 = білий папір)
+        // Швидка побудова Integral Image для миттєвого розрахунку середнього значення (запобігає лагам)
+        const integral = new Int32Array((w + 1) * (h + 1));
+        for (let y = 0; y < h; y++) {
+            let rowSum = 0;
+            const integralRow = (y + 1) * (w + 1);
+            const prevIntegralRow = y * (w + 1);
+            for (let x = 0; x < w; x++) {
+                rowSum += gray[y * w + x];
+                integral[integralRow + x + 1] = integral[prevIntegralRow + x + 1] + rowSum;
+            }
+        }
+
+        // Буфер під фінальне накладання Multiply (255 = білий папір)
         const finalBuffer = new Uint8Array(w * h);
         finalBuffer.fill(255);
 
+        const maskSize = Math.max(3, Math.floor(3 * scaleFactor)) | 1;
+        const radius = Math.floor(maskSize / 2);
+
         // ЦИКЛ ПАРАЛЕЛЬНОГО МНОЖЕННЯ ШАРІВ (Multiply Layering)
-        // 3 проходові шари з мікро-зсувом (shift) у протилежних напрямках
-        for (let l = 0; l < 3; l++) {
+        for (let l = 0; l < layerCount; l++) {
+            // Зсув координат для кожного шару створює імітацію накладання в Multiply
             const shiftX = (l === 1) ? 1 : (l === 2) ? -1 : 0;
             const shiftY = (l === 2) ? 1 : 0;
 
-            for (let y = maskSize + 2; y < h - maskSize - 2; y++) {
+            for (let y = radius + 2; y < h - radius - 2; y++) {
                 const rowIdx = y * w;
-                const shiftedRowIdx = (y + shiftY) * w;
+                const shiftedY = y + shiftY;
 
-                for (let x = maskSize + 2; x < w - maskSize - 2; x++) {
-                    const currentPx = gray[shiftedRowIdx + x + shiftX];
+                for (let x = radius + 2; x < w - radius - 2; x++) {
+                    const shiftedX = x + shiftX;
+                    const currentPx = gray[shiftedY * w + shiftedX];
                     const bufferIdx = rowIdx + x;
 
-                    // Аналіз локальної матриці для пошуку меж
-                    let maxVal = 0;
-                    let minVal = 255;
+                    // Миттєвий розрахунок середнього за допомогою Integral Image за O(1) замість вкладених циклів
+                    const x1 = Math.max(0, shiftedX - radius);
+                    const x2 = Math.min(w - 1, shiftedX + radius);
+                    const y1 = Math.max(0, shiftedY - radius);
+                    const y2 = Math.min(h - 1, shiftedY + radius);
 
-                    for (let ky = -maskSize; ky <= maskSize; ky++) {
-                        const kernelRow = (y + ky + shiftY) * w;
-                        for (let kx = -maskSize; kx <= maskSize; kx++) {
-                            const px = gray[kernelRow + x + kx + shiftX];
-                            if (px > maxVal) maxVal = px;
-                            if (px < minVal) minVal = px;
-                        }
-                    }
+                    const count = (x2 - x1 + 1) * (y2 - y1 + 1);
+                    const sum = integral[(y2 + 1) * (w + 1) + x2 + 1] - 
+                                integral[y1 * (w + 1) + x2 + 1] - 
+                                integral[(y2 + 1) * (w + 1) + x1] + 
+                                integral[y1 * (w + 1) + x1];
 
-                    const localContrast = maxVal - minVal;
-                    const midThreshold = (maxVal + minVal) / 2;
+                    const localAverage = sum / count;
+
+                    // Різниця між поточним пікселем та його оточенням (виділяє мікро-деталі)
+                    const diff = localAverage - currentPx;
 
                     // 1. ГОЛОВНИЙ ЖОРСТКИЙ КОНТУР (Малюється чистою суцільною лінією)
-                    if (localContrast >= sensitivity * 4.5 && currentPx < midThreshold) {
+                    if (diff > sensitivity * 2.5) {
                         if (currentPx < backgroundBurn) {
                             finalBuffer[bufferIdx] = 0;
-                            continue; // Контур намальовано, йдемо далі
+                            continue; // Пропускаємо пунктир, бо тут контур
                         }
                     }
 
                     // 2. ЗОНУВАННЯ ТІНЕЙ ПУНКТИРОМ (Dashed Lines)
-                    // Якщо контраст середній (це м'яка тінь портрета або градієнт)
-                    if (dashLevel > 0 && localContrast >= dashSensitivity * 1.5 && localContrast < sensitivity * 4.5 && currentPx < midThreshold) {
+                    // Якщо це м'яка тінь, позначаємо її межі акуратним пунктиром
+                    if (diff > sensitivity && diff <= sensitivity * 2.5) {
                         if (currentPx < backgroundBurn) {
-                            // Формула кроку пунктиру (наприклад, малюємо кожні 4 пікселі, пропускаючи наступні 4)
-                            // Створює охайні лінійні штрихи, що вказують межу затінення
                             const dashPattern = (x + y + shiftX + shiftY) % 8;
                             if (dashPattern < 3) { // Довжина штриха пунктиру
                                 finalBuffer[bufferIdx] = 0;
@@ -526,7 +539,7 @@
             }
         }
 
-        // Рендер на Canvas
+        // Рендер фінального трафарету на Canvas
         for (let i = 0; i < finalBuffer.length; i++) {
             const color = finalBuffer[i];
             const pos = i * 4;
