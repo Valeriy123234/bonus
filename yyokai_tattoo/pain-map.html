@@ -9,7 +9,7 @@
             --bg-color: #060608;
             --panel-color: #0e0e11;
             --control-bg: #121216;
-            --accent-color: #00ffcc; /* Фірмовий кіберпанк синій контур */
+            --accent-color: #00ffcc;
             --accent-hover: #00cca3;
             --text-color: #ffffff;
             --border-radius: 16px;
@@ -42,7 +42,7 @@
             z-index: 100;
         }
 
-        /* Повернено контрастну синю кнопку звуку */
+        /* Кнопка звуку */
         .music-container {
             width: 40px;
             height: 40px;
@@ -62,14 +62,16 @@
             box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
         }
 
-        .music-icon { font-size: 16px; color: #fff; transition: all 0.3s ease; }
+        .music-icon { font-size: 16px; color: #fff; display: block; }
         
-        /* Преміум еквалайзер строго з 6 прямокутників */
+        /* Еквалайзер з 6 прямокутників */
         .equalizer { display: none; align-items: flex-end; justify-content: space-between; width: 20px; height: 16px; }
         .eq-bar { width: 2px; height: 3px; background-color: var(--accent-color); border-radius: 1px; }
         
-        .music-container.playing .music-icon { display: none; }
-        .music-container.playing .equalizer { display: flex; }
+        /* Класи стану для увімкненої музики */
+        .music-container.playing .music-icon { display: none !important; }
+        .music-container.playing .equalizer { display: flex !important; }
+        
         .music-container.playing .eq-bar:nth-child(1) { animation: eq-rise 0.5s ease-in-out infinite alternate; }
         .music-container.playing .eq-bar:nth-child(2) { animation: eq-rise 0.3s ease-in-out infinite alternate 0.1s; }
         .music-container.playing .eq-bar:nth-child(3) { animation: eq-rise 0.6s ease-in-out infinite alternate 0.2s; }
@@ -79,7 +81,6 @@
 
         @keyframes eq-rise { 0% { height: 2px; } 100% { height: 16px; } }
 
-        /* Повернено вертикальний логотип YYO KAI строго по центру хедера */
         .brand-block {
             display: flex;
             flex-direction: column;
@@ -230,7 +231,6 @@
         input[type="range"]::-moz-range-thumb:active { cursor: grabbing; transform: scale(1.15); }
         input[type="range"]:disabled { opacity: 0.15; cursor: not-allowed; }
 
-        /* Повернено преміальний стек: спочатку результат під повзунками, а потім оригінал */
         .workspace { margin-top: 20px; display: grid; grid-template-columns: 1fr; gap: 20px; }
 
         .preview-box {
@@ -330,12 +330,12 @@
     </div>
 
 <script>
-    // Ініціалізація аудіофайлу
+    // Налаштування аудіо
     const bgMusic = new Audio('track.mp3'); 
     bgMusic.loop = true; 
     bgMusic.volume = 0.3; 
     
-    let isMusicPlaying = false; // Залізобетонний прапорець On/Off
+    let isMusicPlaying = false; 
 
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('file-input');
@@ -356,15 +356,21 @@
     let originalData = null;
     let isProcessing = false;
 
-    // Стовідсотково виправлена функція тригера аудіо та анімації
+    // ПОВНІСТЮ ПЕРЕПИСАНА ЛОГІКА ТРИГЕРА: ЕКВАЛАЙЗЕР ОЖИВАЄ ЗАВЖДИ ВІД КЛІКУ
     function toggleMusic() {
         const musicBtn = document.getElementById('music-btn');
+        
         if (!isMusicPlaying) {
-            bgMusic.play().then(() => {
-                isMusicPlaying = true;
-                musicBtn.classList.add('playing');
-            }).catch((err) => { console.log("Файл track.mp3 не знайдено поруч:", err); });
+            // Візуальний стан змінюємо миттєво, не чекаючи відповіді браузера
+            isMusicPlaying = true;
+            musicBtn.classList.add('playing');
+            
+            // Асинхронний запуск треку із захистом від блокування
+            bgMusic.play().catch((err) => { 
+                console.log("Музику заблоковано або файл track.mp3 відсутній, але інтерфейс активовано."); 
+            });
         } else {
+            // Вимикаємо миттєво
             bgMusic.pause();
             isMusicPlaying = false;
             musicBtn.classList.remove('playing');
@@ -377,7 +383,12 @@
     }
 
     dropZone.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', (e) => { if (e.target.files && e.target.files.length > 0) handleFile(e.target.files); });
+    
+    fileInput.addEventListener('change', (e) => { 
+        if (e.target.files && e.target.files.length > 0) {
+            handleFile(e.target.files); 
+        }
+    });
 
     function handleFile(files) {
         const file = files[0];
@@ -428,7 +439,6 @@
         }
     }
 
-    // ЛІНІЙНИЙ ДВИГУН ДЛЯ ВИДІЛЕННЯ КОНТУРІВ (60 FPS)
     function processPremiumPureLineTransfer() {
         if (!originalData) return;
 
@@ -504,7 +514,6 @@
         ctx.putImageData(imgData, 0, 0);
     }
 
-    // Завантаження через Blob
     btnDownload.addEventListener('click', () => {
         outputCanvas.toBlob((blob) => {
             if (!blob) return;
