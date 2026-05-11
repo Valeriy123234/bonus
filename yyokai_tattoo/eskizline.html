@@ -67,21 +67,39 @@
         .eq-bar:nth-child(5) { animation-delay: 0.4s; }
         .eq-bar:nth-child(6) { animation-delay: 0.6s; }
 
+        /* ГЛІТЧ НА СУЧАСНОМУ CLIP-PATH ДЛЯ МОБІЛОК */
         .glitch-wrapper { text-align: center; user-select: none; }
-        .glitch, .glitch-kai { position: relative; animation: glitch-skew 1s infinite linear alternate-reverse; }
+        .glitch, .glitch-kai { position: relative; }
         .glitch { color: #fff; font-size: 26px; font-weight: 900; letter-spacing: 4px; line-height: 1; }
         .glitch-kai { font-size: 11px; letter-spacing: 6px; color: #dc2626; display: block; margin-top: 3px; font-weight: bold; }
+        
         .glitch::before, .glitch::after, .glitch-kai::before, .glitch-kai::after {
             content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #060606;
         }
-        .glitch::before { left: 1px; text-shadow: -1px 0 #ff00c8; clip: rect(10px, 450px, 30px, 0); animation: glitch-anim 3s infinite linear alternate-reverse; }
-        .glitch::after { left: -1px; text-shadow: -1px 0 #00ffff, 0 1px #ff00c8; clip: rect(40px, 450px, 70px, 0); animation: glitch-anim2 3s infinite linear alternate-reverse; }
-        .glitch-kai::before { left: 1px; text-shadow: -1px 0 #00ffff; clip: rect(2px, 450px, 8px, 0); animation: glitch-anim 2s infinite linear alternate-reverse; }
-        .glitch-kai::after { left: -1px; text-shadow: 1px 0 #ff00c8; clip: rect(5px, 450px, 12px, 0); animation: glitch-anim2 2s infinite linear alternate-reverse; }
+        
+        .glitch::before { left: 2px; text-shadow: -2px 0 #ff00c8; animation: glitch-anim-1 2s infinite linear alternate-reverse; }
+        .glitch::after { left: -2px; text-shadow: -2px 0 #00ffff, 0 2px #ff00c8; animation: glitch-anim-2 2s infinite linear alternate-reverse; }
+        
+        .glitch-kai::before { left: 1px; text-shadow: -1px 0 #00ffff; animation: glitch-anim-1 3s infinite linear alternate-reverse; }
+        .glitch-kai::after { left: -1px; text-shadow: 1px 0 #ff00c8; animation: glitch-anim-2 3s infinite linear alternate-reverse; }
 
-        @keyframes glitch-skew { 0% { transform: skew(-2deg); } 100% { transform: skew(2deg); } }
+        @keyframes glitch-anim-1 {
+            0% { clip-path: inset(20% 0 30% 0); }
+            20% { clip-path: inset(60% 0 10% 0); }
+            40% { clip-path: inset(40% 0 50% 0); }
+            60% { clip-path: inset(80% 0 5% 0); }
+            80% { clip-path: inset(10% 0 70% 0); }
+            100% { clip-path: inset(30% 0 20% 0); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { clip-path: inset(15% 0 40% 0); }
+            25% { clip-path: inset(70% 0 5% 0); }
+            50% { clip-path: inset(35% 0 55% 0); }
+            75% { clip-path: inset(85% 0 15% 0); }
+            100% { clip-path: inset(50% 0 25% 0); }
+        }
 
-        /* НАДІЙНИЙ КРЕСТ МЕНЮ (ПОВНІСТЮ ВИДИМИЙ) */
+        /* ХРЕСТИК МЕНЮ З АБСОЛЮТНИМ ПРІОРИТЕТОМ */
         #menu-toggle {
             background: none; border: none; width: 44px; height: 44px;
             display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; cursor: pointer;
@@ -263,7 +281,7 @@
         menuToggle.addEventListener('click', toggleMenu);
         document.getElementById('btn-book-session').addEventListener('click', function() { if(!menuOpen) toggleMenu(); });
 
-        // --- 3. АВТОМАТИЧНИЙ VE-TRACE АЛГОРИТМ (ФІЛЮТРАЦІЯ БРУДУ ТА ТІНЕЙ) ---
+        // --- 3. АВТОМАТИЧНИЙ АЛГОРИТМ ЧИСТОЇ НАРІЗКИ ---
         const imageUpload = document.getElementById('image-upload');
         const uploadStatus = document.getElementById('upload-status');
         const placeholderText = document.getElementById('placeholder-text');
@@ -276,32 +294,29 @@
         let hdCtx = hdCanvas.getContext('2d');
 
         imageUpload.addEventListener('change', function(e) {
-            if (e.target.files && e.target.files.length > 0) {
-                const file = e.target.files;
+            const files = e.target.files;
+            if (files && files.length > 0) {
+                const file = files[0];
                 uploadStatus.textContent = file.name.substring(0, 12) + '...';
                 uploadStatus.style.color = '#dc2626';
                 placeholderText.style.display = 'none';
                 cPreview.style.display = 'block';
                 
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    sourceImg = new Image();
-                    sourceImg.onload = function() {
-                        // Жорстка фіксація 2.5K роздільної здатності для ідеальних векторних ліній
-                        const hdMaxDim = 2400; 
-                        let wd = sourceImg.width; let hg = sourceImg.height;
-                        if (wd > hdMaxDim || hg > hdMaxDim) {
-                            if (wd > hg) { hg = (hdMaxDim / wd) * hg; wd = hdMaxDim; }
-                            else { wd = (hdMaxDim / hg) * wd; hg = hdMaxDim; }
-                        }
-                        hdCanvas.width = wd; hdCanvas.height = hg;
-                        cPreview.width = hdCanvas.width; cPreview.height = hdCanvas.height;
-                        
-                        processStencil();
-                    };
-                    sourceImg.src = event.target.result;
+                sourceImg = new Image();
+                sourceImg.onload = function() {
+                    const hdMaxDim = 2400; 
+                    let wd = sourceImg.width; let hg = sourceImg.height;
+                    if (wd > hdMaxDim || hg > hdMaxDim) {
+                        if (wd > hg) { hg = (hdMaxDim / wd) * hg; wd = hdMaxDim; }
+                        else { wd = (hdMaxDim / hg) * wd; hg = hdMaxDim; }
+                    }
+                    hdCanvas.width = wd; hdCanvas.height = hg;
+                    cPreview.width = hdCanvas.width; cPreview.height = hdCanvas.height;
+                    
+                    processStencil();
+                    URL.revokeObjectURL(sourceImg.src);
                 };
-                reader.readAsDataURL(file);
+                sourceImg.src = URL.createObjectURL(file);
             }
         });
 
@@ -321,12 +336,10 @@
             const outputImgData = hdCtx.createImageData(width, height);
             const outData = outputImgData.data;
 
-            // Чисте біле тло
             for(let i=0; i<outData.length; i+=4) {
                 outData[i]=255; outData[i+1]=255; outData[i+2]=255; outData[i+3]=255;
             }
 
-            // Професійні захардкоджені коефіцієнти відсікання бруду
             const edgeThresh = 32;   
             const shadowLimit = 105; 
 
@@ -344,17 +357,13 @@
 
                     let drawRed = false;
 
-                    // 1. КОНТУР: Тільки чіткі лінії малюнка
                     if (diffH > edgeThresh || diffV > edgeThresh) {
-                        // Відсікаємо слабкий шум фону та пори шкіри
                         if (currentBright < 210) {
                             drawRed = true;
                         }
                     } 
-                    // 2. ЧІТКИЙ ПУНКТИР: Тільки на межі глибоких контурних перепадів тіні
                     else if (currentBright < shadowLimit) {
                         if ((currentBright <= shadowLimit && right > shadowLimit) || (currentBright <= shadowLimit && bottom > shadowLimit)) {
-                            // Ефект тонкого Procreate-пунктиру за рахунок математичного кроку
                             if (Math.floor((x + y) / 6) % 2 === 0) {
                                 drawRed = true;
                             }
@@ -374,7 +383,7 @@
 
         btnSaveStencil.addEventListener('click', function(e) {
             e.preventDefault();
-            if (!sourceImg) { alert('Будь ласка, завантажте ескіз!'); return; }
+            if (!sourceImg) { alert('Будь ласка, спочатку завантажте ескіз!'); return; }
             const dataUrl = hdCanvas.toDataURL('image/png');
             const link = document.createElement('a');
             link.href = dataUrl;
