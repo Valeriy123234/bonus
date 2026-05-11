@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYO KAI</title>
+    <title>YYO KAI - Tattoo Splitter</title>
     <link rel="preconnect" href="googleapis.com">
     <link rel="preconnect" href="gstatic.com" crossorigin>
     <link href="googleapis.com" rel="stylesheet">
     
-    <!-- Бібліотека JSZip для пакування всіх PNG в один архів в 1 клік -->
+    <!-- Надійне підключення бібліотеки JSZip для скачування в один клік -->
     <script src="cloudflare.com"></script>
     
     <style>
@@ -32,16 +32,15 @@
             position: relative;
         }
 
-        /* Надійне тло матриці */
         #matrix {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 1;
+            pointer-events: none; z-index: 0;
             opacity: 0.17;
         }
 
         header {
-            position: relative; z-index: 50;
+            position: relative; z-index: 99;
             display: flex; justify-content: space-between; align-items: center;
             width: 100%; height: 54px;
         }
@@ -81,17 +80,11 @@
         .glitch-kai::before { left: 1px; text-shadow: -1px 0 #00ffff; clip: rect(2px, 450px, 8px, 0); animation: glitch-anim 2s infinite linear alternate-reverse; }
         .glitch-kai::after { left: -1px; text-shadow: 1px 0 #ff00c8; clip: rect(5px, 450px, 12px, 0); animation: glitch-anim2 2s infinite linear alternate-reverse; }
 
-        @keyframes glitch-anim {
-            0% { clip: rect(15px, 9999px, 30px, 0); }
-            50% { clip: rect(5px, 9999px, 15px, 0); }
-            100% { clip: rect(25px, 9999px, 35px, 0); }
-        }
-        @keyframes glitch-anim2 {
-            0% { clip: rect(35px, 9999px, 45px, 0); }
-            50% { clip: rect(12px, 9999px, 28px, 0); }
-            100% { clip: rect(4px, 9999px, 18px, 0); }
-        }
+        @keyframes glitch-skew { 0% { transform: skew(-2deg); } 100% { transform: skew(2deg); } }
+        @keyframes glitch-anim { 0% { clip: rect(15px, 9999px, 30px, 0); } 50% { clip: rect(5px, 9999px, 15px, 0); } 100% { clip: rect(25px, 9999px, 35px, 0); } }
+        @keyframes glitch-anim2 { 0% { clip: rect(35px, 9999px, 45px, 0); } 50% { clip: rect(12px, 9999px, 28px, 0); } 100% { clip: rect(4px, 9999px, 18px, 0); } }
 
+        /* Кнопка меню завжди поверх усього */
         #menu-toggle {
             background: none; border: none; width: 44px; height: 44px;
             display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; cursor: pointer;
@@ -99,13 +92,13 @@
         }
         .burger-line { width: 26px; height: 2.5px; background-color: #a3a3a3; transition: all 0.3s ease; }
 
+        /* Фікс перекриття меню */
         #full-menu {
-            position: fixed; inset: 0; background-color: rgba(6, 6, 6, 0.98);
-            z-index: 90; display: none; flex-direction: column; justify-content: center;
-            align-items: center; gap: 24px; font-size: 20px; letter-spacing: 4px; backdrop-filter: blur(8px);
+            position: fixed; inset: 0; background-color: #060606;
+            z-index: 80; display: none; flex-direction: column; justify-content: center;
+            align-items: center; gap: 24px; font-size: 20px; letter-spacing: 4px;
         }
         #full-menu a { color: #a3a3a3; text-decoration: none; transition: color 0.3s; }
-        #full-menu a:hover { color: #dc2626; }
         #full-menu .active-link { color: #dc2626; border-bottom: 1px solid #dc2626; padding-bottom: 4px; }
 
         main {
@@ -152,14 +145,12 @@
         .tech-text { font-size: 10px; color: #525252; line-height: 1.4; text-transform: uppercase; }
         .tech-text span { color: #d4d4d4; }
 
-        /* ГОЛОВНА КНОПКА СКАЧУВАННЯ АРХІВУ */
         #btn-zip-download {
             width: 100%; background-color: #991b1b; color: #fff;
             border: none; padding: 14px; font-size: 11px;
             font-family: inherit; font-weight: bold; text-transform: uppercase;
             letter-spacing: 2px; cursor: pointer; text-align: center;
         }
-        #btn-zip-download:active { background-color: #dc2626; }
 
         .grid-container-layout { display: grid; gap: 2px; background-color: #000; width: 100%; height: 100%; max-height: 70px; aspect-ratio: 16/9; }
         .preview-sheet {
@@ -175,7 +166,6 @@
 </head>
 <body>
 
-    <!-- Полотно матричного коду -->
     <canvas id="matrix"></canvas>
 
     <header>
@@ -230,7 +220,7 @@
             <div class="preview-box">
                 <div class="preview-label">Схема сторінок</div>
                 <div id="preview-grid">
-                    <div class="preview-placeholder">Очікування завантаження контуру...</div>
+                    <div class="preview-placeholder">Очікування контуру ескізу...</div>
                 </div>
                 <div class="grid-info-footer">
                     <span>Листів: <strong class="id-count">-</strong></span>
@@ -255,7 +245,7 @@
     </footer>
 
     <script>
-        // --- 1. ЯПОНСЬКИЙ МАТРИЧНИЙ КОД (БЕЗ ОЧИЩЕННЯ ФОНУ ЧОРНОТОЮ) ---
+        // --- 1. МАТРИЦЯ ---
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -269,12 +259,8 @@
         let rainDrops = Array(Math.floor(columns)).fill(1);
 
         function drawMatrix() {
-            // Використовуємо прозору заливку чорного кольору для створення шлейфу, не перекриваючи canvas
-            ctx.fillStyle = 'rgba(6, 6, 6, 0.08)'; 
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.fillStyle = '#991b1b'; 
-            ctx.font = fontSize + 'px monospace';
+            ctx.fillStyle = 'rgba(6, 6, 6, 0.08)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#991b1b'; ctx.font = fontSize + 'px monospace';
             for (let i = 0; i < rainDrops.length; i++) {
                 const text = alphabet[Math.floor(Math.random() * alphabet.length)];
                 ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
@@ -284,7 +270,7 @@
         }
         setInterval(drawMatrix, 35);
 
-        // --- 2. ЕКВАЛАЙЗЕР ТА МЕНЮ ---
+        // --- 2. ЕКВАЛАЙЗЕР ТА МЕНЮ (НАДІЙНИЙ ФІКС ХРЕСТИКА) ---
         const audioBtn = document.getElementById('audio-toggle');
         const iconSound = document.getElementById('icon-sound');
         const iconEq = document.getElementById('icon-eq');
@@ -304,13 +290,19 @@
         menuToggle.addEventListener('click', function() {
             menuOpen = !menuOpen;
             if (menuOpen) {
-                fullMenu.style.display = 'flex'; l1.style.transform = 'rotate(45deg) translate(6px, 6px)'; l2.style.opacity = '0'; l3.style.transform = 'rotate(-45deg) translate(6px, -6px)';
+                fullMenu.style.display = 'flex';
+                l1.style.transform = 'rotate(45deg) translate(6px, 6px)'; l1.style.backgroundColor = '#dc2626';
+                l2.style.opacity = '0';
+                l3.style.transform = 'rotate(-45deg) translate(6px, -6px)'; l3.style.backgroundColor = '#dc2626';
             } else {
-                fullMenu.style.display = 'none'; l1.style.transform = 'none'; l2.style.opacity = '1'; l3.style.transform = 'none';
+                fullMenu.style.display = 'none';
+                l1.style.transform = 'none'; l1.style.backgroundColor = '#a3a3a3';
+                l2.style.opacity = '1';
+                l3.style.transform = 'none'; l3.style.backgroundColor = '#a3a3a3';
             }
         });
 
-        // --- 3. АЛГОРИТМ ПРОПОРЦІЙНОЇ НАРІЗКИ ТА СКАЧУВАННЯ В 1 КЛІК ЧЕРЕЗ ZIP ---
+        // --- 3. СКРИПТ НАРІЗКИ ---
         const sketchUpload = document.getElementById('sketch-upload');
         const uploadStatus = document.getElementById('upload-status');
         const widthCmInput = document.getElementById('width-cm');
@@ -321,34 +313,27 @@
         const btnZipDownload = document.getElementById('btn-zip-download');
 
         let originalImg = null;
+        const PRINT_W_MM = 170; const PRINT_H_MM = 257; 
 
-        // Корисна зона друку А4 з урахуванням 2 см білих відступів принтера по краях
-        const PRINT_W_MM = 170; 
-        const PRINT_H_MM = 257; 
-
+        // Нативний мобільний фікс завантаження файлу
         sketchUpload.addEventListener('change', function(e) {
-            const file = e.target.files;
+            const file = e.target.files[0];
             if(file) {
                 uploadStatus.textContent = file.name.substring(0, 12) + '...';
                 uploadStatus.style.color = '#dc2626';
                 
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    originalImg = new Image();
-                    originalImg.onload = updatePreview;
-                    originalImg.src = event.target.result;
-                };
-                reader.readAsDataURL(file);
+                if(originalImg) originalImg = null;
+                originalImg = new Image();
+                originalImg.onload = updatePreview;
+                originalImg.src = URL.createObjectURL(file);
             }
         });
 
         function updatePreview() {
             if (!originalImg) return;
-            
             const w = parseFloat(widthCmInput.value) || 20;
             const h = parseFloat(heightCmInput.value) || 40;
             
-            // Розрахунок точної кількості аркушів А4 по корисному вікну друку принтера
             const cols = Math.ceil((w * 10) / PRINT_W_MM); 
             const rows = Math.ceil((h * 10) / PRINT_H_MM);
             const total = cols * rows;
@@ -372,63 +357,41 @@
 
         [widthCmInput, heightCmInput].forEach(input => input.addEventListener('input', updatePreview));
 
-        // НАЙБІЛЬШ НАДІЙНИЙ МЕТОД: СКАНУВАННЯ ВСІХ СТОРІНОК В ОДИН ZIP АРХІВ
         btnZipDownload.addEventListener('click', function(e) {
             e.preventDefault();
-            if (!originalImg) { alert('Будь ласка, завантажте контур ескізу змії!'); return; }
+            if (!originalImg) { alert('Будь ласка, завантажте контур ескізу!'); return; }
 
-            const w = parseFloat(widthCmInput.value);
-            const h = parseFloat(heightCmInput.value);
+            const w = parseFloat(widthCmInput.value); const h = parseFloat(heightCmInput.value);
             if (!w || !h) return;
 
-            const cols = Math.ceil((w * 10) / PRINT_W_MM); 
-            const rows = Math.ceil((h * 10) / PRINT_H_MM);
-
+            const cols = Math.ceil((w * 10) / PRINT_W_MM); const rows = Math.ceil((h * 10) / PRINT_H_MM);
             const zip = new JSZip();
             
-            // Вираховуємо реальні фізичні пропорції зображення щодо заданої мети
-            const wTargetMm = w * 10;
-            const hTargetMm = h * 10;
-            
-            // Коефіцієнт кроку нарізки пікселів
-            const scaleFactorX = originalImg.width / wTargetMm;
-            const scaleFactorY = originalImg.height / hTargetMm;
+            const wTargetMm = w * 10; const hTargetMm = h * 10;
+            const scaleFactorX = originalImg.width / wTargetMm; const scaleFactorY = originalImg.height / hTargetMm;
 
             let count = 0;
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
                     count++;
-                    
-                    // Створюємо окреме чисте полотно А4 високої якості 300 DPI
                     const renderCanvas = document.createElement('canvas');
-                    renderCanvas.width = 2100; 
-                    renderCanvas.height = 2970;
+                    renderCanvas.width = 2100; renderCanvas.height = 2970;
                     const rCtx = renderCanvas.getContext('2d');
 
-                    // Повністю заливаємо лист білим кольором (поля принтера)
-                    rCtx.fillStyle = '#FFFFFF';
-                    rCtx.fillRect(0, 0, renderCanvas.width, renderCanvas.height);
+                    rCtx.fillStyle = '#FFFFFF'; rCtx.fillRect(0, 0, renderCanvas.width, renderCanvas.height);
 
-                    // Координати вирізання фрагмента з оригінальної картинки
-                    const sx = (c * PRINT_W_MM) * scaleFactorX;
-                    const sy = (r * PRINT_H_MM) * scaleFactorY;
-                    const sWidth = PRINT_W_MM * scaleFactorX;
-                    const sHeight = PRINT_H_MM * scaleFactorY;
+                    const sx = (c * PRINT_W_MM) * scaleFactorX; const sy = (r * PRINT_H_MM) * scaleFactorY;
+                    const sWidth = PRINT_W_MM * scaleFactorX; const sHeight = PRINT_H_MM * scaleFactorY;
 
-                    // Вставка ескізу СУТЬ ВСЕРЕДИНУ корисного поля (відступи по 200px = 2см)
-                    // Малюнок копіюється з повним збереженням Aspect Ratio (без спотворення ліній!)
+                    // Збереження пропорцій ліній
                     rCtx.drawImage(originalImg, sx, sy, sWidth, sHeight, 200, 200, 1700, 2570);
 
-                    // Витягуємо чистий base64 код картинки PNG
                     const dataUrl = renderCanvas.toDataURL('image/png');
                     const base64Data = dataUrl.split(',')[1];
-                    
-                    // Додаємо поточний аркуш в архів папки
                     zip.file('page-' + count + '.png', base64Data, {base64: true});
                 }
             }
 
-            // Генеруємо архів та примусово віддаємо його у файли телефона
             zip.generateAsync({type: 'blob'}).then(function(content) {
                 const blobUrl = URL.createObjectURL(content);
                 const link = document.createElement('a');
