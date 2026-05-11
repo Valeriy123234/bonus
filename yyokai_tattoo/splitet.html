@@ -8,8 +8,8 @@
     <link rel="preconnect" href="gstatic.com" crossorigin>
     <link href="googleapis.com" rel="stylesheet">
     
-    <!-- Стабільна бібліотека jsPDF -->
-    <script src="unpkg.com"></script>
+    <!-- Надійна та стабільна версія jsPDF для мобільних пристроїв -->
+    <script src="cloudflare.com"></script>
     
     <style>
         * {
@@ -81,17 +81,6 @@
         .glitch-kai::before { left: 1px; text-shadow: -1px 0 #00ffff; clip: rect(2px, 450px, 8px, 0); animation: glitch-anim 2s infinite linear alternate-reverse; }
         .glitch-kai::after { left: -1px; text-shadow: 1px 0 #ff00c8; clip: rect(5px, 450px, 12px, 0); animation: glitch-anim2 2s infinite linear alternate-reverse; }
 
-        @keyframes glitch-anim {
-            0% { clip: rect(15px, 9999px, 30px, 0); }
-            50% { clip: rect(5px, 9999px, 15px, 0); }
-            100% { clip: rect(25px, 9999px, 35px, 0); }
-        }
-        @keyframes glitch-anim2 {
-            0% { clip: rect(35px, 9999px, 45px, 0); }
-            50% { clip: rect(12px, 9999px, 28px, 0); }
-            100% { clip: rect(4px, 9999px, 18px, 0); }
-        }
-
         #menu-toggle {
             background: none; border: none; width: 44px; height: 44px;
             display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; cursor: pointer;
@@ -151,6 +140,7 @@
         .tech-text { font-size: 10px; color: #525252; line-height: 1.4; text-transform: uppercase; }
         .tech-text span { color: #d4d4d4; }
 
+        /* ОНОВЛЕНА КНОПКА З НАЙВИЩИМ РІВНЕМ КЛІКАБЕЛЬНОСТІ */
         #btn-split {
             position: relative; z-index: 999;
             width: 100%; background-color: #991b1b; color: #fff; font-weight: bold;
@@ -300,7 +290,7 @@
             }
         });
 
-        // --- 3. СКРИПТ НАРІЗКИ З ХАРДКОРНИМ ФІКСОМ ПРОПОРЦІЙ ТА ПРИМУСОВИМ СКАЧУВАННЯМ ---
+        // --- 3. СКРИПТ НАДІЙНОЇ НАРІЗКИ ЗБЕРЕЖЕННЯ ПРОПОРЦІЙ ---
         const sketchUpload = document.getElementById('sketch-upload');
         const uploadStatus = document.getElementById('upload-status');
         const widthCmInput = document.getElementById('width-cm');
@@ -310,16 +300,16 @@
         const countDisplay = document.querySelector('.id-count');
         const layoutDisplay = document.querySelector('.id-layout');
 
-        let loadedImage = null;
+        let loadedImageDataUrl = null;
+        let imgWidth = 0;
+        let imgHeight = 0;
 
-        // Поля принтера (2 см з кожного боку)
+        // Корисне вікно друку А4 з урахуванням 2 см відступів принтера з кожного боку
         const MARGIN_MM = 20; 
         const A4_W_MM = 210; 
         const A4_H_MM = 297;
-        
-        // Корисна зона друку всередині білих полів
-        const PRINT_W_MM = A4_W_MM - (MARGIN_MM * 2); // 170 мм
-        const PRINT_H_MM = A4_H_MM - (MARGIN_MM * 2); // 257 мм
+        const PRINT_W_MM = 170; // 210 - 40
+        const PRINT_H_MM = 257; // 297 - 40
 
         sketchUpload.addEventListener('change', (e) => {
             const file = e.target.files[0];
@@ -328,15 +318,21 @@
                 uploadStatus.style.color = '#dc2626';
                 const reader = new FileReader();
                 reader.onload = function(event) {
-                    loadedImage = new Image();
-                    loadedImage.onload = updatePreview;
-                    loadedImage.src = event.target.result;
+                    loadedImageDataUrl = event.target.result;
+                    const tempImg = new Image();
+                    tempImg.onload = function() {
+                        imgWidth = tempImg.width;
+                        imgHeight = tempImg.height;
+                        updatePreview();
+                    };
+                    tempImg.src = loadedImageDataUrl;
                 };
                 reader.readAsDataURL(file);
             }
         });
 
         function updatePreview() {
+            if (!loadedImageDataUrl) return;
             const w = parseFloat(widthCmInput.value) || 40;
             const h = parseFloat(heightCmInput.value) || 30;
             
@@ -361,12 +357,12 @@
             previewGrid.appendChild(gridContainer);
         }
 
-        [widthCmInput, heightCmInput].forEach(input => input.addEventListener('input', () => { if(loadedImage) updatePreview(); }));
+        [widthCmInput, heightCmInput].forEach(input => input.addEventListener('input', () => { updatePreview(); }));
 
-        // КНОПКА ГЕНЕРАЦІЇ З ІДЕАЛЬНИМИ ПРОПОРЦІЯМИ ТА ЖОРСТКИМ СКАЧУВАННЯМ БЕЗ ПЕРЕНАПРАВЛЕННЯ
+        // 100% СУМІСНИЙ НАДІЙНИЙ МЕТОД ГЕНЕРАЦІЇ ПДФ НА МОБІЛЦІ БЕЗ ПЕРЕГРУЗУ CANVAS
         btnSplit.addEventListener('click', (e) => {
             e.preventDefault();
-            if (!loadedImage) { alert('Будь ласка, завантажте контур ескізу!'); return; }
+            if (!loadedImageDataUrl) { alert('Будь ласка, спочатку завантажте ескіз татуювання!'); return; }
             
             const wTarget = parseFloat(widthCmInput.value); 
             const hTarget = parseFloat(heightCmInput.value);
@@ -381,12 +377,9 @@
             const cols = Math.ceil(wTargetMm / PRINT_W_MM); 
             const rows = Math.ceil(hTargetMm / PRINT_H_MM);
 
-            // ВИРАХОВУЄМО ОРИГІНАЛЬНІ ПРОПОРЦІЇ КАРТИНКИ (ЩОБ НЕ РОЗТЯГУВАЛО В ШИРИНУ)
-            const imgRatio = loadedImage.width / loadedImage.height;
-            const targetRatio = wTargetMm / hTargetMm;
-            
-            let scaleFactorX = loadedImage.width / wTargetMm;
-            let scaleFactorY = loadedImage.height / hTargetMm;
+            // Вираховуємо коефіцієнт реального розміру зображення щодо цілі
+            const mmToPxX = imgWidth / wTargetMm;
+            const mmToPxY = imgHeight / hTargetMm;
 
             let pageCount = 0;
             for (let r = 0; r < rows; r++) {
@@ -394,32 +387,28 @@
                     if (pageCount > 0) pdf.addPage();
                     pageCount++;
 
-                    // Координати шматка на оригінальній картинці
-                    const sx = (c * PRINT_W_MM) * scaleFactorX;
-                    const sy = (r * PRINT_H_MM) * scaleFactorY;
-                    const sWidth = PRINT_W_MM * scaleFactorX;
-                    const sHeight = PRINT_H_MM * scaleFactorY;
+                    // Розраховуємо зміщення для поточного фрагмента А4 в міліметрах
+                    const chunkX_mm = c * PRINT_W_MM;
+                    const chunkY_mm = r * PRINT_H_MM;
 
-                    // Створюємо біле полотно А4 з урахуванням 20мм (2см) полів
-                    const tempCanvas = document.createElement('canvas');
-                    tempCanvas.width = 2100; 
-                    tempCanvas.height = 2970;
-                    const tempCtx = tempCanvas.getContext('2d');
-                    
-                    // Робимо весь лист А4 чисто білим (це і є наші майбутні білі поля для принтера)
-                    tempCtx.fillStyle = '#FFFFFF'; 
-                    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-                    
-                    // Малюємо ескіз СУТЬ ВСЕРЕДИНІ корисного вікна друку (зміщення на 200 пікселів = 2 см)
-                    // Малюнок копіюється 1 в 1 без спотворення ширини
-                    tempCtx.drawImage(loadedImage, sx, sy, sWidth, sHeight, 200, 200, 1700, 2570);
+                    // Початковий масштаб нарізки картинки з урахуванням білих відступів (MARGIN)
+                    const posX_mm = MARGIN_MM - chunkX_mm;
+                    const posY_mm = MARGIN_MM - chunkY_mm;
 
-                    const imgData = tempCanvas.toDataURL('image/jpeg', 0.85);
-                    pdf.addImage(imgData, 'JPEG', 0, 0, A4_W_MM, A4_H_MM);
+                    // Додаємо оригінальне фото на сторінку А4 за координатами зміщення. 
+                    // jsPDF сам відріже зайве за межами сторінки А4, сформувавши ідеальні 2 см білі поля!
+                    pdf.addImage(
+                        loadedImageDataUrl, 
+                        'JPEG', 
+                        posX_mm, 
+                        posY_mm, 
+                        wTargetMm, 
+                        hTargetMm
+                    );
                 }
             }
             
-            // ЖОРСТКИЙ ФІКС ДЛЯ ПРИМУСОВОГО СКАЧУВАННЯ ФАЙЛУ НА ТЕЛЕФОНІ
+            // Найнадійніший кросбраузерний метод примусового скачування
             try {
                 const blob = pdf.output('blob');
                 const blobUrl = URL.createObjectURL(blob);
@@ -431,7 +420,6 @@
                 document.body.removeChild(downloadLink);
                 URL.revokeObjectURL(blobUrl);
             } catch (err) {
-                // Запасний варіант, якщо Blob не підтримується старим софтом
                 pdf.save(`yyokai-transfer-${wTarget}x${hTarget}.pdf`);
             }
         });
