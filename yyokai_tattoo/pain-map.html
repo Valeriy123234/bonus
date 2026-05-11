@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YYO KAI | Premium Tattoo Stencil Engine</title>
+    <title>YYO KAI | Premium Dotwork & Line-Art Engine</title>
     <style>
         :root {
             --bg-color: #060608;
@@ -280,24 +280,23 @@
 
     <div class="container">
         <div class="upload-zone" id="drop-zone">
-            <p id="upload-text">📸 Завантажте ескіз для преміум-обробки контурів</p>
+            <p id="upload-text">📸 Завантажте ескіз або портрет для розумної обробки</p>
             <input type="file" id="file-input" accept="image/*">
         </div>
 
         <div class="controls">
             <div class="control-group">
-                <!-- Вправо — максимальна чіткість ліній -->
-                <label>Чіткість та товщина ліній: <span id="detail-val">50%</span></label>
+                <!-- Вправо -> Чутливість росте, більше мікро-деталей та тіней у вигляді крапок -->
+                <label>Чутливість до мікро-ліній та дотвірку: <span id="detail-val">50%</span></label>
                 <input type="range" id="detail-slider" min="1" max="100" value="50" step="1" disabled>
             </div>
             <div class="control-group">
-                <!-- Вправо — максимальне очищення від бруду -->
-                <label>Фільтрація бруду (Очищення фону): <span id="noise-val">50%</span></label>
+                <!-- Вправо -> Сильніше очищення фонового бруду -->
+                <label>Випалювання фонового бруду (Очищення): <span id="noise-val">50%</span></label>
                 <input type="range" id="noise-slider" min="1" max="100" value="50" step="1" disabled>
             </div>
             <div class="control-group">
-                <!-- Накладання шарів Multiply -->
-                <label>Глибина чорного (Multiply): <span id="layers-val">2 шари</span></label>
+                <label>Глибина ліній (Накладання Multiply): <span id="layers-val">2 шари</span></label>
                 <input type="range" id="layers-slider" min="1" max="3" value="2" step="1" disabled>
             </div>
         </div>
@@ -308,7 +307,7 @@
                 <img id="source-img" src="data:image/svg+xml;utf8,<svg xmlns='w3.org' width='100' height='100'></svg>" alt="Оригінал">
             </div>
             <div class="preview-box">
-                <h3>Чистий Контурний Трафарет</h3>
+                <h3>Трафарет (Контур + Дотвірк)</h3>
                 <canvas id="output-canvas"></canvas>
             </div>
         </div>
@@ -386,11 +385,12 @@
     
     fileInput.addEventListener('change', (e) => { 
         if (e.target.files && e.target.files.length > 0) {
-            handleFile(e.target.files[0]); // Фікс зчитування файлу
+            handleFile(e.target.files); 
         }
     });
 
-    function handleFile(file) {
+    function handleFile(files) {
+        const file = files[0];
         if (!file || !file.type.startsWith('image/')) return;
         playClickSound();
         const reader = new FileReader();
@@ -433,87 +433,103 @@
         if (!isProcessing) {
             isProcessing = true;
             window.requestAnimationFrame(() => {
-                processAdaptiveMeanTransfer();
+                processDotworkTransfer();
                 isProcessing = false;
             });
         }
     }
 
-    // ПРОФЕСІЙНИЙ ДВОРІВНЕВИЙ ДВИГУН АДАПТИВНОЇ ОБРОБКИ (ADAPTIVE MEAN THRESHOLDING)
-    function processAdaptiveMeanTransfer() {
+    // НОВИЙ ПРЕМІУМ-ДВИГУН: КОНТУРНИЙ ЛІНЕАРИЗАТОР + ДИСЕРИНГ ТІНЕЙ (DITHER DOTWORK)
+    function processDotworkTransfer() {
         if (!originalData) return;
 
         const w = outputCanvas.width;
         const h = outputCanvas.height;
         
-        const detailSliderVal = parseInt(detailSlider.value); // 1-100%
-        const noiseSliderVal = parseInt(noiseSlider.value);   // 1-100%
-        const layerCount = parseInt(layersSlider.value);       // 1-3 шари
+        const detailLevel = parseInt(detailSlider.value); // 1-100%
+        const noiseLevel = parseInt(noiseSlider.value);   // 1-100%
+        const layerCount = parseInt(layersSlider.value);   // 1-3 шари
 
-        // Динамічний розмір маски адаптується під роздільну здатність ескізу
-        const maxBlockSize = Math.max(5, Math.floor(Math.min(w, h) / 100));
-        // Чим більший перший повзунок -> тим чіткіший і товстіший контур
-        const blockSize = Math.max(3, Math.floor((detailSliderVal / 100) * maxBlockSize)) | 1; // Завжди непарне
-
-        // Чим більше другий повзунок -> тим більше константне зрізання сірого шуму паперу
-        const C = (noiseSliderVal / 100) * 35 - 10; 
+        // Мапування значень під реальні математичні фільтри
+        const noiseCutoff = 255 - (noiseLevel * 1.5); // Чим вище повзунок, тим більше випалюємо сірого
+        const edgeSensitivity = 1.0 + ((100 - detailLevel) / 15); // Поріг знаходження ліній контуру
 
         const imgData = ctx.createImageData(w, h);
         const src = originalData.data;
         const dst = imgData.data;
 
-        // Швидке переведення в чб
+        // Швидкий Grayscale в один крок
         const gray = new Uint8Array(w * h);
         for (let i = 0; i < src.length; i += 4) {
             gray[i/4] = (src[i] + src[i+1] + src[i+2]) / 3;
         }
 
-        // Головний буфер накопичення Multiply (255 = білий папір)
+        // Буфер під фінальне накладання Multiply (255 = білий папір)
         const finalBuffer = new Uint8Array(w * h);
         finalBuffer.fill(255);
 
-        const radius = Math.floor(blockSize / 2);
+        const maskSize = 3;
 
-        // ЦИКЛ ПАРАЛЕЛЬНОГО МНОЖЕННЯ ШАРІВ (Multiply Layer Mode)
+        // ЦИКЛ ПАРАЛЕЛЬНОГО МНОЖЕННЯ ШАРІВ (Multiply Layering)
         for (let l = 0; l < layerCount; l++) {
-            // Зсув координат для кожного шару створює імітацію накладання в Multiply
             const shiftX = (l === 1) ? 1 : (l === 2) ? -1 : 0;
             const shiftY = (l === 2) ? 1 : 0;
 
-            for (let y = radius; y < h - radius; y++) {
+            for (let y = maskSize; y < h - maskSize; y++) {
                 const rowIdx = y * w;
                 const shiftedRowIdx = (y + shiftY) * w;
 
-                for (let x = radius; x < w - radius; x++) {
+                for (let x = maskSize; x < w - maskSize; x++) {
                     const currentPx = gray[shiftedRowIdx + x + shiftX];
+                    const bufferIdx = rowIdx + x;
 
-                    // Інтеграл середнього значення яскравості навколо пікселя
-                    let sum = 0;
-                    let count = 0;
+                    // 1. АНАЛІЗ ЧІТКИХ ЛІНІЙ (Контурний Sauvola блок)
+                    let maxVal = 0;
+                    let minVal = 255;
 
-                    for (let ky = -radius; ky <= radius; ky++) {
+                    for (let ky = -maskSize; ky <= maskSize; ky++) {
                         const kernelRow = (y + ky + shiftY) * w;
-                        for (let kx = -radius; kx <= radius; kx++) {
-                            sum += gray[kernelRow + x + kx + shiftX];
-                            count++;
+                        for (let kx = -maskSize; kx <= maskSize; kx++) {
+                            const px = gray[kernelRow + x + kx + shiftX];
+                            if (px > maxVal) maxVal = px;
+                            if (px < minVal) minVal = px;
                         }
                     }
 
-                    const mean = sum / count;
-                    const bufferIdx = rowIdx + x;
+                    const localContrast = maxVal - minVal;
+                    const midThreshold = (maxVal + minVal) / 2;
 
-                    // Адаптивний поріг Бернсена: якщо поточний піксель значно темніший за оточення — це лінія
-                    if (currentPx < mean - C) {
-                        // Тіні у найтемніших зонах відсікаються, щоб не утворювати брудну "кашу"
-                        if (currentPx < (255 - noiseSliderVal * 1.5)) {
-                            finalBuffer[bufferIdx] = 0; // Малюємо чорний піксель контуру
+                    // Якщо це контурна лінія — малюємо чистий чорний колір
+                    if (localContrast >= edgeSensitivity * 4 && currentPx < midThreshold) {
+                        if (currentPx < noiseCutoff) {
+                            finalBuffer[bufferIdx] = 0;
+                            continue; // Пропускаємо обробку точок, бо тут уже є лінія
                         }
+                    }
+
+                    // 2. АНАЛІЗ ТІНЕЙ: ПЕРЕТВОРЕННЯ ГРАДІЄНТІВ У ДОТВІРК (Stipple Halftone)
+                    // Матриця Баєра 4х4 для розумного розподілу крапок
+                    const bayerMatrix = [
+                        [ 15, 135,  45, 165],
+                        [195,  75, 225, 105],
+                        [ 60, 180,  30, 150],
+                        [240, 120, 210,  90]
+                    ];
+
+                    const bx = (x + shiftX) % 4;
+                    const by = (y + shiftY) % 4;
+                    const thresholdValue = bayerMatrix[by][bx];
+
+                    // Якщо напівтон ескізу темніший за поріг матриці — малюємо охайну крапку (дотвірк/віп)
+                    // Чутливість регулює, скільки тіней перейдуть у крапки
+                    if (currentPx < noiseCutoff && currentPx < thresholdValue * (detailLevel / 50)) {
+                        finalBuffer[bufferIdx] = 0;
                     }
                 }
             }
         }
 
-        // Рендер фінального накопиченого результату на Canvas
+        // Рендер фінального трафарету на Canvas
         for (let i = 0; i < finalBuffer.length; i++) {
             const color = finalBuffer[i];
             const pos = i * 4;
@@ -525,14 +541,6 @@
         
         ctx.putImageData(imgData, 0, 0);
     }
-
-    btnDownload.addEventListener('click', () => {
-        playClickSound();
-        const link = document.createElement('a');
-        link.download = 'yyokai-ultra-stencil.png';
-        link.href = outputCanvas.toDataURL('image/png');
-        link.click();
-    });
 </script>
 </body>
 </html>
