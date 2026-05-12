@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>YYOKAI | Artist Dashboard</title>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
@@ -11,11 +12,19 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-storage-compat.js"></script>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
 
 :root{
   --accent:#e5092f;
   --text:#f6f1ef;
+  --muted:#8c8886;
+  --glass:rgba(255,255,255,.055);
+  --line:rgba(255,255,255,.11);
 }
 
 html,body{
@@ -28,7 +37,7 @@ html,body{
 body{
   overflow-x:hidden;
   background:
-    radial-gradient(circle at 50% -10%,rgba(229,9,47,.38),transparent 35%),
+    radial-gradient(circle at 50% -10%,color-mix(in srgb,var(--accent) 38%,transparent),transparent 35%),
     linear-gradient(180deg,#000 0%,#0b0103 45%,#000 100%);
   transition:background .25s ease;
 }
@@ -46,9 +55,12 @@ body::before{
   transform:rotate(-12deg) scale(1.15);
 }
 
+button,input,select{
+  font-family:inherit;
+}
+
 button{
   cursor:pointer;
-  font-family:inherit;
 }
 
 .app{
@@ -58,6 +70,8 @@ button{
   padding:18px;
   padding-bottom:112px;
 }
+
+/* TOPBAR */
 
 .topbar{
   position:sticky;
@@ -71,7 +85,7 @@ button{
   padding:10px 12px;
   border-radius:30px;
   background:rgba(0,0,0,.9);
-  border:1px solid rgba(255,255,255,.13);
+  border:1px solid var(--line);
   backdrop-filter:blur(26px);
   box-shadow:0 24px 80px rgba(0,0,0,.75);
 }
@@ -88,12 +102,47 @@ button{
 
 .logo{
   justify-self:center;
-  transform:translateX(5px);
-  font-size:31px;
+  position:relative;
+  transform:translateX(4px);
+  font-size:27px;
   font-weight:950;
   letter-spacing:.08em;
   color:#fff;
-  text-shadow:0 0 28px rgba(229,9,47,.3);
+  text-shadow:0 0 24px color-mix(in srgb,var(--accent) 45%,transparent);
+}
+
+.logo::before,
+.logo::after{
+  content:"YYOKAI";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.34;
+}
+
+.logo::before{
+  color:var(--accent);
+  transform:translate(-1px,0);
+  animation:glitchA 2.8s infinite;
+}
+
+.logo::after{
+  color:#fff;
+  transform:translate(1px,0);
+  animation:glitchB 3.3s infinite reverse;
+}
+
+@keyframes glitchA{
+  0%,92%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0)}
+  93%{clip-path:inset(12% 0 64% 0);transform:translate(-2px,1px)}
+  95%{clip-path:inset(60% 0 18% 0);transform:translate(2px,-1px)}
+  97%{clip-path:inset(30% 0 38% 0);transform:translate(-1px,0)}
+}
+
+@keyframes glitchB{
+  0%,94%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0)}
+  95%{clip-path:inset(44% 0 30% 0);transform:translate(1px,0)}
+  97%{clip-path:inset(15% 0 58% 0);transform:translate(-1px,0)}
 }
 
 .top-actions{
@@ -104,6 +153,7 @@ button{
 
 .lang{
   display:flex;
+  align-items:center;
   gap:5px;
   padding:5px;
   border-radius:999px;
@@ -124,6 +174,8 @@ button{
   background:#fff;
   color:#000;
 }
+
+/* PROFILE */
 
 .profile{
   position:relative;
@@ -166,7 +218,9 @@ button{
   box-shadow:0 35px 100px rgba(0,0,0,.85);
 }
 
-.profile-menu.open{display:block}
+.profile-menu.open{
+  display:block;
+}
 
 .profile-name{
   font-size:22px;
@@ -188,6 +242,8 @@ button{
   color:#fff;
   font-size:20px;
 }
+
+/* PLAYER */
 
 .player{
   margin:16px 0;
@@ -242,8 +298,8 @@ button{
 }
 
 #playPauseBtn{
-  background:rgba(229,9,47,.22);
-  border-color:rgba(229,9,47,.42);
+  background:color-mix(in srgb,var(--accent) 22%,transparent);
+  border-color:color-mix(in srgb,var(--accent) 42%,transparent);
 }
 
 .profile-menu button{
@@ -263,6 +319,21 @@ button{
   color:#fff;
 }
 
+/* SIDE MENU */
+
+.side-overlay{
+  position:fixed;
+  inset:0;
+  z-index:94;
+  background:rgba(0,0,0,.35);
+  display:none;
+  backdrop-filter:blur(2px);
+}
+
+.side-overlay.open{
+  display:block;
+}
+
 .side-menu{
   position:fixed;
   left:-290px;
@@ -275,9 +346,12 @@ button{
   border-right:1px solid rgba(255,255,255,.1);
   backdrop-filter:blur(28px);
   transition:.25s ease;
+  box-shadow:30px 0 90px rgba(0,0,0,.75);
 }
 
-.side-menu.open{left:0}
+.side-menu.open{
+  left:0;
+}
 
 .side-head{
   display:flex;
@@ -287,9 +361,30 @@ button{
 }
 
 .side-brand{
+  position:relative;
   font-size:22px;
   font-weight:950;
   letter-spacing:.12em;
+  text-shadow:0 0 20px color-mix(in srgb,var(--accent) 50%,transparent);
+}
+
+.side-brand::before,
+.side-brand::after{
+  content:"YYOKAI";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.25;
+}
+
+.side-brand::before{
+  color:var(--accent);
+  transform:translate(-1px,0);
+}
+
+.side-brand::after{
+  color:#fff;
+  transform:translate(1px,0);
 }
 
 .close-side{
@@ -345,12 +440,14 @@ button{
 .side-nav button:hover,
 .side-nav button.active{
   background:
-    radial-gradient(circle at 0% 50%, color-mix(in srgb,var(--accent) 26%,transparent), transparent 55%),
+    radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--accent) 26%,transparent),transparent 55%),
     rgba(255,255,255,.055);
   color:#fff;
   border-color:color-mix(in srgb,var(--accent) 55%,transparent);
   box-shadow:0 14px 45px color-mix(in srgb,var(--accent) 12%,transparent);
 }
+
+/* HERO */
 
 .hero{
   margin-top:20px;
@@ -375,6 +472,8 @@ button{
   line-height:1.6;
   font-size:20px;
 }
+
+/* STATS */
 
 .stats{
   margin-top:18px;
@@ -412,6 +511,8 @@ button{
   font-size:28px;
 }
 
+/* PANELS */
+
 .focus-grid{
   margin-top:18px;
   display:grid;
@@ -447,10 +548,10 @@ button{
   border:0;
   border-radius:999px;
   padding:14px 18px;
-  background:#e5092f;
+  background:var(--accent);
   color:#fff;
   font-weight:950;
-  box-shadow:0 0 30px rgba(229,9,47,.3);
+  box-shadow:0 0 30px color-mix(in srgb,var(--accent) 30%,transparent);
 }
 
 .ghost-btn{
@@ -461,6 +562,8 @@ button{
   color:#fff;
   font-weight:950;
 }
+
+/* DOCK */
 
 .dock{
   position:fixed;
@@ -504,6 +607,8 @@ button{
   background:color-mix(in srgb,var(--accent) 20%,transparent);
   color:#fff;
 }
+
+/* MODALS */
 
 .settings,
 .pay-modal{
@@ -577,13 +682,40 @@ button{
   outline:none;
 }
 
+.color-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+#colorPicker{
+  width:62px;
+  height:62px;
+  border-radius:50%;
+  padding:0;
+  border:2px solid rgba(255,255,255,.18);
+  overflow:hidden;
+  background:transparent;
+  appearance:none;
+  -webkit-appearance:none;
+}
+
+#colorPicker::-webkit-color-swatch-wrapper{
+  padding:0;
+}
+
+#colorPicker::-webkit-color-swatch{
+  border:none;
+  border-radius:50%;
+}
+
 .small-btn,
 .confirm-plan{
   margin-top:12px;
   padding:14px 16px;
   border:0;
   border-radius:999px;
-  background:#e5092f;
+  background:var(--accent);
   color:#fff;
   font-weight:950;
 }
@@ -611,8 +743,8 @@ button{
 }
 
 .plan-card.selected{
-  border-color:rgba(229,9,47,.85);
-  box-shadow:0 0 0 2px rgba(229,9,47,.2);
+  border-color:var(--accent);
+  box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 25%,transparent);
 }
 
 .plan-price,
@@ -652,17 +784,32 @@ audio{
 }
 
 @media(max-width:720px){
-  .stats,.focus-grid,.plan-grid,.balance-grid{grid-template-columns:1fr}
-  .hero{padding:28px 22px}
-  .hero p{font-size:17px}
-  .logo{font-size:28px}
+  .stats,
+  .focus-grid,
+  .plan-grid,
+  .balance-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero{
+    padding:28px 22px;
+  }
+
+  .hero p{
+    font-size:17px;
+  }
+
+  .logo{
+    font-size:26px;
+  }
 }
 </style>
 </head>
 
 <body>
-
 <audio id="bgMusic"></audio>
+
+<div class="side-overlay" id="sideOverlay" onclick="closeSide()"></div>
 
 <aside class="side-menu" id="sideMenu">
   <div class="side-head">
@@ -671,111 +818,150 @@ audio{
   </div>
 
   <nav class="side-nav">
-    <button class="active" onclick="go('artist-dashboard.html')"><span>⌂</span><span data-i18n="navHome">Home</span></button>
-    <button onclick="go('stencil.html')"><span>🧿</span><span data-i18n="navStencil">AI Stencil</span></button>
-    <button onclick="go('generation.html')"><span>✦</span><span data-i18n="navGenerate">AI Generate</span></button>
-    <button onclick="go('bookings.html')"><span>🗓</span><span data-i18n="navBookings">Bookings</span></button>
-    <button onclick="go('split.html')"><span>📄</span><span data-i18n="navSplit">A4 Print</span></button>
-    <button onclick="go('uploads.html')"><span>墨</span><span data-i18n="navFiles">Files</span></button>
+    <button onclick="go('stencil.html')">
+      <span>🧿</span>
+      <span data-i18n="navStencil">AI Stencil</span>
+    </button>
+
+    <button onclick="go('generation.html')">
+      <span>✦</span>
+      <span data-i18n="navGenerate">AI Generate</span>
+    </button>
+
+    <button onclick="go('bookings.html')">
+      <span>🗓</span>
+      <span data-i18n="navBookings">Bookings</span>
+    </button>
+
+    <button onclick="go('split.html')">
+      <span>📄</span>
+      <span data-i18n="navSplit">A4 Print</span>
+    </button>
+
+    <button onclick="go('uploads.html')">
+      <span>墨</span>
+      <span data-i18n="navFiles">Files</span>
+    </button>
   </nav>
 </aside>
 
 <main class="app">
+  <header class="topbar">
+    <button class="menu-btn" id="menuBtn" onclick="toggleSide()">☰</button>
 
-<header class="topbar">
-  <button class="menu-btn" id="menuBtn" onclick="toggleSide()">☰</button>
-  <div class="logo">YYOKAI</div>
+    <div class="logo">YYOKAI</div>
 
-  <div class="top-actions">
-    <div class="lang">
-      <button class="active" onclick="setLang('uk', this)">UA</button>
-      <button onclick="setLang('en', this)">EN</button>
-    </div>
+    <div class="top-actions">
+      <div class="lang">
+        <button class="active" onclick="setLang('uk', this)">UA</button>
+        <button onclick="setLang('en', this)">EN</button>
+      </div>
 
-    <div class="profile">
-      <div class="avatar" id="avatar" onclick="toggleProfile()">妖</div>
+      <div class="profile">
+        <div class="avatar" id="avatar" onclick="toggleProfile()">妖</div>
 
-      <div class="profile-menu" id="profileMenu">
-        <div class="profile-name" id="artistName">Guest Artist</div>
-        <div class="profile-email" id="artistEmail">artist@email.com</div>
+        <div class="profile-menu" id="profileMenu">
+          <div class="profile-name" id="artistName">Guest Artist</div>
+          <div class="profile-email" id="artistEmail">artist@email.com</div>
 
-        <div class="balance">
-          <span data-i18n="balance">Баланс</span>: <strong id="balanceValue">$0.00</strong>
-        </div>
-
-        <div class="player">
-          <div class="cover" id="trackCover">⛩</div>
-          <div>
-            <div class="track-title" id="trackTitle">Japanese Chill</div>
-            <div class="track-sub" id="trackSub">YYOKAI playlist</div>
+          <div class="balance">
+            <span data-i18n="balance">Баланс</span>: <strong id="balanceValue">$0.00</strong>
           </div>
-          <div class="music-controls">
-            <button onclick="prevTrack()">‹</button>
-            <button id="playPauseBtn" onclick="toggleMusic()">▶</button>
-            <button onclick="nextTrack()">›</button>
-          </div>
-        </div>
 
-        <button onclick="uploadOwnMusic()">＋ <span data-i18n="uploadMusic">Додати свою музику</span></button>
-        <input id="ownMusicInput" type="file" accept="audio/mp3,audio/mpeg" style="display:none" onchange="loadOwnMusic(event)">
-        <button onclick="openBalanceModal()">＋ <span data-i18n="addBalance">Поповнити баланс</span></button>
-        <button onclick="openSettings()">⚙ <span data-i18n="settings">Налаштування</span></button>
-        <button onclick="logout()">退出 <span data-i18n="logout">Вийти</span></button>
+          <div class="player">
+            <div class="cover" id="trackCover">⛩</div>
+
+            <div>
+              <div class="track-title" id="trackTitle">Japanese Chill</div>
+              <div class="track-sub" id="trackSub">YYOKAI playlist</div>
+            </div>
+
+            <div class="music-controls">
+              <button onclick="prevTrack()">‹</button>
+              <button id="playPauseBtn" onclick="toggleMusic()">▶</button>
+              <button onclick="nextTrack()">›</button>
+            </div>
+          </div>
+
+          <button onclick="uploadOwnMusic()">＋ <span data-i18n="uploadMusic">Додати свою музику</span></button>
+          <input id="ownMusicInput" type="file" accept="audio/mp3,audio/mpeg" style="display:none" onchange="loadOwnMusic(event)">
+
+          <button onclick="openBalanceModal()">＋ <span data-i18n="addBalance">Поповнити баланс</span></button>
+          <button onclick="openSettings()">⚙ <span data-i18n="settings">Налаштування</span></button>
+          <button onclick="logout()">退出 <span data-i18n="logout">Вийти</span></button>
+        </div>
       </div>
     </div>
-  </div>
-</header>
+  </header>
 
-<section class="hero">
-  <h1 data-i18n="heroTitle">Welcome back, artist</h1>
-  <p data-i18n="heroText">
-    Твоя преміальна система для тату-майстра: генерації, записи, музика, атмосфера, баланс, файли та workflow в одному місці.
-  </p>
-</section>
+  <section class="hero">
+    <h1 data-i18n="heroTitle">Welcome back, artist</h1>
+    <p data-i18n="heroText">
+      Твоя преміальна система для тату-майстра: генерації, записи, музика, атмосфера, баланс, файли та workflow в одному місці.
+    </p>
+  </section>
 
-<section class="stats">
-  <div class="stat clickable" onclick="openBalanceModal()">
-    <span data-i18n="statBalance">Баланс</span>
-    <strong id="balanceMain">$0.00</strong>
-  </div>
-
-  <div class="stat clickable" onclick="openPlanModal()">
-    <span data-i18n="statPlan">План</span>
-    <strong id="planValue">Free</strong>
-  </div>
-
-  <div class="stat">
-    <span data-i18n="statBookings">Записи</span>
-    <strong id="bookingCount">0</strong>
-  </div>
-</section>
-
-<section class="focus-grid">
-  <div class="panel">
-    <h2 data-i18n="workflowTitle">Start your workflow</h2>
-    <p data-i18n="workflowText">Почни з потрібного інструмента. Чистий інтерфейс без перевантаження.</p>
-
-    <div class="panel-actions">
-      <button class="red-btn" onclick="go('stencil.html')">Stencil</button>
-      <button class="ghost-btn" onclick="go('bookings.html')" data-i18n="bookingsBtn">Записи</button>
-      <button class="ghost-btn" onclick="go('generation.html')">Generate</button>
+  <section class="stats">
+    <div class="stat clickable" onclick="openBalanceModal()">
+      <span data-i18n="statBalance">Баланс</span>
+      <strong id="balanceMain">$0.00</strong>
     </div>
-  </div>
 
-  <div class="panel">
-    <h2 data-i18n="studioTitle">Studio mode</h2>
-    <p data-i18n="studioText">Твій простір. Музика, колір, атмосфера, фон і профіль — все персоналізується.</p>
-  </div>
-</section>
+    <div class="stat clickable" onclick="openPlanModal()">
+      <span data-i18n="statPlan">План</span>
+      <strong id="planValue">Free</strong>
+    </div>
 
+    <div class="stat">
+      <span data-i18n="statBookings">Записи</span>
+      <strong id="bookingCount">0</strong>
+    </div>
+  </section>
+
+  <section class="focus-grid">
+    <div class="panel">
+      <h2 data-i18n="workflowTitle">Start your workflow</h2>
+      <p data-i18n="workflowText">Почни з потрібного інструмента. Чистий інтерфейс без перевантаження.</p>
+
+      <div class="panel-actions">
+        <button class="red-btn" onclick="go('stencil.html')">Stencil</button>
+        <button class="ghost-btn" onclick="go('bookings.html')" data-i18n="bookingsBtn">Записи</button>
+        <button class="ghost-btn" onclick="go('generation.html')">Generate</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2 data-i18n="studioTitle">Studio mode</h2>
+      <p data-i18n="studioText">Твій простір. Музика, колір, атмосфера, фон і профіль — все персоналізується.</p>
+    </div>
+  </section>
 </main>
 
 <nav class="dock">
-  <button class="active" onclick="go('artist-dashboard.html')"><i>⌂</i><span>Home</span></button>
-  <button onclick="go('stencil.html')"><i>🧿</i><span>Stencil</span></button>
-  <button onclick="go('generation.html')"><i>✦</i><span>Generate</span></button>
-  <button onclick="go('bookings.html')"><i>🗓</i><span data-i18n="dockBookings">Записи</span></button>
-  <button onclick="openBalanceModal()"><i>¥</i><span>Balance</span></button>
+  <button class="active" onclick="go('artist-dashboard.html')">
+    <i>⌂</i>
+    <span>Home</span>
+  </button>
+
+  <button onclick="go('stencil.html')">
+    <i>🧿</i>
+    <span>Stencil</span>
+  </button>
+
+  <button onclick="go('generation.html')">
+    <i>✦</i>
+    <span>Generate</span>
+  </button>
+
+  <button onclick="go('bookings.html')">
+    <i>🗓</i>
+    <span data-i18n="dockBookings">Записи</span>
+  </button>
+
+  <button onclick="openBalanceModal()">
+    <i>¥</i>
+    <span>Balance</span>
+  </button>
 </nav>
 
 <section class="pay-modal" id="planModal">
@@ -895,7 +1081,10 @@ audio{
 
     <div class="row">
       <label data-i18n="colorLabel">Колір системи</label>
-      <input type="color" id="colorPicker" value="#e5092f" onchange="saveAccent(this.value)">
+      <div class="color-row">
+        <input type="color" id="colorPicker" value="#e5092f" oninput="saveAccent(this.value)">
+        <span id="colorValue">#e5092f</span>
+      </div>
     </div>
 
     <div class="row">
@@ -933,53 +1122,153 @@ let customMusicUrl="";
 const CACHE_KEY="yyokai_user_cache";
 
 const tracks=[
-  {title:"Japanese Chill",sub:"YYOKAI playlist",icon:"⛩",src:"music/japan-chill.mp3"},
-  {title:"Dark Ambient",sub:"Focus mode",icon:"🌑",src:"music/dark-ambient.mp3"},
-  {title:"Night Studio",sub:"Late session",icon:"🦊",src:"music/night-studio.mp3"}
+  {
+    title:"Japanese Chill",
+    sub:"YYOKAI playlist",
+    icon:"⛩",
+    src:"music/japan-chill.mp3"
+  },
+  {
+    title:"Dark Ambient",
+    sub:"Focus mode",
+    icon:"🌑",
+    src:"music/dark-ambient.mp3"
+  },
+  {
+    title:"Night Studio",
+    sub:"Late session",
+    icon:"🦊",
+    src:"music/night-studio.mp3"
+  }
 ];
 
 const t={
   uk:{
-    navHome:"Головна",navStencil:"AI Stencil",navGenerate:"AI генерація",navBookings:"Записи",navSplit:"A4 друк",navFiles:"Файли",
-    balance:"Баланс",uploadMusic:"Додати свою музику",addBalance:"Поповнити баланс",settings:"Налаштування",logout:"Вийти",
+    navStencil:"AI Stencil",
+    navGenerate:"AI генерація",
+    navBookings:"Записи",
+    navSplit:"A4 друк",
+    navFiles:"Файли",
+    balance:"Баланс",
+    uploadMusic:"Додати свою музику",
+    addBalance:"Поповнити баланс",
+    settings:"Налаштування",
+    logout:"Вийти",
     heroTitle:"Welcome back, artist",
     heroText:"Твоя преміальна система для тату-майстра: генерації, записи, музика, атмосфера, баланс, файли та workflow в одному місці.",
-    statBalance:"Баланс",statPlan:"План",statBookings:"Записи",
-    workflowTitle:"Start your workflow",workflowText:"Почни з потрібного інструмента. Чистий інтерфейс без перевантаження.",
-    bookingsBtn:"Записи",studioTitle:"Studio mode",studioText:"Твій простір. Музика, колір, атмосфера, фон і профіль — все персоналізується.",
-    dockBookings:"Записи",choosePlan:"Оберіть план",topUpBalance:"Поповнити баланс",confirmPlan:"Підтвердити план",
-    starterName:"Starter / місяць",proName:"Pro / місяць",yokaiName:"YYOKAI Full / місяць",
-    free1:"3 генерації стенсила",free2:"3 генерації ескізу",free3:"3 A4 розділення",free4:"50 записів клієнтів",
-    starter1:"250 генерацій стенсила",starter2:"250 генерацій ескізу",starter3:"50 A4 розділень",starter4:"100 записів клієнтів",
-    pro1:"500 генерацій стенсила",pro2:"500 генерацій ескізу",pro3:"100 A4 розділень",pro4:"150 записів клієнтів",
-    yokai1:"Повний доступ",yokai2:"Безлімітний workflow",yokai3:"Premium tools",yokai4:"Custom studio mode",
-    balance10:"Легкий старт для перевірки інструментів.",balance20:"Для активної роботи з клієнтами.",balance30:"Більше свободи для щоденного workflow.",balance50:"Запас для інтенсивної роботи студії.",
-    avatarLabel:"Змінити фото профілю",nameLabel:"Нік майстра",saveName:"Зберегти",musicLabel:"Додати свою музику",colorLabel:"Колір системи",bgLabel:"Фон кабінету"
+    statBalance:"Баланс",
+    statPlan:"План",
+    statBookings:"Записи",
+    workflowTitle:"Start your workflow",
+    workflowText:"Почни з потрібного інструмента. Чистий інтерфейс без перевантаження.",
+    bookingsBtn:"Записи",
+    studioTitle:"Studio mode",
+    studioText:"Твій простір. Музика, колір, атмосфера, фон і профіль — все персоналізується.",
+    dockBookings:"Записи",
+    choosePlan:"Оберіть план",
+    topUpBalance:"Поповнити баланс",
+    confirmPlan:"Підтвердити план",
+    starterName:"Starter / місяць",
+    proName:"Pro / місяць",
+    yokaiName:"YYOKAI Full / місяць",
+    free1:"3 генерації стенсила",
+    free2:"3 генерації ескізу",
+    free3:"3 A4 розділення",
+    free4:"50 записів клієнтів",
+    starter1:"250 генерацій стенсила",
+    starter2:"250 генерацій ескізу",
+    starter3:"50 A4 розділень",
+    starter4:"100 записів клієнтів",
+    pro1:"500 генерацій стенсила",
+    pro2:"500 генерацій ескізу",
+    pro3:"100 A4 розділень",
+    pro4:"150 записів клієнтів",
+    yokai1:"Повний доступ",
+    yokai2:"Безлімітний workflow",
+    yokai3:"Premium tools",
+    yokai4:"Custom studio mode",
+    balance10:"Легкий старт для перевірки інструментів.",
+    balance20:"Для активної роботи з клієнтами.",
+    balance30:"Більше свободи для щоденного workflow.",
+    balance50:"Запас для інтенсивної роботи студії.",
+    avatarLabel:"Змінити фото профілю",
+    nameLabel:"Нік майстра",
+    saveName:"Зберегти",
+    musicLabel:"Додати свою музику",
+    colorLabel:"Колір системи",
+    bgLabel:"Фон кабінету"
   },
   en:{
-    navHome:"Home",navStencil:"AI Stencil",navGenerate:"AI Generate",navBookings:"Bookings",navSplit:"A4 Print",navFiles:"Files",
-    balance:"Balance",uploadMusic:"Add your music",addBalance:"Add balance",settings:"Settings",logout:"Logout",
+    navStencil:"AI Stencil",
+    navGenerate:"AI Generate",
+    navBookings:"Bookings",
+    navSplit:"A4 Print",
+    navFiles:"Files",
+    balance:"Balance",
+    uploadMusic:"Add your music",
+    addBalance:"Add balance",
+    settings:"Settings",
+    logout:"Logout",
     heroTitle:"Welcome back, artist",
     heroText:"Your premium tattoo artist system: generations, bookings, music, atmosphere, balance, files and workflow in one place.",
-    statBalance:"Balance",statPlan:"Plan",statBookings:"Bookings",
-    workflowTitle:"Start your workflow",workflowText:"Start with the tool you need. Clean interface without overload.",
-    bookingsBtn:"Bookings",studioTitle:"Studio mode",studioText:"Your space. Music, color, atmosphere, background and profile — everything is personal.",
-    dockBookings:"Bookings",choosePlan:"Choose your plan",topUpBalance:"Top up balance",confirmPlan:"Confirm plan",
-    starterName:"Starter / month",proName:"Pro / month",yokaiName:"YYOKAI Full / month",
-    free1:"3 stencil generations",free2:"3 sketch generations",free3:"3 A4 splits",free4:"50 client bookings",
-    starter1:"250 stencil generations",starter2:"250 sketch generations",starter3:"50 A4 splits",starter4:"100 client bookings",
-    pro1:"500 stencil generations",pro2:"500 sketch generations",pro3:"100 A4 splits",pro4:"150 client bookings",
-    yokai1:"Full access",yokai2:"Unlimited workflow",yokai3:"Premium tools",yokai4:"Custom studio mode",
-    balance10:"A light start to test the tools.",balance20:"For active client work.",balance30:"More freedom for daily workflow.",balance50:"Reserve for intensive studio work.",
-    avatarLabel:"Change profile photo",nameLabel:"Artist nickname",saveName:"Save",musicLabel:"Add your music",colorLabel:"System color",bgLabel:"Dashboard background"
+    statBalance:"Balance",
+    statPlan:"Plan",
+    statBookings:"Bookings",
+    workflowTitle:"Start your workflow",
+    workflowText:"Start with the tool you need. Clean interface without overload.",
+    bookingsBtn:"Bookings",
+    studioTitle:"Studio mode",
+    studioText:"Your space. Music, color, atmosphere, background and profile — everything is personal.",
+    dockBookings:"Bookings",
+    choosePlan:"Choose your plan",
+    topUpBalance:"Top up balance",
+    confirmPlan:"Confirm plan",
+    starterName:"Starter / month",
+    proName:"Pro / month",
+    yokaiName:"YYOKAI Full / month",
+    free1:"3 stencil generations",
+    free2:"3 sketch generations",
+    free3:"3 A4 splits",
+    free4:"50 client bookings",
+    starter1:"250 stencil generations",
+    starter2:"250 sketch generations",
+    starter3:"50 A4 splits",
+    starter4:"100 client bookings",
+    pro1:"500 stencil generations",
+    pro2:"500 sketch generations",
+    pro3:"100 A4 splits",
+    pro4:"150 client bookings",
+    yokai1:"Full access",
+    yokai2:"Unlimited workflow",
+    yokai3:"Premium tools",
+    yokai4:"Custom studio mode",
+    balance10:"A light start to test the tools.",
+    balance20:"For active client work.",
+    balance30:"More freedom for daily workflow.",
+    balance50:"Reserve for intensive studio work.",
+    avatarLabel:"Change profile photo",
+    nameLabel:"Artist nickname",
+    saveName:"Save",
+    musicLabel:"Add your music",
+    colorLabel:"System color",
+    bgLabel:"Dashboard background"
   }
 };
 
 function loadLocalCache(){
   const cached=JSON.parse(localStorage.getItem(CACHE_KEY)||"{}");
-  if(cached.accent) applyAccent(cached.accent);
-  if(cached.avatarUrl) avatar.innerHTML=`<img src="${cached.avatarUrl}">`;
-  if(cached.backgroundUrl) applyBackgroundImage(cached.backgroundUrl);
+
+  if(cached.accent){
+    applyAccent(cached.accent);
+  }
+
+  if(cached.avatarUrl){
+    avatar.innerHTML=`<img src="${cached.avatarUrl}">`;
+  }
+
+  if(cached.backgroundUrl){
+    applyBackgroundImage(cached.backgroundUrl);
+  }
 }
 
 function saveLocalCache(data){
@@ -1016,21 +1305,26 @@ auth.onAuthStateChanged(async user=>{
     saveLocalCache({avatarUrl:data.avatarUrl});
   }
 
-  if(data.settings?.accent){
+  if(data.settings && data.settings.accent){
     applyAccent(data.settings.accent);
     saveLocalCache({accent:data.settings.accent});
   }
 
-  if(data.settings?.backgroundUrl){
+  if(data.settings && data.settings.backgroundUrl){
     applyBackgroundImage(data.settings.backgroundUrl);
     saveLocalCache({backgroundUrl:data.settings.backgroundUrl});
   }
 
-  if(data.settings?.customMusicUrl){
+  if(data.settings && data.settings.customMusicUrl){
     customMusicUrl=data.settings.customMusicUrl;
-    setMusic(customMusicUrl,data.settings.customMusicName||"Custom music","Custom track","♫");
+    setMusic(
+      customMusicUrl,
+      data.settings.customMusicName||"Custom music",
+      "Custom track",
+      "♫"
+    );
   }else{
-    setTrack(data.settings?.trackIndex||0);
+    setTrack(data.settings && typeof data.settings.trackIndex==="number" ? data.settings.trackIndex : 0);
   }
 
   const bookingsSnap=await db.ref("users/"+user.uid+"/clients").once("value");
@@ -1042,16 +1336,25 @@ function setLang(lang,btn){
   document.documentElement.lang=lang;
 
   Object.keys(t[lang]).forEach(key=>{
-    document.querySelectorAll(`[data-i18n="${key}"]`).forEach(el=>el.textContent=t[lang][key]);
+    document.querySelectorAll(`[data-i18n="${key}"]`).forEach(el=>{
+      el.textContent=t[lang][key];
+    });
   });
 
   document.querySelectorAll(".lang button").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
+
   displayPlan();
 }
 
 function displayPlan(){
-  const names={free:"Free",starter:"Starter",pro:"Pro",yokai:"YYOKAI Full"};
+  const names={
+    free:"Free",
+    starter:"Starter",
+    pro:"Pro",
+    yokai:"YYOKAI Full"
+  };
+
   planValue.textContent=names[currentPlanKey]||"Free";
 }
 
@@ -1061,11 +1364,13 @@ function go(url){
 
 function toggleSide(){
   sideMenu.classList.toggle("open");
+  sideOverlay.classList.toggle("open");
   menuBtn.textContent=sideMenu.classList.contains("open")?"←":"☰";
 }
 
 function closeSide(){
   sideMenu.classList.remove("open");
+  sideOverlay.classList.remove("open");
   menuBtn.textContent="☰";
 }
 
@@ -1084,6 +1389,7 @@ function closeSettings(){
 
 function openBalanceModal(){
   balanceModal.classList.add("open");
+  profileMenu.classList.remove("open");
 }
 
 function closeBalanceModal(){
@@ -1092,10 +1398,18 @@ function closeBalanceModal(){
 
 function openPlanModal(){
   selectedPlan=currentPlanKey;
-  document.querySelectorAll(".plan-card").forEach(c=>c.classList.remove("selected"));
-  const card=document.querySelector(`[data-plan="${selectedPlan}"]`);
-  if(card)card.classList.add("selected");
+
+  document.querySelectorAll(".plan-card").forEach(card=>{
+    card.classList.remove("selected");
+  });
+
+  const selected=document.querySelector(`[data-plan="${selectedPlan}"]`);
+  if(selected){
+    selected.classList.add("selected");
+  }
+
   planModal.classList.add("open");
+  profileMenu.classList.remove("open");
 }
 
 function closePlanModal(){
@@ -1104,70 +1418,104 @@ function closePlanModal(){
 
 function selectPlan(plan){
   selectedPlan=plan;
-  document.querySelectorAll(".plan-card").forEach(c=>c.classList.remove("selected"));
-  document.querySelector(`[data-plan="${plan}"]`).classList.add("selected");
+
+  document.querySelectorAll(".plan-card").forEach(card=>{
+    card.classList.remove("selected");
+  });
+
+  const selected=document.querySelector(`[data-plan="${plan}"]`);
+  if(selected){
+    selected.classList.add("selected");
+  }
 }
 
 async function confirmPlan(){
-  if(!currentUser||!selectedPlan)return;
+  if(!currentUser || !selectedPlan)return;
+
   currentPlanKey=selectedPlan;
-  await db.ref("users/"+currentUser.uid).update({planKey:currentPlanKey});
+
+  await db.ref("users/"+currentUser.uid).update({
+    planKey:currentPlanKey
+  });
+
   displayPlan();
   closePlanModal();
 }
 
 async function topUpBalance(amount){
   if(!currentUser)return;
+
   const snap=await db.ref("users/"+currentUser.uid+"/balance").once("value");
   const next=Number(snap.val()||0)+amount;
-  await db.ref("users/"+currentUser.uid).update({balance:next});
+
+  await db.ref("users/"+currentUser.uid).update({
+    balance:next
+  });
+
   balanceValue.textContent="$"+next.toFixed(2);
   balanceMain.textContent="$"+next.toFixed(2);
+
   closeBalanceModal();
 }
 
 async function saveName(){
   const name=nameInput.value.trim()||"Guest Artist";
-  await db.ref("users/"+currentUser.uid).update({name});
+
+  await db.ref("users/"+currentUser.uid).update({
+    name:name
+  });
+
   artistName.textContent=name;
 }
 
 async function uploadAvatar(e){
   const file=e.target.files[0];
-  if(!file||!currentUser)return;
+  if(!file || !currentUser)return;
 
   const reader=new FileReader();
+
   reader.onload=x=>{
     avatar.innerHTML=`<img src="${x.target.result}">`;
     saveLocalCache({avatarUrl:x.target.result});
   };
+
   reader.readAsDataURL(file);
 
   const ref=storage.ref("avatars/"+currentUser.uid+"/avatar_"+Date.now()+"_"+file.name);
   await ref.put(file);
+
   const url=await ref.getDownloadURL();
 
-  await db.ref("users/"+currentUser.uid).update({avatarUrl:url});
+  await db.ref("users/"+currentUser.uid).update({
+    avatarUrl:url
+  });
+
   avatar.innerHTML=`<img src="${url}">`;
   saveLocalCache({avatarUrl:url});
 }
 
 async function uploadBackground(e){
   const file=e.target.files[0];
-  if(!file||!currentUser)return;
+  if(!file || !currentUser)return;
 
   const reader=new FileReader();
+
   reader.onload=x=>{
     applyBackgroundImage(x.target.result);
     saveLocalCache({backgroundUrl:x.target.result});
   };
+
   reader.readAsDataURL(file);
 
   const ref=storage.ref("backgrounds/"+currentUser.uid+"/bg_"+Date.now()+"_"+file.name);
   await ref.put(file);
+
   const url=await ref.getDownloadURL();
 
-  await db.ref("users/"+currentUser.uid+"/settings").update({backgroundUrl:url});
+  await db.ref("users/"+currentUser.uid+"/settings").update({
+    backgroundUrl:url
+  });
+
   applyBackgroundImage(url);
   saveLocalCache({backgroundUrl:url});
 }
@@ -1180,14 +1528,24 @@ function applyBackgroundImage(url){
 async function saveAccent(color){
   applyAccent(color);
   saveLocalCache({accent:color});
+
   if(currentUser){
-    await db.ref("users/"+currentUser.uid+"/settings").update({accent:color});
+    await db.ref("users/"+currentUser.uid+"/settings").update({
+      accent:color
+    });
   }
 }
 
 function applyAccent(color){
   document.documentElement.style.setProperty("--accent",color);
-  colorPicker.value=color;
+
+  if(document.getElementById("colorPicker")){
+    colorPicker.value=color;
+  }
+
+  if(document.getElementById("colorValue")){
+    colorValue.textContent=color;
+  }
 }
 
 function uploadOwnMusic(){
@@ -1196,13 +1554,14 @@ function uploadOwnMusic(){
 
 async function loadOwnMusic(e){
   const file=e.target.files[0];
-  if(!file||!currentUser)return;
+  if(!file || !currentUser)return;
 
   const localUrl=URL.createObjectURL(file);
   setMusic(localUrl,file.name.replace(".mp3",""),"Custom track","♫");
 
   const ref=storage.ref("music/"+currentUser.uid+"/music_"+Date.now()+"_"+file.name);
   await ref.put(file);
+
   const url=await ref.getDownloadURL();
 
   await db.ref("users/"+currentUser.uid+"/settings").update({
@@ -1216,8 +1575,15 @@ async function loadOwnMusic(e){
 
 function setTrack(index){
   trackIndex=index;
-  const tr=tracks[trackIndex]||tracks[0];
-  setMusic(tr.src,tr.title,tr.sub,tr.icon);
+
+  const track=tracks[trackIndex]||tracks[0];
+
+  setMusic(
+    track.src,
+    track.title,
+    track.sub,
+    track.icon
+  );
 }
 
 function setMusic(src,title,sub,icon){
@@ -1232,9 +1598,10 @@ function setMusic(src,title,sub,icon){
 async function nextTrack(){
   trackIndex=(trackIndex+1)%tracks.length;
   setTrack(trackIndex);
+
   if(currentUser){
     await db.ref("users/"+currentUser.uid+"/settings").update({
-      trackIndex,
+      trackIndex:trackIndex,
       customMusicUrl:null,
       customMusicName:null
     });
@@ -1244,9 +1611,10 @@ async function nextTrack(){
 async function prevTrack(){
   trackIndex=(trackIndex-1+tracks.length)%tracks.length;
   setTrack(trackIndex);
+
   if(currentUser){
     await db.ref("users/"+currentUser.uid+"/settings").update({
-      trackIndex,
+      trackIndex:trackIndex,
       customMusicUrl:null,
       customMusicName:null
     });
@@ -1254,7 +1622,9 @@ async function prevTrack(){
 }
 
 function toggleMusic(){
-  if(!bgMusic.src)setTrack(trackIndex);
+  if(!bgMusic.src){
+    setTrack(trackIndex);
+  }
 
   if(!musicPlaying){
     bgMusic.volume=.35;
@@ -1273,8 +1643,9 @@ function logout(){
 }
 
 document.addEventListener("click",e=>{
-  const p=document.querySelector(".profile");
-  if(p&&!p.contains(e.target)){
+  const profile=document.querySelector(".profile");
+
+  if(profile && !profile.contains(e.target)){
     profileMenu.classList.remove("open");
   }
 });
