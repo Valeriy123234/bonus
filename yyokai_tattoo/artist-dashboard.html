@@ -16,26 +16,22 @@
 :root{
   --accent:#e5092f;
   --bg:#020202;
-  --panel:#090909;
-  --panel2:#111;
   --text:#f7f2ef;
   --muted:#8f8a88;
-  --line:rgba(255,255,255,.1);
 }
 
 html,body{
   min-height:100%;
   background:#000;
   color:var(--text);
-  font-family:Inter,Arial,sans-serif;
+  font-family:Arial,sans-serif;
 }
 
 body{
   overflow-x:hidden;
   background:
-    radial-gradient(circle at 50% -10%,rgba(229,9,47,.24),transparent 34%),
-    radial-gradient(circle at 90% 20%,rgba(255,255,255,.04),transparent 22%),
-    linear-gradient(180deg,#000 0%,#090102 45%,#000 100%);
+    radial-gradient(circle at 50% -10%,rgba(229,9,47,.34),transparent 35%),
+    linear-gradient(180deg,#000 0%,#0b0103 45%,#000 100%);
 }
 
 body::before{
@@ -72,10 +68,10 @@ button{font-family:inherit;cursor:pointer}
   gap:14px;
   padding:10px 12px;
   border-radius:30px;
-  background:rgba(0,0,0,.86);
-  border:1px solid rgba(255,255,255,.12);
+  background:rgba(0,0,0,.88);
+  border:1px solid rgba(255,255,255,.13);
   backdrop-filter:blur(28px);
-  box-shadow:0 24px 80px rgba(0,0,0,.65);
+  box-shadow:0 24px 80px rgba(0,0,0,.7);
 }
 
 .menu-btn{
@@ -93,9 +89,9 @@ button{font-family:inherit;cursor:pointer}
   transform:translateX(5px);
   font-size:clamp(26px,7vw,46px);
   font-weight:950;
-  letter-spacing:.22em;
+  letter-spacing:.12em;
   color:#fff;
-  text-shadow:0 0 28px rgba(229,9,47,.3);
+  text-shadow:0 0 28px rgba(229,9,47,.34);
 }
 
 .top-actions{
@@ -140,10 +136,13 @@ button{font-family:inherit;cursor:pointer}
   display:grid;
   place-items:center;
   overflow:hidden;
-  background:linear-gradient(135deg,#2a0009,#080808);
+  background:linear-gradient(135deg,#120005,#080808);
   border:1px solid rgba(255,255,255,.16);
-  box-shadow:0 0 30px rgba(229,9,47,.28);
-  font-size:24px;
+  box-shadow:0 0 30px color-mix(in srgb,var(--accent) 45%,transparent);
+  font-size:27px;
+  color:var(--accent);
+  font-weight:950;
+  text-shadow:0 0 18px var(--accent);
 }
 
 .avatar img{
@@ -156,13 +155,13 @@ button{font-family:inherit;cursor:pointer}
   position:absolute;
   top:66px;
   right:0;
-  width:min(340px,calc(100vw - 40px));
+  width:min(360px,calc(100vw - 36px));
   display:none;
   padding:18px;
   border-radius:28px;
-  background:rgba(0,0,0,.96);
-  border:1px solid rgba(255,255,255,.12);
-  box-shadow:0 30px 100px rgba(0,0,0,.8);
+  background:rgba(0,0,0,.97);
+  border:1px solid rgba(255,255,255,.13);
+  box-shadow:0 30px 100px rgba(0,0,0,.82);
   backdrop-filter:blur(28px);
 }
 
@@ -208,7 +207,7 @@ button{font-family:inherit;cursor:pointer}
   border-radius:16px;
   display:grid;
   place-items:center;
-  background:linear-gradient(135deg,#e5092f,#101010);
+  background:linear-gradient(135deg,var(--accent),#101010);
 }
 
 .track-title{font-weight:950;font-size:14px}
@@ -257,7 +256,7 @@ button{font-family:inherit;cursor:pointer}
   width:280px;
   z-index:70;
   padding:22px;
-  background:rgba(0,0,0,.96);
+  background:rgba(0,0,0,.97);
   border-right:1px solid rgba(255,255,255,.1);
   backdrop-filter:blur(26px);
   transition:.28s ease;
@@ -275,7 +274,7 @@ button{font-family:inherit;cursor:pointer}
 .side-brand{
   font-size:22px;
   font-weight:950;
-  letter-spacing:.16em;
+  letter-spacing:.12em;
 }
 
 .close-side{
@@ -309,7 +308,7 @@ button{font-family:inherit;cursor:pointer}
 }
 
 .side-nav button:hover{
-  background:rgba(229,9,47,.16);
+  background:color-mix(in srgb,var(--accent) 22%,transparent);
   color:#fff;
 }
 
@@ -318,10 +317,10 @@ button{font-family:inherit;cursor:pointer}
   padding:34px;
   border-radius:38px;
   background:
-    radial-gradient(circle at 80% 0%,rgba(229,9,47,.25),transparent 36%),
-    linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.025));
-  border:1px solid rgba(255,255,255,.12);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 40px 120px rgba(0,0,0,.45);
+    radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent) 38%,transparent),transparent 36%),
+    linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.03));
+  border:1px solid rgba(255,255,255,.13);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 40px 120px rgba(0,0,0,.5);
 }
 
 .hero h1{
@@ -333,7 +332,7 @@ button{font-family:inherit;cursor:pointer}
 
 .hero p{
   max-width:780px;
-  color:#b4afad;
+  color:#c2bcba;
   font-size:clamp(18px,3vw,25px);
   line-height:1.55;
 }
@@ -349,7 +348,18 @@ button{font-family:inherit;cursor:pointer}
   padding:18px;
   border-radius:26px;
   background:#070707;
-  border:1px solid rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.11);
+  transition:.25s;
+}
+
+.clickable-stat{
+  cursor:pointer;
+}
+
+.clickable-stat:hover{
+  transform:translateY(-4px);
+  border-color:color-mix(in srgb,var(--accent) 65%,transparent);
+  box-shadow:0 22px 70px color-mix(in srgb,var(--accent) 18%,transparent);
 }
 
 .stat span{
@@ -374,8 +384,8 @@ button{font-family:inherit;cursor:pointer}
 .panel{
   padding:22px;
   border-radius:32px;
-  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.022));
-  border:1px solid rgba(255,255,255,.1);
+  background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.025));
+  border:1px solid rgba(255,255,255,.11);
 }
 
 .panel h2{
@@ -384,7 +394,7 @@ button{font-family:inherit;cursor:pointer}
 }
 
 .panel p{
-  color:#9b9694;
+  color:#aaa4a2;
   line-height:1.6;
 }
 
@@ -423,10 +433,10 @@ button{font-family:inherit;cursor:pointer}
   width:min(720px,calc(100vw - 28px));
   padding:10px;
   border-radius:32px;
-  background:rgba(0,0,0,.86);
-  border:1px solid rgba(255,255,255,.12);
+  background:rgba(0,0,0,.88);
+  border:1px solid rgba(255,255,255,.13);
   backdrop-filter:blur(30px);
-  box-shadow:0 25px 90px rgba(0,0,0,.75);
+  box-shadow:0 25px 90px rgba(0,0,0,.78);
   display:grid;
   grid-template-columns:repeat(5,1fr);
   gap:8px;
@@ -454,11 +464,12 @@ button{font-family:inherit;cursor:pointer}
 
 .dock button:hover,
 .dock button.active{
-  background:rgba(229,9,47,.16);
+  background:color-mix(in srgb,var(--accent) 22%,transparent);
   color:#fff;
 }
 
-.settings{
+.settings,
+.pay-modal{
   display:none;
   position:fixed;
   inset:0;
@@ -466,30 +477,35 @@ button{font-family:inherit;cursor:pointer}
   padding:20px;
   place-items:center;
   background:rgba(0,0,0,.78);
-  backdrop-filter:blur(12px);
+  backdrop-filter:blur(14px);
 }
 
-.settings.open{display:grid}
+.settings.open,
+.pay-modal.open{display:grid}
 
-.modal{
+.modal,
+.pay-box{
   width:100%;
-  max-width:560px;
+  max-width:760px;
   max-height:90vh;
   overflow:auto;
   padding:24px;
-  border-radius:32px;
+  border-radius:34px;
   background:#050505;
-  border:1px solid rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.13);
+  box-shadow:0 40px 120px rgba(0,0,0,.8);
 }
 
-.modal-head{
+.modal-head,
+.pay-head{
   display:flex;
   justify-content:space-between;
   align-items:center;
   margin-bottom:20px;
 }
 
-.close{
+.close,
+.pay-close{
   width:42px;
   height:42px;
   border-radius:14px;
@@ -547,6 +563,63 @@ button{font-family:inherit;cursor:pointer}
   font-weight:950;
 }
 
+.plan-grid,
+.balance-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+
+.plan-card,
+.balance-card{
+  padding:20px;
+  border-radius:26px;
+  border:1px solid rgba(255,255,255,.1);
+  background:
+    radial-gradient(circle at top right,color-mix(in srgb,var(--accent) 24%,transparent),transparent 36%),
+    linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.025));
+  cursor:pointer;
+  transition:.25s;
+}
+
+.plan-card:hover,
+.balance-card:hover{
+  transform:translateY(-5px);
+  border-color:color-mix(in srgb,var(--accent) 65%,transparent);
+  box-shadow:0 26px 80px color-mix(in srgb,var(--accent) 20%,transparent);
+}
+
+.plan-card.featured{
+  border-color:color-mix(in srgb,var(--accent) 70%,transparent);
+}
+
+.plan-price,
+.balance-price{
+  font-size:34px;
+  font-weight:950;
+  margin-bottom:8px;
+}
+
+.plan-name{
+  color:#aaa;
+  font-weight:950;
+  margin-bottom:14px;
+}
+
+.plan-card ul{
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  color:#aaa;
+  font-size:14px;
+}
+
+.plan-card li::before{
+  content:"✦ ";
+  color:var(--accent);
+}
+
 audio{display:none}
 
 @media(max-width:720px){
@@ -566,7 +639,7 @@ audio{display:none}
 
   .logo{
     font-size:33px;
-    letter-spacing:.2em;
+    letter-spacing:.1em;
   }
 
   .lang button{
@@ -577,16 +650,11 @@ audio{display:none}
     padding:28px 22px;
   }
 
-  .stats{
+  .stats,
+  .focus-grid,
+  .plan-grid,
+  .balance-grid{
     grid-template-columns:1fr;
-  }
-
-  .focus-grid{
-    grid-template-columns:1fr;
-  }
-
-  .dock{
-    grid-template-columns:repeat(5,1fr);
   }
 
   .dock button{
@@ -634,7 +702,7 @@ audio{display:none}
       </div>
 
       <div class="profile">
-        <div class="avatar" id="avatar" onclick="toggleProfile()">👺</div>
+        <div class="avatar" id="avatar" onclick="toggleProfile()">妖</div>
 
         <div class="profile-menu" id="profileMenu">
           <div class="profile-name" id="artistName">Guest Artist</div>
@@ -654,6 +722,8 @@ audio{display:none}
             </div>
           </div>
 
+          <button onclick="uploadOwnMusic()">＋ <span data-i18n="uploadMusicBtn">Додати свою музику</span></button>
+          <input id="ownMusicInput" type="file" accept="audio/mp3,audio/mpeg" style="display:none" onchange="loadOwnMusic(event)">
           <button onclick="addBalance()">＋ <span data-i18n="addBalance">Поповнити баланс</span></button>
           <button onclick="openSettings()">⚙ <span data-i18n="settings">Налаштування</span></button>
           <a href="billing.html" data-i18n="billing">Оплата</a>
@@ -671,14 +741,16 @@ audio{display:none}
   </section>
 
   <section class="stats">
-    <div class="stat">
+    <div class="stat clickable-stat" onclick="openBalanceModal()">
       <span data-i18n="statBalance">Баланс</span>
       <strong id="balanceMain">$0.00</strong>
     </div>
-    <div class="stat">
+
+    <div class="stat clickable-stat" onclick="openPlanModal()">
       <span data-i18n="statPlan">План</span>
       <strong id="planValue">Free</strong>
     </div>
+
     <div class="stat">
       <span data-i18n="statBookings">Записи</span>
       <strong id="bookingCount">0</strong>
@@ -713,6 +785,77 @@ audio{display:none}
   <button onclick="go('bookings.html')"><i>🗓</i><span data-i18n="dockBookings">Записи</span></button>
   <button onclick="go('billing.html')"><i>¥</i><span data-i18n="dockBilling">Billing</span></button>
 </nav>
+
+<section class="pay-modal" id="planModal">
+  <div class="pay-box">
+    <div class="pay-head">
+      <h2 data-i18n="choosePlan">Choose your plan</h2>
+      <button class="pay-close" onclick="closePlanModal()">×</button>
+    </div>
+
+    <div class="plan-grid">
+      <div class="plan-card" onclick="selectPlan('free')">
+        <div class="plan-price">$0</div>
+        <div class="plan-name">Free</div>
+        <ul>
+          <li>3 stencil generations</li>
+          <li>3 sketch generations</li>
+          <li>3 A4 splits</li>
+          <li>50 client bookings</li>
+        </ul>
+      </div>
+
+      <div class="plan-card" onclick="selectPlan('starter')">
+        <div class="plan-price">$10</div>
+        <div class="plan-name">Starter / month</div>
+        <ul>
+          <li>250 stencil generations</li>
+          <li>250 sketch generations</li>
+          <li>50 A4 splits</li>
+          <li>100 client bookings</li>
+        </ul>
+      </div>
+
+      <div class="plan-card featured" onclick="selectPlan('pro')">
+        <div class="plan-price">$20</div>
+        <div class="plan-name">Pro / month</div>
+        <ul>
+          <li>500 stencil generations</li>
+          <li>500 sketch generations</li>
+          <li>100 A4 splits</li>
+          <li>150 client bookings</li>
+        </ul>
+      </div>
+
+      <div class="plan-card" onclick="selectPlan('yokai')">
+        <div class="plan-price">$30</div>
+        <div class="plan-name">YYOKAI Full / month</div>
+        <ul>
+          <li>Full access</li>
+          <li>Unlimited workflow</li>
+          <li>Premium tools</li>
+          <li>Custom studio mode</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pay-modal" id="balanceModal">
+  <div class="pay-box">
+    <div class="pay-head">
+      <h2 data-i18n="topUpBalance">Top up balance</h2>
+      <button class="pay-close" onclick="closeBalanceModal()">×</button>
+    </div>
+
+    <div class="balance-grid">
+      <div class="balance-card" onclick="topUpBalance(10)"><div class="balance-price">$10</div></div>
+      <div class="balance-card" onclick="topUpBalance(20)"><div class="balance-price">$20</div></div>
+      <div class="balance-card" onclick="topUpBalance(30)"><div class="balance-price">$30</div></div>
+      <div class="balance-card" onclick="topUpBalance(50)"><div class="balance-price">$50</div></div>
+    </div>
+  </div>
+</section>
 
 <section class="settings" id="settingsPanel">
   <div class="modal">
@@ -799,7 +942,8 @@ studioTitle:"Studio mode",
 studioText:"Твій профіль, музика, фон, колір і баланс — в одному меню справа. Кабінет має відчуватись як особистий простір.",
 dockHome:"Home",dockStencil:"Stencil",dockSplit:"A4",dockBookings:"Записи",dockBilling:"Billing",
 changeAvatar:"Змінити фото профілю",artistNameLabel:"Нік майстра",saveName:"Зберегти нік",
-musicSettings:"Музика / плейлист",backgroundUpload:"Фон кабінету",palette:"Палітра / фон",applyGradient:"Застосувати градієнт"
+musicSettings:"Музика / плейлист",backgroundUpload:"Фон кабінету",palette:"Палітра / фон",applyGradient:"Застосувати градієнт",
+choosePlan:"Оберіть план",topUpBalance:"Поповнити баланс",uploadMusicBtn:"Додати свою музику"
 },
 en:{
 navHome:"Home",navBookings:"Bookings",navStencil:"Stencil",navSplit:"A4 Print",navFiles:"Files",navBilling:"Billing",
@@ -814,7 +958,8 @@ studioTitle:"Studio mode",
 studioText:"Your profile, music, background, color and balance live in one menu on the right. The dashboard should feel like a personal workspace.",
 dockHome:"Home",dockStencil:"Stencil",dockSplit:"A4",dockBookings:"Bookings",dockBilling:"Billing",
 changeAvatar:"Change profile photo",artistNameLabel:"Artist nickname",saveName:"Save nickname",
-musicSettings:"Music / playlist",backgroundUpload:"Dashboard background",palette:"Palette / background",applyGradient:"Apply gradient"
+musicSettings:"Music / playlist",backgroundUpload:"Dashboard background",palette:"Palette / background",applyGradient:"Apply gradient",
+choosePlan:"Choose your plan",topUpBalance:"Top up balance",uploadMusicBtn:"Add your music"
 }
 };
 
@@ -861,6 +1006,41 @@ function setLang(lang,btn){
   btn.classList.add("active");
 }
 
+function openPlanModal(){planModal.classList.add("open")}
+function closePlanModal(){planModal.classList.remove("open")}
+function openBalanceModal(){balanceModal.classList.add("open")}
+function closeBalanceModal(){balanceModal.classList.remove("open")}
+
+async function selectPlan(plan){
+  if(!currentUser)return;
+
+  const planNames={
+    free:"Free",
+    starter:"Starter",
+    pro:"Pro",
+    yokai:"YYOKAI Full"
+  };
+
+  await db.ref("users/"+currentUser.uid).update({plan:planNames[plan]});
+  planValue.textContent=planNames[plan];
+  closePlanModal();
+}
+
+async function topUpBalance(amount){
+  if(!currentUser)return;
+
+  const snap=await db.ref("users/"+currentUser.uid+"/balance").once("value");
+  const current=Number(snap.val()||0);
+  const next=current+amount;
+
+  await db.ref("users/"+currentUser.uid).update({balance:next});
+
+  balanceValue.textContent="$"+next.toFixed(2);
+  balanceMain.textContent="$"+next.toFixed(2);
+
+  closeBalanceModal();
+}
+
 async function saveName(){
   const name=nameInput.value.trim()||"Guest Artist";
   await db.ref("users/"+currentUser.uid).update({name});
@@ -884,6 +1064,23 @@ async function uploadAvatar(e){
   }catch(err){
     console.log(err.message);
   }
+}
+
+function uploadOwnMusic(){
+  ownMusicInput.click();
+}
+
+function loadOwnMusic(e){
+  const file=e.target.files[0];
+  if(!file)return;
+
+  const url=URL.createObjectURL(file);
+  bgMusic.src=url;
+  trackTitle.textContent=file.name.replace(".mp3","");
+  trackSub.textContent="Custom track";
+  trackCover.textContent="♫";
+  musicPlaying=false;
+  playPauseBtn.textContent="▶";
 }
 
 function selectTrack(i){
@@ -941,7 +1138,7 @@ function setCustomAccent(c){
 
 async function applyGradientBackground(){
   document.body.style.background=
-  `radial-gradient(circle at 50% -10%, ${selectedColor}55, transparent 34%),linear-gradient(180deg,#000 0%,#090102 45%,#000 100%)`;
+  `radial-gradient(circle at 50% -10%, ${selectedColor}66, transparent 35%),linear-gradient(180deg,#000 0%,#0b0103 45%,#000 100%)`;
 
   if(currentUser)await db.ref("users/"+currentUser.uid+"/settings").update({accent:selectedColor});
   closeSettings();
@@ -983,7 +1180,7 @@ function closeSettings(){
 }
 
 function addBalance(){
-  location.href="billing.html";
+  openBalanceModal();
 }
 
 function go(url){
