@@ -6,7 +6,11 @@
   <title>YYOKAI</title>
 
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
 
     html{
       background:#000;
@@ -17,24 +21,34 @@
       min-height:100vh;
       font-family:Arial,sans-serif;
       background:
-        radial-gradient(circle at 50% 18%, rgba(170,0,28,.22), transparent 32%),
-        radial-gradient(circle at 15% 70%, rgba(255,255,255,.035), transparent 28%),
-        linear-gradient(to bottom,#000 0%,#070202 30%,#0b0304 60%,#000 100%);
+        radial-gradient(circle at 50% 18%, rgba(185,0,35,.24), transparent 34%),
+        radial-gradient(circle at 15% 70%, rgba(255,255,255,.03), transparent 28%),
+        linear-gradient(
+          to bottom,
+          #000 0%,
+          #050202 30%,
+          #090304 60%,
+          #000 100%
+        );
+
       color:#fff;
       overflow-x:hidden;
       position:relative;
     }
 
     body::before{
-      content:"妖  刺青  鬼  狐  墨  夜  影";
+      content:"妖 刺青 鬼 狐 墨 夜 影";
       position:fixed;
       inset:0;
       z-index:0;
       pointer-events:none;
-      color:rgba(255,255,255,.022);
+
+      color:rgba(255,255,255,.02);
+
       font-size:92px;
       line-height:1.45;
       letter-spacing:36px;
+
       transform:rotate(-12deg) scale(1.18);
     }
 
@@ -44,8 +58,15 @@
       inset:0;
       z-index:1;
       pointer-events:none;
+
       background:
-        linear-gradient(to bottom,rgba(0,0,0,1) 0%,transparent 16%,transparent 84%,rgba(0,0,0,1) 100%);
+        linear-gradient(
+          to bottom,
+          rgba(0,0,0,1) 0%,
+          transparent 16%,
+          transparent 84%,
+          rgba(0,0,0,1) 100%
+        );
     }
 
     header{
@@ -53,30 +74,44 @@
       top:0;
       width:100%;
       padding:24px 34px;
+
       display:flex;
       justify-content:space-between;
       align-items:center;
+
       z-index:10;
     }
 
     .lang{
       display:flex;
       gap:6px;
+
       padding:6px;
+
       border-radius:999px;
+
       background:rgba(0,0,0,.62);
+
       border:1px solid rgba(255,255,255,.12);
+
       backdrop-filter:blur(18px);
     }
 
     .lang button{
       border:0;
       background:transparent;
+
       color:#9a9a9a;
+
       padding:8px 14px;
+
       border-radius:999px;
+
       font-weight:800;
+
       cursor:pointer;
+
+      transition:.2s;
     }
 
     .lang button.active{
@@ -90,14 +125,23 @@
       font-size:14px;
     }
 
+    .login:hover{
+      color:#fff;
+    }
+
     .hero{
       position:relative;
       z-index:2;
+
       min-height:100vh;
-      padding:120px 24px 90px;
+
+      padding:115px 24px 90px;
+
       display:flex;
       justify-content:center;
       align-items:center;
+
+      transform:translateY(-5px);
     }
 
     .wrap{
@@ -110,35 +154,56 @@
       display:inline-flex;
       gap:12px;
       align-items:center;
-      margin-bottom:32px;
+
+      margin-bottom:34px;
+
       padding:10px 18px;
+
       border-radius:999px;
+
       background:rgba(0,0,0,.58);
+
       border:1px solid rgba(255,255,255,.12);
+
       color:#b9b9b9;
+
       backdrop-filter:blur(20px);
+
       font-size:14px;
     }
 
     .seal{
       color:#e5092f;
       font-weight:900;
-      text-shadow:0 0 18px rgba(229,9,47,.75);
+
+      text-shadow:
+        0 0 18px rgba(229,9,47,.75);
     }
+
+    /* LOGO */
 
     .logo{
       position:relative;
+
       display:inline-block;
-      font-size:clamp(64px,12vw,172px);
+
+      font-size:clamp(64px,12vw,176px);
+
       font-weight:950;
-      letter-spacing:.13em;
+
+      letter-spacing:.14em;
+
       line-height:.9;
-      margin-bottom:28px;
+
+      margin-bottom:30px;
+
       color:#f5f0eb;
+
       text-shadow:
-        0 0 10px rgba(255,255,255,.22),
-        0 0 36px rgba(229,9,47,.32),
-        0 0 80px rgba(0,0,0,.9);
+        0 0 8px rgba(255,255,255,.25),
+        0 0 28px rgba(229,9,47,.35),
+        0 0 80px rgba(0,0,0,.95);
+
       animation:breath 4s ease-in-out infinite;
     }
 
@@ -147,99 +212,177 @@
       content:"YYOKAI";
       position:absolute;
       inset:0;
+
       pointer-events:none;
+
       mix-blend-mode:screen;
     }
 
     .logo::before{
-      color:#e5092f;
-      animation:glitchOne 2.4s infinite steps(1,end);
+      color:#ff0037;
+
+      animation:glitchOne 1.8s infinite;
     }
 
     .logo::after{
-      color:#8b0018;
-      animation:glitchTwo 3.1s infinite steps(1,end);
+      color:#a3001f;
+
+      animation:glitchTwo 2.3s infinite;
     }
 
     .logo span{
       position:absolute;
       inset:0;
+
       color:transparent;
-      -webkit-text-stroke:1px rgba(229,9,47,.55);
+
+      -webkit-text-stroke:1px rgba(229,9,47,.58);
+
       opacity:.32;
-      animation:ghost 3.5s infinite ease-in-out;
+
+      animation:ghost 3s infinite ease-in-out;
     }
 
     @keyframes breath{
-      0%,100%{filter:drop-shadow(0 0 10px rgba(229,9,47,.25))}
-      50%{filter:drop-shadow(0 0 32px rgba(229,9,47,.55))}
+      0%,100%{
+        filter:
+          drop-shadow(0 0 10px rgba(229,9,47,.22));
+      }
+
+      50%{
+        filter:
+          drop-shadow(0 0 38px rgba(229,9,47,.62));
+      }
     }
 
     @keyframes ghost{
-      0%,100%{transform:translate(0,0);opacity:.18}
-      50%{transform:translate(0,8px);opacity:.42}
+      0%,100%{
+        transform:translate(0,0);
+        opacity:.18;
+      }
+
+      50%{
+        transform:translate(0,8px);
+        opacity:.48;
+      }
     }
 
+    /* BIG GLITCH */
+
     @keyframes glitchOne{
-      0%,82%,100%{
-        transform:translate(0,0);
+
+      0%,100%{
+        transform:translate(0);
+        opacity:0;
         clip-path:inset(0 0 0 0);
-        opacity:.0;
       }
-      84%{
-        transform:translate(8px,-3px);
-        clip-path:inset(8% 0 78% 0);
-        opacity:.9;
+
+      8%{
+        opacity:1;
+        transform:translate(-10px,-3px);
+        clip-path:inset(0 0 72% 0);
       }
-      86%{
-        transform:translate(-6px,2px);
+
+      10%{
+        transform:translate(10px,3px);
         clip-path:inset(38% 0 42% 0);
-        opacity:.85;
       }
-      88%{
-        transform:translate(4px,0);
+
+      12%{
+        transform:translate(-8px,1px);
         clip-path:inset(72% 0 10% 0);
-        opacity:.75;
       }
-      90%{
-        transform:translate(0,0);
-        clip-path:inset(0 0 0 0);
-        opacity:.0;
+
+      14%{
+        opacity:0;
+      }
+
+      55%{
+        opacity:0;
+      }
+
+      57%{
+        opacity:1;
+        transform:translate(8px,-2px);
+        clip-path:inset(18% 0 60% 0);
+      }
+
+      59%{
+        transform:translate(-10px,2px);
+        clip-path:inset(52% 0 22% 0);
+      }
+
+      61%{
+        transform:translate(6px,0);
+        clip-path:inset(82% 0 4% 0);
+      }
+
+      63%{
+        opacity:0;
       }
     }
 
     @keyframes glitchTwo{
-      0%,60%,100%{
-        transform:translate(0,0);
-        clip-path:inset(0 0 0 0);
-        opacity:.0;
+
+      0%,100%{
+        transform:translate(0);
+        opacity:0;
       }
-      62%{
-        transform:translate(-7px,3px);
-        clip-path:inset(18% 0 66% 0);
+
+      22%{
         opacity:.9;
+        transform:translate(14px,-4px);
+        clip-path:inset(0 0 84% 0);
       }
-      64%{
-        transform:translate(5px,-2px);
-        clip-path:inset(50% 0 30% 0);
-        opacity:.8;
+
+      24%{
+        transform:translate(-12px,3px);
+        clip-path:inset(30% 0 46% 0);
       }
-      66%{
-        transform:translate(-3px,0);
-        clip-path:inset(80% 0 5% 0);
-        opacity:.75;
+
+      26%{
+        transform:translate(9px,-2px);
+        clip-path:inset(74% 0 8% 0);
       }
-      68%{
-        transform:translate(0,0);
-        opacity:.0;
+
+      28%{
+        opacity:0;
+      }
+
+      76%{
+        opacity:0;
+      }
+
+      78%{
+        opacity:1;
+        transform:translate(-13px,4px);
+        clip-path:inset(14% 0 70% 0);
+      }
+
+      80%{
+        transform:translate(10px,-3px);
+        clip-path:inset(44% 0 28% 0);
+      }
+
+      82%{
+        transform:translate(-7px,1px);
+        clip-path:inset(82% 0 4% 0);
+      }
+
+      84%{
+        opacity:0;
       }
     }
 
     .subtitle{
       max-width:760px;
+
       margin:0 auto 46px;
+
       color:#bdb7b4;
+
       font-size:clamp(17px,2vw,22px);
+
       line-height:1.65;
     }
 
@@ -251,16 +394,30 @@
 
     .card{
       position:relative;
+
       min-height:335px;
+
       padding:36px;
+
       border-radius:34px;
+
       text-align:left;
+
       cursor:pointer;
+
       overflow:hidden;
+
       background:
-        linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.018));
+        linear-gradient(
+          180deg,
+          rgba(255,255,255,.075),
+          rgba(255,255,255,.018)
+        );
+
       border:1px solid rgba(255,255,255,.11);
+
       backdrop-filter:blur(24px);
+
       transition:.35s;
     }
 
@@ -268,32 +425,56 @@
       content:"";
       position:absolute;
       inset:-1px;
+
       opacity:0;
+
       transition:.35s;
+
       background:
-        radial-gradient(circle at top right,rgba(229,9,47,.28),transparent 38%),
-        linear-gradient(135deg,rgba(255,255,255,.06),transparent 45%);
+        radial-gradient(
+          circle at top right,
+          rgba(229,9,47,.28),
+          transparent 38%
+        ),
+
+        linear-gradient(
+          135deg,
+          rgba(255,255,255,.06),
+          transparent 45%
+        );
     }
 
     .card:hover{
       transform:translateY(-8px);
+
       border-color:rgba(255,255,255,.26);
-      box-shadow:0 34px 90px rgba(0,0,0,.65);
+
+      box-shadow:
+        0 34px 90px rgba(0,0,0,.65);
     }
 
-    .card:hover::before{opacity:1}
+    .card:hover::before{
+      opacity:1;
+    }
 
     .mask{
       position:relative;
       z-index:1;
+
       width:76px;
       height:76px;
+
       border-radius:24px;
+
       display:grid;
       place-items:center;
+
       margin-bottom:34px;
+
       overflow:hidden;
+
       background:#050505;
+
       border:1px solid rgba(255,255,255,.14);
     }
 
@@ -301,177 +482,195 @@
       width:100%;
       height:100%;
       object-fit:cover;
-      filter:brightness(.92) contrast(1.08) saturate(.9);
+
+      filter:
+        brightness(.92)
+        contrast(1.08)
+        saturate(.9);
     }
 
     .card h2{
       position:relative;
       z-index:1;
+
       font-size:34px;
+
       margin-bottom:14px;
+
       color:#f5f0eb;
     }
 
     .card p{
       position:relative;
       z-index:1;
+
       max-width:440px;
+
       color:#aaa;
+
       line-height:1.65;
+
       margin-bottom:34px;
     }
 
     .btn{
       position:relative;
       z-index:1;
+
       display:inline-flex;
+
       padding:14px 20px;
+
       border-radius:999px;
+
       background:#f5f0eb;
+
       color:#050505;
+
       font-weight:900;
+
       text-decoration:none;
     }
 
     .btn.red{
       color:#fff;
+
       background:#e5092f;
-      box-shadow:0 0 34px rgba(229,9,47,.34);
+
+      box-shadow:
+        0 0 34px rgba(229,9,47,.34);
     }
 
     .auth{
       margin-top:30px;
+      padding-bottom:40px;
+
       font-size:14px;
+
       color:#777;
-      padding-bottom:20px;
     }
 
     .auth a{
       color:#fff;
       text-decoration:none;
-      border-bottom:1px solid rgba(255,255,255,.35);
+
+      border-bottom:
+        1px solid rgba(255,255,255,.35);
     }
 
     @media(max-width:780px){
-      header{padding:18px}
-      .paths{grid-template-columns:1fr}
-      .card{min-height:285px;padding:28px}
-      body::before{font-size:60px;letter-spacing:24px}
+
+      header{
+        padding:18px;
+      }
+
+      .paths{
+        grid-template-columns:1fr;
+      }
+
+      .card{
+        min-height:285px;
+        padding:28px;
+      }
+
+      body::before{
+        font-size:60px;
+        letter-spacing:24px;
+      }
     }
   </style>
 </head>
 
 <body>
+
   <header>
+
     <div class="lang">
-      <button class="active" onclick="setLang('uk')">UA</button>
-      <button onclick="setLang('en')">EN</button>
+      <button class="active">UA</button>
+      <button>EN</button>
     </div>
 
-    <a href="/login.html" class="login" data-i18n="login">Увійти</a>
+    <a href="/login.html" class="login">
+      Увійти
+    </a>
+
   </header>
 
   <main class="hero">
+
     <section class="wrap">
+
       <div class="label">
         <span class="seal">妖</span>
-        <span data-i18n="badge">Інструменти для тату-майстрів нового покоління</span>
+
+        <span>
+          Інструменти для тату-майстрів нового покоління
+        </span>
       </div>
 
-      <h1 class="logo">YYOKAI<span>YYOKAI</span></h1>
+      <h1 class="logo">
+        YYOKAI
+        <span>YYOKAI</span>
+      </h1>
 
-      <p class="subtitle" data-i18n="subtitle">
-        Обери свій шлях: простір для клієнтів або майстерня для тату-майстрів
-        зі стенсілами, шрифтами, референсами та підготовкою до сеансу.
+      <p class="subtitle">
+        Обери свій шлях: простір для клієнтів або майстерня
+        для тату-майстрів зі стенсілами, шрифтами,
+        референсами та підготовкою до сеансу.
       </p>
 
       <div class="paths">
-        <div class="card" onclick="location.href='/client.html'">
+
+        <div class="card">
+
           <div class="mask">
-            <img src="images/kitsune.png" alt="">
+            <img src="images/kitsune.png">
           </div>
 
-          <h2 data-i18n="clientTitle">Я клієнт</h2>
+          <h2>Я клієнт</h2>
 
-          <p data-i18n="clientText">
-            Переглянь ескізи, стиль майстра, приклади робіт,
+          <p>
+            Переглянь ескізи, стиль майстра,
             примірку тату та швидкий запис.
           </p>
 
-          <a href="/client.html" class="btn" data-i18n="clientBtn">
+          <a href="/client.html" class="btn">
             Увійти в студію →
           </a>
+
         </div>
 
-        <div class="card" onclick="location.href='/artist.html'">
+        <div class="card">
+
           <div class="mask">
-            <img src="images/hannya.png" alt="">
+            <img src="images/hannya.png">
           </div>
 
-          <h2 data-i18n="artistTitle">Я майстер</h2>
+          <h2>Я майстер</h2>
 
-          <p data-i18n="artistText">
-            Робочі інструменти: генерація стенсілу,
-            підбір шрифтів, розбиття рукава на A4
-            та помічник для підготовки.
+          <p>
+            Генерація стенсілу, шрифти,
+            розбиття рукава на A4
+            та AI-помічник.
           </p>
 
-          <a href="/artist.html" class="btn red" data-i18n="artistBtn">
+          <a href="/artist.html" class="btn red">
             Увійти в майстерню →
           </a>
+
         </div>
+
       </div>
 
       <div class="auth">
-        <a href="/register.html" data-i18n="register">
+        <a href="/register.html">
           Немає акаунта? Створити профіль
         </a>
       </div>
+
     </section>
+
   </main>
 
-  <script>
-    const text = {
-      uk: {
-        login: "Увійти",
-        badge: "Інструменти для тату-майстрів нового покоління",
-        subtitle: "Обери свій шлях: простір для клієнтів або майстерня для тату-майстрів зі стенсілами, шрифтами, референсами та підготовкою до сеансу.",
-        clientTitle: "Я клієнт",
-        clientText: "Переглянь ескізи, стиль майстра, приклади робіт, примірку тату та швидкий запис.",
-        clientBtn: "Увійти в студію →",
-        artistTitle: "Я майстер",
-        artistText: "Робочі інструменти: генерація стенсілу, підбір шрифтів, розбиття рукава на A4 та помічник для підготовки.",
-        artistBtn: "Увійти в майстерню →",
-        register: "Немає акаунта? Створити профіль"
-      },
-      en: {
-        login: "Log in",
-        badge: "Next-generation tools for tattoo artists",
-        subtitle: "Choose your path: a client space or a workshop for tattoo artists with stencils, fonts, references and session preparation tools.",
-        clientTitle: "I’m a client",
-        clientText: "Explore sketches, artist style, tattoo previews and book your session faster.",
-        clientBtn: "Enter studio →",
-        artistTitle: "I’m an artist",
-        artistText: "Work tools: stencil generation, font selection, A4 sleeve splitting and preparation assistant.",
-        artistBtn: "Enter workshop →",
-        register: "New here? Create profile"
-      }
-    };
-
-    function setLang(lang){
-      document.documentElement.lang = lang;
-
-      Object.keys(text[lang]).forEach(key=>{
-        const el=document.querySelector(`[data-i18n="${key}"]`);
-        if(el) el.textContent=text[lang][key];
-      });
-
-      document.querySelectorAll(".lang button").forEach(btn=>{
-        btn.classList.remove("active");
-      });
-
-      document.querySelector(`[onclick="setLang('${lang}')"]`).classList.add("active");
-    }
-  </script>
 </body>
 </html>
