@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YYOKAI | Artist System</title>
+<title>YYOKAI | Artist Dashboard</title>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
@@ -11,147 +11,665 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-storage-compat.js"></script>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--accent:#e5092f;--text:#f7f2ef}
-html,body{min-height:100%;background:#000;color:var(--text);font-family:Arial,sans-serif}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+:root{
+  --accent:#e5092f;
+  --text:#f6f1ef;
+}
+
+html,body{
+  min-height:100%;
+  background:#000;
+  color:var(--text);
+  font-family:Arial,sans-serif;
+}
+
 body{
   overflow-x:hidden;
-  background:radial-gradient(circle at 50% -10%,rgba(229,9,47,.36),transparent 35%),linear-gradient(180deg,#000 0%,#0b0103 45%,#000 100%);
+  background:
+    radial-gradient(circle at 50% -10%,rgba(229,9,47,.38),transparent 35%),
+    linear-gradient(180deg,#000 0%,#0b0103 45%,#000 100%);
+  transition:background .25s ease;
 }
+
 body::before{
   content:"妖 鬼 狐 墨 夜 刺青";
-  position:fixed;inset:0;z-index:0;pointer-events:none;color:rgba(255,255,255,.018);
-  font-size:78px;letter-spacing:32px;line-height:1.5;transform:rotate(-12deg) scale(1.15);
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  color:rgba(255,255,255,.018);
+  font-size:78px;
+  letter-spacing:30px;
+  line-height:1.5;
+  transform:rotate(-12deg) scale(1.15);
 }
-button{font-family:inherit;cursor:pointer}
-.app{position:relative;z-index:2;min-height:100vh;padding:20px;padding-bottom:112px}
+
+button{
+  cursor:pointer;
+  font-family:inherit;
+}
+
+.app{
+  position:relative;
+  z-index:2;
+  min-height:100vh;
+  padding:18px;
+  padding-bottom:112px;
+}
+
 .topbar{
-  position:sticky;top:14px;z-index:50;height:76px;display:grid;grid-template-columns:56px 1fr auto;
-  align-items:center;gap:14px;padding:10px 12px;border-radius:30px;background:rgba(0,0,0,.9);
-  border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(28px);box-shadow:0 24px 80px rgba(0,0,0,.75);
+  position:sticky;
+  top:12px;
+  z-index:90;
+  height:76px;
+  display:grid;
+  grid-template-columns:56px 1fr auto;
+  align-items:center;
+  gap:14px;
+  padding:10px 12px;
+  border-radius:30px;
+  background:rgba(0,0,0,.9);
+  border:1px solid rgba(255,255,255,.13);
+  backdrop-filter:blur(26px);
+  box-shadow:0 24px 80px rgba(0,0,0,.75);
 }
-.menu-btn{width:54px;height:54px;border-radius:20px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.055);color:#fff;font-size:27px}
-.logo{justify-self:center;transform:translateX(5px);font-size:clamp(22px,6vw,38px);font-weight:950;letter-spacing:.1em;color:#fff;text-shadow:0 0 28px rgba(229,9,47,.34)}
-.top-actions{display:flex;align-items:center;gap:10px}
-.lang{display:flex;gap:5px;padding:5px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
-.lang button{border:0;background:transparent;color:#777;padding:9px 12px;border-radius:999px;font-weight:950;font-size:13px}
-.lang button.active{background:#f5f0eb;color:#050505}
-.profile{position:relative;z-index:80}
+
+.menu-btn{
+  width:54px;
+  height:54px;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,.13);
+  background:rgba(255,255,255,.05);
+  color:#fff;
+  font-size:26px;
+}
+
+.logo{
+  justify-self:center;
+  transform:translateX(5px);
+  font-size:31px;
+  font-weight:950;
+  letter-spacing:.08em;
+  color:#fff;
+  text-shadow:0 0 28px rgba(229,9,47,.3);
+}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.lang{
+  display:flex;
+  gap:5px;
+  padding:5px;
+  border-radius:999px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.lang button{
+  border:0;
+  background:transparent;
+  color:#777;
+  padding:8px 12px;
+  border-radius:999px;
+  font-weight:950;
+}
+
+.lang button.active{
+  background:#fff;
+  color:#000;
+}
+
+.profile{
+  position:relative;
+  z-index:100;
+}
+
 .avatar{
-  width:54px;height:54px;border-radius:50%;display:grid;place-items:center;overflow:hidden;
-  background:linear-gradient(135deg,#120005,#080808);border:1px solid rgba(255,255,255,.16);
-  box-shadow:0 0 30px color-mix(in srgb,var(--accent) 45%,transparent);
-  font-size:27px;color:var(--accent);font-weight:950;text-shadow:0 0 18px var(--accent);
+  width:54px;
+  height:54px;
+  border-radius:50%;
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+  font-size:26px;
+  font-weight:950;
+  color:var(--accent);
+  background:linear-gradient(135deg,#130005,#050505);
+  border:1px solid rgba(255,255,255,.15);
+  box-shadow:0 0 30px color-mix(in srgb,var(--accent) 40%,transparent);
 }
-.avatar img{width:100%;height:100%;object-fit:cover}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
 .profile-menu{
-  position:absolute;top:66px;right:0;width:min(360px,calc(100vw - 36px));display:none;padding:18px;border-radius:28px;
-  background:rgba(0,0,0,.97);border:1px solid rgba(255,255,255,.13);box-shadow:0 30px 100px rgba(0,0,0,.82);backdrop-filter:blur(28px);
+  position:absolute;
+  right:0;
+  top:66px;
+  width:min(360px,calc(100vw - 30px));
+  display:none;
+  padding:18px;
+  border-radius:28px;
+  background:rgba(0,0,0,.96);
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(28px);
+  box-shadow:0 35px 100px rgba(0,0,0,.85);
 }
-.profile-menu.open{display:block}
-.profile-name{font-size:22px;font-weight:950;margin-bottom:5px}
-.profile-email{color:#858585;font-size:13px;margin-bottom:12px}
-.balance{color:#aaa;margin-bottom:14px}.balance strong{color:#fff;font-size:20px}
+
+.profile-menu.open{
+  display:block;
+}
+
+.profile-name{
+  font-size:22px;
+  font-weight:950;
+}
+
+.profile-email{
+  margin-top:4px;
+  color:#7d7d7d;
+  font-size:13px;
+}
+
+.balance{
+  margin-top:12px;
+  color:#aaa;
+}
+
+.balance strong{
+  color:#fff;
+  font-size:20px;
+}
+
 .player{
-  margin:14px 0;padding:12px;border-radius:20px;background:#080808;border:1px solid rgba(255,255,255,.1);
-  display:grid;grid-template-columns:50px 1fr 116px;gap:10px;align-items:center;
+  margin:16px 0;
+  padding:12px;
+  border-radius:20px;
+  background:#070707;
+  border:1px solid rgba(255,255,255,.1);
+  display:grid;
+  grid-template-columns:50px 1fr auto;
+  gap:10px;
+  align-items:center;
 }
-.cover{width:50px;height:50px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),#101010)}
-.track-title{font-weight:950;font-size:14px}.track-sub{color:#777;font-size:12px;margin-top:3px}
-.music-controls{display:flex;justify-content:flex-end;gap:6px}
-.music-controls button{width:34px;height:34px;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.08);color:#fff;font-size:17px;display:grid;place-items:center}
-#playPauseBtn{width:40px;background:rgba(229,9,47,.2);border-color:rgba(229,9,47,.35)}
-.profile-menu button,.profile-menu a{
-  width:100%;display:block;padding:13px 12px;border:0;border-radius:16px;background:transparent;color:#aaa;text-align:left;text-decoration:none;font-weight:900;
+
+.cover{
+  width:50px;
+  height:50px;
+  border-radius:16px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,var(--accent),#0f0f0f);
 }
-.profile-menu button:hover,.profile-menu a:hover{background:rgba(255,255,255,.07);color:#fff}
+
+.track-title{
+  font-size:14px;
+  font-weight:950;
+}
+
+.track-sub{
+  font-size:12px;
+  color:#777;
+  margin-top:3px;
+}
+
+.music-controls{
+  display:flex;
+  gap:6px;
+}
+
+.music-controls button{
+  width:38px;
+  height:38px;
+  min-width:38px;
+  min-height:38px;
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:18px;
+  display:grid;
+  place-items:center;
+  line-height:1;
+}
+
+#playPauseBtn{
+  width:38px;
+  height:38px;
+  min-width:38px;
+  min-height:38px;
+  background:rgba(229,9,47,.22);
+  border-color:rgba(229,9,47,.42);
+}
+
+.profile-menu button{
+  width:100%;
+  margin-top:6px;
+  padding:14px;
+  border:0;
+  border-radius:16px;
+  background:transparent;
+  color:#aaa;
+  text-align:left;
+  font-weight:900;
+}
+
+.profile-menu button:hover{
+  background:rgba(255,255,255,.07);
+  color:#fff;
+}
+
 .side-menu{
-  position:fixed;left:-290px;top:0;bottom:0;width:280px;z-index:70;padding:22px;background:rgba(0,0,0,.97);
-  border-right:1px solid rgba(255,255,255,.1);backdrop-filter:blur(26px);transition:.28s ease;
+  position:fixed;
+  left:-290px;
+  top:0;
+  bottom:0;
+  width:280px;
+  z-index:95;
+  padding:22px;
+  background:rgba(0,0,0,.97);
+  border-right:1px solid rgba(255,255,255,.1);
+  backdrop-filter:blur(28px);
+  transition:.25s ease;
 }
-.side-menu.open{left:0}
-.side-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
-.side-brand{font-size:22px;font-weight:950;letter-spacing:.12em}
-.close-side{width:42px;height:42px;border:1px solid rgba(255,255,255,.12);border-radius:15px;background:rgba(255,255,255,.06);color:#fff;font-size:20px}
-.side-nav{display:flex;flex-direction:column;gap:10px}
+
+.side-menu.open{
+  left:0;
+}
+
+.side-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:28px;
+}
+
+.side-brand{
+  font-size:22px;
+  font-weight:950;
+  letter-spacing:.12em;
+}
+
+.close-side{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  font-size:18px;
+}
+
+.side-nav{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
 .side-nav button{
-  height:54px;border-radius:18px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.045);
-  color:#aaa;display:flex;align-items:center;gap:12px;padding:0 14px;font-weight:950;text-align:left;
+  position:relative;
+  overflow:hidden;
+  height:54px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.04);
+  color:#aaa;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 14px;
+  font-weight:950;
 }
-.side-nav button:hover{background:color-mix(in srgb,var(--accent) 22%,transparent);color:#fff}
+
+.side-nav button::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:12px;
+  bottom:12px;
+  width:3px;
+  border-radius:999px;
+  background:var(--accent);
+  opacity:0;
+  box-shadow:0 0 18px var(--accent);
+  transition:.22s;
+}
+
+.side-nav button:hover::before,
+.side-nav button.active::before{
+  opacity:1;
+}
+
+.side-nav button:hover,
+.side-nav button.active{
+  background:
+    radial-gradient(circle at 0% 50%, color-mix(in srgb,var(--accent) 26%,transparent), transparent 55%),
+    rgba(255,255,255,.055);
+  color:#fff;
+  border-color:color-mix(in srgb,var(--accent) 55%,transparent);
+  box-shadow:0 14px 45px color-mix(in srgb,var(--accent) 12%,transparent);
+}
+
 .hero{
-  margin-top:22px;padding:34px;border-radius:38px;
-  background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent) 40%,transparent),transparent 36%),linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.035));
-  border:1px solid rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 40px 120px rgba(0,0,0,.5);
+  margin-top:20px;
+  padding:34px;
+  border-radius:38px;
+  background:
+    radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent) 40%,transparent),transparent 36%),
+    linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.025));
+  border:1px solid rgba(255,255,255,.13);
 }
-.hero h1{font-size:clamp(42px,9vw,88px);line-height:.95;letter-spacing:-.04em;margin-bottom:18px}
-.hero p{max-width:780px;color:#c2bcba;font-size:clamp(18px,3vw,25px);line-height:1.55}
-.stats{margin-top:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.stat{padding:18px;border-radius:26px;background:#070707;border:1px solid rgba(255,255,255,.11);transition:.25s}
-.clickable-stat{cursor:pointer}.clickable-stat:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--accent) 65%,transparent);box-shadow:0 22px 70px color-mix(in srgb,var(--accent) 18%,transparent)}
-.stat span{display:block;color:#777;font-size:13px;font-weight:900;margin-bottom:10px}
-.stat strong{font-size:26px}
-.focus-grid{margin-top:18px;display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
-.panel{padding:22px;border-radius:32px;background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.11)}
-.panel h2{margin-bottom:12px;font-size:24px}.panel p{color:#aaa4a2;line-height:1.6}
-.panel-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
-.red-btn{border:0;border-radius:999px;padding:14px 18px;background:#e5092f;color:#fff;font-weight:950;box-shadow:0 0 30px rgba(229,9,47,.32)}
-.ghost-btn{border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:14px 18px;background:rgba(255,255,255,.055);color:#fff;font-weight:950}
+
+.hero h1{
+  font-size:clamp(44px,9vw,88px);
+  line-height:.95;
+  letter-spacing:-.04em;
+}
+
+.hero p{
+  margin-top:18px;
+  max-width:760px;
+  color:#c3bdbb;
+  line-height:1.6;
+  font-size:20px;
+}
+
+.stats{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+
+.stat{
+  padding:20px;
+  border-radius:28px;
+  background:#070707;
+  border:1px solid rgba(255,255,255,.1);
+}
+
+.stat span{
+  display:block;
+  color:#777;
+  font-size:13px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+
+.stat strong{
+  font-size:28px;
+}
+
+.focus-grid{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:14px;
+}
+
+.panel{
+  padding:24px;
+  border-radius:32px;
+  background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.1);
+}
+
+.panel h2{
+  font-size:24px;
+  margin-bottom:12px;
+}
+
+.panel p{
+  color:#aaa;
+  line-height:1.6;
+}
+
+.panel-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:20px;
+}
+
+.red-btn{
+  border:0;
+  border-radius:999px;
+  padding:14px 18px;
+  background:#e5092f;
+  color:#fff;
+  font-weight:950;
+  box-shadow:0 0 30px rgba(229,9,47,.3);
+}
+
+.ghost-btn{
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:999px;
+  padding:14px 18px;
+  background:rgba(255,255,255,.05);
+  color:#fff;
+  font-weight:950;
+}
+
 .dock{
-  position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:60;width:min(720px,calc(100vw - 28px));
-  padding:10px;border-radius:32px;background:rgba(0,0,0,.88);border:1px solid rgba(255,255,255,.13);
-  backdrop-filter:blur(30px);box-shadow:0 25px 90px rgba(0,0,0,.78);display:grid;grid-template-columns:repeat(5,1fr);gap:8px;
+  position:fixed;
+  left:50%;
+  bottom:18px;
+  transform:translateX(-50%);
+  z-index:85;
+  width:min(720px,calc(100vw - 28px));
+  padding:10px;
+  border-radius:32px;
+  background:rgba(0,0,0,.88);
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(30px);
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
 }
-.dock button{height:62px;border:0;border-radius:24px;background:transparent;color:#8d8d8d;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-weight:950;font-size:11px}
-.dock button i{font-style:normal;font-size:22px}
-.dock button:hover,.dock button.active{background:color-mix(in srgb,var(--accent) 22%,transparent);color:#fff}
-.settings,.pay-modal{
-  display:none;position:fixed;inset:0;z-index:120;padding:20px;place-items:center;background:rgba(0,0,0,.78);backdrop-filter:blur(14px);
+
+.dock button{
+  height:60px;
+  border:0;
+  border-radius:22px;
+  background:transparent;
+  color:#888;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:5px;
+  font-weight:950;
+  font-size:11px;
 }
-.settings.open,.pay-modal.open{display:grid}
-.modal,.pay-box{
-  width:100%;max-width:760px;max-height:90vh;overflow:auto;padding:24px;border-radius:34px;background:#050505;
-  border:1px solid rgba(255,255,255,.13);box-shadow:0 40px 120px rgba(0,0,0,.8);
+
+.dock button i{
+  font-style:normal;
+  font-size:22px;
 }
-.modal-head,.pay-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-.close,.pay-close{width:42px;height:42px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;font-size:22px}
-.row{padding:14px 0;border-top:1px solid rgba(255,255,255,.08)}
-.row label{display:block;color:#aaa;margin-bottom:8px;font-size:13px;font-weight:900}
-.row input,.row select{width:100%;padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.055);color:#fff;outline:none}
-.color-picker-box{display:flex;align-items:center;gap:14px}
-.color-picker-box input[type=color]{width:64px;height:64px;padding:0;border-radius:50%;overflow:hidden}
-.small-btn,.confirm-plan{margin-top:12px;padding:14px 16px;border:0;border-radius:999px;background:#e5092f;color:#fff;font-weight:950;box-shadow:0 0 30px rgba(229,9,47,.32)}
-.confirm-plan{width:100%;margin-top:18px}
-.plan-grid,.balance-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.plan-card,.balance-card{
-  padding:20px;border-radius:26px;border:1px solid rgba(255,255,255,.1);
-  background:radial-gradient(circle at top right,color-mix(in srgb,var(--accent) 24%,transparent),transparent 36%),linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.025));
-  cursor:pointer;transition:.25s;
+
+.dock button:hover,
+.dock button.active{
+  background:color-mix(in srgb,var(--accent) 20%,transparent);
+  color:#fff;
 }
-.plan-card:hover,.balance-card:hover{transform:translateY(-5px);border-color:color-mix(in srgb,var(--accent) 65%,transparent);box-shadow:0 26px 80px color-mix(in srgb,var(--accent) 20%,transparent)}
-.plan-card.featured{border-color:color-mix(in srgb,var(--accent) 70%,transparent)}
-.plan-card.selected{border-color:rgba(229,9,47,.85);box-shadow:0 0 0 2px rgba(229,9,47,.25),0 30px 90px rgba(229,9,47,.2)}
-.plan-price,.balance-price{font-size:34px;font-weight:950;margin-bottom:8px}
-.plan-name,.balance-name{color:#fff;font-weight:950;margin-bottom:10px}
-.plan-card ul{list-style:none;display:flex;flex-direction:column;gap:8px;color:#aaa;font-size:14px}
-.plan-card li::before{content:"✦ ";color:var(--accent)}
-.balance-card p{color:#aaa;font-size:14px;line-height:1.45}
-audio{display:none}
+
+.settings,
+.pay-modal{
+  position:fixed;
+  inset:0;
+  z-index:130;
+  display:none;
+  place-items:center;
+  padding:20px;
+  background:rgba(0,0,0,.8);
+  backdrop-filter:blur(14px);
+}
+
+.settings.open,
+.pay-modal.open{
+  display:grid;
+}
+
+.modal,
+.pay-box{
+  width:100%;
+  max-width:760px;
+  max-height:90vh;
+  overflow:auto;
+  padding:24px;
+  border-radius:34px;
+  background:#050505;
+  border:1px solid rgba(255,255,255,.12);
+}
+
+.modal-head,
+.pay-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.close,
+.pay-close{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  font-size:22px;
+}
+
+.row{
+  padding:14px 0;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+
+.row label{
+  display:block;
+  margin-bottom:8px;
+  color:#999;
+  font-size:13px;
+  font-weight:900;
+}
+
+.row input,
+.row select{
+  width:100%;
+  padding:14px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.05);
+  color:#fff;
+  outline:none;
+}
+
+.small-btn,
+.confirm-plan{
+  margin-top:12px;
+  padding:14px 16px;
+  border:0;
+  border-radius:999px;
+  background:#e5092f;
+  color:#fff;
+  font-weight:950;
+}
+
+.plan-grid,
+.balance-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+
+.plan-card,
+.balance-card{
+  padding:22px;
+  border-radius:28px;
+  border:1px solid rgba(255,255,255,.1);
+  background:
+    radial-gradient(circle at top right,color-mix(in srgb,var(--accent) 22%,transparent),transparent 36%),
+    linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+}
+
+.plan-card.selected{
+  border-color:rgba(229,9,47,.85);
+  box-shadow:0 0 0 2px rgba(229,9,47,.2);
+}
+
+.plan-price,
+.balance-price{
+  font-size:34px;
+  font-weight:950;
+}
+
+.plan-name,
+.balance-name{
+  margin:10px 0;
+  font-weight:950;
+}
+
+.plan-card ul{
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  color:#aaa;
+  font-size:14px;
+}
+
+.plan-card li::before{
+  content:"✦ ";
+  color:var(--accent);
+}
+
+.balance-card p{
+  color:#aaa;
+  margin-top:8px;
+  line-height:1.5;
+}
+
+audio{
+  display:none;
+}
+
 @media(max-width:720px){
-  .app{padding:14px;padding-bottom:108px}
-  .topbar{height:72px;border-radius:28px;grid-template-columns:52px 1fr auto;gap:8px}
-  .menu-btn,.avatar{width:52px;height:52px}
-  .logo{font-size:29px;letter-spacing:.08em}
-  .lang button{padding:8px 10px}
-  .hero{padding:28px 22px}
-  .stats,.focus-grid,.plan-grid,.balance-grid{grid-template-columns:1fr}
-  .dock button{height:58px;font-size:10px}
-  .profile-menu{right:0;top:64px}
+
+  .stats,
+  .focus-grid,
+  .plan-grid,
+  .balance-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero{
+    padding:28px 22px;
+  }
+
+  .hero p{
+    font-size:17px;
+  }
+
 }
 </style>
 </head>
 
 <body>
+
 <audio id="bgMusic"></audio>
 
 <aside class="side-menu" id="sideMenu">
@@ -161,243 +679,227 @@ audio{display:none}
   </div>
 
   <nav class="side-nav">
-    <button onclick="go('artist-dashboard.html')"><span>⌂</span><span data-i18n="navHome">Головна</span></button>
-    <button onclick="go('stencil.html')"><span>🧿</span><span data-i18n="navStencil">AI Stencil</span></button>
-    <button onclick="go('generation.html')"><span>✦</span><span data-i18n="navGeneration">AI генерація</span></button>
-    <button onclick="go('bookings.html')"><span>🗓</span><span data-i18n="navBookings">Записи</span></button>
-    <button onclick="go('split.html')"><span>📄</span><span data-i18n="navSplit">A4 друк</span></button>
-    <button onclick="go('uploads.html')"><span>墨</span><span data-i18n="navFiles">Файли</span></button>
+    <button class="active"><span>⌂</span><span>Home</span></button>
+    <button><span>🧿</span><span>AI Stencil</span></button>
+    <button><span>✦</span><span>AI Generate</span></button>
+    <button><span>🗓</span><span>Bookings</span></button>
+    <button><span>📄</span><span>A4 Print</span></button>
+    <button><span>墨</span><span>Files</span></button>
   </nav>
 </aside>
 
 <main class="app">
-  <header class="topbar">
-    <button class="menu-btn" id="menuBtn" onclick="toggleSide()">☰</button>
-    <div class="logo">YYOKAI</div>
 
-    <div class="top-actions">
-      <div class="lang">
-        <button class="active" onclick="setLang('uk',this)">UA</button>
-        <button onclick="setLang('en',this)">EN</button>
-      </div>
+<header class="topbar">
 
-      <div class="profile">
-        <div class="avatar" id="avatar" onclick="toggleProfile()">妖</div>
+<button class="menu-btn" id="menuBtn" onclick="toggleSide()">☰</button>
 
-        <div class="profile-menu" id="profileMenu">
-          <div class="profile-name" id="artistName">Guest Artist</div>
-          <div class="profile-email" id="artistEmail">artist@email.com</div>
-          <div class="balance"><span data-i18n="balance">Баланс</span>: <strong id="balanceValue">$0.00</strong></div>
+<div class="logo">YYOKAI</div>
 
-          <div class="player">
-            <div class="cover" id="trackCover">⛩</div>
-            <div>
-              <div class="track-title" id="trackTitle">Japanese Chill</div>
-              <div class="track-sub" id="trackSub">YYOKAI playlist</div>
-            </div>
-            <div class="music-controls">
-              <button onclick="prevTrack()">‹</button>
-              <button id="playPauseBtn" onclick="toggleMusic()">▶</button>
-              <button onclick="nextTrack()">›</button>
-            </div>
-          </div>
+<div class="top-actions">
 
-          <button onclick="uploadOwnMusic()">＋ <span data-i18n="uploadMusicBtn">Додати свою музику</span></button>
-          <input id="ownMusicInput" type="file" accept="audio/mp3,audio/mpeg" style="display:none" onchange="loadOwnMusic(event)">
-          <button onclick="addBalance()">＋ <span data-i18n="addBalance">Поповнити баланс</span></button>
-          <button onclick="openSettings()">⚙ <span data-i18n="settings">Налаштування</span></button>
-          <button onclick="logout()">退出 <span data-i18n="logout">Вийти</span></button>
-        </div>
-      </div>
-    </div>
-  </header>
+<div class="lang">
+  <button class="active">UA</button>
+  <button>EN</button>
+</div>
 
-  <section class="hero">
-    <h1 data-i18n="heroTitle">Welcome back, artist</h1>
-    <p data-i18n="heroText">Твоя преміальна робоча система для тату-підготовки: клієнти, файли, стенсіли, друк, баланс і атмосфера в одному місці.</p>
-  </section>
+<div class="profile">
 
-  <section class="stats">
-    <div class="stat clickable-stat" onclick="openBalanceModal()">
-      <span data-i18n="statBalance">Баланс</span>
-      <strong id="balanceMain">$0.00</strong>
-    </div>
+<div class="avatar" id="avatar" onclick="toggleProfile()">妖</div>
 
-    <div class="stat clickable-stat" onclick="openPlanModal()">
-      <span data-i18n="statPlan">План</span>
-      <strong id="planValue">Free</strong>
-    </div>
+<div class="profile-menu" id="profileMenu">
 
-    <div class="stat">
-      <span data-i18n="statBookings">Записи</span>
-      <strong id="bookingCount">0</strong>
-    </div>
-  </section>
+<div class="profile-name" id="artistName">Guest Artist</div>
+<div class="profile-email" id="artistEmail">artist@email.com</div>
 
-  <section class="focus-grid">
-    <div class="panel">
-      <h2 data-i18n="workflowTitle">Start your workflow</h2>
-      <p data-i18n="workflowText">Почни з інструменту, який потрібен зараз. Без зайвого шуму на головній — тільки швидкий доступ до системи.</p>
-      <div class="panel-actions">
-        <button class="red-btn" onclick="go('stencil.html')" data-i18n="startStencil">Stencil</button>
-        <button class="ghost-btn" onclick="go('bookings.html')" data-i18n="openBookings">Записи</button>
-        <button class="ghost-btn" onclick="go('generation.html')" data-i18n="openGeneration">AI генерація</button>
-      </div>
-    </div>
+<div class="balance">
+Баланс: <strong id="balanceValue">$0.00</strong>
+</div>
 
-    <div class="panel">
-      <h2 data-i18n="studioTitle">Studio mode</h2>
-      <p data-i18n="studioText">Твій профіль, музика, фон, колір і баланс — в одному меню справа. Кабінет має відчуватись як особистий простір.</p>
-    </div>
-  </section>
+<div class="player">
+
+<div class="cover" id="trackCover">⛩</div>
+
+<div>
+<div class="track-title" id="trackTitle">Japanese Chill</div>
+<div class="track-sub" id="trackSub">YYOKAI playlist</div>
+</div>
+
+<div class="music-controls">
+<button onclick="prevTrack()">‹</button>
+<button id="playPauseBtn" onclick="toggleMusic()">▶</button>
+<button onclick="nextTrack()">›</button>
+</div>
+
+</div>
+
+<button onclick="openBalanceModal()">＋ Поповнити баланс</button>
+<button onclick="openSettings()">⚙ Налаштування</button>
+<button onclick="logout()">退出 Вийти</button>
+
+</div>
+</div>
+</div>
+</header>
+
+<section class="hero">
+<h1>Welcome back, artist</h1>
+<p>
+Твоя преміальна система для тату-майстра:
+генерації, записи, музика, атмосфера, баланс,
+файли та workflow в одному місці.
+</p>
+</section>
+
+<section class="stats">
+
+<div class="stat">
+<span>Баланс</span>
+<strong id="balanceMain">$0.00</strong>
+</div>
+
+<div class="stat">
+<span>План</span>
+<strong id="planValue">Free</strong>
+</div>
+
+<div class="stat">
+<span>Записи</span>
+<strong id="bookingCount">0</strong>
+</div>
+
+</section>
+
+<section class="focus-grid">
+
+<div class="panel">
+<h2>Start your workflow</h2>
+
+<p>
+Почни з потрібного інструмента.
+Чистий інтерфейс без перевантаження.
+</p>
+
+<div class="panel-actions">
+<button class="red-btn">Stencil</button>
+<button class="ghost-btn">Bookings</button>
+<button class="ghost-btn">Generate</button>
+</div>
+
+</div>
+
+<div class="panel">
+<h2>Studio mode</h2>
+
+<p>
+Твій простір. Музика, колір, атмосфера,
+фон і профіль — все персоналізується.
+</p>
+</div>
+
+</section>
+
 </main>
 
 <nav class="dock">
-  <button class="active" onclick="go('artist-dashboard.html')"><i>⌂</i><span data-i18n="dockHome">Home</span></button>
-  <button onclick="go('stencil.html')"><i>🧿</i><span data-i18n="dockStencil">Stencil</span></button>
-  <button onclick="go('generation.html')"><i>✦</i><span data-i18n="dockGenerate">Generate</span></button>
-  <button onclick="go('bookings.html')"><i>🗓</i><span data-i18n="dockBookings">Записи</span></button>
-  <button onclick="openBalanceModal()"><i>¥</i><span data-i18n="dockBalance">Balance</span></button>
+
+<button class="active">
+<i>⌂</i>
+<span>Home</span>
+</button>
+
+<button>
+<i>🧿</i>
+<span>Stencil</span>
+</button>
+
+<button>
+<i>✦</i>
+<span>Generate</span>
+</button>
+
+<button>
+<i>🗓</i>
+<span>Bookings</span>
+</button>
+
+<button onclick="openBalanceModal()">
+<i>¥</i>
+<span>Balance</span>
+</button>
+
 </nav>
 
-<section class="pay-modal" id="planModal">
-  <div class="pay-box">
-    <div class="pay-head">
-      <h2 data-i18n="choosePlan">Оберіть план</h2>
-      <button class="pay-close" onclick="closePlanModal()">×</button>
-    </div>
-
-    <div class="plan-grid">
-      <div class="plan-card" data-plan="free" onclick="selectPlan('free')">
-        <div class="plan-price">$0</div>
-        <div class="plan-name" data-plan-name="free">Free</div>
-        <ul>
-          <li data-i18n="free1">3 генерації стенсила</li>
-          <li data-i18n="free2">3 генерації ескізу</li>
-          <li data-i18n="free3">3 A4 розділення</li>
-          <li data-i18n="free4">50 записів клієнтів</li>
-        </ul>
-      </div>
-
-      <div class="plan-card" data-plan="starter" onclick="selectPlan('starter')">
-        <div class="plan-price">$10</div>
-        <div class="plan-name" data-plan-name="starter">Starter / місяць</div>
-        <ul>
-          <li data-i18n="starter1">250 генерацій стенсила</li>
-          <li data-i18n="starter2">250 генерацій ескізу</li>
-          <li data-i18n="starter3">50 A4 розділень</li>
-          <li data-i18n="starter4">100 записів клієнтів</li>
-        </ul>
-      </div>
-
-      <div class="plan-card featured" data-plan="pro" onclick="selectPlan('pro')">
-        <div class="plan-price">$20</div>
-        <div class="plan-name" data-plan-name="pro">Pro / місяць</div>
-        <ul>
-          <li data-i18n="pro1">500 генерацій стенсила</li>
-          <li data-i18n="pro2">500 генерацій ескізу</li>
-          <li data-i18n="pro3">100 A4 розділень</li>
-          <li data-i18n="pro4">150 записів клієнтів</li>
-        </ul>
-      </div>
-
-      <div class="plan-card" data-plan="yokai" onclick="selectPlan('yokai')">
-        <div class="plan-price">$30</div>
-        <div class="plan-name" data-plan-name="yokai">YYOKAI Full / місяць</div>
-        <ul>
-          <li data-i18n="yokai1">Повний доступ</li>
-          <li data-i18n="yokai2">Безлімітний workflow</li>
-          <li data-i18n="yokai3">Premium tools</li>
-          <li data-i18n="yokai4">Custom studio mode</li>
-        </ul>
-      </div>
-    </div>
-
-    <button class="confirm-plan" onclick="confirmPlan()" data-i18n="confirmPlan">Підтвердити план</button>
-  </div>
-</section>
-
 <section class="pay-modal" id="balanceModal">
-  <div class="pay-box">
-    <div class="pay-head">
-      <h2 data-i18n="topUpBalance">Поповнити баланс</h2>
-      <button class="pay-close" onclick="closeBalanceModal()">×</button>
-    </div>
 
-    <div class="balance-grid">
-      <div class="balance-card" onclick="topUpBalance(10)">
-        <div class="balance-price">$10</div>
-        <div class="balance-name" data-i18n="balance10Title">Quick start</div>
-        <p data-i18n="balance10Text">Легкий старт для перевірки інструментів.</p>
-      </div>
+<div class="pay-box">
 
-      <div class="balance-card" onclick="topUpBalance(20)">
-        <div class="balance-price">$20</div>
-        <div class="balance-name" data-i18n="balance20Title">Artist pack</div>
-        <p data-i18n="balance20Text">Для активної роботи з клієнтами.</p>
-      </div>
+<div class="pay-head">
+<h2>Поповнити баланс</h2>
+<button class="pay-close" onclick="closeBalanceModal()">×</button>
+</div>
 
-      <div class="balance-card" onclick="topUpBalance(30)">
-        <div class="balance-price">$30</div>
-        <div class="balance-name" data-i18n="balance30Title">Studio pack</div>
-        <p data-i18n="balance30Text">Більше свободи для щоденного workflow.</p>
-      </div>
+<div class="balance-grid">
 
-      <div class="balance-card" onclick="topUpBalance(50)">
-        <div class="balance-price">$50</div>
-        <div class="balance-name" data-i18n="balance50Title">Premium reserve</div>
-        <p data-i18n="balance50Text">Запас для інтенсивної роботи студії.</p>
-      </div>
-    </div>
-  </div>
+<div class="balance-card">
+<div class="balance-price">$10</div>
+<div class="balance-name">Quick start</div>
+<p>100 bookings / 500 generations</p>
+</div>
+
+<div class="balance-card">
+<div class="balance-price">$20</div>
+<div class="balance-name">Artist pack</div>
+<p>1000 generations / 150 bookings</p>
+</div>
+
+<div class="balance-card">
+<div class="balance-price">$30</div>
+<div class="balance-name">Studio pack</div>
+<p>Unlimited workflow</p>
+</div>
+
+<div class="balance-card">
+<div class="balance-price">$50</div>
+<div class="balance-name">Premium reserve</div>
+<p>Extended studio mode</p>
+</div>
+
+</div>
+</div>
 </section>
 
 <section class="settings" id="settingsPanel">
-  <div class="modal">
-    <div class="modal-head">
-      <h2 data-i18n="settings">Налаштування</h2>
-      <button class="close" onclick="closeSettings()">×</button>
-    </div>
 
-    <div class="row">
-      <label data-i18n="changeAvatar">Змінити фото профілю</label>
-      <input type="file" accept="image/*" onchange="uploadAvatar(event)">
-    </div>
+<div class="modal">
 
-    <div class="row">
-      <label data-i18n="artistNameLabel">Нік майстра</label>
-      <input id="nameInput" type="text">
-      <button class="small-btn" onclick="saveName()" data-i18n="saveName">Зберегти нік</button>
-    </div>
+<div class="modal-head">
+<h2>Налаштування</h2>
+<button class="close" onclick="closeSettings()">×</button>
+</div>
 
-    <div class="row">
-      <label data-i18n="musicSettings">Музика / плейлист</label>
-      <select id="musicSelect" onchange="selectTrack(this.value)">
-        <option value="0">Japanese Chill</option>
-        <option value="1">Dark Ambient</option>
-        <option value="2">Night Studio</option>
-      </select>
-    </div>
+<div class="row">
+<label>Змінити фото профілю</label>
+<input type="file" accept="image/*" onchange="uploadAvatar(event)">
+</div>
 
-    <div class="row">
-      <label data-i18n="uploadMusicBtn">Додати свою музику</label>
-      <input type="file" accept="audio/mp3,audio/mpeg" onchange="loadOwnMusic(event)">
-    </div>
+<div class="row">
+<label>Нік майстра</label>
+<input id="nameInput" type="text">
+<button class="small-btn" onclick="saveName()">Зберегти</button>
+</div>
 
-    <div class="row">
-      <label data-i18n="backgroundUpload">Фон кабінету</label>
-      <input type="file" accept="image/*" onchange="uploadBackground(event)">
-    </div>
+<div class="row">
+<label>Колір системи</label>
+<input type="color" id="colorPicker" value="#e5092f" onchange="setCustomAccent(this.value)">
+</div>
 
-    <div class="row">
-      <label data-i18n="palette">Палітра / фон</label>
-      <div class="color-picker-box">
-        <input id="colorPicker" type="color" value="#e5092f" oninput="setCustomAccent(this.value)">
-        <span id="colorValue">#e5092f</span>
-      </div>
-      <button class="small-btn" onclick="applyGradientBackground()" data-i18n="applyGradient">Застосувати градієнт</button>
-    </div>
-  </div>
+<div class="row">
+<label>Фон кабінету</label>
+<input type="file" accept="image/*" onchange="uploadBackground(event)">
+</div>
+
+</div>
 </section>
 
 <script>
@@ -412,84 +914,53 @@ const firebaseConfig={
 };
 
 firebase.initializeApp(firebaseConfig);
+
 const auth=firebase.auth();
 const db=firebase.database();
 const storage=firebase.storage();
 
 let currentUser=null;
-let selectedColor="#e5092f";
-let musicPlaying=false;
-let trackIndex=0;
-let currentLang="uk";
-let currentPlanKey="free";
-let selectedPlan=null;
-let customMusicUrl="";
-let customMusicName="";
 
-const playlist=[
-  {title:"Japanese Chill",sub:"Soft studio mood",icon:"⛩",src:"music/japan-chill.mp3"},
-  {title:"Dark Ambient",sub:"Deep focus",icon:"🌑",src:"music/dark-ambient.mp3"},
-  {title:"Night Studio",sub:"Late work flow",icon:"🦊",src:"music/night-studio.mp3"}
-];
+const CACHE_KEY="yyokai_user_cache";
 
-const planLabels={
-  uk:{free:"Free",starter:"Starter",pro:"Pro",yokai:"YYOKAI Full"},
-  en:{free:"Free",starter:"Starter",pro:"Pro",yokai:"YYOKAI Full"}
-};
+function loadLocalCache(){
 
-const tr={
-uk:{
-navHome:"Головна",navBookings:"Записи",navStencil:"AI Stencil",navGeneration:"AI генерація",navSplit:"A4 друк",navFiles:"Файли",
-balance:"Баланс",addBalance:"Поповнити баланс",settings:"Налаштування",logout:"Вийти",
-heroTitle:"Welcome back, artist",
-heroText:"Твоя преміальна робоча система для тату-підготовки: клієнти, файли, стенсіли, друк, баланс і атмосфера в одному місці.",
-statBalance:"Баланс",statPlan:"План",statBookings:"Записи",
-workflowTitle:"Start your workflow",
-workflowText:"Почни з інструменту, який потрібен зараз. Без зайвого шуму на головній — тільки швидкий доступ до системи.",
-startStencil:"Stencil",openBookings:"Записи",openGeneration:"AI генерація",
-studioTitle:"Studio mode",
-studioText:"Твій профіль, музика, фон, колір і баланс — в одному меню справа. Кабінет має відчуватись як особистий простір.",
-dockHome:"Home",dockStencil:"Stencil",dockGenerate:"Generate",dockBookings:"Записи",dockBalance:"Balance",
-changeAvatar:"Змінити фото профілю",artistNameLabel:"Нік майстра",saveName:"Зберегти нік",
-musicSettings:"Музика / плейлист",backgroundUpload:"Фон кабінету",palette:"Палітра / фон",applyGradient:"Застосувати градієнт",
-choosePlan:"Оберіть план",topUpBalance:"Поповнити баланс",uploadMusicBtn:"Додати свою музику",confirmPlan:"Підтвердити план",
-free1:"3 генерації стенсила",free2:"3 генерації ескізу",free3:"3 A4 розділення",free4:"50 записів клієнтів",
-starter1:"250 генерацій стенсила",starter2:"250 генерацій ескізу",starter3:"50 A4 розділень",starter4:"100 записів клієнтів",
-pro1:"500 генерацій стенсила",pro2:"500 генерацій ескізу",pro3:"100 A4 розділень",pro4:"150 записів клієнтів",
-yokai1:"Повний доступ",yokai2:"Безлімітний workflow",yokai3:"Premium tools",yokai4:"Custom studio mode",
-balance10Title:"Quick start",balance10Text:"Легкий старт для перевірки інструментів.",
-balance20Title:"Artist pack",balance20Text:"Для активної роботи з клієнтами.",
-balance30Title:"Studio pack",balance30Text:"Більше свободи для щоденного workflow.",
-balance50Title:"Premium reserve",balance50Text:"Запас для інтенсивної роботи студії."
-},
-en:{
-navHome:"Home",navBookings:"Bookings",navStencil:"AI Stencil",navGeneration:"AI Generation",navSplit:"A4 Print",navFiles:"Files",
-balance:"Balance",addBalance:"Add balance",settings:"Settings",logout:"Logout",
-heroTitle:"Welcome back, artist",
-heroText:"Your premium tattoo preparation system: clients, files, stencils, printing, balance and atmosphere in one place.",
-statBalance:"Balance",statPlan:"Plan",statBookings:"Bookings",
-workflowTitle:"Start your workflow",
-workflowText:"Start with the tool you need right now. No noise on the main screen — only fast access to the system.",
-startStencil:"Stencil",openBookings:"Bookings",openGeneration:"AI Generation",
-studioTitle:"Studio mode",
-studioText:"Your profile, music, background, color and balance live in one menu on the right. The dashboard should feel like a personal workspace.",
-dockHome:"Home",dockStencil:"Stencil",dockGenerate:"Generate",dockBookings:"Bookings",dockBalance:"Balance",
-changeAvatar:"Change profile photo",artistNameLabel:"Artist nickname",saveName:"Save nickname",
-musicSettings:"Music / playlist",backgroundUpload:"Dashboard background",palette:"Palette / background",applyGradient:"Apply gradient",
-choosePlan:"Choose your plan",topUpBalance:"Top up balance",uploadMusicBtn:"Add your music",confirmPlan:"Confirm plan",
-free1:"3 stencil generations",free2:"3 sketch generations",free3:"3 A4 splits",free4:"50 client bookings",
-starter1:"250 stencil generations",starter2:"250 sketch generations",starter3:"50 A4 splits",starter4:"100 client bookings",
-pro1:"500 stencil generations",pro2:"500 sketch generations",pro3:"100 A4 splits",pro4:"150 client bookings",
-yokai1:"Full access",yokai2:"Unlimited workflow",yokai3:"Premium tools",yokai4:"Custom studio mode",
-balance10Title:"Quick start",balance10Text:"A light start to test the tools.",
-balance20Title:"Artist pack",balance20Text:"For active client work.",
-balance30Title:"Studio pack",balance30Text:"More freedom for daily workflow.",
-balance50Title:"Premium reserve",balance50Text:"Reserve for intensive studio work."
+  const cached=JSON.parse(localStorage.getItem(CACHE_KEY)||"{}");
+
+  if(cached.accent){
+    setCustomAccent(cached.accent,false);
+  }
+
+  if(cached.avatarUrl){
+    avatar.innerHTML=`<img src="${cached.avatarUrl}">`;
+  }
+
+  if(cached.backgroundUrl){
+    applyBackgroundImage(cached.backgroundUrl);
+  }
+
 }
-};
+
+function saveLocalCache(data){
+
+  const old=JSON.parse(localStorage.getItem(CACHE_KEY)||"{}");
+
+  localStorage.setItem(
+    CACHE_KEY,
+    JSON.stringify({...old,...data})
+  );
+
+}
+
+loadLocalCache();
 
 auth.onAuthStateChanged(async user=>{
-  if(!user){location.href="artist-auth.html";return}
+
+  if(!user){
+    location.href="artist-auth.html";
+    return;
+  }
+
   currentUser=user;
 
   const snap=await db.ref("users/"+user.uid).once("value");
@@ -497,239 +968,238 @@ auth.onAuthStateChanged(async user=>{
 
   artistName.textContent=data.name||"Guest Artist";
   artistEmail.textContent=data.email||user.email;
-  nameInput.value=data.name||"Guest Artist";
 
   const balance=Number(data.balance||0).toFixed(2);
+
   balanceValue.textContent="$"+balance;
   balanceMain.textContent="$"+balance;
 
-  currentPlanKey=data.planKey||normalizePlan(data.plan)||"free";
-  displayPlan();
+  if(data.avatarUrl){
 
-  if(data.avatarUrl) avatar.innerHTML=`<img src="${data.avatarUrl}">`;
+    avatar.innerHTML=`<img src="${data.avatarUrl}">`;
 
-  const bookingsSnap=await db.ref("users/"+user.uid+"/clients").once("value");
-  bookingCount.textContent=bookingsSnap.exists()?Object.keys(bookingsSnap.val()).length:0;
+    saveLocalCache({
+      avatarUrl:data.avatarUrl
+    });
 
-  loadSettings(data);
+  }
+
+  if(data.settings?.accent){
+
+    setCustomAccent(
+      data.settings.accent,
+      false
+    );
+
+    saveLocalCache({
+      accent:data.settings.accent
+    });
+
+  }
+
+  if(data.settings?.backgroundUrl){
+
+    applyBackgroundImage(
+      data.settings.backgroundUrl
+    );
+
+    saveLocalCache({
+      backgroundUrl:data.settings.backgroundUrl
+    });
+
+  }
+
 });
 
-function normalizePlan(plan){
-  if(!plan)return "free";
-  const p=String(plan).toLowerCase();
-  if(p.includes("starter"))return "starter";
-  if(p.includes("pro"))return "pro";
-  if(p.includes("full")||p.includes("yokai"))return "yokai";
-  return "free";
-}
+function setCustomAccent(color,save=true){
 
-function displayPlan(){planValue.textContent=planLabels[currentLang][currentPlanKey]||"Free"}
+  document.documentElement.style.setProperty(
+    "--accent",
+    color
+  );
 
-function setLang(lang,btn){
-  currentLang=lang;
-  document.documentElement.lang=lang;
-  Object.keys(tr[lang]).forEach(k=>{
-    document.querySelectorAll(`[data-i18n="${k}"]`).forEach(el=>el.textContent=tr[lang][k]);
-  });
-  document.querySelectorAll(".lang button").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
-  updatePlanNames();
-  displayPlan();
-}
+  if(save){
+    saveLocalCache({
+      accent:color
+    });
+  }
 
-function updatePlanNames(){
-  document.querySelector('[data-plan-name="free"]').textContent="Free";
-  document.querySelector('[data-plan-name="starter"]').textContent=currentLang==="uk"?"Starter / місяць":"Starter / month";
-  document.querySelector('[data-plan-name="pro"]').textContent=currentLang==="uk"?"Pro / місяць":"Pro / month";
-  document.querySelector('[data-plan-name="yokai"]').textContent=currentLang==="uk"?"YYOKAI Full / місяць":"YYOKAI Full / month";
-}
-
-function openPlanModal(){
-  selectedPlan=currentPlanKey;
-  document.querySelectorAll(".plan-card").forEach(card=>card.classList.remove("selected"));
-  const active=document.querySelector(`[data-plan="${selectedPlan}"]`);
-  if(active)active.classList.add("selected");
-  planModal.classList.add("open");
-}
-function closePlanModal(){planModal.classList.remove("open")}
-function openBalanceModal(){balanceModal.classList.add("open")}
-function closeBalanceModal(){balanceModal.classList.remove("open")}
-function selectPlan(plan){
-  selectedPlan=plan;
-  document.querySelectorAll(".plan-card").forEach(card=>card.classList.remove("selected"));
-  document.querySelector(`[data-plan="${plan}"]`).classList.add("selected");
-}
-async function confirmPlan(){
-  if(!currentUser||!selectedPlan)return;
-  currentPlanKey=selectedPlan;
-  await db.ref("users/"+currentUser.uid).update({planKey:currentPlanKey,plan:planLabels.en[currentPlanKey]});
-  displayPlan();
-  closePlanModal();
-}
-async function topUpBalance(amount){
-  if(!currentUser)return;
-  const snap=await db.ref("users/"+currentUser.uid+"/balance").once("value");
-  const current=Number(snap.val()||0);
-  const next=current+amount;
-  await db.ref("users/"+currentUser.uid).update({balance:next});
-  balanceValue.textContent="$"+next.toFixed(2);
-  balanceMain.textContent="$"+next.toFixed(2);
-  closeBalanceModal();
-}
-
-async function saveName(){
-  const name=nameInput.value.trim()||"Guest Artist";
-  await db.ref("users/"+currentUser.uid).update({name});
-  artistName.textContent=name;
 }
 
 async function uploadAvatar(e){
+
   const file=e.target.files[0];
+
   if(!file||!currentUser)return;
 
-  const reader=new FileReader();
-  reader.onload=x=>avatar.innerHTML=`<img src="${x.target.result}">`;
-  reader.readAsDataURL(file);
+  const storageRef=storage.ref(
+    "avatars/"+currentUser.uid+"/avatar"
+  );
 
-  const storageRef=storage.ref("avatars/"+currentUser.uid+"/avatar_"+Date.now()+"_"+file.name);
   await storageRef.put(file);
+
   const url=await storageRef.getDownloadURL();
 
-  await db.ref("users/"+currentUser.uid).update({avatarUrl:url});
+  await db.ref("users/"+currentUser.uid).update({
+    avatarUrl:url
+  });
+
   avatar.innerHTML=`<img src="${url}">`;
+
+  saveLocalCache({
+    avatarUrl:url
+  });
+
+}
+
+async function saveName(){
+
+  const name=nameInput.value.trim();
+
+  if(!name)return;
+
+  await db.ref("users/"+currentUser.uid).update({
+    name
+  });
+
+  artistName.textContent=name;
+
 }
 
 async function uploadBackground(e){
+
   const file=e.target.files[0];
+
   if(!file||!currentUser)return;
 
-  const reader=new FileReader();
-  reader.onload=x=>applyBackgroundImage(x.target.result);
-  reader.readAsDataURL(file);
+  const storageRef=storage.ref(
+    "backgrounds/"+currentUser.uid+"/background"
+  );
 
-  const storageRef=storage.ref("backgrounds/"+currentUser.uid+"/bg_"+Date.now()+"_"+file.name);
   await storageRef.put(file);
+
   const url=await storageRef.getDownloadURL();
 
-  await db.ref("users/"+currentUser.uid+"/settings").update({backgroundUrl:url});
+  await db.ref(
+    "users/"+currentUser.uid+"/settings"
+  ).update({
+    backgroundUrl:url
+  });
+
   applyBackgroundImage(url);
+
+  saveLocalCache({
+    backgroundUrl:url
+  });
+
 }
 
 function applyBackgroundImage(url){
-  document.body.style.background=`linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.9)),url('${url}') center/cover fixed`;
-}
 
-function uploadOwnMusic(){ownMusicInput.click()}
+  document.body.style.background=
+  `linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.9)),url('${url}') center/cover fixed`;
 
-async function loadOwnMusic(e){
-  const file=e.target.files[0];
-  if(!file||!currentUser)return;
-
-  const localUrl=URL.createObjectURL(file);
-  setMusic(localUrl,file.name.replace(".mp3",""),"Custom track","♫");
-
-  const storageRef=storage.ref("music/"+currentUser.uid+"/custom_"+Date.now()+"_"+file.name);
-  await storageRef.put(file);
-  const url=await storageRef.getDownloadURL();
-
-  customMusicUrl=url;
-  customMusicName=file.name.replace(".mp3","");
-
-  await db.ref("users/"+currentUser.uid+"/settings").update({
-    customMusicUrl:url,
-    customMusicName:customMusicName,
-    trackMode:"custom"
-  });
-
-  setMusic(url,customMusicName,"Custom track","♫");
-}
-
-function setMusic(src,title,sub,icon){
-  bgMusic.src=src;
-  trackTitle.textContent=title;
-  trackSub.textContent=sub;
-  trackCover.textContent=icon;
-  musicPlaying=false;
-  playPauseBtn.textContent="▶";
-}
-
-function selectTrack(i){
-  trackIndex=Number(i);
-  const t=playlist[trackIndex];
-  setMusic(t.src,t.title,t.sub,t.icon);
-  if(currentUser)db.ref("users/"+currentUser.uid+"/settings").update({trackIndex,trackMode:"playlist"});
-}
-
-function toggleMusic(){
-  const t=playlist[trackIndex];
-  if(!bgMusic.src){
-    if(customMusicUrl){bgMusic.src=customMusicUrl}
-    else{bgMusic.src=t.src}
-  }
-
-  if(!musicPlaying){
-    bgMusic.volume=.35;
-    bgMusic.play();
-    playPauseBtn.textContent="⏸";
-    musicPlaying=true;
-  }else{
-    bgMusic.pause();
-    playPauseBtn.textContent="▶";
-    musicPlaying=false;
-  }
-}
-
-function nextTrack(){selectTrack((trackIndex+1)%playlist.length);if(musicPlaying)bgMusic.play()}
-function prevTrack(){selectTrack((trackIndex-1+playlist.length)%playlist.length);if(musicPlaying)bgMusic.play()}
-
-function loadSettings(data){
-  const s=data.settings||{};
-
-  if(s.accent)setCustomAccent(s.accent);
-  if(s.backgroundUrl)applyBackgroundImage(s.backgroundUrl);
-
-  customMusicUrl=s.customMusicUrl||"";
-  customMusicName=s.customMusicName||"";
-
-  if(s.trackMode==="custom"&&customMusicUrl){
-    setMusic(customMusicUrl,customMusicName||"Custom music","Custom track","♫");
-  }else if(typeof s.trackIndex==="number"){
-    musicSelect.value=s.trackIndex;
-    selectTrack(s.trackIndex);
-  }else{
-    selectTrack(0);
-  }
-}
-
-function setCustomAccent(c){
-  selectedColor=c;
-  colorValue.textContent=c;
-  colorPicker.value=c;
-  document.documentElement.style.setProperty("--accent",c);
-}
-
-async function applyGradientBackground(){
-  document.body.style.background=`radial-gradient(circle at 50% -10%, ${selectedColor}66, transparent 35%),linear-gradient(180deg,#000 0%,#0b0103 45%,#000 100%)`;
-  if(currentUser)await db.ref("users/"+currentUser.uid+"/settings").update({accent:selectedColor,backgroundUrl:""});
-  closeSettings();
 }
 
 function toggleSide(){
+
   sideMenu.classList.toggle("open");
-  menuBtn.textContent=sideMenu.classList.contains("open")?"←":"☰";
+
+  menuBtn.textContent=
+  sideMenu.classList.contains("open")
+  ?"←":"☰";
+
 }
-function closeSide(){sideMenu.classList.remove("open");menuBtn.textContent="☰"}
-function toggleProfile(){profileMenu.classList.toggle("open")}
-function openSettings(){settingsPanel.classList.add("open");profileMenu.classList.remove("open")}
-function closeSettings(){settingsPanel.classList.remove("open")}
-function addBalance(){openBalanceModal()}
-function go(url){location.href=url}
-function logout(){auth.signOut()}
+
+function closeSide(){
+
+  sideMenu.classList.remove("open");
+
+  menuBtn.textContent="☰";
+
+}
+
+function toggleProfile(){
+
+  profileMenu.classList.toggle("open");
+
+}
+
+function openSettings(){
+
+  settingsPanel.classList.add("open");
+
+}
+
+function closeSettings(){
+
+  settingsPanel.classList.remove("open");
+
+}
+
+function openBalanceModal(){
+
+  balanceModal.classList.add("open");
+
+}
+
+function closeBalanceModal(){
+
+  balanceModal.classList.remove("open");
+
+}
+
+function logout(){
+
+  auth.signOut();
+
+}
+
+const bgMusic=document.getElementById("bgMusic");
+
+let musicPlaying=false;
+
+function toggleMusic(){
+
+  if(!bgMusic.src){
+    bgMusic.src="music/japan-chill.mp3";
+  }
+
+  if(!musicPlaying){
+
+    bgMusic.volume=.35;
+
+    bgMusic.play();
+
+    playPauseBtn.textContent="⏸";
+
+    musicPlaying=true;
+
+  }else{
+
+    bgMusic.pause();
+
+    playPauseBtn.textContent="▶";
+
+    musicPlaying=false;
+
+  }
+
+}
+
+function nextTrack(){}
+function prevTrack(){}
 
 document.addEventListener("click",e=>{
+
   const p=document.querySelector(".profile");
-  if(p&&!p.contains(e.target))profileMenu.classList.remove("open");
+
+  if(p&&!p.contains(e.target)){
+    profileMenu.classList.remove("open");
+  }
+
 });
 </script>
+
 </body>
 </html>
