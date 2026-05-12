@@ -7,33 +7,28 @@
 
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
-
-    :root{
-      --accent:#e5092f;
-      --button-red:#e5092f;
-    }
+    :root{--accent:#e5092f;--red:#e5092f}
 
     html,body{
       min-height:100%;
       background:#000;
-      font-family:Arial,sans-serif;
       color:#fff;
+      font-family:Arial,sans-serif;
     }
 
     body{
       background:
-        radial-gradient(circle at 50% 0%, rgba(180,0,32,.22), transparent 32%),
-        linear-gradient(to bottom,#000,#080203 55%,#000);
+        radial-gradient(circle at 55% 0%,rgba(229,9,47,.22),transparent 34%),
+        linear-gradient(to bottom,#000,#070203 55%,#000);
       overflow-x:hidden;
-      transition:background .35s ease;
     }
 
     body::before{
       content:"妖 鬼 狐 墨 夜 刺青";
       position:fixed;
       inset:0;
-      z-index:0;
       pointer-events:none;
+      z-index:0;
       color:rgba(255,255,255,.018);
       font-size:78px;
       letter-spacing:30px;
@@ -50,28 +45,21 @@
     }
 
     .sidebar{
-      min-height:100vh;
       padding:22px;
+      min-height:100vh;
+      background:rgba(0,0,0,.65);
       border-right:1px solid rgba(255,255,255,.08);
-      background:rgba(0,0,0,.55);
       backdrop-filter:blur(22px);
     }
 
-    .brand{margin-bottom:34px}
-
-    .seal{
-      color:var(--accent);
-      font-weight:900;
-      margin-bottom:8px;
-      text-shadow:0 0 18px rgba(229,9,47,.75);
-    }
-
+    .seal{color:var(--accent);font-weight:900;margin-bottom:8px}
     .logo{
       font-size:28px;
       font-weight:950;
       letter-spacing:.16em;
       color:#f5f0eb;
       text-shadow:0 0 22px rgba(229,9,47,.35);
+      margin-bottom:34px;
     }
 
     .side-title{
@@ -82,11 +70,7 @@
       margin:24px 0 12px;
     }
 
-    .nav{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
+    .nav{display:flex;flex-direction:column;gap:8px}
 
     .nav button{
       border:0;
@@ -97,19 +81,14 @@
       text-align:left;
       cursor:pointer;
       font-weight:800;
-      transition:.2s;
     }
 
-    .nav button.active,
-    .nav button:hover{
+    .nav button.active,.nav button:hover{
       background:rgba(229,9,47,.12);
       color:#fff;
     }
 
-    .main{
-      min-width:0;
-      padding:20px;
-    }
+    .main{min-width:0;padding:18px}
 
     .topbar{
       position:sticky;
@@ -119,55 +98,32 @@
       justify-content:space-between;
       align-items:center;
       gap:14px;
-      margin-bottom:22px;
+      margin-bottom:18px;
       padding:14px;
-      border:1px solid rgba(255,255,255,.09);
       border-radius:28px;
-      background:rgba(0,0,0,.62);
+      border:1px solid rgba(255,255,255,.09);
+      background:rgba(0,0,0,.68);
       backdrop-filter:blur(20px);
     }
 
-    .top-left{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width:0;
-    }
-
+    .top-left{display:flex;align-items:center;gap:10px}
     .menu-btn{
       display:none;
-      width:42px;
-      height:42px;
-      border:1px solid rgba(255,255,255,.12);
+      width:42px;height:42px;
       border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
       background:rgba(255,255,255,.06);
       color:#fff;
       font-size:24px;
-      line-height:1;
       cursor:pointer;
-      transition:.25s;
     }
 
-    .menu-btn.open{
-      background:rgba(229,9,47,.18);
-      border-color:rgba(229,9,47,.45);
-    }
+    .menu-btn.open{background:rgba(229,9,47,.18)}
 
-    .page-title h1{
-      font-size:20px;
-      margin-bottom:4px;
-    }
+    .title h1{font-size:20px;margin-bottom:4px}
+    .title p{font-size:13px;color:#777}
 
-    .page-title p{
-      color:#777;
-      font-size:13px;
-    }
-
-    .top-actions{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
+    .actions{display:flex;align-items:center;gap:10px}
 
     .lang{
       display:flex;
@@ -181,7 +137,7 @@
     .lang button{
       border:0;
       background:transparent;
-      color:#8d8d8d;
+      color:#888;
       padding:8px 11px;
       border-radius:999px;
       font-size:12px;
@@ -189,14 +145,10 @@
       cursor:pointer;
     }
 
-    .lang button.active{
-      background:#f5f0eb;
-      color:#050505;
-    }
+    .lang button.active{background:#f5f0eb;color:#050505}
 
     .icon-btn{
-      width:42px;
-      height:42px;
+      width:42px;height:42px;
       border-radius:15px;
       border:1px solid rgba(255,255,255,.12);
       background:rgba(255,255,255,.055);
@@ -206,116 +158,152 @@
     }
 
     .profile{position:relative}
-
     .avatar{
-      width:44px;
-      height:44px;
-      border-radius:50%;
+      width:44px;height:44px;border-radius:50%;
       border:1px solid rgba(255,255,255,.15);
       background:linear-gradient(135deg,#160406,#39000d);
-      display:grid;
-      place-items:center;
+      display:grid;place-items:center;
       cursor:pointer;
+      overflow:hidden;
       font-size:22px;
       box-shadow:0 0 22px rgba(229,9,47,.24);
-      overflow:hidden;
     }
 
-    .avatar img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
+    .avatar img{width:100%;height:100%;object-fit:cover}
 
     .profile-menu{
+      display:none;
       position:absolute;
       top:56px;
       right:0;
-      width:260px;
+      width:270px;
       padding:16px;
       border-radius:24px;
       border:1px solid rgba(255,255,255,.12);
-      background:rgba(0,0,0,.88);
+      background:rgba(0,0,0,.9);
       backdrop-filter:blur(24px);
       box-shadow:0 30px 80px rgba(0,0,0,.55);
-      display:none;
     }
 
     .profile-menu.open{display:block}
-
-    .profile-name{
-      font-weight:900;
-      margin-bottom:6px;
-    }
-
-    .balance{
-      color:#aaa;
-      font-size:14px;
-      margin-bottom:14px;
-    }
-
+    .profile-name{font-weight:900;margin-bottom:6px}
+    .profile-email{font-size:12px;color:#777;margin-bottom:12px}
+    .balance{font-size:14px;color:#aaa;margin-bottom:14px}
     .balance strong{color:#fff}
 
-    .profile-menu button,
-    .profile-menu a{
+    .profile-menu button,.profile-menu a{
       width:100%;
       display:block;
       border:0;
       background:transparent;
       color:#aaa;
-      text-align:left;
-      text-decoration:none;
       padding:12px;
       border-radius:14px;
+      text-align:left;
+      text-decoration:none;
       font-weight:800;
       cursor:pointer;
     }
 
-    .profile-menu button:hover,
-    .profile-menu a:hover{
+    .profile-menu button:hover,.profile-menu a:hover{
       background:rgba(255,255,255,.06);
       color:#fff;
     }
 
-    .hero-card{
-      padding:28px;
-      border-radius:34px;
-      border:1px solid rgba(255,255,255,.1);
-      background:
-        radial-gradient(circle at top right,rgba(229,9,47,.18),transparent 36%),
-        linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.018));
-      backdrop-filter:blur(22px);
-      margin-bottom:22px;
+    .workspace{
+      display:grid;
+      grid-template-columns:1.25fr .75fr;
+      gap:18px;
     }
 
-    .hero-card h2{
-      font-size:clamp(26px,5vw,46px);
+    .generate-box,.panel,.tool{
+      border:1px solid rgba(255,255,255,.1);
+      background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.018));
+      backdrop-filter:blur(22px);
+      border-radius:30px;
+    }
+
+    .generate-box{padding:24px}
+
+    .generate-box h2{
+      font-size:clamp(28px,5vw,54px);
       margin-bottom:12px;
       color:#f5f0eb;
     }
 
-    .hero-card p{
-      max-width:720px;
+    .generate-box p{
       color:#aaa;
       line-height:1.65;
+      margin-bottom:22px;
+      max-width:720px;
     }
 
-    .tool-grid{
+    .prompt-area{
+      min-height:150px;
+      width:100%;
+      resize:vertical;
+      padding:18px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.45);
+      color:#fff;
+      outline:none;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:14px;
+    }
+
+    .prompt-row{display:flex;gap:10px;flex-wrap:wrap}
+
+    .main-btn{
+      border:0;
+      border-radius:999px;
+      padding:14px 20px;
+      background:var(--red);
+      color:#fff;
+      font-weight:950;
+      cursor:pointer;
+      box-shadow:0 0 28px rgba(229,9,47,.3);
+    }
+
+    .ghost-btn{
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      padding:14px 20px;
+      background:rgba(255,255,255,.055);
+      color:#fff;
+      font-weight:900;
+      cursor:pointer;
+    }
+
+    .panel{padding:20px}
+    .panel h3{margin-bottom:14px}
+
+    .stat{
+      display:flex;
+      justify-content:space-between;
+      padding:13px 0;
+      border-bottom:1px solid rgba(255,255,255,.07);
+      color:#aaa;
+      font-size:14px;
+    }
+
+    .stat strong{color:#fff}
+
+    .tools{
+      margin-top:18px;
       display:grid;
       grid-template-columns:repeat(3,1fr);
-      gap:16px;
+      gap:14px;
     }
 
     .tool{
-      position:relative;
-      min-height:190px;
-      padding:22px;
-      border-radius:28px;
-      border:1px solid rgba(255,255,255,.1);
-      background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.018));
+      min-height:165px;
+      padding:20px;
       cursor:pointer;
-      overflow:hidden;
       transition:.25s;
+      position:relative;
+      overflow:hidden;
     }
 
     .tool:hover{
@@ -325,65 +313,39 @@
     }
 
     .tool-icon{
-      width:52px;
-      height:52px;
+      width:50px;height:50px;
+      display:grid;place-items:center;
       border-radius:18px;
-      display:grid;
-      place-items:center;
       background:#070707;
       border:1px solid rgba(255,255,255,.12);
-      margin-bottom:22px;
+      margin-bottom:18px;
       font-size:24px;
     }
 
-    .tool h3{
-      font-size:20px;
-      margin-bottom:10px;
-    }
-
-    .tool p{
-      color:#999;
-      line-height:1.55;
-      font-size:14px;
-    }
-
-    .tag{
-      position:absolute;
-      top:18px;
-      right:18px;
-      font-size:11px;
-      color:#ff6b81;
-      background:rgba(229,9,47,.1);
-      border:1px solid rgba(229,9,47,.18);
-      padding:6px 9px;
-      border-radius:999px;
-      font-weight:900;
-    }
+    .tool h3{font-size:19px;margin-bottom:8px}
+    .tool p{font-size:14px;color:#999;line-height:1.5}
 
     .settings-panel{
+      display:none;
       position:fixed;
       inset:0;
       z-index:50;
-      display:none;
       background:rgba(0,0,0,.72);
       backdrop-filter:blur(10px);
       padding:20px;
     }
 
-    .settings-panel.open{
-      display:grid;
-      place-items:center;
-    }
+    .settings-panel.open{display:grid;place-items:center}
 
     .modal{
       width:100%;
-      max-width:520px;
+      max-width:540px;
       max-height:90vh;
       overflow:auto;
+      padding:24px;
       border-radius:32px;
       border:1px solid rgba(255,255,255,.12);
       background:#050505;
-      padding:24px;
       box-shadow:0 40px 100px rgba(0,0,0,.75);
     }
 
@@ -394,11 +356,8 @@
       margin-bottom:20px;
     }
 
-    .modal h2{font-size:24px}
-
     .close{
-      width:40px;
-      height:40px;
+      width:40px;height:40px;
       border-radius:14px;
       border:1px solid rgba(255,255,255,.12);
       background:rgba(255,255,255,.06);
@@ -419,8 +378,7 @@
       font-size:13px;
     }
 
-    .setting-row input,
-    .setting-row select{
+    .setting-row input,.setting-row select{
       width:100%;
       padding:13px 14px;
       border-radius:16px;
@@ -430,15 +388,9 @@
       outline:none;
     }
 
-    .color-picker-box{
-      display:flex;
-      align-items:center;
-      gap:14px;
-    }
-
+    .color-picker-box{display:flex;align-items:center;gap:14px}
     .color-picker-box input[type="color"]{
-      width:64px;
-      height:64px;
+      width:64px;height:64px;
       padding:0;
       border-radius:50%;
       overflow:hidden;
@@ -447,11 +399,7 @@
       background:transparent;
     }
 
-    #colorValue{
-      color:#aaa;
-      font-size:14px;
-      font-weight:800;
-    }
+    #colorValue{color:#aaa;font-size:14px;font-weight:800}
 
     .small-btn{
       margin-top:12px;
@@ -462,14 +410,12 @@
       color:#fff;
       font-weight:900;
       cursor:pointer;
-      box-shadow:0 0 24px rgba(229,9,47,.25);
     }
 
     audio{display:none}
 
-    @media(max-width:980px){
+    @media(max-width:1000px){
       .app{grid-template-columns:1fr}
-
       .sidebar{
         position:fixed;
         top:0;
@@ -478,410 +424,462 @@
         z-index:40;
         transition:.25s;
       }
-
       .sidebar.open{left:0}
-
       .menu-btn{display:block}
-
-      .tool-grid{grid-template-columns:repeat(2,1fr)}
+      .workspace{grid-template-columns:1fr}
+      .tools{grid-template-columns:repeat(2,1fr)}
     }
 
     @media(max-width:640px){
       .main{padding:14px}
-
-      .topbar{
-        border-radius:24px;
-        align-items:flex-start;
-      }
-
-      .top-actions{gap:7px}
-
+      .topbar{border-radius:24px;align-items:flex-start}
+      .actions{gap:7px}
       .lang button{padding:7px 9px}
-
-      .page-title p{display:none}
-
-      .tool-grid{grid-template-columns:1fr}
-
-      .hero-card{padding:22px}
-
-      .tool{min-height:165px}
-
-      .profile-menu{
-        right:-4px;
-        width:240px;
-      }
+      .title p{display:none}
+      .tools{grid-template-columns:1fr}
+      .generate-box{padding:20px}
+      .profile-menu{right:-4px;width:245px}
     }
   </style>
 </head>
 
 <body>
-  <audio id="bgMusic" loop>
-    <source src="music/japan-chill.mp3" type="audio/mpeg">
-  </audio>
+<audio id="bgMusic" loop>
+  <source src="music/japan-chill.mp3" type="audio/mpeg">
+</audio>
 
-  <div class="app">
-    <aside class="sidebar" id="sidebar">
-      <div class="brand">
-        <div class="seal">妖</div>
-        <div class="logo">YYOKAI</div>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="seal">妖</div>
+    <div class="logo">YYOKAI</div>
+
+    <div class="side-title" data-i18n="workspace">Workspace</div>
+
+    <nav class="nav">
+      <button class="active" onclick="go('/artist-dashboard.html')" data-i18n="navDashboard">Dashboard</button>
+      <button onclick="go('/stencil.html')" data-i18n="navStencil">AI Stencil</button>
+      <button onclick="go('/split.html')" data-i18n="navSplit">A4 Split</button>
+      <button onclick="go('/fonts.html')" data-i18n="navFonts">Fonts</button>
+      <button onclick="go('/references.html')" data-i18n="navReferences">References</button>
+      <button onclick="go('/sessions.html')" data-i18n="navSessions">Sessions</button>
+      <button onclick="go('/uploads.html')" data-i18n="navUploads">Uploads</button>
+      <button onclick="go('/billing.html')" data-i18n="navBilling">Billing</button>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="top-left">
+        <button class="menu-btn" id="menuBtn" onclick="toggleSidebar()">☰</button>
+        <div class="title">
+          <h1 data-i18n="title">Майстерня</h1>
+          <p data-i18n="subtitle">AI workspace для тату-майстра</p>
+        </div>
       </div>
 
-      <div class="side-title" data-i18n="workspace">Workspace</div>
-
-      <nav class="nav">
-        <button class="active" onclick="go('/artist-dashboard.html')" data-i18n="navDashboard">Dashboard</button>
-        <button onclick="go('/stencil.html')" data-i18n="navStencil">AI Stencil</button>
-        <button onclick="go('/split.html')" data-i18n="navSplit">A4 Split</button>
-        <button onclick="go('/fonts.html')" data-i18n="navFonts">Fonts</button>
-        <button onclick="go('/references.html')" data-i18n="navReferences">References</button>
-        <button onclick="go('/sessions.html')" data-i18n="navSessions">Sessions</button>
-        <button onclick="go('/uploads.html')" data-i18n="navUploads">Uploads</button>
-        <button onclick="go('/billing.html')" data-i18n="navBilling">Billing</button>
-      </nav>
-    </aside>
-
-    <main class="main">
-      <header class="topbar">
-        <div class="top-left">
-          <button class="menu-btn" id="menuBtn" onclick="toggleSidebar()">☰</button>
-
-          <div class="page-title">
-            <h1 data-i18n="title">Майстерня</h1>
-            <p data-i18n="subtitle">Твій простір для підготовки тату-сесій</p>
-          </div>
+      <div class="actions">
+        <div class="lang">
+          <button class="active" onclick="setLang('uk', this)">UA</button>
+          <button onclick="setLang('en', this)">EN</button>
         </div>
 
-        <div class="top-actions">
-          <div class="lang">
-            <button class="active" onclick="setLang('uk', this)">UA</button>
-            <button onclick="setLang('en', this)">EN</button>
-          </div>
+        <button class="icon-btn" id="musicBtn" onclick="toggleMusic()">🔇</button>
 
-          <button class="icon-btn" id="musicBtn" onclick="toggleMusic()">🔇</button>
+        <div class="profile">
+          <div class="avatar" onclick="toggleProfile()" id="avatar">👺</div>
 
-          <div class="profile">
-            <div class="avatar" onclick="toggleProfile()" id="avatar">👺</div>
+          <div class="profile-menu" id="profileMenu">
+            <div class="profile-name" id="artistName">YYOKAI Artist</div>
+            <div class="profile-email" id="artistEmail">artist@email.com</div>
 
-            <div class="profile-menu" id="profileMenu">
-              <div class="profile-name" id="artistName">YYOKAI Artist</div>
-
-              <div class="balance">
-                <span data-i18n="balance">Баланс</span>:
-                <strong id="balanceValue">$0.00</strong>
-              </div>
-
-              <button onclick="addBalance()">＋ <span data-i18n="addBalance">Поповнити баланс</span></button>
-              <button onclick="openSettings()">⚙ <span data-i18n="settings">Налаштування</span></button>
-              <a href="/billing.html" data-i18n="billing">Оплата</a>
-              <button onclick="logout()">退出 <span data-i18n="logout">Вийти</span></button>
+            <div class="balance">
+              <span data-i18n="balance">Баланс</span>:
+              <strong id="balanceValue">$0.00</strong>
             </div>
+
+            <button onclick="addBalance()">＋ <span data-i18n="addBalance">Поповнити баланс</span></button>
+            <button onclick="openSettings()">⚙ <span data-i18n="settings">Налаштування</span></button>
+            <a href="/billing.html" data-i18n="billing">Оплата</a>
+            <button onclick="logout()">退出 <span data-i18n="logout">Вийти</span></button>
           </div>
         </div>
-      </header>
+      </div>
+    </header>
 
-      <section class="hero-card">
-        <h2 data-i18n="welcome">Welcome to YYOKAI System</h2>
+    <section class="workspace">
+      <div class="generate-box">
+        <h2 data-i18n="welcome">Create tattoo workflow faster</h2>
         <p data-i18n="welcomeText">
-          Інструменти для тату-майстра: стенсіл, шрифти, A4 split, референси,
-          підготовка до сеансу та AI workflow.
+          Генеруй стенсіли, референси, шрифти та матеріали для сеансу в одному просторі.
         </p>
-      </section>
 
-      <section class="tool-grid">
-        <article class="tool" onclick="go('/stencil.html')">
-          <span class="tag">CORE</span>
-          <div class="tool-icon">🧿</div>
-          <h3 data-i18n="toolStencil">AI Stencil</h3>
-          <p data-i18n="toolStencilText">Завантаж фото та отримай clean stencil.</p>
-        </article>
+        <textarea class="prompt-area" id="prompt" data-i18n-placeholder="promptPlaceholder" placeholder="Опиши ідею тату, стиль, розмір, розміщення..."></textarea>
 
-        <article class="tool" onclick="go('/split.html')">
-          <div class="tool-icon">📄</div>
-          <h3 data-i18n="toolSplit">A4 Split</h3>
-          <p data-i18n="toolSplitText">Розбий великий ескіз на A4 сторінки.</p>
-        </article>
-
-        <article class="tool" onclick="go('/fonts.html')">
-          <div class="tool-icon">字</div>
-          <h3 data-i18n="toolFonts">Tattoo Fonts</h3>
-          <p data-i18n="toolFontsText">Підбір шрифтів та написів для клієнта.</p>
-        </article>
-
-        <article class="tool" onclick="go('/references.html')">
-          <div class="tool-icon">狐</div>
-          <h3 data-i18n="toolRefs">AI References</h3>
-          <p data-i18n="toolRefsText">Референси та AI mood generation.</p>
-        </article>
-
-        <article class="tool" onclick="go('/sessions.html')">
-          <div class="tool-icon">⛩</div>
-          <h3 data-i18n="toolSessions">Sessions</h3>
-          <p data-i18n="toolSessionsText">Підготовка до сеансів та нотатки.</p>
-        </article>
-
-        <article class="tool" onclick="go('/uploads.html')">
-          <div class="tool-icon">墨</div>
-          <h3 data-i18n="toolUploads">Uploads</h3>
-          <p data-i18n="toolUploadsText">Файли, PDF, стенсіли та ескізи.</p>
-        </article>
-      </section>
-    </main>
-  </div>
-
-  <section class="settings-panel" id="settingsPanel">
-    <div class="modal">
-      <div class="modal-head">
-        <h2 data-i18n="settingsTitle">Налаштування</h2>
-        <button class="close" onclick="closeSettings()">×</button>
+        <div class="prompt-row">
+          <button class="main-btn" onclick="go('/stencil.html')" data-i18n="generateBtn">Почати зі стенсілу</button>
+          <button class="ghost-btn" onclick="go('/references.html')" data-i18n="referenceBtn">AI References</button>
+        </div>
       </div>
 
-      <div class="setting-row">
-        <label data-i18n="changeAvatar">Змінити фото профілю</label>
-        <input type="file" accept="image/*" onchange="previewAvatar(event)">
-      </div>
+      <aside class="panel">
+        <h3 data-i18n="artistPanel">Artist panel</h3>
 
-      <div class="setting-row">
-        <label data-i18n="changeEmail">Email</label>
-        <input type="email" placeholder="artist@email.com">
-      </div>
-
-      <div class="setting-row">
-        <label data-i18n="changePassword">Новий пароль</label>
-        <input type="password" placeholder="••••••••">
-      </div>
-
-      <div class="setting-row">
-        <label data-i18n="musicSelect">Музика</label>
-        <select>
-          <option>Japanese Chill</option>
-          <option>Dark Ambient</option>
-          <option>Silent Mode</option>
-        </select>
-      </div>
-
-      <div class="setting-row">
-        <label data-i18n="backgroundUpload">Фон кабінету</label>
-        <input type="file" accept="image/*" onchange="changeBackground(event)">
-      </div>
-
-      <div class="setting-row">
-        <label data-i18n="palette">Палітра / фон</label>
-
-        <div class="color-picker-box">
-          <input id="colorPicker" type="color" value="#e5092f" oninput="setCustomAccent(this.value)">
-          <span id="colorValue">#e5092f</span>
+        <div class="stat">
+          <span data-i18n="plan">План</span>
+          <strong id="planValue">Free</strong>
         </div>
 
-        <button class="small-btn" onclick="applyGradientBackground()" data-i18n="applyGradient">
-          Застосувати градієнт
-        </button>
-      </div>
+        <div class="stat">
+          <span data-i18n="credits">Генерації</span>
+          <strong id="creditsValue">3</strong>
+        </div>
+
+        <div class="stat">
+          <span data-i18n="balance">Баланс</span>
+          <strong id="balanceValuePanel">$0.00</strong>
+        </div>
+
+        <div class="stat">
+          <span>Email</span>
+          <strong id="emailMini">—</strong>
+        </div>
+      </aside>
+    </section>
+
+    <section class="tools">
+      <article class="tool" onclick="go('/stencil.html')">
+        <div class="tool-icon">🧿</div>
+        <h3>AI Stencil</h3>
+        <p data-i18n="toolStencilText">Фото → чистий stencil.</p>
+      </article>
+
+      <article class="tool" onclick="go('/split.html')">
+        <div class="tool-icon">📄</div>
+        <h3>A4 Split</h3>
+        <p data-i18n="toolSplitText">Рукав або великий ескіз на A4.</p>
+      </article>
+
+      <article class="tool" onclick="go('/fonts.html')">
+        <div class="tool-icon">字</div>
+        <h3>Fonts</h3>
+        <p data-i18n="toolFontsText">Шрифти та написи для клієнтів.</p>
+      </article>
+
+      <article class="tool" onclick="go('/references.html')">
+        <div class="tool-icon">狐</div>
+        <h3>References</h3>
+        <p data-i18n="toolRefsText">Ідеї, мудборди, AI стиль.</p>
+      </article>
+
+      <article class="tool" onclick="go('/sessions.html')">
+        <div class="tool-icon">⛩</div>
+        <h3>Sessions</h3>
+        <p data-i18n="toolSessionsText">Підготовка до сеансу.</p>
+      </article>
+
+      <article class="tool" onclick="go('/uploads.html')">
+        <div class="tool-icon">墨</div>
+        <h3>Uploads</h3>
+        <p data-i18n="toolUploadsText">Файли, PDF, стенсіли.</p>
+      </article>
+    </section>
+  </main>
+</div>
+
+<section class="settings-panel" id="settingsPanel">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 data-i18n="settingsTitle">Налаштування</h2>
+      <button class="close" onclick="closeSettings()">×</button>
     </div>
-  </section>
 
-  <script>
-    let musicPlaying = false;
-    let selectedColor = "#e5092f";
+    <div class="setting-row">
+      <label data-i18n="changeAvatar">Змінити фото профілю</label>
+      <input type="file" accept="image/*" onchange="uploadAvatar(event)">
+    </div>
 
-    const translations = {
-      uk:{
-        workspace:"Workspace",
-        navDashboard:"Dashboard",
-        navStencil:"AI Stencil",
-        navSplit:"A4 Split",
-        navFonts:"Шрифти",
-        navReferences:"Референси",
-        navSessions:"Сеанси",
-        navUploads:"Файли",
-        navBilling:"Оплата",
-        title:"Майстерня",
-        subtitle:"Твій простір для підготовки тату-сесій",
-        balance:"Баланс",
-        addBalance:"Поповнити баланс",
-        settings:"Налаштування",
-        billing:"Оплата",
-        logout:"Вийти",
-        welcome:"Welcome to YYOKAI System",
-        welcomeText:"Інструменти для тату-майстра: стенсіл, шрифти, A4 split, референси, підготовка до сеансу та AI workflow.",
-        toolStencil:"AI Stencil",
-        toolStencilText:"Завантаж фото та отримай clean stencil.",
-        toolSplit:"A4 Split",
-        toolSplitText:"Розбий великий ескіз на A4 сторінки.",
-        toolFonts:"Tattoo Fonts",
-        toolFontsText:"Підбір шрифтів та написів для клієнта.",
-        toolRefs:"AI References",
-        toolRefsText:"Референси та AI mood generation.",
-        toolSessions:"Sessions",
-        toolSessionsText:"Підготовка до сеансів та нотатки.",
-        toolUploads:"Uploads",
-        toolUploadsText:"Файли, PDF, стенсіли та ескізи.",
-        settingsTitle:"Налаштування",
-        changeAvatar:"Змінити фото профілю",
-        changeEmail:"Email",
-        changePassword:"Новий пароль",
-        musicSelect:"Музика",
-        backgroundUpload:"Фон кабінету",
-        palette:"Палітра / фон",
-        applyGradient:"Застосувати градієнт"
-      },
+    <div class="setting-row">
+      <label data-i18n="changeEmail">Email</label>
+      <input id="newEmail" type="email" placeholder="artist@email.com">
+      <button class="small-btn" onclick="saveEmail()" data-i18n="saveEmail">Зберегти email</button>
+    </div>
 
-      en:{
-        workspace:"Workspace",
-        navDashboard:"Dashboard",
-        navStencil:"AI Stencil",
-        navSplit:"A4 Split",
-        navFonts:"Fonts",
-        navReferences:"References",
-        navSessions:"Sessions",
-        navUploads:"Uploads",
-        navBilling:"Billing",
-        title:"Workshop",
-        subtitle:"Your space for tattoo session preparation",
-        balance:"Balance",
-        addBalance:"Add balance",
-        settings:"Settings",
-        billing:"Billing",
-        logout:"Logout",
-        welcome:"Welcome to YYOKAI System",
-        welcomeText:"Tools for tattoo artists: stencil, fonts, A4 split, references, session preparation and AI workflow.",
-        toolStencil:"AI Stencil",
-        toolStencilText:"Upload an image and get a clean stencil.",
-        toolSplit:"A4 Split",
-        toolSplitText:"Split a large sketch into A4 pages.",
-        toolFonts:"Tattoo Fonts",
-        toolFontsText:"Font and lettering selection for clients.",
-        toolRefs:"AI References",
-        toolRefsText:"References and AI mood generation.",
-        toolSessions:"Sessions",
-        toolSessionsText:"Session preparation and notes.",
-        toolUploads:"Uploads",
-        toolUploadsText:"Files, PDFs, stencils and sketches.",
-        settingsTitle:"Settings",
-        changeAvatar:"Change profile photo",
-        changeEmail:"Email",
-        changePassword:"New password",
-        musicSelect:"Music",
-        backgroundUpload:"Dashboard background",
-        palette:"Palette / background",
-        applyGradient:"Apply gradient"
-      }
+    <div class="setting-row">
+      <label data-i18n="changePassword">Новий пароль</label>
+      <input id="newPassword" type="password" placeholder="••••••••">
+      <button class="small-btn" onclick="savePassword()" data-i18n="savePassword">Змінити пароль</button>
+    </div>
+
+    <div class="setting-row">
+      <label data-i18n="musicSelect">Музика</label>
+      <select>
+        <option>Japanese Chill</option>
+        <option>Dark Ambient</option>
+        <option>Silent Mode</option>
+      </select>
+    </div>
+
+    <div class="setting-row">
+      <label data-i18n="backgroundUpload">Фон кабінету</label>
+      <input type="file" accept="image/*" onchange="changeBackground(event)">
+    </div>
+
+    <div class="setting-row">
+      <label data-i18n="palette">Палітра / фон</label>
+      <div class="color-picker-box">
+        <input id="colorPicker" type="color" value="#e5092f" oninput="setCustomAccent(this.value)">
+        <span id="colorValue">#e5092f</span>
+      </div>
+      <button class="small-btn" onclick="applyGradientBackground()" data-i18n="applyGradient">Застосувати градієнт</button>
+    </div>
+  </div>
+</section>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signOut,
+    updateEmail,
+    updatePassword
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import {
+    getFirestore,
+    doc,
+    getDoc,
+    updateDoc
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import {
+    getStorage,
+    ref,
+    uploadBytes,
+    getDownloadURL
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+  const firebaseConfig = {
+    apiKey: "PASTE_HERE",
+    authDomain: "PASTE_HERE",
+    projectId: "PASTE_HERE",
+    storageBucket: "PASTE_HERE",
+    messagingSenderId: "PASTE_HERE",
+    appId: "PASTE_HERE"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
+
+  let currentUser = null;
+  let selectedColor = "#e5092f";
+  let musicPlaying = false;
+
+  const translations = {
+    uk:{
+      workspace:"Workspace", navDashboard:"Dashboard", navStencil:"AI Stencil", navSplit:"A4 Split", navFonts:"Шрифти",
+      navReferences:"Референси", navSessions:"Сеанси", navUploads:"Файли", navBilling:"Оплата",
+      title:"Майстерня", subtitle:"AI workspace для тату-майстра",
+      balance:"Баланс", addBalance:"Поповнити баланс", settings:"Налаштування", billing:"Оплата", logout:"Вийти",
+      welcome:"Create tattoo workflow faster",
+      welcomeText:"Генеруй стенсіли, референси, шрифти та матеріали для сеансу в одному просторі.",
+      promptPlaceholder:"Опиши ідею тату, стиль, розмір, розміщення...",
+      generateBtn:"Почати зі стенсілу", referenceBtn:"AI References",
+      artistPanel:"Artist panel", plan:"План", credits:"Генерації",
+      toolStencilText:"Фото → чистий stencil.", toolSplitText:"Рукав або великий ескіз на A4.",
+      toolFontsText:"Шрифти та написи для клієнтів.", toolRefsText:"Ідеї, мудборди, AI стиль.",
+      toolSessionsText:"Підготовка до сеансу.", toolUploadsText:"Файли, PDF, стенсіли.",
+      settingsTitle:"Налаштування", changeAvatar:"Змінити фото профілю", changeEmail:"Email",
+      changePassword:"Новий пароль", musicSelect:"Музика", backgroundUpload:"Фон кабінету",
+      palette:"Палітра / фон", applyGradient:"Застосувати градієнт",
+      saveEmail:"Зберегти email", savePassword:"Змінити пароль"
+    },
+    en:{
+      workspace:"Workspace", navDashboard:"Dashboard", navStencil:"AI Stencil", navSplit:"A4 Split", navFonts:"Fonts",
+      navReferences:"References", navSessions:"Sessions", navUploads:"Uploads", navBilling:"Billing",
+      title:"Workshop", subtitle:"AI workspace for tattoo artists",
+      balance:"Balance", addBalance:"Add balance", settings:"Settings", billing:"Billing", logout:"Logout",
+      welcome:"Create tattoo workflow faster",
+      welcomeText:"Generate stencils, references, fonts and session materials in one workspace.",
+      promptPlaceholder:"Describe tattoo idea, style, size, placement...",
+      generateBtn:"Start with stencil", referenceBtn:"AI References",
+      artistPanel:"Artist panel", plan:"Plan", credits:"Credits",
+      toolStencilText:"Photo → clean stencil.", toolSplitText:"Sleeve or large sketch to A4.",
+      toolFontsText:"Fonts and lettering for clients.", toolRefsText:"Ideas, moodboards, AI style.",
+      toolSessionsText:"Session preparation.", toolUploadsText:"Files, PDFs, stencils.",
+      settingsTitle:"Settings", changeAvatar:"Change profile photo", changeEmail:"Email",
+      changePassword:"New password", musicSelect:"Music", backgroundUpload:"Dashboard background",
+      palette:"Palette / background", applyGradient:"Apply gradient",
+      saveEmail:"Save email", savePassword:"Change password"
+    }
+  };
+
+  function money(value){
+    const n = Number(value || 0);
+    return "$" + n.toFixed(2);
+  }
+
+  async function loadUserData(user){
+    const snap = await getDoc(doc(db, "users", user.uid));
+    const data = snap.exists() ? snap.data() : {};
+
+    const name = data.name || "YYOKAI Artist";
+    const email = user.email || data.email || "artist@email.com";
+    const balance = data.balance || 0;
+    const plan = data.plan || "Free";
+    const credits = data.stencilCredits ?? 3;
+    const avatarUrl = data.avatarUrl || "";
+
+    document.getElementById("artistName").textContent = name;
+    document.getElementById("artistEmail").textContent = email;
+    document.getElementById("emailMini").textContent = email;
+    document.getElementById("balanceValue").textContent = money(balance);
+    document.getElementById("balanceValuePanel").textContent = money(balance);
+    document.getElementById("planValue").textContent = plan;
+    document.getElementById("creditsValue").textContent = credits;
+
+    if(avatarUrl){
+      document.getElementById("avatar").innerHTML = `<img src="${avatarUrl}" alt="avatar">`;
+    }
+  }
+
+  onAuthStateChanged(auth, async (user)=>{
+    if(!user){
+      location.href = "/artist-auth.html";
+      return;
+    }
+
+    currentUser = user;
+    await loadUserData(user);
+  });
+
+  window.setLang = function(lang, btn){
+    document.documentElement.lang = lang;
+
+    Object.keys(translations[lang]).forEach(key=>{
+      const el = document.querySelector(`[data-i18n="${key}"]`);
+      if(el) el.textContent = translations[lang][key];
+
+      const input = document.querySelector(`[data-i18n-placeholder="${key}"]`);
+      if(input) input.placeholder = translations[lang][key];
+    });
+
+    document.querySelectorAll(".lang button").forEach(b=>b.classList.remove("active"));
+    if(btn) btn.classList.add("active");
+  };
+
+  window.go = url => location.href = url;
+
+  window.toggleSidebar = function(){
+    const sidebar = document.getElementById("sidebar");
+    const menuBtn = document.getElementById("menuBtn");
+
+    sidebar.classList.toggle("open");
+    menuBtn.classList.toggle("open");
+    menuBtn.textContent = sidebar.classList.contains("open") ? "×" : "☰";
+  };
+
+  window.toggleProfile = function(){
+    document.getElementById("profileMenu").classList.toggle("open");
+  };
+
+  window.openSettings = function(){
+    document.getElementById("settingsPanel").classList.add("open");
+    document.getElementById("profileMenu").classList.remove("open");
+  };
+
+  window.closeSettings = function(){
+    document.getElementById("settingsPanel").classList.remove("open");
+  };
+
+  window.toggleMusic = function(){
+    const audio = document.getElementById("bgMusic");
+    const btn = document.getElementById("musicBtn");
+
+    if(!musicPlaying){
+      audio.volume = 0.35;
+      audio.play();
+      btn.textContent = "🔊";
+      musicPlaying = true;
+    }else{
+      audio.pause();
+      btn.textContent = "🔇";
+      musicPlaying = false;
+    }
+  };
+
+  window.uploadAvatar = async function(event){
+    const file = event.target.files[0];
+    if(!file || !currentUser) return;
+
+    const storageRef = ref(storage, `avatars/${currentUser.uid}/${file.name}`);
+    await uploadBytes(storageRef, file);
+    const url = await getDownloadURL(storageRef);
+
+    await updateDoc(doc(db, "users", currentUser.uid), { avatarUrl:url });
+    document.getElementById("avatar").innerHTML = `<img src="${url}" alt="avatar">`;
+  };
+
+  window.saveEmail = async function(){
+    const email = document.getElementById("newEmail").value.trim();
+    if(!email || !currentUser) return;
+
+    await updateEmail(currentUser, email);
+    await updateDoc(doc(db, "users", currentUser.uid), { email });
+    document.getElementById("artistEmail").textContent = email;
+    document.getElementById("emailMini").textContent = email;
+  };
+
+  window.savePassword = async function(){
+    const password = document.getElementById("newPassword").value;
+    if(!password || !currentUser) return;
+
+    await updatePassword(currentUser, password);
+    alert("Password updated");
+  };
+
+  window.changeBackground = function(event){
+    const file = event.target.files[0];
+    if(!file) return;
+
+    const reader = new FileReader();
+    reader.onload = e=>{
+      document.body.style.background = `
+        linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.9)),
+        url('${e.target.result}') center/cover fixed
+      `;
     };
+    reader.readAsDataURL(file);
+  };
 
-    function setLang(lang, btn){
-      document.documentElement.lang = lang;
+  window.setCustomAccent = function(color){
+    selectedColor = color;
+    document.getElementById("colorValue").textContent = color;
+    document.documentElement.style.setProperty("--accent", color);
+  };
 
-      Object.keys(translations[lang]).forEach(key=>{
-        const el = document.querySelector(`[data-i18n="${key}"]`);
-        if(el) el.textContent = translations[lang][key];
-      });
+  window.applyGradientBackground = function(){
+    document.body.style.background = `
+      radial-gradient(circle at 50% 0%, ${selectedColor}55, transparent 32%),
+      linear-gradient(to bottom,#000,#080203 55%,#000)
+    `;
+  };
 
-      document.querySelectorAll(".lang button").forEach(button=>{
-        button.classList.remove("active");
-      });
+  window.addBalance = function(){
+    location.href = "/billing.html";
+  };
 
-      if(btn) btn.classList.add("active");
-    }
+  window.logout = async function(){
+    await signOut(auth);
+    location.href = "/artist-auth.html";
+  };
 
-    function go(url){
-      location.href = url;
-    }
-
-    function toggleSidebar(){
-      const sidebar = document.getElementById("sidebar");
-      const menuBtn = document.getElementById("menuBtn");
-
-      sidebar.classList.toggle("open");
-      menuBtn.classList.toggle("open");
-
-      menuBtn.textContent = sidebar.classList.contains("open") ? "×" : "☰";
-    }
-
-    function toggleProfile(){
-      document.getElementById("profileMenu").classList.toggle("open");
-    }
-
-    function openSettings(){
-      document.getElementById("settingsPanel").classList.add("open");
+  document.addEventListener("click", e=>{
+    const profile = document.querySelector(".profile");
+    if(profile && !profile.contains(e.target)){
       document.getElementById("profileMenu").classList.remove("open");
     }
-
-    function closeSettings(){
-      document.getElementById("settingsPanel").classList.remove("open");
-    }
-
-    function toggleMusic(){
-      const audio = document.getElementById("bgMusic");
-      const btn = document.getElementById("musicBtn");
-
-      if(!musicPlaying){
-        audio.volume = 0.35;
-        audio.play();
-        btn.textContent = "🔊";
-        musicPlaying = true;
-      }else{
-        audio.pause();
-        btn.textContent = "🔇";
-        musicPlaying = false;
-      }
-    }
-
-    function previewAvatar(event){
-      const file = event.target.files[0];
-      if(!file) return;
-
-      const reader = new FileReader();
-
-      reader.onload = function(e){
-        document.getElementById("avatar").innerHTML =
-          `<img src="${e.target.result}" alt="avatar">`;
-      };
-
-      reader.readAsDataURL(file);
-    }
-
-    function changeBackground(event){
-      const file = event.target.files[0];
-      if(!file) return;
-
-      const reader = new FileReader();
-
-      reader.onload = function(e){
-        document.body.style.background = `
-          linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.9)),
-          url('${e.target.result}') center/cover fixed
-        `;
-      };
-
-      reader.readAsDataURL(file);
-    }
-
-    function setCustomAccent(color){
-      selectedColor = color;
-      document.getElementById("colorValue").textContent = color;
-      document.documentElement.style.setProperty("--accent", color);
-    }
-
-    function applyGradientBackground(){
-      document.body.style.background = `
-        radial-gradient(circle at 50% 0%, ${selectedColor}55, transparent 32%),
-        linear-gradient(to bottom,#000,#080203 55%,#000)
-      `;
-    }
-
-    function addBalance(){
-      location.href = "/billing.html";
-    }
-
-    function logout(){
-      location.href = "/artist-auth.html";
-    }
-
-    document.addEventListener("click",function(e){
-      const profile = document.querySelector(".profile");
-      if(profile && !profile.contains(e.target)){
-        document.getElementById("profileMenu").classList.remove("open");
-      }
-    });
-  </script>
+  });
+</script>
 </body>
 </html>
