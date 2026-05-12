@@ -1,197 +1,333 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>YYOKAI</title>
+
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       min-height: 100vh;
-      font-family: Arial, sans-serif;
+      font-family: Inter, Arial, sans-serif;
       background:
-        radial-gradient(circle at top, rgba(180, 0, 0, 0.25), transparent 35%),
-        linear-gradient(135deg, #050505, #111, #050505);
+        radial-gradient(circle at 20% 10%, rgba(255,0,60,.18), transparent 30%),
+        radial-gradient(circle at 80% 80%, rgba(130,0,255,.12), transparent 35%),
+        #050506;
       color: #fff;
       overflow-x: hidden;
     }
 
-    .page {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
+    .noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .05;
+      background-image: linear-gradient(90deg, #fff 1px, transparent 1px),
+                        linear-gradient(#fff 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: radial-gradient(circle, black, transparent 75%);
     }
 
-    .card {
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      max-width: 980px;
-      padding: 40px 28px;
-      border: 1px solid rgba(255, 0, 0, 0.25);
-      border-radius: 28px;
-      background: rgba(10, 10, 10, 0.78);
-      box-shadow: 0 0 60px rgba(180, 0, 0, 0.18);
+      padding: 22px 34px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .lang {
+      display: flex;
+      gap: 8px;
+      padding: 6px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 999px;
+      background: rgba(255,255,255,.04);
+      backdrop-filter: blur(18px);
+    }
+
+    .lang button {
+      border: none;
+      background: transparent;
+      color: #888;
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .lang button.active {
+      background: #fff;
+      color: #050506;
+    }
+
+    .login {
+      color: #aaa;
+      text-decoration: none;
+      font-size: 14px;
+      transition: .2s;
+    }
+
+    .login:hover { color: #fff; }
+
+    .hero {
+      min-height: 100vh;
+      padding: 110px 24px 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 1180px;
       text-align: center;
     }
 
-    .logo {
-      font-size: 48px;
-      letter-spacing: 8px;
-      font-weight: 800;
-      color: #ff1a1a;
-      text-shadow: 0 0 18px rgba(255, 0, 0, 0.6);
-      margin-bottom: 12px;
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 26px;
+      padding: 10px 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 999px;
+      background: rgba(255,255,255,.04);
+      color: #aaa;
+      backdrop-filter: blur(20px);
     }
 
-    .subtitle {
-      color: #aaa;
-      margin-bottom: 34px;
-      font-size: 16px;
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ff1744;
+      box-shadow: 0 0 18px #ff1744;
+    }
+
+    .glitch {
+      position: relative;
+      font-size: clamp(56px, 12vw, 150px);
+      font-weight: 900;
+      letter-spacing: .12em;
+      line-height: .9;
+      margin-bottom: 22px;
+      text-shadow: 0 0 45px rgba(255,0,50,.25);
+    }
+
+    .glitch::before,
+    .glitch::after {
+      content: "YYOKAI";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .7;
+    }
+
+    .glitch::before {
+      color: #ff003c;
+      transform: translate(3px, -2px);
+      clip-path: inset(0 0 55% 0);
+      animation: glitchTop 2.2s infinite linear alternate-reverse;
+    }
+
+    .glitch::after {
+      color: #00e5ff;
+      transform: translate(-3px, 2px);
+      clip-path: inset(55% 0 0 0);
+      animation: glitchBottom 1.8s infinite linear alternate-reverse;
+    }
+
+    @keyframes glitchTop {
+      0% { transform: translate(2px, -2px); }
+      30% { transform: translate(-3px, 1px); }
+      60% { transform: translate(4px, -1px); }
+      100% { transform: translate(1px, -3px); }
+    }
+
+    @keyframes glitchBottom {
+      0% { transform: translate(-2px, 2px); }
+      30% { transform: translate(3px, -1px); }
+      60% { transform: translate(-4px, 2px); }
+      100% { transform: translate(-1px, 3px); }
+    }
+
+    .title {
+      max-width: 760px;
+      margin: 0 auto 44px;
+      color: #b8b8b8;
+      font-size: clamp(17px, 2vw, 22px);
+      line-height: 1.55;
     }
 
     .paths {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 22px;
-      margin-bottom: 30px;
+      margin-top: 20px;
     }
 
-    .path {
-      min-height: 260px;
-      padding: 28px;
-      border-radius: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: linear-gradient(160deg, rgba(255, 0, 0, 0.14), rgba(255, 255, 255, 0.03));
+    .card {
+      position: relative;
+      min-height: 320px;
+      padding: 34px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 34px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.025));
+      backdrop-filter: blur(24px);
+      text-align: left;
+      overflow: hidden;
       cursor: pointer;
-      transition: 0.25s;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      transition: .35s ease;
     }
 
-    .path:hover {
-      transform: translateY(-6px);
-      border-color: rgba(255, 0, 0, 0.65);
-      box-shadow: 0 0 35px rgba(255, 0, 0, 0.22);
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      background: radial-gradient(circle at top right, rgba(255,0,60,.35), transparent 38%);
+      opacity: 0;
+      transition: .35s;
     }
 
-    .mask {
-      font-size: 54px;
-      margin-bottom: 18px;
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(255,255,255,.25);
+      box-shadow: 0 30px 80px rgba(0,0,0,.45);
     }
 
-    .path h2 {
-      font-size: 28px;
-      margin-bottom: 12px;
+    .card:hover::before { opacity: 1; }
+
+    .icon {
+      position: relative;
+      z-index: 1;
+      width: 64px;
+      height: 64px;
+      margin-bottom: 34px;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      font-size: 30px;
     }
 
-    .path p {
-      color: #bdbdbd;
-      line-height: 1.5;
-      font-size: 15px;
+    .card h2 {
+      position: relative;
+      z-index: 1;
+      font-size: 32px;
+      margin-bottom: 14px;
+    }
+
+    .card p {
+      position: relative;
+      z-index: 1;
+      max-width: 430px;
+      color: #a9a9a9;
+      line-height: 1.6;
+      margin-bottom: 34px;
     }
 
     .btn {
-      margin-top: 22px;
-      display: inline-block;
-      padding: 13px 24px;
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 20px;
       border-radius: 999px;
-      background: #d60000;
-      color: white;
+      background: #fff;
+      color: #050506;
+      font-weight: 800;
       text-decoration: none;
-      font-weight: bold;
-      transition: 0.2s;
     }
 
-    .btn:hover {
-      background: #ff1a1a;
+    .btn.dark {
+      background: #ff1744;
+      color: #fff;
+      box-shadow: 0 0 30px rgba(255,23,68,.35);
     }
 
     .auth {
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      flex-wrap: wrap;
-      color: #999;
+      margin-top: 28px;
+      color: #777;
       font-size: 14px;
     }
 
     .auth a {
-      color: #ff3b3b;
+      color: #fff;
       text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,.35);
     }
 
-    .auth a:hover {
-      text-decoration: underline;
-    }
-
-    .footer {
-      margin-top: 24px;
-      color: #555;
-      font-size: 12px;
-    }
-
-    @media (max-width: 720px) {
-      .logo {
-        font-size: 36px;
-        letter-spacing: 5px;
-      }
-
-      .paths {
-        grid-template-columns: 1fr;
-      }
-
-      .card {
-        padding: 32px 18px;
-      }
+    @media (max-width: 780px) {
+      header { padding: 18px; }
+      .paths { grid-template-columns: 1fr; }
+      .card { min-height: 280px; padding: 28px; }
     }
   </style>
 </head>
+
 <body>
-  <main class="page">
-    <section class="card">
-      <div class="logo">YYOKAI</div>
-      <p class="subtitle">Choose your path</p>
+  <div class="noise"></div>
+
+  <header>
+    <div class="lang">
+      <button class="active">UA</button>
+      <button>EN</button>
+      <button>ES</button>
+    </div>
+
+    <a class="login" href="/login.html">Увійти</a>
+  </header>
+
+  <main class="hero">
+    <section class="wrap">
+      <div class="badge">
+        <span class="dot"></span>
+        AI tattoo workflow platform
+      </div>
+
+      <h1 class="glitch">YYOKAI</h1>
+
+      <p class="title">
+        Обери свій шлях. Простір для клієнтів і робоча панель для тату-майстрів:
+        стенсіли, шрифти, AI-референси та підготовка до сеансу.
+      </p>
 
       <div class="paths">
-        <div class="path" onclick="goTo('/client.html')">
-          <div>
-            <div class="mask">🦊</div>
-            <h2>I’m a Client</h2>
-            <p>Sketches, tattoo preview, booking and personal tattoo experience.</p>
-          </div>
-          <a class="btn" href="/client.html">Enter Studio</a>
+        <div class="card" onclick="location.href='/client.html'">
+          <div class="icon">🦊</div>
+          <h2>Я клієнт</h2>
+          <p>
+            Переглянь ескізи, стиль майстра, приклади робіт,
+            примірку тату та швидкий запис на сеанс.
+          </p>
+          <a class="btn" href="/client.html">Увійти в студію →</a>
         </div>
 
-        <div class="path" onclick="goTo('/artist.html')">
-          <div>
-            <div class="mask">👹</div>
-            <h2>I’m a Tattoo Artist</h2>
-            <p>Stencil generator, fonts, A4 split, AI references and workflow tools.</p>
-          </div>
-          <a class="btn" href="/artist.html">Enter Workshop</a>
+        <div class="card" onclick="location.href='/artist.html'">
+          <div class="icon">👹</div>
+          <h2>Я майстер</h2>
+          <p>
+            Інструменти для роботи: генерація стенсілу, підбір шрифтів,
+            розбиття рукава на A4 та AI-помічник.
+          </p>
+          <a class="btn dark" href="/artist.html">Увійти в майстерню →</a>
         </div>
       </div>
 
       <div class="auth">
-        <span>Already have an account? <a href="/login.html">Login</a></span>
-        <span>New here? <a href="/register.html">Create account</a></span>
+        Немає акаунта? <a href="/register.html">Створити профіль</a>
       </div>
-
-      <div class="footer">Dark tattoo tools by YYOKAI</div>
     </section>
   </main>
-
-  <script>
-    function goTo(url) {
-      window.location.href = url;
-    }
-  </script>
 </body>
 </html>
