@@ -12,9 +12,9 @@
       min-height: 100vh;
       font-family: Inter, Arial, sans-serif;
       background:
-        radial-gradient(circle at 20% 10%, rgba(255,0,60,.18), transparent 30%),
-        radial-gradient(circle at 80% 80%, rgba(130,0,255,.12), transparent 35%),
-        #050506;
+        radial-gradient(circle at 20% 10%, rgba(255, 23, 79, .18), transparent 32%),
+        radial-gradient(circle at 80% 78%, rgba(155, 44, 255, .18), transparent 36%),
+        linear-gradient(135deg, #050506, #0b0710, #050506);
       color: #fff;
       overflow-x: hidden;
     }
@@ -23,9 +23,10 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      opacity: .05;
-      background-image: linear-gradient(90deg, #fff 1px, transparent 1px),
-                        linear-gradient(#fff 1px, transparent 1px);
+      opacity: .045;
+      background-image:
+        linear-gradient(90deg, #fff 1px, transparent 1px),
+        linear-gradient(#fff 1px, transparent 1px);
       background-size: 42px 42px;
       mask-image: radial-gradient(circle, black, transparent 75%);
     }
@@ -39,7 +40,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 10;
+      z-index: 20;
     }
 
     .lang {
@@ -48,23 +49,24 @@
       padding: 6px;
       border: 1px solid rgba(255,255,255,.1);
       border-radius: 999px;
-      background: rgba(255,255,255,.04);
+      background: rgba(255,255,255,.045);
       backdrop-filter: blur(18px);
     }
 
     .lang button {
       border: none;
       background: transparent;
-      color: #888;
-      padding: 8px 12px;
+      color: #8d8d8d;
+      padding: 8px 13px;
       border-radius: 999px;
       cursor: pointer;
-      font-weight: 600;
+      font-weight: 700;
+      transition: .2s;
     }
 
     .lang button.active {
       background: #fff;
-      color: #050506;
+      color: #060607;
     }
 
     .login {
@@ -78,7 +80,7 @@
 
     .hero {
       min-height: 100vh;
-      padding: 110px 24px 40px;
+      padding: 112px 24px 44px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -94,31 +96,35 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 26px;
+      margin-bottom: 28px;
       padding: 10px 16px;
       border: 1px solid rgba(255,255,255,.12);
       border-radius: 999px;
-      background: rgba(255,255,255,.04);
-      color: #aaa;
+      background: rgba(255,255,255,.045);
+      color: #b8b8b8;
       backdrop-filter: blur(20px);
+      font-size: 14px;
     }
 
     .dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #ff1744;
-      box-shadow: 0 0 18px #ff1744;
+      background: #ff174f;
+      box-shadow: 0 0 18px #ff174f;
     }
 
     .glitch {
       position: relative;
-      font-size: clamp(56px, 12vw, 150px);
-      font-weight: 900;
+      font-size: clamp(58px, 12vw, 160px);
+      font-weight: 950;
       letter-spacing: .12em;
       line-height: .9;
-      margin-bottom: 22px;
-      text-shadow: 0 0 45px rgba(255,0,50,.25);
+      margin-bottom: 24px;
+      color: #f6f6f6;
+      text-shadow:
+        0 0 18px rgba(255, 22, 88, .45),
+        0 0 55px rgba(150, 40, 255, .28);
     }
 
     .glitch::before,
@@ -127,41 +133,41 @@
       position: absolute;
       inset: 0;
       pointer-events: none;
-      opacity: .7;
+      opacity: .82;
     }
 
     .glitch::before {
-      color: #ff003c;
-      transform: translate(3px, -2px);
-      clip-path: inset(0 0 55% 0);
-      animation: glitchTop 2.2s infinite linear alternate-reverse;
+      color: #ff174f;
+      transform: translate(4px, -2px);
+      clip-path: inset(0 0 58% 0);
+      animation: glitchTop 1.7s infinite linear alternate-reverse;
     }
 
     .glitch::after {
-      color: #00e5ff;
-      transform: translate(-3px, 2px);
-      clip-path: inset(55% 0 0 0);
-      animation: glitchBottom 1.8s infinite linear alternate-reverse;
+      color: #9b2cff;
+      transform: translate(-4px, 2px);
+      clip-path: inset(54% 0 0 0);
+      animation: glitchBottom 2.1s infinite linear alternate-reverse;
     }
 
     @keyframes glitchTop {
       0% { transform: translate(2px, -2px); }
-      30% { transform: translate(-3px, 1px); }
-      60% { transform: translate(4px, -1px); }
+      28% { transform: translate(-4px, 1px); }
+      55% { transform: translate(5px, -1px); }
       100% { transform: translate(1px, -3px); }
     }
 
     @keyframes glitchBottom {
       0% { transform: translate(-2px, 2px); }
-      30% { transform: translate(3px, -1px); }
-      60% { transform: translate(-4px, 2px); }
+      33% { transform: translate(4px, -1px); }
+      66% { transform: translate(-5px, 2px); }
       100% { transform: translate(-1px, 3px); }
     }
 
     .title {
       max-width: 760px;
-      margin: 0 auto 44px;
-      color: #b8b8b8;
+      margin: 0 auto 46px;
+      color: #b6b6b6;
       font-size: clamp(17px, 2vw, 22px);
       line-height: 1.55;
     }
@@ -179,8 +185,7 @@
       padding: 34px;
       border: 1px solid rgba(255,255,255,.1);
       border-radius: 34px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.025));
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.025));
       backdrop-filter: blur(24px);
       text-align: left;
       overflow: hidden;
@@ -192,7 +197,7 @@
       content: "";
       position: absolute;
       inset: -1px;
-      background: radial-gradient(circle at top right, rgba(255,0,60,.35), transparent 38%);
+      background: radial-gradient(circle at top right, rgba(255,23,79,.34), transparent 38%);
       opacity: 0;
       transition: .35s;
     }
@@ -230,7 +235,7 @@
       position: relative;
       z-index: 1;
       max-width: 430px;
-      color: #a9a9a9;
+      color: #aaa;
       line-height: 1.6;
       margin-bottom: 34px;
     }
@@ -250,9 +255,9 @@
     }
 
     .btn.dark {
-      background: #ff1744;
+      background: linear-gradient(135deg, #ff174f, #9b2cff);
       color: #fff;
-      box-shadow: 0 0 30px rgba(255,23,68,.35);
+      box-shadow: 0 0 34px rgba(255,23,79,.28);
     }
 
     .auth {
@@ -280,54 +285,97 @@
 
   <header>
     <div class="lang">
-      <button class="active">UA</button>
-      <button>EN</button>
-      <button>ES</button>
+      <button class="active" onclick="setLang('uk')">UA</button>
+      <button onclick="setLang('en')">EN</button>
     </div>
 
-    <a class="login" href="/login.html">Увійти</a>
+    <a class="login" href="/login.html" data-i18n="login">Увійти</a>
   </header>
 
   <main class="hero">
     <section class="wrap">
       <div class="badge">
         <span class="dot"></span>
-        AI tattoo workflow platform
+        <span data-i18n="badge">Інструменти для тату-майстрів нового покоління</span>
       </div>
 
       <h1 class="glitch">YYOKAI</h1>
 
-      <p class="title">
+      <p class="title" data-i18n="title">
         Обери свій шлях. Простір для клієнтів і робоча панель для тату-майстрів:
-        стенсіли, шрифти, AI-референси та підготовка до сеансу.
+        стенсіли, шрифти, референси та підготовка до сеансу.
       </p>
 
       <div class="paths">
         <div class="card" onclick="location.href='/client.html'">
           <div class="icon">🦊</div>
-          <h2>Я клієнт</h2>
-          <p>
+          <h2 data-i18n="client">Я клієнт</h2>
+          <p data-i18n="clientText">
             Переглянь ескізи, стиль майстра, приклади робіт,
             примірку тату та швидкий запис на сеанс.
           </p>
-          <a class="btn" href="/client.html">Увійти в студію →</a>
+          <a class="btn" href="/client.html" data-i18n="clientBtn">Увійти в студію →</a>
         </div>
 
         <div class="card" onclick="location.href='/artist.html'">
           <div class="icon">👹</div>
-          <h2>Я майстер</h2>
-          <p>
+          <h2 data-i18n="artist">Я майстер</h2>
+          <p data-i18n="artistText">
             Інструменти для роботи: генерація стенсілу, підбір шрифтів,
-            розбиття рукава на A4 та AI-помічник.
+            розбиття рукава на A4 та помічник для підготовки.
           </p>
-          <a class="btn dark" href="/artist.html">Увійти в майстерню →</a>
+          <a class="btn dark" href="/artist.html" data-i18n="artistBtn">Увійти в майстерню →</a>
         </div>
       </div>
 
       <div class="auth">
-        Немає акаунта? <a href="/register.html">Створити профіль</a>
+        <a href="/register.html" data-i18n="register">Немає акаунта? Створити профіль</a>
       </div>
     </section>
   </main>
+
+  <script>
+    const text = {
+      uk: {
+        badge: "Інструменти для тату-майстрів нового покоління",
+        title: "Обери свій шлях. Простір для клієнтів і робоча панель для тату-майстрів: стенсіли, шрифти, референси та підготовка до сеансу.",
+        client: "Я клієнт",
+        clientText: "Переглянь ескізи, стиль майстра, приклади робіт, примірку тату та швидкий запис на сеанс.",
+        clientBtn: "Увійти в студію →",
+        artist: "Я майстер",
+        artistText: "Інструменти для роботи: генерація стенсілу, підбір шрифтів, розбиття рукава на A4 та помічник для підготовки.",
+        artistBtn: "Увійти в майстерню →",
+        login: "Увійти",
+        register: "Немає акаунта? Створити профіль"
+      },
+      en: {
+        badge: "Next-generation tools for tattoo artists",
+        title: "Choose your path. A client space and a professional dashboard for tattoo artists: stencils, fonts, references and session preparation.",
+        client: "I’m a client",
+        clientText: "Explore sketches, artist style, tattoo previews and book your session faster.",
+        clientBtn: "Enter studio →",
+        artist: "I’m an artist",
+        artistText: "Work tools: stencil generation, font selection, A4 sleeve splitting and preparation assistant.",
+        artistBtn: "Enter workshop →",
+        login: "Log in",
+        register: "New here? Create profile"
+      }
+    };
+
+    function setLang(lang) {
+      document.documentElement.lang = lang;
+
+      Object.keys(text[lang]).forEach(key => {
+        const el = document.querySelector(`[data-i18n="${key}"]`);
+        if (el) el.textContent = text[lang][key];
+      });
+
+      document.querySelectorAll(".lang button").forEach(btn => {
+        btn.classList.remove("active");
+      });
+
+      document.querySelector(`[onclick="setLang('${lang}')"]`).classList.add("active");
+    }
+  </script>
 </body>
 </html>
