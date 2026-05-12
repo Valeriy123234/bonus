@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YYOKAI</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(180, 0, 0, 0.25), transparent 35%),
+        linear-gradient(135deg, #050505, #111, #050505);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 980px;
+      padding: 40px 28px;
+      border: 1px solid rgba(255, 0, 0, 0.25);
+      border-radius: 28px;
+      background: rgba(10, 10, 10, 0.78);
+      box-shadow: 0 0 60px rgba(180, 0, 0, 0.18);
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 48px;
+      letter-spacing: 8px;
+      font-weight: 800;
+      color: #ff1a1a;
+      text-shadow: 0 0 18px rgba(255, 0, 0, 0.6);
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      color: #aaa;
+      margin-bottom: 34px;
+      font-size: 16px;
+    }
+
+    .paths {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
+      margin-bottom: 30px;
+    }
+
+    .path {
+      min-height: 260px;
+      padding: 28px;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: linear-gradient(160deg, rgba(255, 0, 0, 0.14), rgba(255, 255, 255, 0.03));
+      cursor: pointer;
+      transition: 0.25s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .path:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255, 0, 0, 0.65);
+      box-shadow: 0 0 35px rgba(255, 0, 0, 0.22);
+    }
+
+    .mask {
+      font-size: 54px;
+      margin-bottom: 18px;
+    }
+
+    .path h2 {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .path p {
+      color: #bdbdbd;
+      line-height: 1.5;
+      font-size: 15px;
+    }
+
+    .btn {
+      margin-top: 22px;
+      display: inline-block;
+      padding: 13px 24px;
+      border-radius: 999px;
+      background: #d60000;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      background: #ff1a1a;
+    }
+
+    .auth {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      color: #999;
+      font-size: 14px;
+    }
+
+    .auth a {
+      color: #ff3b3b;
+      text-decoration: none;
+    }
+
+    .auth a:hover {
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 24px;
+      color: #555;
+      font-size: 12px;
+    }
+
+    @media (max-width: 720px) {
+      .logo {
+        font-size: 36px;
+        letter-spacing: 5px;
+      }
+
+      .paths {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 32px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="card">
+      <div class="logo">YYOKAI</div>
+      <p class="subtitle">Choose your path</p>
+
+      <div class="paths">
+        <div class="path" onclick="goTo('/client.html')">
+          <div>
+            <div class="mask">🦊</div>
+            <h2>I’m a Client</h2>
+            <p>Sketches, tattoo preview, booking and personal tattoo experience.</p>
+          </div>
+          <a class="btn" href="/client.html">Enter Studio</a>
+        </div>
+
+        <div class="path" onclick="goTo('/artist.html')">
+          <div>
+            <div class="mask">👹</div>
+            <h2>I’m a Tattoo Artist</h2>
+            <p>Stencil generator, fonts, A4 split, AI references and workflow tools.</p>
+          </div>
+          <a class="btn" href="/artist.html">Enter Workshop</a>
+        </div>
+      </div>
+
+      <div class="auth">
+        <span>Already have an account? <a href="/login.html">Login</a></span>
+        <span>New here? <a href="/register.html">Create account</a></span>
+      </div>
+
+      <div class="footer">Dark tattoo tools by YYOKAI</div>
+    </section>
+  </main>
+
+  <script>
+    function goTo(url) {
+      window.location.href = url;
+    }
+  </script>
+</body>
+</html>
