@@ -8,6 +8,8 @@
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
 
+    :root{--accent:#e5092f}
+
     html,body{
       min-height:100%;
       background:#000;
@@ -51,12 +53,10 @@
       backdrop-filter:blur(22px);
     }
 
-    .brand{
-      margin-bottom:34px;
-    }
+    .brand{margin-bottom:34px}
 
     .seal{
-      color:#e5092f;
+      color:var(--accent);
       font-weight:900;
       margin-bottom:8px;
       text-shadow:0 0 18px rgba(229,9,47,.75);
@@ -138,7 +138,14 @@
       border-radius:14px;
       background:rgba(255,255,255,.06);
       color:#fff;
-      font-size:20px;
+      font-size:22px;
+      cursor:pointer;
+      transition:.25s;
+    }
+
+    .menu-btn.open{
+      background:rgba(229,9,47,.18);
+      transform:rotate(90deg);
     }
 
     .page-title h1{
@@ -193,9 +200,7 @@
       font-size:18px;
     }
 
-    .profile{
-      position:relative;
-    }
+    .profile{position:relative}
 
     .avatar{
       width:44px;
@@ -231,9 +236,7 @@
       display:none;
     }
 
-    .profile-menu.open{
-      display:block;
-    }
+    .profile-menu.open{display:block}
 
     .profile-name{
       font-weight:900;
@@ -246,9 +249,7 @@
       margin-bottom:14px;
     }
 
-    .balance strong{
-      color:#fff;
-    }
+    .balance strong{color:#fff}
 
     .profile-menu button,
     .profile-menu a{
@@ -372,6 +373,8 @@
     .modal{
       width:100%;
       max-width:520px;
+      max-height:90vh;
+      overflow:auto;
       border-radius:32px;
       border:1px solid rgba(255,255,255,.12);
       background:#050505;
@@ -386,9 +389,7 @@
       margin-bottom:20px;
     }
 
-    .modal h2{
-      font-size:24px;
-    }
+    .modal h2{font-size:24px}
 
     .close{
       width:40px;
@@ -423,32 +424,44 @@
       outline:none;
     }
 
-    .color-row{
+    .color-picker-box{
       display:flex;
-      gap:10px;
+      align-items:center;
+      gap:14px;
     }
 
-    .color-dot{
-      width:34px;
-      height:34px;
+    .color-picker-box input[type="color"]{
+      width:64px;
+      height:64px;
+      padding:0;
       border-radius:50%;
-      border:1px solid rgba(255,255,255,.2);
+      overflow:hidden;
+      cursor:pointer;
+      border:2px solid rgba(255,255,255,.18);
+      background:transparent;
+    }
+
+    #colorValue{
+      color:#aaa;
+      font-size:14px;
+      font-weight:800;
+    }
+
+    .small-btn{
+      margin-top:12px;
+      padding:12px 16px;
+      border:0;
+      border-radius:999px;
+      background:var(--accent);
+      color:#fff;
+      font-weight:900;
       cursor:pointer;
     }
 
-    .c-red{background:#e5092f}
-    .c-white{background:#f5f0eb}
-    .c-purple{background:#6b2cff}
-    .c-black{background:#111}
-
-    audio{
-      display:none;
-    }
+    audio{display:none}
 
     @media(max-width:980px){
-      .app{
-        grid-template-columns:1fr;
-      }
+      .app{grid-template-columns:1fr}
 
       .sidebar{
         position:fixed;
@@ -459,52 +472,32 @@
         transition:.25s;
       }
 
-      .sidebar.open{
-        left:0;
-      }
+      .sidebar.open{left:0}
 
-      .menu-btn{
-        display:block;
-      }
+      .menu-btn{display:block}
 
-      .tool-grid{
-        grid-template-columns:repeat(2,1fr);
-      }
+      .tool-grid{grid-template-columns:repeat(2,1fr)}
     }
 
     @media(max-width:640px){
-      .main{
-        padding:14px;
-      }
+      .main{padding:14px}
 
       .topbar{
         border-radius:24px;
         align-items:flex-start;
       }
 
-      .top-actions{
-        gap:7px;
-      }
+      .top-actions{gap:7px}
 
-      .lang button{
-        padding:7px 9px;
-      }
+      .lang button{padding:7px 9px}
 
-      .page-title p{
-        display:none;
-      }
+      .page-title p{display:none}
 
-      .tool-grid{
-        grid-template-columns:1fr;
-      }
+      .tool-grid{grid-template-columns:1fr}
 
-      .hero-card{
-        padding:22px;
-      }
+      .hero-card{padding:22px}
 
-      .tool{
-        min-height:165px;
-      }
+      .tool{min-height:165px}
 
       .profile-menu{
         right:-4px;
@@ -529,21 +522,21 @@
       <div class="side-title" data-i18n="workspace">Workspace</div>
 
       <nav class="nav">
-        <button class="active" data-i18n="navDashboard">Dashboard</button>
-        <button data-i18n="navStencil">AI Stencil</button>
-        <button data-i18n="navSplit">A4 Split</button>
-        <button data-i18n="navFonts">Fonts</button>
-        <button data-i18n="navReferences">References</button>
-        <button data-i18n="navSessions">Sessions</button>
-        <button data-i18n="navUploads">Uploads</button>
-        <button data-i18n="navBilling">Billing</button>
+        <button class="active" onclick="go('/artist-dashboard.html')" data-i18n="navDashboard">Dashboard</button>
+        <button onclick="go('/stencil.html')" data-i18n="navStencil">AI Stencil</button>
+        <button onclick="go('/split.html')" data-i18n="navSplit">A4 Split</button>
+        <button onclick="go('/fonts.html')" data-i18n="navFonts">Fonts</button>
+        <button onclick="go('/references.html')" data-i18n="navReferences">References</button>
+        <button onclick="go('/sessions.html')" data-i18n="navSessions">Sessions</button>
+        <button onclick="go('/uploads.html')" data-i18n="navUploads">Uploads</button>
+        <button onclick="go('/billing.html')" data-i18n="navBilling">Billing</button>
       </nav>
     </aside>
 
     <main class="main">
       <header class="topbar">
         <div class="top-left">
-          <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+          <button class="menu-btn" id="menuBtn" onclick="toggleSidebar()">☰</button>
 
           <div class="page-title">
             <h1 data-i18n="title">Майстерня</h1>
@@ -587,38 +580,38 @@
       </section>
 
       <section class="tool-grid">
-        <article class="tool" onclick="location.href='/stencil.html'">
+        <article class="tool" onclick="go('/stencil.html')">
           <span class="tag">CORE</span>
           <div class="tool-icon">🧿</div>
           <h3 data-i18n="toolStencil">AI Stencil</h3>
           <p data-i18n="toolStencilText">Завантаж фото та отримай чистий stencil для роботи.</p>
         </article>
 
-        <article class="tool" onclick="location.href='/split.html'">
+        <article class="tool" onclick="go('/split.html')">
           <div class="tool-icon">📄</div>
           <h3 data-i18n="toolSplit">A4 Sleeve Split</h3>
           <p data-i18n="toolSplitText">Розбий великий ескіз на листи A4 для друку.</p>
         </article>
 
-        <article class="tool" onclick="location.href='/fonts.html'">
+        <article class="tool" onclick="go('/fonts.html')">
           <div class="tool-icon">字</div>
           <h3 data-i18n="toolFonts">Tattoo Fonts</h3>
           <p data-i18n="toolFontsText">Підбір написів, шрифтів і швидких варіантів для клієнта.</p>
         </article>
 
-        <article class="tool" onclick="location.href='/references.html'">
+        <article class="tool" onclick="go('/references.html')">
           <div class="tool-icon">狐</div>
           <h3 data-i18n="toolRefs">AI References</h3>
           <p data-i18n="toolRefsText">Ідеї, образи та референси під твій стиль.</p>
         </article>
 
-        <article class="tool" onclick="location.href='/sessions.html'">
+        <article class="tool" onclick="go('/sessions.html')">
           <div class="tool-icon">⛩</div>
           <h3 data-i18n="toolSessions">Sessions</h3>
           <p data-i18n="toolSessionsText">Підготовка до сеансу, файли, нотатки та клієнти.</p>
         </article>
 
-        <article class="tool" onclick="location.href='/uploads.html'">
+        <article class="tool" onclick="go('/uploads.html')">
           <div class="tool-icon">墨</div>
           <h3 data-i18n="toolUploads">Uploads</h3>
           <p data-i18n="toolUploadsText">Твої зображення, стенсіли, PDF та готові матеріали.</p>
@@ -664,13 +657,16 @@
       </div>
 
       <div class="setting-row">
-        <label data-i18n="palette">Палітра</label>
-        <div class="color-row">
-          <div class="color-dot c-red" onclick="setAccent('#e5092f')"></div>
-          <div class="color-dot c-white" onclick="setAccent('#f5f0eb')"></div>
-          <div class="color-dot c-purple" onclick="setAccent('#6b2cff')"></div>
-          <div class="color-dot c-black" onclick="setAccent('#111')"></div>
+        <label data-i18n="palette">Палітра / фон</label>
+
+        <div class="color-picker-box">
+          <input id="colorPicker" type="color" value="#e5092f" oninput="setCustomAccent(this.value)">
+          <span id="colorValue">#e5092f</span>
         </div>
+
+        <button class="small-btn" onclick="applyGradientBackground()" data-i18n="applyGradient">
+          Застосувати градієнт
+        </button>
       </div>
     </div>
   </section>
@@ -678,6 +674,7 @@
   <script>
     let currentLang = "uk";
     let musicPlaying = false;
+    let selectedColor = "#e5092f";
 
     const text = {
       uk:{
@@ -717,7 +714,8 @@
         changePassword:"Новий пароль",
         musicSelect:"Музика",
         backgroundUpload:"Фон кабінету",
-        palette:"Палітра"
+        palette:"Палітра / фон",
+        applyGradient:"Застосувати градієнт"
       },
       en:{
         workspace:"Workspace",
@@ -756,9 +754,14 @@
         changePassword:"New password",
         musicSelect:"Music",
         backgroundUpload:"Dashboard background",
-        palette:"Palette"
+        palette:"Palette / background",
+        applyGradient:"Apply gradient"
       }
     };
+
+    function go(url){
+      location.href = url;
+    }
 
     function setLang(lang){
       currentLang = lang;
@@ -774,7 +777,13 @@
     }
 
     function toggleSidebar(){
-      document.getElementById("sidebar").classList.toggle("open");
+      const sidebar = document.getElementById("sidebar");
+      const menuBtn = document.getElementById("menuBtn");
+
+      sidebar.classList.toggle("open");
+      menuBtn.classList.toggle("open");
+
+      menuBtn.textContent = sidebar.classList.contains("open") ? "×" : "☰";
     }
 
     function toggleProfile(){
@@ -831,9 +840,17 @@
       reader.readAsDataURL(file);
     }
 
-    function setAccent(color){
+    function setCustomAccent(color){
+      selectedColor = color;
+      document.getElementById("colorValue").textContent = color;
       document.documentElement.style.setProperty("--accent", color);
-      alert("Accent selected: " + color);
+    }
+
+    function applyGradientBackground(){
+      document.body.style.background = `
+        radial-gradient(circle at 50% 0%, ${selectedColor}55, transparent 32%),
+        linear-gradient(to bottom, #000, #080203 55%, #000)
+      `;
     }
 
     function addBalance(){
@@ -843,6 +860,19 @@
     function logout(){
       location.href = "/artist-auth.html";
     }
+
+    /*
+      Для будущего billing:
+
+      Firestore users/{uid}:
+      balance: 0
+      plan: "free"
+      billingCustomerId: null
+      lastPaymentId: null
+
+      После оплаты backend/webhook должен обновлять users/{uid}.balance
+      Потом тут просто подгружаешь баланс и вставляешь в #balanceValue.
+    */
 
     document.addEventListener("click",function(e){
       const profile = document.querySelector(".profile");
