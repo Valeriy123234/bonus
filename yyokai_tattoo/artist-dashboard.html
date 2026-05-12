@@ -23,32 +23,39 @@ body:before{
   position:fixed;inset:0;pointer-events:none;color:rgba(255,255,255,.015);
   font-size:80px;letter-spacing:30px;line-height:1.5;transform:rotate(-12deg) scale(1.15)
 }
-.hidden{display:none!important}
 button{cursor:pointer}
-.app{position:relative;z-index:2;min-height:100vh;display:grid;grid-template-columns:92px 1fr}
+.app{position:relative;z-index:2;min-height:100vh;display:grid;grid-template-columns:260px 1fr}
 .rail{
-  min-height:100vh;padding:18px 12px;border-right:1px solid rgba(255,255,255,.08);
-  background:rgba(0,0,0,.72);backdrop-filter:blur(24px);
-  display:flex;flex-direction:column;align-items:center;gap:18px
+  min-height:100vh;padding:22px 16px;border-right:1px solid rgba(255,255,255,.08);
+  background:rgba(0,0,0,.74);backdrop-filter:blur(24px);
 }
+.rail-head{display:flex;align-items:center;gap:12px;margin-bottom:34px}
 .seal{color:var(--accent);font-size:24px;text-shadow:0 0 18px rgba(229,9,47,.75)}
-.logo-mini{writing-mode:vertical-rl;font-weight:950;letter-spacing:.16em;color:#f5f0eb;font-size:13px}
-.nav{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.logo-mini{font-weight:950;letter-spacing:.16em;color:#f5f0eb;font-size:18px}
+.nav{display:flex;flex-direction:column;gap:10px}
 .nav button{
-  width:58px;height:58px;border-radius:20px;border:1px solid rgba(255,255,255,.1);
-  background:rgba(255,255,255,.05);color:#aaa;font-size:22px;transition:.2s
+  width:100%;height:54px;border-radius:18px;border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.05);color:#aaa;font-size:15px;transition:.2s;
+  display:flex;align-items:center;gap:12px;padding:0 14px;font-weight:900;text-align:left
 }
+.nav button i{font-style:normal;font-size:20px;width:25px;text-align:center}
 .nav button.active,.nav button:hover{background:rgba(229,9,47,.16);color:#fff;border-color:rgba(229,9,47,.35)}
 .main{padding:18px;min-width:0}
 .topbar{
+  position:sticky;top:0;z-index:30;
   display:flex;justify-content:space-between;align-items:center;gap:12px;
   padding:14px 16px;margin-bottom:18px;border-radius:28px;
-  background:rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.09);backdrop-filter:blur(24px)
+  background:rgba(0,0,0,.76);border:1px solid rgba(255,255,255,.09);backdrop-filter:blur(24px)
 }
 .brand{display:flex;align-items:center;gap:12px}
 .brand h1{letter-spacing:.16em;font-size:22px}
 .brand p{font-size:13px;color:#777;margin-top:3px}
-.menu-mobile{display:none}
+.menu-mobile{
+  display:none;width:44px;height:44px;min-width:44px;
+  border-radius:15px;border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.07);color:#fff;font-size:26px;line-height:1;z-index:90
+}
+.menu-mobile.open{background:rgba(229,9,47,.2);border-color:rgba(229,9,47,.45)}
 .actions{display:flex;align-items:center;gap:10px}
 .lang{display:flex;gap:5px;padding:5px;border-radius:999px;background:rgba(255,255,255,.06)}
 .lang button{border:0;background:transparent;color:#888;padding:8px 11px;border-radius:999px;font-weight:900}
@@ -57,15 +64,16 @@ button{cursor:pointer}
   width:42px;height:42px;border-radius:15px;border:1px solid rgba(255,255,255,.12);
   background:rgba(255,255,255,.055);color:#fff;font-size:18px
 }
-.profile{position:relative}
+.profile{position:relative;z-index:60}
 .avatar{
   width:44px;height:44px;border-radius:50%;display:grid;place-items:center;overflow:hidden;
-  background:#250008;border:1px solid rgba(255,255,255,.15);box-shadow:0 0 22px rgba(229,9,47,.24)
+  background:#250008;border:1px solid rgba(255,255,255,.15);box-shadow:0 0 22px rgba(229,9,47,.24);position:relative;z-index:61
 }
 .avatar img{width:100%;height:100%;object-fit:cover}
 .profile-menu{
-  display:none;position:absolute;right:0;top:56px;width:280px;padding:16px;border-radius:24px;
-  background:rgba(0,0,0,.94);border:1px solid rgba(255,255,255,.12);z-index:10
+  display:none;position:absolute;right:0;top:56px;width:310px;padding:16px;border-radius:24px;
+  background:rgba(0,0,0,.96);border:1px solid rgba(255,255,255,.12);z-index:100;
+  box-shadow:0 30px 90px rgba(0,0,0,.65)
 }
 .profile-menu.open{display:block}
 .profile-name{font-weight:900}.profile-email{font-size:12px;color:#777;margin:6px 0 12px}
@@ -76,6 +84,15 @@ button{cursor:pointer}
 }
 .profile-menu button:hover,.profile-menu a:hover{background:rgba(255,255,255,.06);color:#fff}
 
+.player{
+  margin:14px 0;padding:12px;border-radius:18px;background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.08);display:grid;grid-template-columns:52px 1fr auto;gap:12px;align-items:center
+}
+.cover{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,#e5092f,#111);display:grid;place-items:center}
+.track-title{font-weight:900;font-size:14px}.track-sub{color:#777;font-size:12px;margin-top:3px}
+.music-controls{display:flex;gap:7px}
+.music-controls button{width:34px;height:34px;border-radius:12px;border:0;background:rgba(255,255,255,.08);color:#fff;text-align:center;padding:0}
+
 .hero{
   padding:28px;border-radius:34px;margin-bottom:18px;border:1px solid rgba(255,255,255,.1);
   background:radial-gradient(circle at 85% 15%,rgba(229,9,47,.22),transparent 34%),linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.018));
@@ -83,8 +100,7 @@ button{cursor:pointer}
 }
 .hero h2{font-size:clamp(30px,6vw,56px);line-height:1;margin-bottom:12px}
 .hero p{color:#aaa;line-height:1.65;max-width:760px}
-
-.grid-main{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;margin-bottom:16px}
+.grid-main{display:grid;grid-template-columns:1.05fr .95fr;gap:16px;margin-bottom:16px}
 .card,.tool,.modal{
   border:1px solid rgba(255,255,255,.1);
   background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.018));
@@ -97,14 +113,27 @@ button{cursor:pointer}
   width:100%;padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.12);
   background:rgba(0,0,0,.45);color:#fff;outline:none
 }
+.field{display:flex;flex-direction:column;gap:7px}
+.field label{font-size:12px;color:#888;font-weight:900}
 .client-form textarea{grid-column:1/-1;min-height:90px;resize:vertical}
 .red-btn{border:0;border-radius:999px;padding:14px 18px;background:#e5092f;color:#fff;font-weight:950;box-shadow:0 0 26px rgba(229,9,47,.28)}
 .ghost-btn{border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:14px 18px;background:rgba(255,255,255,.055);color:#fff;font-weight:900}
-.list{display:flex;flex-direction:column;gap:10px;max-height:360px;overflow:auto}
-.item{padding:14px;border-radius:18px;background:rgba(0,0,0,.36);border:1px solid rgba(255,255,255,.08)}
-.item-top{display:flex;justify-content:space-between;gap:10px;margin-bottom:6px}
-.item strong{color:#fff}.item span,.item p{color:#999;font-size:13px;line-height:1.45}
-.item button{margin-top:10px;border:0;background:rgba(229,9,47,.14);color:#fff;border-radius:999px;padding:8px 12px}
+
+.booking-view{min-height:285px;display:grid;grid-template-rows:auto 1fr auto;gap:12px}
+.booking-card{
+  min-height:205px;padding:18px;border-radius:24px;background:rgba(0,0,0,.36);
+  border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;justify-content:space-between
+}
+.booking-top{display:flex;justify-content:space-between;gap:12px;margin-bottom:10px}
+.booking-top strong{font-size:20px}.booking-top span{color:#999;font-size:13px}
+.booking-card p{color:#aaa;line-height:1.55;margin-top:8px}
+.booking-meta{color:#888;font-size:13px}
+.booking-nav{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.booking-nav button{
+  width:44px;height:38px;border-radius:14px;border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.055);color:#fff;font-size:18px
+}
+.counter{color:#777;font-size:13px}
 
 .tools{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .tool{min-height:165px;padding:18px;border-radius:26px;transition:.25s;cursor:pointer}
@@ -112,16 +141,7 @@ button{cursor:pointer}
 .tool-icon{width:50px;height:50px;border-radius:18px;display:grid;place-items:center;background:#070707;border:1px solid rgba(255,255,255,.12);font-size:23px;margin-bottom:18px}
 .tool h3{margin-bottom:8px}.tool p{font-size:13px;color:#999;line-height:1.45}
 
-.music-panel{
-  display:flex;gap:12px;align-items:center;padding:12px;border-radius:18px;
-  background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08);margin-top:12px
-}
-.cover{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,#e5092f,#111);display:grid;place-items:center}
-.track-title{font-weight:900}.track-sub{color:#777;font-size:12px}
-.music-controls{margin-left:auto;display:flex;gap:8px}
-.music-controls button{width:38px;height:38px;border-radius:14px;border:0;background:rgba(255,255,255,.08);color:#fff}
-
-.settings{display:none;position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.74);backdrop-filter:blur(10px);padding:20px;place-items:center}
+.settings{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.74);backdrop-filter:blur(10px);padding:20px;place-items:center}
 .settings.open{display:grid}
 .modal{width:100%;max-width:560px;max-height:90vh;overflow:auto;padding:24px;border-radius:32px;background:#050505}
 .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
@@ -136,13 +156,17 @@ audio{display:none}
 
 @media(max-width:980px){
   .app{grid-template-columns:1fr}
-  .rail{position:fixed;left:-94px;top:0;width:92px;z-index:40;transition:.25s}.rail.open{left:0}
+  .rail{
+    position:fixed;left:-280px;top:0;width:260px;z-index:80;transition:.25s;
+    box-shadow:30px 0 80px rgba(0,0,0,.55)
+  }
+  .rail.open{left:0}
   .menu-mobile{display:block}
   .grid-main{grid-template-columns:1fr}.tools{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:640px){
   .main{padding:12px}.brand p{display:none}.grid-main{gap:12px}.tools{grid-template-columns:1fr}
-  .client-form{grid-template-columns:1fr}.hero{padding:22px}
+  .client-form{grid-template-columns:1fr}.hero{padding:22px}.profile-menu{right:-4px;width:285px}
 }
 </style>
 </head>
@@ -152,21 +176,25 @@ audio{display:none}
 
 <section class="app">
   <aside class="rail" id="rail">
-    <div class="seal">妖</div>
-    <div class="logo-mini">YYOKAI</div>
+    <div class="rail-head">
+      <div class="seal">妖</div>
+      <div class="logo-mini">YYOKAI</div>
+    </div>
+
     <nav class="nav">
-      <button class="active" onclick="showSection('home')">⌂</button>
-      <button onclick="showSection('clients')">🗓</button>
-      <button onclick="go('/stencil.html')">🧿</button>
-      <button onclick="go('/split.html')">📄</button>
-      <button onclick="go('/billing.html')">¥</button>
+      <button class="active" onclick="showSection('home')"><i>⌂</i><span data-i18n="navHome">Головна</span></button>
+      <button onclick="showSection('clients')"><i>🗓</i><span data-i18n="navClients">Записи</span></button>
+      <button onclick="go('/stencil.html')"><i>🧿</i><span data-i18n="navStencil">Стенсіл</span></button>
+      <button onclick="go('/split.html')"><i>📄</i><span data-i18n="navSplit">A4 друк</span></button>
+      <button onclick="go('/uploads.html')"><i>墨</i><span data-i18n="navFiles">Файли</span></button>
+      <button onclick="go('/billing.html')"><i>¥</i><span data-i18n="navBilling">Оплата</span></button>
     </nav>
   </aside>
 
   <main class="main">
     <header class="topbar">
       <div class="brand">
-        <button class="icon-btn menu-mobile" id="menuBtn" onclick="toggleRail()">☰</button>
+        <button class="menu-mobile" id="menuBtn" onclick="toggleRail()">☰</button>
         <div>
           <h1>YYOKAI</h1>
           <p data-i18n="subtitle">Твоя тату-система, не просто кабінет</p>
@@ -178,13 +206,26 @@ audio{display:none}
           <button class="active" onclick="setLang('uk',this)">UA</button>
           <button onclick="setLang('en',this)">EN</button>
         </div>
-        <button class="icon-btn" onclick="toggleMusic()" id="musicBtn">🔇</button>
         <div class="profile">
           <div class="avatar" id="avatar" onclick="toggleProfile()">👺</div>
           <div class="profile-menu" id="profileMenu">
             <div class="profile-name" id="artistName">YYOKAI Artist</div>
             <div class="profile-email" id="artistEmail">artist@email.com</div>
             <div class="balance"><span data-i18n="balance">Баланс</span>: <strong id="balanceValue">$0.00</strong></div>
+
+            <div class="player">
+              <div class="cover" id="trackCover">⛩</div>
+              <div>
+                <div class="track-title" id="trackTitle">Japanese Chill</div>
+                <div class="track-sub" id="trackSub">YYOKAI playlist</div>
+              </div>
+              <div class="music-controls">
+                <button onclick="prevTrack()">‹</button>
+                <button id="playPauseBtn" onclick="toggleMusic()">▶</button>
+                <button onclick="nextTrack()">›</button>
+              </div>
+            </div>
+
             <button onclick="addBalance()">＋ <span data-i18n="addBalance">Поповнити баланс</span></button>
             <button onclick="openSettings()">⚙ <span data-i18n="settings">Налаштування</span></button>
             <a href="/billing.html" data-i18n="billing">Оплата</a>
@@ -203,36 +244,49 @@ audio{display:none}
       <div class="card">
         <h3 data-i18n="clientTitle">Запис клієнта</h3>
         <div class="client-form">
-          <input id="clientName" data-i18n-placeholder="clientName" placeholder="Імʼя клієнта">
-          <input id="clientPhone" placeholder="Telegram / Phone">
-          <input id="clientDate" type="date">
-          <select id="clientStatus">
-            <option value="new">New</option>
-            <option value="consultation">Consultation</option>
-            <option value="booked">Booked</option>
-            <option value="done">Done</option>
-          </select>
+          <div class="field">
+            <label data-i18n="clientNameLabel">Імʼя клієнта</label>
+            <input id="clientName" data-i18n-placeholder="clientName" placeholder="Імʼя клієнта">
+          </div>
+          <div class="field">
+            <label>Telegram / Phone</label>
+            <input id="clientPhone" placeholder="@username / phone">
+          </div>
+          <div class="field">
+            <label data-i18n="dateLabel">Оберіть дату</label>
+            <input id="clientDate" type="date">
+          </div>
+          <div class="field">
+            <label data-i18n="statusLabel">Статус</label>
+            <select id="clientStatus">
+              <option value="new">New</option>
+              <option value="consultation">Consultation</option>
+              <option value="booked">Booked</option>
+              <option value="done">Done</option>
+            </select>
+          </div>
           <textarea id="clientNote" data-i18n-placeholder="clientNote" placeholder="Нотатка: місце, стиль, розмір, побажання..."></textarea>
           <button class="red-btn" onclick="saveClient()" data-i18n="saveClient">Зберегти клієнта</button>
           <button class="ghost-btn" onclick="clearClientForm()" data-i18n="clear">Очистити</button>
         </div>
       </div>
 
-      <div class="card">
-        <h3 data-i18n="todayTitle">Список записів</h3>
-        <div class="list" id="clientsList"></div>
-
-        <div class="music-panel">
-          <div class="cover" id="trackCover">⛩</div>
+      <div class="card booking-view">
+        <h3 data-i18n="todayTitle">Картка запису</h3>
+        <div class="booking-card" id="bookingCard">
           <div>
-            <div class="track-title" id="trackTitle">Japanese Chill</div>
-            <div class="track-sub" id="trackSub">YYOKAI playlist</div>
+            <div class="booking-top">
+              <strong data-i18n="emptyBooking">Поки немає записів</strong>
+              <span>—</span>
+            </div>
+            <div class="booking-meta">—</div>
+            <p data-i18n="emptyBookingText">Додай першого клієнта зліва, і тут буде зручна картка запису.</p>
           </div>
-          <div class="music-controls">
-            <button onclick="prevTrack()">‹</button>
-            <button onclick="toggleMusic()">▶</button>
-            <button onclick="nextTrack()">›</button>
-          </div>
+        </div>
+        <div class="booking-nav">
+          <button onclick="prevClient()">‹</button>
+          <div class="counter" id="bookingCounter">0 / 0</div>
+          <button onclick="nextClient()">›</button>
         </div>
       </div>
     </section>
@@ -291,7 +345,7 @@ audio{display:none}
 
 <script>
 const firebaseConfig={
-   apiKey: "AIzaSyALs-ZgFX7auGxRQ2EeQnVngjnejimPLV4",
+  apiKey: "AIzaSyALs-ZgFX7auGxRQ2EeQnVngjnejimPLV4",
   authDomain:"yyokai-tattoo-system.firebaseapp.com",
   databaseURL:"https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/",
   projectId:"yyokai-tattoo-system",
@@ -306,6 +360,7 @@ const db=firebase.database();
 const storage=firebase.storage();
 
 let currentUser=null, selectedColor="#e5092f", musicPlaying=false, trackIndex=0;
+let clients=[], clientIndex=0, currentLang="uk";
 
 const playlist=[
   {title:"Japanese Chill",sub:"Soft studio mood",icon:"⛩",src:"music/japan-chill.mp3"},
@@ -315,17 +370,23 @@ const playlist=[
 
 const tr={
 uk:{
+navHome:"Головна",navClients:"Записи",navStencil:"Стенсіл",navSplit:"A4 друк",navFiles:"Файли",navBilling:"Оплата",
 subtitle:"Твоя тату-система, не просто кабінет",balance:"Баланс",addBalance:"Поповнити баланс",settings:"Налаштування",billing:"Оплата",logout:"Вийти",
 welcome:"Welcome back, artist",welcomeText:"Плануй клієнтів, зберігай нотатки, керуй файлами, музикою, балансом і підготовкою до сеансів в одному темному просторі.",
-clientTitle:"Запис клієнта",clientName:"Імʼя клієнта",clientNote:"Нотатка: місце, стиль, розмір, побажання...",saveClient:"Зберегти клієнта",clear:"Очистити",
-todayTitle:"Список записів",stencilText:"Підготовка чистого stencil.",splitText:"Друк великих ескізів.",filesText:"Файли, PDF, референси.",billingText:"Баланс, оплати, тарифи.",
+clientTitle:"Запис клієнта",clientNameLabel:"Імʼя клієнта",clientName:"Імʼя клієнта",dateLabel:"Оберіть дату",statusLabel:"Статус",
+clientNote:"Нотатка: місце, стиль, розмір, побажання...",saveClient:"Зберегти клієнта",clear:"Очистити",
+todayTitle:"Картка запису",emptyBooking:"Поки немає записів",emptyBookingText:"Додай першого клієнта зліва, і тут буде зручна картка запису.",
+stencilText:"Підготовка чистого stencil.",splitText:"Друк великих ескізів.",filesText:"Файли, PDF, референси.",billingText:"Баланс, оплати, тарифи.",
 changeAvatar:"Змінити фото профілю",artistNameLabel:"Нік майстра",saveName:"Зберегти нік",musicSettings:"Музика / плейлист",backgroundUpload:"Фон кабінету",palette:"Палітра / фон",applyGradient:"Застосувати градієнт"
 },
 en:{
+navHome:"Home",navClients:"Bookings",navStencil:"Stencil",navSplit:"A4 Print",navFiles:"Files",navBilling:"Billing",
 subtitle:"Your tattoo system, not just a dashboard",balance:"Balance",addBalance:"Add balance",settings:"Settings",billing:"Billing",logout:"Logout",
 welcome:"Welcome back, artist",welcomeText:"Plan clients, save notes, manage files, music, balance and session preparation in one dark workspace.",
-clientTitle:"Client booking",clientName:"Client name",clientNote:"Note: placement, style, size, wishes...",saveClient:"Save client",clear:"Clear",
-todayTitle:"Booking list",stencilText:"Clean stencil preparation.",splitText:"Print large sketches.",filesText:"Files, PDFs, references.",billingText:"Balance, payments, plans.",
+clientTitle:"Client booking",clientNameLabel:"Client name",clientName:"Client name",dateLabel:"Choose date",statusLabel:"Status",
+clientNote:"Note: placement, style, size, wishes...",saveClient:"Save client",clear:"Clear",
+todayTitle:"Booking card",emptyBooking:"No bookings yet",emptyBookingText:"Add your first client on the left, and a clean booking card will appear here.",
+stencilText:"Clean stencil preparation.",splitText:"Print large sketches.",filesText:"Files, PDFs, references.",billingText:"Balance, payments, plans.",
 changeAvatar:"Change profile photo",artistNameLabel:"Artist nickname",saveName:"Save nickname",musicSettings:"Music / playlist",backgroundUpload:"Dashboard background",palette:"Palette / background",applyGradient:"Apply gradient"
 }
 };
@@ -347,12 +408,15 @@ auth.onAuthStateChanged(async user=>{
 });
 
 function setLang(lang,btn){
+  currentLang=lang;
+  document.documentElement.lang=lang;
   Object.keys(tr[lang]).forEach(k=>{
     document.querySelectorAll(`[data-i18n="${k}"]`).forEach(el=>el.textContent=tr[lang][k]);
     document.querySelectorAll(`[data-i18n-placeholder="${k}"]`).forEach(el=>el.placeholder=tr[lang][k]);
   });
   document.querySelectorAll(".lang button").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
+  renderClient();
 }
 
 async function saveClient(){
@@ -376,21 +440,38 @@ function clearClientForm(){
 }
 
 async function loadClients(){
-  const snap=await db.ref("users/"+currentUser.uid+"/clients").orderByChild("createdAt").limitToLast(12).once("value");
+  const snap=await db.ref("users/"+currentUser.uid+"/clients").orderByChild("createdAt").limitToLast(20).once("value");
   const data=snap.val()||{};
-  clientsList.innerHTML="";
-  Object.entries(data).reverse().forEach(([id,c])=>{
-    const div=document.createElement("div");
-    div.className="item";
-    div.innerHTML=`
-      <div class="item-top"><strong>${c.name||"Client"}</strong><span>${c.date||"No date"}</span></div>
-      <span>${c.phone||""} · ${c.status||"new"}</span>
-      <p>${c.note||""}</p>
-      <button onclick="deleteClient('${id}')">Delete</button>
-    `;
-    clientsList.appendChild(div);
-  });
+  clients=Object.entries(data).map(([id,c])=>({id,...c})).reverse();
+  clientIndex=0;
+  renderClient();
 }
+
+function renderClient(){
+  if(!clients.length){
+    bookingCard.innerHTML=`
+      <div>
+        <div class="booking-top"><strong>${tr[currentLang].emptyBooking}</strong><span>—</span></div>
+        <div class="booking-meta">—</div>
+        <p>${tr[currentLang].emptyBookingText}</p>
+      </div>`;
+    bookingCounter.textContent="0 / 0";
+    return;
+  }
+
+  const c=clients[clientIndex];
+  bookingCard.innerHTML=`
+    <div>
+      <div class="booking-top"><strong>${c.name||"Client"}</strong><span>${c.date||"No date"}</span></div>
+      <div class="booking-meta">${c.phone||""} · ${c.status||"new"}</div>
+      <p>${c.note||""}</p>
+    </div>
+    <button onclick="deleteClient('${c.id}')">Delete</button>`;
+  bookingCounter.textContent=(clientIndex+1)+" / "+clients.length;
+}
+
+function nextClient(){if(!clients.length)return;clientIndex=(clientIndex+1)%clients.length;renderClient()}
+function prevClient(){if(!clients.length)return;clientIndex=(clientIndex-1+clients.length)%clients.length;renderClient()}
 
 async function deleteClient(id){
   await db.ref("users/"+currentUser.uid+"/clients/"+id).remove();
@@ -416,21 +497,21 @@ function selectTrack(i){
   trackIndex=Number(i);
   const t=playlist[trackIndex];
   bgMusic.src=t.src; trackTitle.textContent=t.title; trackSub.textContent=t.sub; trackCover.textContent=t.icon;
-  db.ref("users/"+currentUser.uid+"/settings").update({trackIndex});
+  if(currentUser) db.ref("users/"+currentUser.uid+"/settings").update({trackIndex});
 }
 
 function toggleMusic(){
   const t=playlist[trackIndex];
   if(!bgMusic.src) bgMusic.src=t.src;
-  if(!musicPlaying){bgMusic.volume=.35;bgMusic.play();musicBtn.textContent="🔊";musicPlaying=true}
-  else{bgMusic.pause();musicBtn.textContent="🔇";musicPlaying=false}
+  if(!musicPlaying){bgMusic.volume=.35;bgMusic.play();playPauseBtn.textContent="⏸";musicPlaying=true}
+  else{bgMusic.pause();playPauseBtn.textContent="▶";musicPlaying=false}
 }
-function nextTrack(){selectTrack((trackIndex+1)%playlist.length); if(musicPlaying){bgMusic.play()}}
-function prevTrack(){selectTrack((trackIndex-1+playlist.length)%playlist.length); if(musicPlaying){bgMusic.play()}}
+function nextTrack(){selectTrack((trackIndex+1)%playlist.length); if(musicPlaying) bgMusic.play()}
+function prevTrack(){selectTrack((trackIndex-1+playlist.length)%playlist.length); if(musicPlaying) bgMusic.play()}
 
 function loadSettings(data){
   const s=data.settings||{};
-  if(s.accent){setCustomAccent(s.accent)}
+  if(s.accent)setCustomAccent(s.accent);
   if(typeof s.trackIndex==="number"){musicSelect.value=s.trackIndex;selectTrack(s.trackIndex)}
 }
 
@@ -443,10 +524,14 @@ function changeBackground(e){
 function setCustomAccent(c){selectedColor=c;colorValue.textContent=c;document.documentElement.style.setProperty("--accent",c)}
 async function applyGradientBackground(){
   document.body.style.background=`radial-gradient(circle at 50% 0%, ${selectedColor}55, transparent 32%),linear-gradient(to bottom,#000,#080203 55%,#000)`;
-  if(currentUser) await db.ref("users/"+currentUser.uid+"/settings").update({accent:selectedColor});
+  if(currentUser)await db.ref("users/"+currentUser.uid+"/settings").update({accent:selectedColor});
 }
 
-function toggleRail(){rail.classList.toggle("open");menuBtn.textContent=rail.classList.contains("open")?"×":"☰"}
+function toggleRail(){
+  rail.classList.toggle("open");
+  menuBtn.classList.toggle("open");
+  menuBtn.textContent=rail.classList.contains("open")?"×":"☰";
+}
 function toggleProfile(){profileMenu.classList.toggle("open")}
 function openSettings(){settingsPanel.classList.add("open");profileMenu.classList.remove("open")}
 function closeSettings(){settingsPanel.classList.remove("open")}
