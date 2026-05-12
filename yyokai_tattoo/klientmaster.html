@@ -6,26 +6,14 @@
   <title>YYOKAI</title>
 
   <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
+    *{ margin:0; padding:0; box-sizing:border-box; }
 
     body{
       min-height:100vh;
       font-family:Arial,sans-serif;
       background:
         radial-gradient(circle at 50% 20%, rgba(140,0,25,.18), transparent 34%),
-        linear-gradient(
-          to bottom,
-          #000 0%,
-          #050505 12%,
-          #0a0506 50%,
-          #050505 88%,
-          #000 100%
-        );
-
+        linear-gradient(to bottom,#000 0%,#050505 12%,#0a0506 50%,#050505 88%,#000 100%);
       color:#fff;
       overflow-x:hidden;
       position:relative;
@@ -38,7 +26,7 @@
       font-size:92px;
       line-height:1.5;
       letter-spacing:38px;
-      color:rgba(255,255,255,.022);
+      color:rgba(255,255,255,.02);
       transform:rotate(-12deg) scale(1.15);
       pointer-events:none;
       z-index:0;
@@ -50,13 +38,12 @@
       inset:0;
       pointer-events:none;
       z-index:1;
-
       background:linear-gradient(
         to bottom,
-        rgba(0,0,0,.95) 0%,
+        rgba(0,0,0,.98) 0%,
         transparent 14%,
         transparent 86%,
-        rgba(0,0,0,.95) 100%
+        rgba(0,0,0,.98) 100%
       );
     }
 
@@ -89,7 +76,6 @@
       border-radius:999px;
       font-weight:800;
       cursor:pointer;
-      transition:.2s;
     }
 
     .lang button.active{
@@ -101,12 +87,9 @@
       color:#aaa;
       text-decoration:none;
       font-size:14px;
-      transition:.2s;
     }
 
-    .login:hover{
-      color:#fff;
-    }
+    .login:hover{ color:#fff; }
 
     .hero{
       position:relative;
@@ -144,8 +127,6 @@
       text-shadow:0 0 18px rgba(255,20,60,.7);
     }
 
-    /* LOGO */
-
     .logo{
       position:relative;
       display:inline-block;
@@ -154,13 +135,10 @@
       letter-spacing:.13em;
       line-height:.9;
       margin-bottom:26px;
-
       color:#f8f8f8;
-
       text-shadow:
         0 0 18px rgba(255,255,255,.22),
         0 0 44px rgba(255,0,40,.34);
-
       animation:logoPulse 3.2s infinite ease-in-out;
     }
 
@@ -177,14 +155,14 @@
       color:#ff143c;
       transform:translate(3px,-2px);
       clip-path:inset(0 0 54% 0);
-      animation:glitchRed 1.35s infinite steps(2,end);
+      animation:glitchRed1 1.35s infinite steps(2,end);
     }
 
     .logo::after{
-      color:#ffffff;
+      color:#ff3b5c;
       transform:translate(-3px,2px);
       clip-path:inset(50% 0 0 0);
-      animation:glitchWhite 1.8s infinite steps(2,end);
+      animation:glitchRed2 1.8s infinite steps(2,end);
     }
 
     .logo span{
@@ -197,83 +175,30 @@
     }
 
     @keyframes logoPulse{
-      0%,100%{
-        filter:drop-shadow(0 0 10px rgba(255,0,45,.22));
-      }
-      50%{
-        filter:drop-shadow(0 0 28px rgba(255,0,45,.45));
-      }
+      0%,100%{ filter:drop-shadow(0 0 10px rgba(255,0,45,.22)); }
+      50%{ filter:drop-shadow(0 0 28px rgba(255,0,45,.45)); }
     }
 
-    @keyframes glitchRed{
-      0%{
-        transform:translate(0);
-        clip-path:inset(0 0 88% 0);
-      }
-
-      8%{
-        transform:translate(5px,-2px);
-        clip-path:inset(12% 0 62% 0);
-      }
-
-      16%{
-        transform:translate(-4px,2px);
-        clip-path:inset(44% 0 38% 0);
-      }
-
-      24%{
-        transform:translate(3px,0);
-        clip-path:inset(70% 0 12% 0);
-      }
-
-      32%,100%{
-        transform:translate(3px,-2px);
-        clip-path:inset(0 0 54% 0);
-      }
+    @keyframes glitchRed1{
+      0%{ transform:translate(0); clip-path:inset(0 0 88% 0); }
+      8%{ transform:translate(5px,-2px); clip-path:inset(12% 0 62% 0); }
+      16%{ transform:translate(-4px,2px); clip-path:inset(44% 0 38% 0); }
+      24%{ transform:translate(3px,0); clip-path:inset(70% 0 12% 0); }
+      32%,100%{ transform:translate(3px,-2px); clip-path:inset(0 0 54% 0); }
     }
 
-    @keyframes glitchWhite{
-      0%{
-        transform:translate(0);
-        clip-path:inset(82% 0 0 0);
-      }
-
-      10%{
-        transform:translate(-5px,2px);
-        clip-path:inset(10% 0 72% 0);
-      }
-
-      20%{
-        transform:translate(4px,-1px);
-        clip-path:inset(52% 0 22% 0);
-      }
-
-      30%{
-        transform:translate(-3px,1px);
-        clip-path:inset(78% 0 8% 0);
-      }
-
-      38%,100%{
-        transform:translate(-3px,2px);
-        clip-path:inset(50% 0 0 0);
-      }
+    @keyframes glitchRed2{
+      0%{ transform:translate(0); clip-path:inset(82% 0 0 0); }
+      10%{ transform:translate(-5px,2px); clip-path:inset(10% 0 72% 0); }
+      20%{ transform:translate(4px,-1px); clip-path:inset(52% 0 22% 0); }
+      30%{ transform:translate(-3px,1px); clip-path:inset(78% 0 8% 0); }
+      38%,100%{ transform:translate(-3px,2px); clip-path:inset(50% 0 0 0); }
     }
 
     @keyframes scan{
-      0%{
-        transform:translateY(-8px);
-        opacity:.1;
-      }
-
-      50%{
-        transform:translateY(6px);
-        opacity:.42;
-      }
-
-      100%{
-        transform:translateY(-8px);
-        opacity:.1;
-      }
+      0%{ transform:translateY(-8px); opacity:.1; }
+      50%{ transform:translateY(6px); opacity:.42; }
+      100%{ transform:translateY(-8px); opacity:.1; }
     }
 
     .subtitle{
@@ -298,18 +223,9 @@
       text-align:left;
       overflow:hidden;
       cursor:pointer;
-
-      background:
-        linear-gradient(
-          180deg,
-          rgba(255,255,255,.075),
-          rgba(255,255,255,.018)
-        );
-
+      background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.018));
       border:1px solid rgba(255,255,255,.10);
-
       backdrop-filter:blur(24px);
-
       transition:.35s;
     }
 
@@ -317,14 +233,7 @@
       content:"";
       position:absolute;
       inset:-1px;
-
-      background:
-        radial-gradient(
-          circle at top right,
-          rgba(255,20,60,.28),
-          transparent 38%
-        );
-
+      background:radial-gradient(circle at top right,rgba(255,20,60,.28),transparent 38%);
       opacity:0;
       transition:.35s;
     }
@@ -332,33 +241,22 @@
     .card:hover{
       transform:translateY(-8px);
       border-color:rgba(255,255,255,.24);
-
-      box-shadow:
-        0 32px 90px rgba(0,0,0,.55);
+      box-shadow:0 32px 90px rgba(0,0,0,.55);
     }
 
-    .card:hover::before{
-      opacity:1;
-    }
+    .card:hover::before{ opacity:1; }
 
     .mask{
       position:relative;
       z-index:1;
-
       width:76px;
       height:76px;
-
       border-radius:24px;
-
       display:grid;
       place-items:center;
-
       margin-bottom:34px;
-
       background:rgba(0,0,0,.35);
-
       border:1px solid rgba(255,255,255,.12);
-
       overflow:hidden;
     }
 
@@ -366,11 +264,7 @@
       width:100%;
       height:100%;
       object-fit:cover;
-
-      filter:
-        brightness(.95)
-        contrast(1.05)
-        drop-shadow(0 0 14px rgba(255,20,60,.24));
+      filter:brightness(.95) contrast(1.05) drop-shadow(0 0 14px rgba(255,20,60,.24));
     }
 
     .card h2{
@@ -392,16 +286,11 @@
     .btn{
       position:relative;
       z-index:1;
-
       display:inline-flex;
-
       padding:14px 20px;
-
       border-radius:999px;
-
       background:#f7f2ed;
       color:#050505;
-
       font-weight:900;
       text-decoration:none;
     }
@@ -409,9 +298,7 @@
     .btn.red{
       color:white;
       background:#ff143c;
-
-      box-shadow:
-        0 0 35px rgba(255,20,60,.3);
+      box-shadow:0 0 35px rgba(255,20,60,.3);
     }
 
     .auth{
@@ -427,53 +314,29 @@
     }
 
     @media (max-width:780px){
-
-      header{
-        padding:18px;
-      }
-
-      .paths{
-        grid-template-columns:1fr;
-      }
-
-      .card{
-        min-height:285px;
-        padding:28px;
-      }
-
-      body::before{
-        font-size:60px;
-        letter-spacing:24px;
-      }
+      header{ padding:18px; }
+      .paths{ grid-template-columns:1fr; }
+      .card{ min-height:285px; padding:28px; }
+      body::before{ font-size:60px; letter-spacing:24px; }
     }
   </style>
 </head>
 
 <body>
-
   <header>
-
     <div class="lang">
       <button class="active" onclick="setLang('uk')">UA</button>
       <button onclick="setLang('en')">EN</button>
     </div>
 
-    <a href="/login.html" class="login" data-i18n="login">
-      Увійти
-    </a>
-
+    <a href="/login.html" class="login" data-i18n="login">Увійти</a>
   </header>
 
   <main class="hero">
-
     <section class="wrap">
-
       <div class="label">
-        <span class="seal">妖怪</span>
-
-        <span data-i18n="badge">
-          Інструменти для тату-майстрів нового покоління
-        </span>
+        <span class="seal">妖</span>
+        <span data-i18n="badge">Інструменти для тату-майстрів нового покоління</span>
       </div>
 
       <h1 class="logo">
@@ -487,41 +350,27 @@
       </p>
 
       <div class="paths">
-
-        <!-- CLIENT -->
-
         <div class="card" onclick="location.href='/client.html'">
-
           <div class="mask">
             <img src="images/kitsune.png" alt="">
           </div>
 
-          <h2 data-i18n="clientTitle">
-            Я клієнт
-          </h2>
+          <h2 data-i18n="clientTitle">Я клієнт</h2>
 
           <p data-i18n="clientText">
             Переглянь ескізи, стиль майстра, приклади робіт,
             примірку тату та швидкий запис.
           </p>
 
-          <a href="/client.html" class="btn" data-i18n="clientBtn">
-            Увійти в студію →
-          </a>
-
+          <a href="/client.html" class="btn" data-i18n="clientBtn">Увійти в студію →</a>
         </div>
 
-        <!-- ARTIST -->
-
         <div class="card" onclick="location.href='/artist.html'">
-
           <div class="mask">
             <img src="images/hannya.png" alt="">
           </div>
 
-          <h2 data-i18n="artistTitle">
-            Я майстер
-          </h2>
+          <h2 data-i18n="artistTitle">Я майстер</h2>
 
           <p data-i18n="artistText">
             Робочі інструменти: генерація стенсілу,
@@ -529,120 +378,58 @@
             та помічник для підготовки.
           </p>
 
-          <a href="/artist.html" class="btn red" data-i18n="artistBtn">
-            Увійти в майстерню →
-          </a>
-
+          <a href="/artist.html" class="btn red" data-i18n="artistBtn">Увійти в майстерню →</a>
         </div>
-
       </div>
 
       <div class="auth">
-        <a href="/register.html" data-i18n="register">
-          Немає акаунта? Створити профіль
-        </a>
+        <a href="/register.html" data-i18n="register">Немає акаунта? Створити профіль</a>
       </div>
-
     </section>
-
   </main>
 
   <script>
-
     const text = {
-
       uk: {
         login: "Увійти",
-
-        badge:
-        "Інструменти для тату-майстрів нового покоління",
-
-        subtitle:
-        "Обери свій шлях: простір для клієнтів або майстерня для тату-майстрів зі стенсілами, шрифтами, референсами та підготовкою до сеансу.",
-
-        clientTitle:
-        "Я клієнт",
-
-        clientText:
-        "Переглянь ескізи, стиль майстра, приклади робіт, примірку тату та швидкий запис.",
-
-        clientBtn:
-        "Увійти в студію →",
-
-        artistTitle:
-        "Я майстер",
-
-        artistText:
-        "Робочі інструменти: генерація стенсілу, підбір шрифтів, розбиття рукава на A4 та помічник для підготовки.",
-
-        artistBtn:
-        "Увійти в майстерню →",
-
-        register:
-        "Немає акаунта? Створити профіль"
+        badge: "Інструменти для тату-майстрів нового покоління",
+        subtitle: "Обери свій шлях: простір для клієнтів або майстерня для тату-майстрів зі стенсілами, шрифтами, референсами та підготовкою до сеансу.",
+        clientTitle: "Я клієнт",
+        clientText: "Переглянь ескізи, стиль майстра, приклади робіт, примірку тату та швидкий запис.",
+        clientBtn: "Увійти в студію →",
+        artistTitle: "Я майстер",
+        artistText: "Робочі інструменти: генерація стенсілу, підбір шрифтів, розбиття рукава на A4 та помічник для підготовки.",
+        artistBtn: "Увійти в майстерню →",
+        register: "Немає акаунта? Створити профіль"
       },
-
       en: {
-
-        login:
-        "Log in",
-
-        badge:
-        "Next-generation tools for tattoo artists",
-
-        subtitle:
-        "Choose your path: a client space or a workshop for tattoo artists with stencils, fonts, references and session preparation tools.",
-
-        clientTitle:
-        "I’m a client",
-
-        clientText:
-        "Explore sketches, artist style, tattoo previews and book your session faster.",
-
-        clientBtn:
-        "Enter studio →",
-
-        artistTitle:
-        "I’m an artist",
-
-        artistText:
-        "Work tools: stencil generation, font selection, A4 sleeve splitting and preparation assistant.",
-
-        artistBtn:
-        "Enter workshop →",
-
-        register:
-        "New here? Create profile"
+        login: "Log in",
+        badge: "Next-generation tools for tattoo artists",
+        subtitle: "Choose your path: a client space or a workshop for tattoo artists with stencils, fonts, references and session preparation tools.",
+        clientTitle: "I’m a client",
+        clientText: "Explore sketches, artist style, tattoo previews and book your session faster.",
+        clientBtn: "Enter studio →",
+        artistTitle: "I’m an artist",
+        artistText: "Work tools: stencil generation, font selection, A4 sleeve splitting and preparation assistant.",
+        artistBtn: "Enter workshop →",
+        register: "New here? Create profile"
       }
     };
 
     function setLang(lang){
-
       document.documentElement.lang = lang;
 
       Object.keys(text[lang]).forEach(key => {
-
-        const el = document.querySelector(
-          `[data-i18n="${key}"]`
-        );
-
-        if(el){
-          el.textContent = text[lang][key];
-        }
-
+        const el = document.querySelector(`[data-i18n="${key}"]`);
+        if(el) el.textContent = text[lang][key];
       });
 
-      document.querySelectorAll(".lang button")
-      .forEach(btn => {
+      document.querySelectorAll(".lang button").forEach(btn => {
         btn.classList.remove("active");
       });
 
-      document.querySelector(
-        `[onclick="setLang('${lang}')"]`
-      ).classList.add("active");
+      document.querySelector(`[onclick="setLang('${lang}')"]`).classList.add("active");
     }
-
   </script>
-
 </body>
 </html>
