@@ -7,29 +7,75 @@
 
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
-
     html,body{min-height:100%;background:#000}
 
     body{
       font-family:Arial,sans-serif;
       color:#fff;
       background:
-        radial-gradient(circle at 50% 15%,rgba(180,0,30,.24),transparent 34%),
+        radial-gradient(circle at 50% 18%,rgba(185,0,35,.22),transparent 34%),
         linear-gradient(to bottom,#000,#070202 45%,#000);
       overflow-x:hidden;
+      position:relative;
     }
 
     body::before{
-      content:"妖  鬼  狐  墨  夜  刺青";
+      content:"妖 鬼 狐 墨 夜 刺青";
       position:fixed;
       inset:0;
-      color:rgba(255,255,255,.025);
+      color:rgba(255,255,255,.022);
       font-size:90px;
       letter-spacing:34px;
       line-height:1.5;
       transform:rotate(-12deg) scale(1.15);
       pointer-events:none;
+      z-index:0;
     }
+
+    header{
+      position:fixed;
+      top:0;
+      width:100%;
+      padding:22px 34px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      z-index:10;
+    }
+
+    .lang{
+      display:flex;
+      gap:8px;
+      padding:7px;
+      border-radius:999px;
+      background:rgba(0,0,0,.62);
+      border:1px solid rgba(255,255,255,.12);
+      backdrop-filter:blur(18px);
+    }
+
+    .lang button{
+      border:none;
+      background:transparent;
+      color:#9f9f9f;
+      padding:9px 16px;
+      border-radius:999px;
+      font-weight:900;
+      font-size:13px;
+      cursor:pointer;
+    }
+
+    .lang button.active{
+      background:#f4f0eb;
+      color:#050505;
+    }
+
+    .back{
+      color:#aaa;
+      text-decoration:none;
+      font-size:14px;
+    }
+
+    .back:hover{color:#fff}
 
     .page{
       position:relative;
@@ -38,62 +84,51 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:40px 20px;
+      padding:100px 20px 70px;
     }
 
-    .auth-box{
+    .wrap{
       width:100%;
-      max-width:980px;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:24px;
-    }
-
-    .brand{
-      padding:42px;
-      border-radius:34px;
-      background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.02));
-      border:1px solid rgba(255,255,255,.12);
-      backdrop-filter:blur(24px);
+      max-width:480px;
+      text-align:center;
     }
 
     .seal{
       color:#e5092f;
-      font-size:22px;
-      margin-bottom:22px;
-      text-shadow:0 0 20px rgba(229,9,47,.7);
+      font-weight:900;
+      margin-bottom:16px;
+      text-shadow:0 0 18px rgba(229,9,47,.75);
     }
 
     .logo{
-      font-size:64px;
+      font-size:clamp(48px,12vw,84px);
       font-weight:950;
       letter-spacing:.14em;
-      margin-bottom:24px;
+      margin-bottom:28px;
       color:#f5f0eb;
-      text-shadow:0 0 35px rgba(229,9,47,.45);
-    }
-
-    .brand p{
-      color:#bdb7b4;
-      line-height:1.7;
-      font-size:17px;
+      text-shadow:
+        0 0 8px rgba(255,255,255,.2),
+        0 0 28px rgba(229,9,47,.45);
     }
 
     .panel{
       padding:28px;
       border-radius:34px;
-      background:rgba(0,0,0,.62);
+      background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.018));
       border:1px solid rgba(255,255,255,.12);
       backdrop-filter:blur(24px);
+      box-shadow:0 34px 90px rgba(0,0,0,.65);
+      text-align:left;
     }
 
     .tabs{
       display:flex;
       gap:8px;
       margin-bottom:24px;
-      background:rgba(255,255,255,.06);
       padding:6px;
       border-radius:999px;
+      background:rgba(0,0,0,.55);
+      border:1px solid rgba(255,255,255,.08);
     }
 
     .tabs button{
@@ -101,10 +136,10 @@
       border:0;
       padding:12px;
       border-radius:999px;
-      cursor:pointer;
       background:transparent;
       color:#999;
       font-weight:900;
+      cursor:pointer;
     }
 
     .tabs button.active{
@@ -118,11 +153,11 @@
       gap:14px;
     }
 
-    form.active{
-      display:flex;
-    }
+    form.active{display:flex}
 
     label{
+      display:block;
+      margin-bottom:7px;
       font-size:13px;
       color:#aaa;
     }
@@ -155,15 +190,6 @@
       box-shadow:0 0 30px rgba(229,9,47,.32);
     }
 
-    .ghost{
-      margin-top:14px;
-      display:block;
-      color:#999;
-      text-align:center;
-      text-decoration:none;
-      font-size:14px;
-    }
-
     .msg{
       margin-top:16px;
       min-height:22px;
@@ -172,35 +198,72 @@
       text-align:center;
     }
 
-    @media(max-width:820px){
-      .auth-box{grid-template-columns:1fr}
-      .logo{font-size:46px}
-      .brand{padding:30px}
+    .footer{
+      position:fixed;
+      left:0;
+      bottom:0;
+      width:100%;
+      z-index:5;
+      padding:14px 24px 18px;
+      background:#000;
+      border-top:1px solid rgba(255,255,255,.035);
+      opacity:.42;
+      text-align:center;
+    }
+
+    .footer-links{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-bottom:8px;
+      font-size:11px;
+    }
+
+    .footer-links a{
+      color:#5d5d5d;
+      text-decoration:none;
+    }
+
+    .footer-bottom{
+      color:#3f3f3f;
+      font-size:10px;
+      letter-spacing:.08em;
+    }
+
+    @media(max-width:600px){
+      header{padding:18px}
+      .lang button{padding:8px 12px}
+      .panel{padding:22px}
+      .footer{position:relative;margin-top:20px}
     }
   </style>
 </head>
 
 <body>
+  <header>
+    <div class="lang">
+      <button class="active" onclick="setLang('uk')">Українська</button>
+      <button onclick="setLang('en')">English</button>
+    </div>
+
+    <a href="/index.html" class="back" data-i18n="back">← Назад</a>
+  </header>
+
   <main class="page">
-    <section class="auth-box">
-      <div class="brand">
-        <div class="seal">妖</div>
-        <div class="logo">YYOKAI</div>
-        <p>
-          Майстерня для тату-майстрів: стенсіли, шрифти,
-          A4 split, AI-референси та підготовка до сеансу.
-        </p>
-      </div>
+    <section class="wrap">
+      <div class="seal">妖</div>
+      <div class="logo">YYOKAI</div>
 
       <div class="panel">
         <div class="tabs">
-          <button id="tabRegister" class="active" type="button">Реєстрація</button>
-          <button id="tabLogin" type="button">Вхід</button>
+          <button id="tabRegister" class="active" type="button" data-i18n="tabRegister">Реєстрація</button>
+          <button id="tabLogin" type="button" data-i18n="tabLogin">Вхід</button>
         </div>
 
         <form id="registerForm" class="active">
           <div>
-            <label>Імʼя майстра</label>
+            <label data-i18n="nameLabel">Імʼя майстра</label>
             <input id="regName" type="text" placeholder="YYOKAI Artist" required />
           </div>
 
@@ -210,11 +273,11 @@
           </div>
 
           <div>
-            <label>Пароль</label>
+            <label data-i18n="passwordLabel">Пароль</label>
             <input id="regPassword" type="password" placeholder="Мінімум 6 символів" required />
           </div>
 
-          <button class="submit" type="submit">Створити профіль</button>
+          <button class="submit" type="submit" data-i18n="registerBtn">Створити профіль</button>
         </form>
 
         <form id="loginForm">
@@ -224,29 +287,38 @@
           </div>
 
           <div>
-            <label>Пароль</label>
+            <label data-i18n="passwordLabel2">Пароль</label>
             <input id="loginPassword" type="password" placeholder="Твій пароль" required />
           </div>
 
-          <button class="submit" type="submit">Увійти в майстерню</button>
+          <button class="submit" type="submit" data-i18n="loginBtn">Увійти в майстерню</button>
         </form>
 
-        <a class="ghost" href="/index.html">← Назад на головну</a>
         <p id="msg" class="msg"></p>
       </div>
     </section>
   </main>
 
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="/privacy.html">Privacy</a>
+      <a href="/terms.html">Terms</a>
+      <a href="/cookies.html">Cookies</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+
+    <div class="footer-bottom">
+      © 2026 YYOKAI SYSTEM. All rights reserved.
+    </div>
+  </footer>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
     import {
       getAuth,
       createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-      onAuthStateChanged
+      signInWithEmailAndPassword
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
     import {
       getFirestore,
       doc,
@@ -274,19 +346,19 @@
     const loginForm = document.getElementById("loginForm");
     const msg = document.getElementById("msg");
 
-    function showMessage(text) {
+    function showMessage(text){
       msg.textContent = text;
     }
 
-    function switchTab(type) {
+    function switchTab(type){
       showMessage("");
 
-      if (type === "register") {
+      if(type === "register"){
         tabRegister.classList.add("active");
         tabLogin.classList.remove("active");
         registerForm.classList.add("active");
         loginForm.classList.remove("active");
-      } else {
+      }else{
         tabLogin.classList.add("active");
         tabRegister.classList.remove("active");
         loginForm.classList.add("active");
@@ -294,77 +366,92 @@
       }
     }
 
-    tabRegister.addEventListener("click", () => switchTab("register"));
-    tabLogin.addEventListener("click", () => switchTab("login"));
+    tabRegister.addEventListener("click",()=>switchTab("register"));
+    tabLogin.addEventListener("click",()=>switchTab("login"));
 
-    registerForm.addEventListener("submit", async (e) => {
+    registerForm.addEventListener("submit", async (e)=>{
       e.preventDefault();
 
       const name = document.getElementById("regName").value.trim();
       const email = document.getElementById("regEmail").value.trim();
       const password = document.getElementById("regPassword").value;
 
-      try {
-        showMessage("Створюю профіль...");
+      try{
+        showMessage("...");
+        const userCred = await createUserWithEmailAndPassword(auth,email,password);
 
-        const userCred = await createUserWithEmailAndPassword(auth, email, password);
-
-        await setDoc(doc(db, "users", userCred.user.uid), {
-          uid: userCred.user.uid,
-          name: name,
-          email: email,
-          role: "artist",
-          plan: "free",
-          stencilCredits: 3,
-          createdAt: serverTimestamp()
+        await setDoc(doc(db,"users",userCred.user.uid),{
+          uid:userCred.user.uid,
+          name,
+          email,
+          role:"artist",
+          plan:"free",
+          stencilCredits:3,
+          createdAt:serverTimestamp()
         });
 
-        window.location.href = "/artist-dashboard.html";
-      } catch (error) {
+        window.location.href="/artist-dashboard.html";
+      }catch(error){
         showMessage(error.message);
       }
     });
 
-    loginForm.addEventListener("submit", async (e) => {
+    loginForm.addEventListener("submit", async (e)=>{
       e.preventDefault();
 
       const email = document.getElementById("loginEmail").value.trim();
       const password = document.getElementById("loginPassword").value;
 
-      try {
-        showMessage("Входжу...");
+      try{
+        showMessage("...");
+        const userCred = await signInWithEmailAndPassword(auth,email,password);
+        const userDoc = await getDoc(doc(db,"users",userCred.user.uid));
 
-        const userCred = await signInWithEmailAndPassword(auth, email, password);
-        const userDoc = await getDoc(doc(db, "users", userCred.user.uid));
-
-        if (!userDoc.exists()) {
-          showMessage("Профіль не знайдено.");
+        if(!userDoc.exists()){
+          showMessage("Profile not found.");
           return;
         }
 
-        const data = userDoc.data();
-
-        if (data.role !== "artist") {
-          showMessage("Цей профіль не є профілем майстра.");
-          return;
-        }
-
-        window.location.href = "/artist-dashboard.html";
-      } catch (error) {
+        window.location.href="/artist-dashboard.html";
+      }catch(error){
         showMessage(error.message);
       }
     });
 
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) return;
+    window.setLang = function(lang){
+      document.documentElement.lang = lang;
 
-      const userDoc = await getDoc(doc(db, "users", user.uid));
+      const text = {
+        uk:{
+          back:"← Назад",
+          tabRegister:"Реєстрація",
+          tabLogin:"Вхід",
+          nameLabel:"Імʼя майстра",
+          passwordLabel:"Пароль",
+          passwordLabel2:"Пароль",
+          registerBtn:"Створити профіль",
+          loginBtn:"Увійти в майстерню"
+        },
+        en:{
+          back:"← Back",
+          tabRegister:"Register",
+          tabLogin:"Login",
+          nameLabel:"Artist name",
+          passwordLabel:"Password",
+          passwordLabel2:"Password",
+          registerBtn:"Create profile",
+          loginBtn:"Enter workshop"
+        }
+      };
 
-      if (userDoc.exists() && userDoc.data().role === "artist") {
-        // Автовхід можна ввімкнути пізніше:
-        // window.location.href = "/artist-dashboard.html";
-      }
-    });
+      Object.keys(text[lang]).forEach(key=>{
+        const el=document.querySelector(`[data-i18n="${key}"]`);
+        if(el) el.textContent=text[lang][key];
+      });
+
+      document.querySelectorAll(".lang button").forEach(btn=>btn.classList.remove("active"));
+      document.querySelector(`[onclick="setLang('${lang}')"]`).classList.add("active");
+    }
   </script>
 </body>
 </html>
