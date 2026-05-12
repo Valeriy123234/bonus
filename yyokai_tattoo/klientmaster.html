@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>YYOKAI</title>
 
   <style>
+
     *{
       margin:0;
       padding:0;
@@ -20,14 +22,15 @@
     body{
       min-height:100vh;
       font-family:Arial,sans-serif;
+
       background:
         radial-gradient(circle at 50% 18%, rgba(185,0,35,.24), transparent 34%),
-        radial-gradient(circle at 15% 70%, rgba(255,255,255,.03), transparent 28%),
+        radial-gradient(circle at 10% 80%, rgba(255,255,255,.03), transparent 28%),
         linear-gradient(
           to bottom,
           #000 0%,
-          #050202 30%,
-          #090304 60%,
+          #070202 35%,
+          #0a0304 65%,
           #000 100%
         );
 
@@ -37,25 +40,27 @@
     }
 
     body::before{
-      content:"妖 刺青 鬼 狐 墨 夜 影";
+      content:"妖 鬼 狐 墨 夜 刺青";
       position:fixed;
       inset:0;
-      z-index:0;
+
       pointer-events:none;
+      z-index:0;
 
-      color:rgba(255,255,255,.02);
+      color:rgba(255,255,255,.022);
 
-      font-size:92px;
+      font-size:90px;
       line-height:1.45;
-      letter-spacing:36px;
+      letter-spacing:34px;
 
-      transform:rotate(-12deg) scale(1.18);
+      transform:rotate(-12deg) scale(1.15);
     }
 
     body::after{
       content:"";
       position:fixed;
       inset:0;
+
       z-index:1;
       pointer-events:none;
 
@@ -63,8 +68,8 @@
         linear-gradient(
           to bottom,
           rgba(0,0,0,1) 0%,
-          transparent 16%,
-          transparent 84%,
+          transparent 14%,
+          transparent 86%,
           rgba(0,0,0,1) 100%
         );
     }
@@ -73,6 +78,7 @@
       position:fixed;
       top:0;
       width:100%;
+
       padding:24px 34px;
 
       display:flex;
@@ -82,11 +88,14 @@
       z-index:10;
     }
 
+    /* LANGUAGE */
+
     .lang{
       display:flex;
-      gap:6px;
+      align-items:center;
+      gap:8px;
 
-      padding:6px;
+      padding:7px;
 
       border-radius:999px;
 
@@ -98,31 +107,36 @@
     }
 
     .lang button{
-      border:0;
+      border:none;
       background:transparent;
 
-      color:#9a9a9a;
+      color:#9f9f9f;
 
-      padding:8px 14px;
+      padding:10px 18px;
 
       border-radius:999px;
 
-      font-weight:800;
+      font-weight:900;
+      font-size:13px;
 
       cursor:pointer;
 
-      transition:.2s;
+      transition:.25s;
     }
 
     .lang button.active{
       background:#f4f0eb;
       color:#050505;
+
+      box-shadow:
+        0 0 18px rgba(255,255,255,.08);
     }
 
     .login{
       color:#aaa;
       text-decoration:none;
       font-size:14px;
+      transition:.2s;
     }
 
     .login:hover{
@@ -135,11 +149,11 @@
 
       min-height:100vh;
 
-      padding:115px 24px 90px;
+      padding:110px 24px 90px;
 
       display:flex;
-      justify-content:center;
       align-items:center;
+      justify-content:center;
 
       transform:translateY(-5px);
     }
@@ -152,8 +166,8 @@
 
     .label{
       display:inline-flex;
-      gap:12px;
       align-items:center;
+      gap:12px;
 
       margin-bottom:34px;
 
@@ -187,7 +201,7 @@
 
       display:inline-block;
 
-      font-size:clamp(64px,12vw,176px);
+      font-size:clamp(64px,12vw,180px);
 
       font-weight:950;
 
@@ -195,17 +209,19 @@
 
       line-height:.9;
 
-      margin-bottom:30px;
+      margin-bottom:28px;
 
       color:#f5f0eb;
 
       text-shadow:
-        0 0 8px rgba(255,255,255,.25),
-        0 0 28px rgba(229,9,47,.35),
+        0 0 8px rgba(255,255,255,.2),
+        0 0 24px rgba(229,9,47,.35),
         0 0 80px rgba(0,0,0,.95);
 
-      animation:breath 4s ease-in-out infinite;
+      animation:logoPulse 4s ease-in-out infinite;
     }
+
+    /* NEW GLITCH */
 
     .logo::before,
     .logo::after{
@@ -214,20 +230,20 @@
       inset:0;
 
       pointer-events:none;
-
-      mix-blend-mode:screen;
     }
 
     .logo::before{
       color:#ff0037;
+      z-index:-1;
 
-      animation:glitchOne 1.8s infinite;
+      animation:glitchTop 2s infinite linear;
     }
 
     .logo::after{
-      color:#a3001f;
+      color:#920018;
+      z-index:-2;
 
-      animation:glitchTwo 2.3s infinite;
+      animation:glitchBottom 2.6s infinite linear;
     }
 
     .logo span{
@@ -236,141 +252,128 @@
 
       color:transparent;
 
-      -webkit-text-stroke:1px rgba(229,9,47,.58);
+      -webkit-text-stroke:1px rgba(229,9,47,.45);
 
-      opacity:.32;
+      opacity:.35;
 
-      animation:ghost 3s infinite ease-in-out;
+      animation:scanline 3s infinite linear;
     }
 
-    @keyframes breath{
+    @keyframes logoPulse{
+
       0%,100%{
         filter:
-          drop-shadow(0 0 10px rgba(229,9,47,.22));
+          drop-shadow(0 0 10px rgba(229,9,47,.18));
       }
 
       50%{
         filter:
-          drop-shadow(0 0 38px rgba(229,9,47,.62));
+          drop-shadow(0 0 34px rgba(229,9,47,.55));
       }
     }
 
-    @keyframes ghost{
-      0%,100%{
-        transform:translate(0,0);
-        opacity:.18;
-      }
-
-      50%{
-        transform:translate(0,8px);
-        opacity:.48;
-      }
-    }
-
-    /* BIG GLITCH */
-
-    @keyframes glitchOne{
+    @keyframes glitchTop{
 
       0%,100%{
         transform:translate(0);
         opacity:0;
-        clip-path:inset(0 0 0 0);
+      }
+
+      2%{
+        opacity:1;
+        transform:translate(-8px,-2px);
+      }
+
+      4%{
+        transform:translate(10px,2px);
+      }
+
+      6%{
+        transform:translate(-6px,1px);
       }
 
       8%{
-        opacity:1;
-        transform:translate(-10px,-3px);
-        clip-path:inset(0 0 72% 0);
-      }
-
-      10%{
-        transform:translate(10px,3px);
-        clip-path:inset(38% 0 42% 0);
-      }
-
-      12%{
-        transform:translate(-8px,1px);
-        clip-path:inset(72% 0 10% 0);
-      }
-
-      14%{
         opacity:0;
       }
 
-      55%{
+      70%{
         opacity:0;
       }
 
-      57%{
+      72%{
         opacity:1;
-        transform:translate(8px,-2px);
-        clip-path:inset(18% 0 60% 0);
+        transform:translate(12px,-3px);
       }
 
-      59%{
+      74%{
         transform:translate(-10px,2px);
-        clip-path:inset(52% 0 22% 0);
       }
 
-      61%{
-        transform:translate(6px,0);
-        clip-path:inset(82% 0 4% 0);
+      76%{
+        transform:translate(6px,-1px);
       }
 
-      63%{
+      78%{
         opacity:0;
       }
     }
 
-    @keyframes glitchTwo{
+    @keyframes glitchBottom{
 
       0%,100%{
         transform:translate(0);
         opacity:0;
       }
 
-      22%{
+      20%{
         opacity:.9;
-        transform:translate(14px,-4px);
-        clip-path:inset(0 0 84% 0);
+        transform:translate(9px,3px);
+      }
+
+      22%{
+        transform:translate(-12px,-2px);
       }
 
       24%{
-        transform:translate(-12px,3px);
-        clip-path:inset(30% 0 46% 0);
+        transform:translate(7px,1px);
       }
 
       26%{
-        transform:translate(9px,-2px);
-        clip-path:inset(74% 0 8% 0);
-      }
-
-      28%{
         opacity:0;
       }
 
-      76%{
+      86%{
         opacity:0;
       }
 
-      78%{
+      88%{
         opacity:1;
         transform:translate(-13px,4px);
-        clip-path:inset(14% 0 70% 0);
       }
 
-      80%{
-        transform:translate(10px,-3px);
-        clip-path:inset(44% 0 28% 0);
+      90%{
+        transform:translate(9px,-3px);
       }
 
-      82%{
-        transform:translate(-7px,1px);
-        clip-path:inset(82% 0 4% 0);
+      92%{
+        transform:translate(-5px,2px);
       }
 
-      84%{
+      94%{
         opacity:0;
+      }
+    }
+
+    @keyframes scanline{
+
+      0%,100%{
+        transform:translateY(0);
+        opacity:.15;
+      }
+
+      50%{
+        transform:translateY(8px);
+        opacity:.4;
       }
     }
 
@@ -578,6 +581,7 @@
         letter-spacing:24px;
       }
     }
+
   </style>
 </head>
 
@@ -586,11 +590,27 @@
   <header>
 
     <div class="lang">
-      <button class="active">UA</button>
-      <button>EN</button>
+
+      <button
+        class="active"
+        onclick="setLang('uk')"
+      >
+        Українська
+      </button>
+
+      <button
+        onclick="setLang('en')"
+      >
+        English
+      </button>
+
     </div>
 
-    <a href="/login.html" class="login">
+    <a
+      href="/login.html"
+      class="login"
+      data-i18n="login"
+    >
       Увійти
     </a>
 
@@ -601,11 +621,15 @@
     <section class="wrap">
 
       <div class="label">
-        <span class="seal">妖</span>
 
-        <span>
+        <span class="seal">
+          妖
+        </span>
+
+        <span data-i18n="badge">
           Інструменти для тату-майстрів нового покоління
         </span>
+
       </div>
 
       <h1 class="logo">
@@ -613,13 +637,19 @@
         <span>YYOKAI</span>
       </h1>
 
-      <p class="subtitle">
-        Обери свій шлях: простір для клієнтів або майстерня
-        для тату-майстрів зі стенсілами, шрифтами,
-        референсами та підготовкою до сеансу.
+      <p
+        class="subtitle"
+        data-i18n="subtitle"
+      >
+        Обери свій шлях: простір для клієнтів
+        або майстерня для тату-майстрів
+        зі стенсілами, шрифтами,
+        референсами та AI-підготовкою.
       </p>
 
       <div class="paths">
+
+        <!-- CLIENT -->
 
         <div class="card">
 
@@ -627,18 +657,26 @@
             <img src="images/kitsune.png">
           </div>
 
-          <h2>Я клієнт</h2>
+          <h2 data-i18n="clientTitle">
+            Я клієнт
+          </h2>
 
-          <p>
+          <p data-i18n="clientText">
             Переглянь ескізи, стиль майстра,
             примірку тату та швидкий запис.
           </p>
 
-          <a href="/client.html" class="btn">
+          <a
+            href="/client.html"
+            class="btn"
+            data-i18n="clientBtn"
+          >
             Увійти в студію →
           </a>
 
         </div>
+
+        <!-- ARTIST -->
 
         <div class="card">
 
@@ -646,15 +684,21 @@
             <img src="images/hannya.png">
           </div>
 
-          <h2>Я майстер</h2>
+          <h2 data-i18n="artistTitle">
+            Я майстер
+          </h2>
 
-          <p>
-            Генерація стенсілу, шрифти,
-            розбиття рукава на A4
+          <p data-i18n="artistText">
+            Генерація стенсілу,
+            шрифти, A4 split
             та AI-помічник.
           </p>
 
-          <a href="/artist.html" class="btn red">
+          <a
+            href="/artist-auth.html"
+            class="btn red"
+            data-i18n="artistBtn"
+          >
             Увійти в майстерню →
           </a>
 
@@ -663,14 +707,118 @@
       </div>
 
       <div class="auth">
-        <a href="/register.html">
+
+        <a
+          href="/register.html"
+          data-i18n="register"
+        >
           Немає акаунта? Створити профіль
         </a>
+
       </div>
 
     </section>
 
   </main>
+
+  <script>
+
+    const text = {
+
+      uk: {
+
+        login:
+        "Увійти",
+
+        badge:
+        "Інструменти для тату-майстрів нового покоління",
+
+        subtitle:
+        "Обери свій шлях: простір для клієнтів або майстерня для тату-майстрів зі стенсілами, шрифтами, референсами та AI-підготовкою.",
+
+        clientTitle:
+        "Я клієнт",
+
+        clientText:
+        "Переглянь ескізи, стиль майстра, примірку тату та швидкий запис.",
+
+        clientBtn:
+        "Увійти в студію →",
+
+        artistTitle:
+        "Я майстер",
+
+        artistText:
+        "Генерація стенсілу, шрифти, A4 split та AI-помічник.",
+
+        artistBtn:
+        "Увійти в майстерню →",
+
+        register:
+        "Немає акаунта? Створити профіль"
+      },
+
+      en: {
+
+        login:
+        "Log in",
+
+        badge:
+        "Next-generation tools for tattoo artists",
+
+        subtitle:
+        "Choose your path: a client space or a workshop for tattoo artists with stencils, fonts, references and AI preparation tools.",
+
+        clientTitle:
+        "I’m a client",
+
+        clientText:
+        "Explore sketches, artist style, tattoo previews and quick booking.",
+
+        clientBtn:
+        "Enter studio →",
+
+        artistTitle:
+        "I’m an artist",
+
+        artistText:
+        "Stencil generation, fonts, A4 split and AI assistant.",
+
+        artistBtn:
+        "Enter workshop →",
+
+        register:
+        "New here? Create profile"
+      }
+    };
+
+    function setLang(lang){
+
+      document.documentElement.lang = lang;
+
+      Object.keys(text[lang]).forEach(key => {
+
+        const el = document.querySelector(
+          `[data-i18n="${key}"]`
+        );
+
+        if(el){
+          el.textContent = text[lang][key];
+        }
+
+      });
+
+      document.querySelectorAll(".lang button")
+      .forEach(btn => {
+        btn.classList.remove("active");
+      });
+
+      document.querySelector(
+        `[onclick="setLang('${lang}')"]`
+      ).classList.add("active");
+    }
+
+  </script>
 
 </body>
 </html>
