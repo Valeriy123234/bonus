@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>YYOKAI</title>
 
   <style>
@@ -80,7 +81,6 @@
     .lang button.active{
       background:#f4f0eb;
       color:#050505;
-      box-shadow:0 0 18px rgba(255,255,255,.08);
     }
 
     .login{
@@ -96,7 +96,7 @@
       position:relative;
       z-index:2;
       min-height:100vh;
-      padding:110px 24px 40px;
+      padding:110px 24px 24px;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -314,8 +314,8 @@
     }
 
     .auth{
-      margin-top:30px;
-      padding-bottom:20px;
+      margin-top:24px;
+      padding-bottom:0;
       font-size:14px;
       color:#777;
     }
@@ -329,10 +329,11 @@
     .footer{
       position:relative;
       z-index:2;
-      margin-top:40px;
-      padding:56px 24px 34px;
-      border-top:1px solid rgba(255,255,255,.08);
-      background:linear-gradient(to bottom,rgba(255,255,255,.018),rgba(0,0,0,.75));
+      margin-top:4px;
+      padding:14px 24px 18px;
+      border-top:1px solid rgba(255,255,255,.035);
+      background:#000;
+      opacity:.42;
     }
 
     .footer-grid{
@@ -341,46 +342,48 @@
       margin:0 auto;
       display:flex;
       justify-content:space-between;
-      gap:40px;
+      align-items:center;
+      gap:18px;
       flex-wrap:wrap;
       text-align:left;
     }
 
     .footer-logo{
-      font-size:22px;
+      font-size:11px;
       font-weight:900;
-      letter-spacing:.14em;
-      color:#f5f0eb;
-      margin-bottom:12px;
-      text-shadow:0 0 18px rgba(229,9,47,.25);
+      letter-spacing:.18em;
+      color:#777;
+      margin-bottom:3px;
     }
 
     .footer-text{
-      color:#777;
+      color:#4c4c4c;
       max-width:340px;
-      line-height:1.7;
+      line-height:1.4;
+      font-size:11px;
     }
 
     .footer-links{
       display:flex;
-      gap:18px;
+      gap:12px;
       flex-wrap:wrap;
-      align-items:flex-start;
+      align-items:center;
+      font-size:11px;
     }
 
     .footer-links a{
-      color:#9a9a9a;
+      color:#5d5d5d;
       text-decoration:none;
       transition:.2s;
     }
 
-    .footer-links a:hover{color:#fff}
+    .footer-links a:hover{color:#aaa}
 
     .footer-bottom{
-      margin-top:44px;
+      margin-top:10px;
       text-align:center;
-      color:#5f5f5f;
-      font-size:13px;
+      color:#3f3f3f;
+      font-size:10px;
       letter-spacing:.08em;
     }
 
@@ -451,7 +454,7 @@
 
   <footer class="footer">
     <div class="footer-grid">
-      <div class="footer-brand">
+      <div>
         <div class="footer-logo">YYOKAI SYSTEM</div>
         <p class="footer-text" data-i18n="footerText">
           AI tools and workflow platform for tattoo artists.
@@ -459,8 +462,8 @@
       </div>
 
       <div class="footer-links">
-        <a href="/privacy.html">Privacy Policy</a>
-        <a href="/terms.html">Terms of Service</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
         <a href="/cookies.html">Cookies</a>
         <a href="/contact.html">Contact</a>
       </div>
