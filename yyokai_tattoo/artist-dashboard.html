@@ -8,7 +8,10 @@
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
 
-    :root{--accent:#e5092f}
+    :root{
+      --accent:#e5092f;
+      --button-red:#e5092f;
+    }
 
     html,body{
       min-height:100%;
@@ -19,9 +22,10 @@
 
     body{
       background:
-        radial-gradient(circle at 50% 0%,rgba(180,0,32,.22),transparent 32%),
+        radial-gradient(circle at 50% 0%, rgba(180,0,32,.22), transparent 32%),
         linear-gradient(to bottom,#000,#080203 55%,#000);
       overflow-x:hidden;
+      transition:background .35s ease;
     }
 
     body::before{
@@ -138,14 +142,15 @@
       border-radius:14px;
       background:rgba(255,255,255,.06);
       color:#fff;
-      font-size:22px;
+      font-size:24px;
+      line-height:1;
       cursor:pointer;
       transition:.25s;
     }
 
     .menu-btn.open{
       background:rgba(229,9,47,.18);
-      transform:rotate(90deg);
+      border-color:rgba(229,9,47,.45);
     }
 
     .page-title h1{
@@ -399,6 +404,7 @@
       background:rgba(255,255,255,.06);
       color:#fff;
       cursor:pointer;
+      font-size:22px;
     }
 
     .setting-row{
@@ -452,10 +458,11 @@
       padding:12px 16px;
       border:0;
       border-radius:999px;
-      background:var(--accent);
+      background:#e5092f;
       color:#fff;
       font-weight:900;
       cursor:pointer;
+      box-shadow:0 0 24px rgba(229,9,47,.25);
     }
 
     audio{display:none}
@@ -546,8 +553,8 @@
 
         <div class="top-actions">
           <div class="lang">
-            <button class="active" onclick="setLang('uk')">UA</button>
-            <button onclick="setLang('en')">EN</button>
+            <button class="active" onclick="setLang('uk', this)">UA</button>
+            <button onclick="setLang('en', this)">EN</button>
           </div>
 
           <button class="icon-btn" id="musicBtn" onclick="toggleMusic()">🔇</button>
@@ -557,6 +564,7 @@
 
             <div class="profile-menu" id="profileMenu">
               <div class="profile-name" id="artistName">YYOKAI Artist</div>
+
               <div class="balance">
                 <span data-i18n="balance">Баланс</span>:
                 <strong id="balanceValue">$0.00</strong>
@@ -564,7 +572,7 @@
 
               <button onclick="addBalance()">＋ <span data-i18n="addBalance">Поповнити баланс</span></button>
               <button onclick="openSettings()">⚙ <span data-i18n="settings">Налаштування</span></button>
-              <a href="/billing.html" data-i18n="billing">Billing</a>
+              <a href="/billing.html" data-i18n="billing">Оплата</a>
               <button onclick="logout()">退出 <span data-i18n="logout">Вийти</span></button>
             </div>
           </div>
@@ -575,7 +583,7 @@
         <h2 data-i18n="welcome">Welcome to YYOKAI System</h2>
         <p data-i18n="welcomeText">
           Інструменти для тату-майстра: стенсіл, шрифти, A4 split, референси,
-          підготовка до сеансу та майбутній AI-помічник.
+          підготовка до сеансу та AI workflow.
         </p>
       </section>
 
@@ -584,37 +592,37 @@
           <span class="tag">CORE</span>
           <div class="tool-icon">🧿</div>
           <h3 data-i18n="toolStencil">AI Stencil</h3>
-          <p data-i18n="toolStencilText">Завантаж фото та отримай чистий stencil для роботи.</p>
+          <p data-i18n="toolStencilText">Завантаж фото та отримай clean stencil.</p>
         </article>
 
         <article class="tool" onclick="go('/split.html')">
           <div class="tool-icon">📄</div>
-          <h3 data-i18n="toolSplit">A4 Sleeve Split</h3>
-          <p data-i18n="toolSplitText">Розбий великий ескіз на листи A4 для друку.</p>
+          <h3 data-i18n="toolSplit">A4 Split</h3>
+          <p data-i18n="toolSplitText">Розбий великий ескіз на A4 сторінки.</p>
         </article>
 
         <article class="tool" onclick="go('/fonts.html')">
           <div class="tool-icon">字</div>
           <h3 data-i18n="toolFonts">Tattoo Fonts</h3>
-          <p data-i18n="toolFontsText">Підбір написів, шрифтів і швидких варіантів для клієнта.</p>
+          <p data-i18n="toolFontsText">Підбір шрифтів та написів для клієнта.</p>
         </article>
 
         <article class="tool" onclick="go('/references.html')">
           <div class="tool-icon">狐</div>
           <h3 data-i18n="toolRefs">AI References</h3>
-          <p data-i18n="toolRefsText">Ідеї, образи та референси під твій стиль.</p>
+          <p data-i18n="toolRefsText">Референси та AI mood generation.</p>
         </article>
 
         <article class="tool" onclick="go('/sessions.html')">
           <div class="tool-icon">⛩</div>
           <h3 data-i18n="toolSessions">Sessions</h3>
-          <p data-i18n="toolSessionsText">Підготовка до сеансу, файли, нотатки та клієнти.</p>
+          <p data-i18n="toolSessionsText">Підготовка до сеансів та нотатки.</p>
         </article>
 
         <article class="tool" onclick="go('/uploads.html')">
           <div class="tool-icon">墨</div>
           <h3 data-i18n="toolUploads">Uploads</h3>
-          <p data-i18n="toolUploadsText">Твої зображення, стенсіли, PDF та готові матеріали.</p>
+          <p data-i18n="toolUploadsText">Файли, PDF, стенсіли та ескізи.</p>
         </article>
       </section>
     </main>
@@ -672,11 +680,10 @@
   </section>
 
   <script>
-    let currentLang = "uk";
     let musicPlaying = false;
     let selectedColor = "#e5092f";
 
-    const text = {
+    const translations = {
       uk:{
         workspace:"Workspace",
         navDashboard:"Dashboard",
@@ -695,19 +702,19 @@
         billing:"Оплата",
         logout:"Вийти",
         welcome:"Welcome to YYOKAI System",
-        welcomeText:"Інструменти для тату-майстра: стенсіл, шрифти, A4 split, референси, підготовка до сеансу та майбутній AI-помічник.",
+        welcomeText:"Інструменти для тату-майстра: стенсіл, шрифти, A4 split, референси, підготовка до сеансу та AI workflow.",
         toolStencil:"AI Stencil",
-        toolStencilText:"Завантаж фото та отримай чистий stencil для роботи.",
-        toolSplit:"A4 Sleeve Split",
-        toolSplitText:"Розбий великий ескіз на листи A4 для друку.",
+        toolStencilText:"Завантаж фото та отримай clean stencil.",
+        toolSplit:"A4 Split",
+        toolSplitText:"Розбий великий ескіз на A4 сторінки.",
         toolFonts:"Tattoo Fonts",
-        toolFontsText:"Підбір написів, шрифтів і швидких варіантів для клієнта.",
+        toolFontsText:"Підбір шрифтів та написів для клієнта.",
         toolRefs:"AI References",
-        toolRefsText:"Ідеї, образи та референси під твій стиль.",
+        toolRefsText:"Референси та AI mood generation.",
         toolSessions:"Sessions",
-        toolSessionsText:"Підготовка до сеансу, файли, нотатки та клієнти.",
+        toolSessionsText:"Підготовка до сеансів та нотатки.",
         toolUploads:"Uploads",
-        toolUploadsText:"Твої зображення, стенсіли, PDF та готові матеріали.",
+        toolUploadsText:"Файли, PDF, стенсіли та ескізи.",
         settingsTitle:"Налаштування",
         changeAvatar:"Змінити фото профілю",
         changeEmail:"Email",
@@ -717,6 +724,7 @@
         palette:"Палітра / фон",
         applyGradient:"Застосувати градієнт"
       },
+
       en:{
         workspace:"Workspace",
         navDashboard:"Dashboard",
@@ -735,19 +743,19 @@
         billing:"Billing",
         logout:"Logout",
         welcome:"Welcome to YYOKAI System",
-        welcomeText:"Tools for tattoo artists: stencil, fonts, A4 split, references, session preparation and future AI assistant.",
+        welcomeText:"Tools for tattoo artists: stencil, fonts, A4 split, references, session preparation and AI workflow.",
         toolStencil:"AI Stencil",
-        toolStencilText:"Upload an image and get a clean stencil for work.",
-        toolSplit:"A4 Sleeve Split",
-        toolSplitText:"Split a large sketch into A4 sheets for printing.",
+        toolStencilText:"Upload an image and get a clean stencil.",
+        toolSplit:"A4 Split",
+        toolSplitText:"Split a large sketch into A4 pages.",
         toolFonts:"Tattoo Fonts",
-        toolFontsText:"Lettering, fonts and fast options for clients.",
+        toolFontsText:"Font and lettering selection for clients.",
         toolRefs:"AI References",
-        toolRefsText:"Ideas, visuals and references for your style.",
+        toolRefsText:"References and AI mood generation.",
         toolSessions:"Sessions",
-        toolSessionsText:"Session preparation, files, notes and clients.",
+        toolSessionsText:"Session preparation and notes.",
         toolUploads:"Uploads",
-        toolUploadsText:"Your images, stencils, PDFs and finished materials.",
+        toolUploadsText:"Files, PDFs, stencils and sketches.",
         settingsTitle:"Settings",
         changeAvatar:"Change profile photo",
         changeEmail:"Email",
@@ -759,21 +767,23 @@
       }
     };
 
-    function go(url){
-      location.href = url;
-    }
-
-    function setLang(lang){
-      currentLang = lang;
+    function setLang(lang, btn){
       document.documentElement.lang = lang;
 
-      Object.keys(text[lang]).forEach(key=>{
+      Object.keys(translations[lang]).forEach(key=>{
         const el = document.querySelector(`[data-i18n="${key}"]`);
-        if(el) el.textContent = text[lang][key];
+        if(el) el.textContent = translations[lang][key];
       });
 
-      document.querySelectorAll(".lang button").forEach(btn=>btn.classList.remove("active"));
-      document.querySelector(`[onclick="setLang('${lang}')"]`).classList.add("active");
+      document.querySelectorAll(".lang button").forEach(button=>{
+        button.classList.remove("active");
+      });
+
+      if(btn) btn.classList.add("active");
+    }
+
+    function go(url){
+      location.href = url;
     }
 
     function toggleSidebar(){
@@ -820,9 +830,12 @@
       if(!file) return;
 
       const reader = new FileReader();
+
       reader.onload = function(e){
-        document.getElementById("avatar").innerHTML = `<img src="${e.target.result}" alt="avatar">`;
+        document.getElementById("avatar").innerHTML =
+          `<img src="${e.target.result}" alt="avatar">`;
       };
+
       reader.readAsDataURL(file);
     }
 
@@ -831,12 +844,14 @@
       if(!file) return;
 
       const reader = new FileReader();
+
       reader.onload = function(e){
         document.body.style.background = `
           linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.9)),
           url('${e.target.result}') center/cover fixed
         `;
       };
+
       reader.readAsDataURL(file);
     }
 
@@ -849,7 +864,7 @@
     function applyGradientBackground(){
       document.body.style.background = `
         radial-gradient(circle at 50% 0%, ${selectedColor}55, transparent 32%),
-        linear-gradient(to bottom, #000, #080203 55%, #000)
+        linear-gradient(to bottom,#000,#080203 55%,#000)
       `;
     }
 
@@ -860,19 +875,6 @@
     function logout(){
       location.href = "/artist-auth.html";
     }
-
-    /*
-      Для будущего billing:
-
-      Firestore users/{uid}:
-      balance: 0
-      plan: "free"
-      billingCustomerId: null
-      lastPaymentId: null
-
-      После оплаты backend/webhook должен обновлять users/{uid}.balance
-      Потом тут просто подгружаешь баланс и вставляешь в #balanceValue.
-    */
 
     document.addEventListener("click",function(e){
       const profile = document.querySelector(".profile");
