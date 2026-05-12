@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YYOKAI SYSTEM</title>
+<title>YYOKAI | Artist System</title>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
@@ -15,134 +15,151 @@
 :root{--accent:#e5092f}
 html,body{min-height:100%;background:#000;color:#fff;font-family:Arial,sans-serif}
 body{
-  background:radial-gradient(circle at 50% 0%,rgba(229,9,47,.24),transparent 35%),linear-gradient(#000,#080203 60%,#000);
+  background:radial-gradient(circle at 50% 0%,rgba(229,9,47,.22),transparent 34%),linear-gradient(#000,#070203 60%,#000);
   overflow-x:hidden;
 }
 body:before{
   content:"妖 鬼 狐 墨 夜 刺青";
-  position:fixed;inset:0;pointer-events:none;color:rgba(255,255,255,.016);
-  font-size:80px;letter-spacing:30px;line-height:1.5;transform:rotate(-12deg) scale(1.15);
+  position:fixed;inset:0;pointer-events:none;color:rgba(255,255,255,.015);
+  font-size:80px;letter-spacing:30px;line-height:1.5;transform:rotate(-12deg) scale(1.15)
 }
 .hidden{display:none!important}
 button{cursor:pointer}
-.auth-page,.app{position:relative;z-index:2}
-.auth-page{min-height:100vh;display:grid;place-items:center;padding:24px}
-.auth-card,.panel,.hero,.box,.tool,.modal{
-  border:1px solid rgba(255,255,255,.1);
-  background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.018));
-  backdrop-filter:blur(22px);
+.app{position:relative;z-index:2;min-height:100vh;display:grid;grid-template-columns:92px 1fr}
+.rail{
+  min-height:100vh;padding:18px 12px;border-right:1px solid rgba(255,255,255,.08);
+  background:rgba(0,0,0,.72);backdrop-filter:blur(24px);
+  display:flex;flex-direction:column;align-items:center;gap:18px
 }
-.auth-card{width:100%;max-width:460px;padding:28px;border-radius:34px;text-align:center}
-.logo{font-size:46px;font-weight:950;letter-spacing:.15em;text-shadow:0 0 28px rgba(229,9,47,.4)}
-.seal{color:var(--accent);font-weight:900;margin-bottom:10px}
-.tabs{display:flex;gap:8px;margin:24px 0;padding:6px;border-radius:999px;background:rgba(255,255,255,.06)}
-.tabs button{flex:1;border:0;border-radius:999px;padding:12px;background:transparent;color:#999;font-weight:900}
-.tabs button.active{background:#f5f0eb;color:#050505}
-form{display:none;flex-direction:column;gap:12px;text-align:left}
-form.active{display:flex}
-label{font-size:13px;color:#aaa}
-input,textarea,select{
-  width:100%;padding:14px 15px;border-radius:16px;border:1px solid rgba(255,255,255,.12);
-  background:rgba(0,0,0,.45);color:#fff;outline:none
+.seal{color:var(--accent);font-size:24px;text-shadow:0 0 18px rgba(229,9,47,.75)}
+.logo-mini{writing-mode:vertical-rl;font-weight:950;letter-spacing:.16em;color:#f5f0eb;font-size:13px}
+.nav{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.nav button{
+  width:58px;height:58px;border-radius:20px;border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.05);color:#aaa;font-size:22px;transition:.2s
 }
-.main-btn{border:0;border-radius:999px;padding:15px;background:#e5092f;color:#fff;font-weight:950;box-shadow:0 0 28px rgba(229,9,47,.3)}
-.msg{min-height:22px;color:#ff6178;text-align:center;font-size:13px;margin-top:12px}
-
-.app{min-height:100vh;display:grid;grid-template-columns:86px 1fr}
-.rail{min-height:100vh;padding:18px 12px;border-right:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.68);display:flex;flex-direction:column;align-items:center;gap:18px}
-.logo-mini{writing-mode:vertical-rl;font-weight:950;letter-spacing:.15em}
-.nav{display:flex;flex-direction:column;gap:10px;margin-top:16px}
-.nav button{width:58px;height:58px;border-radius:20px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;font-size:22px}
-.nav button:hover,.nav button.active{background:rgba(229,9,47,.16);border-color:rgba(229,9,47,.35)}
+.nav button.active,.nav button:hover{background:rgba(229,9,47,.16);color:#fff;border-color:rgba(229,9,47,.35)}
 .main{padding:18px;min-width:0}
-.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;border-radius:28px;background:rgba(0,0,0,.68);border:1px solid rgba(255,255,255,.09);backdrop-filter:blur(24px);margin-bottom:18px}
-.brand h1{letter-spacing:.16em}.brand p{font-size:13px;color:#777;margin-top:4px}
+.topbar{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  padding:14px 16px;margin-bottom:18px;border-radius:28px;
+  background:rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.09);backdrop-filter:blur(24px)
+}
+.brand{display:flex;align-items:center;gap:12px}
+.brand h1{letter-spacing:.16em;font-size:22px}
+.brand p{font-size:13px;color:#777;margin-top:3px}
+.menu-mobile{display:none}
 .actions{display:flex;align-items:center;gap:10px}
 .lang{display:flex;gap:5px;padding:5px;border-radius:999px;background:rgba(255,255,255,.06)}
 .lang button{border:0;background:transparent;color:#888;padding:8px 11px;border-radius:999px;font-weight:900}
 .lang button.active{background:#f5f0eb;color:#050505}
-.icon-btn{width:42px;height:42px;border-radius:15px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.055);color:#fff;font-size:18px}
-.avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:#250008;border:1px solid rgba(255,255,255,.15);box-shadow:0 0 22px rgba(229,9,47,.24)}
-.avatar img{width:100%;height:100%;object-fit:cover}
+.icon-btn{
+  width:42px;height:42px;border-radius:15px;border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.055);color:#fff;font-size:18px
+}
 .profile{position:relative}
-.profile-menu{display:none;position:absolute;right:0;top:56px;width:270px;padding:16px;border-radius:24px;background:rgba(0,0,0,.92);border:1px solid rgba(255,255,255,.12);z-index:9}
+.avatar{
+  width:44px;height:44px;border-radius:50%;display:grid;place-items:center;overflow:hidden;
+  background:#250008;border:1px solid rgba(255,255,255,.15);box-shadow:0 0 22px rgba(229,9,47,.24)
+}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.profile-menu{
+  display:none;position:absolute;right:0;top:56px;width:280px;padding:16px;border-radius:24px;
+  background:rgba(0,0,0,.94);border:1px solid rgba(255,255,255,.12);z-index:10
+}
 .profile-menu.open{display:block}
-.profile-menu button,.profile-menu a{display:block;width:100%;padding:12px;border:0;background:transparent;color:#aaa;text-align:left;text-decoration:none;border-radius:14px;font-weight:800}
+.profile-name{font-weight:900}.profile-email{font-size:12px;color:#777;margin:6px 0 12px}
+.balance{color:#aaa;margin-bottom:12px}.balance strong{color:#fff}
+.profile-menu button,.profile-menu a{
+  width:100%;display:block;border:0;background:transparent;color:#aaa;text-align:left;text-decoration:none;
+  padding:12px;border-radius:14px;font-weight:800
+}
 .profile-menu button:hover,.profile-menu a:hover{background:rgba(255,255,255,.06);color:#fff}
-.profile-name{font-weight:900}.profile-email{font-size:12px;color:#777;margin:6px 0 12px}.balance{color:#aaa;margin-bottom:12px}.balance strong{color:#fff}
-.hero{padding:30px;border-radius:34px;margin-bottom:18px}
-.hero h2{font-size:clamp(32px,6vw,58px);line-height:1;margin-bottom:14px}.hero p{color:#aaa;line-height:1.65;max-width:760px}
-.create{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-bottom:18px}
-.box{padding:20px;border-radius:30px}.box textarea{height:150px;resize:none;margin-bottom:12px}
-.controls{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
-.preview-box{height:248px;border-radius:24px;border:1px dashed rgba(255,255,255,.16);display:grid;place-items:center;color:#777;background:rgba(0,0,0,.35);text-align:center;padding:20px}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.tool{min-height:165px;padding:18px;border-radius:26px;transition:.25s}
-.tool:hover{transform:translateY(-5px);border-color:rgba(229,9,47,.35)}
+
+.hero{
+  padding:28px;border-radius:34px;margin-bottom:18px;border:1px solid rgba(255,255,255,.1);
+  background:radial-gradient(circle at 85% 15%,rgba(229,9,47,.22),transparent 34%),linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.018));
+  backdrop-filter:blur(22px)
+}
+.hero h2{font-size:clamp(30px,6vw,56px);line-height:1;margin-bottom:12px}
+.hero p{color:#aaa;line-height:1.65;max-width:760px}
+
+.grid-main{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;margin-bottom:16px}
+.card,.tool,.modal{
+  border:1px solid rgba(255,255,255,.1);
+  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.018));
+  backdrop-filter:blur(22px)
+}
+.card{border-radius:30px;padding:20px}
+.card h3{margin-bottom:14px}
+.client-form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.client-form input,.client-form textarea,.client-form select{
+  width:100%;padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.12);
+  background:rgba(0,0,0,.45);color:#fff;outline:none
+}
+.client-form textarea{grid-column:1/-1;min-height:90px;resize:vertical}
+.red-btn{border:0;border-radius:999px;padding:14px 18px;background:#e5092f;color:#fff;font-weight:950;box-shadow:0 0 26px rgba(229,9,47,.28)}
+.ghost-btn{border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:14px 18px;background:rgba(255,255,255,.055);color:#fff;font-weight:900}
+.list{display:flex;flex-direction:column;gap:10px;max-height:360px;overflow:auto}
+.item{padding:14px;border-radius:18px;background:rgba(0,0,0,.36);border:1px solid rgba(255,255,255,.08)}
+.item-top{display:flex;justify-content:space-between;gap:10px;margin-bottom:6px}
+.item strong{color:#fff}.item span,.item p{color:#999;font-size:13px;line-height:1.45}
+.item button{margin-top:10px;border:0;background:rgba(229,9,47,.14);color:#fff;border-radius:999px;padding:8px 12px}
+
+.tools{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.tool{min-height:165px;padding:18px;border-radius:26px;transition:.25s;cursor:pointer}
+.tool:hover{transform:translateY(-5px);border-color:rgba(229,9,47,.35);box-shadow:0 24px 70px rgba(0,0,0,.45)}
 .tool-icon{width:50px;height:50px;border-radius:18px;display:grid;place-items:center;background:#070707;border:1px solid rgba(255,255,255,.12);font-size:23px;margin-bottom:18px}
 .tool h3{margin-bottom:8px}.tool p{font-size:13px;color:#999;line-height:1.45}
-.settings{display:none;position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.72);backdrop-filter:blur(10px);padding:20px;place-items:center}
+
+.music-panel{
+  display:flex;gap:12px;align-items:center;padding:12px;border-radius:18px;
+  background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08);margin-top:12px
+}
+.cover{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,#e5092f,#111);display:grid;place-items:center}
+.track-title{font-weight:900}.track-sub{color:#777;font-size:12px}
+.music-controls{margin-left:auto;display:flex;gap:8px}
+.music-controls button{width:38px;height:38px;border-radius:14px;border:0;background:rgba(255,255,255,.08);color:#fff}
+
+.settings{display:none;position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.74);backdrop-filter:blur(10px);padding:20px;place-items:center}
 .settings.open{display:grid}
-.modal{width:100%;max-width:540px;max-height:90vh;overflow:auto;padding:24px;border-radius:32px;background:#050505}
+.modal{width:100%;max-width:560px;max-height:90vh;overflow:auto;padding:24px;border-radius:32px;background:#050505}
 .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
 .close{width:40px;height:40px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;font-size:22px}
 .row{padding:14px 0;border-top:1px solid rgba(255,255,255,.07)}
+.row label{display:block;color:#aaa;margin-bottom:8px;font-size:13px}
+.row input,.row select{width:100%;padding:13px 14px;border-radius:16px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.055);color:#fff}
 .color-picker-box{display:flex;align-items:center;gap:14px}
 .color-picker-box input[type=color]{width:64px;height:64px;padding:0;border-radius:50%;overflow:hidden}
 .small-btn{margin-top:12px;padding:12px 16px;border:0;border-radius:999px;background:#e5092f;color:#fff;font-weight:900}
 audio{display:none}
-.menu-mobile{display:none}
+
 @media(max-width:980px){
-  .app{grid-template-columns:1fr}.rail{position:fixed;left:-90px;top:0;width:86px;z-index:40;transition:.25s}.rail.open{left:0}.menu-mobile{display:block}
-  .create{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr)}
+  .app{grid-template-columns:1fr}
+  .rail{position:fixed;left:-94px;top:0;width:92px;z-index:40;transition:.25s}.rail.open{left:0}
+  .menu-mobile{display:block}
+  .grid-main{grid-template-columns:1fr}.tools{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:640px){
-  .main{padding:12px}.brand p{display:none}.controls{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.hero{padding:22px}
+  .main{padding:12px}.brand p{display:none}.grid-main{gap:12px}.tools{grid-template-columns:1fr}
+  .client-form{grid-template-columns:1fr}.hero{padding:22px}
 }
 </style>
 </head>
 
 <body>
-<audio id="bgMusic" loop><source src="music/japan-chill.mp3" type="audio/mpeg"></audio>
+<audio id="bgMusic"></audio>
 
-<section class="auth-page" id="authPage">
-  <div class="auth-card">
-    <div class="seal">妖</div>
-    <div class="logo">YYOKAI</div>
-
-    <div class="tabs">
-      <button class="active" onclick="switchAuth('login',this)">Вхід</button>
-      <button onclick="switchAuth('register',this)">Реєстрація</button>
-    </div>
-
-    <form id="loginForm" class="active">
-      <label>Email</label>
-      <input id="loginEmail" type="email" required>
-      <label>Пароль</label>
-      <input id="loginPassword" type="password" required>
-      <button class="main-btn" type="submit">Увійти</button>
-    </form>
-
-    <form id="registerForm">
-      <label>Нік майстра</label>
-      <input id="regName" type="text" placeholder="YYOKAI Artist" required>
-      <label>Email</label>
-      <input id="regEmail" type="email" required>
-      <label>Пароль</label>
-      <input id="regPassword" type="password" required>
-      <button class="main-btn" type="submit">Створити профіль</button>
-    </form>
-
-    <div class="msg" id="authMsg"></div>
-  </div>
-</section>
-
-<section class="app hidden" id="dashboard">
+<section class="app">
   <aside class="rail" id="rail">
     <div class="seal">妖</div>
     <div class="logo-mini">YYOKAI</div>
     <nav class="nav">
-      <button class="active">⌂</button><button onclick="go('/stencil.html')">🧿</button><button onclick="go('/split.html')">📄</button><button onclick="go('/fonts.html')">字</button><button onclick="go('/references.html')">狐</button><button onclick="go('/billing.html')">¥</button>
+      <button class="active" onclick="showSection('home')">⌂</button>
+      <button onclick="showSection('clients')">🗓</button>
+      <button onclick="go('/stencil.html')">🧿</button>
+      <button onclick="go('/split.html')">📄</button>
+      <button onclick="go('/billing.html')">¥</button>
     </nav>
   </aside>
 
@@ -150,13 +167,18 @@ audio{display:none}
     <header class="topbar">
       <div class="brand">
         <button class="icon-btn menu-mobile" id="menuBtn" onclick="toggleRail()">☰</button>
-        <h1>YYOKAI</h1>
-        <p data-i18n="subtitle">Твоя AI-майстерня для тату-підготовки</p>
+        <div>
+          <h1>YYOKAI</h1>
+          <p data-i18n="subtitle">Твоя тату-система, не просто кабінет</p>
+        </div>
       </div>
 
       <div class="actions">
-        <div class="lang"><button class="active" onclick="setLang('uk',this)">UA</button><button onclick="setLang('en',this)">EN</button></div>
-        <button class="icon-btn" id="musicBtn" onclick="toggleMusic()">🔇</button>
+        <div class="lang">
+          <button class="active" onclick="setLang('uk',this)">UA</button>
+          <button onclick="setLang('en',this)">EN</button>
+        </div>
+        <button class="icon-btn" onclick="toggleMusic()" id="musicBtn">🔇</button>
         <div class="profile">
           <div class="avatar" id="avatar" onclick="toggleProfile()">👺</div>
           <div class="profile-menu" id="profileMenu">
@@ -173,56 +195,109 @@ audio{display:none}
     </header>
 
     <section class="hero">
-      <h2 data-i18n="welcome">Create tattoo workflow faster</h2>
-      <p data-i18n="welcomeText">Генеруй стенсіли, розбивай рукави на A4, підбирай шрифти, референси та готуйся до сеансів в одному місці.</p>
+      <h2 data-i18n="welcome">Welcome back, artist</h2>
+      <p data-i18n="welcomeText">Плануй клієнтів, зберігай нотатки, керуй файлами, музикою, балансом і підготовкою до сеансів в одному темному просторі.</p>
     </section>
 
-    <section class="create">
-      <div class="box">
-        <textarea data-i18n-placeholder="promptPlaceholder" placeholder="Опиши ідею, стиль, розмір, місце на тілі..."></textarea>
-        <div class="controls">
-          <select><option>Stencil</option><option>Reference</option><option>Lettering</option></select>
-          <select><option>Dark Japan</option><option>Blackwork</option><option>Fine Line</option></select>
-          <input type="number" value="1">
+    <section class="grid-main">
+      <div class="card">
+        <h3 data-i18n="clientTitle">Запис клієнта</h3>
+        <div class="client-form">
+          <input id="clientName" data-i18n-placeholder="clientName" placeholder="Імʼя клієнта">
+          <input id="clientPhone" placeholder="Telegram / Phone">
+          <input id="clientDate" type="date">
+          <select id="clientStatus">
+            <option value="new">New</option>
+            <option value="consultation">Consultation</option>
+            <option value="booked">Booked</option>
+            <option value="done">Done</option>
+          </select>
+          <textarea id="clientNote" data-i18n-placeholder="clientNote" placeholder="Нотатка: місце, стиль, розмір, побажання..."></textarea>
+          <button class="red-btn" onclick="saveClient()" data-i18n="saveClient">Зберегти клієнта</button>
+          <button class="ghost-btn" onclick="clearClientForm()" data-i18n="clear">Очистити</button>
         </div>
-        <button class="main-btn" onclick="go('/stencil.html')" data-i18n="generate">Start creation</button>
       </div>
-      <div class="box"><div class="preview-box" data-i18n="preview">Тут буде превʼю генерації / останній результат</div></div>
+
+      <div class="card">
+        <h3 data-i18n="todayTitle">Список записів</h3>
+        <div class="list" id="clientsList"></div>
+
+        <div class="music-panel">
+          <div class="cover" id="trackCover">⛩</div>
+          <div>
+            <div class="track-title" id="trackTitle">Japanese Chill</div>
+            <div class="track-sub" id="trackSub">YYOKAI playlist</div>
+          </div>
+          <div class="music-controls">
+            <button onclick="prevTrack()">‹</button>
+            <button onclick="toggleMusic()">▶</button>
+            <button onclick="nextTrack()">›</button>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section class="grid">
-      <article class="tool" onclick="go('/stencil.html')"><div class="tool-icon">🧿</div><h3>AI Stencil</h3><p data-i18n="stencilText">Фото → чистий stencil.</p></article>
-      <article class="tool" onclick="go('/split.html')"><div class="tool-icon">📄</div><h3>A4 Split</h3><p data-i18n="splitText">Розбиття ескізу на друк.</p></article>
-      <article class="tool" onclick="go('/fonts.html')"><div class="tool-icon">字</div><h3>Fonts</h3><p data-i18n="fontsText">Шрифти та написи.</p></article>
-      <article class="tool" onclick="go('/references.html')"><div class="tool-icon">狐</div><h3>References</h3><p data-i18n="refsText">Ідеї під твій стиль.</p></article>
+    <section class="tools">
+      <article class="tool" onclick="go('/stencil.html')"><div class="tool-icon">🧿</div><h3>Stencil</h3><p data-i18n="stencilText">Підготовка чистого stencil.</p></article>
+      <article class="tool" onclick="go('/split.html')"><div class="tool-icon">📄</div><h3>A4 Split</h3><p data-i18n="splitText">Друк великих ескізів.</p></article>
+      <article class="tool" onclick="go('/uploads.html')"><div class="tool-icon">墨</div><h3>Files</h3><p data-i18n="filesText">Файли, PDF, референси.</p></article>
+      <article class="tool" onclick="go('/billing.html')"><div class="tool-icon">¥</div><h3>Billing</h3><p data-i18n="billingText">Баланс, оплати, тарифи.</p></article>
     </section>
   </main>
 </section>
 
 <section class="settings" id="settingsPanel">
   <div class="modal">
-    <div class="modal-head"><h2 data-i18n="settingsTitle">Налаштування</h2><button class="close" onclick="closeSettings()">×</button></div>
-    <div class="row"><label data-i18n="changeAvatar">Змінити фото профілю</label><input type="file" accept="image/*" onchange="uploadAvatar(event)"></div>
-    <div class="row"><label data-i18n="artistNameLabel">Нік майстра</label><input id="nameInput" type="text"><button class="small-btn" onclick="saveName()" data-i18n="saveName">Зберегти нік</button></div>
-    <div class="row"><label>Email</label><input id="emailInput" type="email" disabled></div>
-    <div class="row"><label data-i18n="backgroundUpload">Фон кабінету</label><input type="file" accept="image/*" onchange="changeBackground(event)"></div>
+    <div class="modal-head">
+      <h2 data-i18n="settings">Налаштування</h2>
+      <button class="close" onclick="closeSettings()">×</button>
+    </div>
+
+    <div class="row">
+      <label data-i18n="changeAvatar">Змінити фото профілю</label>
+      <input type="file" accept="image/*" onchange="uploadAvatar(event)">
+    </div>
+
+    <div class="row">
+      <label data-i18n="artistNameLabel">Нік майстра</label>
+      <input id="nameInput" type="text">
+      <button class="small-btn" onclick="saveName()" data-i18n="saveName">Зберегти нік</button>
+    </div>
+
+    <div class="row">
+      <label data-i18n="musicSettings">Музика / плейлист</label>
+      <select id="musicSelect" onchange="selectTrack(this.value)">
+        <option value="0">Japanese Chill</option>
+        <option value="1">Dark Ambient</option>
+        <option value="2">Night Studio</option>
+      </select>
+    </div>
+
+    <div class="row">
+      <label data-i18n="backgroundUpload">Фон кабінету</label>
+      <input type="file" accept="image/*" onchange="changeBackground(event)">
+    </div>
+
     <div class="row">
       <label data-i18n="palette">Палітра / фон</label>
-      <div class="color-picker-box"><input id="colorPicker" type="color" value="#e5092f" oninput="setCustomAccent(this.value)"><span id="colorValue">#e5092f</span></div>
+      <div class="color-picker-box">
+        <input id="colorPicker" type="color" value="#e5092f" oninput="setCustomAccent(this.value)">
+        <span id="colorValue">#e5092f</span>
+      </div>
       <button class="small-btn" onclick="applyGradientBackground()" data-i18n="applyGradient">Застосувати градієнт</button>
     </div>
   </div>
 </section>
 
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyALs-ZgFX7auGxRQ2EeQnVngjnejimPLV4",
-  authDomain: "yyokai-tattoo-system.firebaseapp.com",
-  databaseURL: "https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/",
-  projectId: "yyokai-tattoo-system",
-  storageBucket: "yyokai-tattoo-system.firebasestorage.app",
-  messagingSenderId: "995298614954",
-  appId: "1:995298614954:web:e4039c69fcb0541a95fad3"
+const firebaseConfig={
+  apiKey:"ТВОЙ_API_KEY",
+  authDomain:"yyokai-tattoo-system.firebaseapp.com",
+  databaseURL:"https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/",
+  projectId:"yyokai-tattoo-system",
+  storageBucket:"yyokai-tattoo-system.firebasestorage.app",
+  messagingSenderId:"995298614954",
+  appId:"1:995298614954:web:e4039c69fcb0541a95fad3"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -230,72 +305,106 @@ const auth=firebase.auth();
 const db=firebase.database();
 const storage=firebase.storage();
 
-let currentUser=null, selectedColor="#e5092f", musicPlaying=false;
+let currentUser=null, selectedColor="#e5092f", musicPlaying=false, trackIndex=0;
 
-const t={
-uk:{subtitle:"Твоя AI-майстерня для тату-підготовки",balance:"Баланс",addBalance:"Поповнити баланс",settings:"Налаштування",billing:"Оплата",logout:"Вийти",welcome:"Create tattoo workflow faster",welcomeText:"Генеруй стенсіли, розбивай рукави на A4, підбирай шрифти, референси та готуйся до сеансів в одному місці.",promptPlaceholder:"Опиши ідею, стиль, розмір, місце на тілі...",generate:"Start creation",preview:"Тут буде превʼю генерації / останній результат",stencilText:"Фото → чистий stencil.",splitText:"Розбиття ескізу на друк.",fontsText:"Шрифти та написи.",refsText:"Ідеї під твій стиль.",settingsTitle:"Налаштування",changeAvatar:"Змінити фото профілю",artistNameLabel:"Нік майстра",saveName:"Зберегти нік",backgroundUpload:"Фон кабінету",palette:"Палітра / фон",applyGradient:"Застосувати градієнт"},
-en:{subtitle:"Your AI workshop for tattoo preparation",balance:"Balance",addBalance:"Add balance",settings:"Settings",billing:"Billing",logout:"Logout",welcome:"Create tattoo workflow faster",welcomeText:"Generate stencils, split sleeves to A4, choose fonts, references and prepare sessions in one place.",promptPlaceholder:"Describe idea, style, size, body placement...",generate:"Start creation",preview:"Generation preview / latest result will appear here",stencilText:"Photo → clean stencil.",splitText:"Split sketch for printing.",fontsText:"Fonts and lettering.",refsText:"Ideas for your style.",settingsTitle:"Settings",changeAvatar:"Change profile photo",artistNameLabel:"Artist nickname",saveName:"Save nickname",backgroundUpload:"Dashboard background",palette:"Palette / background",applyGradient:"Apply gradient"}
-};
+const playlist=[
+  {title:"Japanese Chill",sub:"Soft studio mood",icon:"⛩",src:"music/japan-chill.mp3"},
+  {title:"Dark Ambient",sub:"Deep focus",icon:"🌑",src:"music/dark-ambient.mp3"},
+  {title:"Night Studio",sub:"Late work flow",icon:"🦊",src:"music/night-studio.mp3"}
+];
 
-function switchAuth(type,btn){
-  document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
-  loginForm.classList.toggle("active",type==="login");
-  registerForm.classList.toggle("active",type==="register");
+const tr={
+uk:{
+subtitle:"Твоя тату-система, не просто кабінет",balance:"Баланс",addBalance:"Поповнити баланс",settings:"Налаштування",billing:"Оплата",logout:"Вийти",
+welcome:"Welcome back, artist",welcomeText:"Плануй клієнтів, зберігай нотатки, керуй файлами, музикою, балансом і підготовкою до сеансів в одному темному просторі.",
+clientTitle:"Запис клієнта",clientName:"Імʼя клієнта",clientNote:"Нотатка: місце, стиль, розмір, побажання...",saveClient:"Зберегти клієнта",clear:"Очистити",
+todayTitle:"Список записів",stencilText:"Підготовка чистого stencil.",splitText:"Друк великих ескізів.",filesText:"Файли, PDF, референси.",billingText:"Баланс, оплати, тарифи.",
+changeAvatar:"Змінити фото профілю",artistNameLabel:"Нік майстра",saveName:"Зберегти нік",musicSettings:"Музика / плейлист",backgroundUpload:"Фон кабінету",palette:"Палітра / фон",applyGradient:"Застосувати градієнт"
+},
+en:{
+subtitle:"Your tattoo system, not just a dashboard",balance:"Balance",addBalance:"Add balance",settings:"Settings",billing:"Billing",logout:"Logout",
+welcome:"Welcome back, artist",welcomeText:"Plan clients, save notes, manage files, music, balance and session preparation in one dark workspace.",
+clientTitle:"Client booking",clientName:"Client name",clientNote:"Note: placement, style, size, wishes...",saveClient:"Save client",clear:"Clear",
+todayTitle:"Booking list",stencilText:"Clean stencil preparation.",splitText:"Print large sketches.",filesText:"Files, PDFs, references.",billingText:"Balance, payments, plans.",
+changeAvatar:"Change profile photo",artistNameLabel:"Artist nickname",saveName:"Save nickname",musicSettings:"Music / playlist",backgroundUpload:"Dashboard background",palette:"Palette / background",applyGradient:"Apply gradient"
 }
-
-loginForm.onsubmit=async e=>{
-  e.preventDefault();
-  authMsg.textContent="...";
-  try{await auth.signInWithEmailAndPassword(loginEmail.value,loginPassword.value)}
-  catch(err){authMsg.textContent=err.message}
-};
-
-registerForm.onsubmit=async e=>{
-  e.preventDefault();
-  authMsg.textContent="...";
-  try{
-    const cred=await auth.createUserWithEmailAndPassword(regEmail.value,regPassword.value);
-    await db.ref("users/"+cred.user.uid).set({name:regName.value,email:regEmail.value,role:"artist",balance:0,plan:"free",avatarUrl:""});
-  }catch(err){authMsg.textContent=err.message}
 };
 
 auth.onAuthStateChanged(async user=>{
-  if(!user){authPage.classList.remove("hidden");dashboard.classList.add("hidden");return}
+  if(!user){location.href="artist-auth.html";return}
   currentUser=user;
-  authPage.classList.add("hidden");dashboard.classList.remove("hidden");
+
   const snap=await db.ref("users/"+user.uid).once("value");
-  let data=snap.val();
-  if(!data){
-    data={name:"YYOKAI Artist",email:user.email,role:"artist",balance:0,plan:"free",avatarUrl:""};
-    await db.ref("users/"+user.uid).set(data);
-  }
+  const data=snap.val()||{};
   artistName.textContent=data.name||"YYOKAI Artist";
   artistEmail.textContent=data.email||user.email;
-  emailInput.value=data.email||user.email;
   nameInput.value=data.name||"YYOKAI Artist";
   balanceValue.textContent="$"+Number(data.balance||0).toFixed(2);
   if(data.avatarUrl) avatar.innerHTML=`<img src="${data.avatarUrl}">`;
+
+  loadClients();
+  loadSettings(data);
 });
 
 function setLang(lang,btn){
-  Object.keys(t[lang]).forEach(k=>{
-    document.querySelectorAll(`[data-i18n="${k}"]`).forEach(el=>el.textContent=t[lang][k]);
-    document.querySelectorAll(`[data-i18n-placeholder="${k}"]`).forEach(el=>el.placeholder=t[lang][k]);
+  Object.keys(tr[lang]).forEach(k=>{
+    document.querySelectorAll(`[data-i18n="${k}"]`).forEach(el=>el.textContent=tr[lang][k]);
+    document.querySelectorAll(`[data-i18n-placeholder="${k}"]`).forEach(el=>el.placeholder=tr[lang][k]);
   });
   document.querySelectorAll(".lang button").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
 }
 
-async function saveName(){
+async function saveClient(){
   if(!currentUser)return;
+  const data={
+    name:clientName.value.trim(),
+    phone:clientPhone.value.trim(),
+    date:clientDate.value,
+    status:clientStatus.value,
+    note:clientNote.value.trim(),
+    createdAt:Date.now()
+  };
+  if(!data.name)return;
+  await db.ref("users/"+currentUser.uid+"/clients").push(data);
+  clearClientForm();
+  loadClients();
+}
+
+function clearClientForm(){
+  clientName.value="";clientPhone.value="";clientDate.value="";clientNote.value="";clientStatus.value="new";
+}
+
+async function loadClients(){
+  const snap=await db.ref("users/"+currentUser.uid+"/clients").orderByChild("createdAt").limitToLast(12).once("value");
+  const data=snap.val()||{};
+  clientsList.innerHTML="";
+  Object.entries(data).reverse().forEach(([id,c])=>{
+    const div=document.createElement("div");
+    div.className="item";
+    div.innerHTML=`
+      <div class="item-top"><strong>${c.name||"Client"}</strong><span>${c.date||"No date"}</span></div>
+      <span>${c.phone||""} · ${c.status||"new"}</span>
+      <p>${c.note||""}</p>
+      <button onclick="deleteClient('${id}')">Delete</button>
+    `;
+    clientsList.appendChild(div);
+  });
+}
+
+async function deleteClient(id){
+  await db.ref("users/"+currentUser.uid+"/clients/"+id).remove();
+  loadClients();
+}
+
+async function saveName(){
   const name=nameInput.value.trim()||"YYOKAI Artist";
   await db.ref("users/"+currentUser.uid).update({name});
   artistName.textContent=name;
 }
 
 async function uploadAvatar(e){
-  const file=e.target.files[0]; if(!file||!currentUser)return;
+  const file=e.target.files[0]; if(!file)return;
   const ref=storage.ref("avatars/"+currentUser.uid+"/"+file.name);
   await ref.put(file);
   const url=await ref.getDownloadURL();
@@ -303,17 +412,53 @@ async function uploadAvatar(e){
   avatar.innerHTML=`<img src="${url}">`;
 }
 
-function logout(){auth.signOut()}
-function go(url){location.href=url}
-function addBalance(){location.href="/billing.html"}
+function selectTrack(i){
+  trackIndex=Number(i);
+  const t=playlist[trackIndex];
+  bgMusic.src=t.src; trackTitle.textContent=t.title; trackSub.textContent=t.sub; trackCover.textContent=t.icon;
+  db.ref("users/"+currentUser.uid+"/settings").update({trackIndex});
+}
+
+function toggleMusic(){
+  const t=playlist[trackIndex];
+  if(!bgMusic.src) bgMusic.src=t.src;
+  if(!musicPlaying){bgMusic.volume=.35;bgMusic.play();musicBtn.textContent="🔊";musicPlaying=true}
+  else{bgMusic.pause();musicBtn.textContent="🔇";musicPlaying=false}
+}
+function nextTrack(){selectTrack((trackIndex+1)%playlist.length); if(musicPlaying){bgMusic.play()}}
+function prevTrack(){selectTrack((trackIndex-1+playlist.length)%playlist.length); if(musicPlaying){bgMusic.play()}}
+
+function loadSettings(data){
+  const s=data.settings||{};
+  if(s.accent){setCustomAccent(s.accent)}
+  if(typeof s.trackIndex==="number"){musicSelect.value=s.trackIndex;selectTrack(s.trackIndex)}
+}
+
+function changeBackground(e){
+  const f=e.target.files[0]; if(!f)return;
+  const r=new FileReader();
+  r.onload=x=>document.body.style.background=`linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.9)),url('${x.target.result}') center/cover fixed`;
+  r.readAsDataURL(f);
+}
+function setCustomAccent(c){selectedColor=c;colorValue.textContent=c;document.documentElement.style.setProperty("--accent",c)}
+async function applyGradientBackground(){
+  document.body.style.background=`radial-gradient(circle at 50% 0%, ${selectedColor}55, transparent 32%),linear-gradient(to bottom,#000,#080203 55%,#000)`;
+  if(currentUser) await db.ref("users/"+currentUser.uid+"/settings").update({accent:selectedColor});
+}
+
+function toggleRail(){rail.classList.toggle("open");menuBtn.textContent=rail.classList.contains("open")?"×":"☰"}
 function toggleProfile(){profileMenu.classList.toggle("open")}
 function openSettings(){settingsPanel.classList.add("open");profileMenu.classList.remove("open")}
 function closeSettings(){settingsPanel.classList.remove("open")}
-function toggleRail(){rail.classList.toggle("open");menuBtn.textContent=rail.classList.contains("open")?"×":"☰"}
-function toggleMusic(){const a=bgMusic;if(!musicPlaying){a.volume=.35;a.play();musicBtn.textContent="🔊";musicPlaying=true}else{a.pause();musicBtn.textContent="🔇";musicPlaying=false}}
-function changeBackground(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=x=>{document.body.style.background=`linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.9)),url('${x.target.result}') center/cover fixed`};r.readAsDataURL(f)}
-function setCustomAccent(c){selectedColor=c;colorValue.textContent=c;document.documentElement.style.setProperty("--accent",c)}
-function applyGradientBackground(){document.body.style.background=`radial-gradient(circle at 50% 0%, ${selectedColor}55, transparent 32%),linear-gradient(to bottom,#000,#080203 55%,#000)`}
+function addBalance(){location.href="billing.html"}
+function go(url){location.href=url}
+function logout(){auth.signOut()}
+function showSection(){}
+
+document.addEventListener("click",e=>{
+  const p=document.querySelector(".profile");
+  if(p&&!p.contains(e.target))profileMenu.classList.remove("open");
+});
 </script>
 </body>
 </html>
