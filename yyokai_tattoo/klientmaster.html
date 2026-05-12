@@ -1,50 +1,43 @@
+Вот полный index.html с чёрными плашками сверху/снизу и бело-красным glitch YYOKAI:
+
 <!DOCTYPE html>
 <html lang="uk">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>YYOKAI</title>
-
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
       min-height: 100vh;
       font-family: Arial, sans-serif;
       background:
-        radial-gradient(circle at 20% 15%, rgba(185, 0, 40, .28), transparent 32%),
-        radial-gradient(circle at 80% 80%, rgba(85, 0, 130, .22), transparent 36%),
-        linear-gradient(135deg, #030303, #0b0508, #050008);
+        radial-gradient(circle at 50% 20%, rgba(140, 0, 25, .18), transparent 34%),
+        linear-gradient(to bottom, #000 0%, #050505 12%, #0a0506 50%, #050505 88%, #000 100%);
       color: #fff;
       overflow-x: hidden;
+      position: relative;
     }
-
     body::before {
-      content: "妖怪  刺青  夜  影  鬼  狐  墨";
+      content: "妖怪  刺青  鬼  狐  墨  夜";
       position: fixed;
       inset: 0;
-      font-size: 96px;
-      line-height: 1.4;
-      letter-spacing: 40px;
-      color: rgba(255,255,255,.025);
-      transform: rotate(-12deg) scale(1.2);
+      font-size: 92px;
+      line-height: 1.5;
+      letter-spacing: 38px;
+      color: rgba(255,255,255,.022);
+      transform: rotate(-12deg) scale(1.15);
       pointer-events: none;
       z-index: 0;
     }
-
-    .grain {
+    body::after {
+      content: "";
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 1;
-      opacity: .06;
-      background-image:
-        linear-gradient(90deg, #fff 1px, transparent 1px),
-        linear-gradient(#fff 1px, transparent 1px);
-      background-size: 44px 44px;
-      mask-image: radial-gradient(circle, black, transparent 72%);
+      background: linear-gradient(to bottom, rgba(0,0,0,.95) 0%, transparent 14%, transparent 86%, rgba(0,0,0,.95) 100%);
     }
-
     header {
       position: fixed;
       top: 0;
@@ -55,17 +48,15 @@
       align-items: center;
       z-index: 10;
     }
-
     .lang {
       display: flex;
       gap: 6px;
       padding: 6px;
       border-radius: 999px;
-      background: rgba(255,255,255,.05);
+      background: rgba(0,0,0,.55);
       border: 1px solid rgba(255,255,255,.12);
-      backdrop-filter: blur(20px);
+      backdrop-filter: blur(18px);
     }
-
     .lang button {
       border: none;
       background: transparent;
@@ -75,107 +66,111 @@
       font-weight: 800;
       cursor: pointer;
     }
-
     .lang button.active {
       background: #fff;
       color: #050505;
     }
-
     .login {
       color: #aaa;
       text-decoration: none;
       font-size: 14px;
     }
-
     .login:hover { color: #fff; }
-
     .hero {
       position: relative;
       z-index: 2;
       min-height: 100vh;
-      padding: 115px 24px 50px;
+      padding: 120px 24px 56px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-
     .wrap {
       width: 100%;
       max-width: 1180px;
       text-align: center;
     }
-
-    .japan-label {
+    .label {
       display: inline-flex;
       gap: 12px;
       align-items: center;
-      margin-bottom: 26px;
+      margin-bottom: 30px;
       color: #b8b8b8;
       font-size: 14px;
-      letter-spacing: .08em;
       padding: 10px 18px;
       border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.045);
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.48);
       backdrop-filter: blur(20px);
     }
-
     .seal {
-      color: #ff174f;
+      color: #ff143c;
       font-weight: 900;
-      text-shadow: 0 0 20px rgba(255,23,79,.65);
+      text-shadow: 0 0 18px rgba(255,20,60,.7);
     }
-
     .logo {
       position: relative;
-      font-size: clamp(60px, 12vw, 165px);
+      display: inline-block;
+      font-size: clamp(62px, 12vw, 170px);
       font-weight: 950;
       letter-spacing: .13em;
       line-height: .9;
-      margin-bottom: 24px;
-      color: #f8f4ef;
-      text-shadow:
-        0 0 25px rgba(255,23,79,.45),
-        0 0 80px rgba(140,0,255,.25);
+      margin-bottom: 26px;
+      color: #f8f8f8;
+      text-shadow: 0 0 18px rgba(255,255,255,.22), 0 0 44px rgba(255,0,40,.34);
+      animation: logoPulse 3.2s infinite ease-in-out;
     }
-
     .logo::before,
     .logo::after {
       content: "YYOKAI";
       position: absolute;
       inset: 0;
-      opacity: .8;
       pointer-events: none;
+      opacity: .9;
     }
-
     .logo::before {
-      color: #ff174f;
-      transform: translate(4px, -2px);
-      clip-path: inset(0 0 58% 0);
-      animation: glitch1 1.8s infinite alternate-reverse;
+      color: #ff143c;
+      transform: translate(3px, -2px);
+      clip-path: inset(0 0 54% 0);
+      animation: glitchRed 1.35s infinite steps(2, end);
     }
-
     .logo::after {
-      color: #7b2cff;
-      transform: translate(-4px, 2px);
-      clip-path: inset(52% 0 0 0);
-      animation: glitch2 2.2s infinite alternate-reverse;
+      color: #ffffff;
+      transform: translate(-3px, 2px);
+      clip-path: inset(50% 0 0 0);
+      animation: glitchWhite 1.8s infinite steps(2, end);
     }
-
-    @keyframes glitch1 {
-      0% { transform: translate(2px, -2px); }
-      35% { transform: translate(-4px, 1px); }
-      70% { transform: translate(5px, -1px); }
-      100% { transform: translate(1px, -3px); }
+    .logo span {
+      position: absolute;
+      inset: 0;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,20,60,.62);
+      opacity: .38;
+      animation: scan 2.4s infinite linear;
     }
-
-    @keyframes glitch2 {
-      0% { transform: translate(-2px, 2px); }
-      35% { transform: translate(4px, -1px); }
-      70% { transform: translate(-5px, 2px); }
-      100% { transform: translate(-1px, 3px); }
+    @keyframes logoPulse {
+      0%, 100% { filter: drop-shadow(0 0 10px rgba(255,0,45,.22)); }
+      50% { filter: drop-shadow(0 0 28px rgba(255,0,45,.45)); }
     }
-
+    @keyframes glitchRed {
+      0% { transform: translate(0); clip-path: inset(0 0 88% 0); }
+      8% { transform: translate(5px, -2px); clip-path: inset(12% 0 62% 0); }
+      16% { transform: translate(-4px, 2px); clip-path: inset(44% 0 38% 0); }
+      24% { transform: translate(3px, 0); clip-path: inset(70% 0 12% 0); }
+      32%, 100% { transform: translate(3px, -2px); clip-path: inset(0 0 54% 0); }
+    }
+    @keyframes glitchWhite {
+      0% { transform: translate(0); clip-path: inset(82% 0 0 0); }
+      10% { transform: translate(-5px, 2px); clip-path: inset(10% 0 72% 0); }
+      20% { transform: translate(4px, -1px); clip-path: inset(52% 0 22% 0); }
+      30% { transform: translate(-3px, 1px); clip-path: inset(78% 0 8% 0); }
+      38%, 100% { transform: translate(-3px, 2px); clip-path: inset(50% 0 0 0); }
+    }
+    @keyframes scan {
+      0% { transform: translateY(-8px); opacity: .1; }
+      50% { transform: translateY(6px); opacity: .42; }
+      100% { transform: translateY(-8px); opacity: .1; }
+    }
     .subtitle {
       max-width: 760px;
       margin: 0 auto 46px;
@@ -183,13 +178,11 @@
       font-size: clamp(17px, 2vw, 22px);
       line-height: 1.6;
     }
-
     .paths {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 24px;
     }
-
     .card {
       position: relative;
       min-height: 335px;
@@ -198,32 +191,25 @@
       text-align: left;
       overflow: hidden;
       cursor: pointer;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.085), rgba(255,255,255,.025));
-      border: 1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.018));
+      border: 1px solid rgba(255,255,255,.10);
       backdrop-filter: blur(24px);
       transition: .35s;
     }
-
     .card::before {
       content: "";
       position: absolute;
       inset: -1px;
-      background:
-        radial-gradient(circle at top right, rgba(255,23,79,.35), transparent 38%),
-        radial-gradient(circle at bottom left, rgba(123,44,255,.22), transparent 34%);
+      background: radial-gradient(circle at top right, rgba(255,20,60,.28), transparent 38%);
       opacity: 0;
       transition: .35s;
     }
-
     .card:hover {
       transform: translateY(-8px);
-      border-color: rgba(255,255,255,.28);
-      box-shadow: 0 32px 90px rgba(0,0,0,.5);
+      border-color: rgba(255,255,255,.24);
+      box-shadow: 0 32px 90px rgba(0,0,0,.55);
     }
-
     .card:hover::before { opacity: 1; }
-
     .mask {
       position: relative;
       z-index: 1;
@@ -234,19 +220,15 @@
       place-items: center;
       margin-bottom: 34px;
       font-size: 34px;
-      background: rgba(255,255,255,.075);
-      border: 1px solid rgba(255,255,255,.13);
-      box-shadow: inset 0 0 20px rgba(255,255,255,.025);
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.12);
     }
-
     .card h2 {
       position: relative;
       z-index: 1;
       font-size: 34px;
       margin-bottom: 14px;
-      color: #fff;
     }
-
     .card p {
       position: relative;
       z-index: 1;
@@ -255,7 +237,6 @@
       line-height: 1.65;
       margin-bottom: 34px;
     }
-
     .btn {
       position: relative;
       z-index: 1;
@@ -267,25 +248,21 @@
       font-weight: 900;
       text-decoration: none;
     }
-
     .btn.red {
       color: white;
-      background: linear-gradient(135deg, #ff174f, #7b2cff);
-      box-shadow: 0 0 35px rgba(255,23,79,.3);
+      background: #ff143c;
+      box-shadow: 0 0 35px rgba(255,20,60,.3);
     }
-
     .auth {
       margin-top: 30px;
       font-size: 14px;
       color: #777;
     }
-
     .auth a {
       color: #fff;
       text-decoration: none;
       border-bottom: 1px solid rgba(255,255,255,.35);
     }
-
     @media (max-width: 780px) {
       header { padding: 18px; }
       .paths { grid-template-columns: 1fr; }
@@ -294,33 +271,25 @@
     }
   </style>
 </head>
-
 <body>
-  <div class="grain"></div>
-
   <header>
     <div class="lang">
       <button class="active" onclick="setLang('uk')">UA</button>
       <button onclick="setLang('en')">EN</button>
     </div>
-
     <a href="/login.html" class="login" data-i18n="login">Увійти</a>
   </header>
-
   <main class="hero">
     <section class="wrap">
-      <div class="japan-label">
+      <div class="label">
         <span class="seal">妖怪</span>
         <span data-i18n="badge">Інструменти для тату-майстрів нового покоління</span>
       </div>
-
-      <h1 class="logo">YYOKAI</h1>
-
+      <h1 class="logo">YYOKAI<span>YYOKAI</span></h1>
       <p class="subtitle" data-i18n="subtitle">
         Обери свій шлях: простір для клієнтів або майстерня для тату-майстрів
         зі стенсілами, шрифтами, референсами та підготовкою до сеансу.
       </p>
-
       <div class="paths">
         <div class="card" onclick="location.href='/client.html'">
           <div class="mask">狐</div>
@@ -331,7 +300,6 @@
           </p>
           <a href="/client.html" class="btn" data-i18n="clientBtn">Увійти в студію →</a>
         </div>
-
         <div class="card" onclick="location.href='/artist.html'">
           <div class="mask">鬼</div>
           <h2 data-i18n="artistTitle">Я майстер</h2>
@@ -342,13 +310,11 @@
           <a href="/artist.html" class="btn red" data-i18n="artistBtn">Увійти в майстерню →</a>
         </div>
       </div>
-
       <div class="auth">
         <a href="/register.html" data-i18n="register">Немає акаунта? Створити профіль</a>
       </div>
     </section>
   </main>
-
   <script>
     const text = {
       uk: {
@@ -376,19 +342,15 @@
         register: "New here? Create profile"
       }
     };
-
     function setLang(lang) {
       document.documentElement.lang = lang;
-
       Object.keys(text[lang]).forEach(key => {
         const el = document.querySelector(`[data-i18n="${key}"]`);
         if (el) el.textContent = text[lang][key];
       });
-
       document.querySelectorAll(".lang button").forEach(btn => {
         btn.classList.remove("active");
       });
-
       document.querySelector(`[onclick="setLang('${lang}')"]`).classList.add("active");
     }
   </script>
