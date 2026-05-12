@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YYOKAI | Artist Dashboard</title>
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+
+    html,body{
+      min-height:100%;
+      background:#000;
+      font-family:Arial,sans-serif;
+      color:#fff;
+    }
+
+    body{
+      background:
+        radial-gradient(circle at 50% 0%,rgba(180,0,32,.22),transparent 32%),
+        linear-gradient(to bottom,#000,#080203 55%,#000);
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:"妖 鬼 狐 墨 夜 刺青";
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      color:rgba(255,255,255,.018);
+      font-size:78px;
+      letter-spacing:30px;
+      line-height:1.5;
+      transform:rotate(-12deg) scale(1.15);
+    }
+
+    .app{
+      position:relative;
+      z-index:2;
+      min-height:100vh;
+      display:grid;
+      grid-template-columns:260px 1fr;
+    }
+
+    .sidebar{
+      min-height:100vh;
+      padding:22px;
+      border-right:1px solid rgba(255,255,255,.08);
+      background:rgba(0,0,0,.55);
+      backdrop-filter:blur(22px);
+    }
+
+    .brand{
+      margin-bottom:34px;
+    }
+
+    .seal{
+      color:#e5092f;
+      font-weight:900;
+      margin-bottom:8px;
+      text-shadow:0 0 18px rgba(229,9,47,.75);
+    }
+
+    .logo{
+      font-size:28px;
+      font-weight:950;
+      letter-spacing:.16em;
+      color:#f5f0eb;
+      text-shadow:0 0 22px rgba(229,9,47,.35);
+    }
+
+    .side-title{
+      color:#555;
+      font-size:11px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      margin:24px 0 12px;
+    }
+
+    .nav{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .nav button{
+      border:0;
+      background:transparent;
+      color:#aaa;
+      padding:13px 14px;
+      border-radius:16px;
+      text-align:left;
+      cursor:pointer;
+      font-weight:800;
+      transition:.2s;
+    }
+
+    .nav button.active,
+    .nav button:hover{
+      background:rgba(229,9,47,.12);
+      color:#fff;
+    }
+
+    .main{
+      min-width:0;
+      padding:20px;
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:20;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      margin-bottom:22px;
+      padding:14px;
+      border:1px solid rgba(255,255,255,.09);
+      border-radius:28px;
+      background:rgba(0,0,0,.62);
+      backdrop-filter:blur(20px);
+    }
+
+    .top-left{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+
+    .menu-btn{
+      display:none;
+      width:42px;
+      height:42px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:14px;
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      font-size:20px;
+    }
+
+    .page-title h1{
+      font-size:20px;
+      margin-bottom:4px;
+    }
+
+    .page-title p{
+      color:#777;
+      font-size:13px;
+    }
+
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .lang{
+      display:flex;
+      gap:5px;
+      padding:5px;
+      border-radius:999px;
+      background:rgba(255,255,255,.055);
+      border:1px solid rgba(255,255,255,.1);
+    }
+
+    .lang button{
+      border:0;
+      background:transparent;
+      color:#8d8d8d;
+      padding:8px 11px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:900;
+      cursor:pointer;
+    }
+
+    .lang button.active{
+      background:#f5f0eb;
+      color:#050505;
+    }
+
+    .icon-btn{
+      width:42px;
+      height:42px;
+      border-radius:15px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.055);
+      color:#fff;
+      cursor:pointer;
+      font-size:18px;
+    }
+
+    .profile{
+      position:relative;
+    }
+
+    .avatar{
+      width:44px;
+      height:44px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.15);
+      background:linear-gradient(135deg,#160406,#39000d);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      font-size:22px;
+      box-shadow:0 0 22px rgba(229,9,47,.24);
+      overflow:hidden;
+    }
+
+    .avatar img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .profile-menu{
+      position:absolute;
+      top:56px;
+      right:0;
+      width:260px;
+      padding:16px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.88);
+      backdrop-filter:blur(24px);
+      box-shadow:0 30px 80px rgba(0,0,0,.55);
+      display:none;
+    }
+
+    .profile-menu.open{
+      display:block;
+    }
+
+    .profile-name{
+      font-weight:900;
+      margin-bottom:6px;
+    }
+
+    .balance{
+      color:#aaa;
+      font-size:14px;
+      margin-bottom:14px;
+    }
+
+    .balance strong{
+      color:#fff;
+    }
+
+    .profile-menu button,
+    .profile-menu a{
+      width:100%;
+      display:block;
+      border:0;
+      background:transparent;
+      color:#aaa;
+      text-align:left;
+      text-decoration:none;
+      padding:12px;
+      border-radius:14px;
+      font-weight:800;
+      cursor:pointer;
+    }
+
+    .profile-menu button:hover,
+    .profile-menu a:hover{
+      background:rgba(255,255,255,.06);
+      color:#fff;
+    }
+
+    .hero-card{
+      padding:28px;
+      border-radius:34px;
+      border:1px solid rgba(255,255,255,.1);
+      background:
+        radial-gradient(circle at top right,rgba(229,9,47,.18),transparent 36%),
+        linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.018));
+      backdrop-filter:blur(22px);
+      margin-bottom:22px;
+    }
+
+    .hero-card h2{
+      font-size:clamp(26px,5vw,46px);
+      margin-bottom:12px;
+      color:#f5f0eb;
+    }
+
+    .hero-card p{
+      max-width:720px;
+      color:#aaa;
+      line-height:1.65;
+    }
+
+    .tool-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+    }
+
+    .tool{
+      position:relative;
+      min-height:190px;
+      padding:22px;
+      border-radius:28px;
+      border:1px solid rgba(255,255,255,.1);
+      background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.018));
+      cursor:pointer;
+      overflow:hidden;
+      transition:.25s;
+    }
+
+    .tool:hover{
+      transform:translateY(-5px);
+      border-color:rgba(229,9,47,.35);
+      box-shadow:0 24px 70px rgba(0,0,0,.45);
+    }
+
+    .tool-icon{
+      width:52px;
+      height:52px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      background:#070707;
+      border:1px solid rgba(255,255,255,.12);
+      margin-bottom:22px;
+      font-size:24px;
+    }
+
+    .tool h3{
+      font-size:20px;
+      margin-bottom:10px;
+    }
+
+    .tool p{
+      color:#999;
+      line-height:1.55;
+      font-size:14px;
+    }
+
+    .tag{
+      position:absolute;
+      top:18px;
+      right:18px;
+      font-size:11px;
+      color:#ff6b81;
+      background:rgba(229,9,47,.1);
+      border:1px solid rgba(229,9,47,.18);
+      padding:6px 9px;
+      border-radius:999px;
+      font-weight:900;
+    }
+
+    .settings-panel{
+      position:fixed;
+      inset:0;
+      z-index:50;
+      display:none;
+      background:rgba(0,0,0,.72);
+      backdrop-filter:blur(10px);
+      padding:20px;
+    }
+
+    .settings-panel.open{
+      display:grid;
+      place-items:center;
+    }
+
+    .modal{
+      width:100%;
+      max-width:520px;
+      border-radius:32px;
+      border:1px solid rgba(255,255,255,.12);
+      background:#050505;
+      padding:24px;
+      box-shadow:0 40px 100px rgba(0,0,0,.75);
+    }
+
+    .modal-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:20px;
+    }
+
+    .modal h2{
+      font-size:24px;
+    }
+
+    .close{
+      width:40px;
+      height:40px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      cursor:pointer;
+    }
+
+    .setting-row{
+      padding:14px 0;
+      border-top:1px solid rgba(255,255,255,.07);
+    }
+
+    .setting-row label{
+      display:block;
+      color:#aaa;
+      margin-bottom:8px;
+      font-size:13px;
+    }
+
+    .setting-row input,
+    .setting-row select{
+      width:100%;
+      padding:13px 14px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.055);
+      color:#fff;
+      outline:none;
+    }
+
+    .color-row{
+      display:flex;
+      gap:10px;
+    }
+
+    .color-dot{
+      width:34px;
+      height:34px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.2);
+      cursor:pointer;
+    }
+
+    .c-red{background:#e5092f}
+    .c-white{background:#f5f0eb}
+    .c-purple{background:#6b2cff}
+    .c-black{background:#111}
+
+    audio{
+      display:none;
+    }
+
+    @media(max-width:980px){
+      .app{
+        grid-template-columns:1fr;
+      }
+
+      .sidebar{
+        position:fixed;
+        top:0;
+        left:-280px;
+        width:260px;
+        z-index:40;
+        transition:.25s;
+      }
+
+      .sidebar.open{
+        left:0;
+      }
+
+      .menu-btn{
+        display:block;
+      }
+
+      .tool-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+    }
+
+    @media(max-width:640px){
+      .main{
+        padding:14px;
+      }
+
+      .topbar{
+        border-radius:24px;
+        align-items:flex-start;
+      }
+
+      .top-actions{
+        gap:7px;
+      }
+
+      .lang button{
+        padding:7px 9px;
+      }
+
+      .page-title p{
+        display:none;
+      }
+
+      .tool-grid{
+        grid-template-columns:1fr;
+      }
+
+      .hero-card{
+        padding:22px;
+      }
+
+      .tool{
+        min-height:165px;
+      }
+
+      .profile-menu{
+        right:-4px;
+        width:240px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <audio id="bgMusic" loop>
+    <source src="music/japan-chill.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="seal">妖</div>
+        <div class="logo">YYOKAI</div>
+      </div>
+
+      <div class="side-title" data-i18n="workspace">Workspace</div>
+
+      <nav class="nav">
+        <button class="active" data-i18n="navDashboard">Dashboard</button>
+        <button data-i18n="navStencil">AI Stencil</button>
+        <button data-i18n="navSplit">A4 Split</button>
+        <button data-i18n="navFonts">Fonts</button>
+        <button data-i18n="navReferences">References</button>
+        <button data-i18n="navSessions">Sessions</button>
+        <button data-i18n="navUploads">Uploads</button>
+        <button data-i18n="navBilling">Billing</button>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="top-left">
+          <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+
+          <div class="page-title">
+            <h1 data-i18n="title">Майстерня</h1>
+            <p data-i18n="subtitle">Твій простір для підготовки тату-сесій</p>
+          </div>
+        </div>
+
+        <div class="top-actions">
+          <div class="lang">
+            <button class="active" onclick="setLang('uk')">UA</button>
+            <button onclick="setLang('en')">EN</button>
+          </div>
+
+          <button class="icon-btn" id="musicBtn" onclick="toggleMusic()">🔇</button>
+
+          <div class="profile">
+            <div class="avatar" onclick="toggleProfile()" id="avatar">👺</div>
+
+            <div class="profile-menu" id="profileMenu">
+              <div class="profile-name" id="artistName">YYOKAI Artist</div>
+              <div class="balance">
+                <span data-i18n="balance">Баланс</span>:
+                <strong id="balanceValue">$0.00</strong>
+              </div>
+
+              <button onclick="addBalance()">＋ <span data-i18n="addBalance">Поповнити баланс</span></button>
+              <button onclick="openSettings()">⚙ <span data-i18n="settings">Налаштування</span></button>
+              <a href="/billing.html" data-i18n="billing">Billing</a>
+              <button onclick="logout()">退出 <span data-i18n="logout">Вийти</span></button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="hero-card">
+        <h2 data-i18n="welcome">Welcome to YYOKAI System</h2>
+        <p data-i18n="welcomeText">
+          Інструменти для тату-майстра: стенсіл, шрифти, A4 split, референси,
+          підготовка до сеансу та майбутній AI-помічник.
+        </p>
+      </section>
+
+      <section class="tool-grid">
+        <article class="tool" onclick="location.href='/stencil.html'">
+          <span class="tag">CORE</span>
+          <div class="tool-icon">🧿</div>
+          <h3 data-i18n="toolStencil">AI Stencil</h3>
+          <p data-i18n="toolStencilText">Завантаж фото та отримай чистий stencil для роботи.</p>
+        </article>
+
+        <article class="tool" onclick="location.href='/split.html'">
+          <div class="tool-icon">📄</div>
+          <h3 data-i18n="toolSplit">A4 Sleeve Split</h3>
+          <p data-i18n="toolSplitText">Розбий великий ескіз на листи A4 для друку.</p>
+        </article>
+
+        <article class="tool" onclick="location.href='/fonts.html'">
+          <div class="tool-icon">字</div>
+          <h3 data-i18n="toolFonts">Tattoo Fonts</h3>
+          <p data-i18n="toolFontsText">Підбір написів, шрифтів і швидких варіантів для клієнта.</p>
+        </article>
+
+        <article class="tool" onclick="location.href='/references.html'">
+          <div class="tool-icon">狐</div>
+          <h3 data-i18n="toolRefs">AI References</h3>
+          <p data-i18n="toolRefsText">Ідеї, образи та референси під твій стиль.</p>
+        </article>
+
+        <article class="tool" onclick="location.href='/sessions.html'">
+          <div class="tool-icon">⛩</div>
+          <h3 data-i18n="toolSessions">Sessions</h3>
+          <p data-i18n="toolSessionsText">Підготовка до сеансу, файли, нотатки та клієнти.</p>
+        </article>
+
+        <article class="tool" onclick="location.href='/uploads.html'">
+          <div class="tool-icon">墨</div>
+          <h3 data-i18n="toolUploads">Uploads</h3>
+          <p data-i18n="toolUploadsText">Твої зображення, стенсіли, PDF та готові матеріали.</p>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <section class="settings-panel" id="settingsPanel">
+    <div class="modal">
+      <div class="modal-head">
+        <h2 data-i18n="settingsTitle">Налаштування</h2>
+        <button class="close" onclick="closeSettings()">×</button>
+      </div>
+
+      <div class="setting-row">
+        <label data-i18n="changeAvatar">Змінити фото профілю</label>
+        <input type="file" accept="image/*" onchange="previewAvatar(event)">
+      </div>
+
+      <div class="setting-row">
+        <label data-i18n="changeEmail">Email</label>
+        <input type="email" placeholder="artist@email.com">
+      </div>
+
+      <div class="setting-row">
+        <label data-i18n="changePassword">Новий пароль</label>
+        <input type="password" placeholder="••••••••">
+      </div>
+
+      <div class="setting-row">
+        <label data-i18n="musicSelect">Музика</label>
+        <select>
+          <option>Japanese Chill</option>
+          <option>Dark Ambient</option>
+          <option>Silent Mode</option>
+        </select>
+      </div>
+
+      <div class="setting-row">
+        <label data-i18n="backgroundUpload">Фон кабінету</label>
+        <input type="file" accept="image/*" onchange="changeBackground(event)">
+      </div>
+
+      <div class="setting-row">
+        <label data-i18n="palette">Палітра</label>
+        <div class="color-row">
+          <div class="color-dot c-red" onclick="setAccent('#e5092f')"></div>
+          <div class="color-dot c-white" onclick="setAccent('#f5f0eb')"></div>
+          <div class="color-dot c-purple" onclick="setAccent('#6b2cff')"></div>
+          <div class="color-dot c-black" onclick="setAccent('#111')"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    let currentLang = "uk";
+    let musicPlaying = false;
+
+    const text = {
+      uk:{
+        workspace:"Workspace",
+        navDashboard:"Dashboard",
+        navStencil:"AI Stencil",
+        navSplit:"A4 Split",
+        navFonts:"Шрифти",
+        navReferences:"Референси",
+        navSessions:"Сеанси",
+        navUploads:"Файли",
+        navBilling:"Оплата",
+        title:"Майстерня",
+        subtitle:"Твій простір для підготовки тату-сесій",
+        balance:"Баланс",
+        addBalance:"Поповнити баланс",
+        settings:"Налаштування",
+        billing:"Оплата",
+        logout:"Вийти",
+        welcome:"Welcome to YYOKAI System",
+        welcomeText:"Інструменти для тату-майстра: стенсіл, шрифти, A4 split, референси, підготовка до сеансу та майбутній AI-помічник.",
+        toolStencil:"AI Stencil",
+        toolStencilText:"Завантаж фото та отримай чистий stencil для роботи.",
+        toolSplit:"A4 Sleeve Split",
+        toolSplitText:"Розбий великий ескіз на листи A4 для друку.",
+        toolFonts:"Tattoo Fonts",
+        toolFontsText:"Підбір написів, шрифтів і швидких варіантів для клієнта.",
+        toolRefs:"AI References",
+        toolRefsText:"Ідеї, образи та референси під твій стиль.",
+        toolSessions:"Sessions",
+        toolSessionsText:"Підготовка до сеансу, файли, нотатки та клієнти.",
+        toolUploads:"Uploads",
+        toolUploadsText:"Твої зображення, стенсіли, PDF та готові матеріали.",
+        settingsTitle:"Налаштування",
+        changeAvatar:"Змінити фото профілю",
+        changeEmail:"Email",
+        changePassword:"Новий пароль",
+        musicSelect:"Музика",
+        backgroundUpload:"Фон кабінету",
+        palette:"Палітра"
+      },
+      en:{
+        workspace:"Workspace",
+        navDashboard:"Dashboard",
+        navStencil:"AI Stencil",
+        navSplit:"A4 Split",
+        navFonts:"Fonts",
+        navReferences:"References",
+        navSessions:"Sessions",
+        navUploads:"Uploads",
+        navBilling:"Billing",
+        title:"Workshop",
+        subtitle:"Your space for tattoo session preparation",
+        balance:"Balance",
+        addBalance:"Add balance",
+        settings:"Settings",
+        billing:"Billing",
+        logout:"Logout",
+        welcome:"Welcome to YYOKAI System",
+        welcomeText:"Tools for tattoo artists: stencil, fonts, A4 split, references, session preparation and future AI assistant.",
+        toolStencil:"AI Stencil",
+        toolStencilText:"Upload an image and get a clean stencil for work.",
+        toolSplit:"A4 Sleeve Split",
+        toolSplitText:"Split a large sketch into A4 sheets for printing.",
+        toolFonts:"Tattoo Fonts",
+        toolFontsText:"Lettering, fonts and fast options for clients.",
+        toolRefs:"AI References",
+        toolRefsText:"Ideas, visuals and references for your style.",
+        toolSessions:"Sessions",
+        toolSessionsText:"Session preparation, files, notes and clients.",
+        toolUploads:"Uploads",
+        toolUploadsText:"Your images, stencils, PDFs and finished materials.",
+        settingsTitle:"Settings",
+        changeAvatar:"Change profile photo",
+        changeEmail:"Email",
+        changePassword:"New password",
+        musicSelect:"Music",
+        backgroundUpload:"Dashboard background",
+        palette:"Palette"
+      }
+    };
+
+    function setLang(lang){
+      currentLang = lang;
+      document.documentElement.lang = lang;
+
+      Object.keys(text[lang]).forEach(key=>{
+        const el = document.querySelector(`[data-i18n="${key}"]`);
+        if(el) el.textContent = text[lang][key];
+      });
+
+      document.querySelectorAll(".lang button").forEach(btn=>btn.classList.remove("active"));
+      document.querySelector(`[onclick="setLang('${lang}')"]`).classList.add("active");
+    }
+
+    function toggleSidebar(){
+      document.getElementById("sidebar").classList.toggle("open");
+    }
+
+    function toggleProfile(){
+      document.getElementById("profileMenu").classList.toggle("open");
+    }
+
+    function openSettings(){
+      document.getElementById("settingsPanel").classList.add("open");
+      document.getElementById("profileMenu").classList.remove("open");
+    }
+
+    function closeSettings(){
+      document.getElementById("settingsPanel").classList.remove("open");
+    }
+
+    function toggleMusic(){
+      const audio = document.getElementById("bgMusic");
+      const btn = document.getElementById("musicBtn");
+
+      if(!musicPlaying){
+        audio.volume = 0.35;
+        audio.play();
+        btn.textContent = "🔊";
+        musicPlaying = true;
+      }else{
+        audio.pause();
+        btn.textContent = "🔇";
+        musicPlaying = false;
+      }
+    }
+
+    function previewAvatar(event){
+      const file = event.target.files[0];
+      if(!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e){
+        document.getElementById("avatar").innerHTML = `<img src="${e.target.result}" alt="avatar">`;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function changeBackground(event){
+      const file = event.target.files[0];
+      if(!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e){
+        document.body.style.background = `
+          linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.9)),
+          url('${e.target.result}') center/cover fixed
+        `;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function setAccent(color){
+      document.documentElement.style.setProperty("--accent", color);
+      alert("Accent selected: " + color);
+    }
+
+    function addBalance(){
+      location.href = "/billing.html";
+    }
+
+    function logout(){
+      location.href = "/artist-auth.html";
+    }
+
+    document.addEventListener("click",function(e){
+      const profile = document.querySelector(".profile");
+      if(profile && !profile.contains(e.target)){
+        document.getElementById("profileMenu").classList.remove("open");
+      }
+    });
+  </script>
+</body>
+</html>
