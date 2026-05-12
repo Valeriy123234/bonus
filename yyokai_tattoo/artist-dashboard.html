@@ -11,11 +11,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-storage-compat.js"></script>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box}
 
 :root{
   --accent:#e5092f;
@@ -147,6 +143,7 @@ button{
   background:linear-gradient(135deg,#130005,#050505);
   border:1px solid rgba(255,255,255,.15);
   box-shadow:0 0 30px color-mix(in srgb,var(--accent) 40%,transparent);
+  text-shadow:0 0 18px var(--accent);
 }
 
 .avatar img{
@@ -159,7 +156,7 @@ button{
   position:absolute;
   right:0;
   top:66px;
-  width:min(360px,calc(100vw - 30px));
+  width:min(370px,calc(100vw - 30px));
   display:none;
   padding:18px;
   border-radius:28px;
@@ -169,9 +166,7 @@ button{
   box-shadow:0 35px 100px rgba(0,0,0,.85);
 }
 
-.profile-menu.open{
-  display:block;
-}
+.profile-menu.open{display:block}
 
 .profile-name{
   font-size:22px;
@@ -247,10 +242,6 @@ button{
 }
 
 #playPauseBtn{
-  width:38px;
-  height:38px;
-  min-width:38px;
-  min-height:38px;
   background:rgba(229,9,47,.22);
   border-color:rgba(229,9,47,.42);
 }
@@ -286,9 +277,7 @@ button{
   transition:.25s ease;
 }
 
-.side-menu.open{
-  left:0;
-}
+.side-menu.open{left:0}
 
 .side-head{
   display:flex;
@@ -399,6 +388,16 @@ button{
   border-radius:28px;
   background:#070707;
   border:1px solid rgba(255,255,255,.1);
+}
+
+.stat.clickable{
+  cursor:pointer;
+  transition:.25s;
+}
+
+.stat.clickable:hover{
+  transform:translateY(-4px);
+  border-color:color-mix(in srgb,var(--accent) 55%,transparent);
 }
 
 .stat span{
@@ -589,6 +588,10 @@ button{
   font-weight:950;
 }
 
+.confirm-plan{
+  width:100%;
+}
+
 .plan-grid,
 .balance-grid{
   display:grid;
@@ -604,6 +607,7 @@ button{
   background:
     radial-gradient(circle at top right,color-mix(in srgb,var(--accent) 22%,transparent),transparent 36%),
     linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+  cursor:pointer;
 }
 
 .plan-card.selected{
@@ -648,22 +652,10 @@ audio{
 }
 
 @media(max-width:720px){
-
-  .stats,
-  .focus-grid,
-  .plan-grid,
-  .balance-grid{
-    grid-template-columns:1fr;
-  }
-
-  .hero{
-    padding:28px 22px;
-  }
-
-  .hero p{
-    font-size:17px;
-  }
-
+  .stats,.focus-grid,.plan-grid,.balance-grid{grid-template-columns:1fr}
+  .hero{padding:28px 22px}
+  .hero p{font-size:17px}
+  .logo{font-size:28px}
 }
 </style>
 </head>
@@ -679,227 +671,238 @@ audio{
   </div>
 
   <nav class="side-nav">
-    <button class="active"><span>⌂</span><span>Home</span></button>
-    <button><span>🧿</span><span>AI Stencil</span></button>
-    <button><span>✦</span><span>AI Generate</span></button>
-    <button><span>🗓</span><span>Bookings</span></button>
-    <button><span>📄</span><span>A4 Print</span></button>
-    <button><span>墨</span><span>Files</span></button>
+    <button class="active" onclick="go('artist-dashboard.html')"><span>⌂</span><span data-i18n="navHome">Home</span></button>
+    <button onclick="go('stencil.html')"><span>🧿</span><span data-i18n="navStencil">AI Stencil</span></button>
+    <button onclick="go('generation.html')"><span>✦</span><span data-i18n="navGenerate">AI Generate</span></button>
+    <button onclick="go('bookings.html')"><span>🗓</span><span data-i18n="navBookings">Bookings</span></button>
+    <button onclick="go('split.html')"><span>📄</span><span data-i18n="navSplit">A4 Print</span></button>
+    <button onclick="go('uploads.html')"><span>墨</span><span data-i18n="navFiles">Files</span></button>
   </nav>
 </aside>
 
 <main class="app">
 
 <header class="topbar">
+  <button class="menu-btn" id="menuBtn" onclick="toggleSide()">☰</button>
+  <div class="logo">YYOKAI</div>
 
-<button class="menu-btn" id="menuBtn" onclick="toggleSide()">☰</button>
+  <div class="top-actions">
+    <div class="lang">
+      <button class="active" onclick="setLang('uk', this)">UA</button>
+      <button onclick="setLang('en', this)">EN</button>
+    </div>
 
-<div class="logo">YYOKAI</div>
+    <div class="profile">
+      <div class="avatar" id="avatar" onclick="toggleProfile()">妖</div>
 
-<div class="top-actions">
+      <div class="profile-menu" id="profileMenu">
+        <div class="profile-name" id="artistName">Guest Artist</div>
+        <div class="profile-email" id="artistEmail">artist@email.com</div>
 
-<div class="lang">
-  <button class="active">UA</button>
-  <button>EN</button>
-</div>
+        <div class="balance">
+          <span data-i18n="balance">Баланс</span>: <strong id="balanceValue">$0.00</strong>
+        </div>
 
-<div class="profile">
+        <div class="player">
+          <div class="cover" id="trackCover">⛩</div>
+          <div>
+            <div class="track-title" id="trackTitle">Japanese Chill</div>
+            <div class="track-sub" id="trackSub">YYOKAI playlist</div>
+          </div>
+          <div class="music-controls">
+            <button onclick="prevTrack()">‹</button>
+            <button id="playPauseBtn" onclick="toggleMusic()">▶</button>
+            <button onclick="nextTrack()">›</button>
+          </div>
+        </div>
 
-<div class="avatar" id="avatar" onclick="toggleProfile()">妖</div>
-
-<div class="profile-menu" id="profileMenu">
-
-<div class="profile-name" id="artistName">Guest Artist</div>
-<div class="profile-email" id="artistEmail">artist@email.com</div>
-
-<div class="balance">
-Баланс: <strong id="balanceValue">$0.00</strong>
-</div>
-
-<div class="player">
-
-<div class="cover" id="trackCover">⛩</div>
-
-<div>
-<div class="track-title" id="trackTitle">Japanese Chill</div>
-<div class="track-sub" id="trackSub">YYOKAI playlist</div>
-</div>
-
-<div class="music-controls">
-<button onclick="prevTrack()">‹</button>
-<button id="playPauseBtn" onclick="toggleMusic()">▶</button>
-<button onclick="nextTrack()">›</button>
-</div>
-
-</div>
-
-<button onclick="openBalanceModal()">＋ Поповнити баланс</button>
-<button onclick="openSettings()">⚙ Налаштування</button>
-<button onclick="logout()">退出 Вийти</button>
-
-</div>
-</div>
-</div>
+        <button onclick="uploadOwnMusic()">＋ <span data-i18n="uploadMusic">Додати свою музику</span></button>
+        <input id="ownMusicInput" type="file" accept="audio/mp3,audio/mpeg" style="display:none" onchange="loadOwnMusic(event)">
+        <button onclick="openBalanceModal()">＋ <span data-i18n="addBalance">Поповнити баланс</span></button>
+        <button onclick="openSettings()">⚙ <span data-i18n="settings">Налаштування</span></button>
+        <button onclick="logout()">退出 <span data-i18n="logout">Вийти</span></button>
+      </div>
+    </div>
+  </div>
 </header>
 
 <section class="hero">
-<h1>Welcome back, artist</h1>
-<p>
-Твоя преміальна система для тату-майстра:
-генерації, записи, музика, атмосфера, баланс,
-файли та workflow в одному місці.
-</p>
+  <h1 data-i18n="heroTitle">Welcome back, artist</h1>
+  <p data-i18n="heroText">
+    Твоя преміальна система для тату-майстра: генерації, записи, музика, атмосфера, баланс, файли та workflow в одному місці.
+  </p>
 </section>
 
 <section class="stats">
+  <div class="stat clickable" onclick="openBalanceModal()">
+    <span data-i18n="statBalance">Баланс</span>
+    <strong id="balanceMain">$0.00</strong>
+  </div>
 
-<div class="stat">
-<span>Баланс</span>
-<strong id="balanceMain">$0.00</strong>
-</div>
+  <div class="stat clickable" onclick="openPlanModal()">
+    <span data-i18n="statPlan">План</span>
+    <strong id="planValue">Free</strong>
+  </div>
 
-<div class="stat">
-<span>План</span>
-<strong id="planValue">Free</strong>
-</div>
-
-<div class="stat">
-<span>Записи</span>
-<strong id="bookingCount">0</strong>
-</div>
-
+  <div class="stat">
+    <span data-i18n="statBookings">Записи</span>
+    <strong id="bookingCount">0</strong>
+  </div>
 </section>
 
 <section class="focus-grid">
+  <div class="panel">
+    <h2 data-i18n="workflowTitle">Start your workflow</h2>
+    <p data-i18n="workflowText">Почни з потрібного інструмента. Чистий інтерфейс без перевантаження.</p>
 
-<div class="panel">
-<h2>Start your workflow</h2>
+    <div class="panel-actions">
+      <button class="red-btn" onclick="go('stencil.html')">Stencil</button>
+      <button class="ghost-btn" onclick="go('bookings.html')" data-i18n="bookingsBtn">Записи</button>
+      <button class="ghost-btn" onclick="go('generation.html')">Generate</button>
+    </div>
+  </div>
 
-<p>
-Почни з потрібного інструмента.
-Чистий інтерфейс без перевантаження.
-</p>
-
-<div class="panel-actions">
-<button class="red-btn">Stencil</button>
-<button class="ghost-btn">Bookings</button>
-<button class="ghost-btn">Generate</button>
-</div>
-
-</div>
-
-<div class="panel">
-<h2>Studio mode</h2>
-
-<p>
-Твій простір. Музика, колір, атмосфера,
-фон і профіль — все персоналізується.
-</p>
-</div>
-
+  <div class="panel">
+    <h2 data-i18n="studioTitle">Studio mode</h2>
+    <p data-i18n="studioText">Твій простір. Музика, колір, атмосфера, фон і профіль — все персоналізується.</p>
+  </div>
 </section>
 
 </main>
 
 <nav class="dock">
-
-<button class="active">
-<i>⌂</i>
-<span>Home</span>
-</button>
-
-<button>
-<i>🧿</i>
-<span>Stencil</span>
-</button>
-
-<button>
-<i>✦</i>
-<span>Generate</span>
-</button>
-
-<button>
-<i>🗓</i>
-<span>Bookings</span>
-</button>
-
-<button onclick="openBalanceModal()">
-<i>¥</i>
-<span>Balance</span>
-</button>
-
+  <button class="active" onclick="go('artist-dashboard.html')"><i>⌂</i><span>Home</span></button>
+  <button onclick="go('stencil.html')"><i>🧿</i><span>Stencil</span></button>
+  <button onclick="go('generation.html')"><i>✦</i><span>Generate</span></button>
+  <button onclick="go('bookings.html')"><i>🗓</i><span data-i18n="dockBookings">Записи</span></button>
+  <button onclick="openBalanceModal()"><i>¥</i><span>Balance</span></button>
 </nav>
 
+<section class="pay-modal" id="planModal">
+  <div class="pay-box">
+    <div class="pay-head">
+      <h2 data-i18n="choosePlan">Оберіть план</h2>
+      <button class="pay-close" onclick="closePlanModal()">×</button>
+    </div>
+
+    <div class="plan-grid">
+      <div class="plan-card" data-plan="free" onclick="selectPlan('free')">
+        <div class="plan-price">$0</div>
+        <div class="plan-name">Free</div>
+        <ul>
+          <li data-i18n="free1">3 генерації стенсила</li>
+          <li data-i18n="free2">3 генерації ескізу</li>
+          <li data-i18n="free3">3 A4 розділення</li>
+          <li data-i18n="free4">50 записів клієнтів</li>
+        </ul>
+      </div>
+
+      <div class="plan-card" data-plan="starter" onclick="selectPlan('starter')">
+        <div class="plan-price">$10</div>
+        <div class="plan-name" data-i18n="starterName">Starter / місяць</div>
+        <ul>
+          <li data-i18n="starter1">250 генерацій стенсила</li>
+          <li data-i18n="starter2">250 генерацій ескізу</li>
+          <li data-i18n="starter3">50 A4 розділень</li>
+          <li data-i18n="starter4">100 записів клієнтів</li>
+        </ul>
+      </div>
+
+      <div class="plan-card" data-plan="pro" onclick="selectPlan('pro')">
+        <div class="plan-price">$20</div>
+        <div class="plan-name" data-i18n="proName">Pro / місяць</div>
+        <ul>
+          <li data-i18n="pro1">500 генерацій стенсила</li>
+          <li data-i18n="pro2">500 генерацій ескізу</li>
+          <li data-i18n="pro3">100 A4 розділень</li>
+          <li data-i18n="pro4">150 записів клієнтів</li>
+        </ul>
+      </div>
+
+      <div class="plan-card" data-plan="yokai" onclick="selectPlan('yokai')">
+        <div class="plan-price">$30</div>
+        <div class="plan-name" data-i18n="yokaiName">YYOKAI Full / місяць</div>
+        <ul>
+          <li data-i18n="yokai1">Повний доступ</li>
+          <li data-i18n="yokai2">Безлімітний workflow</li>
+          <li data-i18n="yokai3">Premium tools</li>
+          <li data-i18n="yokai4">Custom studio mode</li>
+        </ul>
+      </div>
+    </div>
+
+    <button class="confirm-plan" onclick="confirmPlan()" data-i18n="confirmPlan">Підтвердити план</button>
+  </div>
+</section>
+
 <section class="pay-modal" id="balanceModal">
+  <div class="pay-box">
+    <div class="pay-head">
+      <h2 data-i18n="topUpBalance">Поповнити баланс</h2>
+      <button class="pay-close" onclick="closeBalanceModal()">×</button>
+    </div>
 
-<div class="pay-box">
+    <div class="balance-grid">
+      <div class="balance-card" onclick="topUpBalance(10)">
+        <div class="balance-price">$10</div>
+        <div class="balance-name">Quick start</div>
+        <p data-i18n="balance10">Легкий старт для перевірки інструментів.</p>
+      </div>
 
-<div class="pay-head">
-<h2>Поповнити баланс</h2>
-<button class="pay-close" onclick="closeBalanceModal()">×</button>
-</div>
+      <div class="balance-card" onclick="topUpBalance(20)">
+        <div class="balance-price">$20</div>
+        <div class="balance-name">Artist pack</div>
+        <p data-i18n="balance20">Для активної роботи з клієнтами.</p>
+      </div>
 
-<div class="balance-grid">
+      <div class="balance-card" onclick="topUpBalance(30)">
+        <div class="balance-price">$30</div>
+        <div class="balance-name">Studio pack</div>
+        <p data-i18n="balance30">Більше свободи для щоденного workflow.</p>
+      </div>
 
-<div class="balance-card">
-<div class="balance-price">$10</div>
-<div class="balance-name">Quick start</div>
-<p>100 bookings / 500 generations</p>
-</div>
-
-<div class="balance-card">
-<div class="balance-price">$20</div>
-<div class="balance-name">Artist pack</div>
-<p>1000 generations / 150 bookings</p>
-</div>
-
-<div class="balance-card">
-<div class="balance-price">$30</div>
-<div class="balance-name">Studio pack</div>
-<p>Unlimited workflow</p>
-</div>
-
-<div class="balance-card">
-<div class="balance-price">$50</div>
-<div class="balance-name">Premium reserve</div>
-<p>Extended studio mode</p>
-</div>
-
-</div>
-</div>
+      <div class="balance-card" onclick="topUpBalance(50)">
+        <div class="balance-price">$50</div>
+        <div class="balance-name">Premium reserve</div>
+        <p data-i18n="balance50">Запас для інтенсивної роботи студії.</p>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section class="settings" id="settingsPanel">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 data-i18n="settings">Налаштування</h2>
+      <button class="close" onclick="closeSettings()">×</button>
+    </div>
 
-<div class="modal">
+    <div class="row">
+      <label data-i18n="avatarLabel">Змінити фото профілю</label>
+      <input type="file" accept="image/*" onchange="uploadAvatar(event)">
+    </div>
 
-<div class="modal-head">
-<h2>Налаштування</h2>
-<button class="close" onclick="closeSettings()">×</button>
-</div>
+    <div class="row">
+      <label data-i18n="nameLabel">Нік майстра</label>
+      <input id="nameInput" type="text">
+      <button class="small-btn" onclick="saveName()" data-i18n="saveName">Зберегти</button>
+    </div>
 
-<div class="row">
-<label>Змінити фото профілю</label>
-<input type="file" accept="image/*" onchange="uploadAvatar(event)">
-</div>
+    <div class="row">
+      <label data-i18n="musicLabel">Додати свою музику</label>
+      <input type="file" accept="audio/mp3,audio/mpeg" onchange="loadOwnMusic(event)">
+    </div>
 
-<div class="row">
-<label>Нік майстра</label>
-<input id="nameInput" type="text">
-<button class="small-btn" onclick="saveName()">Зберегти</button>
-</div>
+    <div class="row">
+      <label data-i18n="colorLabel">Колір системи</label>
+      <input type="color" id="colorPicker" value="#e5092f" onchange="saveAccent(this.value)">
+    </div>
 
-<div class="row">
-<label>Колір системи</label>
-<input type="color" id="colorPicker" value="#e5092f" onchange="setCustomAccent(this.value)">
-</div>
-
-<div class="row">
-<label>Фон кабінету</label>
-<input type="file" accept="image/*" onchange="uploadBackground(event)">
-</div>
-
-</div>
+    <div class="row">
+      <label data-i18n="bgLabel">Фон кабінету</label>
+      <input type="file" accept="image/*" onchange="uploadBackground(event)">
+    </div>
+  </div>
 </section>
 
 <script>
@@ -920,42 +923,73 @@ const db=firebase.database();
 const storage=firebase.storage();
 
 let currentUser=null;
+let currentLang="uk";
+let currentPlanKey="free";
+let selectedPlan=null;
+let musicPlaying=false;
+let trackIndex=0;
+let customMusicUrl="";
 
 const CACHE_KEY="yyokai_user_cache";
 
+const tracks=[
+  {title:"Japanese Chill",sub:"YYOKAI playlist",icon:"⛩",src:"music/japan-chill.mp3"},
+  {title:"Dark Ambient",sub:"Focus mode",icon:"🌑",src:"music/dark-ambient.mp3"},
+  {title:"Night Studio",sub:"Late session",icon:"🦊",src:"music/night-studio.mp3"}
+];
+
+const t={
+  uk:{
+    navHome:"Головна",navStencil:"AI Stencil",navGenerate:"AI генерація",navBookings:"Записи",navSplit:"A4 друк",navFiles:"Файли",
+    balance:"Баланс",uploadMusic:"Додати свою музику",addBalance:"Поповнити баланс",settings:"Налаштування",logout:"Вийти",
+    heroTitle:"Welcome back, artist",
+    heroText:"Твоя преміальна система для тату-майстра: генерації, записи, музика, атмосфера, баланс, файли та workflow в одному місці.",
+    statBalance:"Баланс",statPlan:"План",statBookings:"Записи",
+    workflowTitle:"Start your workflow",workflowText:"Почни з потрібного інструмента. Чистий інтерфейс без перевантаження.",
+    bookingsBtn:"Записи",studioTitle:"Studio mode",studioText:"Твій простір. Музика, колір, атмосфера, фон і профіль — все персоналізується.",
+    dockBookings:"Записи",choosePlan:"Оберіть план",topUpBalance:"Поповнити баланс",confirmPlan:"Підтвердити план",
+    starterName:"Starter / місяць",proName:"Pro / місяць",yokaiName:"YYOKAI Full / місяць",
+    free1:"3 генерації стенсила",free2:"3 генерації ескізу",free3:"3 A4 розділення",free4:"50 записів клієнтів",
+    starter1:"250 генерацій стенсила",starter2:"250 генерацій ескізу",starter3:"50 A4 розділень",starter4:"100 записів клієнтів",
+    pro1:"500 генерацій стенсила",pro2:"500 генерацій ескізу",pro3:"100 A4 розділень",pro4:"150 записів клієнтів",
+    yokai1:"Повний доступ",yokai2:"Безлімітний workflow",yokai3:"Premium tools",yokai4:"Custom studio mode",
+    balance10:"Легкий старт для перевірки інструментів.",balance20:"Для активної роботи з клієнтами.",balance30:"Більше свободи для щоденного workflow.",balance50:"Запас для інтенсивної роботи студії.",
+    avatarLabel:"Змінити фото профілю",nameLabel:"Нік майстра",saveName:"Зберегти",musicLabel:"Додати свою музику",colorLabel:"Колір системи",bgLabel:"Фон кабінету"
+  },
+  en:{
+    navHome:"Home",navStencil:"AI Stencil",navGenerate:"AI Generate",navBookings:"Bookings",navSplit:"A4 Print",navFiles:"Files",
+    balance:"Balance",uploadMusic:"Add your music",addBalance:"Add balance",settings:"Settings",logout:"Logout",
+    heroTitle:"Welcome back, artist",
+    heroText:"Your premium tattoo artist system: generations, bookings, music, atmosphere, balance, files and workflow in one place.",
+    statBalance:"Balance",statPlan:"Plan",statBookings:"Bookings",
+    workflowTitle:"Start your workflow",workflowText:"Start with the tool you need. Clean interface without overload.",
+    bookingsBtn:"Bookings",studioTitle:"Studio mode",studioText:"Your space. Music, color, atmosphere, background and profile — everything is personal.",
+    dockBookings:"Bookings",choosePlan:"Choose your plan",topUpBalance:"Top up balance",confirmPlan:"Confirm plan",
+    starterName:"Starter / month",proName:"Pro / month",yokaiName:"YYOKAI Full / month",
+    free1:"3 stencil generations",free2:"3 sketch generations",free3:"3 A4 splits",free4:"50 client bookings",
+    starter1:"250 stencil generations",starter2:"250 sketch generations",starter3:"50 A4 splits",starter4:"100 client bookings",
+    pro1:"500 stencil generations",pro2:"500 sketch generations",pro3:"100 A4 splits",pro4:"150 client bookings",
+    yokai1:"Full access",yokai2:"Unlimited workflow",yokai3:"Premium tools",yokai4:"Custom studio mode",
+    balance10:"A light start to test the tools.",balance20:"For active client work.",balance30:"More freedom for daily workflow.",balance50:"Reserve for intensive studio work.",
+    avatarLabel:"Change profile photo",nameLabel:"Artist nickname",saveName:"Save",musicLabel:"Add your music",colorLabel:"System color",bgLabel:"Dashboard background"
+  }
+};
+
 function loadLocalCache(){
-
   const cached=JSON.parse(localStorage.getItem(CACHE_KEY)||"{}");
-
-  if(cached.accent){
-    setCustomAccent(cached.accent,false);
-  }
-
-  if(cached.avatarUrl){
-    avatar.innerHTML=`<img src="${cached.avatarUrl}">`;
-  }
-
-  if(cached.backgroundUrl){
-    applyBackgroundImage(cached.backgroundUrl);
-  }
-
+  if(cached.accent) applyAccent(cached.accent);
+  if(cached.avatarUrl) avatar.innerHTML=`<img src="${cached.avatarUrl}">`;
+  if(cached.backgroundUrl) applyBackgroundImage(cached.backgroundUrl);
 }
 
 function saveLocalCache(data){
-
   const old=JSON.parse(localStorage.getItem(CACHE_KEY)||"{}");
-
-  localStorage.setItem(
-    CACHE_KEY,
-    JSON.stringify({...old,...data})
-  );
-
+  localStorage.setItem(CACHE_KEY,JSON.stringify({...old,...data}));
 }
 
 loadLocalCache();
 
 auth.onAuthStateChanged(async user=>{
-
   if(!user){
     location.href="artist-auth.html";
     return;
@@ -968,236 +1002,281 @@ auth.onAuthStateChanged(async user=>{
 
   artistName.textContent=data.name||"Guest Artist";
   artistEmail.textContent=data.email||user.email;
+  nameInput.value=data.name||"Guest Artist";
 
   const balance=Number(data.balance||0).toFixed(2);
-
   balanceValue.textContent="$"+balance;
   balanceMain.textContent="$"+balance;
 
+  currentPlanKey=data.planKey||"free";
+  displayPlan();
+
   if(data.avatarUrl){
-
     avatar.innerHTML=`<img src="${data.avatarUrl}">`;
-
-    saveLocalCache({
-      avatarUrl:data.avatarUrl
-    });
-
+    saveLocalCache({avatarUrl:data.avatarUrl});
   }
 
   if(data.settings?.accent){
-
-    setCustomAccent(
-      data.settings.accent,
-      false
-    );
-
-    saveLocalCache({
-      accent:data.settings.accent
-    });
-
+    applyAccent(data.settings.accent);
+    saveLocalCache({accent:data.settings.accent});
   }
 
   if(data.settings?.backgroundUrl){
-
-    applyBackgroundImage(
-      data.settings.backgroundUrl
-    );
-
-    saveLocalCache({
-      backgroundUrl:data.settings.backgroundUrl
-    });
-
+    applyBackgroundImage(data.settings.backgroundUrl);
+    saveLocalCache({backgroundUrl:data.settings.backgroundUrl});
   }
 
+  if(data.settings?.customMusicUrl){
+    customMusicUrl=data.settings.customMusicUrl;
+    setMusic(customMusicUrl,data.settings.customMusicName||"Custom music","Custom track","♫");
+  }else{
+    setTrack(data.settings?.trackIndex||0);
+  }
+
+  const bookingsSnap=await db.ref("users/"+user.uid+"/clients").once("value");
+  bookingCount.textContent=bookingsSnap.exists()?Object.keys(bookingsSnap.val()).length:0;
 });
 
-function setCustomAccent(color,save=true){
+function setLang(lang,btn){
+  currentLang=lang;
+  document.documentElement.lang=lang;
 
-  document.documentElement.style.setProperty(
-    "--accent",
-    color
-  );
+  Object.keys(t[lang]).forEach(key=>{
+    document.querySelectorAll(`[data-i18n="${key}"]`).forEach(el=>el.textContent=t[lang][key]);
+  });
 
-  if(save){
-    saveLocalCache({
-      accent:color
-    });
-  }
-
+  document.querySelectorAll(".lang button").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  displayPlan();
 }
 
-async function uploadAvatar(e){
-
-  const file=e.target.files[0];
-
-  if(!file||!currentUser)return;
-
-  const storageRef=storage.ref(
-    "avatars/"+currentUser.uid+"/avatar"
-  );
-
-  await storageRef.put(file);
-
-  const url=await storageRef.getDownloadURL();
-
-  await db.ref("users/"+currentUser.uid).update({
-    avatarUrl:url
-  });
-
-  avatar.innerHTML=`<img src="${url}">`;
-
-  saveLocalCache({
-    avatarUrl:url
-  });
-
+function displayPlan(){
+  const names={free:"Free",starter:"Starter",pro:"Pro",yokai:"YYOKAI Full"};
+  planValue.textContent=names[currentPlanKey]||"Free";
 }
 
-async function saveName(){
-
-  const name=nameInput.value.trim();
-
-  if(!name)return;
-
-  await db.ref("users/"+currentUser.uid).update({
-    name
-  });
-
-  artistName.textContent=name;
-
-}
-
-async function uploadBackground(e){
-
-  const file=e.target.files[0];
-
-  if(!file||!currentUser)return;
-
-  const storageRef=storage.ref(
-    "backgrounds/"+currentUser.uid+"/background"
-  );
-
-  await storageRef.put(file);
-
-  const url=await storageRef.getDownloadURL();
-
-  await db.ref(
-    "users/"+currentUser.uid+"/settings"
-  ).update({
-    backgroundUrl:url
-  });
-
-  applyBackgroundImage(url);
-
-  saveLocalCache({
-    backgroundUrl:url
-  });
-
-}
-
-function applyBackgroundImage(url){
-
-  document.body.style.background=
-  `linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.9)),url('${url}') center/cover fixed`;
-
+function go(url){
+  location.href=url;
 }
 
 function toggleSide(){
-
   sideMenu.classList.toggle("open");
-
-  menuBtn.textContent=
-  sideMenu.classList.contains("open")
-  ?"←":"☰";
-
+  menuBtn.textContent=sideMenu.classList.contains("open")?"←":"☰";
 }
 
 function closeSide(){
-
   sideMenu.classList.remove("open");
-
   menuBtn.textContent="☰";
-
 }
 
 function toggleProfile(){
-
   profileMenu.classList.toggle("open");
-
 }
 
 function openSettings(){
-
   settingsPanel.classList.add("open");
-
+  profileMenu.classList.remove("open");
 }
 
 function closeSettings(){
-
   settingsPanel.classList.remove("open");
-
 }
 
 function openBalanceModal(){
-
   balanceModal.classList.add("open");
-
 }
 
 function closeBalanceModal(){
-
   balanceModal.classList.remove("open");
+}
 
+function openPlanModal(){
+  selectedPlan=currentPlanKey;
+  document.querySelectorAll(".plan-card").forEach(c=>c.classList.remove("selected"));
+  const card=document.querySelector(`[data-plan="${selectedPlan}"]`);
+  if(card)card.classList.add("selected");
+  planModal.classList.add("open");
+}
+
+function closePlanModal(){
+  planModal.classList.remove("open");
+}
+
+function selectPlan(plan){
+  selectedPlan=plan;
+  document.querySelectorAll(".plan-card").forEach(c=>c.classList.remove("selected"));
+  document.querySelector(`[data-plan="${plan}"]`).classList.add("selected");
+}
+
+async function confirmPlan(){
+  if(!currentUser||!selectedPlan)return;
+  currentPlanKey=selectedPlan;
+  await db.ref("users/"+currentUser.uid).update({planKey:currentPlanKey});
+  displayPlan();
+  closePlanModal();
+}
+
+async function topUpBalance(amount){
+  if(!currentUser)return;
+  const snap=await db.ref("users/"+currentUser.uid+"/balance").once("value");
+  const next=Number(snap.val()||0)+amount;
+  await db.ref("users/"+currentUser.uid).update({balance:next});
+  balanceValue.textContent="$"+next.toFixed(2);
+  balanceMain.textContent="$"+next.toFixed(2);
+  closeBalanceModal();
+}
+
+async function saveName(){
+  const name=nameInput.value.trim()||"Guest Artist";
+  await db.ref("users/"+currentUser.uid).update({name});
+  artistName.textContent=name;
+}
+
+async function uploadAvatar(e){
+  const file=e.target.files[0];
+  if(!file||!currentUser)return;
+
+  const reader=new FileReader();
+  reader.onload=x=>{
+    avatar.innerHTML=`<img src="${x.target.result}">`;
+    saveLocalCache({avatarUrl:x.target.result});
+  };
+  reader.readAsDataURL(file);
+
+  const ref=storage.ref("avatars/"+currentUser.uid+"/avatar_"+Date.now()+"_"+file.name);
+  await ref.put(file);
+  const url=await ref.getDownloadURL();
+
+  await db.ref("users/"+currentUser.uid).update({avatarUrl:url});
+  avatar.innerHTML=`<img src="${url}">`;
+  saveLocalCache({avatarUrl:url});
+}
+
+async function uploadBackground(e){
+  const file=e.target.files[0];
+  if(!file||!currentUser)return;
+
+  const reader=new FileReader();
+  reader.onload=x=>{
+    applyBackgroundImage(x.target.result);
+    saveLocalCache({backgroundUrl:x.target.result});
+  };
+  reader.readAsDataURL(file);
+
+  const ref=storage.ref("backgrounds/"+currentUser.uid+"/bg_"+Date.now()+"_"+file.name);
+  await ref.put(file);
+  const url=await ref.getDownloadURL();
+
+  await db.ref("users/"+currentUser.uid+"/settings").update({backgroundUrl:url});
+  applyBackgroundImage(url);
+  saveLocalCache({backgroundUrl:url});
+}
+
+function applyBackgroundImage(url){
+  document.body.style.background=
+    `linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.9)),url('${url}') center/cover fixed`;
+}
+
+async function saveAccent(color){
+  applyAccent(color);
+  saveLocalCache({accent:color});
+  if(currentUser){
+    await db.ref("users/"+currentUser.uid+"/settings").update({accent:color});
+  }
+}
+
+function applyAccent(color){
+  document.documentElement.style.setProperty("--accent",color);
+  colorPicker.value=color;
+}
+
+function uploadOwnMusic(){
+  ownMusicInput.click();
+}
+
+async function loadOwnMusic(e){
+  const file=e.target.files[0];
+  if(!file||!currentUser)return;
+
+  const localUrl=URL.createObjectURL(file);
+  setMusic(localUrl,file.name.replace(".mp3",""),"Custom track","♫");
+
+  const ref=storage.ref("music/"+currentUser.uid+"/music_"+Date.now()+"_"+file.name);
+  await ref.put(file);
+  const url=await ref.getDownloadURL();
+
+  await db.ref("users/"+currentUser.uid+"/settings").update({
+    customMusicUrl:url,
+    customMusicName:file.name.replace(".mp3","")
+  });
+
+  customMusicUrl=url;
+  setMusic(url,file.name.replace(".mp3",""),"Custom track","♫");
+}
+
+function setTrack(index){
+  trackIndex=index;
+  const tr=tracks[trackIndex]||tracks[0];
+  setMusic(tr.src,tr.title,tr.sub,tr.icon);
+}
+
+function setMusic(src,title,sub,icon){
+  bgMusic.src=src;
+  trackTitle.textContent=title;
+  trackSub.textContent=sub;
+  trackCover.textContent=icon;
+  playPauseBtn.textContent="▶";
+  musicPlaying=false;
+}
+
+async function nextTrack(){
+  trackIndex=(trackIndex+1)%tracks.length;
+  setTrack(trackIndex);
+  if(currentUser){
+    await db.ref("users/"+currentUser.uid+"/settings").update({
+      trackIndex,
+      customMusicUrl:null,
+      customMusicName:null
+    });
+  }
+}
+
+async function prevTrack(){
+  trackIndex=(trackIndex-1+tracks.length)%tracks.length;
+  setTrack(trackIndex);
+  if(currentUser){
+    await db.ref("users/"+currentUser.uid+"/settings").update({
+      trackIndex,
+      customMusicUrl:null,
+      customMusicName:null
+    });
+  }
+}
+
+function toggleMusic(){
+  if(!bgMusic.src)setTrack(trackIndex);
+
+  if(!musicPlaying){
+    bgMusic.volume=.35;
+    bgMusic.play();
+    playPauseBtn.textContent="⏸";
+    musicPlaying=true;
+  }else{
+    bgMusic.pause();
+    playPauseBtn.textContent="▶";
+    musicPlaying=false;
+  }
 }
 
 function logout(){
-
   auth.signOut();
-
 }
-
-const bgMusic=document.getElementById("bgMusic");
-
-let musicPlaying=false;
-
-function toggleMusic(){
-
-  if(!bgMusic.src){
-    bgMusic.src="music/japan-chill.mp3";
-  }
-
-  if(!musicPlaying){
-
-    bgMusic.volume=.35;
-
-    bgMusic.play();
-
-    playPauseBtn.textContent="⏸";
-
-    musicPlaying=true;
-
-  }else{
-
-    bgMusic.pause();
-
-    playPauseBtn.textContent="▶";
-
-    musicPlaying=false;
-
-  }
-
-}
-
-function nextTrack(){}
-function prevTrack(){}
 
 document.addEventListener("click",e=>{
-
   const p=document.querySelector(".profile");
-
   if(p&&!p.contains(e.target)){
     profileMenu.classList.remove("open");
   }
-
 });
 </script>
 
