@@ -14,159 +14,612 @@
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--accent:#e5092f}
 html,body{min-height:100%;background:#000;color:#fff;font-family:Arial,sans-serif}
+
 body{
-  background:radial-gradient(circle at 50% 0%,rgba(229,9,47,.22),transparent 34%),linear-gradient(#000,#070203 60%,#000);
+  background:
+    radial-gradient(circle at 50% 0%,rgba(229,9,47,.22),transparent 34%),
+    linear-gradient(#000,#070203 60%,#000);
   overflow-x:hidden;
 }
+
 body:before{
   content:"妖 鬼 狐 墨 夜 刺青";
-  position:fixed;inset:0;pointer-events:none;color:rgba(255,255,255,.015);
-  font-size:80px;letter-spacing:30px;line-height:1.5;transform:rotate(-12deg) scale(1.15)
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  color:rgba(255,255,255,.015);
+  font-size:80px;
+  letter-spacing:30px;
+  line-height:1.5;
+  transform:rotate(-12deg) scale(1.15);
 }
+
 button{cursor:pointer}
-.app{position:relative;z-index:2;min-height:100vh;display:grid;grid-template-columns:260px 1fr}
+
+.app{
+  position:relative;
+  z-index:2;
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:260px 1fr;
+}
+
 .rail{
-  min-height:100vh;padding:22px 16px;border-right:1px solid rgba(255,255,255,.08);
-  background:rgba(0,0,0,.74);backdrop-filter:blur(24px);
+  min-height:100vh;
+  padding:22px 16px;
+  border-right:1px solid rgba(255,255,255,.08);
+  background:rgba(0,0,0,.74);
+  backdrop-filter:blur(24px);
 }
-.rail-head{display:flex;align-items:center;gap:12px;margin-bottom:34px}
-.seal{color:var(--accent);font-size:24px;text-shadow:0 0 18px rgba(229,9,47,.75)}
-.logo-mini{font-weight:950;letter-spacing:.16em;color:#f5f0eb;font-size:18px}
+
+.rail-head{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:24px;
+  padding-left:5px;
+}
+
+.seal{
+  color:var(--accent);
+  font-size:24px;
+  text-shadow:0 0 18px rgba(229,9,47,.75);
+}
+
+.logo-mini{
+  font-weight:950;
+  letter-spacing:.16em;
+  color:#f5f0eb;
+  font-size:18px;
+}
+
+.close-menu{
+  display:none;
+  width:100%;
+  margin-bottom:18px;
+  padding:12px 14px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(229,9,47,.14);
+  color:#fff;
+  font-weight:900;
+  text-align:left;
+}
+
 .nav{display:flex;flex-direction:column;gap:10px}
+
 .nav button{
-  width:100%;height:54px;border-radius:18px;border:1px solid rgba(255,255,255,.1);
-  background:rgba(255,255,255,.05);color:#aaa;font-size:15px;transition:.2s;
-  display:flex;align-items:center;gap:12px;padding:0 14px;font-weight:900;text-align:left
+  width:100%;
+  height:54px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.05);
+  color:#aaa;
+  font-size:15px;
+  transition:.2s;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 14px;
+  font-weight:900;
+  text-align:left;
 }
-.nav button i{font-style:normal;font-size:20px;width:25px;text-align:center}
-.nav button.active,.nav button:hover{background:rgba(229,9,47,.16);color:#fff;border-color:rgba(229,9,47,.35)}
-.main{padding:18px;min-width:0}
+
+.nav button i{
+  font-style:normal;
+  font-size:20px;
+  width:25px;
+  text-align:center;
+}
+
+.nav button.active,
+.nav button:hover{
+  background:rgba(229,9,47,.16);
+  color:#fff;
+  border-color:rgba(229,9,47,.35);
+}
+
+.main{
+  padding:18px;
+  min-width:0;
+}
+
 .topbar{
-  position:sticky;top:0;z-index:30;
-  display:flex;justify-content:space-between;align-items:center;gap:12px;
-  padding:14px 16px;margin-bottom:18px;border-radius:28px;
-  background:rgba(0,0,0,.76);border:1px solid rgba(255,255,255,.09);backdrop-filter:blur(24px)
+  position:sticky;
+  top:0;
+  z-index:30;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  padding:14px 16px;
+  margin-bottom:18px;
+  border-radius:28px;
+  background:rgba(0,0,0,.76);
+  border:1px solid rgba(255,255,255,.09);
+  backdrop-filter:blur(24px);
 }
-.brand{display:flex;align-items:center;gap:12px}
-.brand h1{letter-spacing:.16em;font-size:22px}
-.brand p{font-size:13px;color:#777;margin-top:3px}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.brand h1{
+  letter-spacing:.16em;
+  font-size:22px;
+}
+
+.brand p{
+  font-size:13px;
+  color:#777;
+  margin-top:3px;
+}
+
 .menu-mobile{
-  display:none;width:44px;height:44px;min-width:44px;
-  border-radius:15px;border:1px solid rgba(255,255,255,.16);
-  background:rgba(255,255,255,.07);color:#fff;font-size:26px;line-height:1;z-index:90
+  display:none;
+  width:44px;
+  height:44px;
+  min-width:44px;
+  border-radius:15px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.07);
+  color:#fff;
+  font-size:22px;
+  line-height:1;
+  z-index:90;
 }
-.menu-mobile.open{background:rgba(229,9,47,.2);border-color:rgba(229,9,47,.45)}
-.actions{display:flex;align-items:center;gap:10px}
-.lang{display:flex;gap:5px;padding:5px;border-radius:999px;background:rgba(255,255,255,.06)}
-.lang button{border:0;background:transparent;color:#888;padding:8px 11px;border-radius:999px;font-weight:900}
-.lang button.active{background:#f5f0eb;color:#050505}
-.icon-btn{
-  width:42px;height:42px;border-radius:15px;border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.055);color:#fff;font-size:18px
+
+.menu-mobile.open{
+  background:rgba(229,9,47,.2);
+  border-color:rgba(229,9,47,.45);
 }
-.profile{position:relative;z-index:60}
+
+.actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.lang{
+  display:flex;
+  gap:5px;
+  padding:5px;
+  border-radius:999px;
+  background:rgba(255,255,255,.06);
+}
+
+.lang button{
+  border:0;
+  background:transparent;
+  color:#888;
+  padding:8px 11px;
+  border-radius:999px;
+  font-weight:900;
+}
+
+.lang button.active{
+  background:#f5f0eb;
+  color:#050505;
+}
+
+.profile{
+  position:relative;
+  z-index:60;
+}
+
 .avatar{
-  width:44px;height:44px;border-radius:50%;display:grid;place-items:center;overflow:hidden;
-  background:#250008;border:1px solid rgba(255,255,255,.15);box-shadow:0 0 22px rgba(229,9,47,.24);position:relative;z-index:61
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:#250008;
+  border:1px solid rgba(255,255,255,.15);
+  box-shadow:0 0 22px rgba(229,9,47,.24);
+  position:relative;
+  z-index:61;
 }
-.avatar img{width:100%;height:100%;object-fit:cover}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
 .profile-menu{
-  display:none;position:absolute;right:0;top:56px;width:310px;padding:16px;border-radius:24px;
-  background:rgba(0,0,0,.96);border:1px solid rgba(255,255,255,.12);z-index:100;
-  box-shadow:0 30px 90px rgba(0,0,0,.65)
+  display:none;
+  position:absolute;
+  right:0;
+  top:56px;
+  width:330px;
+  padding:16px;
+  border-radius:24px;
+  background:rgba(0,0,0,.96);
+  border:1px solid rgba(255,255,255,.12);
+  z-index:100;
+  box-shadow:0 30px 90px rgba(0,0,0,.65);
 }
+
 .profile-menu.open{display:block}
-.profile-name{font-weight:900}.profile-email{font-size:12px;color:#777;margin:6px 0 12px}
-.balance{color:#aaa;margin-bottom:12px}.balance strong{color:#fff}
-.profile-menu button,.profile-menu a{
-  width:100%;display:block;border:0;background:transparent;color:#aaa;text-align:left;text-decoration:none;
-  padding:12px;border-radius:14px;font-weight:800
+
+.profile-name{font-weight:900}
+.profile-email{font-size:12px;color:#777;margin:6px 0 12px}
+.balance{color:#aaa;margin-bottom:12px}
+.balance strong{color:#fff}
+
+.profile-menu button,
+.profile-menu a{
+  width:100%;
+  display:block;
+  border:0;
+  background:transparent;
+  color:#aaa;
+  text-align:left;
+  text-decoration:none;
+  padding:12px;
+  border-radius:14px;
+  font-weight:800;
 }
-.profile-menu button:hover,.profile-menu a:hover{background:rgba(255,255,255,.06);color:#fff}
+
+.profile-menu button:hover,
+.profile-menu a:hover{
+  background:rgba(255,255,255,.06);
+  color:#fff;
+}
 
 .player{
-  margin:14px 0;padding:12px;border-radius:18px;background:rgba(255,255,255,.045);
-  border:1px solid rgba(255,255,255,.08);display:grid;grid-template-columns:52px 1fr auto;gap:12px;align-items:center
+  margin:14px 0;
+  padding:12px;
+  border-radius:18px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.08);
+  display:grid;
+  grid-template-columns:48px 1fr 108px;
+  gap:10px;
+  align-items:center;
 }
-.cover{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,#e5092f,#111);display:grid;place-items:center}
-.track-title{font-weight:900;font-size:14px}.track-sub{color:#777;font-size:12px;margin-top:3px}
-.music-controls{display:flex;gap:7px}
-.music-controls button{width:34px;height:34px;border-radius:12px;border:0;background:rgba(255,255,255,.08);color:#fff;text-align:center;padding:0}
+
+.cover{
+  width:48px;
+  height:48px;
+  border-radius:15px;
+  background:linear-gradient(135deg,#e5092f,#111);
+  display:grid;
+  place-items:center;
+}
+
+.track-title{
+  font-weight:900;
+  font-size:14px;
+}
+
+.track-sub{
+  color:#777;
+  font-size:12px;
+  margin-top:3px;
+}
+
+.music-controls{
+  display:flex;
+  gap:6px;
+  justify-content:flex-end;
+}
+
+.music-controls button{
+  width:32px;
+  height:32px;
+  border-radius:11px;
+  border:0;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  text-align:center;
+  padding:0;
+}
 
 .hero{
-  padding:28px;border-radius:34px;margin-bottom:18px;border:1px solid rgba(255,255,255,.1);
-  background:radial-gradient(circle at 85% 15%,rgba(229,9,47,.22),transparent 34%),linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.018));
-  backdrop-filter:blur(22px)
+  padding:28px;
+  border-radius:34px;
+  margin-bottom:18px;
+  border:1px solid rgba(255,255,255,.1);
+  background:
+    radial-gradient(circle at 85% 15%,rgba(229,9,47,.22),transparent 34%),
+    linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.018));
+  backdrop-filter:blur(22px);
 }
-.hero h2{font-size:clamp(30px,6vw,56px);line-height:1;margin-bottom:12px}
-.hero p{color:#aaa;line-height:1.65;max-width:760px}
-.grid-main{display:grid;grid-template-columns:1.05fr .95fr;gap:16px;margin-bottom:16px}
+
+.hero h2{
+  font-size:clamp(30px,6vw,56px);
+  line-height:1;
+  margin-bottom:12px;
+}
+
+.hero p{
+  color:#aaa;
+  line-height:1.65;
+  max-width:760px;
+}
+
+.grid-main{
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:16px;
+  margin-bottom:16px;
+}
+
 .card,.tool,.modal{
   border:1px solid rgba(255,255,255,.1);
   background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.018));
-  backdrop-filter:blur(22px)
+  backdrop-filter:blur(22px);
 }
-.card{border-radius:30px;padding:20px}
-.card h3{margin-bottom:14px}
-.client-form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.client-form input,.client-form textarea,.client-form select{
-  width:100%;padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.12);
-  background:rgba(0,0,0,.45);color:#fff;outline:none
-}
-.field{display:flex;flex-direction:column;gap:7px}
-.field label{font-size:12px;color:#888;font-weight:900}
-.client-form textarea{grid-column:1/-1;min-height:90px;resize:vertical}
-.red-btn{border:0;border-radius:999px;padding:14px 18px;background:#e5092f;color:#fff;font-weight:950;box-shadow:0 0 26px rgba(229,9,47,.28)}
-.ghost-btn{border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:14px 18px;background:rgba(255,255,255,.055);color:#fff;font-weight:900}
 
-.booking-view{min-height:285px;display:grid;grid-template-rows:auto 1fr auto;gap:12px}
-.booking-card{
-  min-height:205px;padding:18px;border-radius:24px;background:rgba(0,0,0,.36);
-  border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;justify-content:space-between
+.card{
+  border-radius:30px;
+  padding:20px;
 }
-.booking-top{display:flex;justify-content:space-between;gap:12px;margin-bottom:10px}
-.booking-top strong{font-size:20px}.booking-top span{color:#999;font-size:13px}
+
+.card h3{margin-bottom:14px}
+
+.client-form{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.client-form input,
+.client-form textarea,
+.client-form select{
+  width:100%;
+  padding:14px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(0,0,0,.45);
+  color:#fff;
+  outline:none;
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.field label{
+  font-size:12px;
+  color:#888;
+  font-weight:900;
+}
+
+.client-form textarea{
+  grid-column:1/-1;
+  min-height:90px;
+  resize:vertical;
+}
+
+.red-btn{
+  border:0;
+  border-radius:999px;
+  padding:14px 18px;
+  background:#e5092f;
+  color:#fff;
+  font-weight:950;
+  box-shadow:0 0 26px rgba(229,9,47,.28);
+}
+
+.ghost-btn{
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:999px;
+  padding:14px 18px;
+  background:rgba(255,255,255,.055);
+  color:#fff;
+  font-weight:900;
+}
+
+.booking-view{
+  min-height:285px;
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  gap:12px;
+}
+
+.booking-card{
+  min-height:205px;
+  padding:18px;
+  border-radius:24px;
+  background:rgba(0,0,0,.36);
+  border:1px solid rgba(255,255,255,.08);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.booking-top{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:10px;
+}
+
+.booking-top strong{font-size:20px}
+.booking-top span{color:#999;font-size:13px}
 .booking-card p{color:#aaa;line-height:1.55;margin-top:8px}
 .booking-meta{color:#888;font-size:13px}
-.booking-nav{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.booking-nav button{
-  width:44px;height:38px;border-radius:14px;border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.055);color:#fff;font-size:18px
+
+.booking-nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
 }
-.counter{color:#777;font-size:13px}
 
-.tools{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.tool{min-height:165px;padding:18px;border-radius:26px;transition:.25s;cursor:pointer}
-.tool:hover{transform:translateY(-5px);border-color:rgba(229,9,47,.35);box-shadow:0 24px 70px rgba(0,0,0,.45)}
-.tool-icon{width:50px;height:50px;border-radius:18px;display:grid;place-items:center;background:#070707;border:1px solid rgba(255,255,255,.12);font-size:23px;margin-bottom:18px}
-.tool h3{margin-bottom:8px}.tool p{font-size:13px;color:#999;line-height:1.45}
+.booking-nav button{
+  width:44px;
+  height:38px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.055);
+  color:#fff;
+  font-size:18px;
+}
 
-.settings{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.74);backdrop-filter:blur(10px);padding:20px;place-items:center}
+.counter{
+  color:#777;
+  font-size:13px;
+}
+
+.tools{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+}
+
+.tool{
+  min-height:165px;
+  padding:18px;
+  border-radius:26px;
+  transition:.25s;
+  cursor:pointer;
+}
+
+.tool:hover{
+  transform:translateY(-5px);
+  border-color:rgba(229,9,47,.35);
+  box-shadow:0 24px 70px rgba(0,0,0,.45);
+}
+
+.tool-icon{
+  width:50px;
+  height:50px;
+  border-radius:18px;
+  display:grid;
+  place-items:center;
+  background:#070707;
+  border:1px solid rgba(255,255,255,.12);
+  font-size:23px;
+  margin-bottom:18px;
+}
+
+.tool h3{margin-bottom:8px}
+.tool p{font-size:13px;color:#999;line-height:1.45}
+
+.settings{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:200;
+  background:rgba(0,0,0,.74);
+  backdrop-filter:blur(10px);
+  padding:20px;
+  place-items:center;
+}
+
 .settings.open{display:grid}
-.modal{width:100%;max-width:560px;max-height:90vh;overflow:auto;padding:24px;border-radius:32px;background:#050505}
-.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-.close{width:40px;height:40px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;font-size:22px}
-.row{padding:14px 0;border-top:1px solid rgba(255,255,255,.07)}
-.row label{display:block;color:#aaa;margin-bottom:8px;font-size:13px}
-.row input,.row select{width:100%;padding:13px 14px;border-radius:16px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.055);color:#fff}
-.color-picker-box{display:flex;align-items:center;gap:14px}
-.color-picker-box input[type=color]{width:64px;height:64px;padding:0;border-radius:50%;overflow:hidden}
-.small-btn{margin-top:12px;padding:12px 16px;border:0;border-radius:999px;background:#e5092f;color:#fff;font-weight:900}
+
+.modal{
+  width:100%;
+  max-width:560px;
+  max-height:90vh;
+  overflow:auto;
+  padding:24px;
+  border-radius:32px;
+  background:#050505;
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.close{
+  width:40px;
+  height:40px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  font-size:22px;
+}
+
+.row{
+  padding:14px 0;
+  border-top:1px solid rgba(255,255,255,.07);
+}
+
+.row label{
+  display:block;
+  color:#aaa;
+  margin-bottom:8px;
+  font-size:13px;
+}
+
+.row input,
+.row select{
+  width:100%;
+  padding:13px 14px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.055);
+  color:#fff;
+}
+
+.color-picker-box{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.color-picker-box input[type=color]{
+  width:64px;
+  height:64px;
+  padding:0;
+  border-radius:50%;
+  overflow:hidden;
+}
+
+.small-btn{
+  margin-top:12px;
+  padding:12px 16px;
+  border:0;
+  border-radius:999px;
+  background:#e5092f;
+  color:#fff;
+  font-weight:900;
+}
+
 audio{display:none}
 
 @media(max-width:980px){
   .app{grid-template-columns:1fr}
+
   .rail{
-    position:fixed;left:-280px;top:0;width:260px;z-index:80;transition:.25s;
-    box-shadow:30px 0 80px rgba(0,0,0,.55)
+    position:fixed;
+    left:-280px;
+    top:0;
+    width:260px;
+    z-index:80;
+    transition:.25s;
+    box-shadow:30px 0 80px rgba(0,0,0,.55);
   }
+
   .rail.open{left:0}
+  .close-menu{display:block}
   .menu-mobile{display:block}
-  .grid-main{grid-template-columns:1fr}.tools{grid-template-columns:repeat(2,1fr)}
+  .grid-main{grid-template-columns:1fr}
+  .tools{grid-template-columns:repeat(2,1fr)}
 }
+
 @media(max-width:640px){
-  .main{padding:12px}.brand p{display:none}.grid-main{gap:12px}.tools{grid-template-columns:1fr}
-  .client-form{grid-template-columns:1fr}.hero{padding:22px}.profile-menu{right:-4px;width:285px}
+  .main{padding:12px}
+  .brand p{display:none}
+  .grid-main{gap:12px}
+  .tools{grid-template-columns:1fr}
+  .client-form{grid-template-columns:1fr}
+  .hero{padding:22px}
+  .profile-menu{right:-4px;width:305px}
 }
 </style>
 </head>
@@ -180,6 +633,8 @@ audio{display:none}
       <div class="seal">妖</div>
       <div class="logo-mini">YYOKAI</div>
     </div>
+
+    <button class="close-menu" onclick="closeRail()" data-i18n="closeMenu">← Закрити меню</button>
 
     <nav class="nav">
       <button class="active" onclick="showSection('home')"><i>⌂</i><span data-i18n="navHome">Головна</span></button>
@@ -206,10 +661,12 @@ audio{display:none}
           <button class="active" onclick="setLang('uk',this)">UA</button>
           <button onclick="setLang('en',this)">EN</button>
         </div>
+
         <div class="profile">
           <div class="avatar" id="avatar" onclick="toggleProfile()">👺</div>
+
           <div class="profile-menu" id="profileMenu">
-            <div class="profile-name" id="artistName">YYOKAI Artist</div>
+            <div class="profile-name" id="artistName">Guest Artist</div>
             <div class="profile-email" id="artistEmail">artist@email.com</div>
             <div class="balance"><span data-i18n="balance">Баланс</span>: <strong id="balanceValue">$0.00</strong></div>
 
@@ -243,19 +700,28 @@ audio{display:none}
     <section class="grid-main">
       <div class="card">
         <h3 data-i18n="clientTitle">Запис клієнта</h3>
+
         <div class="client-form">
           <div class="field">
             <label data-i18n="clientNameLabel">Імʼя клієнта</label>
             <input id="clientName" data-i18n-placeholder="clientName" placeholder="Імʼя клієнта">
           </div>
+
           <div class="field">
             <label>Telegram / Phone</label>
             <input id="clientPhone" placeholder="@username / phone">
           </div>
+
           <div class="field">
-            <label data-i18n="dateLabel">Оберіть дату</label>
+            <label data-i18n="dateLabel">Дата</label>
             <input id="clientDate" type="date">
           </div>
+
+          <div class="field">
+            <label data-i18n="timeLabel">Час</label>
+            <select id="clientTime"></select>
+          </div>
+
           <div class="field">
             <label data-i18n="statusLabel">Статус</label>
             <select id="clientStatus">
@@ -265,7 +731,9 @@ audio{display:none}
               <option value="done">Done</option>
             </select>
           </div>
+
           <textarea id="clientNote" data-i18n-placeholder="clientNote" placeholder="Нотатка: місце, стиль, розмір, побажання..."></textarea>
+
           <button class="red-btn" onclick="saveClient()" data-i18n="saveClient">Зберегти клієнта</button>
           <button class="ghost-btn" onclick="clearClientForm()" data-i18n="clear">Очистити</button>
         </div>
@@ -273,6 +741,7 @@ audio{display:none}
 
       <div class="card booking-view">
         <h3 data-i18n="todayTitle">Картка запису</h3>
+
         <div class="booking-card" id="bookingCard">
           <div>
             <div class="booking-top">
@@ -283,6 +752,7 @@ audio{display:none}
             <p data-i18n="emptyBookingText">Додай першого клієнта зліва, і тут буде зручна картка запису.</p>
           </div>
         </div>
+
         <div class="booking-nav">
           <button onclick="prevClient()">‹</button>
           <div class="counter" id="bookingCounter">0 / 0</div>
@@ -359,8 +829,13 @@ const auth=firebase.auth();
 const db=firebase.database();
 const storage=firebase.storage();
 
-let currentUser=null, selectedColor="#e5092f", musicPlaying=false, trackIndex=0;
-let clients=[], clientIndex=0, currentLang="uk";
+let currentUser=null;
+let selectedColor="#e5092f";
+let musicPlaying=false;
+let trackIndex=0;
+let clients=[];
+let clientIndex=0;
+let currentLang="uk";
 
 const playlist=[
   {title:"Japanese Chill",sub:"Soft studio mood",icon:"⛩",src:"music/japan-chill.mp3"},
@@ -370,38 +845,119 @@ const playlist=[
 
 const tr={
 uk:{
-navHome:"Головна",navClients:"Записи",navStencil:"Стенсіл",navSplit:"A4 друк",navFiles:"Файли",navBilling:"Оплата",
-subtitle:"Твоя тату-система, не просто кабінет",balance:"Баланс",addBalance:"Поповнити баланс",settings:"Налаштування",billing:"Оплата",logout:"Вийти",
-welcome:"Welcome back, artist",welcomeText:"Плануй клієнтів, зберігай нотатки, керуй файлами, музикою, балансом і підготовкою до сеансів в одному темному просторі.",
-clientTitle:"Запис клієнта",clientNameLabel:"Імʼя клієнта",clientName:"Імʼя клієнта",dateLabel:"Оберіть дату",statusLabel:"Статус",
-clientNote:"Нотатка: місце, стиль, розмір, побажання...",saveClient:"Зберегти клієнта",clear:"Очистити",
-todayTitle:"Картка запису",emptyBooking:"Поки немає записів",emptyBookingText:"Додай першого клієнта зліва, і тут буде зручна картка запису.",
-stencilText:"Підготовка чистого stencil.",splitText:"Друк великих ескізів.",filesText:"Файли, PDF, референси.",billingText:"Баланс, оплати, тарифи.",
-changeAvatar:"Змінити фото профілю",artistNameLabel:"Нік майстра",saveName:"Зберегти нік",musicSettings:"Музика / плейлист",backgroundUpload:"Фон кабінету",palette:"Палітра / фон",applyGradient:"Застосувати градієнт"
+closeMenu:"← Закрити меню",
+navHome:"Головна",
+navClients:"Записи",
+navStencil:"Стенсіл",
+navSplit:"A4 друк",
+navFiles:"Файли",
+navBilling:"Оплата",
+subtitle:"Твоя тату-система, не просто кабінет",
+balance:"Баланс",
+addBalance:"Поповнити баланс",
+settings:"Налаштування",
+billing:"Оплата",
+logout:"Вийти",
+welcome:"Welcome back, artist",
+welcomeText:"Плануй клієнтів, зберігай нотатки, керуй файлами, музикою, балансом і підготовкою до сеансів в одному темному просторі.",
+clientTitle:"Запис клієнта",
+clientNameLabel:"Імʼя клієнта",
+clientName:"Імʼя клієнта",
+dateLabel:"Дата",
+timeLabel:"Час",
+statusLabel:"Статус",
+clientNote:"Нотатка: місце, стиль, розмір, побажання...",
+saveClient:"Зберегти клієнта",
+clear:"Очистити",
+todayTitle:"Картка запису",
+emptyBooking:"Поки немає записів",
+emptyBookingText:"Додай першого клієнта зліва, і тут буде зручна картка запису.",
+stencilText:"Підготовка чистого stencil.",
+splitText:"Друк великих ескізів.",
+filesText:"Файли, PDF, референси.",
+billingText:"Баланс, оплати, тарифи.",
+changeAvatar:"Змінити фото профілю",
+artistNameLabel:"Нік майстра",
+saveName:"Зберегти нік",
+musicSettings:"Музика / плейлист",
+backgroundUpload:"Фон кабінету",
+palette:"Палітра / фон",
+applyGradient:"Застосувати градієнт"
 },
 en:{
-navHome:"Home",navClients:"Bookings",navStencil:"Stencil",navSplit:"A4 Print",navFiles:"Files",navBilling:"Billing",
-subtitle:"Your tattoo system, not just a dashboard",balance:"Balance",addBalance:"Add balance",settings:"Settings",billing:"Billing",logout:"Logout",
-welcome:"Welcome back, artist",welcomeText:"Plan clients, save notes, manage files, music, balance and session preparation in one dark workspace.",
-clientTitle:"Client booking",clientNameLabel:"Client name",clientName:"Client name",dateLabel:"Choose date",statusLabel:"Status",
-clientNote:"Note: placement, style, size, wishes...",saveClient:"Save client",clear:"Clear",
-todayTitle:"Booking card",emptyBooking:"No bookings yet",emptyBookingText:"Add your first client on the left, and a clean booking card will appear here.",
-stencilText:"Clean stencil preparation.",splitText:"Print large sketches.",filesText:"Files, PDFs, references.",billingText:"Balance, payments, plans.",
-changeAvatar:"Change profile photo",artistNameLabel:"Artist nickname",saveName:"Save nickname",musicSettings:"Music / playlist",backgroundUpload:"Dashboard background",palette:"Palette / background",applyGradient:"Apply gradient"
+closeMenu:"← Close menu",
+navHome:"Home",
+navClients:"Bookings",
+navStencil:"Stencil",
+navSplit:"A4 Print",
+navFiles:"Files",
+navBilling:"Billing",
+subtitle:"Your tattoo system, not just a dashboard",
+balance:"Balance",
+addBalance:"Add balance",
+settings:"Settings",
+billing:"Billing",
+logout:"Logout",
+welcome:"Welcome back, artist",
+welcomeText:"Plan clients, save notes, manage files, music, balance and session preparation in one dark workspace.",
+clientTitle:"Client booking",
+clientNameLabel:"Client name",
+clientName:"Client name",
+dateLabel:"Date",
+timeLabel:"Time",
+statusLabel:"Status",
+clientNote:"Note: placement, style, size, wishes...",
+saveClient:"Save client",
+clear:"Clear",
+todayTitle:"Booking card",
+emptyBooking:"No bookings yet",
+emptyBookingText:"Add your first client on the left, and a clean booking card will appear here.",
+stencilText:"Clean stencil preparation.",
+splitText:"Print large sketches.",
+filesText:"Files, PDFs, references.",
+billingText:"Balance, payments, plans.",
+changeAvatar:"Change profile photo",
+artistNameLabel:"Artist nickname",
+saveName:"Save nickname",
+musicSettings:"Music / playlist",
+backgroundUpload:"Dashboard background",
+palette:"Palette / background",
+applyGradient:"Apply gradient"
 }
 };
 
+function buildTimeOptions(){
+  clientTime.innerHTML="";
+  for(let h=8;h<=22;h++){
+    const hour=String(h).padStart(2,"0")+":00";
+    const option=document.createElement("option");
+    option.value=hour;
+    option.textContent=hour;
+    clientTime.appendChild(option);
+  }
+}
+
+buildTimeOptions();
+
 auth.onAuthStateChanged(async user=>{
-  if(!user){location.href="artist-auth.html";return}
+  if(!user){
+    location.href="artist-auth.html";
+    return;
+  }
+
   currentUser=user;
 
   const snap=await db.ref("users/"+user.uid).once("value");
   const data=snap.val()||{};
-  artistName.textContent=data.name||"YYOKAI Artist";
+
+  artistName.textContent=data.name||"Guest Artist";
   artistEmail.textContent=data.email||user.email;
-  nameInput.value=data.name||"YYOKAI Artist";
+  nameInput.value=data.name||"Guest Artist";
   balanceValue.textContent="$"+Number(data.balance||0).toFixed(2);
-  if(data.avatarUrl) avatar.innerHTML=`<img src="${data.avatarUrl}">`;
+
+  if(data.avatarUrl){
+    avatar.innerHTML=`<img src="${data.avatarUrl}">`;
+  }
 
   loadClients();
   loadSettings(data);
@@ -410,10 +966,12 @@ auth.onAuthStateChanged(async user=>{
 function setLang(lang,btn){
   currentLang=lang;
   document.documentElement.lang=lang;
+
   Object.keys(tr[lang]).forEach(k=>{
     document.querySelectorAll(`[data-i18n="${k}"]`).forEach(el=>el.textContent=tr[lang][k]);
     document.querySelectorAll(`[data-i18n-placeholder="${k}"]`).forEach(el=>el.placeholder=tr[lang][k]);
   });
+
   document.querySelectorAll(".lang button").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
   renderClient();
@@ -421,27 +979,37 @@ function setLang(lang,btn){
 
 async function saveClient(){
   if(!currentUser)return;
+
   const data={
     name:clientName.value.trim(),
     phone:clientPhone.value.trim(),
     date:clientDate.value,
+    time:clientTime.value,
     status:clientStatus.value,
     note:clientNote.value.trim(),
     createdAt:Date.now()
   };
+
   if(!data.name)return;
+
   await db.ref("users/"+currentUser.uid+"/clients").push(data);
   clearClientForm();
   loadClients();
 }
 
 function clearClientForm(){
-  clientName.value="";clientPhone.value="";clientDate.value="";clientNote.value="";clientStatus.value="new";
+  clientName.value="";
+  clientPhone.value="";
+  clientDate.value="";
+  clientTime.value="08:00";
+  clientNote.value="";
+  clientStatus.value="new";
 }
 
 async function loadClients(){
   const snap=await db.ref("users/"+currentUser.uid+"/clients").orderByChild("createdAt").limitToLast(20).once("value");
   const data=snap.val()||{};
+
   clients=Object.entries(data).map(([id,c])=>({id,...c})).reverse();
   clientIndex=0;
   renderClient();
@@ -451,27 +1019,46 @@ function renderClient(){
   if(!clients.length){
     bookingCard.innerHTML=`
       <div>
-        <div class="booking-top"><strong>${tr[currentLang].emptyBooking}</strong><span>—</span></div>
+        <div class="booking-top">
+          <strong>${tr[currentLang].emptyBooking}</strong>
+          <span>—</span>
+        </div>
         <div class="booking-meta">—</div>
         <p>${tr[currentLang].emptyBookingText}</p>
-      </div>`;
+      </div>
+    `;
     bookingCounter.textContent="0 / 0";
     return;
   }
 
   const c=clients[clientIndex];
+
   bookingCard.innerHTML=`
     <div>
-      <div class="booking-top"><strong>${c.name||"Client"}</strong><span>${c.date||"No date"}</span></div>
+      <div class="booking-top">
+        <strong>${c.name||"Client"}</strong>
+        <span>${c.date||"No date"} · ${c.time||"No time"}</span>
+      </div>
       <div class="booking-meta">${c.phone||""} · ${c.status||"new"}</div>
       <p>${c.note||""}</p>
     </div>
-    <button onclick="deleteClient('${c.id}')">Delete</button>`;
+    <button onclick="deleteClient('${c.id}')">Delete</button>
+  `;
+
   bookingCounter.textContent=(clientIndex+1)+" / "+clients.length;
 }
 
-function nextClient(){if(!clients.length)return;clientIndex=(clientIndex+1)%clients.length;renderClient()}
-function prevClient(){if(!clients.length)return;clientIndex=(clientIndex-1+clients.length)%clients.length;renderClient()}
+function nextClient(){
+  if(!clients.length)return;
+  clientIndex=(clientIndex+1)%clients.length;
+  renderClient();
+}
+
+function prevClient(){
+  if(!clients.length)return;
+  clientIndex=(clientIndex-1+clients.length)%clients.length;
+  renderClient();
+}
 
 async function deleteClient(id){
   await db.ref("users/"+currentUser.uid+"/clients/"+id).remove();
@@ -479,70 +1066,168 @@ async function deleteClient(id){
 }
 
 async function saveName(){
-  const name=nameInput.value.trim()||"YYOKAI Artist";
+  const name=nameInput.value.trim()||"Guest Artist";
   await db.ref("users/"+currentUser.uid).update({name});
   artistName.textContent=name;
 }
 
 async function uploadAvatar(e){
-  const file=e.target.files[0]; if(!file)return;
-  const ref=storage.ref("avatars/"+currentUser.uid+"/"+file.name);
-  await ref.put(file);
-  const url=await ref.getDownloadURL();
-  await db.ref("users/"+currentUser.uid).update({avatarUrl:url});
-  avatar.innerHTML=`<img src="${url}">`;
+  const file=e.target.files[0];
+  if(!file)return;
+
+  const reader=new FileReader();
+  reader.onload=x=>{
+    avatar.innerHTML=`<img src="${x.target.result}">`;
+  };
+  reader.readAsDataURL(file);
+
+  if(!currentUser)return;
+
+  try{
+    const ref=storage.ref("avatars/"+currentUser.uid+"/"+file.name);
+    await ref.put(file);
+    const url=await ref.getDownloadURL();
+    await db.ref("users/"+currentUser.uid).update({avatarUrl:url});
+    avatar.innerHTML=`<img src="${url}">`;
+  }catch(err){
+    console.log("Avatar preview works, storage error:",err.message);
+  }
 }
 
 function selectTrack(i){
   trackIndex=Number(i);
   const t=playlist[trackIndex];
-  bgMusic.src=t.src; trackTitle.textContent=t.title; trackSub.textContent=t.sub; trackCover.textContent=t.icon;
-  if(currentUser) db.ref("users/"+currentUser.uid+"/settings").update({trackIndex});
+
+  bgMusic.src=t.src;
+  trackTitle.textContent=t.title;
+  trackSub.textContent=t.sub;
+  trackCover.textContent=t.icon;
+
+  if(currentUser){
+    db.ref("users/"+currentUser.uid+"/settings").update({trackIndex});
+  }
 }
 
 function toggleMusic(){
   const t=playlist[trackIndex];
-  if(!bgMusic.src) bgMusic.src=t.src;
-  if(!musicPlaying){bgMusic.volume=.35;bgMusic.play();playPauseBtn.textContent="⏸";musicPlaying=true}
-  else{bgMusic.pause();playPauseBtn.textContent="▶";musicPlaying=false}
+
+  if(!bgMusic.src){
+    bgMusic.src=t.src;
+  }
+
+  if(!musicPlaying){
+    bgMusic.volume=.35;
+    bgMusic.play();
+    playPauseBtn.textContent="⏸";
+    musicPlaying=true;
+  }else{
+    bgMusic.pause();
+    playPauseBtn.textContent="▶";
+    musicPlaying=false;
+  }
 }
-function nextTrack(){selectTrack((trackIndex+1)%playlist.length); if(musicPlaying) bgMusic.play()}
-function prevTrack(){selectTrack((trackIndex-1+playlist.length)%playlist.length); if(musicPlaying) bgMusic.play()}
+
+function nextTrack(){
+  selectTrack((trackIndex+1)%playlist.length);
+  if(musicPlaying)bgMusic.play();
+}
+
+function prevTrack(){
+  selectTrack((trackIndex-1+playlist.length)%playlist.length);
+  if(musicPlaying)bgMusic.play();
+}
 
 function loadSettings(data){
   const s=data.settings||{};
-  if(s.accent)setCustomAccent(s.accent);
-  if(typeof s.trackIndex==="number"){musicSelect.value=s.trackIndex;selectTrack(s.trackIndex)}
+
+  if(s.accent){
+    setCustomAccent(s.accent);
+  }
+
+  if(typeof s.trackIndex==="number"){
+    musicSelect.value=s.trackIndex;
+    selectTrack(s.trackIndex);
+  }
 }
 
 function changeBackground(e){
-  const f=e.target.files[0]; if(!f)return;
+  const f=e.target.files[0];
+  if(!f)return;
+
   const r=new FileReader();
-  r.onload=x=>document.body.style.background=`linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.9)),url('${x.target.result}') center/cover fixed`;
+  r.onload=x=>{
+    document.body.style.background=
+    `linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.9)),url('${x.target.result}') center/cover fixed`;
+  };
   r.readAsDataURL(f);
 }
-function setCustomAccent(c){selectedColor=c;colorValue.textContent=c;document.documentElement.style.setProperty("--accent",c)}
+
+function setCustomAccent(c){
+  selectedColor=c;
+  colorValue.textContent=c;
+  document.documentElement.style.setProperty("--accent",c);
+}
+
 async function applyGradientBackground(){
-  document.body.style.background=`radial-gradient(circle at 50% 0%, ${selectedColor}55, transparent 32%),linear-gradient(to bottom,#000,#080203 55%,#000)`;
-  if(currentUser)await db.ref("users/"+currentUser.uid+"/settings").update({accent:selectedColor});
+  document.body.style.background=
+  `radial-gradient(circle at 50% 0%, ${selectedColor}55, transparent 32%),linear-gradient(to bottom,#000,#080203 55%,#000)`;
+
+  if(currentUser){
+    await db.ref("users/"+currentUser.uid+"/settings").update({accent:selectedColor});
+  }
+
+  closeSettings();
 }
 
 function toggleRail(){
   rail.classList.toggle("open");
   menuBtn.classList.toggle("open");
-  menuBtn.textContent=rail.classList.contains("open")?"×":"☰";
+
+  if(rail.classList.contains("open")){
+    menuBtn.textContent="←";
+  }else{
+    menuBtn.textContent="☰";
+  }
 }
-function toggleProfile(){profileMenu.classList.toggle("open")}
-function openSettings(){settingsPanel.classList.add("open");profileMenu.classList.remove("open")}
-function closeSettings(){settingsPanel.classList.remove("open")}
-function addBalance(){location.href="billing.html"}
-function go(url){location.href=url}
-function logout(){auth.signOut()}
+
+function closeRail(){
+  rail.classList.remove("open");
+  menuBtn.classList.remove("open");
+  menuBtn.textContent="☰";
+}
+
+function toggleProfile(){
+  profileMenu.classList.toggle("open");
+}
+
+function openSettings(){
+  settingsPanel.classList.add("open");
+  profileMenu.classList.remove("open");
+}
+
+function closeSettings(){
+  settingsPanel.classList.remove("open");
+}
+
+function addBalance(){
+  location.href="billing.html";
+}
+
+function go(url){
+  location.href=url;
+}
+
+function logout(){
+  auth.signOut();
+}
+
 function showSection(){}
 
 document.addEventListener("click",e=>{
   const p=document.querySelector(".profile");
-  if(p&&!p.contains(e.target))profileMenu.classList.remove("open");
+  if(p&&!p.contains(e.target)){
+    profileMenu.classList.remove("open");
+  }
 });
 </script>
 </body>
