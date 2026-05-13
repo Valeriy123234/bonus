@@ -1216,64 +1216,86 @@ async function createBalancePayment(amount){
 }
 
 async function applySettings(){
-  if(!currentUser)return;
-
-  const name=nameInput.value.trim()||"Guest Artist";
-  const color=colorPicker.value;
-  const avatarFile=avatarInput.files[0];
-  const bgFile=bgInput.files[0];
-
-  applyAccent(color);
-  saveLocalCache({accent:color});
-
-  const updates={
-    name,
-    email:currentUser.email||"",
-    updatedAt:Date.now()
-  };
-
-  const settingsUpdates={
-    accent:color
-  };
-
-  if(avatarFile){
-    const local=URL.createObjectURL(avatarFile);
-    avatar.innerHTML=`<img src="${local}">`;
-    saveLocalCache({avatarUrl:local});
-
-    const ref=storage.ref("users/"+currentUser.uid+"/avatar/avatar_"+Date.now()+"_"+avatarFile.name);
-    await ref.put(avatarFile);
-    const url=await ref.getDownloadURL();
-
-    updates.avatarUrl=url;
-    avatar.innerHTML=`<img src="${url}">`;
-    saveLocalCache({avatarUrl:url});
+  if(!currentUser){
+    showToast("No user");
+    return;
   }
 
-  if(bgFile){
-    const localBg=URL.createObjectURL(bgFile);
-    applyBackgroundImage(localBg);
-    saveLocalCache({backgroundUrl:localBg});
+  try{
+    showToast(currentLang==="uk" ? "Зберігаємо..." : "Saving...");
 
-    const ref=storage.ref("users/"+currentUser.uid+"/background/bg_"+Date.now()+"_"+bgFile.name);
-    await ref.put(bgFile);
-    const url=await ref.getDownloadURL();
+    const name=nameInput.value.trim()||"Guest Artist";
+    const color=colorPicker.value;
+    const avatarFile=avatarInput.files[0];
+    const bgFile=bgInput.files[0];
 
-    settingsUpdates.backgroundUrl=url;
-    applyBackgroundImage(url);
-    saveLocalCache({backgroundUrl:url});
+    applyAccent(color);
+    saveLocalCache({accent:color});
+
+    const updates={
+      name:name,
+      email:currentUser.email||"",
+      updatedAt:Date.now()
+    };
+
+    const settingsUpdates={
+      accent:color
+    };
+
+    if(avatarFile){
+      const avatarRef=storage.ref(
+        "users/"+currentUser.uid+"/avatar/avatar_"+Date.now()+"_"+avatarFile.name
+      );
+
+      await avatarRef.put(avatarFile);
+
+      const avatarUrl=await avatarRef.getDownloadURL();
+
+      updates.avatarUrl=avatarUrl;
+      avatar.innerHTML=`<img src="${avatarUrl}">`;
+
+      saveLocalCache({
+        avatarUrl:avatarUrl
+      });
+    }
+
+    if(bgFile){
+      const bgRef=storage.ref(
+        "users/"+currentUser.uid+"/background/bg_"+Date.now()+"_"+bgFile.name
+      );
+
+      await bgRef.put(bgFile);
+
+      const bgUrl=await bgRef.getDownloadURL();
+
+      settingsUpdates.backgroundUrl=bgUrl;
+      applyBackgroundImage(bgUrl);
+
+      saveLocalCache({
+        backgroundUrl:bgUrl
+      });
+    }
+
+    await db.ref("users/"+currentUser.uid).update(updates);
+    await db.ref("users/"+currentUser.uid+"/settings").update(settingsUpdates);
+
+    artistName.textContent=name;
+    artistEmail.textContent=currentUser.email||"";
+
+    closeSettings();
+    showToast(t[currentLang].saved);
+
+    setTimeout(()=>{
+      window.scrollTo({
+        top:0,
+        behavior:"smooth"
+      });
+    },120);
+
+  }catch(error){
+    console.error(error);
+    showToast("Firebase: "+error.message);
   }
-
-  await db.ref("users/"+currentUser.uid).update(updates);
-  await db.ref("users/"+currentUser.uid+"/settings").update(settingsUpdates);
-
-  artistName.textContent=name;
-  artistEmail.textContent=currentUser.email||"";
-
-  showToast(t[currentLang].saved);
-  closeSettings();
-
-  window.scrollTo({top:0,behavior:"smooth"});
 }
 
 function applyBackgroundImage(url){
@@ -1283,14 +1305,27 @@ function applyBackgroundImage(url){
 
 function applyAccent(color){
   document.documentElement.style.setProperty("--accent",color);
-  if(document.getElementById("colorPicker"))colorPicker.value=color;
-  if(document.getElementById("colorValue"))colorValue.textContent=color;
+
+  if(document.getElementById("colorPicker")){
+    colorPicker.value=color;
+  }
+
+  if(document.getElementById("colorValue")){
+    colorValue.textContent=color;
+  }
 }
 
 function setTrack(index){
   trackIndex=index;
+
   const track=tracks[trackIndex]||tracks[0];
-  setMusic(track.src,track.title,track.sub,track.icon);
+
+  setMusic(
+    track.src,
+    track.title,
+    track.sub,
+    track.icon
+  );
 }
 
 function setMusic(src,title,sub,icon){
@@ -1304,53 +1339,76 @@ function setMusic(src,title,sub,icon){
 
 async function nextTrack(){
   trackIndex=(trackIndex+1)%tracks.length;
+
   setTrack(trackIndex);
 
   if(currentUser){
-    await db.ref("users/"+currentUser.uid+"/settings").update({trackIndex});
+    await db.ref("users/"+currentUser.uid+"/settings").update({
+      trackIndex:trackIndex
+    });
   }
 }
 
 async function prevTrack(){
   trackIndex=(trackIndex-1+tracks.length)%tracks.length;
+
   setTrack(trackIndex);
 
   if(currentUser){
-    await db.ref("users/"+currentUser.uid+"/settings").update({trackIndex});
+    await db.ref("users/"+currentUser.uid+"/settings").update({
+      trackIndex:trackIndex
+    });
   }
 }
 
 function toggleMusic(){
-  if(!bgMusic.src)setTrack(trackIndex);
+  if(!bgMusic.src){
+    setTrack(trackIndex);
+  }
 
   if(!musicPlaying){
     bgMusic.volume=.35;
+
     bgMusic.play();
+
     playPauseBtn.classList.add("playing");
+
     musicPlaying=true;
+
   }else{
     bgMusic.pause();
+
     playPauseBtn.classList.remove("playing");
+
     musicPlaying=false;
   }
 }
 
 function showToast(text){
   toastText.textContent=text;
+
   toastBox.classList.add("open");
+
   clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>hideToast(),10000);
+
+  toastTimer=setTimeout(()=>{
+    hideToast();
+  },10000);
 }
 
-function hideToast(){toastBox.classList.remove("open")}
+function hideToast(){
+  toastBox.classList.remove("open");
+}
 
 async function logout(){
   await auth.signOut();
+
   location.href=authUrl();
 }
 
 document.addEventListener("click",e=>{
   const profile=document.querySelector(".profile");
+
   if(profile&&!profile.contains(e.target)){
     profileMenu.classList.remove("open");
   }
