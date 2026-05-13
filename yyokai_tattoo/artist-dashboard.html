@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>YYOKAI | Artist Dashboard</title>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
@@ -12,28 +11,9 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-storage-compat.js"></script>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
-
-:root{
-  --accent:#e5092f;
-  --text:#f6f1ef;
-  --muted:#8c8886;
-  --glass:rgba(255,255,255,.055);
-  --line:rgba(255,255,255,.11);
-}
-
-html,body{
-  min-height:100%;
-  background:#000;
-  color:var(--text);
-  font-family:Arial,sans-serif;
-}
-
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--accent:#e5092f;--text:#f6f1ef;--line:rgba(255,255,255,.11)}
+html,body{min-height:100%;background:#000;color:var(--text);font-family:Arial,sans-serif}
 body{
   overflow-x:hidden;
   background:
@@ -41,791 +21,270 @@ body{
     linear-gradient(180deg,#000 0%,#0b0103 45%,#000 100%);
   transition:background .25s ease;
 }
-
 body::before{
   content:"妖 鬼 狐 墨 夜 刺青";
-  position:fixed;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-  color:rgba(255,255,255,.018);
-  font-size:78px;
-  letter-spacing:30px;
-  line-height:1.5;
-  transform:rotate(-12deg) scale(1.15);
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  color:rgba(255,255,255,.018);font-size:78px;letter-spacing:30px;
+  line-height:1.5;transform:rotate(-12deg) scale(1.15);
 }
-
-button,input,select{
-  font-family:inherit;
-}
-
-button{
-  cursor:pointer;
-}
-
-.app{
-  position:relative;
-  z-index:2;
-  min-height:100vh;
-  padding:18px;
-  padding-bottom:112px;
-}
+button,input,select{font-family:inherit}
+button{cursor:pointer}
+.app{position:relative;z-index:2;min-height:100vh;padding:18px;padding-bottom:112px}
 
 .topbar{
-  position:sticky;
-  top:12px;
-  z-index:90;
-  height:76px;
-  display:grid;
-  grid-template-columns:56px 1fr auto;
-  align-items:center;
-  gap:14px;
-  padding:10px 12px;
-  border-radius:30px;
-  background:rgba(0,0,0,.9);
-  border:1px solid var(--line);
-  backdrop-filter:blur(26px);
+  position:sticky;top:12px;z-index:90;height:76px;
+  display:grid;grid-template-columns:56px 1fr auto;align-items:center;gap:14px;
+  padding:10px 12px;border-radius:30px;background:rgba(0,0,0,.9);
+  border:1px solid var(--line);backdrop-filter:blur(26px);
   box-shadow:0 24px 80px rgba(0,0,0,.75);
 }
-
 .menu-btn{
-  width:54px;
-  height:54px;
-  border-radius:20px;
-  border:1px solid rgba(255,255,255,.13);
-  background:rgba(255,255,255,.05);
-  color:#fff;
-  font-size:26px;
+  width:54px;height:54px;border-radius:20px;border:1px solid rgba(255,255,255,.13);
+  background:rgba(255,255,255,.05);color:#fff;font-size:26px;
 }
-
 .logo{
-  justify-self:center;
-  position:relative;
-  transform:translateX(4px);
-  font-size:27px;
-  font-weight:950;
-  letter-spacing:.08em;
-  color:#fff;
+  justify-self:center;position:relative;transform:translateX(4px);
+  font-size:27px;font-weight:950;letter-spacing:.08em;color:#fff;
   text-shadow:0 0 24px color-mix(in srgb,var(--accent) 45%,transparent);
 }
-
-.logo::before,
-.logo::after{
-  content:"YYOKAI";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  opacity:.34;
-}
-
-.logo::before{
-  color:var(--accent);
-  transform:translate(-1px,0);
-  animation:glitchA 2.8s infinite;
-}
-
-.logo::after{
-  color:#fff;
-  transform:translate(1px,0);
-  animation:glitchB 3.3s infinite reverse;
-}
-
+.logo::before,.logo::after{content:"YYOKAI";position:absolute;inset:0;pointer-events:none;opacity:.34}
+.logo::before{color:var(--accent);transform:translate(-1px,0);animation:glitchA 2.8s infinite}
+.logo::after{color:#fff;transform:translate(1px,0);animation:glitchB 3.3s infinite reverse}
 @keyframes glitchA{
   0%,92%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0)}
   93%{clip-path:inset(12% 0 64% 0);transform:translate(-2px,1px)}
   95%{clip-path:inset(60% 0 18% 0);transform:translate(2px,-1px)}
   97%{clip-path:inset(30% 0 38% 0);transform:translate(-1px,0)}
 }
-
 @keyframes glitchB{
   0%,94%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0)}
   95%{clip-path:inset(44% 0 30% 0);transform:translate(1px,0)}
   97%{clip-path:inset(15% 0 58% 0);transform:translate(-1px,0)}
 }
-
-.top-actions{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
+.top-actions{display:flex;align-items:center;gap:10px}
 .lang{
-  display:flex;
-  align-items:center;
-  gap:5px;
-  padding:5px;
-  border-radius:999px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;gap:5px;padding:5px;border-radius:999px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);
 }
+.lang button{border:0;background:transparent;color:#777;padding:8px 12px;border-radius:999px;font-weight:950}
+.lang button.active{background:#fff;color:#000}
 
-.lang button{
-  border:0;
-  background:transparent;
-  color:#777;
-  padding:8px 12px;
-  border-radius:999px;
-  font-weight:950;
-}
-
-.lang button.active{
-  background:#fff;
-  color:#000;
-}
-
-.profile{
-  position:relative;
-  z-index:100;
-}
-
+.profile{position:relative;z-index:100}
 .avatar{
-  width:54px;
-  height:54px;
-  border-radius:50%;
-  overflow:hidden;
-  display:grid;
-  place-items:center;
-  font-size:26px;
-  font-weight:950;
-  color:var(--accent);
+  width:54px;height:54px;border-radius:50%;overflow:hidden;display:grid;place-items:center;
+  font-size:26px;font-weight:950;color:var(--accent);
   background:linear-gradient(135deg,#130005,#050505);
   border:1px solid rgba(255,255,255,.15);
   box-shadow:0 0 30px color-mix(in srgb,var(--accent) 40%,transparent);
   text-shadow:0 0 18px var(--accent);
 }
-
-.avatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
+.avatar img{width:100%;height:100%;object-fit:cover}
 .profile-menu{
-  position:absolute;
-  right:0;
-  top:66px;
-  width:min(370px,calc(100vw - 30px));
-  display:none;
-  padding:18px;
-  border-radius:28px;
-  background:rgba(0,0,0,.96);
-  border:1px solid rgba(255,255,255,.12);
-  backdrop-filter:blur(28px);
+  position:absolute;right:0;top:66px;width:min(370px,calc(100vw - 30px));
+  display:none;padding:18px;border-radius:28px;background:rgba(0,0,0,.96);
+  border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(28px);
   box-shadow:0 35px 100px rgba(0,0,0,.85);
 }
-
-.profile-menu.open{
-  display:block;
-}
-
-.profile-name{
-  font-size:22px;
-  font-weight:950;
-}
-
-.profile-email{
-  margin-top:4px;
-  color:#7d7d7d;
-  font-size:13px;
-}
-
-.balance{
-  margin-top:12px;
-  color:#aaa;
-}
-
-.balance strong{
-  color:#fff;
-  font-size:20px;
-}
+.profile-menu.open{display:block}
+.profile-name{font-size:22px;font-weight:950}
+.profile-email{margin-top:4px;color:#7d7d7d;font-size:13px}
+.balance{margin-top:12px;color:#aaa}
+.balance strong{color:#fff;font-size:20px}
 
 .player{
-  margin:16px 0;
-  padding:12px;
-  border-radius:20px;
-  background:#070707;
+  margin:16px 0;padding:12px;border-radius:20px;background:#070707;
   border:1px solid rgba(255,255,255,.1);
-  display:grid;
-  grid-template-columns:50px 1fr auto;
-  gap:10px;
-  align-items:center;
+  display:grid;grid-template-columns:50px 1fr auto;gap:10px;align-items:center;
 }
-
 .cover{
-  width:50px;
-  height:50px;
-  border-radius:16px;
-  display:grid;
-  place-items:center;
-  background:linear-gradient(135deg,var(--accent),#0f0f0f);
+  width:50px;height:50px;border-radius:16px;display:grid;place-items:center;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
 }
-
-.track-title{
-  font-size:14px;
-  font-weight:950;
-}
-
-.track-sub{
-  font-size:12px;
-  color:#777;
-  margin-top:3px;
-}
-
-.music-controls{
-  display:flex;
-  gap:6px;
-}
-
+.track-title{font-size:14px;font-weight:950}
+.track-sub{font-size:12px;color:#777;margin-top:3px}
+.music-controls{display:flex;gap:6px}
 .music-controls button{
-  width:38px;
-  height:38px;
-  min-width:38px;
-  min-height:38px;
-  border:1px solid rgba(255,255,255,.13);
-  border-radius:14px;
-  background:rgba(255,255,255,.08);
-  color:#fff;
-  font-size:18px;
-  display:grid;
-  place-items:center;
-  line-height:1;
+  width:38px;height:38px;min-width:38px;min-height:38px;
+  border:1px solid rgba(255,255,255,.13);border-radius:14px;
+  background:rgba(255,255,255,.08);color:#fff;font-size:18px;
+  display:grid;place-items:center;line-height:1;box-shadow:none;
 }
-
 #playPauseBtn{
-  background:rgba(255,255,255,.08);
-  border-color:rgba(255,255,255,.13);
-  box-shadow:none;
+  background:rgba(255,255,255,.08)!important;
+  border-color:rgba(255,255,255,.13)!important;
+  box-shadow:none!important;
+  outline:none!important;
 }
-
 .profile-menu button{
-  width:100%;
-  margin-top:6px;
-  padding:14px;
-  border:0;
-  border-radius:16px;
-  background:transparent;
-  color:#aaa;
-  text-align:left;
-  font-weight:900;
+  width:100%;margin-top:6px;padding:14px;border:0;border-radius:16px;
+  background:transparent;color:#aaa;text-align:left;font-weight:900;
 }
-
-.profile-menu button:hover{
-  background:rgba(255,255,255,.07);
-  color:#fff;
-}
+.profile-menu button:hover{background:rgba(255,255,255,.07);color:#fff}
 
 .side-overlay{
-  position:fixed;
-  inset:0;
-  z-index:94;
-  background:rgba(0,0,0,.35);
-  display:none;
-  backdrop-filter:blur(2px);
+  position:fixed;inset:0;z-index:94;background:rgba(0,0,0,.35);
+  display:none;backdrop-filter:blur(2px);
 }
-
-.side-overlay.open{
-  display:block;
-}
-
+.side-overlay.open{display:block}
 .side-menu{
-  position:fixed;
-  left:-290px;
-  top:0;
-  bottom:0;
-  width:280px;
-  z-index:95;
-  padding:22px;
-  background:rgba(0,0,0,.97);
-  border-right:1px solid rgba(255,255,255,.1);
-  backdrop-filter:blur(28px);
-  transition:.25s ease;
-  box-shadow:30px 0 90px rgba(0,0,0,.75);
+  position:fixed;left:-290px;top:0;bottom:0;width:280px;z-index:95;
+  padding:22px;background:rgba(0,0,0,.97);
+  border-right:1px solid rgba(255,255,255,.1);backdrop-filter:blur(28px);
+  transition:.25s ease;box-shadow:30px 0 90px rgba(0,0,0,.75);
 }
-
-.side-menu.open{
-  left:0;
-}
-
+.side-menu.open{left:0}
 .side-head{
-  display:grid;
-  grid-template-columns:42px 1fr 42px;
-  align-items:center;
-  margin-bottom:28px;
+  display:grid;grid-template-columns:42px 1fr 42px;align-items:center;margin-bottom:28px;
 }
-
-.side-brand{
-  grid-column:2;
-  justify-self:center;
-  position:relative;
-  font-size:22px;
-  font-weight:950;
-  letter-spacing:.08em;
-  text-shadow:0 0 20px color-mix(in srgb,var(--accent) 50%,transparent);
+.side-logo-img{
+  grid-column:2;justify-self:center;width:58px;height:58px;border-radius:20px;
+  object-fit:cover;border:1px solid rgba(255,255,255,.13);
+  box-shadow:0 0 28px color-mix(in srgb,var(--accent) 38%,transparent);
+  background:#080808;
 }
-
-.side-brand::before,
-.side-brand::after{
-  content:"YYOKAI";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  opacity:.35;
-}
-
-.side-brand::before{
-  color:var(--accent);
-  transform:translate(-1px,0);
-  animation:glitchA 2.8s infinite;
-}
-
-.side-brand::after{
-  color:#fff;
-  transform:translate(1px,0);
-  animation:glitchB 3.2s infinite reverse;
-}
-
 .close-side{
-  grid-column:3;
-  width:42px;
-  height:42px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.1);
-  background:rgba(255,255,255,.06);
-  color:#fff;
-  font-size:18px;
+  grid-column:3;width:42px;height:42px;border-radius:14px;
+  border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);
+  color:#fff;font-size:18px;
 }
-
-.side-nav{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
+.side-nav{display:flex;flex-direction:column;gap:10px}
 .side-nav button{
-  position:relative;
-  overflow:hidden;
-  height:54px;
-  border-radius:18px;
-  border:1px solid rgba(255,255,255,.1);
-  background:rgba(255,255,255,.04);
-  color:#aaa;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:0 14px;
-  font-weight:950;
+  position:relative;overflow:hidden;height:54px;border-radius:18px;
+  border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);
+  color:#aaa;display:flex;align-items:center;gap:12px;padding:0 14px;font-weight:950;
 }
-
 .side-nav button::before{
-  content:"";
-  position:absolute;
-  left:0;
-  top:12px;
-  bottom:12px;
-  width:3px;
-  border-radius:999px;
-  background:var(--accent);
-  opacity:0;
-  box-shadow:0 0 18px var(--accent);
-  transition:.22s;
+  content:"";position:absolute;left:0;top:12px;bottom:12px;width:3px;
+  border-radius:999px;background:var(--accent);opacity:0;
+  box-shadow:0 0 18px var(--accent);transition:.22s;
 }
-
-.side-nav button:hover::before,
-.side-nav button.active::before{
-  opacity:1;
-}
-
-.side-nav button:hover,
-.side-nav button.active{
+.side-nav button:hover::before,.side-nav button.active::before{opacity:1}
+.side-nav button:hover,.side-nav button.active{
   background:
     radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--accent) 26%,transparent),transparent 55%),
     rgba(255,255,255,.055);
-  color:#fff;
-  border-color:color-mix(in srgb,var(--accent) 55%,transparent);
+  color:#fff;border-color:color-mix(in srgb,var(--accent) 55%,transparent);
   box-shadow:0 14px 45px color-mix(in srgb,var(--accent) 12%,transparent);
 }
 
 .hero{
-  margin-top:20px;
-  padding:34px;
-  border-radius:38px;
+  margin-top:20px;padding:34px;border-radius:38px;
   background:
     radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent) 40%,transparent),transparent 36%),
     linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.025));
   border:1px solid rgba(255,255,255,.13);
 }
+.hero h1{font-size:clamp(44px,9vw,88px);line-height:.95;letter-spacing:-.04em}
+.hero p{margin-top:18px;max-width:760px;color:#c3bdbb;line-height:1.6;font-size:20px}
 
-.hero h1{
-  font-size:clamp(44px,9vw,88px);
-  line-height:.95;
-  letter-spacing:-.04em;
-}
+.stats{margin-top:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.stat{padding:20px;border-radius:28px;background:#070707;border:1px solid rgba(255,255,255,.1)}
+.stat.clickable{cursor:pointer;transition:.25s}
+.stat.clickable:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--accent) 55%,transparent)}
+.stat span{display:block;color:#777;font-size:13px;font-weight:900;margin-bottom:10px}
+.stat strong{font-size:28px}
 
-.hero p{
-  margin-top:18px;
-  max-width:760px;
-  color:#c3bdbb;
-  line-height:1.6;
-  font-size:20px;
-}
-
-.stats{
-  margin-top:18px;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
-}
-
-.stat{
-  padding:20px;
-  border-radius:28px;
-  background:#070707;
-  border:1px solid rgba(255,255,255,.1);
-}
-
-.stat.clickable{
-  cursor:pointer;
-  transition:.25s;
-}
-
-.stat.clickable:hover{
-  transform:translateY(-4px);
-  border-color:color-mix(in srgb,var(--accent) 55%,transparent);
-}
-
-.stat span{
-  display:block;
-  color:#777;
-  font-size:13px;
-  font-weight:900;
-  margin-bottom:10px;
-}
-
-.stat strong{
-  font-size:28px;
-}
-
-.focus-grid{
-  margin-top:18px;
-  display:grid;
-  grid-template-columns:1.1fr .9fr;
-  gap:14px;
-}
-
+.focus-grid{margin-top:18px;display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
 .panel{
-  padding:24px;
-  border-radius:32px;
+  padding:24px;border-radius:32px;
   background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.02));
   border:1px solid rgba(255,255,255,.1);
 }
-
-.panel h2{
-  font-size:24px;
-  margin-bottom:12px;
-}
-
-.panel p{
-  color:#aaa;
-  line-height:1.6;
-}
-
-.panel-actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:20px;
-}
-
+.panel h2{font-size:24px;margin-bottom:12px}
+.panel p{color:#aaa;line-height:1.6}
+.panel-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
 .red-btn{
-  border:0;
-  border-radius:999px;
-  padding:14px 18px;
-  background:var(--accent);
-  color:#fff;
-  font-weight:950;
-  box-shadow:0 0 30px color-mix(in srgb,var(--accent) 30%,transparent);
+  border:0;border-radius:999px;padding:14px 18px;background:var(--accent);
+  color:#fff;font-weight:950;box-shadow:0 0 30px color-mix(in srgb,var(--accent) 30%,transparent);
 }
-
 .ghost-btn{
-  border:1px solid rgba(255,255,255,.14);
-  border-radius:999px;
-  padding:14px 18px;
-  background:rgba(255,255,255,.05);
-  color:#fff;
-  font-weight:950;
+  border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:14px 18px;
+  background:rgba(255,255,255,.05);color:#fff;font-weight:950;
 }
 
 .dock{
-  position:fixed;
-  left:50%;
-  bottom:18px;
-  transform:translateX(-50%);
-  z-index:85;
-  width:min(720px,calc(100vw - 28px));
-  padding:10px;
-  border-radius:32px;
-  background:rgba(0,0,0,.88);
-  border:1px solid rgba(255,255,255,.12);
-  backdrop-filter:blur(30px);
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:8px;
+  position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
+  z-index:85;width:min(720px,calc(100vw - 28px));padding:10px;
+  border-radius:32px;background:rgba(0,0,0,.88);
+  border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(30px);
+  display:grid;grid-template-columns:repeat(5,1fr);gap:8px;
 }
-
 .dock button{
-  height:60px;
-  border:0;
-  border-radius:22px;
-  background:transparent;
-  color:#888;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  gap:5px;
-  font-weight:950;
-  font-size:11px;
+  height:60px;border:0;border-radius:22px;background:transparent;color:#888;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  gap:5px;font-weight:950;font-size:11px;
 }
+.dock button i{font-style:normal;font-size:22px}
+.dock button:hover,.dock button.active{background:color-mix(in srgb,var(--accent) 20%,transparent);color:#fff}
 
-.dock button i{
-  font-style:normal;
-  font-size:22px;
+.settings,.pay-modal{
+  position:fixed;inset:0;z-index:130;display:none;place-items:center;
+  padding:20px;background:rgba(0,0,0,.8);backdrop-filter:blur(14px);
 }
-
-.dock button:hover,
-.dock button.active{
-  background:color-mix(in srgb,var(--accent) 20%,transparent);
-  color:#fff;
+.settings.open,.pay-modal.open{display:grid}
+.modal,.pay-box{
+  width:100%;max-width:760px;max-height:90vh;overflow:auto;padding:24px;
+  border-radius:34px;background:#050505;border:1px solid rgba(255,255,255,.12);
 }
-
-.settings,
-.pay-modal{
-  position:fixed;
-  inset:0;
-  z-index:130;
-  display:none;
-  place-items:center;
-  padding:20px;
-  background:rgba(0,0,0,.8);
-  backdrop-filter:blur(14px);
+.modal-head,.pay-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.close,.pay-close{
+  width:42px;height:42px;border-radius:14px;border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.06);color:#fff;font-size:22px;
 }
-
-.settings.open,
-.pay-modal.open{
-  display:grid;
+.row{padding:14px 0;border-top:1px solid rgba(255,255,255,.08)}
+.row label{display:block;margin-bottom:8px;color:#999;font-size:13px;font-weight:900}
+.row input,.row select{
+  width:100%;padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.05);color:#fff;outline:none;
 }
-
-.modal,
-.pay-box{
-  width:100%;
-  max-width:760px;
-  max-height:90vh;
-  overflow:auto;
-  padding:24px;
-  border-radius:34px;
-  background:#050505;
-  border:1px solid rgba(255,255,255,.12);
-}
-
-.modal-head,
-.pay-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:18px;
-}
-
-.close,
-.pay-close{
-  width:42px;
-  height:42px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.06);
-  color:#fff;
-  font-size:22px;
-}
-
-.row{
-  padding:14px 0;
-  border-top:1px solid rgba(255,255,255,.08);
-}
-
-.row label{
-  display:block;
-  margin-bottom:8px;
-  color:#999;
-  font-size:13px;
-  font-weight:900;
-}
-
-.row input,
-.row select{
-  width:100%;
-  padding:14px;
-  border-radius:16px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.05);
-  color:#fff;
-  outline:none;
-}
-
-.color-row{
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-
+.color-row{display:flex;align-items:center;gap:14px}
 #colorPicker{
-  width:62px;
-  height:62px;
-  border-radius:50%;
-  padding:0;
-  border:2px solid rgba(255,255,255,.18);
-  overflow:hidden;
-  background:transparent;
-  appearance:none;
-  -webkit-appearance:none;
+  width:62px;height:62px;border-radius:50%;padding:0;
+  border:2px solid rgba(255,255,255,.18);overflow:hidden;background:transparent;
+  appearance:none;-webkit-appearance:none;
 }
-
-#colorPicker::-webkit-color-swatch-wrapper{
-  padding:0;
+#colorPicker::-webkit-color-swatch-wrapper{padding:0}
+#colorPicker::-webkit-color-swatch{border:none;border-radius:50%}
+.small-btn,.confirm-plan{
+  margin-top:12px;padding:14px 16px;border:0;border-radius:999px;
+  background:var(--accent);color:#fff;font-weight:950;
 }
-
-#colorPicker::-webkit-color-swatch{
-  border:none;
-  border-radius:50%;
-}
-
-.small-btn,
-.confirm-plan{
-  margin-top:12px;
-  padding:14px 16px;
-  border:0;
-  border-radius:999px;
-  background:var(--accent);
-  color:#fff;
-  font-weight:950;
-}
-
-.confirm-plan{
-  width:100%;
-}
-
-.plan-grid,
-.balance-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:14px;
-}
-
-.plan-card,
-.balance-card{
-  padding:22px;
-  border-radius:28px;
-  border:1px solid rgba(255,255,255,.1);
+.confirm-plan{width:100%}
+.plan-grid,.balance-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.plan-card,.balance-card{
+  padding:22px;border-radius:28px;border:1px solid rgba(255,255,255,.1);
   background:
     radial-gradient(circle at top right,color-mix(in srgb,var(--accent) 22%,transparent),transparent 36%),
     linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
   cursor:pointer;
 }
-
-.plan-card.selected{
-  border-color:var(--accent);
-  box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 25%,transparent);
-}
-
-.plan-price,
-.balance-price{
-  font-size:34px;
-  font-weight:950;
-}
-
-.plan-name,
-.balance-name{
-  margin:10px 0;
-  font-weight:950;
-}
-
-.plan-card ul{
-  list-style:none;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  color:#aaa;
-  font-size:14px;
-}
-
-.plan-card li::before{
-  content:"✦ ";
-  color:var(--accent);
-}
-
-.balance-card p{
-  color:#aaa;
-  margin-top:8px;
-  line-height:1.5;
-}
-
+.plan-card.selected{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 25%,transparent)}
+.plan-price,.balance-price{font-size:34px;font-weight:950}
+.plan-name,.balance-name{margin:10px 0;font-weight:950}
+.plan-card ul{list-style:none;display:flex;flex-direction:column;gap:8px;color:#aaa;font-size:14px}
+.plan-card li::before{content:"✦ ";color:var(--accent)}
+.balance-card p{color:#aaa;margin-top:8px;line-height:1.5}
 .toast{
-  position:fixed;
-  left:50%;
-  bottom:105px;
-  transform:translateX(-50%) translateY(30px);
-  z-index:300;
-  width:min(430px,calc(100vw - 30px));
-  padding:18px 54px 18px 18px;
-  border-radius:24px;
+  position:fixed;left:50%;bottom:105px;transform:translateX(-50%) translateY(30px);
+  z-index:300;width:min(430px,calc(100vw - 30px));
+  padding:18px 54px 18px 18px;border-radius:24px;
   background:rgba(0,0,0,.94);
   border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);
-  color:#fff;
-  box-shadow:0 20px 80px rgba(0,0,0,.7);
-  opacity:0;
-  pointer-events:none;
-  transition:.25s;
+  color:#fff;box-shadow:0 20px 80px rgba(0,0,0,.7);
+  opacity:0;pointer-events:none;transition:.25s;
 }
-
-.toast.open{
-  opacity:1;
-  transform:translateX(-50%) translateY(0);
-  pointer-events:auto;
-}
-
+.toast.open{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
 .toast button{
-  position:absolute;
-  right:12px;
-  top:12px;
-  width:32px;
-  height:32px;
-  border-radius:12px;
-  border:0;
-  background:rgba(255,255,255,.08);
-  color:#fff;
+  position:absolute;right:12px;top:12px;width:32px;height:32px;
+  border-radius:12px;border:0;background:rgba(255,255,255,.08);color:#fff;
 }
-
-audio{
-  display:none;
-}
-
+audio{display:none}
 @media(max-width:720px){
-  .stats,
-  .focus-grid,
-  .plan-grid,
-  .balance-grid{
-    grid-template-columns:1fr;
-  }
-
-  .hero{
-    padding:28px 22px;
-  }
-
-  .hero p{
-    font-size:17px;
-  }
-
-  .logo{
-    font-size:26px;
-  }
+  .stats,.focus-grid,.plan-grid,.balance-grid{grid-template-columns:1fr}
+  .hero{padding:28px 22px}
+  .hero p{font-size:17px}
+  .logo{font-size:26px}
 }
 </style>
 </head>
@@ -838,155 +297,96 @@ audio{
 <aside class="side-menu" id="sideMenu">
   <div class="side-head">
     <div></div>
-    <div class="side-brand">YYOKAI</div>
+    <img class="side-logo-img" src="yyokai-mask.png" alt="YYOKAI mask">
     <button class="close-side" onclick="closeSide()">←</button>
   </div>
 
   <nav class="side-nav">
-    <button onclick="go('stencil.html')">
-      <span>🧿</span>
-      <span data-i18n="navStencil">AI Stencil</span>
-    </button>
-
-    <button onclick="go('generation.html')">
-      <span>✦</span>
-      <span data-i18n="navGenerate">AI Generate</span>
-    </button>
-
-    <button onclick="go('bookings.html')">
-      <span>🗓</span>
-      <span data-i18n="navBookings">Bookings</span>
-    </button>
-
-    <button onclick="go('split.html')">
-      <span>📄</span>
-      <span data-i18n="navSplit">A4 Print</span>
-    </button>
-
-    <button onclick="go('uploads.html')">
-      <span>墨</span>
-      <span data-i18n="navFiles">Files</span>
-    </button>
+    <button onclick="go('stencil.html')"><span>🧿</span><span data-i18n="navStencil">AI Stencil</span></button>
+    <button onclick="go('generation.html')"><span>✦</span><span data-i18n="navGenerate">AI Generate</span></button>
+    <button onclick="go('bookings.html')"><span>🗓</span><span data-i18n="navBookings">Bookings</span></button>
+    <button onclick="go('split.html')"><span>📄</span><span data-i18n="navSplit">A4 Print</span></button>
+    <button onclick="go('uploads.html')"><span>墨</span><span data-i18n="navFiles">Files</span></button>
   </nav>
 </aside>
 
 <main class="app">
-  <header class="topbar">
-    <button class="menu-btn" id="menuBtn" onclick="toggleSide()">☰</button>
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" onclick="toggleSide()">☰</button>
+  <div class="logo">YYOKAI</div>
 
-    <div class="logo">YYOKAI</div>
+  <div class="top-actions">
+    <div class="lang">
+      <button class="active" onclick="setLang('uk', this)">UA</button>
+      <button onclick="setLang('en', this)">EN</button>
+    </div>
 
-    <div class="top-actions">
-      <div class="lang">
-        <button class="active" onclick="setLang('uk', this)">UA</button>
-        <button onclick="setLang('en', this)">EN</button>
-      </div>
+    <div class="profile">
+      <div class="avatar" id="avatar" onclick="toggleProfile()">妖</div>
 
-      <div class="profile">
-        <div class="avatar" id="avatar" onclick="toggleProfile()">妖</div>
+      <div class="profile-menu" id="profileMenu">
+        <div class="profile-name" id="artistName">Guest Artist</div>
+        <div class="profile-email" id="artistEmail">artist@email.com</div>
+        <div class="balance"><span data-i18n="balance">Баланс</span>: <strong id="balanceValue">$0.00</strong></div>
 
-        <div class="profile-menu" id="profileMenu">
-          <div class="profile-name" id="artistName">Guest Artist</div>
-          <div class="profile-email" id="artistEmail">artist@email.com</div>
-
-          <div class="balance">
-            <span data-i18n="balance">Баланс</span>: <strong id="balanceValue">$0.00</strong>
+        <div class="player">
+          <div class="cover" id="trackCover">⛩</div>
+          <div>
+            <div class="track-title" id="trackTitle">Japanese Chill</div>
+            <div class="track-sub" id="trackSub">YYOKAI playlist</div>
           </div>
-
-          <div class="player">
-            <div class="cover" id="trackCover">⛩</div>
-
-            <div>
-              <div class="track-title" id="trackTitle">Japanese Chill</div>
-              <div class="track-sub" id="trackSub">YYOKAI playlist</div>
-            </div>
-
-            <div class="music-controls">
-              <button onclick="prevTrack()">‹</button>
-              <button id="playPauseBtn" onclick="toggleMusic()">▶</button>
-              <button onclick="nextTrack()">›</button>
-            </div>
+          <div class="music-controls">
+            <button onclick="prevTrack()">‹</button>
+            <button id="playPauseBtn" onclick="toggleMusic()">▶</button>
+            <button onclick="nextTrack()">›</button>
           </div>
-
-          <button onclick="uploadOwnMusic()">＋ <span data-i18n="uploadMusic">Додати свою музику</span></button>
-          <input id="ownMusicInput" type="file" accept="audio/mp3,audio/mpeg" style="display:none" onchange="loadOwnMusic(event)">
-
-          <button onclick="openBalanceModal()">＋ <span data-i18n="addBalance">Поповнити баланс</span></button>
-          <button onclick="openSettings()">⚙ <span data-i18n="settings">Налаштування</span></button>
-          <button onclick="logout()">退出 <span data-i18n="logout">Вийти</span></button>
         </div>
+
+        <button onclick="uploadOwnMusic()">＋ <span data-i18n="uploadMusic">Додати свою музику</span></button>
+        <input id="ownMusicInput" type="file" accept="audio/mp3,audio/mpeg" style="display:none" onchange="loadOwnMusic(event)">
+        <button onclick="openBalanceModal()">＋ <span data-i18n="addBalance">Поповнити баланс</span></button>
+        <button onclick="openSettings()">⚙ <span data-i18n="settings">Налаштування</span></button>
+        <button onclick="logout()">退出 <span data-i18n="logout">Вийти</span></button>
       </div>
     </div>
-  </header>
+  </div>
+</header>
 
-  <section class="hero">
-    <h1 data-i18n="heroTitle">Welcome back, artist</h1>
-    <p data-i18n="heroText">
-      Твоя преміальна система для тату-майстра: генерації, записи, музика, атмосфера, баланс, файли та workflow в одному місці.
-    </p>
-  </section>
+<section class="hero">
+  <h1 data-i18n="heroTitle">Welcome back, artist</h1>
+  <p data-i18n="heroText">Твоя преміальна система для тату-майстра: генерації, записи, музика, атмосфера, баланс, файли та workflow в одному місці.</p>
+</section>
 
-  <section class="stats">
-    <div class="stat clickable" onclick="openBalanceModal()">
-      <span data-i18n="statBalance">Баланс</span>
-      <strong id="balanceMain">$0.00</strong>
+<section class="stats">
+  <div class="stat clickable" onclick="openBalanceModal()"><span data-i18n="statBalance">Баланс</span><strong id="balanceMain">$0.00</strong></div>
+  <div class="stat clickable" onclick="openPlanModal()"><span data-i18n="statPlan">План</span><strong id="planValue">Free</strong></div>
+  <div class="stat"><span data-i18n="statBookings">Записи</span><strong id="bookingCount">0</strong></div>
+</section>
+
+<section class="focus-grid">
+  <div class="panel">
+    <h2 data-i18n="workflowTitle">Start your workflow</h2>
+    <p data-i18n="workflowText">Почни з потрібного інструмента. Чистий інтерфейс без перевантаження.</p>
+    <div class="panel-actions">
+      <button class="red-btn" onclick="go('stencil.html')">Stencil</button>
+      <button class="ghost-btn" onclick="go('bookings.html')" data-i18n="bookingsBtn">Записи</button>
+      <button class="ghost-btn" onclick="go('generation.html')">Generate</button>
     </div>
+  </div>
 
-    <div class="stat clickable" onclick="openPlanModal()">
-      <span data-i18n="statPlan">План</span>
-      <strong id="planValue">Free</strong>
-    </div>
-
-    <div class="stat">
-      <span data-i18n="statBookings">Записи</span>
-      <strong id="bookingCount">0</strong>
-    </div>
-  </section>
-
-  <section class="focus-grid">
-    <div class="panel">
-      <h2 data-i18n="workflowTitle">Start your workflow</h2>
-      <p data-i18n="workflowText">Почни з потрібного інструмента. Чистий інтерфейс без перевантаження.</p>
-
-      <div class="panel-actions">
-        <button class="red-btn" onclick="go('stencil.html')">Stencil</button>
-        <button class="ghost-btn" onclick="go('bookings.html')" data-i18n="bookingsBtn">Записи</button>
-        <button class="ghost-btn" onclick="go('generation.html')">Generate</button>
-      </div>
-    </div>
-
-    <div class="panel">
-      <h2 data-i18n="studioTitle">Studio mode</h2>
-      <p data-i18n="studioText">Твій простір. Музика, колір, атмосфера, фон і профіль — все персоналізується.</p>
-    </div>
-  </section>
+  <div class="panel">
+    <h2 data-i18n="studioTitle">Studio mode</h2>
+    <p data-i18n="studioText">Твій простір. Музика, колір, атмосфера, фон і профіль — все персоналізується.</p>
+  </div>
+</section>
 </main>
 
 <nav class="dock">
-  <button class="active" onclick="go('artist-dashboard.html')">
-    <i>⌂</i>
-    <span>Home</span>
-  </button>
-
-  <button onclick="go('stencil.html')">
-    <i>🧿</i>
-    <span>Stencil</span>
-  </button>
-
-  <button onclick="go('generation.html')">
-    <i>✦</i>
-    <span>Generate</span>
-  </button>
-
-  <button onclick="go('bookings.html')">
-    <i>🗓</i>
-    <span data-i18n="dockBookings">Записи</span>
-  </button>
-
-  <button onclick="openBalanceModal()">
-    <i>¥</i>
-    <span>Balance</span>
-  </button>
+  <button class="active" onclick="go('artist-dashboard.html')"><i>⌂</i><span>Home</span></button>
+  <button onclick="go('stencil.html')"><i>🧿</i><span>Stencil</span></button>
+  <button onclick="go('generation.html')"><i>✦</i><span>Generate</span></button>
+  <button onclick="go('bookings.html')"><i>🗓</i><span data-i18n="dockBookings">Записи</span></button>
+  <button onclick="openBalanceModal()"><i>¥</i><span>Balance</span></button>
 </nav>
 
 <section class="pay-modal" id="planModal">
@@ -998,8 +398,7 @@ audio{
 
     <div class="plan-grid">
       <div class="plan-card" data-plan="free" onclick="selectPlan('free')">
-        <div class="plan-price">$0</div>
-        <div class="plan-name">Free</div>
+        <div class="plan-price">$0</div><div class="plan-name">Free</div>
         <ul>
           <li data-i18n="free1">3 генерації стенсила</li>
           <li data-i18n="free2">3 генерації ескізу</li>
@@ -1009,8 +408,7 @@ audio{
       </div>
 
       <div class="plan-card" data-plan="starter" onclick="selectPlan('starter')">
-        <div class="plan-price">$10</div>
-        <div class="plan-name" data-i18n="starterName">Starter / місяць</div>
+        <div class="plan-price">$10</div><div class="plan-name" data-i18n="starterName">Starter / місяць</div>
         <ul>
           <li data-i18n="starter1">250 генерацій стенсила</li>
           <li data-i18n="starter2">250 генерацій ескізу</li>
@@ -1020,8 +418,7 @@ audio{
       </div>
 
       <div class="plan-card" data-plan="pro" onclick="selectPlan('pro')">
-        <div class="plan-price">$20</div>
-        <div class="plan-name" data-i18n="proName">Pro / місяць</div>
+        <div class="plan-price">$20</div><div class="plan-name" data-i18n="proName">Pro / місяць</div>
         <ul>
           <li data-i18n="pro1">500 генерацій стенсила</li>
           <li data-i18n="pro2">500 генерацій ескізу</li>
@@ -1031,8 +428,7 @@ audio{
       </div>
 
       <div class="plan-card" data-plan="yokai" onclick="selectPlan('yokai')">
-        <div class="plan-price">$30</div>
-        <div class="plan-name" data-i18n="yokaiName">YYOKAI Full / місяць</div>
+        <div class="plan-price">$30</div><div class="plan-name" data-i18n="yokaiName">YYOKAI Full / місяць</div>
         <ul>
           <li data-i18n="yokai1">Повний доступ</li>
           <li data-i18n="yokai2">Безлімітний workflow</li>
@@ -1121,7 +517,7 @@ audio{
 
 <div class="toast" id="toastBox">
   <button onclick="hideToast()">×</button>
-  <div id="toastText">Дякую за покупку</div>
+  <div id="toastText">Done</div>
 </div>
 
 <script>
@@ -1153,157 +549,55 @@ let toastTimer=null;
 const CACHE_KEY="yyokai_user_cache";
 
 const tracks=[
-  {
-    title:"Japanese Chill",
-    sub:"YYOKAI playlist",
-    icon:"⛩",
-    src:"music/japan-chill.mp3"
-  },
-  {
-    title:"Dark Ambient",
-    sub:"Focus mode",
-    icon:"🌑",
-    src:"music/dark-ambient.mp3"
-  },
-  {
-    title:"Night Studio",
-    sub:"Late session",
-    icon:"🦊",
-    src:"music/night-studio.mp3"
-  }
+  {title:"Japanese Chill",sub:"YYOKAI playlist",icon:"⛩",src:"music/japan-chill.mp3"},
+  {title:"Dark Ambient",sub:"Focus mode",icon:"🌑",src:"music/dark-ambient.mp3"},
+  {title:"Night Studio",sub:"Late session",icon:"🦊",src:"music/night-studio.mp3"}
 ];
 
 const t={
-  uk:{
-    navStencil:"AI Stencil",
-    navGenerate:"AI генерація",
-    navBookings:"Записи",
-    navSplit:"A4 друк",
-    navFiles:"Файли",
-    balance:"Баланс",
-    uploadMusic:"Додати свою музику",
-    addBalance:"Поповнити баланс",
-    settings:"Налаштування",
-    logout:"Вийти",
-    heroTitle:"Welcome back, artist",
-    heroText:"Твоя преміальна система для тату-майстра: генерації, записи, музика, атмосфера, баланс, файли та workflow в одному місці.",
-    statBalance:"Баланс",
-    statPlan:"План",
-    statBookings:"Записи",
-    workflowTitle:"Start your workflow",
-    workflowText:"Почни з потрібного інструмента. Чистий інтерфейс без перевантаження.",
-    bookingsBtn:"Записи",
-    studioTitle:"Studio mode",
-    studioText:"Твій простір. Музика, колір, атмосфера, фон і профіль — все персоналізується.",
-    dockBookings:"Записи",
-    choosePlan:"Оберіть план",
-    topUpBalance:"Поповнити баланс",
-    confirmPlan:"Підтвердити план",
-    starterName:"Starter / місяць",
-    proName:"Pro / місяць",
-    yokaiName:"YYOKAI Full / місяць",
-    free1:"3 генерації стенсила",
-    free2:"3 генерації ескізу",
-    free3:"3 A4 розділення",
-    free4:"50 записів клієнтів",
-    starter1:"250 генерацій стенсила",
-    starter2:"250 генерацій ескізу",
-    starter3:"50 A4 розділень",
-    starter4:"100 записів клієнтів",
-    pro1:"500 генерацій стенсила",
-    pro2:"500 генерацій ескізу",
-    pro3:"100 A4 розділень",
-    pro4:"150 записів клієнтів",
-    yokai1:"Повний доступ",
-    yokai2:"Безлімітний workflow",
-    yokai3:"Premium tools",
-    yokai4:"Custom studio mode",
-    balance10:"Легкий старт для перевірки інструментів.",
-    balance20:"Для активної роботи з клієнтами.",
-    balance30:"Більше свободи для щоденного workflow.",
-    balance50:"Запас для інтенсивної роботи студії.",
-    avatarLabel:"Змінити фото профілю",
-    nameLabel:"Нік майстра",
-    saveName:"Зберегти",
-    musicLabel:"Додати свою музику",
-    colorLabel:"Колір системи",
-    bgLabel:"Фон кабінету",
-    thanks:"Дякую за покупку. Оплата очікує підтвердження.",
-    pending:"Оплату створено. Переходимо до checkout."
-  },
-  en:{
-    navStencil:"AI Stencil",
-    navGenerate:"AI Generate",
-    navBookings:"Bookings",
-    navSplit:"A4 Print",
-    navFiles:"Files",
-    balance:"Balance",
-    uploadMusic:"Add your music",
-    addBalance:"Add balance",
-    settings:"Settings",
-    logout:"Logout",
-    heroTitle:"Welcome back, artist",
-    heroText:"Your premium tattoo artist system: generations, bookings, music, atmosphere, balance, files and workflow in one place.",
-    statBalance:"Balance",
-    statPlan:"Plan",
-    statBookings:"Bookings",
-    workflowTitle:"Start your workflow",
-    workflowText:"Start with the tool you need. Clean interface without overload.",
-    bookingsBtn:"Bookings",
-    studioTitle:"Studio mode",
-    studioText:"Your space. Music, color, atmosphere, background and profile — everything is personal.",
-    dockBookings:"Bookings",
-    choosePlan:"Choose your plan",
-    topUpBalance:"Top up balance",
-    confirmPlan:"Confirm plan",
-    starterName:"Starter / month",
-    proName:"Pro / month",
-    yokaiName:"YYOKAI Full / month",
-    free1:"3 stencil generations",
-    free2:"3 sketch generations",
-    free3:"3 A4 splits",
-    free4:"50 client bookings",
-    starter1:"250 stencil generations",
-    starter2:"250 sketch generations",
-    starter3:"50 A4 splits",
-    starter4:"100 client bookings",
-    pro1:"500 stencil generations",
-    pro2:"500 sketch generations",
-    pro3:"100 A4 splits",
-    pro4:"150 client bookings",
-    yokai1:"Full access",
-    yokai2:"Unlimited workflow",
-    yokai3:"Premium tools",
-    yokai4:"Custom studio mode",
-    balance10:"A light start to test the tools.",
-    balance20:"For active client work.",
-    balance30:"More freedom for daily workflow.",
-    balance50:"Reserve for intensive studio work.",
-    avatarLabel:"Change profile photo",
-    nameLabel:"Artist nickname",
-    saveName:"Save",
-    musicLabel:"Add your music",
-    colorLabel:"System color",
-    bgLabel:"Dashboard background",
-    thanks:"Thank you for your purchase. Payment is waiting for confirmation.",
-    pending:"Payment created. Redirecting to checkout."
-  }
+uk:{
+navStencil:"AI Stencil",navGenerate:"AI генерація",navBookings:"Записи",navSplit:"A4 друк",navFiles:"Файли",
+balance:"Баланс",uploadMusic:"Додати свою музику",addBalance:"Поповнити баланс",settings:"Налаштування",logout:"Вийти",
+heroTitle:"Welcome back, artist",
+heroText:"Твоя преміальна система для тату-майстра: генерації, записи, музика, атмосфера, баланс, файли та workflow в одному місці.",
+statBalance:"Баланс",statPlan:"План",statBookings:"Записи",
+workflowTitle:"Start your workflow",workflowText:"Почни з потрібного інструмента. Чистий інтерфейс без перевантаження.",
+bookingsBtn:"Записи",studioTitle:"Studio mode",studioText:"Твій простір. Музика, колір, атмосфера, фон і профіль — все персоналізується.",
+dockBookings:"Записи",choosePlan:"Оберіть план",topUpBalance:"Поповнити баланс",confirmPlan:"Підтвердити план",
+starterName:"Starter / місяць",proName:"Pro / місяць",yokaiName:"YYOKAI Full / місяць",
+free1:"3 генерації стенсила",free2:"3 генерації ескізу",free3:"3 A4 розділення",free4:"50 записів клієнтів",
+starter1:"250 генерацій стенсила",starter2:"250 генерацій ескізу",starter3:"50 A4 розділень",starter4:"100 записів клієнтів",
+pro1:"500 генерацій стенсила",pro2:"500 генерацій ескізу",pro3:"100 A4 розділень",pro4:"150 записів клієнтів",
+yokai1:"Повний доступ",yokai2:"Безлімітний workflow",yokai3:"Premium tools",yokai4:"Custom studio mode",
+balance10:"Легкий старт для перевірки інструментів.",balance20:"Для активної роботи з клієнтами.",balance30:"Більше свободи для щоденного workflow.",balance50:"Запас для інтенсивної роботи студії.",
+avatarLabel:"Змінити фото профілю",nameLabel:"Нік майстра",saveName:"Зберегти",musicLabel:"Додати свою музику",colorLabel:"Колір системи",bgLabel:"Фон кабінету",
+pending:"Оплату створено. Переходимо до checkout.",thanks:"Дякую за покупку. Оплата очікує підтвердження."
+},
+en:{
+navStencil:"AI Stencil",navGenerate:"AI Generate",navBookings:"Bookings",navSplit:"A4 Print",navFiles:"Files",
+balance:"Balance",uploadMusic:"Add your music",addBalance:"Add balance",settings:"Settings",logout:"Logout",
+heroTitle:"Welcome back, artist",
+heroText:"Your premium tattoo artist system: generations, bookings, music, atmosphere, balance, files and workflow in one place.",
+statBalance:"Balance",statPlan:"Plan",statBookings:"Bookings",
+workflowTitle:"Start your workflow",workflowText:"Start with the tool you need. Clean interface without overload.",
+bookingsBtn:"Bookings",studioTitle:"Studio mode",studioText:"Your space. Music, color, atmosphere, background and profile — everything is personal.",
+dockBookings:"Bookings",choosePlan:"Choose your plan",topUpBalance:"Top up balance",confirmPlan:"Confirm plan",
+starterName:"Starter / month",proName:"Pro / month",yokaiName:"YYOKAI Full / month",
+free1:"3 stencil generations",free2:"3 sketch generations",free3:"3 A4 splits",free4:"50 client bookings",
+starter1:"250 stencil generations",starter2:"250 sketch generations",starter3:"50 A4 splits",starter4:"100 client bookings",
+pro1:"500 stencil generations",pro2:"500 sketch generations",pro3:"100 A4 splits",pro4:"150 client bookings",
+yokai1:"Full access",yokai2:"Unlimited workflow",yokai3:"Premium tools",yokai4:"Custom studio mode",
+balance10:"A light start to test the tools.",balance20:"For active client work.",balance30:"More freedom for daily workflow.",balance50:"Reserve for intensive studio work.",
+avatarLabel:"Change profile photo",nameLabel:"Artist nickname",saveName:"Save",musicLabel:"Add your music",colorLabel:"System color",bgLabel:"Dashboard background",
+pending:"Payment created. Redirecting to checkout.",thanks:"Thank you for your purchase. Payment is waiting for confirmation."
+}
 };
 
 function loadLocalCache(){
   const cached=JSON.parse(localStorage.getItem(CACHE_KEY)||"{}");
-
-  if(cached.accent){
-    applyAccent(cached.accent);
-  }
-
-  if(cached.avatarUrl){
-    avatar.innerHTML=`<img src="${cached.avatarUrl}">`;
-  }
-
-  if(cached.backgroundUrl){
-    applyBackgroundImage(cached.backgroundUrl);
-  }
+  if(cached.accent)applyAccent(cached.accent);
+  if(cached.avatarUrl)avatar.innerHTML=`<img src="${cached.avatarUrl}">`;
+  if(cached.backgroundUrl)applyBackgroundImage(cached.backgroundUrl);
 }
 
 function saveLocalCache(data){
@@ -1320,7 +614,6 @@ auth.onAuthStateChanged(async user=>{
   }
 
   currentUser=user;
-
   await checkPaymentReturn();
 
   const snap=await db.ref("users/"+user.uid).once("value");
@@ -1342,26 +635,21 @@ auth.onAuthStateChanged(async user=>{
     saveLocalCache({avatarUrl:data.avatarUrl});
   }
 
-  if(data.settings && data.settings.accent){
+  if(data.settings&&data.settings.accent){
     applyAccent(data.settings.accent);
     saveLocalCache({accent:data.settings.accent});
   }
 
-  if(data.settings && data.settings.backgroundUrl){
+  if(data.settings&&data.settings.backgroundUrl){
     applyBackgroundImage(data.settings.backgroundUrl);
     saveLocalCache({backgroundUrl:data.settings.backgroundUrl});
   }
 
-  if(data.settings && data.settings.customMusicUrl){
+  if(data.settings&&data.settings.customMusicUrl){
     customMusicUrl=data.settings.customMusicUrl;
-    setMusic(
-      customMusicUrl,
-      data.settings.customMusicName||"Custom music",
-      "Custom track",
-      "♫"
-    );
+    setMusic(customMusicUrl,data.settings.customMusicName||"Custom music","Custom track","♫");
   }else{
-    setTrack(data.settings && typeof data.settings.trackIndex==="number" ? data.settings.trackIndex : 0);
+    setTrack(data.settings&&typeof data.settings.trackIndex==="number"?data.settings.trackIndex:0);
   }
 
   const bookingsSnap=await db.ref("users/"+user.uid+"/clients").once("value");
@@ -1372,11 +660,8 @@ async function checkPaymentReturn(){
   const params=new URLSearchParams(window.location.search);
   const paymentId=params.get("paymentId");
   const paid=params.get("paid");
-
-  if(!paymentId || paid!=="1")return;
-
-  showToast(currentLang==="uk" ? t.uk.thanks : t.en.thanks);
-
+  if(!paymentId||paid!=="1")return;
+  showToast(t[currentLang].thanks);
   history.replaceState({},document.title,window.location.pathname);
 }
 
@@ -1392,24 +677,15 @@ function setLang(lang,btn){
 
   document.querySelectorAll(".lang button").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
-
   displayPlan();
 }
 
 function displayPlan(){
-  const names={
-    free:"Free",
-    starter:"Starter",
-    pro:"Pro",
-    yokai:"YYOKAI Full"
-  };
-
+  const names={free:"Free",starter:"Starter",pro:"Pro",yokai:"YYOKAI Full"};
   planValue.textContent=names[currentPlanKey]||"Free";
 }
 
-function go(url){
-  location.href=url;
-}
+function go(url){location.href=url}
 
 function toggleSide(){
   sideMenu.classList.toggle("open");
@@ -1423,89 +699,52 @@ function closeSide(){
   menuBtn.textContent="☰";
 }
 
-function toggleProfile(){
-  profileMenu.classList.toggle("open");
-}
+function toggleProfile(){profileMenu.classList.toggle("open")}
 
 function openSettings(){
   settingsPanel.classList.add("open");
   profileMenu.classList.remove("open");
 }
 
-function closeSettings(){
-  settingsPanel.classList.remove("open");
-}
+function closeSettings(){settingsPanel.classList.remove("open")}
 
 function openBalanceModal(){
   balanceModal.classList.add("open");
   profileMenu.classList.remove("open");
 }
 
-function closeBalanceModal(){
-  balanceModal.classList.remove("open");
-}
+function closeBalanceModal(){balanceModal.classList.remove("open")}
 
 function openPlanModal(){
   selectedPlan=currentPlanKey;
-
-  document.querySelectorAll(".plan-card").forEach(card=>{
-    card.classList.remove("selected");
-  });
-
+  document.querySelectorAll(".plan-card").forEach(card=>card.classList.remove("selected"));
   const selected=document.querySelector(`[data-plan="${selectedPlan}"]`);
-  if(selected){
-    selected.classList.add("selected");
-  }
-
+  if(selected)selected.classList.add("selected");
   planModal.classList.add("open");
   profileMenu.classList.remove("open");
 }
 
-function closePlanModal(){
-  planModal.classList.remove("open");
-}
+function closePlanModal(){planModal.classList.remove("open")}
 
 function selectPlan(plan){
   selectedPlan=plan;
-
-  document.querySelectorAll(".plan-card").forEach(card=>{
-    card.classList.remove("selected");
-  });
-
+  document.querySelectorAll(".plan-card").forEach(card=>card.classList.remove("selected"));
   const selected=document.querySelector(`[data-plan="${plan}"]`);
-  if(selected){
-    selected.classList.add("selected");
-  }
+  if(selected)selected.classList.add("selected");
 }
 
 async function confirmPlan(){
-  if(!currentUser || !selectedPlan)return;
+  if(!currentUser||!selectedPlan)return;
 
-  const prices={
-    free:0,
-    starter:10,
-    pro:20,
-    yokai:30
-  };
-
+  const prices={free:0,starter:10,pro:20,yokai:30};
   const amount=prices[selectedPlan];
 
   if(amount===0){
     currentPlanKey="free";
-
-    await db.ref("users/"+currentUser.uid).update({
-      planKey:"free"
-    });
-
+    await db.ref("users/"+currentUser.uid).update({planKey:"free"});
     displayPlan();
     closePlanModal();
-
-    showToast(
-      currentLang==="uk"
-        ? "Free план активовано."
-        : "Free plan activated."
-    );
-
+    showToast(currentLang==="uk"?"Free план активовано.":"Free plan activated.");
     return;
   }
 
@@ -1560,62 +799,46 @@ async function createBalancePayment(amount){
 
 async function saveName(){
   const name=nameInput.value.trim()||"Guest Artist";
-
-  await db.ref("users/"+currentUser.uid).update({
-    name:name
-  });
-
+  await db.ref("users/"+currentUser.uid).update({name:name});
   artistName.textContent=name;
 }
 
 async function uploadAvatar(e){
   const file=e.target.files[0];
-  if(!file || !currentUser)return;
+  if(!file||!currentUser)return;
 
   const reader=new FileReader();
-
   reader.onload=x=>{
     avatar.innerHTML=`<img src="${x.target.result}">`;
     saveLocalCache({avatarUrl:x.target.result});
   };
-
   reader.readAsDataURL(file);
 
   const ref=storage.ref("avatars/"+currentUser.uid+"/avatar_"+Date.now()+"_"+file.name);
   await ref.put(file);
-
   const url=await ref.getDownloadURL();
 
-  await db.ref("users/"+currentUser.uid).update({
-    avatarUrl:url
-  });
-
+  await db.ref("users/"+currentUser.uid).update({avatarUrl:url});
   avatar.innerHTML=`<img src="${url}">`;
   saveLocalCache({avatarUrl:url});
 }
 
 async function uploadBackground(e){
   const file=e.target.files[0];
-  if(!file || !currentUser)return;
+  if(!file||!currentUser)return;
 
   const reader=new FileReader();
-
   reader.onload=x=>{
     applyBackgroundImage(x.target.result);
     saveLocalCache({backgroundUrl:x.target.result});
   };
-
   reader.readAsDataURL(file);
 
   const ref=storage.ref("backgrounds/"+currentUser.uid+"/bg_"+Date.now()+"_"+file.name);
   await ref.put(file);
-
   const url=await ref.getDownloadURL();
 
-  await db.ref("users/"+currentUser.uid+"/settings").update({
-    backgroundUrl:url
-  });
-
+  await db.ref("users/"+currentUser.uid+"/settings").update({backgroundUrl:url});
   applyBackgroundImage(url);
   saveLocalCache({backgroundUrl:url});
 }
@@ -1628,40 +851,28 @@ function applyBackgroundImage(url){
 async function saveAccent(color){
   applyAccent(color);
   saveLocalCache({accent:color});
-
   if(currentUser){
-    await db.ref("users/"+currentUser.uid+"/settings").update({
-      accent:color
-    });
+    await db.ref("users/"+currentUser.uid+"/settings").update({accent:color});
   }
 }
 
 function applyAccent(color){
   document.documentElement.style.setProperty("--accent",color);
-
-  if(document.getElementById("colorPicker")){
-    colorPicker.value=color;
-  }
-
-  if(document.getElementById("colorValue")){
-    colorValue.textContent=color;
-  }
+  if(document.getElementById("colorPicker"))colorPicker.value=color;
+  if(document.getElementById("colorValue"))colorValue.textContent=color;
 }
 
-function uploadOwnMusic(){
-  ownMusicInput.click();
-}
+function uploadOwnMusic(){ownMusicInput.click()}
 
 async function loadOwnMusic(e){
   const file=e.target.files[0];
-  if(!file || !currentUser)return;
+  if(!file||!currentUser)return;
 
   const localUrl=URL.createObjectURL(file);
   setMusic(localUrl,file.name.replace(".mp3",""),"Custom track","♫");
 
   const ref=storage.ref("music/"+currentUser.uid+"/music_"+Date.now()+"_"+file.name);
   await ref.put(file);
-
   const url=await ref.getDownloadURL();
 
   await db.ref("users/"+currentUser.uid+"/settings").update({
@@ -1675,15 +886,8 @@ async function loadOwnMusic(e){
 
 function setTrack(index){
   trackIndex=index;
-
   const track=tracks[trackIndex]||tracks[0];
-
-  setMusic(
-    track.src,
-    track.title,
-    track.sub,
-    track.icon
-  );
+  setMusic(track.src,track.title,track.sub,track.icon);
 }
 
 function setMusic(src,title,sub,icon){
@@ -1698,7 +902,6 @@ function setMusic(src,title,sub,icon){
 async function nextTrack(){
   trackIndex=(trackIndex+1)%tracks.length;
   setTrack(trackIndex);
-
   if(currentUser){
     await db.ref("users/"+currentUser.uid+"/settings").update({
       trackIndex:trackIndex,
@@ -1711,7 +914,6 @@ async function nextTrack(){
 async function prevTrack(){
   trackIndex=(trackIndex-1+tracks.length)%tracks.length;
   setTrack(trackIndex);
-
   if(currentUser){
     await db.ref("users/"+currentUser.uid+"/settings").update({
       trackIndex:trackIndex,
@@ -1722,9 +924,7 @@ async function prevTrack(){
 }
 
 function toggleMusic(){
-  if(!bgMusic.src){
-    setTrack(trackIndex);
-  }
+  if(!bgMusic.src)setTrack(trackIndex);
 
   if(!musicPlaying){
     bgMusic.volume=.35;
@@ -1741,30 +941,20 @@ function toggleMusic(){
 function showToast(text){
   toastText.textContent=text;
   toastBox.classList.add("open");
-
   clearTimeout(toastTimer);
-
-  toastTimer=setTimeout(()=>{
-    hideToast();
-  },10000);
+  toastTimer=setTimeout(()=>hideToast(),10000);
 }
 
-function hideToast(){
-  toastBox.classList.remove("open");
-}
+function hideToast(){toastBox.classList.remove("open")}
 
-function logout(){
-  auth.signOut();
-}
+function logout(){auth.signOut()}
 
 document.addEventListener("click",e=>{
   const profile=document.querySelector(".profile");
-
-  if(profile && !profile.contains(e.target)){
+  if(profile&&!profile.contains(e.target)){
     profileMenu.classList.remove("open");
   }
 });
 </script>
-
 </body>
 </html>
