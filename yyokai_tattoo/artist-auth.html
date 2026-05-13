@@ -320,12 +320,11 @@
       signInWithEmailAndPassword
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import {
-      getFirestore,
-      doc,
-      setDoc,
-      getDoc,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  getDatabase,
+  ref,
+  set,
+  update
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
     const firebaseConfig = {
   apiKey: "AIzaSyALs-ZgFX7auGxRQ2EeQnVngjnejimPLV4",
@@ -339,7 +338,7 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db = getFirestore(app);
+    const db = getDatabase(app);
 
     const tabRegister = document.getElementById("tabRegister");
     const tabLogin = document.getElementById("tabLogin");
@@ -371,53 +370,69 @@
     tabLogin.addEventListener("click",()=>switchTab("login"));
 
     registerForm.addEventListener("submit", async (e)=>{
-      e.preventDefault();
+  e.preventDefault();
 
-      const name = document.getElementById("regName").value.trim();
-      const email = document.getElementById("regEmail").value.trim();
-      const password = document.getElementById("regPassword").value;
+  const name = document.getElementById("regName").value.trim();
+  const email = document.getElementById("regEmail").value.trim();
+  const password = document.getElementById("regPassword").value;
 
-      try{
-        showMessage("...");
-        const userCred = await createUserWithEmailAndPassword(auth,email,password);
+  try{
+    showMessage("...");
 
-        await setDoc(doc(db,"users",userCred.user.uid),{
-          uid:userCred.user.uid,
-          name,
-          email,
-          role:"artist",
-          plan:"free",
-          stencilCredits:3,
-          createdAt:serverTimestamp()
-        });
+    const userCred =
+      await createUserWithEmailAndPassword(auth,email,password);
 
-        window.location.href="/yyokai/yyokai_tattoo/artist-dashboard.html";
-      }catch(error){
-        showMessage(error.message);
-      }
+    const user = userCred.user;
+
+    await set(ref(db,"users/"+user.uid),{
+      uid:user.uid,
+      name:name || "Guest Artist",
+      email:email,
+      role:"artist",
+      balance:0,
+      planKey:"free",
+      stencilCredits:3,
+      createdAt:Date.now(),
+      lastLogin:Date.now()
     });
 
-    loginForm.addEventListener("submit", async (e)=>{
-      e.preventDefault();
+    window.location.href=
+      "/yyokai/yyokai_tattoo/artist-dashboard.html";
 
-      const email = document.getElementById("loginEmail").value.trim();
-      const password = document.getElementById("loginPassword").value;
+  }catch(error){
+    showMessage(error.message);
+  }
+});
 
-      try{
-        showMessage("...");
-        const userCred = await signInWithEmailAndPassword(auth,email,password);
-        const userDoc = await getDoc(doc(db,"users",userCred.user.uid));
+loginForm.addEventListener("submit", async (e)=>{
+  e.preventDefault();
 
-        if(!userDoc.exists()){
-          showMessage("Profile not found.");
-          return;
-        }
+  const email =
+    document.getElementById("loginEmail").value.trim();
 
-        window.location.href="/yyokai/yyokai_tattoo/artist-dashboard.html";
-      }catch(error){
-        showMessage(error.message);
-      }
+  const password =
+    document.getElementById("loginPassword").value;
+
+  try{
+    showMessage("...");
+
+    const userCred =
+      await signInWithEmailAndPassword(auth,email,password);
+
+    const user = userCred.user;
+
+    await update(ref(db,"users/"+user.uid),{
+      email:user.email || email,
+      lastLogin:Date.now()
     });
+
+    window.location.href=
+      "/yyokai/yyokai_tattoo/artist-dashboard.html";
+
+  }catch(error){
+    showMessage(error.message);
+  }
+});
 
     window.setLang = function(lang){
       document.documentElement.lang = lang;
