@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YYOKAI | Checkout</title>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+:root{
+  --accent:#e5092f;
+  --text:#f6f1ef;
+  --muted:#8c8886;
+  --line:rgba(255,255,255,.11);
+}
+
+html,body{
+  min-height:100%;
+  background:#000;
+  color:var(--text);
+  font-family:Arial,sans-serif;
+}
+
+body{
+  overflow-x:hidden;
+  background:
+    radial-gradient(circle at 50% -10%,color-mix(in srgb,var(--accent) 38%,transparent),transparent 35%),
+    linear-gradient(180deg,#000 0%,#0b0103 45%,#000 100%);
+}
+
+body::before{
+  content:"妖 鬼 狐 墨 夜 刺青";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  color:rgba(255,255,255,.018);
+  font-size:78px;
+  letter-spacing:30px;
+  line-height:1.5;
+  transform:rotate(-12deg) scale(1.15);
+}
+
+button,input{
+  font-family:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.page{
+  position:relative;
+  z-index:2;
+  min-height:100vh;
+  padding:18px;
+  display:grid;
+  place-items:center;
+}
+
+.checkout{
+  width:min(980px,100%);
+  display:grid;
+  grid-template-columns:.9fr 1.1fr;
+  gap:16px;
+}
+
+.logo{
+  text-align:center;
+  position:relative;
+  font-size:30px;
+  font-weight:950;
+  letter-spacing:.08em;
+  margin-bottom:18px;
+  text-shadow:0 0 24px color-mix(in srgb,var(--accent) 45%,transparent);
+}
+
+.logo::before,
+.logo::after{
+  content:"YYOKAI";
+  position:absolute;
+  inset:0;
+  opacity:.34;
+  pointer-events:none;
+}
+
+.logo::before{
+  color:var(--accent);
+  animation:glitchA 2.8s infinite;
+}
+
+.logo::after{
+  color:#fff;
+  animation:glitchB 3.3s infinite reverse;
+}
+
+@keyframes glitchA{
+  0%,92%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0)}
+  93%{clip-path:inset(12% 0 64% 0);transform:translate(-2px,1px)}
+  95%{clip-path:inset(60% 0 18% 0);transform:translate(2px,-1px)}
+  97%{clip-path:inset(30% 0 38% 0);transform:translate(-1px,0)}
+}
+
+@keyframes glitchB{
+  0%,94%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0)}
+  95%{clip-path:inset(44% 0 30% 0);transform:translate(1px,0)}
+  97%{clip-path:inset(15% 0 58% 0);transform:translate(-1px,0)}
+}
+
+.card{
+  border-radius:34px;
+  background:rgba(0,0,0,.72);
+  border:1px solid var(--line);
+  backdrop-filter:blur(24px);
+  padding:24px;
+  box-shadow:0 35px 100px rgba(0,0,0,.75);
+}
+
+.summary{
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  min-height:520px;
+}
+
+.kicker{
+  color:var(--accent);
+  font-weight:950;
+  font-size:13px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+h1{
+  margin-top:12px;
+  font-size:clamp(38px,7vw,72px);
+  line-height:.95;
+  letter-spacing:-.05em;
+}
+
+.desc{
+  margin-top:18px;
+  color:#aaa;
+  line-height:1.65;
+  font-size:16px;
+}
+
+.amount-box{
+  margin-top:28px;
+  padding:18px;
+  border-radius:26px;
+  background:
+    radial-gradient(circle at top right,color-mix(in srgb,var(--accent) 24%,transparent),transparent 36%),
+    rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);
+}
+
+.amount-label{
+  color:#777;
+  font-size:13px;
+  font-weight:900;
+  margin-bottom:8px;
+}
+
+.amount{
+  font-size:44px;
+  font-weight:950;
+}
+
+.meta{
+  margin-top:14px;
+  display:grid;
+  gap:10px;
+  color:#aaa;
+  font-size:14px;
+}
+
+.meta-row{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding-bottom:10px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.meta-row strong{
+  color:#fff;
+  text-align:right;
+}
+
+.back{
+  margin-top:20px;
+  width:100%;
+  padding:15px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.05);
+  color:#fff;
+  font-weight:950;
+}
+
+.methods{
+  display:grid;
+  gap:12px;
+}
+
+.method{
+  width:100%;
+  min-height:88px;
+  padding:18px;
+  border-radius:26px;
+  border:1px solid rgba(255,255,255,.1);
+  background:
+    radial-gradient(circle at top right,color-mix(in srgb,var(--accent) 18%,transparent),transparent 38%),
+    rgba(255,255,255,.04);
+  color:#fff;
+  display:grid;
+  grid-template-columns:48px 1fr auto;
+  align-items:center;
+  gap:14px;
+  text-align:left;
+  transition:.22s;
+}
+
+.method:hover{
+  transform:translateY(-3px);
+  border-color:color-mix(in srgb,var(--accent) 55%,transparent);
+  box-shadow:0 20px 70px color-mix(in srgb,var(--accent) 14%,transparent);
+}
+
+.icon{
+  width:48px;
+  height:48px;
+  border-radius:17px;
+  display:grid;
+  place-items:center;
+  background:#080808;
+  border:1px solid rgba(255,255,255,.1);
+  font-size:23px;
+}
+
+.method h3{
+  font-size:17px;
+  margin-bottom:5px;
+}
+
+.method p{
+  color:#888;
+  font-size:13px;
+  line-height:1.45;
+}
+
+.arrow{
+  color:var(--accent);
+  font-size:22px;
+}
+
+.crypto-box{
+  display:none;
+  margin-top:14px;
+  padding:18px;
+  border-radius:26px;
+  border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);
+  background:rgba(255,255,255,.04);
+}
+
+.crypto-box.open{
+  display:block;
+}
+
+.wallet{
+  margin-top:12px;
+  padding:14px;
+  border-radius:18px;
+  background:#060606;
+  border:1px solid rgba(255,255,255,.1);
+  word-break:break-all;
+  color:#fff;
+  font-weight:900;
+  line-height:1.45;
+}
+
+.copy-row{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+  margin-top:12px;
+}
+
+.copy-row button,
+.report-btn{
+  padding:13px 16px;
+  border-radius:999px;
+  border:0;
+  background:var(--accent);
+  color:#fff;
+  font-weight:950;
+}
+
+.copy-row input{
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.05);
+  color:#fff;
+  padding:13px 16px;
+  outline:none;
+}
+
+.report-btn{
+  width:100%;
+  margin-top:12px;
+}
+
+.notice{
+  margin-top:12px;
+  color:#888;
+  font-size:13px;
+  line-height:1.55;
+}
+
+.status{
+  margin-top:18px;
+  padding:14px;
+  border-radius:20px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.08);
+  color:#aaa;
+  line-height:1.5;
+}
+
+.status strong{
+  color:#fff;
+}
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:26px;
+  transform:translateX(-50%) translateY(30px);
+  z-index:300;
+  width:min(430px,calc(100vw - 30px));
+  padding:18px 54px 18px 18px;
+  border-radius:24px;
+  background:rgba(0,0,0,.94);
+  border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);
+  color:#fff;
+  box-shadow:0 20px 80px rgba(0,0,0,.7);
+  opacity:0;
+  pointer-events:none;
+  transition:.25s;
+}
+
+.toast.open{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+  pointer-events:auto;
+}
+
+.toast button{
+  position:absolute;
+  right:12px;
+  top:12px;
+  width:32px;
+  height:32px;
+  border-radius:12px;
+  border:0;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+}
+
+.lang{
+  position:fixed;
+  top:18px;
+  right:18px;
+  z-index:10;
+  display:flex;
+  gap:5px;
+  padding:5px;
+  border-radius:999px;
+  background:rgba(0,0,0,.7);
+  border:1px solid rgba(255,255,255,.09);
+}
+
+.lang button{
+  border:0;
+  background:transparent;
+  color:#777;
+  padding:8px 12px;
+  border-radius:999px;
+  font-weight:950;
+}
+
+.lang button.active{
+  background:#fff;
+  color:#000;
+}
+
+@media(max-width:820px){
+  .checkout{
+    grid-template-columns:1fr;
+  }
+
+  .summary{
+    min-height:auto;
+  }
+
+  .card{
+    padding:20px;
+  }
+
+  .method{
+    grid-template-columns:44px 1fr;
+  }
+
+  .arrow{
+    display:none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="lang">
+  <button class="active" onclick="setLang('uk', this)">UA</button>
+  <button onclick="setLang('en', this)">EN</button>
+</div>
+
+<main class="page">
+  <section class="checkout">
+    <aside class="card summary">
+      <div>
+        <div class="logo">YYOKAI</div>
+
+        <div class="kicker" data-i18n="secure">Secure checkout</div>
+        <h1 data-i18n="title">Оплата YYOKAI</h1>
+        <p class="desc" data-i18n="desc">
+          Оберіть спосіб оплати. Баланс або тариф оновиться тільки після підтвердження платежу.
+        </p>
+
+        <div class="amount-box">
+          <div class="amount-label" data-i18n="amountLabel">Сума до оплати</div>
+          <div class="amount" id="amountText">$0</div>
+
+          <div class="meta">
+            <div class="meta-row">
+              <span data-i18n="paymentType">Тип</span>
+              <strong id="typeText">—</strong>
+            </div>
+
+            <div class="meta-row">
+              <span data-i18n="paymentStatus">Статус</span>
+              <strong id="statusText">pending</strong>
+            </div>
+
+            <div class="meta-row">
+              <span>Payment ID</span>
+              <strong id="paymentIdText">—</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="status" id="liveStatus">
+          <strong data-i18n="waiting">Очікуємо оплату.</strong>
+          <br>
+          <span data-i18n="waitingText">Після підтвердження платіжки система оновить баланс або тариф.</span>
+        </div>
+      </div>
+
+      <button class="back" onclick="goBack()" data-i18n="back">
+        ← Назад в кабінет
+      </button>
+    </aside>
+
+    <section class="card">
+      <div class="kicker" data-i18n="methods">Payment methods</div>
+
+      <div class="methods">
+        <button class="method" onclick="startGateway('liqpay')">
+          <div class="icon">💳</div>
+          <div>
+            <h3>LiqPay</h3>
+            <p data-i18n="liqpayText">Картка, Apple Pay, Google Pay, PrivatBank.</p>
+          </div>
+          <div class="arrow">›</div>
+        </button>
+
+        <button class="method" onclick="startGateway('wayforpay')">
+          <div class="icon">🌍</div>
+          <div>
+            <h3>WayForPay</h3>
+            <p data-i18n="wayforpayText">Visa / MasterCard / міжнародні платежі.</p>
+          </div>
+          <div class="arrow">›</div>
+        </button>
+
+        <button class="method" onclick="startGateway('stripe')">
+          <div class="icon">⚡</div>
+          <div>
+            <h3>Stripe / Card</h3>
+            <p data-i18n="stripeText">Світові картки, Apple Pay, Google Pay.</p>
+          </div>
+          <div class="arrow">›</div>
+        </button>
+
+        <button class="method" onclick="toggleCryptoBox()">
+          <div class="icon">₮</div>
+          <div>
+            <h3>USDT TRC20</h3>
+            <p data-i18n="cryptoText">Криптооплата USDT у мережі Tron TRC20.</p>
+          </div>
+          <div class="arrow">›</div>
+        </button>
+      </div>
+
+      <div class="crypto-box" id="cryptoBox">
+        <div class="kicker">USDT TRC20</div>
+
+        <p class="notice" data-i18n="cryptoNotice">
+          Надішліть точну суму USDT на TRC20 адресу. Баланс оновиться тільки після ручного або webhook-підтвердження.
+        </p>
+
+        <div class="wallet" id="walletText">
+          TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        </div>
+
+        <div class="copy-row">
+          <input id="walletInput" readonly value="TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX">
+          <button onclick="copyWallet()" data-i18n="copy">Copy</button>
+        </div>
+
+        <button class="report-btn" onclick="reportCryptoPaid()" data-i18n="reported">
+          Я оплатив
+        </button>
+
+        <p class="notice" data-i18n="reportedNotice">
+          Ця кнопка не начисляє баланс. Вона тільки позначає платіж як “клієнт повідомив про оплату”.
+        </p>
+      </div>
+    </section>
+  </section>
+</main>
+
+<div class="toast" id="toastBox">
+  <button onclick="hideToast()">×</button>
+  <div id="toastText">Done</div>
+</div>
+
+<script>
+const firebaseConfig={
+  apiKey:"ТВОЙ_API_KEY",
+  authDomain:"yyokai-tattoo-system.firebaseapp.com",
+  databaseURL:"https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/",
+  projectId:"yyokai-tattoo-system",
+  storageBucket:"yyokai-tattoo-system.firebasestorage.app",
+  messagingSenderId:"995298614954",
+  appId:"1:995298614954:web:e4039c69fcb0541a95fad3"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth=firebase.auth();
+const db=firebase.database();
+
+const TRC20_WALLET="TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+
+let currentUser=null;
+let currentLang="uk";
+let paymentId=null;
+let paymentData=null;
+let toastTimer=null;
+
+const t={
+  uk:{
+    secure:"Secure checkout",
+    title:"Оплата YYOKAI",
+    desc:"Оберіть спосіб оплати. Баланс або тариф оновиться тільки після підтвердження платежу.",
+    amountLabel:"Сума до оплати",
+    paymentType:"Тип",
+    paymentStatus:"Статус",
+    waiting:"Очікуємо оплату.",
+    waitingText:"Після підтвердження платіжки система оновить баланс або тариф.",
+    back:"← Назад в кабінет",
+    methods:"Способи оплати",
+    liqpayText:"Картка, Apple Pay, Google Pay, PrivatBank.",
+    wayforpayText:"Visa / MasterCard / міжнародні платежі.",
+    stripeText:"Світові картки, Apple Pay, Google Pay.",
+    cryptoText:"Криптооплата USDT у мережі Tron TRC20.",
+    cryptoNotice:"Надішліть точну суму USDT на TRC20 адресу. Баланс оновиться тільки після ручного або webhook-підтвердження.",
+    copy:"Copy",
+    copied:"Адресу скопійовано.",
+    reported:"Я оплатив",
+    reportedNotice:"Ця кнопка не начисляє баланс. Вона тільки позначає платіж як “клієнт повідомив про оплату”.",
+    redirect:"Переходимо до оплати...",
+    reportedDone:"Дякую. Платіж позначено як очікує перевірки.",
+    paid:"Дякую за покупку. Оплату підтверджено.",
+    error:"Щось пішло не так."
+  },
+  en:{
+    secure:"Secure checkout",
+    title:"YYOKAI Payment",
+    desc:"Choose a payment method. Your balance or plan will update only after payment confirmation.",
+    amountLabel:"Amount to pay",
+    paymentType:"Type",
+    paymentStatus:"Status",
+    waiting:"Waiting for payment.",
+    waitingText:"After payment confirmation, the system will update your balance or plan.",
+    back:"← Back to dashboard",
+    methods:"Payment methods",
+    liqpayText:"Card, Apple Pay, Google Pay, PrivatBank.",
+    wayforpayText:"Visa / MasterCard / international payments.",
+    stripeText:"Global cards, Apple Pay, Google Pay.",
+    cryptoText:"USDT crypto payment on Tron TRC20.",
+    cryptoNotice:"Send the exact USDT amount to the TRC20 address. Balance updates only after manual or webhook confirmation.",
+    copy:"Copy",
+    copied:"Wallet copied.",
+    reported:"I paid",
+    reportedNotice:"This button does not add balance. It only marks the payment as customer-reported.",
+    redirect:"Redirecting to payment...",
+    reportedDone:"Thank you. Payment marked as waiting for review.",
+    paid:"Thank you for your purchase. Payment confirmed.",
+    error:"Something went wrong."
+  }
+};
+
+function setLang(lang,btn){
+  currentLang=lang;
+  document.documentElement.lang=lang;
+
+  Object.keys(t[lang]).forEach(key=>{
+    document.querySelectorAll(`[data-i18n="${key}"]`).forEach(el=>{
+      el.textContent=t[lang][key];
+    });
+  });
+
+  document.querySelectorAll(".lang button").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+}
+
+function showToast(text){
+  toastText.textContent=text;
+  toastBox.classList.add("open");
+
+  clearTimeout(toastTimer);
+
+  toastTimer=setTimeout(()=>{
+    hideToast();
+  },10000);
+}
+
+function hideToast(){
+  toastBox.classList.remove("open");
+}
+
+function goBack(){
+  location.href="artist-dashboard.html";
+}
+
+function getParams(){
+  const params=new URLSearchParams(location.search);
+  paymentId=params.get("paymentId");
+}
+
+function loadAccent(){
+  try{
+    const cache=JSON.parse(localStorage.getItem("yyokai_user_cache")||"{}");
+    if(cache.accent){
+      document.documentElement.style.setProperty("--accent",cache.accent);
+    }
+  }catch(e){}
+}
+
+loadAccent();
+getParams();
+
+auth.onAuthStateChanged(async user=>{
+  if(!user){
+    location.href="artist-auth.html";
+    return;
+  }
+
+  currentUser=user;
+
+  if(!paymentId){
+    showToast("No paymentId");
+    return;
+  }
+
+  paymentIdText.textContent=paymentId;
+
+  const ref=db.ref("payments/"+paymentId);
+
+  ref.on("value",snap=>{
+    paymentData=snap.val();
+
+    if(!paymentData){
+      showToast("Payment not found");
+      return;
+    }
+
+    renderPayment(paymentData);
+
+    if(paymentData.status==="paid"){
+      showPaidState(paymentData);
+    }
+  });
+});
+
+function renderPayment(p){
+  const amount=Number(p.amount||0);
+
+  amountText.textContent="$"+amount.toFixed(2);
+  typeText.textContent=p.type||"—";
+  statusText.textContent=p.status||"pending";
+
+  walletText.textContent=TRC20_WALLET;
+  walletInput.value=TRC20_WALLET;
+}
+
+function showPaidState(p){
+  statusText.textContent="paid";
+  liveStatus.innerHTML=
+    "<strong>"+t[currentLang].paid+"</strong><br><span>YYOKAI</span>";
+
+  showToast(t[currentLang].paid);
+
+  setTimeout(()=>{
+    location.href="artist-dashboard.html?paymentId="+paymentId+"&paid=1";
+  },1800);
+}
+
+async function startGateway(provider){
+  if(!currentUser || !paymentId || !paymentData)return;
+
+  await db.ref("payments/"+paymentId).update({
+    provider:provider,
+    status:"pending",
+    startedAt:Date.now()
+  });
+
+  showToast(t[currentLang].redirect);
+
+  /*
+    ВАЖНО:
+    Здесь нельзя хранить private keys.
+    Эти URL должны вести на твой backend / cloud function.
+
+    Backend создаёт invoice/payment у провайдера
+    и возвращает redirectUrl.
+  */
+
+  const backendUrls={
+    liqpay:"/api/create-liqpay-payment",
+    wayforpay:"/api/create-wayforpay-payment",
+    stripe:"/api/create-stripe-payment"
+  };
+
+  const url=
+    backendUrls[provider]+
+    "?paymentId="+encodeURIComponent(paymentId);
+
+  setTimeout(()=>{
+    location.href=url;
+  },700);
+}
+
+function toggleCryptoBox(){
+  cryptoBox.classList.toggle("open");
+
+  if(paymentId){
+    db.ref("payments/"+paymentId).update({
+      provider:"usdt_trc20",
+      cryptoNetwork:"TRC20",
+      wallet:TRC20_WALLET,
+      status:"pending",
+      cryptoOpenedAt:Date.now()
+    });
+  }
+}
+
+async function copyWallet(){
+  try{
+    await navigator.clipboard.writeText(TRC20_WALLET);
+    showToast(t[currentLang].copied);
+  }catch(e){
+    walletInput.select();
+    document.execCommand("copy");
+    showToast(t[currentLang].copied);
+  }
+}
+
+async function reportCryptoPaid(){
+  if(!currentUser || !paymentId)return;
+
+  await db.ref("payments/"+paymentId).update({
+    provider:"usdt_trc20",
+    status:"customer_reported_paid",
+    customerReportedAt:Date.now()
+  });
+
+  statusText.textContent="customer_reported_paid";
+  showToast(t[currentLang].reportedDone);
+}
+</script>
+
+</body>
+</html>
