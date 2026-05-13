@@ -71,8 +71,6 @@ button{
   padding-bottom:112px;
 }
 
-/* TOPBAR */
-
 .topbar{
   position:sticky;
   top:12px;
@@ -175,8 +173,6 @@ button{
   color:#000;
 }
 
-/* PROFILE */
-
 .profile{
   position:relative;
   z-index:100;
@@ -243,8 +239,6 @@ button{
   font-size:20px;
 }
 
-/* PLAYER */
-
 .player{
   margin:16px 0;
   padding:12px;
@@ -298,8 +292,9 @@ button{
 }
 
 #playPauseBtn{
-  background:color-mix(in srgb,var(--accent) 22%,transparent);
-  border-color:color-mix(in srgb,var(--accent) 42%,transparent);
+  background:rgba(255,255,255,.08);
+  border-color:rgba(255,255,255,.13);
+  box-shadow:none;
 }
 
 .profile-menu button{
@@ -318,8 +313,6 @@ button{
   background:rgba(255,255,255,.07);
   color:#fff;
 }
-
-/* SIDE MENU */
 
 .side-overlay{
   position:fixed;
@@ -354,17 +347,19 @@ button{
 }
 
 .side-head{
-  display:flex;
-  justify-content:space-between;
+  display:grid;
+  grid-template-columns:42px 1fr 42px;
   align-items:center;
   margin-bottom:28px;
 }
 
 .side-brand{
+  grid-column:2;
+  justify-self:center;
   position:relative;
   font-size:22px;
   font-weight:950;
-  letter-spacing:.12em;
+  letter-spacing:.08em;
   text-shadow:0 0 20px color-mix(in srgb,var(--accent) 50%,transparent);
 }
 
@@ -374,20 +369,23 @@ button{
   position:absolute;
   inset:0;
   pointer-events:none;
-  opacity:.25;
+  opacity:.35;
 }
 
 .side-brand::before{
   color:var(--accent);
   transform:translate(-1px,0);
+  animation:glitchA 2.8s infinite;
 }
 
 .side-brand::after{
   color:#fff;
   transform:translate(1px,0);
+  animation:glitchB 3.2s infinite reverse;
 }
 
 .close-side{
+  grid-column:3;
   width:42px;
   height:42px;
   border-radius:14px;
@@ -447,8 +445,6 @@ button{
   box-shadow:0 14px 45px color-mix(in srgb,var(--accent) 12%,transparent);
 }
 
-/* HERO */
-
 .hero{
   margin-top:20px;
   padding:34px;
@@ -472,8 +468,6 @@ button{
   line-height:1.6;
   font-size:20px;
 }
-
-/* STATS */
 
 .stats{
   margin-top:18px;
@@ -510,8 +504,6 @@ button{
 .stat strong{
   font-size:28px;
 }
-
-/* PANELS */
 
 .focus-grid{
   margin-top:18px;
@@ -563,8 +555,6 @@ button{
   font-weight:950;
 }
 
-/* DOCK */
-
 .dock{
   position:fixed;
   left:50%;
@@ -607,8 +597,6 @@ button{
   background:color-mix(in srgb,var(--accent) 20%,transparent);
   color:#fff;
 }
-
-/* MODALS */
 
 .settings,
 .pay-modal{
@@ -779,6 +767,42 @@ button{
   line-height:1.5;
 }
 
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:105px;
+  transform:translateX(-50%) translateY(30px);
+  z-index:300;
+  width:min(430px,calc(100vw - 30px));
+  padding:18px 54px 18px 18px;
+  border-radius:24px;
+  background:rgba(0,0,0,.94);
+  border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);
+  color:#fff;
+  box-shadow:0 20px 80px rgba(0,0,0,.7);
+  opacity:0;
+  pointer-events:none;
+  transition:.25s;
+}
+
+.toast.open{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+  pointer-events:auto;
+}
+
+.toast button{
+  position:absolute;
+  right:12px;
+  top:12px;
+  width:32px;
+  height:32px;
+  border-radius:12px;
+  border:0;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+}
+
 audio{
   display:none;
 }
@@ -813,6 +837,7 @@ audio{
 
 <aside class="side-menu" id="sideMenu">
   <div class="side-head">
+    <div></div>
     <div class="side-brand">YYOKAI</div>
     <button class="close-side" onclick="closeSide()">←</button>
   </div>
@@ -1029,25 +1054,25 @@ audio{
     </div>
 
     <div class="balance-grid">
-      <div class="balance-card" onclick="topUpBalance(10)">
+      <div class="balance-card" onclick="createBalancePayment(10)">
         <div class="balance-price">$10</div>
         <div class="balance-name">Quick start</div>
         <p data-i18n="balance10">Легкий старт для перевірки інструментів.</p>
       </div>
 
-      <div class="balance-card" onclick="topUpBalance(20)">
+      <div class="balance-card" onclick="createBalancePayment(20)">
         <div class="balance-price">$20</div>
         <div class="balance-name">Artist pack</div>
         <p data-i18n="balance20">Для активної роботи з клієнтами.</p>
       </div>
 
-      <div class="balance-card" onclick="topUpBalance(30)">
+      <div class="balance-card" onclick="createBalancePayment(30)">
         <div class="balance-price">$30</div>
         <div class="balance-name">Studio pack</div>
         <p data-i18n="balance30">Більше свободи для щоденного workflow.</p>
       </div>
 
-      <div class="balance-card" onclick="topUpBalance(50)">
+      <div class="balance-card" onclick="createBalancePayment(50)">
         <div class="balance-price">$50</div>
         <div class="balance-name">Premium reserve</div>
         <p data-i18n="balance50">Запас для інтенсивної роботи студії.</p>
@@ -1094,6 +1119,11 @@ audio{
   </div>
 </section>
 
+<div class="toast" id="toastBox">
+  <button onclick="hideToast()">×</button>
+  <div id="toastText">Дякую за покупку</div>
+</div>
+
 <script>
 const firebaseConfig={
   apiKey: "AIzaSyALs-ZgFX7auGxRQ2EeQnVngjnejimPLV4",
@@ -1118,6 +1148,7 @@ let selectedPlan=null;
 let musicPlaying=false;
 let trackIndex=0;
 let customMusicUrl="";
+let toastTimer=null;
 
 const CACHE_KEY="yyokai_user_cache";
 
@@ -1196,7 +1227,9 @@ const t={
     saveName:"Зберегти",
     musicLabel:"Додати свою музику",
     colorLabel:"Колір системи",
-    bgLabel:"Фон кабінету"
+    bgLabel:"Фон кабінету",
+    thanks:"Дякую за покупку. Оплата очікує підтвердження.",
+    pending:"Оплату створено. Переходимо до checkout."
   },
   en:{
     navStencil:"AI Stencil",
@@ -1251,7 +1284,9 @@ const t={
     saveName:"Save",
     musicLabel:"Add your music",
     colorLabel:"System color",
-    bgLabel:"Dashboard background"
+    bgLabel:"Dashboard background",
+    thanks:"Thank you for your purchase. Payment is waiting for confirmation.",
+    pending:"Payment created. Redirecting to checkout."
   }
 };
 
@@ -1285,6 +1320,8 @@ auth.onAuthStateChanged(async user=>{
   }
 
   currentUser=user;
+
+  await checkPaymentReturn();
 
   const snap=await db.ref("users/"+user.uid).once("value");
   const data=snap.val()||{};
@@ -1330,6 +1367,18 @@ auth.onAuthStateChanged(async user=>{
   const bookingsSnap=await db.ref("users/"+user.uid+"/clients").once("value");
   bookingCount.textContent=bookingsSnap.exists()?Object.keys(bookingsSnap.val()).length:0;
 });
+
+async function checkPaymentReturn(){
+  const params=new URLSearchParams(window.location.search);
+  const paymentId=params.get("paymentId");
+  const paid=params.get("paid");
+
+  if(!paymentId || paid!=="1")return;
+
+  showToast(currentLang==="uk" ? t.uk.thanks : t.en.thanks);
+
+  history.replaceState({},document.title,window.location.pathname);
+}
 
 function setLang(lang,btn){
   currentLang=lang;
@@ -1432,30 +1481,81 @@ function selectPlan(plan){
 async function confirmPlan(){
   if(!currentUser || !selectedPlan)return;
 
-  currentPlanKey=selectedPlan;
+  const prices={
+    free:0,
+    starter:10,
+    pro:20,
+    yokai:30
+  };
 
-  await db.ref("users/"+currentUser.uid).update({
-    planKey:currentPlanKey
+  const amount=prices[selectedPlan];
+
+  if(amount===0){
+    currentPlanKey="free";
+
+    await db.ref("users/"+currentUser.uid).update({
+      planKey:"free"
+    });
+
+    displayPlan();
+    closePlanModal();
+
+    showToast(
+      currentLang==="uk"
+        ? "Free план активовано."
+        : "Free plan activated."
+    );
+
+    return;
+  }
+
+  const paymentRef=db.ref("payments").push();
+
+  await paymentRef.set({
+    uid:currentUser.uid,
+    email:currentUser.email||"",
+    type:"plan",
+    planKey:selectedPlan,
+    amount:amount,
+    currency:"USD",
+    status:"pending",
+    createdAt:Date.now()
   });
 
-  displayPlan();
-  closePlanModal();
+  showToast(t[currentLang].pending);
+
+  setTimeout(()=>{
+    location.href=
+      "checkout.html?paymentId="+paymentRef.key+
+      "&type=plan"+
+      "&plan="+selectedPlan+
+      "&amount="+amount;
+  },700);
 }
 
-async function topUpBalance(amount){
+async function createBalancePayment(amount){
   if(!currentUser)return;
 
-  const snap=await db.ref("users/"+currentUser.uid+"/balance").once("value");
-  const next=Number(snap.val()||0)+amount;
+  const paymentRef=db.ref("payments").push();
 
-  await db.ref("users/"+currentUser.uid).update({
-    balance:next
+  await paymentRef.set({
+    uid:currentUser.uid,
+    email:currentUser.email||"",
+    type:"balance",
+    amount:amount,
+    currency:"USD",
+    status:"pending",
+    createdAt:Date.now()
   });
 
-  balanceValue.textContent="$"+next.toFixed(2);
-  balanceMain.textContent="$"+next.toFixed(2);
+  showToast(t[currentLang].pending);
 
-  closeBalanceModal();
+  setTimeout(()=>{
+    location.href=
+      "checkout.html?paymentId="+paymentRef.key+
+      "&type=balance"+
+      "&amount="+amount;
+  },700);
 }
 
 async function saveName(){
@@ -1636,6 +1736,21 @@ function toggleMusic(){
     playPauseBtn.textContent="▶";
     musicPlaying=false;
   }
+}
+
+function showToast(text){
+  toastText.textContent=text;
+  toastBox.classList.add("open");
+
+  clearTimeout(toastTimer);
+
+  toastTimer=setTimeout(()=>{
+    hideToast();
+  },10000);
+}
+
+function hideToast(){
+  toastBox.classList.remove("open");
 }
 
 function logout(){
