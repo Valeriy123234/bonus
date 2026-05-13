@@ -11,548 +11,199 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-
-:root{
-  --accent:#e5092f;
-  --text:#f6f1ef;
-  --muted:#8c8886;
-  --line:rgba(255,255,255,.11);
-}
-
-html,body{
-  min-height:100%;
-  background:#000;
-  color:var(--text);
-  font-family:Arial,sans-serif;
-}
-
+:root{--accent:#20ff4f;--text:#fff;--line:rgba(255,255,255,.14)}
+html,body{min-height:100%;background:#000;color:var(--text);font-family:Arial,sans-serif}
 body{
-  overflow-x:hidden;
   background:
-    radial-gradient(circle at 50% -10%,color-mix(in srgb,var(--accent) 38%,transparent),transparent 35%),
-    linear-gradient(180deg,#000 0%,#0b0103 45%,#000 100%);
+    radial-gradient(circle at 50% -10%,color-mix(in srgb,var(--accent) 30%,transparent),transparent 35%),
+    linear-gradient(180deg,#020402,#050505 55%,#000);
+  overflow-x:hidden;
 }
-
 body::before{
-  content:"妖 鬼 狐 墨 夜 刺青";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  color:rgba(255,255,255,.018);
-  font-size:78px;
-  letter-spacing:30px;
-  line-height:1.5;
+  content:"妖 鬼 狐 墨 夜 支 払";
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  color:rgba(255,255,255,.025);font-size:80px;letter-spacing:30px;line-height:1.5;
   transform:rotate(-12deg) scale(1.15);
 }
-
-button,input{
-  font-family:inherit;
+button{font-family:inherit;cursor:pointer;transition:.15s}
+button:active{transform:scale(.96);opacity:.85}
+.app{position:relative;z-index:2;min-height:100vh;padding:18px}
+.shell{
+  max-width:820px;margin:20px auto 80px;padding:24px;border-radius:36px;
+  background:rgba(0,0,0,.76);border:1px solid var(--line);backdrop-filter:blur(26px);
+  box-shadow:0 30px 100px rgba(0,0,0,.8);
 }
-
-button{
-  cursor:pointer;
+.top{
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px;margin-bottom:34px;
 }
-
-.page{
-  position:relative;
-  z-index:2;
-  min-height:100vh;
-  padding:18px;
-  display:grid;
-  place-items:center;
-}
-
-.checkout{
-  width:min(980px,100%);
-  display:grid;
-  grid-template-columns:.9fr 1.1fr;
-  gap:16px;
-}
-
 .logo{
-  text-align:center;
-  position:relative;
-  font-size:30px;
-  font-weight:950;
-  letter-spacing:.08em;
-  margin-bottom:18px;
-  text-shadow:0 0 24px color-mix(in srgb,var(--accent) 45%,transparent);
+  grid-column:2;font-size:34px;font-weight:950;letter-spacing:.12em;text-align:center;
+  text-shadow:0 0 30px color-mix(in srgb,var(--accent) 55%,transparent);
 }
-
-.logo::before,
-.logo::after{
-  content:"YYOKAI";
-  position:absolute;
-  inset:0;
-  opacity:.34;
-  pointer-events:none;
-}
-
-.logo::before{
-  color:var(--accent);
-  animation:glitchA 2.8s infinite;
-}
-
-.logo::after{
-  color:#fff;
-  animation:glitchB 3.3s infinite reverse;
-}
-
-@keyframes glitchA{
-  0%,92%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0)}
-  93%{clip-path:inset(12% 0 64% 0);transform:translate(-2px,1px)}
-  95%{clip-path:inset(60% 0 18% 0);transform:translate(2px,-1px)}
-  97%{clip-path:inset(30% 0 38% 0);transform:translate(-1px,0)}
-}
-
-@keyframes glitchB{
-  0%,94%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0)}
-  95%{clip-path:inset(44% 0 30% 0);transform:translate(1px,0)}
-  97%{clip-path:inset(15% 0 58% 0);transform:translate(-1px,0)}
-}
-
+.lang{justify-self:end;display:flex;gap:5px;padding:5px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+.lang button{border:0;background:transparent;color:#888;padding:8px 12px;border-radius:999px;font-weight:950}
+.lang button.active{background:#fff;color:#000}
+.kicker{color:var(--accent);letter-spacing:.22em;font-weight:950;font-size:14px;margin-bottom:18px}
+h1{font-size:clamp(42px,9vw,74px);letter-spacing:-.05em;line-height:.95;margin-bottom:20px}
+.lead{font-size:20px;line-height:1.6;color:#cfcfcf;margin-bottom:28px}
 .card{
-  border-radius:34px;
-  background:rgba(0,0,0,.72);
-  border:1px solid var(--line);
-  backdrop-filter:blur(24px);
-  padding:24px;
-  box-shadow:0 35px 100px rgba(0,0,0,.75);
+  padding:22px;border-radius:28px;background:
+    radial-gradient(circle at top right,color-mix(in srgb,var(--accent) 28%,transparent),transparent 38%),
+    linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.025));
+  border:1px solid rgba(255,255,255,.14);margin-bottom:18px;
 }
-
-.summary{
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  min-height:520px;
-}
-
-.kicker{
-  color:var(--accent);
-  font-weight:950;
-  font-size:13px;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-}
-
-h1{
-  margin-top:12px;
-  font-size:clamp(38px,7vw,72px);
-  line-height:.95;
-  letter-spacing:-.05em;
-}
-
-.desc{
-  margin-top:18px;
-  color:#aaa;
-  line-height:1.65;
-  font-size:16px;
-}
-
-.amount-box{
-  margin-top:28px;
-  padding:18px;
-  border-radius:26px;
-  background:
-    radial-gradient(circle at top right,color-mix(in srgb,var(--accent) 24%,transparent),transparent 36%),
-    rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.1);
-}
-
-.amount-label{
-  color:#777;
-  font-size:13px;
-  font-weight:900;
-  margin-bottom:8px;
-}
-
-.amount{
-  font-size:44px;
-  font-weight:950;
-}
-
-.meta{
-  margin-top:14px;
-  display:grid;
-  gap:10px;
-  color:#aaa;
-  font-size:14px;
-}
-
-.meta-row{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  padding-bottom:10px;
-  border-bottom:1px solid rgba(255,255,255,.07);
-}
-
-.meta-row strong{
-  color:#fff;
-  text-align:right;
-}
-
+.label{color:#999;font-weight:900;font-size:14px;margin-bottom:10px}
+.amount{font-size:54px;font-weight:950;margin-bottom:22px}
+.row{display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-top:1px solid rgba(255,255,255,.08);color:#aaa}
+.row strong{color:#fff}
+.status{font-weight:950;color:#fff}
+.notice{padding:20px;border-radius:24px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.1);margin:18px 0;color:#ccc;line-height:1.55}
+.notice strong{display:block;color:#fff;font-size:20px;margin-bottom:6px}
 .back{
-  margin-top:20px;
-  width:100%;
-  padding:15px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.05);
-  color:#fff;
-  font-weight:950;
+  width:100%;padding:16px;border-radius:999px;border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.06);color:#fff;font-weight:950;margin-top:12px;
 }
-
-.methods{
-  display:grid;
-  gap:12px;
-}
-
+.methods{margin-top:30px}
+.methods h2{color:var(--accent);letter-spacing:.18em;font-size:16px;margin-bottom:14px}
 .method{
-  width:100%;
-  min-height:88px;
-  padding:18px;
-  border-radius:26px;
-  border:1px solid rgba(255,255,255,.1);
-  background:
-    radial-gradient(circle at top right,color-mix(in srgb,var(--accent) 18%,transparent),transparent 38%),
-    rgba(255,255,255,.04);
-  color:#fff;
-  display:grid;
-  grid-template-columns:48px 1fr auto;
-  align-items:center;
-  gap:14px;
-  text-align:left;
-  transition:.22s;
+  width:100%;display:grid;grid-template-columns:62px 1fr auto;gap:14px;align-items:center;text-align:left;
+  padding:18px;border-radius:26px;border:1px solid rgba(255,255,255,.13);
+  background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+  color:#fff;margin-bottom:12px;
 }
-
-.method:hover{
-  transform:translateY(-3px);
-  border-color:color-mix(in srgb,var(--accent) 55%,transparent);
-  box-shadow:0 20px 70px color-mix(in srgb,var(--accent) 14%,transparent);
-}
-
 .icon{
-  width:48px;
-  height:48px;
-  border-radius:17px;
-  display:grid;
-  place-items:center;
-  background:#080808;
-  border:1px solid rgba(255,255,255,.1);
-  font-size:23px;
+  width:62px;height:62px;border-radius:20px;display:grid;place-items:center;
+  background:rgba(255,255,255,.08);font-size:28px;border:1px solid rgba(255,255,255,.1);
 }
-
-.method h3{
-  font-size:17px;
-  margin-bottom:5px;
-}
-
-.method p{
-  color:#888;
-  font-size:13px;
-  line-height:1.45;
-}
-
-.arrow{
-  color:var(--accent);
-  font-size:22px;
-}
-
+.method-title{font-size:22px;font-weight:950;margin-bottom:5px}
+.method-text{color:#aaa;line-height:1.35;font-size:14px}
+.arrow{font-size:26px;color:var(--accent)}
 .crypto-box{
-  display:none;
-  margin-top:14px;
-  padding:18px;
-  border-radius:26px;
-  border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);
-  background:rgba(255,255,255,.04);
+  display:none;margin-top:-4px;margin-bottom:12px;padding:18px;border-radius:22px;
+  background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.1);
 }
-
-.crypto-box.open{
-  display:block;
+.crypto-box.open{display:block}
+.addr{
+  word-break:break-all;padding:14px;border-radius:16px;background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);font-weight:900;margin:10px 0;
 }
-
-.wallet{
-  margin-top:12px;
-  padding:14px;
-  border-radius:18px;
-  background:#060606;
-  border:1px solid rgba(255,255,255,.1);
-  word-break:break-all;
-  color:#fff;
-  font-weight:900;
-  line-height:1.45;
-}
-
-.copy-row{
-  display:grid;
-  grid-template-columns:1fr auto;
-  gap:10px;
-  margin-top:12px;
-}
-
-.copy-row button,
-.report-btn{
-  padding:13px 16px;
-  border-radius:999px;
-  border:0;
-  background:var(--accent);
-  color:#fff;
-  font-weight:950;
-}
-
-.copy-row input{
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.1);
-  background:rgba(255,255,255,.05);
-  color:#fff;
-  padding:13px 16px;
-  outline:none;
-}
-
-.report-btn{
-  width:100%;
-  margin-top:12px;
-}
-
-.notice{
-  margin-top:12px;
-  color:#888;
-  font-size:13px;
-  line-height:1.55;
-}
-
-.status{
-  margin-top:18px;
-  padding:14px;
-  border-radius:20px;
-  background:rgba(255,255,255,.045);
-  border:1px solid rgba(255,255,255,.08);
-  color:#aaa;
-  line-height:1.5;
-}
-
-.status strong{
-  color:#fff;
-}
-
+.copy{padding:12px 16px;border:0;border-radius:999px;background:var(--accent);color:#000;font-weight:950}
 .toast{
-  position:fixed;
-  left:50%;
-  bottom:26px;
-  transform:translateX(-50%) translateY(30px);
-  z-index:300;
-  width:min(430px,calc(100vw - 30px));
-  padding:18px 54px 18px 18px;
-  border-radius:24px;
-  background:rgba(0,0,0,.94);
-  border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);
-  color:#fff;
-  box-shadow:0 20px 80px rgba(0,0,0,.7);
-  opacity:0;
-  pointer-events:none;
-  transition:.25s;
+  position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);
+  width:min(420px,calc(100vw - 32px));padding:16px 18px;border-radius:20px;
+  background:rgba(0,0,0,.92);border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);
+  opacity:0;pointer-events:none;transition:.2s;z-index:20;
 }
-
-.toast.open{
-  opacity:1;
-  transform:translateX(-50%) translateY(0);
-  pointer-events:auto;
-}
-
-.toast button{
-  position:absolute;
-  right:12px;
-  top:12px;
-  width:32px;
-  height:32px;
-  border-radius:12px;
-  border:0;
-  background:rgba(255,255,255,.08);
-  color:#fff;
-}
-
-.lang{
-  position:fixed;
-  top:18px;
-  right:18px;
-  z-index:10;
-  display:flex;
-  gap:5px;
-  padding:5px;
-  border-radius:999px;
-  background:rgba(0,0,0,.7);
-  border:1px solid rgba(255,255,255,.09);
-}
-
-.lang button{
-  border:0;
-  background:transparent;
-  color:#777;
-  padding:8px 12px;
-  border-radius:999px;
-  font-weight:950;
-}
-
-.lang button.active{
-  background:#fff;
-  color:#000;
-}
-
-@media(max-width:820px){
-  .checkout{
-    grid-template-columns:1fr;
-  }
-
-  .summary{
-    min-height:auto;
-  }
-
-  .card{
-    padding:20px;
-  }
-
-  .method{
-    grid-template-columns:44px 1fr;
-  }
-
-  .arrow{
-    display:none;
-  }
+.toast.open{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:620px){
+  .shell{padding:20px;border-radius:30px}
+  .top{grid-template-columns:1fr;justify-items:center}
+  .logo{grid-column:auto}
+  .lang{justify-self:center}
+  .method{grid-template-columns:54px 1fr auto;padding:15px}
+  .icon{width:54px;height:54px}
 }
 </style>
 </head>
 
 <body>
+<main class="app">
+  <section class="shell">
+    <div class="top">
+      <div></div>
+      <div class="logo">YYOKAI</div>
+      <div class="lang">
+        <button class="active" onclick="setLang('uk',this)">UA</button>
+        <button onclick="setLang('en',this)">EN</button>
+      </div>
+    </div>
 
-<div class="lang">
-  <button class="active" onclick="setLang('uk', this)">UA</button>
-  <button onclick="setLang('en', this)">EN</button>
-</div>
+    <div class="kicker">SECURE CHECKOUT</div>
+    <h1 data-i18n="title">Оплата твого кабінету</h1>
+    <p class="lead" data-i18n="lead">Оберіть спосіб оплати. Баланс або тариф оновиться тільки після підтвердження платежу.</p>
 
-<main class="page">
-  <section class="checkout">
-    <aside class="card summary">
-      <div>
-        <div class="logo">YYOKAI</div>
+    <div class="card">
+      <div class="label" data-i18n="amountLabel">Сума до оплати</div>
+      <div class="amount" id="amountView">$0</div>
 
-        <div class="kicker" data-i18n="secure">Secure checkout</div>
-        <h1 data-i18n="title">Оплата YYOKAI</h1>
-        <p class="desc" data-i18n="desc">
-          Оберіть спосіб оплати. Баланс або тариф оновиться тільки після підтвердження платежу.
-        </p>
-
-        <div class="amount-box">
-          <div class="amount-label" data-i18n="amountLabel">Сума до оплати</div>
-          <div class="amount" id="amountText">$0</div>
-
-          <div class="meta">
-            <div class="meta-row">
-              <span data-i18n="paymentType">Тип</span>
-              <strong id="typeText">—</strong>
-            </div>
-
-            <div class="meta-row">
-              <span data-i18n="paymentStatus">Статус</span>
-              <strong id="statusText">pending</strong>
-            </div>
-
-            <div class="meta-row">
-              <span>Payment ID</span>
-              <strong id="paymentIdText">—</strong>
-            </div>
-          </div>
-        </div>
-
-        <div class="status" id="liveStatus">
-          <strong data-i18n="waiting">Очікуємо оплату.</strong>
-          <br>
-          <span data-i18n="waitingText">Після підтвердження платіжки система оновить баланс або тариф.</span>
-        </div>
+      <div class="row">
+        <span data-i18n="typeLabel">Тип</span>
+        <strong id="typeView">—</strong>
       </div>
 
-      <button class="back" onclick="goBack()" data-i18n="back">
-        ← Назад в кабінет
+      <div class="row">
+        <span data-i18n="statusLabel">Статус</span>
+        <strong class="status" id="statusView">pending</strong>
+      </div>
+
+      <div class="row">
+        <span>Payment ID</span>
+        <strong id="paymentIdView">—</strong>
+      </div>
+    </div>
+
+    <div class="notice">
+      <strong id="noticeTitle" data-i18n="waitingTitle">Очікуємо оплату.</strong>
+      <span data-i18n="waitingText">Після підтвердження платіжки система оновить баланс або тариф.</span>
+    </div>
+
+    <button class="back" onclick="goDashboard()" data-i18n="back">← Назад в кабінет</button>
+
+    <section class="methods">
+      <h2>PAYMENT METHODS</h2>
+
+      <button class="method" onclick="payLiqPay()">
+        <div class="icon">💳</div>
+        <div>
+          <div class="method-title">LiqPay</div>
+          <div class="method-text" data-i18n="liqpayText">Карта, Apple Pay, Google Pay, Visa / Mastercard.</div>
+        </div>
+        <div class="arrow">›</div>
       </button>
-    </aside>
 
-    <section class="card">
-      <div class="kicker" data-i18n="methods">Payment methods</div>
+      <button class="method" onclick="payWayForPay()">
+        <div class="icon">🌍</div>
+        <div>
+          <div class="method-title">WayForPay</div>
+          <div class="method-text" data-i18n="wayText">Міжнародні картки та українські платежі.</div>
+        </div>
+        <div class="arrow">›</div>
+      </button>
 
-      <div class="methods">
-        <button class="method" onclick="startGateway('liqpay')">
-          <div class="icon">💳</div>
-          <div>
-            <h3>LiqPay</h3>
-            <p data-i18n="liqpayText">Картка, Apple Pay, Google Pay, PrivatBank.</p>
-          </div>
-          <div class="arrow">›</div>
-        </button>
-
-        <button class="method" onclick="startGateway('wayforpay')">
-          <div class="icon">🌍</div>
-          <div>
-            <h3>WayForPay</h3>
-            <p data-i18n="wayforpayText">Visa / MasterCard / міжнародні платежі.</p>
-          </div>
-          <div class="arrow">›</div>
-        </button>
-
-        <button class="method" onclick="startGateway('stripe')">
-          <div class="icon">⚡</div>
-          <div>
-            <h3>Stripe / Card</h3>
-            <p data-i18n="stripeText">Світові картки, Apple Pay, Google Pay.</p>
-          </div>
-          <div class="arrow">›</div>
-        </button>
-
-        <button class="method" onclick="toggleCryptoBox()">
-          <div class="icon">₮</div>
-          <div>
-            <h3>USDT TRC20</h3>
-            <p data-i18n="cryptoText">Криптооплата USDT у мережі Tron TRC20.</p>
-          </div>
-          <div class="arrow">›</div>
-        </button>
-      </div>
+      <button class="method" onclick="payCrypto()">
+        <div class="icon">₮</div>
+        <div>
+          <div class="method-title">USDT TRC20</div>
+          <div class="method-text" data-i18n="cryptoText">Криптооплата на TRC20. Підтвердження вручну або через backend.</div>
+        </div>
+        <div class="arrow">›</div>
+      </button>
 
       <div class="crypto-box" id="cryptoBox">
-        <div class="kicker">USDT TRC20</div>
-
-        <p class="notice" data-i18n="cryptoNotice">
-          Надішліть точну суму USDT на TRC20 адресу. Баланс оновиться тільки після ручного або webhook-підтвердження.
-        </p>
-
-        <div class="wallet" id="walletText">
-          TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        </div>
-
-        <div class="copy-row">
-          <input id="walletInput" readonly value="TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX">
-          <button onclick="copyWallet()" data-i18n="copy">Copy</button>
-        </div>
-
-        <button class="report-btn" onclick="reportCryptoPaid()" data-i18n="reported">
-          Я оплатив
-        </button>
-
-        <p class="notice" data-i18n="reportedNotice">
-          Ця кнопка не начисляє баланс. Вона тільки позначає платіж як “клієнт повідомив про оплату”.
-        </p>
+        <div class="label">USDT TRC20 address</div>
+        <div class="addr" id="cryptoAddress">ВСТАВЬ_СЮДА_СВОЙ_TRC20_АДРЕС</div>
+        <button class="copy" onclick="copyCrypto()" data-i18n="copy">Скопіювати адресу</button>
       </div>
+
+      <button class="method" onclick="payStripe()">
+        <div class="icon">💎</div>
+        <div>
+          <div class="method-title">Stripe / Card</div>
+          <div class="method-text" data-i18n="stripeText">Для міжнародних оплат. Підключається через backend.</div>
+        </div>
+        <div class="arrow">›</div>
+      </button>
     </section>
   </section>
 </main>
 
-<div class="toast" id="toastBox">
-  <button onclick="hideToast()">×</button>
-  <div id="toastText">Done</div>
-</div>
+<div class="toast" id="toast"></div>
 
 <script>
+const BASE_PATH="/yyokai/yyokai_tattoo/";
+
 const firebaseConfig={
-  apiKey:"ТВОЙ_API_KEY",
+  apiKey: "AIzaSyALs-ZgFX7auGxRQ2EeQnVngjnejimPLV4",
   authDomain:"yyokai-tattoo-system.firebaseapp.com",
   databaseURL:"https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/",
   projectId:"yyokai-tattoo-system",
@@ -562,78 +213,102 @@ const firebaseConfig={
 };
 
 firebase.initializeApp(firebaseConfig);
-
 const auth=firebase.auth();
 const db=firebase.database();
 
-const TRC20_WALLET="TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-
 let currentUser=null;
-let currentLang="uk";
 let paymentId=null;
-let paymentData=null;
-let toastTimer=null;
+let payment=null;
+let currentLang="uk";
 
-const t={
+const text={
   uk:{
-    secure:"Secure checkout",
-    title:"Оплата YYOKAI",
-    desc:"Оберіть спосіб оплати. Баланс або тариф оновиться тільки після підтвердження платежу.",
+    title:"Оплата твого кабінету",
+    lead:"Оберіть спосіб оплати. Баланс або тариф оновиться тільки після підтвердження платежу.",
     amountLabel:"Сума до оплати",
-    paymentType:"Тип",
-    paymentStatus:"Статус",
-    waiting:"Очікуємо оплату.",
+    typeLabel:"Тип",
+    statusLabel:"Статус",
+    waitingTitle:"Очікуємо оплату.",
     waitingText:"Після підтвердження платіжки система оновить баланс або тариф.",
     back:"← Назад в кабінет",
-    methods:"Способи оплати",
-    liqpayText:"Картка, Apple Pay, Google Pay, PrivatBank.",
-    wayforpayText:"Visa / MasterCard / міжнародні платежі.",
-    stripeText:"Світові картки, Apple Pay, Google Pay.",
-    cryptoText:"Криптооплата USDT у мережі Tron TRC20.",
-    cryptoNotice:"Надішліть точну суму USDT на TRC20 адресу. Баланс оновиться тільки після ручного або webhook-підтвердження.",
-    copy:"Copy",
+    liqpayText:"Карта, Apple Pay, Google Pay, Visa / Mastercard.",
+    wayText:"Міжнародні картки та українські платежі.",
+    cryptoText:"Криптооплата на TRC20. Підтвердження вручну або через backend.",
+    stripeText:"Для міжнародних оплат. Підключається через backend.",
+    copy:"Скопіювати адресу",
     copied:"Адресу скопійовано.",
-    reported:"Я оплатив",
-    reportedNotice:"Ця кнопка не начисляє баланс. Вона тільки позначає платіж як “клієнт повідомив про оплату”.",
-    redirect:"Переходимо до оплати...",
-    reportedDone:"Дякую. Платіж позначено як очікує перевірки.",
-    paid:"Дякую за покупку. Оплату підтверджено.",
-    error:"Щось пішло не так."
+    noPayment:"Payment ID не знайдено.",
+    waitBackend:"Цей метод потребує merchant/backend. Зараз створено заявку в Firebase.",
+    cryptoOpened:"Адреса відкрита. Після оплати адміністратор підтвердить платіж."
   },
   en:{
-    secure:"Secure checkout",
-    title:"YYOKAI Payment",
-    desc:"Choose a payment method. Your balance or plan will update only after payment confirmation.",
+    title:"Payment for your dashboard",
+    lead:"Choose a payment method. Balance or plan updates only after payment confirmation.",
     amountLabel:"Amount to pay",
-    paymentType:"Type",
-    paymentStatus:"Status",
-    waiting:"Waiting for payment.",
-    waitingText:"After payment confirmation, the system will update your balance or plan.",
+    typeLabel:"Type",
+    statusLabel:"Status",
+    waitingTitle:"Waiting for payment.",
+    waitingText:"After payment confirmation the system will update your balance or plan.",
     back:"← Back to dashboard",
-    methods:"Payment methods",
-    liqpayText:"Card, Apple Pay, Google Pay, PrivatBank.",
-    wayforpayText:"Visa / MasterCard / international payments.",
-    stripeText:"Global cards, Apple Pay, Google Pay.",
-    cryptoText:"USDT crypto payment on Tron TRC20.",
-    cryptoNotice:"Send the exact USDT amount to the TRC20 address. Balance updates only after manual or webhook confirmation.",
-    copy:"Copy",
-    copied:"Wallet copied.",
-    reported:"I paid",
-    reportedNotice:"This button does not add balance. It only marks the payment as customer-reported.",
-    redirect:"Redirecting to payment...",
-    reportedDone:"Thank you. Payment marked as waiting for review.",
-    paid:"Thank you for your purchase. Payment confirmed.",
-    error:"Something went wrong."
+    liqpayText:"Card, Apple Pay, Google Pay, Visa / Mastercard.",
+    wayText:"International cards and Ukrainian payments.",
+    cryptoText:"Crypto payment with TRC20. Manual or backend confirmation.",
+    stripeText:"For international payments. Requires backend connection.",
+    copy:"Copy address",
+    copied:"Address copied.",
+    noPayment:"Payment ID not found.",
+    waitBackend:"This method requires merchant/backend. Payment request was created in Firebase.",
+    cryptoOpened:"Address opened. Admin will confirm payment after transfer."
   }
 };
+
+auth.onAuthStateChanged(async user=>{
+  if(!user){
+    location.href=BASE_PATH+"artist-auth.html";
+    return;
+  }
+
+  currentUser=user;
+
+  const params=new URLSearchParams(location.search);
+  paymentId=params.get("paymentId");
+
+  if(!paymentId){
+    showToast(text[currentLang].noPayment);
+    return;
+  }
+
+  paymentIdView.textContent=paymentId;
+
+  const ref=db.ref("payments/"+paymentId);
+
+  ref.on("value",snap=>{
+    payment=snap.val();
+
+    if(!payment){
+      showToast(text[currentLang].noPayment);
+      return;
+    }
+
+    amountView.textContent="$"+Number(payment.amount||0).toFixed(0);
+    typeView.textContent=payment.type==="plan" ? (payment.planKey || "plan") : "balance";
+    statusView.textContent=payment.status || "pending";
+
+    if(payment.status==="paid"){
+      noticeTitle.textContent=currentLang==="uk" ? "Оплату підтверджено." : "Payment confirmed.";
+      document.querySelector("[data-i18n='waitingText']").textContent =
+        currentLang==="uk" ? "Можеш повернутися в кабінет. Баланс або тариф вже оновлено." : "You can return to dashboard. Balance or plan is already updated.";
+    }
+  });
+});
 
 function setLang(lang,btn){
   currentLang=lang;
   document.documentElement.lang=lang;
 
-  Object.keys(t[lang]).forEach(key=>{
+  Object.keys(text[lang]).forEach(key=>{
     document.querySelectorAll(`[data-i18n="${key}"]`).forEach(el=>{
-      el.textContent=t[lang][key];
+      el.textContent=text[lang][key];
     });
   });
 
@@ -641,171 +316,80 @@ function setLang(lang,btn){
   btn.classList.add("active");
 }
 
-function showToast(text){
-  toastText.textContent=text;
-  toastBox.classList.add("open");
-
-  clearTimeout(toastTimer);
-
-  toastTimer=setTimeout(()=>{
-    hideToast();
-  },10000);
-}
-
-function hideToast(){
-  toastBox.classList.remove("open");
-}
-
-function goBack(){
-  location.href="artist-dashboard.html";
-}
-
-function getParams(){
-  const params=new URLSearchParams(location.search);
-  paymentId=params.get("paymentId");
-}
-
-function loadAccent(){
-  try{
-    const cache=JSON.parse(localStorage.getItem("yyokai_user_cache")||"{}");
-    if(cache.accent){
-      document.documentElement.style.setProperty("--accent",cache.accent);
-    }
-  }catch(e){}
-}
-
-loadAccent();
-getParams();
-
-auth.onAuthStateChanged(async user=>{
-  if(!user){
-    location.href="artist-auth.html";
-    return;
-  }
-
-  currentUser=user;
-
-  if(!paymentId){
-    showToast("No paymentId");
-    return;
-  }
-
-  paymentIdText.textContent=paymentId;
-
-  const ref=db.ref("payments/"+paymentId);
-
-  ref.on("value",snap=>{
-    paymentData=snap.val();
-
-    if(!paymentData){
-      showToast("Payment not found");
-      return;
-    }
-
-    renderPayment(paymentData);
-
-    if(paymentData.status==="paid"){
-      showPaidState(paymentData);
-    }
-  });
-});
-
-function renderPayment(p){
-  const amount=Number(p.amount||0);
-
-  amountText.textContent="$"+amount.toFixed(2);
-  typeText.textContent=p.type||"—";
-  statusText.textContent=p.status||"pending";
-
-  walletText.textContent=TRC20_WALLET;
-  walletInput.value=TRC20_WALLET;
-}
-
-function showPaidState(p){
-  statusText.textContent="paid";
-  liveStatus.innerHTML=
-    "<strong>"+t[currentLang].paid+"</strong><br><span>YYOKAI</span>";
-
-  showToast(t[currentLang].paid);
-
-  setTimeout(()=>{
-    location.href="artist-dashboard.html?paymentId="+paymentId+"&paid=1";
-  },1800);
-}
-
-async function startGateway(provider){
-  if(!currentUser || !paymentId || !paymentData)return;
+async function markProvider(provider){
+  if(!paymentId)return;
 
   await db.ref("payments/"+paymentId).update({
     provider:provider,
-    status:"pending",
-    startedAt:Date.now()
+    providerSelectedAt:Date.now()
   });
+}
 
-  showToast(t[currentLang].redirect);
+async function payLiqPay(){
+  await markProvider("liqpay");
+
+  showToast(text[currentLang].waitBackend);
 
   /*
-    ВАЖНО:
-    Здесь нельзя хранить private keys.
-    Эти URL должны вести на твой backend / cloud function.
-
-    Backend создаёт invoice/payment у провайдера
-    и возвращает redirectUrl.
+    Реальный LiqPay:
+    сюда backend должен вернуть checkout URL или form data.
+    Пример:
+    location.href = "https://www.liqpay.ua/api/3/checkout?...";
   */
-
-  const backendUrls={
-    liqpay:"/api/create-liqpay-payment",
-    wayforpay:"/api/create-wayforpay-payment",
-    stripe:"/api/create-stripe-payment"
-  };
-
-  const url=
-    backendUrls[provider]+
-    "?paymentId="+encodeURIComponent(paymentId);
-
-  setTimeout(()=>{
-    location.href=url;
-  },700);
 }
 
-function toggleCryptoBox(){
+async function payWayForPay(){
+  await markProvider("wayforpay");
+
+  showToast(text[currentLang].waitBackend);
+
+  /*
+    Реальный WayForPay:
+    backend создаёт invoice/checkout и возвращает ссылку.
+    Потом:
+    location.href = checkoutUrl;
+  */
+}
+
+async function payStripe(){
+  await markProvider("stripe");
+
+  showToast(text[currentLang].waitBackend);
+
+  /*
+    Реальный Stripe:
+    backend создаёт Checkout Session и возвращает url.
+    Потом:
+    location.href = stripeCheckoutUrl;
+  */
+}
+
+async function payCrypto(){
+  await markProvider("usdt_trc20");
+
   cryptoBox.classList.toggle("open");
 
-  if(paymentId){
-    db.ref("payments/"+paymentId).update({
-      provider:"usdt_trc20",
-      cryptoNetwork:"TRC20",
-      wallet:TRC20_WALLET,
-      status:"pending",
-      cryptoOpenedAt:Date.now()
-    });
-  }
+  showToast(text[currentLang].cryptoOpened);
 }
 
-async function copyWallet(){
-  try{
-    await navigator.clipboard.writeText(TRC20_WALLET);
-    showToast(t[currentLang].copied);
-  }catch(e){
-    walletInput.select();
-    document.execCommand("copy");
-    showToast(t[currentLang].copied);
-  }
+function copyCrypto(){
+  const value=cryptoAddress.textContent.trim();
+  navigator.clipboard.writeText(value);
+  showToast(text[currentLang].copied);
 }
 
-async function reportCryptoPaid(){
-  if(!currentUser || !paymentId)return;
+function goDashboard(){
+  location.href=BASE_PATH+"artist-dashboard.html";
+}
 
-  await db.ref("payments/"+paymentId).update({
-    provider:"usdt_trc20",
-    status:"customer_reported_paid",
-    customerReportedAt:Date.now()
-  });
+function showToast(message){
+  toast.textContent=message;
+  toast.classList.add("open");
 
-  statusText.textContent="customer_reported_paid";
-  showToast(t[currentLang].reportedDone);
+  setTimeout(()=>{
+    toast.classList.remove("open");
+  },4200);
 }
 </script>
-
 </body>
 </html>
