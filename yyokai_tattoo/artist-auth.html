@@ -190,12 +190,22 @@
       box-shadow:0 0 30px rgba(229,9,47,.32);
     }
 
+    .submit:disabled{
+      opacity:.65;
+      cursor:not-allowed;
+    }
+
     .msg{
       margin-top:16px;
       min-height:22px;
       color:#ff5b74;
       font-size:14px;
       text-align:center;
+      line-height:1.45;
+    }
+
+    .msg.ok{
+      color:#7dffb1;
     }
 
     .footer{
@@ -277,7 +287,7 @@
             <input id="regPassword" type="password" placeholder="Мінімум 6 символів" required />
           </div>
 
-          <button class="submit" type="submit" data-i18n="registerBtn">Створити профіль</button>
+          <button id="registerBtn" class="submit" type="submit" data-i18n="registerBtn">Створити профіль</button>
         </form>
 
         <form id="loginForm">
@@ -291,7 +301,7 @@
             <input id="loginPassword" type="password" placeholder="Твій пароль" required />
           </div>
 
-          <button class="submit" type="submit" data-i18n="loginBtn">Увійти в майстерню</button>
+          <button id="loginBtn" class="submit" type="submit" data-i18n="loginBtn">Увійти в майстерню</button>
         </form>
 
         <p id="msg" class="msg"></p>
@@ -312,21 +322,23 @@
     </div>
   </footer>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import {
-      getAuth,
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import {
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
   getDatabase,
   ref,
   set,
   update
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-    const firebaseConfig = {
+const BASE_PATH="/yyokai/yyokai_tattoo/";
+
+const firebaseConfig = {
   apiKey: "AIzaSyALs-ZgFX7auGxRQ2EeQnVngjnejimPLV4",
   authDomain: "yyokai-tattoo-system.firebaseapp.com",
   databaseURL: "https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/",
@@ -336,52 +348,120 @@
   appId: "1:995298614954:web:e4039c69fcb0541a95fad3"
 };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getDatabase(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
 
-    const tabRegister = document.getElementById("tabRegister");
-    const tabLogin = document.getElementById("tabLogin");
-    const registerForm = document.getElementById("registerForm");
-    const loginForm = document.getElementById("loginForm");
-    const msg = document.getElementById("msg");
+let currentLang="uk";
 
-    function showMessage(text){
-      msg.textContent = text;
-    }
+const tabRegister = document.getElementById("tabRegister");
+const tabLogin = document.getElementById("tabLogin");
+const registerForm = document.getElementById("registerForm");
+const loginForm = document.getElementById("loginForm");
+const msg = document.getElementById("msg");
+const registerBtn = document.getElementById("registerBtn");
+const loginBtn = document.getElementById("loginBtn");
 
-    function switchTab(type){
-      showMessage("");
+const text = {
+  uk:{
+    back:"← Назад",
+    tabRegister:"Реєстрація",
+    tabLogin:"Вхід",
+    nameLabel:"Імʼя майстра",
+    passwordLabel:"Пароль",
+    passwordLabel2:"Пароль",
+    registerBtn:"Створити профіль",
+    loginBtn:"Увійти в майстерню",
+    registerLoading:"Створюємо твій профіль YYOKAI...",
+    loginLoading:"Перевіряємо доступ до майстерні...",
+    registerSuccess:"Дякую, що зареєструвались та вибрали нас. Відкриваємо вашу майстерню...",
+    loginSuccess:"Вхід успішний. Відкриваємо вашу майстерню...",
+    fillFields:"Заповни email і пароль.",
+    emailUsed:"Цей email вже зареєстрований. Перейдіть у вкладку Вхід.",
+    invalidLogin:"Невірний email або пароль.",
+    weakPassword:"Пароль має бути мінімум 6 символів.",
+    error:"Помилка Firebase:"
+  },
+  en:{
+    back:"← Back",
+    tabRegister:"Register",
+    tabLogin:"Login",
+    nameLabel:"Artist name",
+    passwordLabel:"Password",
+    passwordLabel2:"Password",
+    registerBtn:"Create profile",
+    loginBtn:"Enter workshop",
+    registerLoading:"Creating your YYOKAI profile...",
+    loginLoading:"Checking access to your workshop...",
+    registerSuccess:"Thank you for registering and choosing us. Opening your workshop...",
+    loginSuccess:"Login successful. Opening your workshop...",
+    fillFields:"Please enter email and password.",
+    emailUsed:"This email is already registered. Go to the Login tab.",
+    invalidLogin:"Invalid email or password.",
+    weakPassword:"Password must be at least 6 characters.",
+    error:"Firebase error:"
+  }
+};
 
-      if(type === "register"){
-        tabRegister.classList.add("active");
-        tabLogin.classList.remove("active");
-        registerForm.classList.add("active");
-        loginForm.classList.remove("active");
-      }else{
-        tabLogin.classList.add("active");
-        tabRegister.classList.remove("active");
-        loginForm.classList.add("active");
-        registerForm.classList.remove("active");
-      }
-    }
+function showMessage(keyOrText,type="error",isKey=true){
+  msg.textContent = isKey ? (text[currentLang][keyOrText] || keyOrText) : keyOrText;
 
-    tabRegister.addEventListener("click",()=>switchTab("register"));
-    tabLogin.addEventListener("click",()=>switchTab("login"));
+  if(type==="ok"){
+    msg.classList.add("ok");
+  }else{
+    msg.classList.remove("ok");
+  }
+}
 
-    registerForm.addEventListener("submit", async (e)=>{
+function switchTab(type){
+  msg.textContent="";
+  msg.classList.remove("ok");
+
+  if(type==="register"){
+    tabRegister.classList.add("active");
+    tabLogin.classList.remove("active");
+    registerForm.classList.add("active");
+    loginForm.classList.remove("active");
+  }else{
+    tabLogin.classList.add("active");
+    tabRegister.classList.remove("active");
+    loginForm.classList.add("active");
+    registerForm.classList.remove("active");
+  }
+}
+
+tabRegister.addEventListener("click",()=>switchTab("register"));
+tabLogin.addEventListener("click",()=>switchTab("login"));
+
+function firebaseMessage(error){
+  const code=error.code || "";
+
+  if(code==="auth/email-already-in-use") return text[currentLang].emailUsed;
+  if(code==="auth/invalid-credential") return text[currentLang].invalidLogin;
+  if(code==="auth/wrong-password") return text[currentLang].invalidLogin;
+  if(code==="auth/user-not-found") return text[currentLang].invalidLogin;
+  if(code==="auth/weak-password") return text[currentLang].weakPassword;
+
+  return text[currentLang].error+" "+error.message;
+}
+
+registerForm.addEventListener("submit", async (e)=>{
   e.preventDefault();
 
   const name = document.getElementById("regName").value.trim();
   const email = document.getElementById("regEmail").value.trim();
   const password = document.getElementById("regPassword").value;
 
+  if(!email || !password){
+    showMessage("fillFields");
+    return;
+  }
+
   try{
-    showMessage("...");
+    registerBtn.disabled=true;
+    showMessage("registerLoading","ok");
 
-    const userCred =
-      await createUserWithEmailAndPassword(auth,email,password);
-
+    const userCred = await createUserWithEmailAndPassword(auth,email,password);
     const user = userCred.user;
 
     await set(ref(db,"users/"+user.uid),{
@@ -396,78 +476,69 @@
       lastLogin:Date.now()
     });
 
-    window.location.href=
-      "/yyokai/yyokai_tattoo/artist-dashboard.html";
+    showMessage("registerSuccess","ok");
+
+    setTimeout(()=>{
+      window.location.replace(BASE_PATH+"artist-dashboard.html");
+    },1200);
 
   }catch(error){
-    showMessage(error.message);
+    registerBtn.disabled=false;
+    showMessage(firebaseMessage(error),"error",false);
   }
 });
 
 loginForm.addEventListener("submit", async (e)=>{
   e.preventDefault();
 
-  const email =
-    document.getElementById("loginEmail").value.trim();
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
 
-  const password =
-    document.getElementById("loginPassword").value;
+  if(!email || !password){
+    showMessage("fillFields");
+    return;
+  }
 
   try{
-    showMessage("...");
+    loginBtn.disabled=true;
+    showMessage("loginLoading","ok");
 
-    const userCred =
-      await signInWithEmailAndPassword(auth,email,password);
-
+    const userCred = await signInWithEmailAndPassword(auth,email,password);
     const user = userCred.user;
 
     await update(ref(db,"users/"+user.uid),{
+      uid:user.uid,
       email:user.email || email,
       lastLogin:Date.now()
     });
 
-    window.location.href=
-      "/yyokai/yyokai_tattoo/artist-dashboard.html";
+    showMessage("loginSuccess","ok");
+
+    setTimeout(()=>{
+      window.location.replace(BASE_PATH+"artist-dashboard.html");
+    },700);
 
   }catch(error){
-    showMessage(error.message);
+    loginBtn.disabled=false;
+    showMessage(firebaseMessage(error),"error",false);
   }
 });
 
-    window.setLang = function(lang){
-      document.documentElement.lang = lang;
+window.setLang=function(lang){
+  currentLang=lang;
+  document.documentElement.lang=lang;
 
-      const text = {
-        uk:{
-          back:"← Назад",
-          tabRegister:"Реєстрація",
-          tabLogin:"Вхід",
-          nameLabel:"Імʼя майстра",
-          passwordLabel:"Пароль",
-          passwordLabel2:"Пароль",
-          registerBtn:"Створити профіль",
-          loginBtn:"Увійти в майстерню"
-        },
-        en:{
-          back:"← Back",
-          tabRegister:"Register",
-          tabLogin:"Login",
-          nameLabel:"Artist name",
-          passwordLabel:"Password",
-          passwordLabel2:"Password",
-          registerBtn:"Create profile",
-          loginBtn:"Enter workshop"
-        }
-      };
+  Object.keys(text[lang]).forEach(key=>{
+    const el=document.querySelector(`[data-i18n="${key}"]`);
+    if(el) el.textContent=text[lang][key];
+  });
 
-      Object.keys(text[lang]).forEach(key=>{
-        const el=document.querySelector(`[data-i18n="${key}"]`);
-        if(el) el.textContent=text[lang][key];
-      });
+  document.querySelectorAll(".lang button").forEach(btn=>btn.classList.remove("active"));
+  document.querySelector(`[onclick="setLang('${lang}')"]`).classList.add("active");
 
-      document.querySelectorAll(".lang button").forEach(btn=>btn.classList.remove("active"));
-      document.querySelector(`[onclick="setLang('${lang}')"]`).classList.add("active");
-    }
-  </script>
+  msg.textContent="";
+  msg.classList.remove("ok");
+};
+</script>
 </body>
 </html>
