@@ -16,7 +16,7 @@
 :root{
   --accent:#e5092f;
   --text:#f6f1ef;
-  --line:rgba(255,255,255,.11);
+  --line:rgba(255,255,255,.15);
   --custom-bg:none;
 }
 
@@ -30,14 +30,21 @@ html,body{
 body{
   overflow-x:hidden;
   background:
-    linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.92)),
+    linear-gradient(rgba(0,0,0,.68),rgba(0,0,0,.92)),
     var(--custom-bg),
-    radial-gradient(circle at 50% -10%,color-mix(in srgb,var(--accent) 38%,transparent),transparent 35%),
-    linear-gradient(180deg,#000 0%,#0b0103 45%,#000 100%);
+    radial-gradient(circle at 50% -10%,color-mix(in srgb,var(--accent) 42%,transparent),transparent 35%),
+    linear-gradient(180deg,#050505 0%,#100206 45%,#000 100%);
   background-size:cover;
   background-position:center;
   background-attachment:fixed;
-  transition:.25s;
+  transition:.25s ease;
+}
+
+body.has-custom-bg{
+  background:
+    linear-gradient(rgba(0,0,0,.68),rgba(0,0,0,.92)),
+    var(--custom-bg) center/cover fixed no-repeat,
+    #000;
 }
 
 body::before{
@@ -46,7 +53,7 @@ body::before{
   inset:0;
   z-index:0;
   pointer-events:none;
-  color:rgba(255,255,255,.018);
+  color:rgba(255,255,255,.022);
   font-size:78px;
   letter-spacing:30px;
   line-height:1.5;
@@ -64,6 +71,23 @@ button{cursor:pointer}
   padding-bottom:112px;
 }
 
+.app::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 18% 18%,color-mix(in srgb,var(--accent) 22%,transparent),transparent 28%),
+    radial-gradient(circle at 88% 8%,rgba(255,255,255,.06),transparent 24%);
+  animation:luxuryBg 9s ease-in-out infinite alternate;
+}
+
+@keyframes luxuryBg{
+  from{opacity:.45;transform:translateY(0)}
+  to{opacity:.85;transform:translateY(18px)}
+}
+
 .topbar{
   position:sticky;
   top:12px;
@@ -77,16 +101,16 @@ button{cursor:pointer}
   border-radius:30px;
   background:rgba(0,0,0,.78);
   border:1px solid var(--line);
-  backdrop-filter:blur(26px);
-  box-shadow:0 24px 80px rgba(0,0,0,.75);
+  backdrop-filter:blur(28px);
+  box-shadow:0 24px 80px rgba(0,0,0,.78);
 }
 
 .menu-btn{
   width:54px;
   height:54px;
   border-radius:20px;
-  border:1px solid rgba(255,255,255,.13);
-  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.15);
+  background:rgba(255,255,255,.07);
   color:#fff;
   font-size:26px;
 }
@@ -99,7 +123,7 @@ button{cursor:pointer}
   font-weight:950;
   letter-spacing:.08em;
   color:#fff;
-  text-shadow:0 0 24px color-mix(in srgb,var(--accent) 45%,transparent);
+  text-shadow:0 0 24px color-mix(in srgb,var(--accent) 50%,transparent);
 }
 
 .logo::before,.logo::after{
@@ -134,14 +158,14 @@ button{cursor:pointer}
   gap:5px;
   padding:5px;
   border-radius:999px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.1);
 }
 
 .lang button{
   border:0;
   background:transparent;
-  color:#777;
+  color:#999;
   padding:8px 12px;
   border-radius:999px;
   font-weight:950;
@@ -162,8 +186,8 @@ button{cursor:pointer}
   font-weight:950;
   color:var(--accent);
   background:linear-gradient(135deg,#130005,#050505);
-  border:1px solid rgba(255,255,255,.15);
-  box-shadow:0 0 30px color-mix(in srgb,var(--accent) 40%,transparent);
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow:0 0 30px color-mix(in srgb,var(--accent) 45%,transparent);
   text-shadow:0 0 18px var(--accent);
 }
 
@@ -173,32 +197,32 @@ button{cursor:pointer}
   position:absolute;
   right:0;
   top:66px;
-  width:min(370px,calc(100vw - 30px));
+  width:min(390px,calc(100vw - 30px));
   display:none;
   padding:18px;
   border-radius:28px;
-  background:rgba(0,0,0,.88);
-  border:1px solid rgba(255,255,255,.12);
-  backdrop-filter:blur(28px);
-  box-shadow:0 35px 100px rgba(0,0,0,.85);
+  background:rgba(0,0,0,.9);
+  border:1px solid rgba(255,255,255,.14);
+  backdrop-filter:blur(30px);
+  box-shadow:0 35px 100px rgba(0,0,0,.88);
 }
 
 .profile-menu.open{display:block}
 
 .profile-name{font-size:22px;font-weight:950}
-.profile-email{margin-top:4px;color:#8b8b8b;font-size:13px}
+.profile-email{margin-top:4px;color:#aaa;font-size:13px}
 .balance{margin-top:12px;color:#aaa}
 .balance strong{color:#fff;font-size:20px}
 
 .player{
   margin:16px 0;
   padding:12px;
-  border-radius:20px;
-  background:rgba(7,7,7,.82);
-  border:1px solid rgba(255,255,255,.1);
+  border-radius:22px;
+  background:rgba(7,7,7,.86);
+  border:1px solid rgba(255,255,255,.14);
   display:grid;
   grid-template-columns:50px 1fr auto;
-  gap:10px;
+  gap:12px;
   align-items:center;
 }
 
@@ -208,39 +232,55 @@ button{cursor:pointer}
   border-radius:16px;
   display:grid;
   place-items:center;
-  background:rgba(255,255,255,.055);
-  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.12);
   box-shadow:none!important;
 }
 
 .track-title{font-size:14px;font-weight:950}
-.track-sub{font-size:12px;color:#777;margin-top:3px}
+.track-sub{font-size:12px;color:#888;margin-top:3px}
 
 .music-controls{
   display:flex;
-  gap:6px;
+  gap:8px;
   align-items:center;
   justify-content:center;
 }
 
-.music-controls button,
-#playPauseBtn{
-  width:38px!important;
-  height:38px!important;
-  min-width:38px!important;
-  min-height:38px!important;
-  border:1px solid rgba(255,255,255,.13)!important;
+.music-controls button{
+  width:42px!important;
+  height:42px!important;
+  min-width:42px!important;
+  min-height:42px!important;
+  padding:0!important;
   border-radius:14px!important;
-  background:rgba(255,255,255,.08)!important;
-  color:#fff!important;
-  font-size:18px!important;
-  display:grid!important;
-  place-items:center!important;
-  line-height:1!important;
+  border:1px solid rgba(255,255,255,.14)!important;
+  background:rgba(255,255,255,.075)!important;
   box-shadow:none!important;
   outline:none!important;
+  color:#fff!important;
+  font-size:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  line-height:1!important;
   appearance:none!important;
   -webkit-appearance:none!important;
+}
+
+.music-controls button::before{
+  font-size:22px;
+  line-height:1;
+  display:block;
+}
+
+.prevBtn::before{content:"‹"}
+.playBtn::before{content:"▶"}
+.nextBtn::before{content:"›"}
+
+.playBtn.playing::before{
+  content:"Ⅱ";
+  font-size:20px;
 }
 
 .profile-menu button{
@@ -250,12 +290,12 @@ button{cursor:pointer}
   border:0;
   border-radius:16px;
   background:transparent;
-  color:#aaa;
+  color:#bbb;
   text-align:left;
   font-weight:900;
 }
 
-.profile-menu button:hover{background:rgba(255,255,255,.07);color:#fff}
+.profile-menu button:hover{background:rgba(255,255,255,.08);color:#fff}
 
 .side-overlay{
   position:fixed;
@@ -276,16 +316,42 @@ button{cursor:pointer}
   width:280px;
   z-index:95;
   padding:22px;
-  background:rgba(0,0,0,.92);
-  border-right:1px solid rgba(255,255,255,.1);
-  backdrop-filter:blur(28px);
+  background:rgba(0,0,0,.94);
+  border-right:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(30px);
   transition:.25s ease;
-  box-shadow:30px 0 90px rgba(0,0,0,.75);
+  box-shadow:30px 0 90px rgba(0,0,0,.85);
+  overflow:hidden;
 }
 
 .side-menu.open{left:0}
 
+.side-menu::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 5%,color-mix(in srgb,var(--accent) 28%,transparent),transparent 35%),
+    linear-gradient(180deg,rgba(255,255,255,.055),transparent 42%);
+  opacity:.95;
+}
+
+.side-menu::after{
+  content:"妖";
+  position:absolute;
+  left:50%;
+  bottom:55px;
+  transform:translateX(-50%);
+  font-size:130px;
+  font-weight:900;
+  color:color-mix(in srgb,var(--accent) 18%,transparent);
+  pointer-events:none;
+}
+
 .side-head{
+  position:relative;
+  z-index:2;
   display:grid;
   grid-template-columns:42px 1fr 42px;
   align-items:center;
@@ -295,12 +361,12 @@ button{cursor:pointer}
 .side-logo-img{
   grid-column:2;
   justify-self:center;
-  width:58px;
-  height:58px;
-  border-radius:20px;
+  width:62px;
+  height:62px;
+  border-radius:22px;
   object-fit:cover;
-  border:1px solid rgba(255,255,255,.13);
-  box-shadow:0 0 28px color-mix(in srgb,var(--accent) 38%,transparent);
+  border:1px solid rgba(255,255,255,.16);
+  box-shadow:0 0 32px color-mix(in srgb,var(--accent) 45%,transparent);
   background:#080808;
 }
 
@@ -309,22 +375,28 @@ button{cursor:pointer}
   width:42px;
   height:42px;
   border-radius:14px;
-  border:1px solid rgba(255,255,255,.1);
-  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.07);
   color:#fff;
   font-size:18px;
 }
 
-.side-nav{display:flex;flex-direction:column;gap:10px}
+.side-nav{
+  position:relative;
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
 
 .side-nav button{
   position:relative;
   overflow:hidden;
-  height:54px;
-  border-radius:18px;
-  border:1px solid rgba(255,255,255,.1);
-  background:rgba(255,255,255,.04);
-  color:#aaa;
+  height:56px;
+  border-radius:19px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.055);
+  color:#bbb;
   display:flex;
   align-items:center;
   gap:12px;
@@ -350,11 +422,11 @@ button{cursor:pointer}
 
 .side-nav button:hover{
   background:
-    radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--accent) 26%,transparent),transparent 55%),
-    rgba(255,255,255,.055);
+    radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--accent) 30%,transparent),transparent 55%),
+    rgba(255,255,255,.075);
   color:#fff;
   border-color:color-mix(in srgb,var(--accent) 55%,transparent);
-  box-shadow:0 14px 45px color-mix(in srgb,var(--accent) 12%,transparent);
+  box-shadow:0 14px 45px color-mix(in srgb,var(--accent) 14%,transparent);
 }
 
 .hero{
@@ -362,42 +434,64 @@ button{cursor:pointer}
   padding:34px;
   border-radius:38px;
   background:
-    radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent) 35%,transparent),transparent 36%),
-    linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.025));
-  border:1px solid rgba(255,255,255,.13);
-  backdrop-filter:blur(18px);
+    radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent) 42%,transparent),transparent 36%),
+    linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.2);
+  backdrop-filter:blur(20px);
 }
 
-.hero h1{font-size:clamp(44px,9vw,88px);line-height:.95;letter-spacing:-.04em}
-.hero p{margin-top:18px;max-width:760px;color:#c3bdbb;line-height:1.6;font-size:20px}
+.hero h1{
+  font-size:clamp(44px,9vw,88px);
+  line-height:.95;
+  letter-spacing:-.04em;
+  color:#fff;
+}
 
-.stats{margin-top:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.hero p{
+  margin-top:18px;
+  max-width:760px;
+  color:#e0d9d6;
+  line-height:1.6;
+  font-size:20px;
+}
+
+.stats{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
 
 .stat{
   padding:20px;
   border-radius:28px;
-  background:rgba(7,7,7,.78);
-  border:1px solid rgba(255,255,255,.1);
-  backdrop-filter:blur(18px);
+  background:rgba(7,7,7,.82);
+  border:1px solid rgba(255,255,255,.16);
+  backdrop-filter:blur(20px);
 }
 
 .stat.clickable{cursor:pointer;transition:.25s}
 .stat.clickable:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--accent) 55%,transparent)}
-.stat span{display:block;color:#777;font-size:13px;font-weight:900;margin-bottom:10px}
-.stat strong{font-size:28px}
+.stat span{display:block;color:#bbb;font-size:13px;font-weight:900;margin-bottom:10px}
+.stat strong{font-size:28px;color:#fff}
 
-.focus-grid{margin-top:18px;display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
+.focus-grid{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:14px;
+}
 
 .panel{
   padding:24px;
   border-radius:32px;
-  background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.02));
-  border:1px solid rgba(255,255,255,.1);
-  backdrop-filter:blur(18px);
+  background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.035));
+  border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(20px);
 }
 
-.panel h2{font-size:24px;margin-bottom:12px}
-.panel p{color:#aaa;line-height:1.6}
+.panel h2{font-size:24px;margin-bottom:12px;color:#fff}
+.panel p{color:#d2cdca;line-height:1.6}
 .panel-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
 
 .red-btn{
@@ -407,14 +501,14 @@ button{cursor:pointer}
   background:var(--accent);
   color:#fff;
   font-weight:950;
-  box-shadow:0 0 30px color-mix(in srgb,var(--accent) 30%,transparent);
+  box-shadow:0 0 30px color-mix(in srgb,var(--accent) 35%,transparent);
 }
 
 .ghost-btn{
-  border:1px solid rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.16);
   border-radius:999px;
   padding:14px 18px;
-  background:rgba(255,255,255,.05);
+  background:rgba(255,255,255,.07);
   color:#fff;
   font-weight:950;
 }
@@ -428,8 +522,8 @@ button{cursor:pointer}
   width:min(720px,calc(100vw - 28px));
   padding:10px;
   border-radius:32px;
-  background:rgba(0,0,0,.82);
-  border:1px solid rgba(255,255,255,.12);
+  background:rgba(0,0,0,.84);
+  border:1px solid rgba(255,255,255,.14);
   backdrop-filter:blur(30px);
   display:grid;
   grid-template-columns:repeat(5,1fr);
@@ -441,7 +535,7 @@ button{cursor:pointer}
   border:0;
   border-radius:22px;
   background:transparent;
-  color:#888;
+  color:#999;
   display:flex;
   flex-direction:column;
   justify-content:center;
@@ -452,7 +546,7 @@ button{cursor:pointer}
 }
 
 .dock button i{font-style:normal;font-size:22px}
-.dock button:hover,.dock button.active{background:color-mix(in srgb,var(--accent) 20%,transparent);color:#fff}
+.dock button:hover,.dock button.active{background:color-mix(in srgb,var(--accent) 22%,transparent);color:#fff}
 
 .settings,.pay-modal{
   position:fixed;
@@ -461,8 +555,8 @@ button{cursor:pointer}
   display:none;
   place-items:center;
   padding:20px;
-  background:rgba(0,0,0,.8);
-  backdrop-filter:blur(14px);
+  background:rgba(0,0,0,.82);
+  backdrop-filter:blur(16px);
 }
 
 .settings.open,.pay-modal.open{display:grid}
@@ -475,7 +569,7 @@ button{cursor:pointer}
   padding:24px;
   border-radius:34px;
   background:#050505;
-  border:1px solid rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.14);
 }
 
 .modal-head,.pay-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
@@ -490,15 +584,15 @@ button{cursor:pointer}
   font-size:22px;
 }
 
-.row{padding:14px 0;border-top:1px solid rgba(255,255,255,.08)}
-.row label{display:block;margin-bottom:8px;color:#999;font-size:13px;font-weight:900}
+.row{padding:14px 0;border-top:1px solid rgba(255,255,255,.09)}
+.row label{display:block;margin-bottom:8px;color:#aaa;font-size:13px;font-weight:900}
 
 .row input,.row select{
   width:100%;
   padding:14px;
   border-radius:16px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.13);
+  background:rgba(255,255,255,.055);
   color:#fff;
   outline:none;
 }
@@ -520,19 +614,23 @@ button{cursor:pointer}
 #colorPicker::-webkit-color-swatch-wrapper{padding:0}
 #colorPicker::-webkit-color-swatch{border:none;border-radius:50%}
 
-.small-btn,.confirm-plan{
-  margin-top:12px;
-  padding:14px 16px;
+.apply-btn,.confirm-plan{
+  margin-top:18px;
+  width:100%;
+  padding:16px 18px;
   border:0;
   border-radius:999px;
   background:var(--accent);
   color:#fff;
   font-weight:950;
+  box-shadow:0 0 26px color-mix(in srgb,var(--accent) 30%,transparent);
 }
 
-.confirm-plan{width:100%}
-
-.plan-grid,.balance-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.plan-grid,.balance-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
 
 .plan-card,.balance-card{
   width:100%;
@@ -540,10 +638,10 @@ button{cursor:pointer}
   display:block;
   padding:22px;
   border-radius:28px;
-  border:1px solid rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.12);
   background:
-    radial-gradient(circle at top right,color-mix(in srgb,var(--accent) 22%,transparent),transparent 36%),
-    linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+    radial-gradient(circle at top right,color-mix(in srgb,var(--accent) 25%,transparent),transparent 36%),
+    linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.03));
   color:#fff;
   cursor:pointer;
   pointer-events:auto;
@@ -552,9 +650,9 @@ button{cursor:pointer}
 .plan-card.selected{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 25%,transparent)}
 .plan-price,.balance-price{font-size:34px;font-weight:950}
 .plan-name,.balance-name{margin:10px 0;font-weight:950}
-.plan-card ul{list-style:none;display:flex;flex-direction:column;gap:8px;color:#aaa;font-size:14px}
+.plan-card ul{list-style:none;display:flex;flex-direction:column;gap:8px;color:#bbb;font-size:14px}
 .plan-card li::before{content:"✦ ";color:var(--accent)}
-.balance-card p{color:#aaa;margin-top:8px;line-height:1.5}
+.balance-card p{color:#bbb;margin-top:8px;line-height:1.5}
 
 .toast{
   position:fixed;
@@ -646,16 +744,14 @@ audio{display:none}
             <div class="track-sub" id="trackSub">YYOKAI playlist</div>
           </div>
           <div class="music-controls">
-            <button type="button" onclick="prevTrack()">‹</button>
-            <button type="button" id="playPauseBtn" onclick="toggleMusic()">▶</button>
-            <button type="button" onclick="nextTrack()">›</button>
+            <button type="button" class="prevBtn" onclick="prevTrack()"></button>
+            <button type="button" id="playPauseBtn" class="playBtn" onclick="toggleMusic()"></button>
+            <button type="button" class="nextBtn" onclick="nextTrack()"></button>
           </div>
         </div>
 
-        <button type="button" onclick="uploadOwnMusic()">＋ <span data-i18n="uploadMusic">Додати свою музику</span></button>
-        <input id="ownMusicInput" type="file" accept="audio/mp3,audio/mpeg" style="display:none" onchange="loadOwnMusic(event)">
-        <button type="button" onclick="openBalanceModal()">＋ <span data-i18n="addBalance">Поповнити баланс</span></button>
         <button type="button" onclick="openSettings()">⚙ <span data-i18n="settings">Налаштування</span></button>
+        <button type="button" onclick="openBalanceModal()">＋ <span data-i18n="addBalance">Поповнити баланс</span></button>
         <button type="button" onclick="logout()">退出 <span data-i18n="logout">Вийти</span></button>
       </div>
     </div>
@@ -743,15 +839,12 @@ audio{display:none}
       <button type="button" class="balance-card" onclick="createBalancePayment(10)">
         <div class="balance-price">$10</div><div class="balance-name">Quick start</div><p data-i18n="balance10">Легкий старт для перевірки інструментів.</p>
       </button>
-
       <button type="button" class="balance-card" onclick="createBalancePayment(20)">
         <div class="balance-price">$20</div><div class="balance-name">Artist pack</div><p data-i18n="balance20">Для активної роботи з клієнтами.</p>
       </button>
-
       <button type="button" class="balance-card" onclick="createBalancePayment(30)">
         <div class="balance-price">$30</div><div class="balance-name">Studio pack</div><p data-i18n="balance30">Більше свободи для щоденного workflow.</p>
       </button>
-
       <button type="button" class="balance-card" onclick="createBalancePayment(50)">
         <div class="balance-price">$50</div><div class="balance-name">Premium reserve</div><p data-i18n="balance50">Запас для інтенсивної роботи студії.</p>
       </button>
@@ -768,32 +861,33 @@ audio{display:none}
 
     <div class="row">
       <label data-i18n="avatarLabel">Змінити фото профілю</label>
-      <input type="file" accept="image/*" onchange="uploadAvatar(event)">
+      <input id="avatarInput" type="file" accept="image/*">
     </div>
 
     <div class="row">
       <label data-i18n="nameLabel">Нік майстра</label>
       <input id="nameInput" type="text">
-      <button type="button" class="small-btn" onclick="saveName()" data-i18n="saveName">Зберегти</button>
     </div>
 
     <div class="row">
       <label data-i18n="musicLabel">Додати свою музику</label>
-      <input type="file" accept="audio/mp3,audio/mpeg" onchange="loadOwnMusic(event)">
+      <input id="musicInput" type="file" accept="audio/mp3,audio/mpeg">
     </div>
 
     <div class="row">
       <label data-i18n="colorLabel">Колір системи</label>
       <div class="color-row">
-        <input type="color" id="colorPicker" value="#e5092f" oninput="saveAccent(this.value)">
+        <input type="color" id="colorPicker" value="#e5092f">
         <span id="colorValue">#e5092f</span>
       </div>
     </div>
 
     <div class="row">
       <label data-i18n="bgLabel">Фон кабінету</label>
-      <input type="file" accept="image/*" onchange="uploadBackground(event)">
+      <input id="bgInput" type="file" accept="image/*">
     </div>
+
+    <button class="apply-btn" type="button" onclick="applySettings()" data-i18n="applySettings">Застосувати</button>
   </div>
 </section>
 
@@ -827,7 +921,6 @@ let currentPlanKey="free";
 let selectedPlan=null;
 let musicPlaying=false;
 let trackIndex=0;
-let customMusicUrl="";
 let toastTimer=null;
 
 const CACHE_KEY="yyokai_user_cache";
@@ -841,7 +934,7 @@ const tracks=[
 const t={
 uk:{
 navStencil:"AI Stencil",navGenerate:"AI генерація",navBookings:"Записи",navSplit:"A4 друк",navFiles:"Файли",
-balance:"Баланс",uploadMusic:"Додати свою музику",addBalance:"Поповнити баланс",settings:"Налаштування",logout:"Вийти",
+balance:"Баланс",addBalance:"Поповнити баланс",settings:"Налаштування",logout:"Вийти",
 heroTitle:"Welcome back, artist",heroText:"Твоя преміальна система для тату-майстра: генерації, записи, музика, атмосфера, баланс, файли та workflow в одному місці.",
 statBalance:"Баланс",statPlan:"План",statBookings:"Записи",
 workflowTitle:"Start your workflow",workflowText:"Почни з потрібного інструмента. Чистий інтерфейс без перевантаження.",
@@ -853,12 +946,12 @@ starter1:"250 генерацій стенсила",starter2:"250 генерац�
 pro1:"500 генерацій стенсила",pro2:"500 генерацій ескізу",pro3:"100 A4 розділень",pro4:"150 записів клієнтів",
 yokai1:"Повний доступ",yokai2:"Безлімітний workflow",yokai3:"Premium tools",yokai4:"Custom studio mode",
 balance10:"Легкий старт для перевірки інструментів.",balance20:"Для активної роботи з клієнтами.",balance30:"Більше свободи для щоденного workflow.",balance50:"Запас для інтенсивної роботи студії.",
-avatarLabel:"Змінити фото профілю",nameLabel:"Нік майстра",saveName:"Зберегти",musicLabel:"Додати свою музику",colorLabel:"Колір системи",bgLabel:"Фон кабінету",
+avatarLabel:"Змінити фото профілю",nameLabel:"Нік майстра",musicLabel:"Додати свою музику",colorLabel:"Колір системи",bgLabel:"Фон кабінету",applySettings:"Застосувати",
 pending:"Оплату створено. Переходимо до checkout.",saved:"Збережено.",thanks:"Дякую за покупку. Оплата очікує підтвердження."
 },
 en:{
 navStencil:"AI Stencil",navGenerate:"AI Generate",navBookings:"Bookings",navSplit:"A4 Print",navFiles:"Files",
-balance:"Balance",uploadMusic:"Add your music",addBalance:"Add balance",settings:"Settings",logout:"Logout",
+balance:"Balance",addBalance:"Add balance",settings:"Settings",logout:"Logout",
 heroTitle:"Welcome back, artist",heroText:"Your premium tattoo artist system: generations, bookings, music, atmosphere, balance, files and workflow in one place.",
 statBalance:"Balance",statPlan:"Plan",statBookings:"Bookings",
 workflowTitle:"Start your workflow",workflowText:"Start with the tool you need. Clean interface without overload.",
@@ -870,18 +963,13 @@ starter1:"250 stencil generations",starter2:"250 sketch generations",starter3:"5
 pro1:"500 stencil generations",pro2:"500 sketch generations",pro3:"100 A4 splits",pro4:"150 client bookings",
 yokai1:"Full access",yokai2:"Unlimited workflow",yokai3:"Premium tools",yokai4:"Custom studio mode",
 balance10:"A light start to test the tools.",balance20:"For active client work.",balance30:"More freedom for daily workflow.",balance50:"Reserve for intensive studio work.",
-avatarLabel:"Change profile photo",nameLabel:"Artist nickname",saveName:"Save",musicLabel:"Add your music",colorLabel:"System color",bgLabel:"Dashboard background",
+avatarLabel:"Change profile photo",nameLabel:"Artist nickname",musicLabel:"Add your music",colorLabel:"System color",bgLabel:"Dashboard background",applySettings:"Apply",
 pending:"Payment created. Redirecting to checkout.",saved:"Saved.",thanks:"Thank you for your purchase. Payment is waiting for confirmation."
 }
 };
 
-function authUrl(){
-  return BASE_PATH+"artist-auth.html";
-}
-
-function checkoutUrl(params){
-  return BASE_PATH+"checkout.html?"+params;
-}
+function authUrl(){return BASE_PATH+"artist-auth.html"}
+function checkoutUrl(params){return BASE_PATH+"checkout.html?"+params}
 
 function loadLocalCache(){
   const cached=JSON.parse(localStorage.getItem(CACHE_KEY)||"{}");
@@ -898,26 +986,18 @@ function saveLocalCache(data){
 loadLocalCache();
 
 auth.onAuthStateChanged(async user=>{
-  if(!user){
-    location.href=authUrl();
-    return;
-  }
+  if(!user){location.href=authUrl();return}
 
   currentUser=user;
   await checkPaymentReturn();
 
-  const userRef=db.ref("users/"+user.uid);
-  const snap=await userRef.once("value");
+  const snap=await db.ref("users/"+user.uid).once("value");
   const data=snap.val()||{};
 
   const email=user.email||data.email||"";
   const name=data.name||user.displayName||"Guest Artist";
 
-  await userRef.update({
-    email:email,
-    name:name,
-    updatedAt:Date.now()
-  });
+  await db.ref("users/"+user.uid).update({email,name,updatedAt:Date.now()});
 
   artistName.textContent=name;
   artistEmail.textContent=email;
@@ -946,8 +1026,7 @@ auth.onAuthStateChanged(async user=>{
   }
 
   if(data.settings&&data.settings.customMusicUrl){
-    customMusicUrl=data.settings.customMusicUrl;
-    setMusic(customMusicUrl,data.settings.customMusicName||"Custom music","Custom track","♫");
+    setMusic(data.settings.customMusicUrl,data.settings.customMusicName||"Custom music","Custom track","♫");
   }else{
     setTrack(data.settings&&typeof data.settings.trackIndex==="number"?data.settings.trackIndex:0);
   }
@@ -985,9 +1064,7 @@ function displayPlan(){
   planValue.textContent=names[currentPlanKey]||"Free";
 }
 
-function go(url){
-  location.href=url;
-}
+function go(url){location.href=url}
 
 function toggleSide(){
   sideMenu.classList.toggle("open");
@@ -1001,27 +1078,21 @@ function closeSide(){
   menuBtn.textContent="☰";
 }
 
-function toggleProfile(){
-  profileMenu.classList.toggle("open");
-}
+function toggleProfile(){profileMenu.classList.toggle("open")}
 
 function openSettings(){
   settingsPanel.classList.add("open");
   profileMenu.classList.remove("open");
 }
 
-function closeSettings(){
-  settingsPanel.classList.remove("open");
-}
+function closeSettings(){settingsPanel.classList.remove("open")}
 
 function openBalanceModal(){
   balanceModal.classList.add("open");
   profileMenu.classList.remove("open");
 }
 
-function closeBalanceModal(){
-  balanceModal.classList.remove("open");
-}
+function closeBalanceModal(){balanceModal.classList.remove("open")}
 
 function openPlanModal(){
   selectedPlan=currentPlanKey;
@@ -1032,9 +1103,7 @@ function openPlanModal(){
   profileMenu.classList.remove("open");
 }
 
-function closePlanModal(){
-  planModal.classList.remove("open");
-}
+function closePlanModal(){planModal.classList.remove("open")}
 
 function selectPlan(plan){
   selectedPlan=plan;
@@ -1065,7 +1134,7 @@ async function confirmPlan(){
     email:currentUser.email||"",
     type:"plan",
     planKey:selectedPlan,
-    amount:amount,
+    amount,
     currency:"USD",
     status:"pending",
     createdAt:Date.now()
@@ -1074,20 +1143,17 @@ async function confirmPlan(){
   showToast(t[currentLang].pending);
 
   setTimeout(()=>{
-    location.href=checkoutUrl(
+    window.location.href=checkoutUrl(
       "paymentId="+paymentRef.key+
       "&type=plan"+
       "&plan="+selectedPlan+
       "&amount="+amount
     );
-  },500);
+  },450);
 }
 
 async function createBalancePayment(amount){
-  if(!currentUser){
-    location.href=authUrl();
-    return;
-  }
+  if(!currentUser){location.href=authUrl();return}
 
   const paymentRef=db.ref("payments").push();
 
@@ -1095,7 +1161,7 @@ async function createBalancePayment(amount){
     uid:currentUser.uid,
     email:currentUser.email||"",
     type:"balance",
-    amount:amount,
+    amount,
     currency:"USD",
     status:"pending",
     createdAt:Date.now()
@@ -1104,72 +1170,90 @@ async function createBalancePayment(amount){
   showToast(t[currentLang].pending);
 
   setTimeout(()=>{
-    location.href=checkoutUrl(
+    window.location.href=checkoutUrl(
       "paymentId="+paymentRef.key+
       "&type=balance"+
       "&amount="+amount
     );
-  },500);
+  },450);
 }
 
-async function saveName(){
+async function applySettings(){
   if(!currentUser)return;
 
   const name=nameInput.value.trim()||"Guest Artist";
+  const color=colorPicker.value;
+  const avatarFile=avatarInput.files[0];
+  const bgFile=bgInput.files[0];
+  const musicFile=musicInput.files[0];
 
-  await db.ref("users/"+currentUser.uid).update({
-    name:name,
+  applyAccent(color);
+  saveLocalCache({accent:color});
+
+  const updates={
+    name,
     email:currentUser.email||"",
     updatedAt:Date.now()
-  });
+  };
+
+  const settingsUpdates={
+    accent:color
+  };
+
+  if(avatarFile){
+    const local=URL.createObjectURL(avatarFile);
+    avatar.innerHTML=`<img src="${local}">`;
+    saveLocalCache({avatarUrl:local});
+
+    const ref=storage.ref("avatars/"+currentUser.uid+"/avatar_"+Date.now()+"_"+avatarFile.name);
+    await ref.put(avatarFile);
+    const url=await ref.getDownloadURL();
+
+    updates.avatarUrl=url;
+    avatar.innerHTML=`<img src="${url}">`;
+    saveLocalCache({avatarUrl:url});
+  }
+
+  if(bgFile){
+    const localBg=URL.createObjectURL(bgFile);
+    applyBackgroundImage(localBg);
+    saveLocalCache({backgroundUrl:localBg});
+
+    const ref=storage.ref("backgrounds/"+currentUser.uid+"/bg_"+Date.now()+"_"+bgFile.name);
+    await ref.put(bgFile);
+    const url=await ref.getDownloadURL();
+
+    settingsUpdates.backgroundUrl=url;
+    applyBackgroundImage(url);
+    saveLocalCache({backgroundUrl:url});
+  }
+
+  if(musicFile){
+    const localMusic=URL.createObjectURL(musicFile);
+    setMusic(localMusic,musicFile.name.replace(".mp3",""),"Custom track","♫");
+
+    const ref=storage.ref("music/"+currentUser.uid+"/music_"+Date.now()+"_"+musicFile.name);
+    await ref.put(musicFile);
+    const url=await ref.getDownloadURL();
+
+    settingsUpdates.customMusicUrl=url;
+    settingsUpdates.customMusicName=musicFile.name.replace(".mp3","");
+
+    setMusic(url,musicFile.name.replace(".mp3",""),"Custom track","♫");
+  }
+
+  await db.ref("users/"+currentUser.uid).update(updates);
+  await db.ref("users/"+currentUser.uid+"/settings").update(settingsUpdates);
 
   artistName.textContent=name;
-  saveLocalCache({name:name});
+  artistEmail.textContent=currentUser.email||"";
   showToast(t[currentLang].saved);
-}
-
-async function uploadAvatar(e){
-  const file=e.target.files[0];
-  if(!file||!currentUser)return;
-
-  const reader=new FileReader();
-  reader.onload=x=>{
-    avatar.innerHTML=`<img src="${x.target.result}">`;
-    saveLocalCache({avatarUrl:x.target.result});
-  };
-  reader.readAsDataURL(file);
-
-  const ref=storage.ref("avatars/"+currentUser.uid+"/avatar_"+Date.now()+"_"+file.name);
-  await ref.put(file);
-  const url=await ref.getDownloadURL();
-
-  await db.ref("users/"+currentUser.uid).update({avatarUrl:url});
-  avatar.innerHTML=`<img src="${url}">`;
-  saveLocalCache({avatarUrl:url});
-}
-
-async function uploadBackground(e){
-  const file=e.target.files[0];
-  if(!file||!currentUser)return;
-
-  const reader=new FileReader();
-  reader.onload=x=>{
-    applyBackgroundImage(x.target.result);
-    saveLocalCache({backgroundUrl:x.target.result});
-  };
-  reader.readAsDataURL(file);
-
-  const ref=storage.ref("backgrounds/"+currentUser.uid+"/bg_"+Date.now()+"_"+file.name);
-  await ref.put(file);
-  const url=await ref.getDownloadURL();
-
-  await db.ref("users/"+currentUser.uid+"/settings").update({backgroundUrl:url});
-  applyBackgroundImage(url);
-  saveLocalCache({backgroundUrl:url});
+  closeSettings();
 }
 
 function applyBackgroundImage(url){
   document.documentElement.style.setProperty("--custom-bg",`url('${url}')`);
+  document.body.classList.add("has-custom-bg");
 }
 
 async function saveAccent(color){
@@ -1186,30 +1270,6 @@ function applyAccent(color){
   if(document.getElementById("colorValue"))colorValue.textContent=color;
 }
 
-function uploadOwnMusic(){
-  ownMusicInput.click();
-}
-
-async function loadOwnMusic(e){
-  const file=e.target.files[0];
-  if(!file||!currentUser)return;
-
-  const localUrl=URL.createObjectURL(file);
-  setMusic(localUrl,file.name.replace(".mp3",""),"Custom track","♫");
-
-  const ref=storage.ref("music/"+currentUser.uid+"/music_"+Date.now()+"_"+file.name);
-  await ref.put(file);
-  const url=await ref.getDownloadURL();
-
-  await db.ref("users/"+currentUser.uid+"/settings").update({
-    customMusicUrl:url,
-    customMusicName:file.name.replace(".mp3","")
-  });
-
-  customMusicUrl=url;
-  setMusic(url,file.name.replace(".mp3",""),"Custom track","♫");
-}
-
 function setTrack(index){
   trackIndex=index;
   const track=tracks[trackIndex]||tracks[0];
@@ -1221,16 +1281,17 @@ function setMusic(src,title,sub,icon){
   trackTitle.textContent=title;
   trackSub.textContent=sub;
   trackCover.textContent=icon;
-  playPauseBtn.textContent="▶";
+  playPauseBtn.classList.remove("playing");
   musicPlaying=false;
 }
 
 async function nextTrack(){
   trackIndex=(trackIndex+1)%tracks.length;
   setTrack(trackIndex);
+
   if(currentUser){
     await db.ref("users/"+currentUser.uid+"/settings").update({
-      trackIndex:trackIndex,
+      trackIndex,
       customMusicUrl:null,
       customMusicName:null
     });
@@ -1240,9 +1301,10 @@ async function nextTrack(){
 async function prevTrack(){
   trackIndex=(trackIndex-1+tracks.length)%tracks.length;
   setTrack(trackIndex);
+
   if(currentUser){
     await db.ref("users/"+currentUser.uid+"/settings").update({
-      trackIndex:trackIndex,
+      trackIndex,
       customMusicUrl:null,
       customMusicName:null
     });
@@ -1255,11 +1317,11 @@ function toggleMusic(){
   if(!musicPlaying){
     bgMusic.volume=.35;
     bgMusic.play();
-    playPauseBtn.textContent="⏸";
+    playPauseBtn.classList.add("playing");
     musicPlaying=true;
   }else{
     bgMusic.pause();
-    playPauseBtn.textContent="▶";
+    playPauseBtn.classList.remove("playing");
     musicPlaying=false;
   }
 }
@@ -1271,9 +1333,7 @@ function showToast(text){
   toastTimer=setTimeout(()=>hideToast(),10000);
 }
 
-function hideToast(){
-  toastBox.classList.remove("open");
-}
+function hideToast(){toastBox.classList.remove("open")}
 
 async function logout(){
   await auth.signOut();
