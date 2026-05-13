@@ -11,677 +11,108 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-
-:root{
-  --accent:#e5092f;
-  --text:#f6f1ef;
-  --line:rgba(255,255,255,.15);
-  --custom-bg:none;
-}
-
-html,body{
-  min-height:100%;
-  background:#000;
-  color:var(--text);
-  font-family:Arial,sans-serif;
-}
-
-body{
-  overflow-x:hidden;
-  background:
-    linear-gradient(rgba(0,0,0,.68),rgba(0,0,0,.92)),
-    var(--custom-bg),
-    radial-gradient(circle at 50% -10%,color-mix(in srgb,var(--accent) 42%,transparent),transparent 35%),
-    linear-gradient(180deg,#050505 0%,#100206 45%,#000 100%);
-  background-size:cover;
-  background-position:center;
-  background-attachment:fixed;
-}
-
-body.has-custom-bg{
-  background:
-    linear-gradient(rgba(0,0,0,.70),rgba(0,0,0,.92)),
-    var(--custom-bg) center/cover fixed no-repeat,
-    #000;
-}
-
-body::before{
-  content:"妖 鬼 狐 墨 夜 刺青";
-  position:fixed;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-  color:rgba(255,255,255,.022);
-  font-size:78px;
-  letter-spacing:30px;
-  line-height:1.5;
-  transform:rotate(-12deg) scale(1.15);
-}
-
+:root{--accent:#e5092f;--text:#f6f1ef;--line:rgba(255,255,255,.15);--custom-bg:none}
+html,body{min-height:100%;background:#000;color:var(--text);font-family:Arial,sans-serif}
+body{overflow-x:hidden;background:linear-gradient(rgba(0,0,0,.68),rgba(0,0,0,.92)),var(--custom-bg),radial-gradient(circle at 50% -10%,color-mix(in srgb,var(--accent) 42%,transparent),transparent 35%),linear-gradient(180deg,#050505 0%,#100206 45%,#000 100%);background-size:cover;background-position:center;background-attachment:fixed}
+body.has-custom-bg{background:linear-gradient(rgba(0,0,0,.70),rgba(0,0,0,.92)),var(--custom-bg) center/cover fixed no-repeat,#000}
+body::before{content:"妖 鬼 狐 墨 夜 刺青";position:fixed;inset:0;z-index:0;pointer-events:none;color:rgba(255,255,255,.022);font-size:78px;letter-spacing:30px;line-height:1.5;transform:rotate(-12deg) scale(1.15)}
 button,input,select{font-family:inherit}
 button{cursor:pointer;transition:transform .12s ease,opacity .12s ease,background .2s ease,border-color .2s ease}
 button:active{transform:scale(.96);opacity:.88;background:color-mix(in srgb,var(--accent) 40%,rgba(255,255,255,.06))!important}
 
-.app{
-  position:relative;
-  z-index:2;
-  min-height:100vh;
-  padding:18px;
-  padding-bottom:112px;
-}
+.app{position:relative;z-index:2;min-height:100vh;padding:18px;padding-bottom:112px}
+.app::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle at 18% 18%,color-mix(in srgb,var(--accent) 22%,transparent),transparent 28%),radial-gradient(circle at 88% 8%,rgba(255,255,255,.06),transparent 24%);animation:luxuryBg 9s ease-in-out infinite alternate}
+@keyframes luxuryBg{from{opacity:.45;transform:translateY(0)}to{opacity:.85;transform:translateY(18px)}}
 
-.app::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  z-index:-1;
-  pointer-events:none;
-  background:
-    radial-gradient(circle at 18% 18%,color-mix(in srgb,var(--accent) 22%,transparent),transparent 28%),
-    radial-gradient(circle at 88% 8%,rgba(255,255,255,.06),transparent 24%);
-  animation:luxuryBg 9s ease-in-out infinite alternate;
-}
-
-@keyframes luxuryBg{
-  from{opacity:.45;transform:translateY(0)}
-  to{opacity:.85;transform:translateY(18px)}
-}
-
-.topbar{
-  position:sticky;
-  top:12px;
-  z-index:90;
-  height:76px;
-  display:grid;
-  grid-template-columns:56px 1fr auto;
-  align-items:center;
-  gap:14px;
-  padding:10px 12px;
-  border-radius:30px;
-  background:rgba(0,0,0,.78);
-  border:1px solid var(--line);
-  backdrop-filter:blur(28px);
-  box-shadow:0 24px 80px rgba(0,0,0,.78);
-}
-
-.menu-btn{
-  width:54px;
-  height:54px;
-  border-radius:20px;
-  border:1px solid rgba(255,255,255,.15);
-  background:rgba(255,255,255,.07);
-  color:#fff;
-  font-size:26px;
-}
-
-.logo{
-  justify-self:center;
-  position:relative;
-  transform:translateX(4px);
-  font-size:27px;
-  font-weight:950;
-  letter-spacing:.08em;
-  color:#fff;
-  text-shadow:0 0 24px color-mix(in srgb,var(--accent) 50%,transparent);
-}
-
-.logo::before,.logo::after{
-  content:"YYOKAI";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  opacity:.34;
-}
-
+.topbar{position:sticky;top:12px;z-index:90;height:76px;display:grid;grid-template-columns:56px 1fr auto;align-items:center;gap:14px;padding:10px 12px;border-radius:30px;background:rgba(0,0,0,.78);border:1px solid var(--line);backdrop-filter:blur(28px);box-shadow:0 24px 80px rgba(0,0,0,.78)}
+.menu-btn{width:54px;height:54px;border-radius:20px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.07);color:#fff;font-size:26px}
+.logo{justify-self:center;position:relative;transform:translateX(4px);font-size:27px;font-weight:950;letter-spacing:.08em;color:#fff;text-shadow:0 0 24px color-mix(in srgb,var(--accent) 50%,transparent)}
+.logo::before,.logo::after{content:"YYOKAI";position:absolute;inset:0;pointer-events:none;opacity:.34}
 .logo::before{color:var(--accent);animation:glitchA 2.8s infinite}
 .logo::after{color:#fff;animation:glitchB 3.3s infinite reverse}
-
-@keyframes glitchA{
-  0%,92%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0)}
-  93%{clip-path:inset(12% 0 64% 0);transform:translate(-2px,1px)}
-  95%{clip-path:inset(60% 0 18% 0);transform:translate(2px,-1px)}
-  97%{clip-path:inset(30% 0 38% 0);transform:translate(-1px,0)}
-}
-
-@keyframes glitchB{
-  0%,94%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0)}
-  95%{clip-path:inset(44% 0 30% 0);transform:translate(1px,0)}
-  97%{clip-path:inset(15% 0 58% 0);transform:translate(-1px,0)}
-}
+@keyframes glitchA{0%,92%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0)}93%{clip-path:inset(12% 0 64% 0);transform:translate(-2px,1px)}95%{clip-path:inset(60% 0 18% 0);transform:translate(2px,-1px)}97%{clip-path:inset(30% 0 38% 0);transform:translate(-1px,0)}}
+@keyframes glitchB{0%,94%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0)}95%{clip-path:inset(44% 0 30% 0);transform:translate(1px,0)}97%{clip-path:inset(15% 0 58% 0);transform:translate(-1px,0)}}
 
 .top-actions{display:flex;align-items:center;gap:10px}
-
-.lang{
-  display:flex;
-  align-items:center;
-  gap:5px;
-  padding:5px;
-  border-radius:999px;
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.1);
-}
-
-.lang button{
-  border:0;
-  background:transparent;
-  color:#999;
-  padding:8px 12px;
-  border-radius:999px;
-  font-weight:950;
-}
-
+.lang{display:flex;align-items:center;gap:5px;padding:5px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1)}
+.lang button{border:0;background:transparent;color:#999;padding:8px 12px;border-radius:999px;font-weight:950}
 .lang button.active{background:#fff;color:#000}
 
 .profile{position:relative;z-index:100}
-
-.avatar{
-  width:54px;
-  height:54px;
-  border-radius:50%;
-  overflow:hidden;
-  display:grid;
-  place-items:center;
-  font-size:26px;
-  font-weight:950;
-  color:var(--accent);
-  background:linear-gradient(135deg,#130005,#050505);
-  border:1px solid rgba(255,255,255,.18);
-  box-shadow:0 0 30px color-mix(in srgb,var(--accent) 45%,transparent);
-  text-shadow:0 0 18px var(--accent);
-}
-
+.avatar{width:54px;height:54px;border-radius:50%;overflow:hidden;display:grid;place-items:center;font-size:26px;font-weight:950;color:var(--accent);background:linear-gradient(135deg,#130005,#050505);border:1px solid rgba(255,255,255,.18);box-shadow:0 0 30px color-mix(in srgb,var(--accent) 45%,transparent);text-shadow:0 0 18px var(--accent)}
 .avatar img{width:100%;height:100%;object-fit:cover}
-
-.profile-menu{
-  position:absolute;
-  right:0;
-  top:66px;
-  width:min(390px,calc(100vw - 30px));
-  display:none;
-  padding:18px;
-  border-radius:28px;
-  background:rgba(0,0,0,.9);
-  border:1px solid rgba(255,255,255,.14);
-  backdrop-filter:blur(30px);
-  box-shadow:0 35px 100px rgba(0,0,0,.88);
-}
-
+.profile-menu{position:absolute;right:0;top:66px;width:min(390px,calc(100vw - 30px));display:none;padding:18px;border-radius:28px;background:rgba(0,0,0,.9);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(30px);box-shadow:0 35px 100px rgba(0,0,0,.88)}
 .profile-menu.open{display:block}
+.profile-name{font-size:22px;font-weight:950}.profile-email{margin-top:4px;color:#aaa;font-size:13px}.balance{margin-top:12px;color:#aaa}.balance strong{color:#fff;font-size:20px}
 
-.profile-name{font-size:22px;font-weight:950}
-.profile-email{margin-top:4px;color:#aaa;font-size:13px}
-.balance{margin-top:12px;color:#aaa}
-.balance strong{color:#fff;font-size:20px}
-
-.player{
-  margin:16px 0;
-  padding:12px;
-  border-radius:22px;
-  background:rgba(7,7,7,.86);
-  border:1px solid rgba(255,255,255,.14);
-  display:grid;
-  grid-template-columns:50px 1fr auto;
-  gap:12px;
-  align-items:center;
-}
-
-.cover{
-  width:50px;
-  height:50px;
-  border-radius:16px;
-  display:grid;
-  place-items:center;
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.12);
-}
-
-.track-title{font-size:14px;font-weight:950}
-.track-sub{font-size:12px;color:#888;margin-top:3px}
-
-.music-controls{
-  display:flex;
-  gap:8px;
-  align-items:center;
-  justify-content:center;
-}
-
-.music-controls button{
-  width:42px!important;
-  height:42px!important;
-  min-width:42px!important;
-  min-height:42px!important;
-  padding:0!important;
-  border-radius:14px!important;
-  border:1px solid rgba(255,255,255,.14)!important;
-  background:rgba(255,255,255,.075)!important;
-  box-shadow:none!important;
-  outline:none!important;
-  color:#fff!important;
-  font-size:0!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  line-height:1!important;
-  appearance:none!important;
-  -webkit-appearance:none!important;
-}
-
-.music-controls button::before{font-size:22px;line-height:1;display:block}
-.prevBtn::before{content:"‹"}
-.playBtn::before{content:"▶"}
-.nextBtn::before{content:"›"}
-.playBtn.playing::before{content:"Ⅱ";font-size:20px}
-
-.profile-menu button{
-  width:100%;
-  margin-top:6px;
-  padding:14px;
-  border:0;
-  border-radius:16px;
-  background:transparent;
-  color:#bbb;
-  text-align:left;
-  font-weight:900;
-}
-
+.player{margin:16px 0;padding:12px;border-radius:22px;background:rgba(7,7,7,.86);border:1px solid rgba(255,255,255,.14);display:grid;grid-template-columns:50px 1fr auto;gap:12px;align-items:center}
+.cover{width:50px;height:50px;border-radius:16px;display:grid;place-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12)}
+.track-title{font-size:14px;font-weight:950}.track-sub{font-size:12px;color:#888;margin-top:3px}
+.music-controls{display:flex;gap:8px;align-items:center;justify-content:center}
+.music-controls button{width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;padding:0!important;border-radius:14px!important;border:1px solid rgba(255,255,255,.14)!important;background:rgba(255,255,255,.075)!important;box-shadow:none!important;outline:none!important;color:#fff!important;font-size:0!important;display:flex!important;align-items:center!important;justify-content:center!important;line-height:1!important;appearance:none!important;-webkit-appearance:none!important}
+.music-controls button::before{font-size:22px;line-height:1;display:block}.prevBtn::before{content:"‹"}.playBtn::before{content:"▶"}.nextBtn::before{content:"›"}.playBtn.playing::before{content:"Ⅱ";font-size:20px}
+.profile-menu button{width:100%;margin-top:6px;padding:14px;border:0;border-radius:16px;background:transparent;color:#bbb;text-align:left;font-weight:900}
 .profile-menu button:hover{background:rgba(255,255,255,.08);color:#fff}
 
-.side-overlay{
-  position:fixed;
-  inset:0;
-  z-index:94;
-  background:rgba(0,0,0,.35);
-  display:none;
-  backdrop-filter:blur(2px);
-}
-
+.side-overlay{position:fixed;inset:0;z-index:94;background:rgba(0,0,0,.35);display:none;backdrop-filter:blur(2px)}
 .side-overlay.open{display:block}
-
-.side-menu{
-  position:fixed;
-  left:-290px;
-  top:0;
-  bottom:0;
-  width:280px;
-  z-index:95;
-  padding:22px;
-  background:rgba(0,0,0,.94);
-  border-right:1px solid rgba(255,255,255,.12);
-  backdrop-filter:blur(30px);
-  transition:.25s ease;
-  box-shadow:30px 0 90px rgba(0,0,0,.85);
-  overflow:hidden;
-}
-
+.side-menu{position:fixed;left:-290px;top:0;bottom:0;width:280px;z-index:95;padding:22px;background:rgba(0,0,0,.94);border-right:1px solid rgba(255,255,255,.12);backdrop-filter:blur(30px);transition:.25s ease;box-shadow:30px 0 90px rgba(0,0,0,.85);overflow:hidden}
 .side-menu.open{left:0}
-
-.side-menu::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background:
-    radial-gradient(circle at 50% 5%,color-mix(in srgb,var(--accent) 28%,transparent),transparent 35%),
-    linear-gradient(180deg,rgba(255,255,255,.055),transparent 42%);
-  opacity:.95;
-}
-
-.side-menu::after{
-  content:"妖";
-  position:absolute;
-  left:50%;
-  bottom:55px;
-  transform:translateX(-50%);
-  font-size:130px;
-  font-weight:900;
-  color:color-mix(in srgb,var(--accent) 18%,transparent);
-  pointer-events:none;
-}
-
-.side-head{
-  position:relative;
-  z-index:2;
-  display:grid;
-  grid-template-columns:42px 1fr 42px;
-  align-items:center;
-  margin-bottom:28px;
-}
-
-.side-logo-img{
-  grid-column:2;
-  justify-self:center;
-  width:62px;
-  height:62px;
-  border-radius:22px;
-  object-fit:cover;
-  border:1px solid rgba(255,255,255,.16);
-  box-shadow:0 0 32px color-mix(in srgb,var(--accent) 45%,transparent);
-  background:#080808;
-}
-
-.close-side{
-  grid-column:3;
-  width:42px;
-  height:42px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.07);
-  color:#fff;
-  font-size:18px;
-}
-
-.side-nav{
-  position:relative;
-  z-index:2;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.side-nav button{
-  position:relative;
-  overflow:hidden;
-  height:56px;
-  border-radius:19px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.055);
-  color:#bbb;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:0 14px;
-  font-weight:950;
-}
-
-.side-nav button::before{
-  content:"";
-  position:absolute;
-  left:0;
-  top:12px;
-  bottom:12px;
-  width:3px;
-  border-radius:999px;
-  background:var(--accent);
-  opacity:0;
-  box-shadow:0 0 18px var(--accent);
-  transition:.22s;
-}
-
+.side-menu::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 5%,color-mix(in srgb,var(--accent) 28%,transparent),transparent 35%),linear-gradient(180deg,rgba(255,255,255,.055),transparent 42%);opacity:.95}
+.side-menu::after{content:"妖";position:absolute;left:50%;bottom:55px;transform:translateX(-50%);font-size:130px;font-weight:900;color:color-mix(in srgb,var(--accent) 18%,transparent);pointer-events:none}
+.side-head{position:relative;z-index:2;display:grid;grid-template-columns:42px 1fr 42px;align-items:center;margin-bottom:28px}
+.side-logo-img{grid-column:2;justify-self:center;width:62px;height:62px;border-radius:22px;object-fit:cover;border:1px solid rgba(255,255,255,.16);box-shadow:0 0 32px color-mix(in srgb,var(--accent) 45%,transparent);background:#080808}
+.close-side{grid-column:3;width:42px;height:42px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:#fff;font-size:18px}
+.side-nav{position:relative;z-index:2;display:flex;flex-direction:column;gap:10px}
+.side-nav button{position:relative;overflow:hidden;height:56px;border-radius:19px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.055);color:#bbb;display:flex;align-items:center;gap:12px;padding:0 14px;font-weight:950}
+.side-nav button::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:999px;background:var(--accent);opacity:0;box-shadow:0 0 18px var(--accent);transition:.22s}
 .side-nav button:hover::before{opacity:1}
 
-.hero{
-  margin-top:20px;
-  padding:34px;
-  border-radius:38px;
-  background:
-    radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent) 42%,transparent),transparent 36%),
-    linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.04));
-  border:1px solid rgba(255,255,255,.2);
-  backdrop-filter:blur(20px);
-}
+.hero{margin-top:20px;padding:34px;border-radius:38px;background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent) 42%,transparent),transparent 36%),linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(20px)}
+.hero h1{font-size:clamp(44px,9vw,88px);line-height:.95;letter-spacing:-.04em;color:#fff}
+.hero p{margin-top:18px;max-width:760px;color:#e0d9d6;line-height:1.6;font-size:20px}
 
-.hero h1{
-  font-size:clamp(44px,9vw,88px);
-  line-height:.95;
-  letter-spacing:-.04em;
-  color:#fff;
-}
+.stats{margin-top:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.stat{padding:20px;border-radius:28px;background:rgba(7,7,7,.82);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(20px)}
+.stat.clickable{cursor:pointer;transition:.25s}.stat.clickable:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--accent) 55%,transparent)}
+.stat span{display:block;color:#bbb;font-size:13px;font-weight:900;margin-bottom:10px}.stat strong{font-size:28px;color:#fff}
 
-.hero p{
-  margin-top:18px;
-  max-width:760px;
-  color:#e0d9d6;
-  line-height:1.6;
-  font-size:20px;
-}
-
-.stats{
-  margin-top:18px;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
-}
-
-.stat{
-  padding:20px;
-  border-radius:28px;
-  background:rgba(7,7,7,.82);
-  border:1px solid rgba(255,255,255,.16);
-  backdrop-filter:blur(20px);
-}
-
-.stat.clickable{cursor:pointer;transition:.25s}
-.stat.clickable:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--accent) 55%,transparent)}
-.stat span{display:block;color:#bbb;font-size:13px;font-weight:900;margin-bottom:10px}
-.stat strong{font-size:28px;color:#fff}
-
-.focus-grid{
-  margin-top:18px;
-  display:grid;
-  grid-template-columns:1.1fr .9fr;
-  gap:14px;
-}
-
-.panel{
-  padding:24px;
-  border-radius:32px;
-  background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.035));
-  border:1px solid rgba(255,255,255,.18);
-  backdrop-filter:blur(20px);
-}
-
-.panel h2{font-size:24px;margin-bottom:12px;color:#fff}
-.panel p{color:#d2cdca;line-height:1.6}
-
-.panel-actions{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-  margin-top:22px;
-}
-
-.workflow-btn{
-  width:100%;
-  min-width:0;
-  border:1px solid rgba(255,255,255,.16);
-  border-radius:999px;
-  padding:14px 10px;
-  background:rgba(255,255,255,.07);
-  color:#fff;
-  font-weight:950;
-  box-shadow:none;
-  text-align:center;
-}
-
+.focus-grid{margin-top:18px;display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
+.panel{padding:24px;border-radius:32px;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.035));border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(20px)}
+.panel h2{font-size:24px;margin-bottom:12px;color:#fff}.panel p{color:#d2cdca;line-height:1.6}
+.panel-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
+.workflow-btn{width:100%;min-width:0;border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:14px 10px;background:rgba(255,255,255,.07);color:#fff;font-weight:950;box-shadow:none;text-align:center}
 .workflow-btn:active{background:color-mix(in srgb,var(--accent) 40%,rgba(255,255,255,.07))!important}
 
-.dock{
-  position:fixed;
-  left:50%;
-  bottom:18px;
-  transform:translateX(-50%);
-  z-index:85;
-  width:min(720px,calc(100vw - 28px));
-  padding:10px;
-  border-radius:32px;
-  background:rgba(0,0,0,.84);
-  border:1px solid rgba(255,255,255,.14);
-  backdrop-filter:blur(30px);
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:8px;
-}
+.dock{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:85;width:min(720px,calc(100vw - 28px));padding:10px;border-radius:32px;background:rgba(0,0,0,.84);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(30px);display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.dock button{height:60px;border:0;border-radius:22px;background:transparent;color:#999;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;font-weight:950;font-size:11px}
+.dock button i{font-style:normal;font-size:22px}.dock button:hover,.dock button.active{background:rgba(255,255,255,.07);color:#fff}
 
-.dock button{
-  height:60px;
-  border:0;
-  border-radius:22px;
-  background:transparent;
-  color:#999;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  gap:5px;
-  font-weight:950;
-  font-size:11px;
-}
-
-.dock button i{font-style:normal;font-size:22px}
-.dock button:hover,.dock button.active{background:rgba(255,255,255,.07);color:#fff}
-
-.settings,.pay-modal{
-  position:fixed;
-  inset:0;
-  z-index:130;
-  display:none;
-  place-items:center;
-  padding:20px;
-  background:rgba(0,0,0,.82);
-  backdrop-filter:blur(16px);
-}
-
+.settings,.pay-modal{position:fixed;inset:0;z-index:130;display:none;place-items:center;padding:20px;background:rgba(0,0,0,.82);backdrop-filter:blur(16px)}
 .settings.open,.pay-modal.open{display:grid}
-
-.modal,.pay-box{
-  width:100%;
-  max-width:760px;
-  max-height:90vh;
-  overflow:auto;
-  padding:24px;
-  border-radius:34px;
-  background:#050505;
-  border:1px solid rgba(255,255,255,.14);
-}
-
+.modal,.pay-box{width:100%;max-width:760px;max-height:90vh;overflow:auto;padding:24px;border-radius:34px;background:#050505;border:1px solid rgba(255,255,255,.14)}
 .modal-head,.pay-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-
-.close,.pay-close{
-  width:42px;
-  height:42px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.06);
-  color:#fff;
-  font-size:22px;
-}
-
-.row{padding:14px 0;border-top:1px solid rgba(255,255,255,.09)}
-.row label{display:block;margin-bottom:8px;color:#aaa;font-size:13px;font-weight:900}
-
-.row input,.row select{
-  width:100%;
-  padding:14px;
-  border-radius:16px;
-  border:1px solid rgba(255,255,255,.13);
-  background:rgba(255,255,255,.055);
-  color:#fff;
-  outline:none;
-}
-
+.close,.pay-close{width:42px;height:42px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;font-size:22px}
+.row{padding:14px 0;border-top:1px solid rgba(255,255,255,.09)}.row label{display:block;margin-bottom:8px;color:#aaa;font-size:13px;font-weight:900}
+.row input,.row select{width:100%;padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.055);color:#fff;outline:none}
 .color-row{display:flex;align-items:center;gap:14px}
+#colorPicker{width:62px;height:62px;border-radius:50%;padding:0;border:2px solid rgba(255,255,255,.18);overflow:hidden;background:transparent;appearance:none;-webkit-appearance:none}
+#colorPicker::-webkit-color-swatch-wrapper{padding:0}#colorPicker::-webkit-color-swatch{border:none;border-radius:50%}
+.apply-btn,.confirm-plan{margin-top:18px;width:100%;padding:16px 18px;border:0;border-radius:999px;background:#ffffff!important;color:#050505!important;font-weight:950;box-shadow:none!important}
 
-#colorPicker{
-  width:62px;
-  height:62px;
-  border-radius:50%;
-  padding:0;
-  border:2px solid rgba(255,255,255,.18);
-  overflow:hidden;
-  background:transparent;
-  appearance:none;
-  -webkit-appearance:none;
-}
-
-#colorPicker::-webkit-color-swatch-wrapper{padding:0}
-#colorPicker::-webkit-color-swatch{border:none;border-radius:50%}
-
-.apply-btn,.confirm-plan{
-  margin-top:18px;
-  width:100%;
-  padding:16px 18px;
-  border:0;
-  border-radius:999px;
-  background:#ffffff!important;
-  color:#050505!important;
-  font-weight:950;
-  box-shadow:none!important;
-}
-
-.plan-grid,.balance-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:14px;
-}
-
-.plan-card,.balance-card{
-  width:100%;
-  text-align:left;
-  display:block;
-  padding:22px;
-  border-radius:28px;
-  border:1px solid rgba(255,255,255,.12);
-  background:
-    radial-gradient(circle at top right,color-mix(in srgb,var(--accent) 25%,transparent),transparent 36%),
-    linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.03));
-  color:#fff;
-  cursor:pointer;
-  pointer-events:auto;
-}
-
+.plan-grid,.balance-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.plan-card,.balance-card{width:100%;text-align:left;display:block;padding:22px;border-radius:28px;border:1px solid rgba(255,255,255,.12);background:radial-gradient(circle at top right,color-mix(in srgb,var(--accent) 25%,transparent),transparent 36%),linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.03));color:#fff;cursor:pointer;pointer-events:auto}
 .plan-card.selected{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 25%,transparent)}
-.plan-price,.balance-price{font-size:34px;font-weight:950}
-.plan-name,.balance-name{margin:10px 0;font-weight:950}
-.plan-card ul{list-style:none;display:flex;flex-direction:column;gap:8px;color:#bbb;font-size:14px}
-.plan-card li::before{content:"✦ ";color:var(--accent)}
+.plan-price,.balance-price{font-size:34px;font-weight:950}.plan-name,.balance-name{margin:10px 0;font-weight:950}
+.plan-card ul{list-style:none;display:flex;flex-direction:column;gap:8px;color:#bbb;font-size:14px}.plan-card li::before{content:"✦ ";color:var(--accent)}
 .balance-card p{color:#bbb;margin-top:8px;line-height:1.5}
 
-.toast{
-  position:fixed;
-  left:50%;
-  bottom:105px;
-  transform:translateX(-50%) translateY(30px);
-  z-index:300;
-  width:min(430px,calc(100vw - 30px));
-  padding:18px 54px 18px 18px;
-  border-radius:24px;
-  background:rgba(0,0,0,.94);
-  border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);
-  color:#fff;
-  box-shadow:0 20px 80px rgba(0,0,0,.7);
-  opacity:0;
-  pointer-events:none;
-  transition:.25s;
-}
-
+.toast{position:fixed;left:50%;bottom:105px;transform:translateX(-50%) translateY(30px);z-index:300;width:min(430px,calc(100vw - 30px));padding:18px 54px 18px 18px;border-radius:24px;background:rgba(0,0,0,.94);border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);color:#fff;box-shadow:0 20px 80px rgba(0,0,0,.7);opacity:0;pointer-events:none;transition:.25s}
 .toast.open{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
-
-.toast button{
-  position:absolute;
-  right:12px;
-  top:12px;
-  width:32px;
-  height:32px;
-  border-radius:12px;
-  border:0;
-  background:rgba(255,255,255,.08);
-  color:#fff;
-}
-
+.toast button{position:absolute;right:12px;top:12px;width:32px;height:32px;border-radius:12px;border:0;background:rgba(255,255,255,.08);color:#fff}
 audio{display:none}
-
-@media(max-width:720px){
-  .stats,.focus-grid,.plan-grid,.balance-grid{grid-template-columns:1fr}
-  .hero{padding:28px 22px}
-  .hero p{font-size:17px}
-  .logo{font-size:26px}
-  .panel-actions{grid-template-columns:repeat(3,1fr)}
-  .workflow-btn{padding:14px 8px;font-size:14px}
-}
-
-@media(max-width:390px){
-  .panel-actions{grid-template-columns:1fr}
-}
+@media(max-width:720px){.stats,.focus-grid,.plan-grid,.balance-grid{grid-template-columns:1fr}.hero{padding:28px 22px}.hero p{font-size:17px}.logo{font-size:26px}.panel-actions{grid-template-columns:repeat(3,1fr)}.workflow-btn{padding:14px 8px;font-size:14px}}
+@media(max-width:390px){.panel-actions{grid-template-columns:1fr}}
 </style>
 </head>
 
@@ -795,17 +226,14 @@ audio{display:none}
         <div class="plan-price">$0</div><div class="plan-name">Free</div>
         <ul><li data-i18n="free1">3 генерації стенсила</li><li data-i18n="free2">3 генерації ескізу</li><li data-i18n="free3">3 A4 розділення</li><li data-i18n="free4">50 записів клієнтів</li></ul>
       </button>
-
       <button type="button" class="plan-card" data-plan="starter" onclick="selectPlan('starter')">
         <div class="plan-price">$10</div><div class="plan-name" data-i18n="starterName">Starter / місяць</div>
         <ul><li data-i18n="starter1">250 генерацій стенсила</li><li data-i18n="starter2">250 генерацій ескізу</li><li data-i18n="starter3">50 A4 розділень</li><li data-i18n="starter4">100 записів клієнтів</li></ul>
       </button>
-
       <button type="button" class="plan-card" data-plan="pro" onclick="selectPlan('pro')">
         <div class="plan-price">$20</div><div class="plan-name" data-i18n="proName">Pro / місяць</div>
         <ul><li data-i18n="pro1">500 генерацій стенсила</li><li data-i18n="pro2">500 генерацій ескізу</li><li data-i18n="pro3">100 A4 розділень</li><li data-i18n="pro4">150 записів клієнтів</li></ul>
       </button>
-
       <button type="button" class="plan-card" data-plan="yokai" onclick="selectPlan('yokai')">
         <div class="plan-price">$30</div><div class="plan-name" data-i18n="yokaiName">YYOKAI Full / місяць</div>
         <ul><li data-i18n="yokai1">Повний доступ</li><li data-i18n="yokai2">Безлімітний workflow</li><li data-i18n="yokai3">Premium tools</li><li data-i18n="yokai4">Custom studio mode</li></ul>
@@ -897,13 +325,7 @@ firebase.initializeApp(firebaseConfig);
 const auth=firebase.auth();
 const db=firebase.database();
 
-let currentUser=null;
-let currentLang="uk";
-let currentPlanKey="free";
-let selectedPlan=null;
-let musicPlaying=false;
-let trackIndex=0;
-let toastTimer=null;
+let currentUser=null,currentLang="uk",currentPlanKey="free",selectedPlan=null,musicPlaying=false,trackIndex=0,toastTimer=null;
 
 const tracks=[
   {title:"Japanese Chill",sub:"YYOKAI playlist",icon:"⛩",src:"music/japan-chill.mp3"},
@@ -913,69 +335,36 @@ const tracks=[
 
 const t={
 uk:{
-navStencil:"AI Stencil",navGenerate:"AI генерація",navBookings:"Записи",navSplit:"A4 друк",navFiles:"Файли",
-balance:"Баланс",addBalance:"Поповнити баланс",settings:"Налаштування",logout:"Вийти",
+navStencil:"AI Stencil",navGenerate:"AI генерація",navBookings:"Записи",navSplit:"A4 друк",navFiles:"Файли",balance:"Баланс",addBalance:"Поповнити баланс",settings:"Налаштування",logout:"Вийти",
 heroTitle:"Welcome back, artist",heroText:"Твоя преміальна система для тату-майстра: генерації, записи, музика, атмосфера, баланс, файли та workflow в одному місці.",
-statBalance:"Баланс",statPlan:"План",statBookings:"Записи",
-workflowTitle:"Start your workflow",workflowText:"Почни з потрібного інструмента. Чистий інтерфейс без перевантаження.",
-bookingsBtn:"Записи",studioTitle:"Studio mode",studioText:"Твій простір. Музика, колір, атмосфера, фон і профіль — все персоналізується.",
-dockBookings:"Записи",choosePlan:"Оберіть план",topUpBalance:"Поповнити баланс",confirmPlan:"Підтвердити план",
-starterName:"Starter / місяць",proName:"Pro / місяць",yokaiName:"YYOKAI Full / місяць",
-free1:"3 генерації стенсила",free2:"3 генерації ескізу",free3:"3 A4 розділення",free4:"50 записів клієнтів",
-starter1:"250 генерацій стенсила",starter2:"250 генерацій ескізу",starter3:"50 A4 розділень",starter4:"100 записів клієнтів",
-pro1:"500 генерацій стенсила",pro2:"500 генерацій ескізу",pro3:"100 A4 розділень",pro4:"150 записів клієнтів",
-yokai1:"Повний доступ",yokai2:"Безлімітний workflow",yokai3:"Premium tools",yokai4:"Custom studio mode",
+statBalance:"Баланс",statPlan:"План",statBookings:"Записи",workflowTitle:"Start your workflow",workflowText:"Почни з потрібного інструмента. Чистий інтерфейс без перевантаження.",bookingsBtn:"Записи",studioTitle:"Studio mode",studioText:"Твій простір. Музика, колір, атмосфера, фон і профіль — все персоналізується.",dockBookings:"Записи",
+choosePlan:"Оберіть план",topUpBalance:"Поповнити баланс",confirmPlan:"Підтвердити план",starterName:"Starter / місяць",proName:"Pro / місяць",yokaiName:"YYOKAI Full / місяць",
+free1:"3 генерації стенсила",free2:"3 генерації ескізу",free3:"3 A4 розділення",free4:"50 записів клієнтів",starter1:"250 генерацій стенсила",starter2:"250 генерацій ескізу",starter3:"50 A4 розділень",starter4:"100 записів клієнтів",pro1:"500 генерацій стенсила",pro2:"500 генерацій ескізу",pro3:"100 A4 розділень",pro4:"150 записів клієнтів",yokai1:"Повний доступ",yokai2:"Безлімітний workflow",yokai3:"Premium tools",yokai4:"Custom studio mode",
 balance10:"Легкий старт для перевірки інструментів.",balance20:"Для активної роботи з клієнтами.",balance30:"Більше свободи для щоденного workflow.",balance50:"Запас для інтенсивної роботи студії.",
-avatarLabel:"Змінити фото профілю",nameLabel:"Нік майстра",colorLabel:"Колір системи",bgLabel:"Фон кабінету",applySettings:"Застосувати",
-pending:"Оплату створено. Переходимо до checkout.",saved:"Збережено.",saving:"Зберігаємо...",thanks:"Дякую за покупку. Оплата очікує підтвердження."
+avatarLabel:"Змінити фото профілю",nameLabel:"Нік майстра",colorLabel:"Колір системи",bgLabel:"Фон кабінету",applySettings:"Застосувати",pending:"Оплату створено. Переходимо до checkout.",saved:"Збережено.",saving:"Зберігаємо...",thanks:"Дякую за покупку. Оплата очікує підтвердження."
 },
 en:{
-navStencil:"AI Stencil",navGenerate:"AI Generate",navBookings:"Bookings",navSplit:"A4 Print",navFiles:"Files",
-balance:"Balance",addBalance:"Add balance",settings:"Settings",logout:"Logout",
+navStencil:"AI Stencil",navGenerate:"AI Generate",navBookings:"Bookings",navSplit:"A4 Print",navFiles:"Files",balance:"Balance",addBalance:"Add balance",settings:"Settings",logout:"Logout",
 heroTitle:"Welcome back, artist",heroText:"Your premium tattoo artist system: generations, bookings, music, atmosphere, balance, files and workflow in one place.",
-statBalance:"Balance",statPlan:"Plan",statBookings:"Bookings",
-workflowTitle:"Start your workflow",workflowText:"Start with the tool you need. Clean interface without overload.",
-bookingsBtn:"Bookings",studioTitle:"Studio mode",studioText:"Your space. Music, color, atmosphere, background and profile — everything is personal.",
-dockBookings:"Bookings",choosePlan:"Choose your plan",topUpBalance:"Top up balance",confirmPlan:"Confirm plan",
-starterName:"Starter / month",proName:"Pro / month",yokaiName:"YYOKAI Full / month",
-free1:"3 stencil generations",free2:"3 sketch generations",free3:"3 A4 splits",free4:"50 client bookings",
-starter1:"250 stencil generations",starter2:"250 sketch generations",starter3:"50 A4 splits",starter4:"100 client bookings",
-pro1:"500 stencil generations",pro2:"500 sketch generations",pro3:"100 A4 splits",pro4:"150 client bookings",
-yokai1:"Full access",yokai2:"Unlimited workflow",yokai3:"Premium tools",yokai4:"Custom studio mode",
+statBalance:"Balance",statPlan:"Plan",statBookings:"Bookings",workflowTitle:"Start your workflow",workflowText:"Start with the tool you need. Clean interface without overload.",bookingsBtn:"Bookings",studioTitle:"Studio mode",studioText:"Your space. Music, color, atmosphere, background and profile — everything is personal.",dockBookings:"Bookings",
+choosePlan:"Choose your plan",topUpBalance:"Top up balance",confirmPlan:"Confirm plan",starterName:"Starter / month",proName:"Pro / month",yokaiName:"YYOKAI Full / month",
+free1:"3 stencil generations",free2:"3 sketch generations",free3:"3 A4 splits",free4:"50 client bookings",starter1:"250 stencil generations",starter2:"250 sketch generations",starter3:"50 A4 splits",starter4:"100 client bookings",pro1:"500 stencil generations",pro2:"500 sketch generations",pro3:"100 A4 splits",pro4:"150 client bookings",yokai1:"Full access",yokai2:"Unlimited workflow",yokai3:"Premium tools",yokai4:"Custom studio mode",
 balance10:"A light start to test the tools.",balance20:"For active client work.",balance30:"More freedom for daily workflow.",balance50:"Reserve for intensive studio work.",
-avatarLabel:"Change profile photo",nameLabel:"Artist nickname",colorLabel:"System color",bgLabel:"Dashboard background",applySettings:"Apply",
-pending:"Payment created. Redirecting to checkout.",saved:"Saved.",saving:"Saving...",thanks:"Thank you for your purchase. Payment is waiting for confirmation."
+avatarLabel:"Change profile photo",nameLabel:"Artist nickname",colorLabel:"System color",bgLabel:"Dashboard background",applySettings:"Apply",pending:"Payment created. Redirecting to checkout.",saved:"Saved.",saving:"Saving...",thanks:"Thank you for your purchase. Payment is waiting for confirmation."
 }
 };
 
 function authUrl(){return BASE_PATH+"artist-auth.html"}
 function checkoutUrl(params){return BASE_PATH+"checkout.html?"+params}
-
-function cacheKey(){
-  return currentUser ? "yyokai_profile_"+currentUser.uid : "yyokai_profile_guest";
-}
+function cacheKey(){return currentUser?"yyokai_profile_"+currentUser.uid:"yyokai_profile_guest"}
 
 function loadLocalCache(){
   const cached=JSON.parse(localStorage.getItem(cacheKey())||"{}");
-
-  if(cached.name){
-    artistName.textContent=cached.name;
-    nameInput.value=cached.name;
-  }
-
-  if(cached.accent){
-    applyAccent(cached.accent);
-  }
-
-  if(cached.avatarUrl){
-    avatar.innerHTML=`<img src="${cached.avatarUrl}">`;
-  }
-
-  if(cached.backgroundUrl){
-    applyBackgroundImage(cached.backgroundUrl);
-  }
+  if(cached.name){artistName.textContent=cached.name;nameInput.value=cached.name}
+  if(cached.accent)applyAccent(cached.accent);
+  if(cached.avatarUrl)avatar.innerHTML=`<img src="${cached.avatarUrl}">`;
+  if(cached.backgroundUrl)applyBackgroundImage(cached.backgroundUrl);
 }
-
 function saveLocalCache(data){
   const key=cacheKey();
   const old=JSON.parse(localStorage.getItem(key)||"{}");
@@ -983,44 +372,34 @@ function saveLocalCache(data){
 }
 
 auth.onAuthStateChanged(async user=>{
-  if(!user){
-    location.href=authUrl();
-    return;
-  }
-
+  if(!user){location.href=authUrl();return}
   currentUser=user;
-
   await checkPaymentReturn();
 
   const snap=await db.ref("users/"+user.uid).once("value");
   const data=snap.val()||{};
-
   const email=user.email||data.email||"";
   const name=data.name||user.displayName||"Guest Artist";
 
-  await db.ref("users/"+user.uid).update({
-    email,
-    name,
-    updatedAt:Date.now()
-  });
+  await db.ref("users/"+user.uid).update({email,name,updatedAt:Date.now()});
 
   artistName.textContent=name;
   artistEmail.textContent=email;
   nameInput.value=name;
-
   loadLocalCache();
 
-  const balance=Number(data.balance||0).toFixed(2);
-  balanceValue.textContent="$"+balance;
-  balanceMain.textContent="$"+balance;
+  db.ref("users/"+user.uid+"/balance").on("value",snap=>{
+    const balance=Number(snap.val()||0).toFixed(2);
+    balanceValue.textContent="$"+balance;
+    balanceMain.textContent="$"+balance;
+  });
 
-  currentPlanKey=data.planKey||"free";
-  displayPlan();
+  db.ref("users/"+user.uid+"/planKey").on("value",snap=>{
+    currentPlanKey=snap.val()||"free";
+    displayPlan();
+  });
 
-  if(data.settings&&data.settings.accent){
-    applyAccent(data.settings.accent);
-  }
-
+  if(data.settings&&data.settings.accent)applyAccent(data.settings.accent);
   setTrack(data.settings&&typeof data.settings.trackIndex==="number"?data.settings.trackIndex:0);
 
   const bookingsSnap=await db.ref("users/"+user.uid+"/clients").once("value");
@@ -1031,9 +410,7 @@ async function checkPaymentReturn(){
   const params=new URLSearchParams(window.location.search);
   const paymentId=params.get("paymentId");
   const paid=params.get("paid");
-
   if(!paymentId||paid!=="1")return;
-
   showToast(t[currentLang].thanks);
   history.replaceState({},document.title,window.location.pathname);
 }
@@ -1041,88 +418,53 @@ async function checkPaymentReturn(){
 function setLang(lang,btn){
   currentLang=lang;
   document.documentElement.lang=lang;
-
   Object.keys(t[lang]).forEach(key=>{
-    document.querySelectorAll(`[data-i18n="${key}"]`).forEach(el=>{
-      el.textContent=t[lang][key];
-    });
+    document.querySelectorAll(`[data-i18n="${key}"]`).forEach(el=>el.textContent=t[lang][key]);
   });
-
   document.querySelectorAll(".lang button").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
   displayPlan();
 }
-
 function displayPlan(){
   const names={free:"Free",starter:"Starter",pro:"Pro",yokai:"YYOKAI Full"};
   planValue.textContent=names[currentPlanKey]||"Free";
 }
 
 function go(url){location.href=url}
-
-function toggleSide(){
-  sideMenu.classList.toggle("open");
-  sideOverlay.classList.toggle("open");
-  menuBtn.textContent=sideMenu.classList.contains("open")?"←":"☰";
-}
-
-function closeSide(){
-  sideMenu.classList.remove("open");
-  sideOverlay.classList.remove("open");
-  menuBtn.textContent="☰";
-}
-
+function toggleSide(){sideMenu.classList.toggle("open");sideOverlay.classList.toggle("open");menuBtn.textContent=sideMenu.classList.contains("open")?"←":"☰"}
+function closeSide(){sideMenu.classList.remove("open");sideOverlay.classList.remove("open");menuBtn.textContent="☰"}
 function toggleProfile(){profileMenu.classList.toggle("open")}
-
-function openSettings(){
-  settingsPanel.classList.add("open");
-  profileMenu.classList.remove("open");
-}
-
+function openSettings(){settingsPanel.classList.add("open");profileMenu.classList.remove("open")}
 function closeSettings(){settingsPanel.classList.remove("open")}
-
-function openBalanceModal(){
-  balanceModal.classList.add("open");
-  profileMenu.classList.remove("open");
-}
-
+function openBalanceModal(){balanceModal.classList.add("open");profileMenu.classList.remove("open")}
 function closeBalanceModal(){balanceModal.classList.remove("open")}
-
 function openPlanModal(){
   selectedPlan=currentPlanKey;
   document.querySelectorAll(".plan-card").forEach(card=>card.classList.remove("selected"));
-  const selected=document.querySelector(`[data-plan="${selectedPlan}"]`);
-  if(selected)selected.classList.add("selected");
+  document.querySelector(`[data-plan="${selectedPlan}"]`)?.classList.add("selected");
   planModal.classList.add("open");
   profileMenu.classList.remove("open");
 }
-
 function closePlanModal(){planModal.classList.remove("open")}
-
 function selectPlan(plan){
   selectedPlan=plan;
   document.querySelectorAll(".plan-card").forEach(card=>card.classList.remove("selected"));
-  const selected=document.querySelector(`[data-plan="${plan}"]`);
-  if(selected)selected.classList.add("selected");
+  document.querySelector(`[data-plan="${plan}"]`)?.classList.add("selected");
 }
 
 async function confirmPlan(){
   if(!currentUser||!selectedPlan)return;
-
   const prices={free:0,starter:10,pro:20,yokai:30};
   const amount=prices[selectedPlan];
 
   if(amount===0){
-    currentPlanKey="free";
     await db.ref("users/"+currentUser.uid).update({planKey:"free"});
-    displayPlan();
     closePlanModal();
     showToast(currentLang==="uk"?"Free план активовано.":"Free plan activated.");
     return;
   }
 
   const paymentRef=db.ref("payments").push();
-
   await paymentRef.set({
     uid:currentUser.uid,
     email:currentUser.email||"",
@@ -1135,25 +477,14 @@ async function confirmPlan(){
   });
 
   showToast(t[currentLang].pending);
-
   setTimeout(()=>{
-    window.location.href=checkoutUrl(
-      "paymentId="+paymentRef.key+
-      "&type=plan"+
-      "&plan="+selectedPlan+
-      "&amount="+amount
-    );
+    window.location.href=checkoutUrl("paymentId="+paymentRef.key+"&type=plan&plan="+selectedPlan+"&amount="+amount);
   },350);
 }
 
 async function createBalancePayment(amount){
-  if(!currentUser){
-    location.href=authUrl();
-    return;
-  }
-
+  if(!currentUser){location.href=authUrl();return}
   const paymentRef=db.ref("payments").push();
-
   await paymentRef.set({
     uid:currentUser.uid,
     email:currentUser.email||"",
@@ -1165,22 +496,13 @@ async function createBalancePayment(amount){
   });
 
   showToast(t[currentLang].pending);
-
   setTimeout(()=>{
-    window.location.href=checkoutUrl(
-      "paymentId="+paymentRef.key+
-      "&type=balance"+
-      "&amount="+amount
-    );
+    window.location.href=checkoutUrl("paymentId="+paymentRef.key+"&type=balance&amount="+amount);
   },350);
 }
 
 async function applySettings(){
-  if(!currentUser){
-    showToast("No user");
-    return;
-  }
-
+  if(!currentUser){showToast("No user");return}
   try{
     showToast(t[currentLang].saving);
 
@@ -1189,21 +511,17 @@ async function applySettings(){
     const avatarFile=avatarInput.files[0];
     const bgFile=bgInput.files[0];
 
-    const saveData={
-      name,
-      accent:color
-    };
-
+    const saveData={name,accent:color};
     applyAccent(color);
 
     if(avatarFile){
-      const avatarBase64=await fileToBase64(avatarFile);
+      const avatarBase64=await compressImageToBase64(avatarFile,420,.72);
       avatar.innerHTML=`<img src="${avatarBase64}">`;
       saveData.avatarUrl=avatarBase64;
     }
 
     if(bgFile){
-      const bgBase64=await fileToBase64(bgFile);
+      const bgBase64=await compressImageToBase64(bgFile,1280,.68);
       applyBackgroundImage(bgBase64);
       saveData.backgroundUrl=bgBase64;
     }
@@ -1223,25 +541,47 @@ async function applySettings(){
 
     artistName.textContent=name;
     artistEmail.textContent=currentUser.email||"";
-
     closeSettings();
     showToast(t[currentLang].saved);
 
-    setTimeout(()=>{
-      window.scrollTo({top:0,behavior:"smooth"});
-    },120);
-
+    setTimeout(()=>window.scrollTo({top:0,behavior:"smooth"}),120);
   }catch(error){
     console.error(error);
     showToast("Error: "+error.message);
   }
 }
 
-function fileToBase64(file){
+function compressImageToBase64(file,maxSize=900,quality=.72){
   return new Promise((resolve,reject)=>{
+    const img=new Image();
     const reader=new FileReader();
-    reader.onload=()=>resolve(reader.result);
+
+    reader.onload=()=>{img.src=reader.result};
     reader.onerror=()=>reject(reader.error);
+
+    img.onload=()=>{
+      const canvas=document.createElement("canvas");
+      let width=img.width;
+      let height=img.height;
+
+      if(width>height&&width>maxSize){
+        height=Math.round(height*(maxSize/width));
+        width=maxSize;
+      }else if(height>=width&&height>maxSize){
+        width=Math.round(width*(maxSize/height));
+        height=maxSize;
+      }
+
+      canvas.width=width;
+      canvas.height=height;
+
+      const ctx=canvas.getContext("2d");
+      ctx.drawImage(img,0,0,width,height);
+
+      resolve(canvas.toDataURL("image/jpeg",quality));
+    };
+
+    img.onerror=()=>reject(new Error("Image load failed"));
     reader.readAsDataURL(file);
   });
 }
@@ -1250,17 +590,10 @@ function applyBackgroundImage(url){
   document.documentElement.style.setProperty("--custom-bg",`url('${url}')`);
   document.body.classList.add("has-custom-bg");
 }
-
 function applyAccent(color){
   document.documentElement.style.setProperty("--accent",color);
-
-  if(document.getElementById("colorPicker")){
-    colorPicker.value=color;
-  }
-
-  if(document.getElementById("colorValue")){
-    colorValue.textContent=color;
-  }
+  if(document.getElementById("colorPicker"))colorPicker.value=color;
+  if(document.getElementById("colorValue"))colorValue.textContent=color;
 }
 
 function setTrack(index){
@@ -1268,7 +601,6 @@ function setTrack(index){
   const track=tracks[trackIndex]||tracks[0];
   setMusic(track.src,track.title,track.sub,track.icon);
 }
-
 function setMusic(src,title,sub,icon){
   bgMusic.src=src;
   trackTitle.textContent=title;
@@ -1277,28 +609,18 @@ function setMusic(src,title,sub,icon){
   playPauseBtn.classList.remove("playing");
   musicPlaying=false;
 }
-
 async function nextTrack(){
   trackIndex=(trackIndex+1)%tracks.length;
   setTrack(trackIndex);
-
-  if(currentUser){
-    await db.ref("users/"+currentUser.uid+"/settings").update({trackIndex});
-  }
+  if(currentUser)await db.ref("users/"+currentUser.uid+"/settings").update({trackIndex});
 }
-
 async function prevTrack(){
   trackIndex=(trackIndex-1+tracks.length)%tracks.length;
   setTrack(trackIndex);
-
-  if(currentUser){
-    await db.ref("users/"+currentUser.uid+"/settings").update({trackIndex});
-  }
+  if(currentUser)await db.ref("users/"+currentUser.uid+"/settings").update({trackIndex});
 }
-
 function toggleMusic(){
   if(!bgMusic.src)setTrack(trackIndex);
-
   if(!musicPlaying){
     bgMusic.volume=.35;
     bgMusic.play();
@@ -1310,28 +632,20 @@ function toggleMusic(){
     musicPlaying=false;
   }
 }
-
 function showToast(text){
   toastText.textContent=text;
   toastBox.classList.add("open");
   clearTimeout(toastTimer);
   toastTimer=setTimeout(()=>hideToast(),10000);
 }
-
-function hideToast(){
-  toastBox.classList.remove("open");
-}
-
+function hideToast(){toastBox.classList.remove("open")}
 async function logout(){
   await auth.signOut();
   location.href=authUrl();
 }
-
 document.addEventListener("click",e=>{
   const profile=document.querySelector(".profile");
-  if(profile&&!profile.contains(e.target)){
-    profileMenu.classList.remove("open");
-  }
+  if(profile&&!profile.contains(e.target))profileMenu.classList.remove("open");
 });
 </script>
 </body>
