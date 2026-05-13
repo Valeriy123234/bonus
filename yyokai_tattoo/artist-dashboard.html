@@ -503,23 +503,44 @@ button:active{
 .panel p{color:#d2cdca;line-height:1.6}
 
 .panel-actions{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:12px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
   margin-top:22px;
 }
 
 .workflow-btn{
-  min-width:112px;
+  width:100%;
+  min-width:0;
   border:1px solid rgba(255,255,255,.16);
   border-radius:999px;
-  padding:14px 18px;
+  padding:14px 10px;
   background:rgba(255,255,255,.07);
   color:#fff;
   font-weight:950;
   box-shadow:none;
+  text-align:center;
+}
+
+@media(max-width:720px){
+
+  .panel-actions{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .workflow-btn{
+    padding:14px 8px;
+    font-size:14px;
+  }
+
+}
+
+@media(max-width:390px){
+
+  .panel-actions{
+    grid-template-columns:1fr;
+  }
+
 }
 
 .workflow-btn:active{
