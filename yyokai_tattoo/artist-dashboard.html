@@ -8,7 +8,6 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-storage-compat.js"></script>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -60,17 +59,8 @@ body::before{
 }
 
 button,input,select{font-family:inherit}
-button{cursor:pointer}
-
-button{
-  transition:transform .12s ease, opacity .12s ease, background .2s ease, border-color .2s ease;
-}
-
-button:active{
-  transform:scale(.96);
-  opacity:.88;
-  background:color-mix(in srgb,var(--accent) 40%,rgba(255,255,255,.06))!important;
-}
+button{cursor:pointer;transition:transform .12s ease,opacity .12s ease,background .2s ease,border-color .2s ease}
+button:active{transform:scale(.96);opacity:.88;background:color-mix(in srgb,var(--accent) 40%,rgba(255,255,255,.06))!important}
 
 .app{
   position:relative;
@@ -243,7 +233,6 @@ button:active{
   place-items:center;
   background:rgba(255,255,255,.07);
   border:1px solid rgba(255,255,255,.12);
-  box-shadow:none!important;
 }
 
 .track-title{font-size:14px;font-weight:950}
@@ -277,20 +266,11 @@ button:active{
   -webkit-appearance:none!important;
 }
 
-.music-controls button::before{
-  font-size:22px;
-  line-height:1;
-  display:block;
-}
-
+.music-controls button::before{font-size:22px;line-height:1;display:block}
 .prevBtn::before{content:"‹"}
 .playBtn::before{content:"▶"}
 .nextBtn::before{content:"›"}
-
-.playBtn.playing::before{
-  content:"Ⅱ";
-  font-size:20px;
-}
+.playBtn.playing::before{content:"Ⅱ";font-size:20px}
 
 .profile-menu button{
   width:100%;
@@ -429,15 +409,6 @@ button:active{
 
 .side-nav button:hover::before{opacity:1}
 
-.side-nav button:hover{
-  background:
-    radial-gradient(circle at 0% 50%,color-mix(in srgb,var(--accent) 30%,transparent),transparent 55%),
-    rgba(255,255,255,.075);
-  color:#fff;
-  border-color:color-mix(in srgb,var(--accent) 55%,transparent);
-  box-shadow:0 14px 45px color-mix(in srgb,var(--accent) 14%,transparent);
-}
-
 .hero{
   margin-top:20px;
   padding:34px;
@@ -522,30 +493,7 @@ button:active{
   text-align:center;
 }
 
-@media(max-width:720px){
-
-  .panel-actions{
-    grid-template-columns:repeat(3,1fr);
-  }
-
-  .workflow-btn{
-    padding:14px 8px;
-    font-size:14px;
-  }
-
-}
-
-@media(max-width:390px){
-
-  .panel-actions{
-    grid-template-columns:1fr;
-  }
-
-}
-
-.workflow-btn:active{
-  background:color-mix(in srgb,var(--accent) 40%,rgba(255,255,255,.07))!important;
-}
+.workflow-btn:active{background:color-mix(in srgb,var(--accent) 40%,rgba(255,255,255,.07))!important}
 
 .dock{
   position:fixed;
@@ -660,12 +608,6 @@ button:active{
   box-shadow:none!important;
 }
 
-.apply-btn:active,.confirm-plan:active{
-  background:#ffffff!important;
-  color:#050505!important;
-  transform:scale(.97);
-}
-
 .plan-grid,.balance-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
@@ -733,6 +675,12 @@ audio{display:none}
   .hero{padding:28px 22px}
   .hero p{font-size:17px}
   .logo{font-size:26px}
+  .panel-actions{grid-template-columns:repeat(3,1fr)}
+  .workflow-btn{padding:14px 8px;font-size:14px}
+}
+
+@media(max-width:390px){
+  .panel-actions{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -948,7 +896,6 @@ firebase.initializeApp(firebaseConfig);
 
 const auth=firebase.auth();
 const db=firebase.database();
-const storage=firebase.storage();
 
 let currentUser=null;
 let currentLang="uk";
@@ -957,8 +904,6 @@ let selectedPlan=null;
 let musicPlaying=false;
 let trackIndex=0;
 let toastTimer=null;
-
-const CACHE_KEY="yyokai_user_cache";
 
 const tracks=[
   {title:"Japanese Chill",sub:"YYOKAI playlist",icon:"⛩",src:"music/japan-chill.mp3"},
@@ -982,7 +927,7 @@ pro1:"500 генерацій стенсила",pro2:"500 генерацій ес
 yokai1:"Повний доступ",yokai2:"Безлімітний workflow",yokai3:"Premium tools",yokai4:"Custom studio mode",
 balance10:"Легкий старт для перевірки інструментів.",balance20:"Для активної роботи з клієнтами.",balance30:"Більше свободи для щоденного workflow.",balance50:"Запас для інтенсивної роботи студії.",
 avatarLabel:"Змінити фото профілю",nameLabel:"Нік майстра",colorLabel:"Колір системи",bgLabel:"Фон кабінету",applySettings:"Застосувати",
-pending:"Оплату створено. Переходимо до checkout.",saved:"Збережено.",thanks:"Дякую за покупку. Оплата очікує підтвердження."
+pending:"Оплату створено. Переходимо до checkout.",saved:"Збережено.",saving:"Зберігаємо...",thanks:"Дякую за покупку. Оплата очікує підтвердження."
 },
 en:{
 navStencil:"AI Stencil",navGenerate:"AI Generate",navBookings:"Bookings",navSplit:"A4 Print",navFiles:"Files",
@@ -999,7 +944,7 @@ pro1:"500 stencil generations",pro2:"500 sketch generations",pro3:"100 A4 splits
 yokai1:"Full access",yokai2:"Unlimited workflow",yokai3:"Premium tools",yokai4:"Custom studio mode",
 balance10:"A light start to test the tools.",balance20:"For active client work.",balance30:"More freedom for daily workflow.",balance50:"Reserve for intensive studio work.",
 avatarLabel:"Change profile photo",nameLabel:"Artist nickname",colorLabel:"System color",bgLabel:"Dashboard background",applySettings:"Apply",
-pending:"Payment created. Redirecting to checkout.",saved:"Saved.",thanks:"Thank you for your purchase. Payment is waiting for confirmation."
+pending:"Payment created. Redirecting to checkout.",saved:"Saved.",saving:"Saving...",thanks:"Thank you for your purchase. Payment is waiting for confirmation."
 }
 };
 
@@ -1007,14 +952,28 @@ function authUrl(){return BASE_PATH+"artist-auth.html"}
 function checkoutUrl(params){return BASE_PATH+"checkout.html?"+params}
 
 function cacheKey(){
-  return currentUser ? "yyokai_user_cache_"+currentUser.uid : CACHE_KEY;
+  return currentUser ? "yyokai_profile_"+currentUser.uid : "yyokai_profile_guest";
 }
 
 function loadLocalCache(){
   const cached=JSON.parse(localStorage.getItem(cacheKey())||"{}");
-  if(cached.accent)applyAccent(cached.accent);
-  if(cached.avatarUrl)avatar.innerHTML=`<img src="${cached.avatarUrl}">`;
-  if(cached.backgroundUrl)applyBackgroundImage(cached.backgroundUrl);
+
+  if(cached.name){
+    artistName.textContent=cached.name;
+    nameInput.value=cached.name;
+  }
+
+  if(cached.accent){
+    applyAccent(cached.accent);
+  }
+
+  if(cached.avatarUrl){
+    avatar.innerHTML=`<img src="${cached.avatarUrl}">`;
+  }
+
+  if(cached.backgroundUrl){
+    applyBackgroundImage(cached.backgroundUrl);
+  }
 }
 
 function saveLocalCache(data){
@@ -1024,7 +983,10 @@ function saveLocalCache(data){
 }
 
 auth.onAuthStateChanged(async user=>{
-  if(!user){location.href=authUrl();return}
+  if(!user){
+    location.href=authUrl();
+    return;
+  }
 
   currentUser=user;
 
@@ -1036,13 +998,17 @@ auth.onAuthStateChanged(async user=>{
   const email=user.email||data.email||"";
   const name=data.name||user.displayName||"Guest Artist";
 
-  await db.ref("users/"+user.uid).update({email,name,updatedAt:Date.now()});
-
-  loadLocalCache();
+  await db.ref("users/"+user.uid).update({
+    email,
+    name,
+    updatedAt:Date.now()
+  });
 
   artistName.textContent=name;
   artistEmail.textContent=email;
   nameInput.value=name;
+
+  loadLocalCache();
 
   const balance=Number(data.balance||0).toFixed(2);
   balanceValue.textContent="$"+balance;
@@ -1051,19 +1017,8 @@ auth.onAuthStateChanged(async user=>{
   currentPlanKey=data.planKey||"free";
   displayPlan();
 
-  if(data.avatarUrl){
-    avatar.innerHTML=`<img src="${data.avatarUrl}">`;
-    saveLocalCache({avatarUrl:data.avatarUrl});
-  }
-
   if(data.settings&&data.settings.accent){
     applyAccent(data.settings.accent);
-    saveLocalCache({accent:data.settings.accent});
-  }
-
-  if(data.settings&&data.settings.backgroundUrl){
-    applyBackgroundImage(data.settings.backgroundUrl);
-    saveLocalCache({backgroundUrl:data.settings.backgroundUrl});
   }
 
   setTrack(data.settings&&typeof data.settings.trackIndex==="number"?data.settings.trackIndex:0);
@@ -1076,7 +1031,9 @@ async function checkPaymentReturn(){
   const params=new URLSearchParams(window.location.search);
   const paymentId=params.get("paymentId");
   const paid=params.get("paid");
+
   if(!paymentId||paid!=="1")return;
+
   showToast(t[currentLang].thanks);
   history.replaceState({},document.title,window.location.pathname);
 }
@@ -1190,7 +1147,10 @@ async function confirmPlan(){
 }
 
 async function createBalancePayment(amount){
-  if(!currentUser){location.href=authUrl();return}
+  if(!currentUser){
+    location.href=authUrl();
+    return;
+  }
 
   const paymentRef=db.ref("payments").push();
 
@@ -1222,62 +1182,44 @@ async function applySettings(){
   }
 
   try{
-    showToast(currentLang==="uk" ? "Зберігаємо..." : "Saving...");
+    showToast(t[currentLang].saving);
 
     const name=nameInput.value.trim()||"Guest Artist";
     const color=colorPicker.value;
     const avatarFile=avatarInput.files[0];
     const bgFile=bgInput.files[0];
 
-    applyAccent(color);
-    saveLocalCache({accent:color});
-
-    const updates={
-      name:name,
-      email:currentUser.email||"",
-      updatedAt:Date.now()
-    };
-
-    const settingsUpdates={
+    const saveData={
+      name,
       accent:color
     };
 
+    applyAccent(color);
+
     if(avatarFile){
-      const avatarRef=storage.ref(
-        "users/"+currentUser.uid+"/avatar/avatar_"+Date.now()+"_"+avatarFile.name
-      );
-
-      await avatarRef.put(avatarFile);
-
-      const avatarUrl=await avatarRef.getDownloadURL();
-
-      updates.avatarUrl=avatarUrl;
-      avatar.innerHTML=`<img src="${avatarUrl}">`;
-
-      saveLocalCache({
-        avatarUrl:avatarUrl
-      });
+      const avatarBase64=await fileToBase64(avatarFile);
+      avatar.innerHTML=`<img src="${avatarBase64}">`;
+      saveData.avatarUrl=avatarBase64;
     }
 
     if(bgFile){
-      const bgRef=storage.ref(
-        "users/"+currentUser.uid+"/background/bg_"+Date.now()+"_"+bgFile.name
-      );
-
-      await bgRef.put(bgFile);
-
-      const bgUrl=await bgRef.getDownloadURL();
-
-      settingsUpdates.backgroundUrl=bgUrl;
-      applyBackgroundImage(bgUrl);
-
-      saveLocalCache({
-        backgroundUrl:bgUrl
-      });
+      const bgBase64=await fileToBase64(bgFile);
+      applyBackgroundImage(bgBase64);
+      saveData.backgroundUrl=bgBase64;
     }
 
-    await db.ref("users/"+currentUser.uid).update(updates);
-    await db.ref("users/"+currentUser.uid+"/settings").update(settingsUpdates);
+    saveLocalCache(saveData);
+
+    await db.ref("users/"+currentUser.uid).update({
+      name,
+      email:currentUser.email||"",
+      updatedAt:Date.now()
+    });
+
+    await db.ref("users/"+currentUser.uid+"/settings").update({
+      accent:color,
+      storageMode:"local"
+    });
 
     artistName.textContent=name;
     artistEmail.textContent=currentUser.email||"";
@@ -1286,16 +1228,22 @@ async function applySettings(){
     showToast(t[currentLang].saved);
 
     setTimeout(()=>{
-      window.scrollTo({
-        top:0,
-        behavior:"smooth"
-      });
+      window.scrollTo({top:0,behavior:"smooth"});
     },120);
 
   }catch(error){
     console.error(error);
-    showToast("Firebase: "+error.message);
+    showToast("Error: "+error.message);
   }
+}
+
+function fileToBase64(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=()=>resolve(reader.result);
+    reader.onerror=()=>reject(reader.error);
+    reader.readAsDataURL(file);
+  });
 }
 
 function applyBackgroundImage(url){
@@ -1317,15 +1265,8 @@ function applyAccent(color){
 
 function setTrack(index){
   trackIndex=index;
-
   const track=tracks[trackIndex]||tracks[0];
-
-  setMusic(
-    track.src,
-    track.title,
-    track.sub,
-    track.icon
-  );
+  setMusic(track.src,track.title,track.sub,track.icon);
 }
 
 function setMusic(src,title,sub,icon){
@@ -1339,61 +1280,42 @@ function setMusic(src,title,sub,icon){
 
 async function nextTrack(){
   trackIndex=(trackIndex+1)%tracks.length;
-
   setTrack(trackIndex);
 
   if(currentUser){
-    await db.ref("users/"+currentUser.uid+"/settings").update({
-      trackIndex:trackIndex
-    });
+    await db.ref("users/"+currentUser.uid+"/settings").update({trackIndex});
   }
 }
 
 async function prevTrack(){
   trackIndex=(trackIndex-1+tracks.length)%tracks.length;
-
   setTrack(trackIndex);
 
   if(currentUser){
-    await db.ref("users/"+currentUser.uid+"/settings").update({
-      trackIndex:trackIndex
-    });
+    await db.ref("users/"+currentUser.uid+"/settings").update({trackIndex});
   }
 }
 
 function toggleMusic(){
-  if(!bgMusic.src){
-    setTrack(trackIndex);
-  }
+  if(!bgMusic.src)setTrack(trackIndex);
 
   if(!musicPlaying){
     bgMusic.volume=.35;
-
     bgMusic.play();
-
     playPauseBtn.classList.add("playing");
-
     musicPlaying=true;
-
   }else{
     bgMusic.pause();
-
     playPauseBtn.classList.remove("playing");
-
     musicPlaying=false;
   }
 }
 
 function showToast(text){
   toastText.textContent=text;
-
   toastBox.classList.add("open");
-
   clearTimeout(toastTimer);
-
-  toastTimer=setTimeout(()=>{
-    hideToast();
-  },10000);
+  toastTimer=setTimeout(()=>hideToast(),10000);
 }
 
 function hideToast(){
@@ -1402,13 +1324,11 @@ function hideToast(){
 
 async function logout(){
   await auth.signOut();
-
   location.href=authUrl();
 }
 
 document.addEventListener("click",e=>{
   const profile=document.querySelector(".profile");
-
   if(profile&&!profile.contains(e.target)){
     profileMenu.classList.remove("open");
   }
