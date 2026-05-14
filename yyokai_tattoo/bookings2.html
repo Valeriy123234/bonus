@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YYOKAI | Bookings</title>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+:root{
+  --accent:#e5092f;
+  --text:#f7f1ef;
+  --line:rgba(255,255,255,.14);
+  --custom-bg:none;
+}
+
+html,body{
+  min-height:100%;
+  background:#000;
+  color:var(--text);
+  font-family:Arial,sans-serif;
+}
+
+body{
+  overflow-x:hidden;
+  background:
+    linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.93)),
+    var(--custom-bg),
+    radial-gradient(circle at 50% -8%,color-mix(in srgb,var(--accent) 40%,transparent),transparent 35%),
+    linear-gradient(180deg,#050505,#110208 50%,#000);
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+}
+
+body::before{
+  content:"妖 鬼 狐 墨 夜 予約";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  color:rgba(255,255,255,.022);
+  font-size:78px;
+  letter-spacing:28px;
+  line-height:1.5;
+  transform:rotate(-12deg) scale(1.15);
+  z-index:0;
+}
+
+button,input,textarea,select{
+  font-family:inherit;
+}
+
+button{
+  cursor:pointer;
+  transition:.15s;
+}
+
+button:active{
+  transform:scale(.96);
+  opacity:.86;
+}
+
+.app{
+  position:relative;
+  z-index:2;
+  min-height:100vh;
+  padding:18px;
+  padding-bottom:36px;
+}
+
+.topbar{
+  height:74px;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:12px;
+  padding:10px 14px;
+  border-radius:30px;
+  background:rgba(0,0,0,.78);
+  border:1px solid var(--line);
+  backdrop-filter:blur(26px);
+  box-shadow:0 24px 80px rgba(0,0,0,.75);
+}
+
+.logo{
+  grid-column:2;
+  position:relative;
+  font-size:27px;
+  font-weight:950;
+  letter-spacing:.08em;
+  text-shadow:0 0 26px color-mix(in srgb,var(--accent) 60%,transparent);
+}
+
+.logo::before,.logo::after{
+  content:"YYOKAI";
+  position:absolute;
+  inset:0;
+  opacity:.35;
+  pointer-events:none;
+}
+
+.logo::before{
+  color:var(--accent);
+  animation:glitchA 3s infinite;
+}
+
+.logo::after{
+  color:#fff;
+  animation:glitchB 3.4s infinite reverse;
+}
+
+@keyframes glitchA{
+  0%,92%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0)}
+  94%{clip-path:inset(20% 0 60% 0);transform:translate(-2px,1px)}
+  96%{clip-path:inset(62% 0 18% 0);transform:translate(2px,-1px)}
+}
+
+@keyframes glitchB{
+  0%,94%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0)}
+  95%{clip-path:inset(44% 0 30% 0);transform:translate(1px,0)}
+}
+
+.back{
+  justify-self:end;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.07);
+  color:#fff;
+  border-radius:999px;
+  padding:13px 16px;
+  font-weight:950;
+}
+
+.lang{
+  justify-self:start;
+  display:flex;
+  gap:5px;
+  padding:5px;
+  border-radius:999px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+}
+
+.lang button{
+  border:0;
+  background:transparent;
+  color:#888;
+  padding:8px 12px;
+  border-radius:999px;
+  font-weight:950;
+}
+
+.lang button.active{
+  background:#fff;
+  color:#000;
+}
+
+.hero{
+  margin-top:20px;
+  padding:28px;
+  border-radius:36px;
+  background:
+    radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent) 42%,transparent),transparent 36%),
+    linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.04));
+  border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(22px);
+}
+
+.hero h1{
+  font-size:clamp(38px,9vw,74px);
+  letter-spacing:-.05em;
+  line-height:.95;
+}
+
+.hero p{
+  margin-top:16px;
+  color:#d9d1ce;
+  line-height:1.55;
+  font-size:18px;
+}
+
+.layout{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns:.95fr 1.05fr;
+  gap:14px;
+}
+
+.card{
+  border-radius:34px;
+  background:linear-gradient(180deg,rgba(255,255,255,.105),rgba(255,255,255,.03));
+  border:1px solid rgba(255,255,255,.16);
+  backdrop-filter:blur(24px);
+  box-shadow:0 28px 90px rgba(0,0,0,.62);
+}
+
+.calendar{
+  padding:18px;
+}
+
+.calendar-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:16px;
+}
+
+.month-title{
+  font-size:22px;
+  font-weight:950;
+}
+
+.nav{
+  display:flex;
+  gap:8px;
+}
+
+.nav button,.add-btn{
+  width:44px;
+  height:44px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.13);
+  background:rgba(255,255,255,.07);
+  color:#fff;
+  font-size:20px;
+}
+
+.week{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+  margin-bottom:8px;
+}
+
+.week span{
+  text-align:center;
+  color:#888;
+  font-size:12px;
+  font-weight:950;
+}
+
+.days{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+}
+
+.day{
+  position:relative;
+  aspect-ratio:1/1;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:18px;
+  background:rgba(255,255,255,.045);
+  color:#fff;
+  font-weight:950;
+  display:grid;
+  place-items:center;
+}
+
+.day.muted{
+  opacity:.25;
+}
+
+.day.today{
+  border-color:color-mix(in srgb,var(--accent) 70%,transparent);
+}
+
+.day.active{
+  background:color-mix(in srgb,var(--accent) 42%,rgba(255,255,255,.05));
+  box-shadow:0 0 25px color-mix(in srgb,var(--accent) 35%,transparent);
+}
+
+.day .dot{
+  position:absolute;
+  bottom:7px;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 12px var(--accent);
+}
+
+.day .count{
+  position:absolute;
+  right:6px;
+  top:5px;
+  min-width:17px;
+  height:17px;
+  padding:0 5px;
+  border-radius:999px;
+  display:grid;
+  place-items:center;
+  background:rgba(0,0,0,.68);
+  border:1px solid rgba(255,255,255,.12);
+  font-size:10px;
+}
+
+.side{
+  padding:18px;
+}
+
+.side-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:14px;
+}
+
+.side h2{
+  font-size:24px;
+}
+
+.add-wide{
+  border:0;
+  border-radius:999px;
+  padding:13px 16px;
+  background:#fff;
+  color:#050505;
+  font-weight:950;
+}
+
+.client-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  max-height:250px;
+  overflow:auto;
+  padding-right:4px;
+}
+
+.client-item{
+  border:1px solid rgba(255,255,255,.11);
+  background:rgba(255,255,255,.055);
+  color:#fff;
+  border-radius:22px;
+  padding:14px;
+  text-align:left;
+}
+
+.client-item.active{
+  border-color:var(--accent);
+  box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 24%,transparent);
+}
+
+.client-name{
+  font-weight:950;
+}
+
+.client-meta{
+  color:#aaa;
+  font-size:13px;
+  margin-top:5px;
+}
+
+.editor{
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid rgba(255,255,255,.1);
+  display:none;
+}
+
+.editor.open{
+  display:block;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.field.full{
+  grid-column:1/-1;
+}
+
+label{
+  display:block;
+  color:#aaa;
+  font-size:12px;
+  font-weight:950;
+  margin-bottom:7px;
+}
+
+input,textarea,select{
+  width:100%;
+  border-radius:16px;
+  padding:14px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(0,0,0,.38);
+  color:#fff;
+  outline:none;
+  font-size:15px;
+}
+
+textarea{
+  min-height:96px;
+  resize:vertical;
+}
+
+input:focus,textarea:focus,select:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 15%,transparent);
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+  margin-top:12px;
+}
+
+.delete{
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.06);
+  color:#ff8a9a;
+  border-radius:999px;
+  padding:13px 16px;
+  font-weight:950;
+}
+
+.saved{
+  color:#7dffb1;
+  font-size:13px;
+  font-weight:950;
+  margin-left:auto;
+  align-self:center;
+  opacity:0;
+  transition:.2s;
+}
+
+.saved.show{
+  opacity:1;
+}
+
+.empty{
+  color:#999;
+  text-align:center;
+  padding:22px;
+  border-radius:22px;
+  background:rgba(255,255,255,.045);
+  border:1px dashed rgba(255,255,255,.13);
+}
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:24px;
+  transform:translateX(-50%) translateY(20px);
+  z-index:50;
+  width:min(420px,calc(100vw - 30px));
+  padding:16px 18px;
+  border-radius:22px;
+  background:rgba(0,0,0,.92);
+  border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);
+  color:#fff;
+  opacity:0;
+  pointer-events:none;
+  transition:.22s;
+}
+
+.toast.open{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+@media(max-width:820px){
+  .layout{
+    grid-template-columns:1fr;
+  }
+
+  .hero{
+    padding:24px 20px;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .topbar{
+    grid-template-columns:1fr auto 1fr;
+  }
+
+  .back{
+    padding:12px 13px;
+    font-size:13px;
+  }
+}
+</style>
+</head>
+
+<body>
+<main class="app">
+  <header class="topbar">
+    <div class="lang">
+      <button class="active" onclick="setLang('uk',this)">UA</button>
+      <button onclick="setLang('en',this)">EN</button>
+    </div>
+
+    <div class="logo">YYOKAI</div>
+
+    <button class="back" onclick="goDashboard()" data-i18n="back">На головну</button>
+  </header>
+
+  <section class="hero">
+    <h1 data-i18n="title">Клієнти та записи</h1>
+    <p data-i18n="lead">Твій приватний простір для клієнтів, нотаток, ідей, контактів, бюджету та історії роботи.</p>
+  </section>
+
+  <section class="layout">
+    <div class="card calendar">
+      <div class="calendar-head">
+        <button class="add-btn" onclick="prevMonth()">‹</button>
+        <div class="month-title" id="monthTitle">Month</div>
+        <button class="add-btn" onclick="nextMonth()">›</button>
+      </div>
+
+      <div class="week">
+        <span data-i18n="w1">Пн</span>
+        <span data-i18n="w2">Вт</span>
+        <span data-i18n="w3">Ср</span>
+        <span data-i18n="w4">Чт</span>
+        <span data-i18n="w5">Пт</span>
+        <span data-i18n="w6">Сб</span>
+        <span data-i18n="w7">Нд</span>
+      </div>
+
+      <div class="days" id="days"></div>
+    </div>
+
+    <div class="card side">
+      <div class="side-head">
+        <div>
+          <h2 id="selectedDateTitle">—</h2>
+          <div class="client-meta" id="dayCount">0</div>
+        </div>
+
+        <button class="add-wide" onclick="addClient()" data-i18n="addClient">+ Клієнт</button>
+      </div>
+
+      <div id="clientList" class="client-list"></div>
+
+      <div id="editor" class="editor">
+        <div class="form-grid">
+          <div class="field">
+            <label data-i18n="name">Імʼя / нік</label>
+            <input id="clientName" oninput="autoSave()" placeholder="Client name">
+          </div>
+
+          <div class="field">
+            <label>Telegram / Phone</label>
+            <input id="clientContact" oninput="autoSave()" placeholder="@username / phone">
+          </div>
+
+          <div class="field">
+            <label data-i18n="time">Час</label>
+            <input id="clientTime" type="time" oninput="autoSave()">
+          </div>
+
+          <div class="field">
+            <label data-i18n="status">Статус</label>
+            <select id="clientStatus" onchange="autoSave()">
+              <option value="consultation">Consultation</option>
+              <option value="booked">Booked</option>
+              <option value="in_progress">In progress</option>
+              <option value="done">Done</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label data-i18n="place">Місце на тілі</label>
+            <input id="clientPlace" oninput="autoSave()" placeholder="Arm / neck / back">
+          </div>
+
+          <div class="field">
+            <label data-i18n="size">Розмір</label>
+            <input id="clientSize" oninput="autoSave()" placeholder="10x15 cm">
+          </div>
+
+          <div class="field">
+            <label data-i18n="budget">Бюджет</label>
+            <input id="clientBudget" oninput="autoSave()" placeholder="$ / ₴">
+          </div>
+
+          <div class="field">
+            <label data-i18n="deposit">Передоплата</label>
+            <input id="clientDeposit" oninput="autoSave()" placeholder="$ / ₴">
+          </div>
+
+          <div class="field full">
+            <label data-i18n="idea">Ідея тату</label>
+            <textarea id="clientIdea" oninput="autoSave()" placeholder="Style, mood, references, details..."></textarea>
+          </div>
+
+          <div class="field full">
+            <label data-i18n="notes">Особисті нотатки майстра</label>
+            <textarea id="clientNotes" oninput="autoSave()" placeholder="Important details, allergies, session history..."></textarea>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="delete" onclick="deleteClient()" data-i18n="delete">Видалити</button>
+          <div class="saved" id="savedText" data-i18n="saved">Збережено</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const BASE_PATH="/yyokai/yyokai_tattoo/";
+
+const firebaseConfig={
+  apiKey:"AIzaSyALs-ZgFX7auGxRQ2EeQnVngjnejimPLV4",
+  authDomain:"yyokai-tattoo-system.firebaseapp.com",
+  databaseURL:"https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/",
+  projectId:"yyokai-tattoo-system",
+  storageBucket:"yyokai-tattoo-system.firebasestorage.app",
+  messagingSenderId:"995298614954",
+  appId:"1:995298614954:web:e4039c69fcb0541a95fad3"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth=firebase.auth();
+const db=firebase.database();
+
+let currentUser=null;
+let currentLang="uk";
+let currentMonth=new Date();
+let selectedDate=formatDate(new Date());
+let clients={};
+let activeClientId=null;
+let saveTimer=null;
+let toastTimer=null;
+
+const t={
+  uk:{
+    back:"На головну",
+    title:"Клієнти та записи",
+    lead:"Твій приватний простір для клієнтів, нотаток, ідей, контактів, бюджету та історії роботи.",
+    addClient:"+ Клієнт",
+    name:"Імʼя / нік",
+    time:"Час",
+    status:"Статус",
+    place:"Місце на тілі",
+    size:"Розмір",
+    budget:"Бюджет",
+    deposit:"Передоплата",
+    idea:"Ідея тату",
+    notes:"Особисті нотатки майстра",
+    delete:"Видалити",
+    saved:"Збережено",
+    empty:"На цю дату ще немає клієнтів.",
+    clients:"клієнтів",
+    w1:"Пн",w2:"Вт",w3:"Ср",w4:"Чт",w5:"Пт",w6:"Сб",w7:"Нд",
+    deleted:"Клієнта видалено."
+  },
+  en:{
+    back:"Dashboard",
+    title:"Clients & bookings",
+    lead:"Your private space for clients, notes, ideas, contacts, budget and tattoo session history.",
+    addClient:"+ Client",
+    name:"Name / nickname",
+    time:"Time",
+    status:"Status",
+    place:"Body placement",
+    size:"Size",
+    budget:"Budget",
+    deposit:"Deposit",
+    idea:"Tattoo idea",
+    notes:"Artist private notes",
+    delete:"Delete",
+    saved:"Saved",
+    empty:"No clients for this date yet.",
+    clients:"clients",
+    w1:"Mon",w2:"Tue",w3:"Wed",w4:"Thu",w5:"Fri",w6:"Sat",w7:"Sun",
+    deleted:"Client deleted."
+  }
+};
+
+auth.onAuthStateChanged(async user=>{
+  if(!user){
+    location.href=BASE_PATH+"artist-auth.html";
+    return;
+  }
+
+  currentUser=user;
+
+  applyProfileStyle();
+
+  db.ref("users/"+user.uid+"/bookings").on("value",snap=>{
+    clients=snap.val()||{};
+    renderCalendar();
+    renderDay();
+  });
+});
+
+function applyProfileStyle(){
+  const cached=JSON.parse(localStorage.getItem("yyokai_profile_"+currentUser.uid)||"{}");
+
+  if(cached.accent){
+    document.documentElement.style.setProperty("--accent",cached.accent);
+  }else{
+    db.ref("users/"+currentUser.uid+"/settings/accent").once("value").then(snap=>{
+      if(snap.val())document.documentElement.style.setProperty("--accent",snap.val());
+    });
+  }
+
+  if(cached.backgroundUrl){
+    document.documentElement.style.setProperty("--custom-bg",`url('${cached.backgroundUrl}')`);
+  }
+}
+
+function formatDate(date){
+  const y=date.getFullYear();
+  const m=String(date.getMonth()+1).padStart(2,"0");
+  const d=String(date.getDate()).padStart(2,"0");
+  return `${y}-${m}-${d}`;
+}
+
+function parseDate(str){
+  const [y,m,d]=str.split("-").map(Number);
+  return new Date(y,m-1,d);
+}
+
+function monthName(date){
+  return date.toLocaleDateString(currentLang==="uk"?"uk-UA":"en-US",{
+    month:"long",
+    year:"numeric"
+  });
+}
+
+function renderCalendar(){
+  days.innerHTML="";
+  monthTitle.textContent=monthName(currentMonth);
+
+  const year=currentMonth.getFullYear();
+  const month=currentMonth.getMonth();
+
+  const first=new Date(year,month,1);
+  const last=new Date(year,month+1,0);
+
+  let startDay=first.getDay();
+  if(startDay===0)startDay=7;
+
+  const start=new Date(year,month,1-(startDay-1));
+  const today=formatDate(new Date());
+
+  for(let i=0;i<42;i++){
+    const date=new Date(start);
+    date.setDate(start.getDate()+i);
+
+    const key=formatDate(date);
+    const count=Object.values(clients).filter(c=>c.date===key).length;
+
+    const btn=document.createElement("button");
+    btn.className="day";
+
+    if(date.getMonth()!==month)btn.classList.add("muted");
+    if(key===today)btn.classList.add("today");
+    if(key===selectedDate)btn.classList.add("active");
+
+    btn.innerHTML=`
+      <span>${date.getDate()}</span>
+      ${count?`<span class="count">${count}</span><span class="dot"></span>`:""}
+    `;
+
+    btn.onclick=()=>{
+      selectedDate=key;
+      activeClientId=null;
+      renderCalendar();
+      renderDay();
+    };
+
+    days.appendChild(btn);
+  }
+}
+
+function renderDay(){
+  const date=parseDate(selectedDate);
+
+  selectedDateTitle.textContent=date.toLocaleDateString(currentLang==="uk"?"uk-UA":"en-US",{
+    day:"numeric",
+    month:"long",
+    year:"numeric"
+  });
+
+  const list=Object.entries(clients)
+    .map(([id,c])=>({id,...c}))
+    .filter(c=>c.date===selectedDate)
+    .sort((a,b)=>(a.time||"").localeCompare(b.time||""));
+
+  dayCount.textContent=list.length+" "+t[currentLang].clients;
+
+  clientList.innerHTML="";
+
+  if(!list.length){
+    clientList.innerHTML=`<div class="empty">${t[currentLang].empty}</div>`;
+    editor.classList.remove("open");
+    return;
+  }
+
+  list.forEach(c=>{
+    const btn=document.createElement("button");
+    btn.className="client-item"+(c.id===activeClientId?" active":"");
+
+    btn.innerHTML=`
+      <div class="client-name">${c.name||"Client"}</div>
+      <div class="client-meta">${c.time||"—"} · ${c.contact||"—"} · ${c.status||"booked"}</div>
+    `;
+
+    btn.onclick=()=>{
+      activeClientId=c.id;
+      openEditor(c);
+      renderDay();
+    };
+
+    clientList.appendChild(btn);
+  });
+
+  if(!activeClientId){
+    activeClientId=list[0].id;
+    openEditor(list[0]);
+  }
+}
+
+async function addClient(){
+  const ref=db.ref("users/"+currentUser.uid+"/bookings").push();
+
+  const data={
+    date:selectedDate,
+    name:"",
+    contact:"",
+    time:"12:00",
+    status:"consultation",
+    place:"",
+    size:"",
+    budget:"",
+    deposit:"",
+    idea:"",
+    notes:"",
+    createdAt:Date.now(),
+    updatedAt:Date.now()
+  };
+
+  await ref.set(data);
+
+  activeClientId=ref.key;
+}
+
+function openEditor(c){
+  editor.classList.add("open");
+
+  clientName.value=c.name||"";
+  clientContact.value=c.contact||"";
+  clientTime.value=c.time||"12:00";
+  clientStatus.value=c.status||"consultation";
+  clientPlace.value=c.place||"";
+  clientSize.value=c.size||"";
+  clientBudget.value=c.budget||"";
+  clientDeposit.value=c.deposit||"";
+  clientIdea.value=c.idea||"";
+  clientNotes.value=c.notes||"";
+}
+
+function autoSave(){
+  if(!activeClientId||!currentUser)return;
+
+  clearTimeout(saveTimer);
+
+  saveTimer=setTimeout(async()=>{
+    const data={
+      date:selectedDate,
+      name:clientName.value.trim(),
+      contact:clientContact.value.trim(),
+      time:clientTime.value,
+      status:clientStatus.value,
+      place:clientPlace.value.trim(),
+      size:clientSize.value.trim(),
+      budget:clientBudget.value.trim(),
+      deposit:clientDeposit.value.trim(),
+      idea:clientIdea.value.trim(),
+      notes:clientNotes.value.trim(),
+      updatedAt:Date.now()
+    };
+
+    await db.ref("users/"+currentUser.uid+"/bookings/"+activeClientId).update(data);
+
+    savedText.classList.add("show");
+
+    setTimeout(()=>{
+      savedText.classList.remove("show");
+    },1200);
+  },450);
+}
+
+async function deleteClient(){
+  if(!activeClientId)return;
+
+  await db.ref("users/"+currentUser.uid+"/bookings/"+activeClientId).remove();
+
+  activeClientId=null;
+  showToast(t[currentLang].deleted);
+}
+
+function prevMonth(){
+  currentMonth.setMonth(currentMonth.getMonth()-1);
+  currentMonth=new Date(currentMonth);
+  renderCalendar();
+}
+
+function nextMonth(){
+  currentMonth.setMonth(currentMonth.getMonth()+1);
+  currentMonth=new Date(currentMonth);
+  renderCalendar();
+}
+
+function setLang(lang,btn){
+  currentLang=lang;
+  document.documentElement.lang=lang;
+
+  Object.keys(t[lang]).forEach(key=>{
+    document.querySelectorAll(`[data-i18n="${key}"]`).forEach(el=>{
+      el.textContent=t[lang][key];
+    });
+  });
+
+  document.querySelectorAll(".lang button").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+
+  renderCalendar();
+  renderDay();
+}
+
+function goDashboard(){
+  location.href=BASE_PATH+"artist-dashboard.html";
+}
+
+function showToast(text){
+  toast.textContent=text;
+  toast.classList.add("open");
+
+  clearTimeout(toastTimer);
+
+  toastTimer=setTimeout(()=>{
+    toast.classList.remove("open");
+  },3200);
+}
+</script>
+</body>
+</html>
