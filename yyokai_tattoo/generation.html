@@ -11,545 +11,80 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-
-:root{
-  --accent:#e5092f;
-  --text:#f6f1ef;
-  --line:rgba(255,255,255,.15);
-  --custom-bg:none;
-}
-
-html,body{
-  min-height:100%;
-  background:#000;
-  color:var(--text);
-  font-family:Arial,sans-serif;
-}
-
-body{
-  overflow-x:hidden;
-  background:
-    linear-gradient(rgba(0,0,0,.70),rgba(0,0,0,.94)),
-    var(--custom-bg),
-    radial-gradient(circle at 50% -10%,color-mix(in srgb,var(--accent) 42%,transparent),transparent 35%),
-    linear-gradient(180deg,#050505 0%,#100206 45%,#000 100%);
-  background-size:cover;
-  background-position:center;
-  background-attachment:fixed;
-}
-
-body.has-custom-bg{
-  background:
-    linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.94)),
-    var(--custom-bg) center/cover fixed no-repeat,
-    #000;
-}
-
-body::before{
-  content:"妖 鬼 狐 墨 夜 生成";
-  position:fixed;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-  color:rgba(255,255,255,.022);
-  font-size:78px;
-  letter-spacing:30px;
-  line-height:1.5;
-  transform:rotate(-12deg) scale(1.15);
-}
-
-.loader-screen{
-  position:fixed;
-  inset:0;
-  z-index:999999;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#000;
-  color:#fff;
-  font-size:34px;
-  font-weight:950;
-  letter-spacing:.12em;
-  transition:.45s ease;
-}
-
-.loader-screen.hide{
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-}
-
-button,textarea,input{
-  font-family:inherit;
-}
-
-button{
-  cursor:pointer;
-  transition:.15s;
-}
-
-button:active{
-  transform:scale(.96);
-  opacity:.88;
-}
-
-.app{
-  position:relative;
-  z-index:2;
-  min-height:100vh;
-  padding:18px;
-  padding-bottom:40px;
-}
-
-.topbar{
-  height:76px;
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
-  align-items:center;
-  gap:14px;
-  padding:10px 14px;
-  border-radius:30px;
-  background:rgba(0,0,0,.78);
-  border:1px solid var(--line);
-  backdrop-filter:blur(28px);
-  box-shadow:0 24px 80px rgba(0,0,0,.78);
-}
-
-.logo{
-  grid-column:2;
-  position:relative;
-  font-size:27px;
-  font-weight:950;
-  letter-spacing:.08em;
-  color:#fff;
-  text-shadow:0 0 24px color-mix(in srgb,var(--accent) 50%,transparent);
-}
-
-.logo::before,.logo::after{
-  content:"YYOKAI";
-  position:absolute;
-  inset:0;
-  opacity:.34;
-  pointer-events:none;
-}
-
-.logo::before{
-  color:var(--accent);
-  animation:glitchA 2.8s infinite;
-}
-
-.logo::after{
-  color:#fff;
-  animation:glitchB 3.3s infinite reverse;
-}
-
-@keyframes glitchA{
-  0%,92%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0)}
-  93%{clip-path:inset(12% 0 64% 0);transform:translate(-2px,1px)}
-  95%{clip-path:inset(60% 0 18% 0);transform:translate(2px,-1px)}
-  97%{clip-path:inset(30% 0 38% 0);transform:translate(-1px,0)}
-}
-
-@keyframes glitchB{
-  0%,94%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0)}
-  95%{clip-path:inset(44% 0 30% 0);transform:translate(1px,0)}
-  97%{clip-path:inset(15% 0 58% 0);transform:translate(-1px,0)}
-}
-
-.back{
-  justify-self:end;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.07);
-  color:#fff;
-  border-radius:999px;
-  padding:13px 16px;
-  font-weight:950;
-}
-
-.lang{
-  justify-self:start;
-  display:flex;
-  gap:5px;
-  padding:5px;
-  border-radius:999px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.1);
-}
-
-.lang button{
-  border:0;
-  background:transparent;
-  color:#888;
-  padding:8px 12px;
-  border-radius:999px;
-  font-weight:950;
-}
-
-.lang button.active{
-  background:#fff;
-  color:#000;
-}
-
-.hero{
-  margin-top:20px;
-  padding:30px;
-  border-radius:38px;
-  background:
-    radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent) 44%,transparent),transparent 36%),
-    linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.04));
-  border:1px solid rgba(255,255,255,.2);
-  backdrop-filter:blur(20px);
-  box-shadow:0 0 55px color-mix(in srgb,var(--accent) 12%,transparent);
-}
-
-.hero h1{
-  font-size:clamp(42px,9vw,82px);
-  line-height:.95;
-  letter-spacing:-.05em;
-}
-
-.hero p{
-  margin-top:18px;
-  max-width:760px;
-  color:#d8d0cd;
-  line-height:1.6;
-  font-size:19px;
-}
-
-.stats{
-  margin-top:18px;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-}
-
-.stat{
-  min-height:92px;
-  padding:14px;
-  border-radius:28px;
-  background:rgba(7,7,7,.82);
-  border:1px solid rgba(255,255,255,.16);
-  backdrop-filter:blur(20px);
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-}
-
-.stat span{
-  color:#bbb;
-  font-size:13px;
-  font-weight:900;
-  margin-bottom:10px;
-}
-
-.stat strong{
-  font-size:24px;
-  line-height:1;
-}
-
-.stat.clickable{
-  cursor:pointer;
-}
-
-.layout{
-  margin-top:18px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-}
-
-.panel{
-  padding:24px;
-  border-radius:34px;
-  background:
-    radial-gradient(circle at 85% 0%,color-mix(in srgb,var(--accent) 28%,transparent),transparent 34%),
-    linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.035));
-  border:1px solid rgba(255,255,255,.18);
-  backdrop-filter:blur(22px);
-  box-shadow:0 0 42px color-mix(in srgb,var(--accent) 10%,transparent);
-}
-
-.panel h2{
-  font-size:25px;
-  margin-bottom:12px;
-}
-
-.panel p{
-  color:#cfc7c4;
-  line-height:1.55;
-}
-
-.prompt-box{
-  margin-top:18px;
-}
-
-textarea{
-  width:100%;
-  min-height:170px;
-  resize:vertical;
-  border-radius:24px;
-  padding:18px;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(0,0,0,.42);
-  color:#fff;
-  outline:none;
-  font-size:16px;
-  line-height:1.55;
-}
-
-textarea:focus{
-  border-color:var(--accent);
-  box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 16%,transparent);
-}
-
-.prompt-actions{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:12px;
-}
-
-.generate-btn,.small-btn{
-  border:0;
-  border-radius:999px;
-  padding:16px 18px;
-  font-weight:950;
-}
-
-.generate-btn{
-  background:#fff;
-  color:#050505;
-}
-
-.small-btn{
-  background:rgba(255,255,255,.07);
-  color:#fff;
-  border:1px solid rgba(255,255,255,.14);
-}
-
-.result-box{
-  min-height:420px;
-  display:grid;
-  place-items:center;
-  border-radius:28px;
-  background:
-    radial-gradient(circle at center,color-mix(in srgb,var(--accent) 22%,transparent),transparent 42%),
-    rgba(0,0,0,.42);
-  border:1px solid rgba(255,255,255,.13);
-  overflow:hidden;
-  position:relative;
-}
-
-.placeholder{
-  text-align:center;
-  padding:30px;
-  color:#aaa;
-}
-
-.placeholder strong{
-  display:block;
-  color:#fff;
-  font-size:28px;
-  margin-bottom:10px;
-}
-
-.generated-img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:none;
-}
-
-.result-box.has-image .generated-img{
-  display:block;
-}
-
-.result-box.has-image .placeholder{
-  display:none;
-}
-
-.loading-art{
-  display:none;
-  text-align:center;
-}
-
-.loading-art.open{
-  display:block;
-}
-
-.ring{
-  width:80px;
-  height:80px;
-  border-radius:50%;
-  border:2px solid rgba(255,255,255,.12);
-  border-top-color:var(--accent);
-  margin:0 auto 18px;
-  animation:spin 1s linear infinite;
-}
-
-@keyframes spin{
-  to{transform:rotate(360deg)}
-}
-
-.history{
-  margin-top:18px;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-}
-
-.history-item{
-  min-height:92px;
-  padding:14px;
-  border-radius:22px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.055);
-  color:#ddd;
-  font-size:13px;
-  line-height:1.4;
-  overflow:hidden;
-}
-
-.credit-modal{
-  position:fixed;
-  inset:0;
-  z-index:200;
-  display:none;
-  place-items:center;
-  padding:20px;
-  background:rgba(0,0,0,.82);
-  backdrop-filter:blur(16px);
-}
-
-.credit-modal.open{
-  display:grid;
-}
-
-.credit-box{
-  width:100%;
-  max-width:720px;
-  max-height:90vh;
-  overflow:auto;
-  padding:24px;
-  border-radius:34px;
-  background:#050505;
-  border:1px solid rgba(255,255,255,.14);
-  box-shadow:0 30px 110px rgba(0,0,0,.9);
-}
-
-.credit-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:16px;
-  margin-bottom:18px;
-}
-
-.credit-head h2{
-  font-size:26px;
-}
-
-.close{
-  width:42px;
-  height:42px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.06);
-  color:#fff;
-  font-size:22px;
-}
-
-.credit-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:14px;
-}
-
-.credit-card{
-  text-align:left;
-  padding:22px;
-  border-radius:28px;
-  border:1px solid rgba(255,255,255,.12);
-  background:
-    radial-gradient(circle at top right,color-mix(in srgb,var(--accent) 25%,transparent),transparent 36%),
-    linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.03));
-  color:#fff;
-}
-
-.credit-price{
-  font-size:34px;
-  font-weight:950;
-}
-
-.credit-count{
-  margin-top:8px;
-  font-size:22px;
-  font-weight:950;
-}
-
-.credit-desc{
-  color:#aaa;
-  margin-top:10px;
-  line-height:1.5;
-}
-
-.toast{
-  position:fixed;
-  left:50%;
-  bottom:24px;
-  transform:translateX(-50%) translateY(20px);
-  z-index:300;
-  width:min(430px,calc(100vw - 30px));
-  padding:16px 18px;
-  border-radius:22px;
-  background:rgba(0,0,0,.94);
-  border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);
-  color:#fff;
-  opacity:0;
-  pointer-events:none;
-  transition:.22s;
-}
-
-.toast.open{
-  opacity:1;
-  transform:translateX(-50%) translateY(0);
-}
-
-@media(max-width:820px){
-  .layout{
-    grid-template-columns:1fr;
-  }
-
-  .hero{
-    padding:28px 22px;
-  }
-
-  .hero p{
-    font-size:17px;
-  }
-
-  .topbar{
-    grid-template-columns:1fr auto 1fr;
-  }
-
-  .back{
-    padding:12px 13px;
-    font-size:13px;
-  }
-
-  .history{
-    grid-template-columns:1fr;
-  }
-
-  .credit-grid{
-    grid-template-columns:1fr;
-  }
-}
+:root{--accent:#e5092f;--text:#f6f1ef;--line:rgba(255,255,255,.15);--custom-bg:none}
+html,body{min-height:100%;background:#000;color:var(--text);font-family:Arial,sans-serif}
+body{overflow-x:hidden;background:linear-gradient(rgba(0,0,0,.70),rgba(0,0,0,.94)),var(--custom-bg),radial-gradient(circle at 50% -10%,color-mix(in srgb,var(--accent) 42%,transparent),transparent 35%),linear-gradient(180deg,#050505 0%,#100206 45%,#000 100%);background-size:cover;background-position:center;background-attachment:fixed}
+body.has-custom-bg{background:linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.94)),var(--custom-bg) center/cover fixed no-repeat,#000}
+body::before{content:"妖 鬼 狐 墨 夜 生成";position:fixed;inset:0;z-index:0;pointer-events:none;color:rgba(255,255,255,.022);font-size:78px;letter-spacing:30px;line-height:1.5;transform:rotate(-12deg) scale(1.15)}
+.loader-screen{position:fixed;inset:0;z-index:999999;display:flex;align-items:center;justify-content:center;background:#000;color:#fff;font-size:34px;font-weight:950;letter-spacing:.12em;transition:.45s ease}
+.loader-screen.hide{opacity:0;visibility:hidden;pointer-events:none}
+button,textarea,input{font-family:inherit}
+button{cursor:pointer;transition:.15s}
+button:active{transform:scale(.96);opacity:.88}
+.app{position:relative;z-index:2;min-height:100vh;padding:18px;padding-bottom:40px}
+.topbar{height:76px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px;padding:10px 14px;border-radius:30px;background:rgba(0,0,0,.78);border:1px solid var(--line);backdrop-filter:blur(28px);box-shadow:0 24px 80px rgba(0,0,0,.78)}
+.logo{grid-column:2;position:relative;font-size:27px;font-weight:950;letter-spacing:.08em;color:#fff;text-shadow:0 0 24px color-mix(in srgb,var(--accent) 50%,transparent)}
+.logo::before,.logo::after{content:"YYOKAI";position:absolute;inset:0;opacity:.34;pointer-events:none}
+.logo::before{color:var(--accent);animation:glitchA 2.8s infinite}
+.logo::after{color:#fff;animation:glitchB 3.3s infinite reverse}
+@keyframes glitchA{0%,92%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0)}93%{clip-path:inset(12% 0 64% 0);transform:translate(-2px,1px)}95%{clip-path:inset(60% 0 18% 0);transform:translate(2px,-1px)}97%{clip-path:inset(30% 0 38% 0);transform:translate(-1px,0)}}
+@keyframes glitchB{0%,94%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0)}95%{clip-path:inset(44% 0 30% 0);transform:translate(1px,0)}97%{clip-path:inset(15% 0 58% 0);transform:translate(-1px,0)}}
+.back{justify-self:end;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);color:#fff;border-radius:999px;padding:13px 16px;font-weight:950}
+.lang{justify-self:start;display:flex;gap:5px;padding:5px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+.lang button{border:0;background:transparent;color:#888;padding:8px 12px;border-radius:999px;font-weight:950}
+.lang button.active{background:#fff;color:#000}
+.hero{margin-top:20px;padding:30px;border-radius:38px;background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent) 44%,transparent),transparent 36%),linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(20px);box-shadow:0 0 55px color-mix(in srgb,var(--accent) 12%,transparent)}
+.hero h1{font-size:clamp(42px,9vw,82px);line-height:.95;letter-spacing:-.05em}
+.hero p{margin-top:18px;max-width:760px;color:#d8d0cd;line-height:1.6;font-size:19px}
+.stats{margin-top:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{min-height:92px;padding:14px;border-radius:28px;background:rgba(7,7,7,.82);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(20px);display:flex;flex-direction:column;justify-content:center}
+.stat span{color:#bbb;font-size:13px;font-weight:900;margin-bottom:10px}
+.stat strong{font-size:24px;line-height:1}
+.stat.clickable{cursor:pointer}
+.layout{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.panel{padding:24px;border-radius:34px;background:radial-gradient(circle at 85% 0%,color-mix(in srgb,var(--accent) 28%,transparent),transparent 34%),linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.035));border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(22px);box-shadow:0 0 42px color-mix(in srgb,var(--accent) 10%,transparent)}
+.panel h2{font-size:25px;margin-bottom:12px}
+.panel p{color:#cfc7c4;line-height:1.55}
+.modes{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:18px}
+.mode-btn{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#aaa;border-radius:999px;padding:11px 8px;font-weight:950;font-size:12px}
+.mode-btn.active{background:#fff;color:#000}
+.prompt-box{margin-top:14px}
+textarea{width:100%;min-height:170px;resize:vertical;border-radius:24px;padding:18px;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.42);color:#fff;outline:none;font-size:16px;line-height:1.55}
+textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 16%,transparent)}
+.prompt-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.generate-btn,.small-btn{border:0;border-radius:999px;padding:16px 18px;font-weight:950}
+.generate-btn{background:#fff;color:#050505}
+.small-btn{background:rgba(255,255,255,.07);color:#fff;border:1px solid rgba(255,255,255,.14)}
+.result-box{min-height:420px;display:grid;place-items:center;border-radius:28px;background:radial-gradient(circle at center,color-mix(in srgb,var(--accent) 22%,transparent),transparent 42%),rgba(0,0,0,.42);border:1px solid rgba(255,255,255,.13);overflow:hidden;position:relative}
+.placeholder{text-align:center;padding:30px;color:#aaa}
+.placeholder strong{display:block;color:#fff;font-size:28px;margin-bottom:10px}
+.generated-img{width:100%;height:100%;object-fit:cover;display:none}
+.result-box.has-image .generated-img{display:block}
+.result-box.has-image .placeholder{display:none}
+.loading-art{display:none;text-align:center}
+.loading-art.open{display:block}
+.ring{width:80px;height:80px;border-radius:50%;border:2px solid rgba(255,255,255,.12);border-top-color:var(--accent);margin:0 auto 18px;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.history{margin-top:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.history-item{min-height:92px;padding:14px;border-radius:22px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.055);color:#ddd;font-size:13px;line-height:1.4;overflow:hidden}
+.gen-modal{position:fixed;inset:0;z-index:200;display:none;place-items:center;padding:20px;background:rgba(0,0,0,.82);backdrop-filter:blur(16px)}
+.gen-modal.open{display:grid}
+.gen-box{width:100%;max-width:720px;max-height:90vh;overflow:auto;padding:24px;border-radius:34px;background:#050505;border:1px solid rgba(255,255,255,.14);box-shadow:0 30px 110px rgba(0,0,0,.9)}
+.gen-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px}
+.gen-head h2{font-size:26px}
+.close{width:42px;height:42px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;font-size:22px}
+.gen-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.gen-card{text-align:left;padding:22px;border-radius:28px;border:1px solid rgba(255,255,255,.12);background:radial-gradient(circle at top right,color-mix(in srgb,var(--accent) 25%,transparent),transparent 36%),linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.03));color:#fff}
+.gen-price{font-size:34px;font-weight:950}
+.gen-count{margin-top:8px;font-size:22px;font-weight:950}
+.gen-desc{color:#aaa;margin-top:10px;line-height:1.5}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);z-index:300;width:min(430px,calc(100vw - 30px));padding:16px 18px;border-radius:22px;background:rgba(0,0,0,.94);border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);color:#fff;opacity:0;pointer-events:none;transition:.22s}
+.toast.open{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:820px){.layout{grid-template-columns:1fr}.hero{padding:28px 22px}.hero p{font-size:17px}.topbar{grid-template-columns:1fr auto 1fr}.back{padding:12px 13px;font-size:13px}.history{grid-template-columns:1fr}.gen-grid{grid-template-columns:1fr}.modes{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 
 <body>
-
 <div class="loader-screen" id="loaderScreen">YYOKAI</div>
 
 <main class="app">
@@ -558,15 +93,13 @@ textarea:focus{
       <button class="active" onclick="setLang('uk',this)">UA</button>
       <button onclick="setLang('en',this)">EN</button>
     </div>
-
     <div class="logo">YYOKAI</div>
-
     <button class="back" onclick="goDashboard()" data-i18n="back">На головну</button>
   </header>
 
   <section class="hero">
-    <h1 data-i18n="title">AI генерація ідей</h1>
-    <p data-i18n="lead">Опиши ідею для тату або арт-концепту. YYOKAI підготує візуальний напрямок, який можна розвивати в ескіз.</p>
+    <h1 data-i18n="title">AI генерація ескізів</h1>
+    <p data-i18n="lead">Не просто prompt box. Обери напрямок, напиши ідею — YYOKAI перетворить її у tattoo-oriented концепт.</p>
   </section>
 
   <section class="stats">
@@ -574,12 +107,10 @@ textarea:focus{
       <span data-i18n="plan">План</span>
       <strong id="planView">Free</strong>
     </div>
-
-    <div class="stat clickable" onclick="openCreditsModal()">
-      <span>AI Credits</span>
-      <strong id="creditsView">0</strong>
+    <div class="stat clickable" onclick="openGenerationsModal()">
+      <span>AI Generations</span>
+      <strong id="generationsView">0</strong>
     </div>
-
     <div class="stat">
       <span data-i18n="flow">Creative Flow</span>
       <strong id="flowView">Active</strong>
@@ -588,11 +119,19 @@ textarea:focus{
 
   <section class="layout">
     <div class="panel">
-      <h2 data-i18n="promptTitle">Що генеруємо?</h2>
-      <p data-i18n="promptText">Наприклад: метелик з рогами, темний японський демон, лисиця в стилі нео-традишнл.</p>
+      <h2 data-i18n="promptTitle">Що створюємо?</h2>
+      <p data-i18n="promptText">Вибери режим, щоб результат був схожий на робочий tattoo concept, а не випадкову AI-картинку.</p>
+
+      <div class="modes">
+        <button class="mode-btn active" onclick="setMode('tattoo_concept',this)">Concept</button>
+        <button class="mode-btn" onclick="setMode('stencil',this)">Stencil</button>
+        <button class="mode-btn" onclick="setMode('japanese_dark',this)">Yokai</button>
+        <button class="mode-btn" onclick="setMode('neo_traditional',this)">Neo</button>
+        <button class="mode-btn" onclick="setMode('fine_line',this)">Fine</button>
+      </div>
 
       <div class="prompt-box">
-        <textarea id="promptInput" data-i18n-placeholder="promptPlaceholder" placeholder="Опиши ідею..."></textarea>
+        <textarea id="promptInput" data-i18n-placeholder="promptPlaceholder" placeholder="Наприклад: метелик з рогами, темні крила, японська містика..."></textarea>
 
         <div class="prompt-actions">
           <button class="small-btn" onclick="randomIdea()" data-i18n="ideaBtn">Ідея</button>
@@ -603,15 +142,12 @@ textarea:focus{
 
     <div class="panel">
       <h2 data-i18n="resultTitle">Результат</h2>
-
       <div class="result-box" id="resultBox">
         <img id="resultImage" class="generated-img" alt="Generated image">
-
         <div class="loading-art" id="loadingArt">
           <div class="ring"></div>
           <strong data-i18n="generating">Генеруємо...</strong>
         </div>
-
         <div class="placeholder" id="placeholder">
           <strong>妖</strong>
           <span data-i18n="emptyResult">Тут зʼявиться результат генерації.</span>
@@ -626,36 +162,36 @@ textarea:focus{
   </section>
 </main>
 
-<section class="credit-modal" id="creditModal">
-  <div class="credit-box">
-    <div class="credit-head">
-      <h2 data-i18n="creditsTitle">Поповнити AI Credits</h2>
-      <button class="close" onclick="closeCreditsModal()">×</button>
+<section class="gen-modal" id="generationsModal">
+  <div class="gen-box">
+    <div class="gen-head">
+      <h2 data-i18n="generationsTitle">Додати AI Generations</h2>
+      <button class="close" onclick="closeGenerationsModal()">×</button>
     </div>
 
-    <div class="credit-grid">
-      <button class="credit-card" onclick="buyCredits(5,75)">
-        <div class="credit-price">$5</div>
-        <div class="credit-count">75 AI Credits</div>
-        <div class="credit-desc" data-i18n="pack75">Легкий пакет для швидких ідей.</div>
+    <div class="gen-grid">
+      <button class="gen-card" onclick="buyGenerations(5,75)">
+        <div class="gen-price">$5</div>
+        <div class="gen-count">75 Generations</div>
+        <div class="gen-desc" data-i18n="pack75">Легкий пакет для швидких ідей.</div>
       </button>
 
-      <button class="credit-card" onclick="buyCredits(10,150)">
-        <div class="credit-price">$10</div>
-        <div class="credit-count">150 AI Credits</div>
-        <div class="credit-desc" data-i18n="pack150">Оптимально для регулярної роботи.</div>
+      <button class="gen-card" onclick="buyGenerations(10,150)">
+        <div class="gen-price">$10</div>
+        <div class="gen-count">150 Generations</div>
+        <div class="gen-desc" data-i18n="pack150">Оптимально для регулярної роботи.</div>
       </button>
 
-      <button class="credit-card" onclick="buyCredits(20,250)">
-        <div class="credit-price">$20</div>
-        <div class="credit-count">250 AI Credits</div>
-        <div class="credit-desc" data-i18n="pack250">Для активного майстра.</div>
+      <button class="gen-card" onclick="buyGenerations(20,250)">
+        <div class="gen-price">$20</div>
+        <div class="gen-count">250 Generations</div>
+        <div class="gen-desc" data-i18n="pack250">Для активного майстра.</div>
       </button>
 
-      <button class="credit-card" onclick="buyCredits(30,500)">
-        <div class="credit-price">$30</div>
-        <div class="credit-count">500 AI Credits</div>
-        <div class="credit-desc" data-i18n="pack500">Studio fuel для потужного workflow.</div>
+      <button class="gen-card" onclick="buyGenerations(30,500)">
+        <div class="gen-price">$30</div>
+        <div class="gen-count">500 Generations</div>
+        <div class="gen-desc" data-i18n="pack500">Studio fuel для потужного workflow.</div>
       </button>
     </div>
   </div>
@@ -678,42 +214,30 @@ const firebaseConfig={
 };
 
 firebase.initializeApp(firebaseConfig);
-
 const auth=firebase.auth();
 const db=firebase.database();
 
 let currentUser=null;
 let currentLang="uk";
 let currentPlanKey="free";
-let aiCredits=0;
+let aiGenerations=0;
+let currentMode="tattoo_concept";
 
-const planNames={
-  free:"Free",
-  starter:"Starter",
-  pro:"Pro",
-  yokai:"YYOKAI Full"
-};
+const planNames={free:"Free",starter:"Starter",pro:"Pro",yokai:"YYOKAI Full"};
 
 const t={
   uk:{
-    back:"На головну",
-    title:"AI генерація ідей",
-    lead:"Опиши ідею для тату або арт-концепту. YYOKAI підготує візуальний напрямок, який можна розвивати в ескіз.",
-    plan:"План",
-    flow:"Creative Flow",
-    promptTitle:"Що генеруємо?",
-    promptText:"Наприклад: метелик з рогами, темний японський демон, лисиця в стилі нео-традишнл.",
+    back:"На головну",title:"AI генерація ескізів",
+    lead:"Не просто prompt box. Обери напрямок, напиши ідею — YYOKAI перетворить її у tattoo-oriented концепт.",
+    plan:"План",flow:"Creative Flow",promptTitle:"Що створюємо?",
+    promptText:"Вибери режим, щоб результат був схожий на робочий tattoo concept, а не випадкову AI-картинку.",
     promptPlaceholder:"Наприклад: метелик з рогами, темні крила, японська містика...",
-    ideaBtn:"Ідея",
-    generateBtn:"Generate",
-    resultTitle:"Результат",
-    generating:"Генеруємо...",
-    emptyResult:"Тут зʼявиться результат генерації.",
-    historyTitle:"Останні ідеї",
+    ideaBtn:"Ідея",generateBtn:"Generate",resultTitle:"Результат",generating:"Генеруємо...",
+    emptyResult:"Тут зʼявиться результат генерації.",historyTitle:"Останні ідеї",
     emptyPrompt:"Напиши ідею для генерації.",
-    noCredits:"AI Credits закінчились. Поповни баланс для продовження.",
+    noGenerations:"AI Generations закінчились. Додай генерації для продовження.",
     apiNotReady:"API ще не підключено. Демо-превʼю створено.",
-    creditsTitle:"Поповнити AI Credits",
+    generationsTitle:"Додати AI Generations",
     pack75:"Легкий пакет для швидких ідей.",
     pack150:"Оптимально для регулярної роботи.",
     pack250:"Для активного майстра.",
@@ -721,24 +245,17 @@ const t={
     paymentCreated:"Checkout створено. Переходимо до оплати..."
   },
   en:{
-    back:"Dashboard",
-    title:"AI idea generation",
-    lead:"Describe a tattoo or art concept. YYOKAI will prepare a visual direction you can develop into a sketch.",
-    plan:"Plan",
-    flow:"Creative Flow",
-    promptTitle:"What are we generating?",
-    promptText:"For example: butterfly with horns, dark Japanese demon, neo-traditional fox.",
+    back:"Dashboard",title:"AI sketch generation",
+    lead:"Not just a prompt box. Choose a direction, write an idea — YYOKAI turns it into a tattoo-oriented concept.",
+    plan:"Plan",flow:"Creative Flow",promptTitle:"What are we creating?",
+    promptText:"Choose a mode so the result feels like a tattoo concept, not random AI output.",
     promptPlaceholder:"Example: butterfly with horns, dark wings, Japanese mystic mood...",
-    ideaBtn:"Idea",
-    generateBtn:"Generate",
-    resultTitle:"Result",
-    generating:"Generating...",
-    emptyResult:"Your generated result will appear here.",
-    historyTitle:"Recent ideas",
+    ideaBtn:"Idea",generateBtn:"Generate",resultTitle:"Result",generating:"Generating...",
+    emptyResult:"Your generated result will appear here.",historyTitle:"Recent ideas",
     emptyPrompt:"Write an idea to generate.",
-    noCredits:"AI Credits are empty. Top up to continue.",
+    noGenerations:"AI Generations are empty. Add generations to continue.",
     apiNotReady:"API is not connected yet. Demo preview created.",
-    creditsTitle:"Top up AI Credits",
+    generationsTitle:"Add AI Generations",
     pack75:"Light pack for quick ideas.",
     pack150:"Optimal for regular work.",
     pack250:"For active artists.",
@@ -765,7 +282,7 @@ auth.onAuthStateChanged(async user=>{
 
   try{
     await loadProfile();
-    await listenCredits();
+    listenGenerations();
     await loadHistory();
   }catch(e){
     console.log("generation load error:",e);
@@ -779,30 +296,23 @@ setTimeout(hideLoader,2200);
 async function loadProfile(){
   const cached=JSON.parse(localStorage.getItem("yyokai_profile_"+currentUser.uid)||"{}");
 
-  if(cached.accent){
-    applyAccent(cached.accent);
-  }
-
-  if(cached.backgroundUrl){
-    applyBackgroundImage(cached.backgroundUrl);
-  }
+  if(cached.accent)applyAccent(cached.accent);
+  if(cached.backgroundUrl)applyBackgroundImage(cached.backgroundUrl);
 
   const snap=await db.ref("users/"+currentUser.uid).once("value");
   const data=snap.val()||{};
 
   currentPlanKey=data.planKey||"free";
 
-  if(data.settings&&data.settings.accent){
-    applyAccent(data.settings.accent);
-  }
+  if(data.settings&&data.settings.accent)applyAccent(data.settings.accent);
 
   planView.textContent=planNames[currentPlanKey]||"Free";
 }
 
-async function listenCredits(){
-  db.ref("users/"+currentUser.uid+"/aiCredits").on("value",snap=>{
-    aiCredits=Number(snap.val()||0);
-    creditsView.textContent=aiCredits;
+function listenGenerations(){
+  db.ref("users/"+currentUser.uid+"/aiGenerations").on("value",snap=>{
+    aiGenerations=Number(snap.val()||0);
+    generationsView.textContent=aiGenerations;
   });
 }
 
@@ -821,25 +331,15 @@ async function loadHistory(){
   list.forEach(item=>{
     const div=document.createElement("div");
     div.className="history-item";
-    div.textContent=item.prompt||"—";
+    div.textContent=(item.mode?item.mode+" · ":"")+(item.prompt||item.userPrompt||"—");
     historyList.appendChild(div);
   });
 }
 
-async function spendCredit(){
-  const ref=db.ref("users/"+currentUser.uid+"/aiCredits");
-
-  const result=await ref.transaction(current=>{
-    const value=Number(current||0);
-
-    if(value<=0){
-      return;
-    }
-
-    return value-1;
-  });
-
-  return result.committed;
+function setMode(mode,btn){
+  currentMode=mode;
+  document.querySelectorAll(".mode-btn").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
 }
 
 async function generateImage(){
@@ -850,17 +350,9 @@ async function generateImage(){
     return;
   }
 
-  if(aiCredits<=0){
-    showToast(t[currentLang].noCredits);
-    openCreditsModal();
-    return;
-  }
-
-  const ok=await spendCredit();
-
-  if(!ok){
-    showToast(t[currentLang].noCredits);
-    openCreditsModal();
+  if(aiGenerations<=0){
+    showToast(t[currentLang].noGenerations);
+    openGenerationsModal();
     return;
   }
 
@@ -877,7 +369,10 @@ async function generateImage(){
         "Content-Type":"application/json",
         "Authorization":"Bearer "+token
       },
-      body:JSON.stringify({prompt})
+      body:JSON.stringify({
+        prompt,
+        mode:currentMode
+      })
     });
 
     const data=await res.json();
@@ -889,22 +384,28 @@ async function generateImage(){
     resultImage.src=data.image;
     resultBox.classList.add("has-image");
 
-    await saveIdea(prompt,"image");
+    if(typeof data.generationsLeft==="number"){
+      aiGenerations=data.generationsLeft;
+      generationsView.textContent=aiGenerations;
+    }
+
+    await saveIdea(prompt,currentMode,"image");
 
   }catch(error){
     console.log(error);
 
     createDemoPreview(prompt);
-    await saveIdea(prompt,"image-demo");
+    await saveIdea(prompt,currentMode,"image-demo");
     showToast(t[currentLang].apiNotReady);
   }
 
   loadingArt.classList.remove("open");
 }
 
-async function saveIdea(prompt,type){
+async function saveIdea(prompt,mode,type){
   await db.ref("aiGenerations/"+currentUser.uid).push({
     type,
+    mode,
     prompt,
     planKey:currentPlanKey,
     createdAt:Date.now()
@@ -926,9 +427,10 @@ function createDemoPreview(prompt){
         </radialGradient>
       </defs>
       <rect width="1024" height="1024" fill="url(#g)"/>
-      <text x="50%" y="43%" text-anchor="middle" fill="white" font-size="92" font-family="Arial" font-weight="900">YYOKAI</text>
-      <text x="50%" y="54%" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="34" font-family="Arial">${escapeSvg(prompt.slice(0,42))}</text>
-      <text x="50%" y="64%" text-anchor="middle" fill="rgba(255,255,255,.28)" font-size="120" font-family="Arial">妖</text>
+      <text x="50%" y="40%" text-anchor="middle" fill="white" font-size="84" font-family="Arial" font-weight="900">YYOKAI</text>
+      <text x="50%" y="51%" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="30" font-family="Arial">${escapeSvg(prompt.slice(0,44))}</text>
+      <text x="50%" y="63%" text-anchor="middle" fill="rgba(255,255,255,.28)" font-size="120" font-family="Arial">妖</text>
+      <text x="50%" y="73%" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="24" font-family="Arial">${escapeSvg(currentMode)}</text>
     </svg>
   `;
 
@@ -936,23 +438,23 @@ function createDemoPreview(prompt){
   resultBox.classList.add("has-image");
 }
 
-function openCreditsModal(){
-  creditModal.classList.add("open");
+function openGenerationsModal(){
+  generationsModal.classList.add("open");
 }
 
-function closeCreditsModal(){
-  creditModal.classList.remove("open");
+function closeGenerationsModal(){
+  generationsModal.classList.remove("open");
 }
 
-async function buyCredits(amount,credits){
+async function buyGenerations(amount,generations){
   const paymentRef=db.ref("payments").push();
 
   await paymentRef.set({
     uid:currentUser.uid,
     email:currentUser.email||"",
-    type:"ai_credits",
+    type:"ai_generations",
     amount,
-    credits,
+    generations,
     currency:"USD",
     status:"pending",
     createdAt:Date.now()
@@ -963,9 +465,9 @@ async function buyCredits(amount,credits){
   setTimeout(()=>{
     location.href=BASE_PATH+
       "checkout.html?paymentId="+paymentRef.key+
-      "&type=ai_credits"+
+      "&type=ai_generations"+
       "&amount="+amount+
-      "&credits="+credits;
+      "&generations="+generations;
   },450);
 }
 
@@ -989,11 +491,7 @@ function randomIdea(){
 
 function escapeSvg(str){
   return str.replace(/[&<>"']/g,m=>({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&apos;"
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&apos;"
   }[m]));
 }
 
