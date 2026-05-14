@@ -1375,6 +1375,18 @@ function saveLocalCache(data){
   localStorage.setItem(key,JSON.stringify({...old,...data}));
 }
 
+function hideLoader(){
+  const loader=document.getElementById("loaderScreen");
+
+  if(loader){
+    loader.classList.add("hide");
+  }
+
+  setTimeout(()=>{
+    document.body.classList.remove("loading");
+  },450);
+}
+
 auth.onAuthStateChanged(async user=>{
   if(!user){
     location.href=authUrl();
@@ -1384,68 +1396,53 @@ auth.onAuthStateChanged(async user=>{
   currentUser=user;
 
   try{
-    if(typeof loadProfile === "function"){
-      await loadProfile();
+    const snap=await db.ref("users/"+user.uid).once("value");
+    const data=snap.val()||{};
+
+    const email=user.email||data.email||"";
+    const name=data.name||user.displayName||"Guest Artist";
+
+    await db.ref("users/"+user.uid).update({
+      email,
+      name,
+      updatedAt:Date.now()
+    });
+
+    artistName.textContent=name;
+    artistEmail.textContent=email;
+    nameInput.value=name;
+
+    loadLocalCache();
+
+    db.ref("users/"+user.uid+"/balance").on("value",snap=>{
+      currentBalance=Number(snap.val()||0);
+      const balance=currentBalance.toFixed(2);
+      balanceValue.textContent="$"+balance;
+      balanceMain.textContent="$"+balance;
+    });
+
+    db.ref("users/"+user.uid+"/planKey").on("value",snap=>{
+      currentPlanKey=snap.val()||"free";
+      displayPlan();
+    });
+
+    if(data.settings&&data.settings.accent){
+      applyAccent(data.settings.accent);
     }
+
+    setTrack(data.settings&&typeof data.settings.trackIndex==="number"?data.settings.trackIndex:0);
+
   }catch(e){
-    console.log("loadProfile error:", e);
+    console.log("dashboard load error:",e);
   }
 
-  loaderScreen.classList.add("hide");
-
-  setTimeout(()=>{
-    document.body.classList.remove("loading");
-  },450);
+  hideLoader();
 });
+
+
+
 
   
-  const snap=await db.ref("users/"+user.uid).once("value");
-  const data=snap.val()||{};
-
-  const email=user.email||data.email||"";
-  const name=data.name||user.displayName||"Guest Artist";
-
-  await db.ref("users/"+user.uid).update({
-    email,
-    name,
-    updatedAt:Date.now()
-  });
-
-  artistName.textContent=name;
-  artistEmail.textContent=email;
-  nameInput.value=name;
-
-  loadLocalCache();
-
-  db.ref("users/"+user.uid+"/balance").on("value",snap=>{
-    currentBalance=Number(snap.val()||0);
-    const balance=currentBalance.toFixed(2);
-    balanceValue.textContent="$"+balance;
-    balanceMain.textContent="$"+balance;
-  });
-
-  db.ref("users/"+user.uid+"/planKey").on("value",snap=>{
-    currentPlanKey=snap.val()||"free";
-    displayPlan();
-  });
-
-  if(data.settings&&data.settings.accent){
-    applyAccent(data.settings.accent);
-  }
-
-  setTrack(data.settings&&typeof data.settings.trackIndex==="number"?data.settings.trackIndex:0);
-});
-
-function setLang(lang,btn){
-  currentLang=lang;
-  document.documentElement.lang=lang;
-
-  Object.keys(t[lang]).forEach(key=>{
-    document.querySelectorAll(`[data-i18n="${key}"]`).forEach(el=>{
-      el.textContent=t[lang][key];
-    });
-  });
-
   document.querySelectorAll(".lang button").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
 
