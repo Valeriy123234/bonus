@@ -26,41 +26,33 @@ html,body{
   font-family:Arial,sans-serif;
 }
 
-body.loading .app{
-  opacity:0;
-  animation:showApp .35s ease forwards;
-  animation-delay:1.2s;
+body.loading{
+  overflow:hidden;
 }
 
-body.loading::after{
-  content:"YYOKAI";
+.loader-screen{
   position:fixed;
   inset:0;
-  z-index:9999;
-  display:grid;
-  place-items:center;
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   background:#000;
   color:#fff;
   font-size:34px;
   font-weight:950;
   letter-spacing:.12em;
-  animation:hideLoader .35s ease forwards;
-  animation-delay:1.2s;
+  transition:.45s;
+}
+
+.loader-screen.hide{
+  opacity:0;
   pointer-events:none;
 }
 
-@keyframes showApp{
-  to{
-    opacity:1;
-  }
-}
 
-@keyframes hideLoader{
-  to{
-    opacity:0;
-    visibility:hidden;
-  }
-}
+
+
 
 body{
   overflow-x:hidden;
@@ -929,16 +921,16 @@ audio{
 </head>
 
 <body class="loading">
+
+<div class="loader-screen" id="loaderScreen">
+  YYOKAI
+</div>
+
 <audio id="bgMusic"></audio>
 
 <div class="side-overlay" id="sideOverlay" onclick="closeSide()"></div>
 
 <aside class="side-menu" id="sideMenu">
-  <div class="side-head">
-    <div></div>
-    <img class="side-logo-img" src="yyokai-mask.png" alt="YYOKAI mask">
-    <button class="close-side" onclick="closeSide()">←</button>
-  </div>
 
   <nav class="side-nav">
     <button onclick="go('stencil.html')"><span>🧿</span><span data-i18n="navStencil">AI Stencil</span></button>
@@ -1397,14 +1389,14 @@ auth.onAuthStateChanged(async user=>{
     }
   }catch(e){
     console.log("loadProfile error:", e);
-  }finally{
-    document.body.classList.remove("loading");
   }
-});
 
-setTimeout(()=>{
-  document.body.classList.remove("loading");
-},1500);
+  loaderScreen.classList.add("hide");
+
+  setTimeout(()=>{
+    document.body.classList.remove("loading");
+  },450);
+});
 
   
   const snap=await db.ref("users/"+user.uid).once("value");
