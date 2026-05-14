@@ -1366,7 +1366,11 @@ auth.onAuthStateChanged(async user=>{
 
   currentUser=user;
 
-  await loadProfile();
+  try{
+    await loadProfile();
+  }catch(e){
+    console.log(e);
+  }
 
   document.body.classList.remove("loading");
 });
