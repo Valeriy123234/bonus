@@ -1330,16 +1330,12 @@ function authUrl(){
 }
 
 function checkoutUrl(params){
-
   const accent=getComputedStyle(document.documentElement)
     .getPropertyValue("--accent")
     .trim()
     .replace("#","");
 
-  return BASE_PATH+
-    "checkout.html?"+
-    params+
-    "&accent="+accent;
+  return BASE_PATH+"checkout.html?"+params+"&accent="+accent;
 }
 
 function cacheKey(){
@@ -1439,14 +1435,21 @@ auth.onAuthStateChanged(async user=>{
   hideLoader();
 });
 
+function setLang(lang,btn){
+  currentLang=lang;
+  document.documentElement.lang=lang;
 
+  Object.keys(t[lang]).forEach(key=>{
+    document.querySelectorAll(`[data-i18n="${key}"]`).forEach(el=>{
+      el.textContent=t[lang][key];
+    });
+  });
 
-
-  
   document.querySelectorAll(".lang button").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
 
   displayPlan();
+}
 }
 
 function displayPlan(){
