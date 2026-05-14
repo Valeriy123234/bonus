@@ -285,7 +285,7 @@ registerForm.addEventListener("submit",async(e)=>{
       uid:user.uid,name:name||"Guest Artist",email,role:"artist",
       balance:0,planKey:"free",stencilCredits:3,createdAt:Date.now(),lastLogin:Date.now()
     });
-
+    localStorage.setItem("yyokai_last_email",email);
     showMessage("registerSuccess","ok");
     setTimeout(()=>window.location.replace(BASE_PATH+"artist-dashboard.html"),1200);
 
@@ -313,7 +313,7 @@ loginForm.addEventListener("submit",async(e)=>{
     await update(ref(db,"users/"+user.uid),{
       uid:user.uid,email:user.email||email,lastLogin:Date.now()
     });
-
+    localStorage.setItem("yyokai_last_email",email);
     showMessage("loginSuccess","ok");
     setTimeout(()=>window.location.replace(BASE_PATH+"artist-dashboard.html"),700);
 
