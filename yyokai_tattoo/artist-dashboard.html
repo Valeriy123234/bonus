@@ -1527,7 +1527,10 @@ async function confirmPlan(){
   body:JSON.stringify({
   uid:currentUser.uid,
   plan:selectedPlan,
-  price:selectedPrice
+  price:
+    selectedPlan==="starter"?10:
+    selectedPlan==="pro"?20:
+    selectedPlan==="full"?30:0
 })
 });
 
