@@ -11,97 +11,346 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{--accent:#20ff4f;--text:#fff;--line:rgba(255,255,255,.14)}
-html,body{min-height:100%;background:#000;color:var(--text);font-family:Arial,sans-serif}
-body{
-  background:
-    radial-gradient(circle at 50% -10%,color-mix(in srgb,var(--accent) 30%,transparent),transparent 35%),
-    linear-gradient(180deg,#020402,#050505 55%,#000);
-  overflow-x:hidden;
+
+:root{
+  --accent:#e5092f;
+  --text:#fff;
+  --line:rgba(255,255,255,.14);
 }
+
+html,body{
+  min-height:100%;
+  background:#000;
+  color:var(--text);
+  font-family:Arial,sans-serif;
+}
+
+body{
+  overflow-x:hidden;
+  background:
+    radial-gradient(circle at 50% -12%,color-mix(in srgb,var(--accent) 35%,transparent),transparent 36%),
+    radial-gradient(circle at 12% 20%,color-mix(in srgb,var(--accent) 18%,transparent),transparent 30%),
+    linear-gradient(180deg,#020202,#070202 55%,#000);
+}
+
 body::before{
   content:"妖 鬼 狐 墨 夜 支 払";
-  position:fixed;inset:0;z-index:0;pointer-events:none;
-  color:rgba(255,255,255,.025);font-size:80px;letter-spacing:30px;line-height:1.5;
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  color:rgba(255,255,255,.025);
+  font-size:80px;
+  letter-spacing:30px;
+  line-height:1.5;
   transform:rotate(-12deg) scale(1.15);
 }
-button{font-family:inherit;cursor:pointer;transition:.15s}
-button:active{transform:scale(.96);opacity:.85}
-.app{position:relative;z-index:2;min-height:100vh;padding:18px}
+
+button{
+  font-family:inherit;
+  cursor:pointer;
+  transition:.15s;
+}
+
+button:active{
+  transform:scale(.96);
+  opacity:.86;
+}
+
+.app{
+  position:relative;
+  z-index:2;
+  min-height:100vh;
+  padding:18px;
+}
+
 .shell{
-  max-width:820px;margin:20px auto 80px;padding:24px;border-radius:36px;
-  background:rgba(0,0,0,.76);border:1px solid var(--line);backdrop-filter:blur(26px);
+  width:100%;
+  max-width:820px;
+  margin:20px auto 80px;
+  padding:24px;
+  border-radius:36px;
+  background:rgba(0,0,0,.78);
+  border:1px solid var(--line);
+  backdrop-filter:blur(26px);
   box-shadow:0 30px 100px rgba(0,0,0,.8);
 }
+
 .top{
-  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px;margin-bottom:34px;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:14px;
+  margin-bottom:34px;
 }
+
 .logo{
-  grid-column:2;font-size:34px;font-weight:950;letter-spacing:.12em;text-align:center;
+  grid-column:2;
+  font-size:34px;
+  font-weight:950;
+  letter-spacing:.12em;
+  text-align:center;
   text-shadow:0 0 30px color-mix(in srgb,var(--accent) 55%,transparent);
 }
-.lang{justify-self:end;display:flex;gap:5px;padding:5px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
-.lang button{border:0;background:transparent;color:#888;padding:8px 12px;border-radius:999px;font-weight:950}
-.lang button.active{background:#fff;color:#000}
-.kicker{color:var(--accent);letter-spacing:.22em;font-weight:950;font-size:14px;margin-bottom:18px}
-h1{font-size:clamp(42px,9vw,74px);letter-spacing:-.05em;line-height:.95;margin-bottom:20px}
-.lead{font-size:20px;line-height:1.6;color:#cfcfcf;margin-bottom:28px}
+
+.lang{
+  justify-self:end;
+  display:flex;
+  gap:5px;
+  padding:5px;
+  border-radius:999px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+}
+
+.lang button{
+  border:0;
+  background:transparent;
+  color:#888;
+  padding:8px 12px;
+  border-radius:999px;
+  font-weight:950;
+}
+
+.lang button.active{
+  background:#fff;
+  color:#000;
+}
+
+.kicker{
+  color:var(--accent);
+  letter-spacing:.22em;
+  font-weight:950;
+  font-size:14px;
+  margin-bottom:18px;
+}
+
+h1{
+  font-size:clamp(42px,9vw,74px);
+  letter-spacing:-.05em;
+  line-height:.95;
+  margin-bottom:20px;
+}
+
+.lead{
+  font-size:20px;
+  line-height:1.6;
+  color:#cfcfcf;
+  margin-bottom:28px;
+}
+
 .card{
-  padding:22px;border-radius:28px;background:
-    radial-gradient(circle at top right,color-mix(in srgb,var(--accent) 28%,transparent),transparent 38%),
+  padding:22px;
+  border-radius:28px;
+  background:
+    radial-gradient(circle at top right,color-mix(in srgb,var(--accent) 30%,transparent),transparent 38%),
     linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.025));
-  border:1px solid rgba(255,255,255,.14);margin-bottom:18px;
+  border:1px solid rgba(255,255,255,.14);
+  margin-bottom:18px;
 }
-.label{color:#999;font-weight:900;font-size:14px;margin-bottom:10px}
-.amount{font-size:54px;font-weight:950;margin-bottom:22px}
-.row{display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-top:1px solid rgba(255,255,255,.08);color:#aaa}
-.row strong{color:#fff}
-.status{font-weight:950;color:#fff}
-.notice{padding:20px;border-radius:24px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.1);margin:18px 0;color:#ccc;line-height:1.55}
-.notice strong{display:block;color:#fff;font-size:20px;margin-bottom:6px}
+
+.label{
+  color:#999;
+  font-weight:900;
+  font-size:14px;
+  margin-bottom:10px;
+}
+
+.amount{
+  font-size:54px;
+  font-weight:950;
+  margin-bottom:22px;
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+  padding:12px 0;
+  border-top:1px solid rgba(255,255,255,.08);
+  color:#aaa;
+}
+
+.row strong{
+  color:#fff;
+  text-align:right;
+}
+
+.status{
+  font-weight:950;
+}
+
+.notice{
+  padding:20px;
+  border-radius:24px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.1);
+  margin:18px 0;
+  color:#ccc;
+  line-height:1.55;
+}
+
+.notice strong{
+  display:block;
+  color:#fff;
+  font-size:20px;
+  margin-bottom:6px;
+}
+
 .back{
-  width:100%;padding:16px;border-radius:999px;border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.06);color:#fff;font-weight:950;margin-top:12px;
+  width:100%;
+  padding:16px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  font-weight:950;
+  margin-top:12px;
 }
-.methods{margin-top:30px}
-.methods h2{color:var(--accent);letter-spacing:.18em;font-size:16px;margin-bottom:14px}
+
+.methods{
+  margin-top:30px;
+}
+
+.methods h2{
+  color:var(--accent);
+  letter-spacing:.18em;
+  font-size:16px;
+  margin-bottom:14px;
+}
+
 .method{
-  width:100%;display:grid;grid-template-columns:62px 1fr auto;gap:14px;align-items:center;text-align:left;
-  padding:18px;border-radius:26px;border:1px solid rgba(255,255,255,.13);
-  background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
-  color:#fff;margin-bottom:12px;
+  width:100%;
+  display:grid;
+  grid-template-columns:62px 1fr auto;
+  gap:14px;
+  align-items:center;
+  text-align:left;
+  padding:18px;
+  border-radius:26px;
+  border:1px solid rgba(255,255,255,.13);
+  background:
+    radial-gradient(circle at top right,color-mix(in srgb,var(--accent) 18%,transparent),transparent 42%),
+    linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+  color:#fff;
+  margin-bottom:12px;
 }
+
 .icon{
-  width:62px;height:62px;border-radius:20px;display:grid;place-items:center;
-  background:rgba(255,255,255,.08);font-size:28px;border:1px solid rgba(255,255,255,.1);
+  width:62px;
+  height:62px;
+  border-radius:20px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.08);
+  font-size:28px;
+  border:1px solid rgba(255,255,255,.1);
 }
-.method-title{font-size:22px;font-weight:950;margin-bottom:5px}
-.method-text{color:#aaa;line-height:1.35;font-size:14px}
-.arrow{font-size:26px;color:var(--accent)}
+
+.method-title{
+  font-size:22px;
+  font-weight:950;
+  margin-bottom:5px;
+}
+
+.method-text{
+  color:#aaa;
+  line-height:1.35;
+  font-size:14px;
+}
+
+.arrow{
+  font-size:26px;
+  color:var(--accent);
+}
+
 .crypto-box{
-  display:none;margin-top:-4px;margin-bottom:12px;padding:18px;border-radius:22px;
-  background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.1);
+  display:none;
+  margin-top:-4px;
+  margin-bottom:12px;
+  padding:18px;
+  border-radius:22px;
+  background:rgba(0,0,0,.55);
+  border:1px solid rgba(255,255,255,.1);
 }
-.crypto-box.open{display:block}
+
+.crypto-box.open{
+  display:block;
+}
+
 .addr{
-  word-break:break-all;padding:14px;border-radius:16px;background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.08);font-weight:900;margin:10px 0;
+  word-break:break-all;
+  padding:14px;
+  border-radius:16px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  font-weight:900;
+  margin:10px 0;
 }
-.copy{padding:12px 16px;border:0;border-radius:999px;background:var(--accent);color:#000;font-weight:950}
+
+.copy,.test-btn{
+  padding:12px 16px;
+  border:0;
+  border-radius:999px;
+  background:var(--accent);
+  color:#000;
+  font-weight:950;
+}
+
+.test-btn{
+  width:100%;
+  margin-top:18px;
+}
+
 .toast{
-  position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);
-  width:min(420px,calc(100vw - 32px));padding:16px 18px;border-radius:20px;
-  background:rgba(0,0,0,.92);border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);
-  opacity:0;pointer-events:none;transition:.2s;z-index:20;
+  position:fixed;
+  left:50%;
+  bottom:24px;
+  transform:translateX(-50%) translateY(20px);
+  width:min(420px,calc(100vw - 32px));
+  padding:16px 18px;
+  border-radius:20px;
+  background:rgba(0,0,0,.92);
+  border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);
+  opacity:0;
+  pointer-events:none;
+  transition:.2s;
+  z-index:20;
 }
-.toast.open{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.toast.open{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
 @media(max-width:620px){
-  .shell{padding:20px;border-radius:30px}
-  .top{grid-template-columns:1fr;justify-items:center}
-  .logo{grid-column:auto}
-  .lang{justify-self:center}
-  .method{grid-template-columns:54px 1fr auto;padding:15px}
-  .icon{width:54px;height:54px}
+  .shell{
+    padding:20px;
+    border-radius:30px;
+  }
+
+  .top{
+    grid-template-columns:1fr;
+    justify-items:center;
+  }
+
+  .logo{
+    grid-column:auto;
+  }
+
+  .lang{
+    justify-self:center;
+  }
+
+  .method{
+    grid-template-columns:54px 1fr auto;
+    padding:15px;
+  }
+
+  .icon{
+    width:54px;
+    height:54px;
+  }
 }
 </style>
 </head>
@@ -112,6 +361,7 @@ h1{font-size:clamp(42px,9vw,74px);letter-spacing:-.05em;line-height:.95;margin-b
     <div class="top">
       <div></div>
       <div class="logo">YYOKAI</div>
+
       <div class="lang">
         <button class="active" onclick="setLang('uk',this)">UA</button>
         <button onclick="setLang('en',this)">EN</button>
@@ -119,8 +369,12 @@ h1{font-size:clamp(42px,9vw,74px);letter-spacing:-.05em;line-height:.95;margin-b
     </div>
 
     <div class="kicker">SECURE CHECKOUT</div>
+
     <h1 data-i18n="title">Оплата твого кабінету</h1>
-    <p class="lead" data-i18n="lead">Оберіть спосіб оплати. Баланс або тариф оновиться тільки після підтвердження платежу.</p>
+
+    <p class="lead" data-i18n="lead">
+      Оберіть спосіб оплати. Баланс або тариф оновиться тільки після підтвердження платежу.
+    </p>
 
     <div class="card">
       <div class="label" data-i18n="amountLabel">Сума до оплати</div>
@@ -144,10 +398,14 @@ h1{font-size:clamp(42px,9vw,74px);letter-spacing:-.05em;line-height:.95;margin-b
 
     <div class="notice">
       <strong id="noticeTitle" data-i18n="waitingTitle">Очікуємо оплату.</strong>
-      <span data-i18n="waitingText">Після підтвердження платіжки система оновить баланс або тариф.</span>
+      <span id="noticeText" data-i18n="waitingText">
+        Після підтвердження платіжки система оновить баланс або тариф.
+      </span>
     </div>
 
-    <button class="back" onclick="goDashboard()" data-i18n="back">← Назад в кабінет</button>
+    <button class="back" onclick="goDashboard()" data-i18n="back">
+      ← Назад в кабінет
+    </button>
 
     <section class="methods">
       <h2>PAYMENT METHODS</h2>
@@ -156,7 +414,9 @@ h1{font-size:clamp(42px,9vw,74px);letter-spacing:-.05em;line-height:.95;margin-b
         <div class="icon">💳</div>
         <div>
           <div class="method-title">LiqPay</div>
-          <div class="method-text" data-i18n="liqpayText">Карта, Apple Pay, Google Pay, Visa / Mastercard.</div>
+          <div class="method-text" data-i18n="liqpayText">
+            Карта, Apple Pay, Google Pay, Visa / Mastercard.
+          </div>
         </div>
         <div class="arrow">›</div>
       </button>
@@ -165,7 +425,9 @@ h1{font-size:clamp(42px,9vw,74px);letter-spacing:-.05em;line-height:.95;margin-b
         <div class="icon">🌍</div>
         <div>
           <div class="method-title">WayForPay</div>
-          <div class="method-text" data-i18n="wayText">Міжнародні картки та українські платежі.</div>
+          <div class="method-text" data-i18n="wayText">
+            Міжнародні картки та українські платежі.
+          </div>
         </div>
         <div class="arrow">›</div>
       </button>
@@ -174,7 +436,9 @@ h1{font-size:clamp(42px,9vw,74px);letter-spacing:-.05em;line-height:.95;margin-b
         <div class="icon">₮</div>
         <div>
           <div class="method-title">USDT TRC20</div>
-          <div class="method-text" data-i18n="cryptoText">Криптооплата на TRC20. Підтвердження вручну або через backend.</div>
+          <div class="method-text" data-i18n="cryptoText">
+            Криптооплата на TRC20. Підтвердження вручну або через backend.
+          </div>
         </div>
         <div class="arrow">›</div>
       </button>
@@ -189,9 +453,15 @@ h1{font-size:clamp(42px,9vw,74px);letter-spacing:-.05em;line-height:.95;margin-b
         <div class="icon">💎</div>
         <div>
           <div class="method-title">Stripe / Card</div>
-          <div class="method-text" data-i18n="stripeText">Для міжнародних оплат. Підключається через backend.</div>
+          <div class="method-text" data-i18n="stripeText">
+            Для міжнародних оплат. Підключається через backend.
+          </div>
         </div>
         <div class="arrow">›</div>
+      </button>
+
+      <button class="test-btn" onclick="confirmTest()" data-i18n="testPay">
+        TEST: підтвердити оплату
       </button>
     </section>
   </section>
@@ -201,6 +471,7 @@ h1{font-size:clamp(42px,9vw,74px);letter-spacing:-.05em;line-height:.95;margin-b
 
 <script>
 const BASE_PATH="/yyokai/yyokai_tattoo/";
+const API_URL="https://api.yyokaiworld.uk";
 
 const firebaseConfig={
   apiKey: "AIzaSyALs-ZgFX7auGxRQ2EeQnVngjnejimPLV4",
@@ -213,6 +484,7 @@ const firebaseConfig={
 };
 
 firebase.initializeApp(firebaseConfig);
+
 const auth=firebase.auth();
 const db=firebase.database();
 
@@ -230,6 +502,8 @@ const text={
     statusLabel:"Статус",
     waitingTitle:"Очікуємо оплату.",
     waitingText:"Після підтвердження платіжки система оновить баланс або тариф.",
+    paidTitle:"Оплату підтверджено.",
+    paidText:"Можеш повернутися в кабінет. Баланс або тариф вже оновлено.",
     back:"← Назад в кабінет",
     liqpayText:"Карта, Apple Pay, Google Pay, Visa / Mastercard.",
     wayText:"Міжнародні картки та українські платежі.",
@@ -238,8 +512,10 @@ const text={
     copy:"Скопіювати адресу",
     copied:"Адресу скопійовано.",
     noPayment:"Payment ID не знайдено.",
-    waitBackend:"Цей метод потребує merchant/backend. Зараз створено заявку в Firebase.",
-    cryptoOpened:"Адреса відкрита. Після оплати адміністратор підтвердить платіж."
+    waitBackend:"Цей метод потребує merchant/backend. Заявку збережено.",
+    cryptoOpened:"Адреса відкрита. Після оплати адміністратор підтвердить платіж.",
+    testPay:"TEST: підтвердити оплату",
+    testDone:"Тестова оплата підтверджена."
   },
   en:{
     title:"Payment for your dashboard",
@@ -249,6 +525,8 @@ const text={
     statusLabel:"Status",
     waitingTitle:"Waiting for payment.",
     waitingText:"After payment confirmation the system will update your balance or plan.",
+    paidTitle:"Payment confirmed.",
+    paidText:"You can return to dashboard. Balance or plan is already updated.",
     back:"← Back to dashboard",
     liqpayText:"Card, Apple Pay, Google Pay, Visa / Mastercard.",
     wayText:"International cards and Ukrainian payments.",
@@ -257,8 +535,10 @@ const text={
     copy:"Copy address",
     copied:"Address copied.",
     noPayment:"Payment ID not found.",
-    waitBackend:"This method requires merchant/backend. Payment request was created in Firebase.",
-    cryptoOpened:"Address opened. Admin will confirm payment after transfer."
+    waitBackend:"This method requires merchant/backend. Request saved.",
+    cryptoOpened:"Address opened. Admin will confirm payment after transfer.",
+    testPay:"TEST: confirm payment",
+    testDone:"Test payment confirmed."
   }
 };
 
@@ -270,8 +550,15 @@ auth.onAuthStateChanged(async user=>{
 
   currentUser=user;
 
+  applyUserAccent();
+
   const params=new URLSearchParams(location.search);
   paymentId=params.get("paymentId");
+
+  const urlAccent=params.get("accent");
+  if(urlAccent){
+    applyAccent("#"+urlAccent.replace("#",""));
+  }
 
   if(!paymentId){
     showToast(text[currentLang].noPayment);
@@ -280,9 +567,7 @@ auth.onAuthStateChanged(async user=>{
 
   paymentIdView.textContent=paymentId;
 
-  const ref=db.ref("payments/"+paymentId);
-
-  ref.on("value",snap=>{
+  db.ref("payments/"+paymentId).on("value",snap=>{
     payment=snap.val();
 
     if(!payment){
@@ -295,12 +580,31 @@ auth.onAuthStateChanged(async user=>{
     statusView.textContent=payment.status || "pending";
 
     if(payment.status==="paid"){
-      noticeTitle.textContent=currentLang==="uk" ? "Оплату підтверджено." : "Payment confirmed.";
-      document.querySelector("[data-i18n='waitingText']").textContent =
-        currentLang==="uk" ? "Можеш повернутися в кабінет. Баланс або тариф вже оновлено." : "You can return to dashboard. Balance or plan is already updated.";
+      noticeTitle.textContent=text[currentLang].paidTitle;
+      noticeText.textContent=text[currentLang].paidText;
     }
   });
 });
+
+function applyUserAccent(){
+  if(!currentUser)return;
+
+  const cached=JSON.parse(localStorage.getItem("yyokai_profile_"+currentUser.uid)||"{}");
+
+  if(cached.accent){
+    applyAccent(cached.accent);
+    return;
+  }
+
+  db.ref("users/"+currentUser.uid+"/settings/accent").once("value").then(snap=>{
+    const accent=snap.val();
+    if(accent)applyAccent(accent);
+  });
+}
+
+function applyAccent(color){
+  document.documentElement.style.setProperty("--accent",color);
+}
 
 function setLang(lang,btn){
   currentLang=lang;
@@ -314,6 +618,11 @@ function setLang(lang,btn){
 
   document.querySelectorAll(".lang button").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
+
+  if(payment && payment.status==="paid"){
+    noticeTitle.textContent=text[currentLang].paidTitle;
+    noticeText.textContent=text[currentLang].paidText;
+  }
 }
 
 async function markProvider(provider){
@@ -327,48 +636,22 @@ async function markProvider(provider){
 
 async function payLiqPay(){
   await markProvider("liqpay");
-
   showToast(text[currentLang].waitBackend);
-
-  /*
-    Реальный LiqPay:
-    сюда backend должен вернуть checkout URL или form data.
-    Пример:
-    location.href = "https://www.liqpay.ua/api/3/checkout?...";
-  */
 }
 
 async function payWayForPay(){
   await markProvider("wayforpay");
-
   showToast(text[currentLang].waitBackend);
-
-  /*
-    Реальный WayForPay:
-    backend создаёт invoice/checkout и возвращает ссылку.
-    Потом:
-    location.href = checkoutUrl;
-  */
 }
 
 async function payStripe(){
   await markProvider("stripe");
-
   showToast(text[currentLang].waitBackend);
-
-  /*
-    Реальный Stripe:
-    backend создаёт Checkout Session и возвращает url.
-    Потом:
-    location.href = stripeCheckoutUrl;
-  */
 }
 
 async function payCrypto(){
   await markProvider("usdt_trc20");
-
   cryptoBox.classList.toggle("open");
-
   showToast(text[currentLang].cryptoOpened);
 }
 
@@ -376,6 +659,35 @@ function copyCrypto(){
   const value=cryptoAddress.textContent.trim();
   navigator.clipboard.writeText(value);
   showToast(text[currentLang].copied);
+}
+
+async function confirmTest(){
+  if(!paymentId)return;
+
+  try{
+    const res=await fetch(API_URL+"/payment/confirm-test",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        paymentId:paymentId,
+        secret:"yyokai_super_secret_key"
+      })
+    });
+
+    const data=await res.json();
+
+    if(!res.ok){
+      showToast(data.error || "Error");
+      return;
+    }
+
+    showToast(text[currentLang].testDone);
+
+  }catch(error){
+    showToast("API error: "+error.message);
+  }
 }
 
 function goDashboard(){
