@@ -10,7 +10,12 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
 
 :root{
   --accent:#e5092f;
@@ -25,35 +30,6 @@ html,body{
   color:var(--text);
   font-family:Arial,sans-serif;
 }
-
-body.loading{
-  overflow:hidden;
-}
-
-.loader-screen{
-  position:fixed;
-  inset:0;
-  z-index:99999;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#000;
-  color:#fff;
-  font-size:34px;
-  font-weight:950;
-  letter-spacing:.12em;
-  transition:.45s;
-}
-
-.loader-screen.hide{
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-}
-
-
-
-
 
 body{
   overflow-x:hidden;
@@ -85,6 +61,27 @@ body::before{
   letter-spacing:30px;
   line-height:1.5;
   transform:rotate(-12deg) scale(1.15);
+}
+
+.loader-screen{
+  position:fixed;
+  inset:0;
+  z-index:999999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#000;
+  color:#fff;
+  font-size:34px;
+  font-weight:950;
+  letter-spacing:.12em;
+  transition:.45s ease;
+}
+
+.loader-screen.hide{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
 }
 
 button,input,select{
@@ -128,8 +125,15 @@ button:active{
 }
 
 @keyframes luxuryBg{
-  from{opacity:.45;transform:translateY(0)}
-  to{opacity:.85;transform:translateY(18px)}
+  from{
+    opacity:.45;
+    transform:translateY(0);
+  }
+
+  to{
+    opacity:.85;
+    transform:translateY(18px);
+  }
 }
 
 .topbar{
@@ -170,7 +174,8 @@ button:active{
   text-shadow:0 0 24px color-mix(in srgb,var(--accent) 50%,transparent);
 }
 
-.logo::before,.logo::after{
+.logo::before,
+.logo::after{
   content:"YYOKAI";
   position:absolute;
   inset:0;
@@ -189,16 +194,42 @@ button:active{
 }
 
 @keyframes glitchA{
-  0%,92%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0)}
-  93%{clip-path:inset(12% 0 64% 0);transform:translate(-2px,1px)}
-  95%{clip-path:inset(60% 0 18% 0);transform:translate(2px,-1px)}
-  97%{clip-path:inset(30% 0 38% 0);transform:translate(-1px,0)}
+  0%,92%,100%{
+    clip-path:inset(0 0 0 0);
+    transform:translate(0,0);
+  }
+
+  93%{
+    clip-path:inset(12% 0 64% 0);
+    transform:translate(-2px,1px);
+  }
+
+  95%{
+    clip-path:inset(60% 0 18% 0);
+    transform:translate(2px,-1px);
+  }
+
+  97%{
+    clip-path:inset(30% 0 38% 0);
+    transform:translate(-1px,0);
+  }
 }
 
 @keyframes glitchB{
-  0%,94%,100%{clip-path:inset(0 0 0 0);transform:translate(0,0)}
-  95%{clip-path:inset(44% 0 30% 0);transform:translate(1px,0)}
-  97%{clip-path:inset(15% 0 58% 0);transform:translate(-1px,0)}
+  0%,94%,100%{
+    clip-path:inset(0 0 0 0);
+    transform:translate(0,0);
+  }
+
+  95%{
+    clip-path:inset(44% 0 30% 0);
+    transform:translate(1px,0);
+  }
+
+  97%{
+    clip-path:inset(15% 0 58% 0);
+    transform:translate(-1px,0);
+  }
 }
 
 .top-actions{
@@ -364,9 +395,17 @@ button:active{
   display:block;
 }
 
-.prevBtn::before{content:"‹"}
-.playBtn::before{content:"▶"}
-.nextBtn::before{content:"›"}
+.prevBtn::before{
+  content:"‹";
+}
+
+.playBtn::before{
+  content:"▶";
+}
+
+.nextBtn::before{
+  content:"›";
+}
 
 .playBtn.playing::before{
   content:"Ⅱ";
@@ -560,7 +599,6 @@ button:active{
   background:rgba(7,7,7,.82);
   border:1px solid rgba(255,255,255,.16);
   backdrop-filter:blur(20px);
-
   display:flex;
   flex-direction:column;
   justify-content:center;
@@ -680,12 +718,14 @@ button:active{
   font-size:22px;
 }
 
-.dock button:hover,.dock button.active{
+.dock button:hover,
+.dock button.active{
   background:rgba(255,255,255,.07);
   color:#fff;
 }
 
-.settings,.pay-modal{
+.settings,
+.pay-modal{
   position:fixed;
   inset:0;
   z-index:130;
@@ -696,11 +736,13 @@ button:active{
   backdrop-filter:blur(16px);
 }
 
-.settings.open,.pay-modal.open{
+.settings.open,
+.pay-modal.open{
   display:grid;
 }
 
-.modal,.pay-box{
+.modal,
+.pay-box{
   width:100%;
   max-width:760px;
   max-height:90vh;
@@ -711,14 +753,16 @@ button:active{
   border:1px solid rgba(255,255,255,.14);
 }
 
-.modal-head,.pay-head{
+.modal-head,
+.pay-head{
   display:flex;
   justify-content:space-between;
   align-items:center;
   margin-bottom:18px;
 }
 
-.close,.pay-close{
+.close,
+.pay-close{
   width:42px;
   height:42px;
   border-radius:14px;
@@ -741,7 +785,8 @@ button:active{
   font-weight:900;
 }
 
-.row input,.row select{
+.row input,
+.row select{
   width:100%;
   padding:14px;
   border-radius:16px;
@@ -778,7 +823,8 @@ button:active{
   border-radius:50%;
 }
 
-.apply-btn,.confirm-plan{
+.apply-btn,
+.confirm-plan{
   margin-top:18px;
   width:100%;
   padding:16px 18px;
@@ -790,13 +836,15 @@ button:active{
   box-shadow:none!important;
 }
 
-.plan-grid,.balance-grid{
+.plan-grid,
+.balance-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:14px;
 }
 
-.plan-card,.balance-card{
+.plan-card,
+.balance-card{
   width:100%;
   text-align:left;
   display:block;
@@ -816,12 +864,14 @@ button:active{
   box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 25%,transparent);
 }
 
-.plan-price,.balance-price{
+.plan-price,
+.balance-price{
   font-size:34px;
   font-weight:950;
 }
 
-.plan-name,.balance-name{
+.plan-name,
+.balance-name{
   margin:10px 0;
   font-weight:950;
 }
@@ -887,7 +937,9 @@ audio{
 }
 
 @media(max-width:720px){
-  .focus-grid,.plan-grid,.balance-grid{
+  .focus-grid,
+  .plan-grid,
+  .balance-grid{
     grid-template-columns:1fr;
   }
 
@@ -921,17 +973,20 @@ audio{
 </style>
 </head>
 
-<body class="loading">
+<body>
 
-<div class="loader-screen" id="loaderScreen">
-  YYOKAI
-</div>
+<div class="loader-screen" id="loaderScreen">YYOKAI</div>
 
 <audio id="bgMusic"></audio>
 
 <div class="side-overlay" id="sideOverlay" onclick="closeSide()"></div>
 
 <aside class="side-menu" id="sideMenu">
+  <div class="side-head">
+    <div></div>
+    <img class="side-logo-img" src="yyokai-mask.png" alt="YYOKAI mask">
+    <button class="close-side" onclick="closeSide()">←</button>
+  </div>
 
   <nav class="side-nav">
     <button onclick="go('stencil.html')"><span>🧿</span><span data-i18n="navStencil">AI Stencil</span></button>
@@ -941,7 +996,6 @@ audio{
     <button onclick="go('uploads.html')"><span>墨</span><span data-i18n="navFiles">Files</span></button>
   </nav>
 </aside>
-
 <main class="app" id="dashboardTop">
 <header class="topbar">
   <button class="menu-btn" id="menuBtn" onclick="toggleSide()">☰</button>
@@ -999,7 +1053,7 @@ audio{
   </div>
 
   <div class="stat clickable" onclick="openPlanModal()">
-    <span data-i18n="statPlanPrice">Вартість плану</span>
+    <span data-i18n="statPlanPrice">Вартість</span>
     <strong id="planPriceValue">$0</strong>
   </div>
 </section>
@@ -1027,7 +1081,7 @@ audio{
   <button class="active" onclick="go('artist-dashboard.html')"><i>⌂</i><span>Home</span></button>
   <button onclick="go('stencil.html')"><i>🧿</i><span>Stencil</span></button>
   <button onclick="go('generation.html')"><i>✦</i><span>Generate</span></button>
-  <button onclick="go('bookings.html')"><i>🗓</i><span data-i18n="dockBookings">Записи</span></button>
+  <button onclick="go('bookings2.html')"><i>🗓</i><span data-i18n="dockBookings">Записи</span></button>
   <button onclick="openBalanceModal()"><i>¥</i><span>Balance</span></button>
 </nav>
 
@@ -1046,7 +1100,7 @@ audio{
           <li data-i18n="free1">3 генерації стенсила</li>
           <li data-i18n="free2">3 генерації ескізу</li>
           <li data-i18n="free3">3 A4 розділення</li>
-          <li data-i18n="free4">50 записів клієнтів</li>
+          <li data-i18n="free4">Записи клієнтів без ліміту</li>
         </ul>
       </button>
 
@@ -1057,7 +1111,7 @@ audio{
           <li data-i18n="starter1">250 генерацій стенсила</li>
           <li data-i18n="starter2">250 генерацій ескізу</li>
           <li data-i18n="starter3">50 A4 розділень</li>
-          <li data-i18n="starter4">100 записів клієнтів</li>
+          <li data-i18n="starter4">Записи клієнтів без ліміту</li>
         </ul>
       </button>
 
@@ -1068,7 +1122,7 @@ audio{
           <li data-i18n="pro1">500 генерацій стенсила</li>
           <li data-i18n="pro2">500 генерацій ескізу</li>
           <li data-i18n="pro3">100 A4 розділень</li>
-          <li data-i18n="pro4">150 записів клієнтів</li>
+          <li data-i18n="pro4">Записи клієнтів без ліміту</li>
         </ul>
       </button>
 
@@ -1167,7 +1221,7 @@ const BASE_PATH="/yyokai/yyokai_tattoo/";
 const API_URL="https://api.yyokaiworld.uk";
 
 const firebaseConfig={
-  apiKey: "AIzaSyALs-ZgFX7auGxRQ2EeQnVngjnejimPLV4",
+  apiKey:"AIzaSyALs-ZgFX7auGxRQ2EeQnVngjnejimPLV4",
   authDomain:"yyokai-tattoo-system.firebaseapp.com",
   databaseURL:"https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/",
   projectId:"yyokai-tattoo-system",
@@ -1218,7 +1272,7 @@ heroTitle:"Вітаю в колективі, майстре",
 heroText:"Твоя преміальна система для тату-майстра: генерації, клієнти, нотатки, музика, баланс, тариф і workflow в одному місці.",
 statBalance:"Баланс",
 statPlan:"План",
-statPlanPrice:"Вартість плану",
+statPlanPrice:"Вартість",
 workflowTitle:"Start your workflow",
 workflowText:"Почни з потрібного інструмента. Чистий інтерфейс без перевантаження.",
 bookingsBtn:"Записи",
@@ -1234,15 +1288,15 @@ yokaiName:"YYOKAI Full / місяць",
 free1:"3 генерації стенсила",
 free2:"3 генерації ескізу",
 free3:"3 A4 розділення",
-free4:"50 записів клієнтів",
+free4:"Записи клієнтів без ліміту",
 starter1:"250 генерацій стенсила",
 starter2:"250 генерацій ескізу",
 starter3:"50 A4 розділень",
-starter4:"100 записів клієнтів",
+starter4:"Записи клієнтів без ліміту",
 pro1:"500 генерацій стенсила",
 pro2:"500 генерацій ескізу",
 pro3:"100 A4 розділень",
-pro4:"150 записів клієнтів",
+pro4:"Записи клієнтів без ліміту",
 yokai1:"Повний доступ",
 yokai2:"Безлімітний workflow",
 yokai3:"Premium tools",
@@ -1278,7 +1332,7 @@ heroTitle:"Welcome to the collective, artist",
 heroText:"Your premium tattoo artist system: generations, clients, notes, music, balance, plan and workflow in one place.",
 statBalance:"Balance",
 statPlan:"Plan",
-statPlanPrice:"Plan price",
+statPlanPrice:"Price",
 workflowTitle:"Start your workflow",
 workflowText:"Start with the tool you need. Clean interface without overload.",
 bookingsBtn:"Bookings",
@@ -1294,15 +1348,15 @@ yokaiName:"YYOKAI Full / month",
 free1:"3 stencil generations",
 free2:"3 sketch generations",
 free3:"3 A4 splits",
-free4:"50 client bookings",
+free4:"Unlimited client bookings",
 starter1:"250 stencil generations",
 starter2:"250 sketch generations",
 starter3:"50 A4 splits",
-starter4:"100 client bookings",
+starter4:"Unlimited client bookings",
 pro1:"500 stencil generations",
 pro2:"500 sketch generations",
 pro3:"100 A4 splits",
-pro4:"150 client bookings",
+pro4:"Unlimited client bookings",
 yokai1:"Full access",
 yokai2:"Unlimited workflow",
 yokai3:"Premium tools",
@@ -1325,6 +1379,15 @@ freeActivated:"Free plan activated.",
 buyingPlan:"Purchasing plan..."
 }
 };
+
+function hideLoader(){
+  const loader=document.getElementById("loaderScreen");
+
+  if(loader){
+    loader.classList.add("hide");
+    setTimeout(()=>loader.remove(),520);
+  }
+}
 
 function authUrl(){
   return BASE_PATH+"artist-auth.html";
@@ -1370,20 +1433,6 @@ function saveLocalCache(data){
   const key=cacheKey();
   const old=JSON.parse(localStorage.getItem(key)||"{}");
   localStorage.setItem(key,JSON.stringify({...old,...data}));
-}
-
-function hideLoader(){
-  const loader=document.getElementById("loaderScreen");
-
-  if(loader){
-    loader.classList.add("hide");
-
-    setTimeout(()=>{
-      loader.remove();
-    },500);
-  }
-
-  document.body.classList.remove("loading");
 }
 
 auth.onAuthStateChanged(async user=>{
@@ -1438,6 +1487,8 @@ auth.onAuthStateChanged(async user=>{
   hideLoader();
 });
 
+setTimeout(hideLoader,2200);
+
 function setLang(lang,btn){
   currentLang=lang;
   document.documentElement.lang=lang;
@@ -1452,7 +1503,6 @@ function setLang(lang,btn){
   btn.classList.add("active");
 
   displayPlan();
-}
 }
 
 function displayPlan(){
@@ -1551,9 +1601,12 @@ async function confirmPlan(){
   if(selectedPlan==="free"){
     await db.ref("users/"+currentUser.uid).update({
       planKey:"free",
-      planUntil:null
+      planUntil:null,
+      planPrice:0
     });
 
+    currentPlanKey="free";
+    displayPlan();
     closePlanModal();
     showToast(t[currentLang].freeActivated);
     return;
@@ -1572,25 +1625,22 @@ async function confirmPlan(){
     const token=await currentUser.getIdToken(true);
 
     const res=await fetch(API_URL+"/plan/purchase",{
-  method:"POST",
-  headers:{
-    "Content-Type":"application/json",
-    "Authorization":"Bearer "+token
-  },
-  body:JSON.stringify({
-  uid:currentUser.uid,
-  plan:selectedPlan,
-  price:
-    selectedPlan==="starter"?10:
-    selectedPlan==="pro"?20:
-    selectedPlan==="yokai"?30:0
-})
-});
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":"Bearer "+token
+      },
+      body:JSON.stringify({
+        uid:currentUser.uid,
+        plan:selectedPlan,
+        price:price
+      })
+    });
 
     const data=await res.json();
 
     if(!res.ok){
-      if(data.error==="INSUFFICIENT_BALANCE"){
+      if(data.error==="INSUFFICIENT_BALANCE"||data.error==="INSUFFICIENT_FUNDS"){
         showToast(t[currentLang].insufficient);
         return;
       }
@@ -1599,6 +1649,8 @@ async function confirmPlan(){
       return;
     }
 
+    currentPlanKey=selectedPlan;
+    displayPlan();
     closePlanModal();
 
     const planName={
@@ -1607,11 +1659,7 @@ async function confirmPlan(){
       yokai:"YYOKAI Full"
     }[selectedPlan]||selectedPlan;
 
-    currentPlanKey=selectedPlan;
-displayPlan();
-closePlanModal();
-
-showToast(t[currentLang].planBought+" "+planName+".");
+    showToast(t[currentLang].planBought+" "+planName+".");
 
   }catch(error){
     console.error(error);
