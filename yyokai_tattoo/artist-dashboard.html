@@ -521,15 +521,20 @@ button:active{
   margin-top:18px;
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:14px;
+  gap:10px;
 }
 
 .stat{
-  padding:20px;
+  padding:18px;
+  min-height:120px;
   border-radius:28px;
   background:rgba(7,7,7,.82);
   border:1px solid rgba(255,255,255,.16);
   backdrop-filter:blur(20px);
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
 }
 
 .stat.clickable{
@@ -551,7 +556,8 @@ button:active{
 }
 
 .stat strong{
-  font-size:28px;
+  font-size:30px;
+  line-height:1;
   color:#fff;
 }
 
@@ -852,7 +858,7 @@ audio{
 }
 
 @media(max-width:720px){
-  .stats,.focus-grid,.plan-grid,.balance-grid{
+  .focus-grid,.plan-grid,.balance-grid{
     grid-template-columns:1fr;
   }
 
