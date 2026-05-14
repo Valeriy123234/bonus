@@ -26,17 +26,28 @@ html,body{
   font-family:Arial,sans-serif;
 }
 
+body.loading .app{
+  opacity:0;
+}
+
+body.loading::after{
+  content:"YYOKAI";
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:grid;
+  place-items:center;
+  background:#000;
+  color:#fff;
+  font-size:34px;
+  font-weight:950;
+  letter-spacing:.12em;
+}
+
 body{
   overflow-x:hidden;
   background:
     linear-gradient(rgba(0,0,0,.68),rgba(0,0,0,.92)),
-    var(--custom-bg),
-    radial-gradient(circle at 50% -10%,color-mix(in srgb,var(--accent) 42%,transparent),transparent 35%),
-    linear-gradient(180deg,#050505 0%,#100206 45%,#000 100%);
-  background-size:cover;
-  background-position:center;
-  background-attachment:fixed;
-}
 
 body.has-custom-bg{
   background:
@@ -892,7 +903,7 @@ audio{
 </style>
 </head>
 
-<body>
+<body class="loading">
 <audio id="bgMusic"></audio>
 
 <div class="side-overlay" id="sideOverlay" onclick="closeSide()"></div>
@@ -1355,6 +1366,12 @@ auth.onAuthStateChanged(async user=>{
 
   currentUser=user;
 
+  await loadProfile();
+
+  document.body.classList.remove("loading");
+});
+
+  
   const snap=await db.ref("users/"+user.uid).once("value");
   const data=snap.val()||{};
 
