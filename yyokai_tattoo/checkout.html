@@ -46,6 +46,27 @@ body::before{
   transform:rotate(-12deg) scale(1.15);
 }
 
+.loader-screen{
+  position:fixed;
+  inset:0;
+  z-index:999999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#000;
+  color:#fff;
+  font-size:34px;
+  font-weight:950;
+  letter-spacing:.12em;
+  transition:.45s ease;
+}
+
+.loader-screen.hide{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+
 button{
   font-family:inherit;
   cursor:pointer;
@@ -356,6 +377,9 @@ h1{
 </head>
 
 <body>
+
+<div class="loader-screen" id="loaderScreen">YYOKAI</div>
+
 <main class="app">
   <section class="shell">
     <div class="top">
@@ -474,7 +498,7 @@ const BASE_PATH="/yyokai/yyokai_tattoo/";
 const API_URL="https://api.yyokaiworld.uk";
 
 const firebaseConfig={
-  apiKey: "AIzaSyALs-ZgFX7auGxRQ2EeQnVngjnejimPLV4",
+  apiKey:"AIzaSyALs-ZgFX7auGxRQ2EeQnVngjnejimPLV4",
   authDomain:"yyokai-tattoo-system.firebaseapp.com",
   databaseURL:"https://yyokai-tattoo-system-default-rtdb.europe-west1.firebasedatabase.app/",
   projectId:"yyokai-tattoo-system",
@@ -492,6 +516,7 @@ let currentUser=null;
 let paymentId=null;
 let payment=null;
 let currentLang="uk";
+let redirected=false;
 
 const text={
   uk:{
@@ -503,7 +528,7 @@ const text={
     waitingTitle:"Очікуємо оплату.",
     waitingText:"Після підтвердження платіжки система оновить баланс або тариф.",
     paidTitle:"Оплату підтверджено.",
-    paidText:"Можеш повернутися в кабінет. Баланс або тариф вже оновлено.",
+    paidText:"Баланс оновлено. Повертаємо вас у кабінет...",
     back:"← Назад в кабінет",
     liqpayText:"Карта, Apple Pay, Google Pay, Visa / Mastercard.",
     wayText:"Міжнародні картки та українські платежі.",
@@ -515,7 +540,7 @@ const text={
     waitBackend:"Цей метод потребує merchant/backend. Заявку збережено.",
     cryptoOpened:"Адреса відкрита. Після оплати адміністратор підтвердить платіж.",
     testPay:"TEST: підтвердити оплату",
-    testDone:"Тестова оплата підтверджена."
+    testDone:"Оплату підтверджено. Повертаємо в кабінет..."
   },
   en:{
     title:"Payment for your dashboard",
@@ -526,7 +551,7 @@ const text={
     waitingTitle:"Waiting for payment.",
     waitingText:"After payment confirmation the system will update your balance or plan.",
     paidTitle:"Payment confirmed.",
-    paidText:"You can return to dashboard. Balance or plan is already updated.",
+    paidText:"Balance updated. Returning to dashboard...",
     back:"← Back to dashboard",
     liqpayText:"Card, Apple Pay, Google Pay, Visa / Mastercard.",
     wayText:"International cards and Ukrainian payments.",
@@ -538,9 +563,18 @@ const text={
     waitBackend:"This method requires merchant/backend. Request saved.",
     cryptoOpened:"Address opened. Admin will confirm payment after transfer.",
     testPay:"TEST: confirm payment",
-    testDone:"Test payment confirmed."
+    testDone:"Payment confirmed. Returning to dashboard..."
   }
 };
+
+function hideLoader(){
+  const loader=document.getElementById("loaderScreen");
+
+  if(loader){
+    loader.classList.add("hide");
+    setTimeout(()=>loader.remove(),520);
+  }
+}
 
 auth.onAuthStateChanged(async user=>{
   if(!user){
@@ -562,6 +596,7 @@ auth.onAuthStateChanged(async user=>{
 
   if(!paymentId){
     showToast(text[currentLang].noPayment);
+    hideLoader();
     return;
   }
 
@@ -572,6 +607,7 @@ auth.onAuthStateChanged(async user=>{
 
     if(!payment){
       showToast(text[currentLang].noPayment);
+      hideLoader();
       return;
     }
 
@@ -582,9 +618,26 @@ auth.onAuthStateChanged(async user=>{
     if(payment.status==="paid"){
       noticeTitle.textContent=text[currentLang].paidTitle;
       noticeText.textContent=text[currentLang].paidText;
+
+      redirectAfterPaid();
     }
+
+    hideLoader();
   });
 });
+
+setTimeout(hideLoader,2200);
+
+function redirectAfterPaid(){
+  if(redirected)return;
+  redirected=true;
+
+  showToast(text[currentLang].testDone);
+
+  setTimeout(()=>{
+    window.location.replace(BASE_PATH+"artist-dashboard.html");
+  },1300);
+}
 
 function applyUserAccent(){
   if(!currentUser)return;
@@ -691,7 +744,7 @@ async function confirmTest(){
 }
 
 function goDashboard(){
-  location.href=BASE_PATH+"artist-dashboard.html";
+  window.location.replace(BASE_PATH+"artist-dashboard.html");
 }
 
 function showToast(message){
