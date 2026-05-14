@@ -1556,6 +1556,8 @@ async function confirmPlan(){
 
     showToast(t[currentLang].planBought+" "+planName+".");
 
+location.reload();
+
   }catch(error){
     console.error(error);
     showToast("API error: "+error.message);
