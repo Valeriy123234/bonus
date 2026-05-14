@@ -355,7 +355,18 @@ avatarLabel:"Change profile photo",nameLabel:"Artist nickname",colorLabel:"Syste
 };
 
 function authUrl(){return BASE_PATH+"artist-auth.html"}
-function checkoutUrl(params){return BASE_PATH+"checkout.html?"+params}
+function checkoutUrl(params){
+
+  const accent=getComputedStyle(document.documentElement)
+    .getPropertyValue("--accent")
+    .trim()
+    .replace("#","");
+
+  return BASE_PATH+
+    "checkout.html?"+
+    params+
+    "&accent="+accent;
+}
 function cacheKey(){return currentUser?"yyokai_profile_"+currentUser.uid:"yyokai_profile_guest"}
 
 function loadLocalCache(){
