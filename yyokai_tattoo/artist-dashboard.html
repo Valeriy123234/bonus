@@ -1554,9 +1554,11 @@ async function confirmPlan(){
       yokai:"YYOKAI Full"
     }[selectedPlan]||selectedPlan;
 
-    showToast(t[currentLang].planBought+" "+planName+".");
+    currentPlanKey=selectedPlan;
+displayPlan();
+closePlanModal();
 
-location.reload();
+showToast(t[currentLang].planBought+" "+planName+".");
 
   }catch(error){
     console.error(error);
