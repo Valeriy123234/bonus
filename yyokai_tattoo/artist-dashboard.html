@@ -1525,10 +1525,10 @@ async function confirmPlan(){
     "Authorization":"Bearer "+token
   },
   body:JSON.stringify({
-    uid:currentUser.uid,
-    plan:selectedPlan,
-    price:plans[selectedPlan].price
-  })
+  uid:currentUser.uid,
+  plan:selectedPlan,
+  price:selectedPrice
+})
 });
 
     const data=await res.json();
