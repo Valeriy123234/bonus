@@ -158,7 +158,10 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  setPersistence,
+  browserLocalPersistence,
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getDatabase, ref, set, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
@@ -176,6 +179,13 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+  await setPersistence(auth,browserLocalPersistence);
+
+onAuthStateChanged(auth,user=>{
+  if(user){
+    window.location.replace(BASE_PATH+"artist-dashboard.html");
+  }
+});
 const db = getDatabase(app);
 
 let currentLang="uk";
