@@ -47,6 +47,7 @@ body.loading{
 
 .loader-screen.hide{
   opacity:0;
+  visibility:hidden;
   pointer-events:none;
 }
 
@@ -1376,11 +1377,13 @@ function hideLoader(){
 
   if(loader){
     loader.classList.add("hide");
+
+    setTimeout(()=>{
+      loader.remove();
+    },500);
   }
 
-  setTimeout(()=>{
-    document.body.classList.remove("loading");
-  },450);
+  document.body.classList.remove("loading");
 }
 
 auth.onAuthStateChanged(async user=>{
