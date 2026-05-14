@@ -371,7 +371,13 @@ window.resetPassword=async function(){
     resetBtn.textContent=text[currentLang].sendReset;
   }
 };
+const savedEmail=localStorage.getItem("yyokai_last_email");
 
+if(savedEmail){
+  document.getElementById("loginEmail").value=savedEmail;
+  document.getElementById("regEmail").value=savedEmail;
+}
+  
 window.setLang=function(lang){
   currentLang=lang;
   document.documentElement.lang=lang;
