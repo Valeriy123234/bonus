@@ -247,6 +247,10 @@ button:active{
   line-height:1;
 }
 
+.stat.clickable{
+  cursor:pointer;
+}
+
 .layout{
   margin-top:18px;
   display:grid;
@@ -406,13 +410,96 @@ textarea:focus{
   overflow:hidden;
 }
 
+.credit-modal{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  display:none;
+  place-items:center;
+  padding:20px;
+  background:rgba(0,0,0,.82);
+  backdrop-filter:blur(16px);
+}
+
+.credit-modal.open{
+  display:grid;
+}
+
+.credit-box{
+  width:100%;
+  max-width:720px;
+  max-height:90vh;
+  overflow:auto;
+  padding:24px;
+  border-radius:34px;
+  background:#050505;
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 30px 110px rgba(0,0,0,.9);
+}
+
+.credit-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  margin-bottom:18px;
+}
+
+.credit-head h2{
+  font-size:26px;
+}
+
+.close{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  font-size:22px;
+}
+
+.credit-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+
+.credit-card{
+  text-align:left;
+  padding:22px;
+  border-radius:28px;
+  border:1px solid rgba(255,255,255,.12);
+  background:
+    radial-gradient(circle at top right,color-mix(in srgb,var(--accent) 25%,transparent),transparent 36%),
+    linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.03));
+  color:#fff;
+}
+
+.credit-price{
+  font-size:34px;
+  font-weight:950;
+}
+
+.credit-count{
+  margin-top:8px;
+  font-size:22px;
+  font-weight:950;
+}
+
+.credit-desc{
+  color:#aaa;
+  margin-top:10px;
+  line-height:1.5;
+}
+
 .toast{
   position:fixed;
   left:50%;
   bottom:24px;
   transform:translateX(-50%) translateY(20px);
-  z-index:100;
-  width:min(420px,calc(100vw - 30px));
+  z-index:300;
+  width:min(430px,calc(100vw - 30px));
   padding:16px 18px;
   border-radius:22px;
   background:rgba(0,0,0,.94);
@@ -453,6 +540,10 @@ textarea:focus{
   .history{
     grid-template-columns:1fr;
   }
+
+  .credit-grid{
+    grid-template-columns:1fr;
+  }
 }
 </style>
 </head>
@@ -484,14 +575,14 @@ textarea:focus{
       <strong id="planView">Free</strong>
     </div>
 
-    <div class="stat">
-      <span data-i18n="used">Використано</span>
-      <strong id="usedView">0</strong>
+    <div class="stat clickable" onclick="openCreditsModal()">
+      <span>AI Credits</span>
+      <strong id="creditsView">0</strong>
     </div>
 
     <div class="stat">
-      <span data-i18n="limit">Ліміт</span>
-      <strong id="limitView">3</strong>
+      <span data-i18n="flow">Creative Flow</span>
+      <strong id="flowView">Active</strong>
     </div>
   </section>
 
@@ -535,6 +626,41 @@ textarea:focus{
   </section>
 </main>
 
+<section class="credit-modal" id="creditModal">
+  <div class="credit-box">
+    <div class="credit-head">
+      <h2 data-i18n="creditsTitle">Поповнити AI Credits</h2>
+      <button class="close" onclick="closeCreditsModal()">×</button>
+    </div>
+
+    <div class="credit-grid">
+      <button class="credit-card" onclick="buyCredits(5,75)">
+        <div class="credit-price">$5</div>
+        <div class="credit-count">75 AI Credits</div>
+        <div class="credit-desc" data-i18n="pack75">Легкий пакет для швидких ідей.</div>
+      </button>
+
+      <button class="credit-card" onclick="buyCredits(10,150)">
+        <div class="credit-price">$10</div>
+        <div class="credit-count">150 AI Credits</div>
+        <div class="credit-desc" data-i18n="pack150">Оптимально для регулярної роботи.</div>
+      </button>
+
+      <button class="credit-card" onclick="buyCredits(20,250)">
+        <div class="credit-price">$20</div>
+        <div class="credit-count">250 AI Credits</div>
+        <div class="credit-desc" data-i18n="pack250">Для активного майстра.</div>
+      </button>
+
+      <button class="credit-card" onclick="buyCredits(30,500)">
+        <div class="credit-price">$30</div>
+        <div class="credit-count">500 AI Credits</div>
+        <div class="credit-desc" data-i18n="pack500">Studio fuel для потужного workflow.</div>
+      </button>
+    </div>
+  </div>
+</section>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -559,16 +685,7 @@ const db=firebase.database();
 let currentUser=null;
 let currentLang="uk";
 let currentPlanKey="free";
-let used=0;
-let limit=3;
-let monthKey=new Date().toISOString().slice(0,7);
-
-const limits={
-  free:3,
-  starter:100,
-  pro:200,
-  yokai:500
-};
+let aiCredits=0;
 
 const planNames={
   free:"Free",
@@ -583,8 +700,7 @@ const t={
     title:"AI генерація ідей",
     lead:"Опиши ідею для тату або арт-концепту. YYOKAI підготує візуальний напрямок, який можна розвивати в ескіз.",
     plan:"План",
-    used:"Використано",
-    limit:"Ліміт",
+    flow:"Creative Flow",
     promptTitle:"Що генеруємо?",
     promptText:"Наприклад: метелик з рогами, темний японський демон, лисиця в стилі нео-традишнл.",
     promptPlaceholder:"Наприклад: метелик з рогами, темні крила, японська містика...",
@@ -595,17 +711,21 @@ const t={
     emptyResult:"Тут зʼявиться результат генерації.",
     historyTitle:"Останні ідеї",
     emptyPrompt:"Напиши ідею для генерації.",
-    limitReached:"Ліміт генерацій на цей місяць вичерпано.",
-    apiNotReady:"API ще не підключено. Візуальна частина працює.",
-    demoReady:"Демо-превʼю створено."
+    noCredits:"AI Credits закінчились. Поповни баланс для продовження.",
+    apiNotReady:"API ще не підключено. Демо-превʼю створено.",
+    creditsTitle:"Поповнити AI Credits",
+    pack75:"Легкий пакет для швидких ідей.",
+    pack150:"Оптимально для регулярної роботи.",
+    pack250:"Для активного майстра.",
+    pack500:"Studio fuel для потужного workflow.",
+    paymentCreated:"Checkout створено. Переходимо до оплати..."
   },
   en:{
     back:"Dashboard",
     title:"AI idea generation",
     lead:"Describe a tattoo or art concept. YYOKAI will prepare a visual direction you can develop into a sketch.",
     plan:"Plan",
-    used:"Used",
-    limit:"Limit",
+    flow:"Creative Flow",
     promptTitle:"What are we generating?",
     promptText:"For example: butterfly with horns, dark Japanese demon, neo-traditional fox.",
     promptPlaceholder:"Example: butterfly with horns, dark wings, Japanese mystic mood...",
@@ -616,9 +736,14 @@ const t={
     emptyResult:"Your generated result will appear here.",
     historyTitle:"Recent ideas",
     emptyPrompt:"Write an idea to generate.",
-    limitReached:"Monthly generation limit reached.",
-    apiNotReady:"API is not connected yet. Visual part works.",
-    demoReady:"Demo preview created."
+    noCredits:"AI Credits are empty. Top up to continue.",
+    apiNotReady:"API is not connected yet. Demo preview created.",
+    creditsTitle:"Top up AI Credits",
+    pack75:"Light pack for quick ideas.",
+    pack150:"Optimal for regular work.",
+    pack250:"For active artists.",
+    pack500:"Studio fuel for powerful workflow.",
+    paymentCreated:"Checkout created. Redirecting to payment..."
   }
 };
 
@@ -640,7 +765,7 @@ auth.onAuthStateChanged(async user=>{
 
   try{
     await loadProfile();
-    await loadUsage();
+    await listenCredits();
     await loadHistory();
   }catch(e){
     console.log("generation load error:",e);
@@ -666,20 +791,19 @@ async function loadProfile(){
   const data=snap.val()||{};
 
   currentPlanKey=data.planKey||"free";
-  limit=limits[currentPlanKey]||3;
 
   if(data.settings&&data.settings.accent){
     applyAccent(data.settings.accent);
   }
 
   planView.textContent=planNames[currentPlanKey]||"Free";
-  limitView.textContent=limit;
 }
 
-async function loadUsage(){
-  const snap=await db.ref("usage/"+currentUser.uid+"/"+monthKey+"/imageGenerations").once("value");
-  used=Number(snap.val()||0);
-  usedView.textContent=used;
+async function listenCredits(){
+  db.ref("users/"+currentUser.uid+"/aiCredits").on("value",snap=>{
+    aiCredits=Number(snap.val()||0);
+    creditsView.textContent=aiCredits;
+  });
 }
 
 async function loadHistory(){
@@ -702,6 +826,22 @@ async function loadHistory(){
   });
 }
 
+async function spendCredit(){
+  const ref=db.ref("users/"+currentUser.uid+"/aiCredits");
+
+  const result=await ref.transaction(current=>{
+    const value=Number(current||0);
+
+    if(value<=0){
+      return;
+    }
+
+    return value-1;
+  });
+
+  return result.committed;
+}
+
 async function generateImage(){
   const prompt=promptInput.value.trim();
 
@@ -710,8 +850,17 @@ async function generateImage(){
     return;
   }
 
-  if(used>=limit){
-    showToast(t[currentLang].limitReached);
+  if(aiCredits<=0){
+    showToast(t[currentLang].noCredits);
+    openCreditsModal();
+    return;
+  }
+
+  const ok=await spendCredit();
+
+  if(!ok){
+    showToast(t[currentLang].noCredits);
+    openCreditsModal();
     return;
   }
 
@@ -740,31 +889,38 @@ async function generateImage(){
     resultImage.src=data.image;
     resultBox.classList.add("has-image");
 
-    used=Number(data.used||used+1);
-    limit=Number(data.limit||limit);
-    usedView.textContent=used;
-    limitView.textContent=limit;
-
-    await loadHistory();
+    await saveIdea(prompt,"image");
 
   }catch(error){
     console.log(error);
 
     createDemoPreview(prompt);
+    await saveIdea(prompt,"image-demo");
     showToast(t[currentLang].apiNotReady);
-
-    await saveDemoIdea(prompt);
   }
 
   loadingArt.classList.remove("open");
 }
 
+async function saveIdea(prompt,type){
+  await db.ref("aiGenerations/"+currentUser.uid).push({
+    type,
+    prompt,
+    planKey:currentPlanKey,
+    createdAt:Date.now()
+  });
+
+  await loadHistory();
+}
+
 function createDemoPreview(prompt){
+  const accent=getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()||"#e5092f";
+
   const svg=`
     <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024">
       <defs>
         <radialGradient id="g" cx="50%" cy="35%" r="70%">
-          <stop offset="0%" stop-color="${getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#e5092f"}" stop-opacity="0.9"/>
+          <stop offset="0%" stop-color="${accent}" stop-opacity="0.9"/>
           <stop offset="55%" stop-color="#130006"/>
           <stop offset="100%" stop-color="#000"/>
         </radialGradient>
@@ -780,32 +936,37 @@ function createDemoPreview(prompt){
   resultBox.classList.add("has-image");
 }
 
-async function saveDemoIdea(prompt){
-  used++;
-  usedView.textContent=used;
+function openCreditsModal(){
+  creditModal.classList.add("open");
+}
 
-  await db.ref("usage/"+currentUser.uid+"/"+monthKey).update({
-    imageGenerations:used
-  });
+function closeCreditsModal(){
+  creditModal.classList.remove("open");
+}
 
-  await db.ref("aiGenerations/"+currentUser.uid).push({
-    type:"image-demo",
-    prompt,
-    planKey:currentPlanKey,
+async function buyCredits(amount,credits){
+  const paymentRef=db.ref("payments").push();
+
+  await paymentRef.set({
+    uid:currentUser.uid,
+    email:currentUser.email||"",
+    type:"ai_credits",
+    amount,
+    credits,
+    currency:"USD",
+    status:"pending",
     createdAt:Date.now()
   });
 
-  await loadHistory();
-}
+  showToast(t[currentLang].paymentCreated);
 
-function escapeSvg(str){
-  return str.replace(/[&<>"']/g,m=>({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&apos;"
-  }[m]));
+  setTimeout(()=>{
+    location.href=BASE_PATH+
+      "checkout.html?paymentId="+paymentRef.key+
+      "&type=ai_credits"+
+      "&amount="+amount+
+      "&credits="+credits;
+  },450);
 }
 
 function randomIdea(){
@@ -824,6 +985,16 @@ function randomIdea(){
     ];
 
   promptInput.value=ideas[Math.floor(Math.random()*ideas.length)];
+}
+
+function escapeSvg(str){
+  return str.replace(/[&<>"']/g,m=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&apos;"
+  }[m]));
 }
 
 function applyAccent(color){
@@ -851,8 +1022,6 @@ function setLang(lang,btn){
 
   document.querySelectorAll(".lang button").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
-
-  planView.textContent=planNames[currentPlanKey]||"Free";
 }
 
 function goDashboard(){
