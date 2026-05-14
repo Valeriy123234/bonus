@@ -1519,15 +1519,17 @@ async function confirmPlan(){
     const token=await currentUser.getIdToken(true);
 
     const res=await fetch(API_URL+"/plan/purchase",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":"Bearer "+token
-      },
-      body:JSON.stringify({
-        planKey:selectedPlan
-      })
-    });
+  method:"POST",
+  headers:{
+    "Content-Type":"application/json",
+    "Authorization":"Bearer "+token
+  },
+  body:JSON.stringify({
+    uid:currentUser.uid,
+    plan:selectedPlan,
+    price:plans[selectedPlan].price
+  })
+});
 
     const data=await res.json();
 
