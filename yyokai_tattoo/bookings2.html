@@ -26,6 +26,24 @@ html,body{
   font-family:Arial,sans-serif;
 }
 
+body.loading .app{
+  opacity:0;
+}
+
+body.loading::after{
+  content:"YYOKAI";
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:grid;
+  place-items:center;
+  background:#000;
+  color:#fff;
+  font-size:34px;
+  font-weight:950;
+  letter-spacing:.12em;
+}
+
 body{
   overflow-x:hidden;
   background:
@@ -707,6 +725,8 @@ auth.onAuthStateChanged(async user=>{
     clients=snap.val()||{};
     renderCalendar();
     renderDay();
+
+    document.body.classList.remove("loading");
   });
 });
 
