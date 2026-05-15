@@ -669,28 +669,60 @@ async function loadHistory(){
 }
 
 function openHistory(url){
-  const img=new Image();
+  const modal=document.createElement("div");
 
-  img.onload=()=>{
-    const canvas=resultCanvas;
-    const ctx=canvas.getContext("2d");
+  modal.style.position="fixed";
+  modal.style.inset="0";
+  modal.style.zIndex="999999";
+  modal.style.background="rgba(0,0,0,.92)";
+  modal.style.backdropFilter="blur(18px)";
+  modal.style.display="flex";
+  modal.style.alignItems="center";
+  modal.style.justifyContent="center";
+  modal.style.padding="20px";
 
-    canvas.width=img.width;
-    canvas.height=img.height;
+  modal.innerHTML=`
+    <div style="
+      position:relative;
+      width:100%;
+      max-width:900px;
+    ">
+      <button id="closePreview" style="
+        position:absolute;
+        top:-56px;
+        right:0;
+        width:46px;
+        height:46px;
+        border-radius:16px;
+        border:1px solid rgba(255,255,255,.12);
+        background:rgba(255,255,255,.08);
+        color:#fff;
+        font-size:26px;
+        cursor:pointer;
+      ">×</button>
 
-    ctx.drawImage(img,0,0);
+      <img src="${url}" style="
+        width:100%;
+        max-height:88vh;
+        object-fit:contain;
+        border-radius:28px;
+        background:#fff;
+        box-shadow:0 20px 90px rgba(0,0,0,.8);
+      ">
+    </div>
+  `;
 
-    currentStencilUrl=url;
+  document.body.appendChild(modal);
 
-    resultBox.classList.add("has-image");
+  modal.addEventListener("click",e=>{
+    if(e.target===modal){
+      modal.remove();
+    }
+  });
 
-    window.scrollTo({
-      top:0,
-      behavior:"smooth"
-    });
+  document.getElementById("closePreview").onclick=()=>{
+    modal.remove();
   };
-
-  img.src=url;
 }
 
 function downloadHistory(url){
