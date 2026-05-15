@@ -358,17 +358,17 @@ auth.onAuthStateChanged(async user=>{
   loadLocalCacheFast();
 
   try{
-    await loadProfile();
-    updateStatusOptions();
-    listenBookings();
-  }catch(e){
-    console.log("bookings load error:",e);
-  }
+  loadProfile();
+  updateStatusOptions();
+  listenBookings();
+}catch(e){
+  console.log("bookings load error:",e);
+}
 
   hideLoader();
 });
 
-setTimeout(hideLoader,2200);
+setTimeout(hideLoader,900);
 
 function loadLocalCacheFast(){
   const cached=JSON.parse(localStorage.getItem("yyokai_profile_"+currentUser.uid)||"{}");
@@ -386,8 +386,10 @@ function loadLocalCacheFast(){
   }
 
   if(cached.backgroundUrl){
+  setTimeout(()=>{
     applyBackgroundImage(cached.backgroundUrl);
-  }
+  },300);
+}
 
   artistEmail.textContent=currentUser.email||"";
 }
