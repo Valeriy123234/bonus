@@ -1448,7 +1448,7 @@ auth.onAuthStateChanged(async user=>{
   currentUser=user;
 
 loadLocalCache();
-hideLoader()
+
 try{
   const snap=await db.ref("users/"+user.uid).once("value");
     const data=snap.val()||{};
@@ -1493,7 +1493,7 @@ try{
   hideLoader();
 });
 
-setTimeout(hideLoader,900);
+setTimeout(hideLoader,2200);
 
 function setLang(lang,btn){
   currentLang=lang;
