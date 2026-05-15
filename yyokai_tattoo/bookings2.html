@@ -44,63 +44,51 @@ button:active{transform:scale(.96);opacity:.88}
 .balance{margin-top:12px;color:#aaa}.balance strong{color:#fff;font-size:20px}
 .menu-line{width:100%;margin-top:8px;padding:14px;border:0;border-radius:16px;background:rgba(255,255,255,.06);color:#ddd;text-align:left;font-weight:900}
 
-.hero{margin-top:20px;padding:30px;border-radius:38px;background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent) 44%,transparent),transparent 36%),linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(20px);box-shadow:0 0 55px color-mix(in srgb,var(--accent) 12%,transparent)}
+.hero{margin-top:20px;padding:30px;border-radius:38px;background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent) 44%,transparent),transparent 36%),linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(20px);box-shadow:0 0 55px color-mix(in srgb,var(--accent) 12%,transparent);text-align:center}
 .hero h1{font-size:clamp(42px,9vw,82px);line-height:.95;letter-spacing:-.05em}
-.hero p{margin-top:18px;max-width:760px;color:#d8d0cd;line-height:1.6;font-size:19px}
+.hero p{margin:18px auto 0;max-width:760px;color:#d8d0cd;line-height:1.6;font-size:19px}
 
 .crm-grid{margin-top:18px;display:grid;grid-template-columns:.9fr 1.1fr;gap:14px}
 .card{padding:20px;border-radius:34px;background:radial-gradient(circle at 85% 0%,color-mix(in srgb,var(--accent) 25%,transparent),transparent 34%),linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.035));border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(22px);box-shadow:0 0 42px color-mix(in srgb,var(--accent) 10%,transparent)}
 .card h2{font-size:24px;margin-bottom:14px}
-
 .calendar-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
 .month-title{font-size:22px;font-weight:950;text-transform:capitalize}
 .nav-btn{width:44px;height:44px;border-radius:16px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.07);color:#fff;font-size:22px}
 .week,.days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
 .week span{text-align:center;color:#888;font-size:12px;font-weight:950;margin-bottom:8px}
 .day{position:relative;aspect-ratio:1/1;border:1px solid rgba(255,255,255,.09);border-radius:18px;background:rgba(255,255,255,.045);color:#fff;font-weight:950;display:grid;place-items:center}
-.day.muted{opacity:.25}
-.day.today{border-color:color-mix(in srgb,var(--accent) 70%,transparent)}
+.day.muted{opacity:.25}.day.today{border-color:color-mix(in srgb,var(--accent) 70%,transparent)}
 .day.active{background:color-mix(in srgb,var(--accent) 42%,rgba(255,255,255,.05));box-shadow:0 0 25px color-mix(in srgb,var(--accent) 35%,transparent)}
 .day .count{position:absolute;right:5px;top:5px;min-width:17px;height:17px;padding:0 5px;border-radius:999px;display:grid;place-items:center;background:rgba(0,0,0,.68);border:1px solid rgba(255,255,255,.12);font-size:10px}
-.day .dot{position:absolute;bottom:7px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent)}
+.day .dot{position:absolute;bottom:7px;width:7px;height:7px;border-radius:50%;background:var(--status-color,var(--accent));box-shadow:0 0 12px var(--status-color,var(--accent))}
 
 .day-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
-.day-title{font-size:22px;font-weight:950}
-.add-btn{border:0;border-radius:999px;padding:14px 16px;background:#fff;color:#050505;font-weight:950}
+.day-title{font-size:22px;font-weight:950}.add-btn{border:0;border-radius:999px;padding:14px 16px;background:#fff;color:#050505;font-weight:950}
 .timeline{display:flex;flex-direction:column;gap:10px;max-height:500px;overflow:auto;padding-right:4px}
 .slot{width:100%;text-align:left;padding:14px;border-radius:22px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.055);color:#fff}
-.slot-top{display:flex;justify-content:space-between;gap:12px;align-items:center}
-.slot-time{font-size:20px;font-weight:950}
-.slot-status{font-size:11px;font-weight:950;padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1)}
-.slot-name{margin-top:8px;font-weight:950;font-size:17px}
-.slot-idea{margin-top:4px;color:#aaa;font-size:13px;line-height:1.4}
+.slot-top{display:flex;justify-content:space-between;gap:12px;align-items:center}.slot-time{font-size:20px;font-weight:950}
+.slot-status{font-size:11px;font-weight:950;padding:6px 9px;border-radius:999px;background:color-mix(in srgb,var(--status-color) 22%,rgba(255,255,255,.06));border:1px solid color-mix(in srgb,var(--status-color) 50%,transparent);color:#fff}
+.slot-name{margin-top:8px;font-weight:950;font-size:17px}.slot-idea{margin-top:4px;color:#aaa;font-size:13px;line-height:1.4}
 .empty{padding:24px;border-radius:22px;background:rgba(255,255,255,.045);border:1px dashed rgba(255,255,255,.13);color:#999;text-align:center}
 
 .modal-wrap{position:fixed;inset:0;z-index:250;display:none;place-items:center;padding:18px;background:rgba(0,0,0,.82);backdrop-filter:blur(16px)}
 .modal-wrap.open{display:grid}
 .modal{width:100%;max-width:760px;max-height:90vh;overflow:auto;padding:24px;border-radius:34px;background:#050505;border:1px solid rgba(255,255,255,.14);box-shadow:0 30px 110px rgba(0,0,0,.9)}
-.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
-.modal-head h2{font-size:26px}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.modal-head h2{font-size:26px}
 .close{width:42px;height:42px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;font-size:22px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.field.full{grid-column:1/-1}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field.full{grid-column:1/-1}
 label{display:block;color:#aaa;font-size:12px;font-weight:950;margin-bottom:7px}
-input,textarea,select{width:100%;border-radius:16px;padding:14px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.42);color:#fff;outline:none;font-size:15px}
+input,textarea,select{width:100%;max-width:100%;border-radius:16px;padding:14px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.42);color:#fff;outline:none;font-size:15px}
+input[type="time"]{height:56px;min-height:56px;padding:0 14px;appearance:none;-webkit-appearance:none}
 textarea{min-height:100px;resize:vertical}
 input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 15%,transparent)}
-.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
-.delete-btn,.confirm-btn{border:0;border-radius:999px;padding:16px;font-weight:950}
+.modal-actions{display:grid;grid-template-columns:1fr;justify-items:center;gap:10px;margin-top:16px}
+.delete-btn,.confirm-btn{border:0;border-radius:999px;padding:16px;font-weight:950;width:min(320px,100%)}
 .delete-btn{background:rgba(255,255,255,.07);color:#ff8a9a;border:1px solid rgba(255,255,255,.12)}
 .confirm-btn{background:#fff;color:#050505}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);z-index:300;width:min(430px,calc(100vw - 30px));padding:16px 18px;border-radius:22px;background:rgba(0,0,0,.94);border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);color:#fff;opacity:0;pointer-events:none;transition:.22s}
 .toast.open{opacity:1;transform:translateX(-50%) translateY(0)}
-
-@media(max-width:820px){
-  .crm-grid{grid-template-columns:1fr}
-  .hero{padding:28px 22px}
-  .hero p{font-size:17px}
-  .form-grid{grid-template-columns:1fr}
-}
+@media(max-width:820px){.crm-grid{grid-template-columns:1fr}.hero{padding:28px 22px}.hero p{font-size:17px}.form-grid{grid-template-columns:1fr}}
 </style>
 </head>
 
@@ -113,12 +101,9 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
     <button class="active" onclick="setLang('uk',this)">UA</button>
     <button onclick="setLang('en',this)">EN</button>
   </div>
-
   <div class="logo">YYOKAI</div>
-
   <div class="profile">
     <div class="avatar" id="avatar" onclick="toggleProfile()">妖</div>
-
     <div class="profile-menu" id="profileMenu">
       <div class="profile-name" id="artistName">Guest Artist</div>
       <div class="profile-email" id="artistEmail">artist@email.com</div>
@@ -140,12 +125,10 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
       <div class="month-title" id="monthTitle">Month</div>
       <button class="nav-btn" onclick="nextMonth()">›</button>
     </div>
-
     <div class="week">
       <span data-i18n="w1">Пн</span><span data-i18n="w2">Вт</span><span data-i18n="w3">Ср</span>
       <span data-i18n="w4">Чт</span><span data-i18n="w5">Пт</span><span data-i18n="w6">Сб</span><span data-i18n="w7">Нд</span>
     </div>
-
     <div class="days" id="days"></div>
   </div>
 
@@ -157,7 +140,6 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
       </div>
       <button class="add-btn" onclick="openCreateModal()" data-i18n="addBooking">+ Запис</button>
     </div>
-
     <div class="timeline" id="timeline"></div>
   </div>
 </section>
@@ -166,14 +148,14 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 <section class="modal-wrap" id="bookingModal">
   <div class="modal">
     <div class="modal-head">
-      <h2 id="modalTitle" data-i18n="modalTitle">Новий запис</h2>
+      <h2 id="modalTitle" data-i18n="modalTitle">Картка запису</h2>
       <button class="close" onclick="closeBookingModal()">×</button>
     </div>
 
     <div class="form-grid">
       <div class="field">
         <label data-i18n="clientName">Імʼя клієнта</label>
-        <input id="clientName" placeholder="Alex">
+        <input id="clientName" placeholder="Імʼя клієнта">
       </div>
 
       <div class="field">
@@ -198,7 +180,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 
       <div class="field">
         <label data-i18n="placement">Місце на тілі</label>
-        <input id="clientPlacement" placeholder="Arm / neck / back">
+        <input id="clientPlacement" placeholder="Рука / шия / спина">
       </div>
 
       <div class="field">
@@ -208,7 +190,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 
       <div class="field">
         <label data-i18n="duration">Тривалість</label>
-        <input id="clientDuration" placeholder="2 hours">
+        <input id="clientDuration" placeholder="2 години">
       </div>
 
       <div class="field">
@@ -224,22 +206,22 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
       <div class="field">
         <label data-i18n="status">Статус</label>
         <select id="clientStatus">
-          <option value="waiting">Waiting deposit</option>
-          <option value="confirmed">Confirmed</option>
-          <option value="in_progress">In progress</option>
-          <option value="done">Done</option>
-          <option value="cancelled">Cancelled</option>
+          <option value="waiting">Очікує передоплату</option>
+          <option value="confirmed">Підтверджено</option>
+          <option value="in_progress">В процесі</option>
+          <option value="done">Завершено</option>
+          <option value="cancelled">Скасовано</option>
         </select>
       </div>
 
       <div class="field full">
         <label data-i18n="idea">Ідея тату</label>
-        <textarea id="clientIdea" placeholder="Tattoo idea, style, mood, references..."></textarea>
+        <textarea id="clientIdea" data-i18n-placeholder="ideaPlaceholder" placeholder="Ідея, стиль, настрій, референси..."></textarea>
       </div>
 
       <div class="field full">
         <label data-i18n="notes">Нотатки до запису</label>
-        <textarea id="clientNotes" placeholder="Important notes, skin, allergies, client details..."></textarea>
+        <textarea id="clientNotes" data-i18n-placeholder="notesPlaceholder" placeholder="Важливі деталі, шкіра, алергії, побажання клієнта..."></textarea>
       </div>
     </div>
 
@@ -277,6 +259,14 @@ let selectedDate=formatDate(new Date());
 let bookings={};
 let editingId=null;
 
+const statusColors={
+  waiting:"#ffd166",
+  confirmed:"#7dffb1",
+  in_progress:"#8ecbff",
+  done:"#b7ff7a",
+  cancelled:"#ff6b7a"
+};
+
 const t={
   uk:{
     balance:"Баланс",
@@ -287,8 +277,8 @@ const t={
     addBooking:"+ Запис",
     bookings:"записів",
     noBookings:"На цю дату ще немає записів.",
-    modalTitle:"Новий запис",
-    editTitle:"Картка запису",
+    modalTitle:"Картка запису",
+    newTitle:"Новий запис",
     clientName:"Імʼя клієнта",
     time:"Час",
     placement:"Місце на тілі",
@@ -299,12 +289,19 @@ const t={
     status:"Статус",
     idea:"Ідея тату",
     notes:"Нотатки до запису",
+    ideaPlaceholder:"Ідея, стиль, настрій, референси...",
+    notesPlaceholder:"Важливі деталі, шкіра, алергії, побажання клієнта...",
     delete:"Видалити",
     confirm:"Підтвердити запис",
     saved:"Запис збережено.",
     deleted:"Запис видалено.",
     nameRequired:"Вкажи імʼя клієнта.",
-    timeRequired:"Вкажи час запису."
+    timeRequired:"Вкажи час запису.",
+    status_waiting:"Очікує передоплату",
+    status_confirmed:"Підтверджено",
+    status_in_progress:"В процесі",
+    status_done:"Завершено",
+    status_cancelled:"Скасовано"
   },
   en:{
     balance:"Balance",
@@ -315,8 +312,8 @@ const t={
     addBooking:"+ Booking",
     bookings:"bookings",
     noBookings:"No bookings for this date yet.",
-    modalTitle:"New booking",
-    editTitle:"Booking card",
+    modalTitle:"Booking card",
+    newTitle:"New booking",
     clientName:"Client name",
     time:"Time",
     placement:"Body placement",
@@ -327,18 +324,24 @@ const t={
     status:"Status",
     idea:"Tattoo idea",
     notes:"Booking notes",
+    ideaPlaceholder:"Tattoo idea, style, mood, references...",
+    notesPlaceholder:"Important notes, skin, allergies, client details...",
     delete:"Delete",
     confirm:"Confirm booking",
     saved:"Booking saved.",
     deleted:"Booking deleted.",
     nameRequired:"Enter client name.",
-    timeRequired:"Choose booking time."
+    timeRequired:"Choose booking time.",
+    status_waiting:"Waiting deposit",
+    status_confirmed:"Confirmed",
+    status_in_progress:"In progress",
+    status_done:"Done",
+    status_cancelled:"Cancelled"
   }
 };
 
 function hideLoader(){
   const loader=document.getElementById("loaderScreen");
-
   if(loader){
     loader.classList.add("hide");
     setTimeout(()=>loader.remove(),520);
@@ -352,11 +355,11 @@ auth.onAuthStateChanged(async user=>{
   }
 
   currentUser=user;
-
   loadLocalCacheFast();
 
   try{
     await loadProfile();
+    updateStatusOptions();
     listenBookings();
   }catch(e){
     console.log("bookings load error:",e);
@@ -436,14 +439,45 @@ function monthName(date){
   });
 }
 
+function getBookingsByDate(dateKey){
+  return Object.entries(bookings)
+    .map(([id,b])=>({id,...b}))
+    .filter(b=>b.date===dateKey)
+    .sort((a,b)=>(a.time||"").localeCompare(b.time||""));
+}
+
+function getMainStatusForDate(dateKey){
+  const list=getBookingsByDate(dateKey);
+
+  if(!list.length)return null;
+
+  const priority=["cancelled","waiting","in_progress","confirmed","done"];
+
+  for(const status of priority){
+    if(list.some(item=>(item.status||"confirmed")===status)){
+      return status;
+    }
+  }
+
+  return "confirmed";
+}
+
+function statusText(status){
+  return t[currentLang]["status_"+status] || status;
+}
+
+function statusColor(status){
+  return statusColors[status] || "#ffffff";
+}
+
 function renderCalendar(){
   days.innerHTML="";
   monthTitle.textContent=monthName(currentMonth);
 
   const year=currentMonth.getFullYear();
   const month=currentMonth.getMonth();
-
   const first=new Date(year,month,1);
+
   let startDay=first.getDay();
   if(startDay===0)startDay=7;
 
@@ -455,7 +489,9 @@ function renderCalendar(){
     date.setDate(start.getDate()+i);
 
     const key=formatDate(date);
-    const count=Object.values(bookings).filter(b=>b.date===key).length;
+    const list=getBookingsByDate(key);
+    const count=list.length;
+    const mainStatus=getMainStatusForDate(key);
 
     const btn=document.createElement("button");
     btn.className="day";
@@ -463,6 +499,10 @@ function renderCalendar(){
     if(date.getMonth()!==month)btn.classList.add("muted");
     if(key===today)btn.classList.add("today");
     if(key===selectedDate)btn.classList.add("active");
+
+    if(mainStatus){
+      btn.style.setProperty("--status-color",statusColor(mainStatus));
+    }
 
     btn.innerHTML=`
       <span>${date.getDate()}</span>
@@ -488,10 +528,7 @@ function renderTimeline(){
     year:"numeric"
   });
 
-  const list=Object.entries(bookings)
-    .map(([id,b])=>({id,...b}))
-    .filter(b=>b.date===selectedDate)
-    .sort((a,b)=>(a.time||"").localeCompare(b.time||""));
+  const list=getBookingsByDate(selectedDate);
 
   dayCount.textContent=list.length+" "+t[currentLang].bookings;
   timeline.innerHTML="";
@@ -502,15 +539,16 @@ function renderTimeline(){
   }
 
   list.forEach(item=>{
+    const status=item.status||"confirmed";
+
     const btn=document.createElement("button");
     btn.className="slot";
-
-    const statusLabel=(item.status||"confirmed").replace("_"," ");
+    btn.style.setProperty("--status-color",statusColor(status));
 
     btn.innerHTML=`
       <div class="slot-top">
         <div class="slot-time">${item.time||"—"}</div>
-        <div class="slot-status">${statusLabel}</div>
+        <div class="slot-status">${statusText(status)}</div>
       </div>
       <div class="slot-name">${escapeHtml(item.name||"Client")}</div>
       <div class="slot-idea">${escapeHtml(item.idea||item.placement||"—")}</div>
@@ -524,7 +562,7 @@ function renderTimeline(){
 
 function openCreateModal(){
   editingId=null;
-  modalTitle.textContent=t[currentLang].modalTitle;
+  modalTitle.textContent=t[currentLang].newTitle;
   deleteBtn.style.display="none";
 
   clientName.value="";
@@ -541,6 +579,7 @@ function openCreateModal(){
   clientIdea.value="";
   clientNotes.value="";
 
+  updateStatusOptions();
   bookingModal.classList.add("open");
 }
 
@@ -549,7 +588,7 @@ function openEditModal(id){
   if(!b)return;
 
   editingId=id;
-  modalTitle.textContent=t[currentLang].editTitle;
+  modalTitle.textContent=t[currentLang].modalTitle;
   deleteBtn.style.display="block";
 
   clientName.value=b.name||"";
@@ -566,6 +605,7 @@ function openEditModal(id){
   clientIdea.value=b.idea||"";
   clientNotes.value=b.notes||"";
 
+  updateStatusOptions();
   bookingModal.classList.add("open");
 }
 
@@ -638,6 +678,20 @@ function nextMonth(){
   renderCalendar();
 }
 
+function updateStatusOptions(){
+  const current=clientStatus.value||"waiting";
+
+  clientStatus.innerHTML=`
+    <option value="waiting">${t[currentLang].status_waiting}</option>
+    <option value="confirmed">${t[currentLang].status_confirmed}</option>
+    <option value="in_progress">${t[currentLang].status_in_progress}</option>
+    <option value="done">${t[currentLang].status_done}</option>
+    <option value="cancelled">${t[currentLang].status_cancelled}</option>
+  `;
+
+  clientStatus.value=current;
+}
+
 function setLang(lang,btn){
   currentLang=lang;
   document.documentElement.lang=lang;
@@ -646,11 +700,16 @@ function setLang(lang,btn){
     document.querySelectorAll(`[data-i18n="${key}"]`).forEach(el=>{
       el.textContent=t[lang][key];
     });
+
+    document.querySelectorAll(`[data-i18n-placeholder="${key}"]`).forEach(el=>{
+      el.placeholder=t[lang][key];
+    });
   });
 
   document.querySelectorAll(".lang button").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
 
+  updateStatusOptions();
   renderCalendar();
   renderTimeline();
 }
