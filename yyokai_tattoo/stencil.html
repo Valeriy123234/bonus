@@ -44,6 +44,13 @@ button:active{transform:scale(.96);opacity:.88}
 .balance{margin-top:12px;color:#aaa}.balance strong{color:#fff;font-size:20px}
 .menu-line{width:100%;margin-top:8px;padding:14px;border:0;border-radius:16px;background:rgba(255,255,255,.06);color:#ddd;text-align:left;font-weight:900}
 
+.player{margin:16px 0;padding:12px;border-radius:22px;background:rgba(7,7,7,.86);border:1px solid rgba(255,255,255,.14);display:grid;grid-template-columns:50px 1fr auto;gap:12px;align-items:center}
+.cover{width:50px;height:50px;border-radius:16px;display:grid;place-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12)}
+.track-title{font-size:14px;font-weight:950}
+.track-sub{font-size:12px;color:#888;margin-top:3px}
+.music-controls{display:flex;gap:8px}
+.music-controls button{width:42px;height:42px;border-radius:14px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.075);color:#fff;font-size:20px}
+
 .hero{margin-top:20px;padding:30px;border-radius:38px;background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--accent) 44%,transparent),transparent 36%),linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(20px);box-shadow:0 0 55px color-mix(in srgb,var(--accent) 12%,transparent);text-align:center}
 .hero h1{font-size:clamp(42px,9vw,82px);line-height:.95;letter-spacing:-.05em}
 .hero p{margin:18px auto 0;max-width:780px;color:#d8d0cd;line-height:1.6;font-size:19px}
@@ -78,8 +85,8 @@ button:active{transform:scale(.96);opacity:.88}
 .switch input{width:20px;height:20px}
 
 .result-box{min-height:430px;display:grid;place-items:center;border-radius:28px;background:radial-gradient(circle at center,color-mix(in srgb,var(--accent) 22%,transparent),transparent 42%),rgba(0,0,0,.42);border:1px solid rgba(255,255,255,.13);overflow:hidden;position:relative}
-.result-box canvas,.result-box img{width:100%;height:100%;object-fit:contain;display:none;background:#fff}
-.result-box.has-image canvas,.result-box.has-image img{display:block}
+.result-box canvas{width:100%;height:100%;object-fit:contain;display:none;background:#fff}
+.result-box.has-image canvas{display:block}
 .placeholder{text-align:center;padding:30px;color:#aaa}
 .placeholder strong{display:block;color:#fff;font-size:28px;margin-bottom:10px}
 .result-box.has-image .placeholder{display:none}
@@ -94,6 +101,8 @@ button:active{transform:scale(.96);opacity:.88}
 .history-card{min-height:150px;border-radius:24px;overflow:hidden;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.055);position:relative;color:#ddd;text-align:left}
 .history-card img{width:100%;height:150px;object-fit:cover;display:block;background:#fff}
 .history-card div{padding:12px;color:#ddd;font-size:13px;line-height:1.35}
+.history-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 12px 12px}
+.history-actions button{border:0;border-radius:999px;padding:10px;background:rgba(255,255,255,.08);color:#fff;font-weight:950;font-size:12px}
 
 .gen-modal{position:fixed;inset:0;z-index:200;display:none;place-items:center;padding:20px;background:rgba(0,0,0,.82);backdrop-filter:blur(16px)}
 .gen-modal.open{display:grid}
@@ -119,6 +128,7 @@ button:active{transform:scale(.96);opacity:.88}
 
 <body>
 <div class="loader-screen" id="loaderScreen">YYOKAI</div>
+<audio id="bgMusic"></audio>
 
 <main class="app">
 <header class="topbar">
@@ -135,6 +145,20 @@ button:active{transform:scale(.96);opacity:.88}
       <div class="profile-name" id="artistName">Guest Artist</div>
       <div class="profile-email" id="artistEmail">artist@email.com</div>
       <div class="balance"><span data-i18n="balance">Баланс</span>: <strong id="balanceValue">$0.00</strong></div>
+
+      <div class="player">
+        <div class="cover" id="trackCover">⛩</div>
+        <div>
+          <div class="track-title" id="trackTitle">Japanese Chill</div>
+          <div class="track-sub" id="trackSub">YYOKAI playlist</div>
+        </div>
+        <div class="music-controls">
+          <button onclick="prevTrack()">‹</button>
+          <button id="playPauseBtn" onclick="toggleMusic()">▶</button>
+          <button onclick="nextTrack()">›</button>
+        </div>
+      </div>
+
       <button class="menu-line" onclick="goDashboard()">← <span data-i18n="back">На головну</span></button>
       <button class="menu-line" onclick="openGenerationsModal()">＋ Stencil Generations</button>
     </div>
@@ -160,7 +184,6 @@ button:active{transform:scale(.96);opacity:.88}
     <strong id="modeView">Classic</strong>
   </div>
 </section>
-
 <section class="layout">
   <div class="panel">
     <h2 data-i18n="uploadTitle">Завантаж ескіз</h2>
@@ -180,13 +203,14 @@ button:active{transform:scale(.96);opacity:.88}
       <div class="switch">
         <label>
           <input id="mirrorToggle" type="checkbox" checked>
-          <span data-i18n="mirror">Mirror transfer</span>
+          <span id="mirrorText">Mirror transfer</span>
         </label>
       </div>
+
       <div class="switch">
         <label>
           <input id="boldToggle" type="checkbox">
-          <span data-i18n="bold">Bold lines</span>
+          <span id="boldText">Посилити контур</span>
         </label>
       </div>
     </div>
@@ -213,7 +237,9 @@ button:active{transform:scale(.96);opacity:.88}
         <span data-i18n="emptyResult">Тут зʼявиться stencil результат.</span>
       </div>
 
-      <div class="download-hint" data-i18n="downloadHint">Натисни на результат, щоб завантажити PNG</div>
+      <div class="download-hint" data-i18n="downloadHint">
+        Натисни на результат, щоб завантажити PNG
+      </div>
     </div>
   </div>
 </section>
@@ -222,6 +248,7 @@ button:active{transform:scale(.96);opacity:.88}
   <h2 data-i18n="historyTitle">Останні stencil результати</h2>
   <div class="history" id="historyList"></div>
 </section>
+
 </main>
 
 <section class="gen-modal" id="generationsModal">
@@ -263,7 +290,6 @@ button:active{transform:scale(.96);opacity:.88}
 
 <script>
 const BASE_PATH="/yyokai/yyokai_tattoo/";
-const API_URL="https://api.yyokaiworld.uk";
 
 const firebaseConfig={
   apiKey:"AIzaSyALs-ZgFX7auGxRQ2EeQnVngjnejimPLV4",
@@ -276,6 +302,7 @@ const firebaseConfig={
 };
 
 firebase.initializeApp(firebaseConfig);
+
 const auth=firebase.auth();
 const db=firebase.database();
 
@@ -285,9 +312,43 @@ let currentPlanKey="free";
 let stencilGenerations=0;
 let sourceImage=null;
 let currentStencilUrl="";
+let musicPlaying=false;
+let trackIndex=0;
 
-const planNames={free:"Free",starter:"Starter",pro:"Pro",yokai:"YYOKAI Full"};
-const starterGenerations={free:3,starter:150,pro:250,yokai:500};
+const tracks=[
+  {
+    title:"Japanese Chill",
+    sub:"YYOKAI playlist",
+    icon:"⛩",
+    src:"music/chill.mp3"
+  },
+  {
+    title:"Cyber Tokyo",
+    sub:"Night atmosphere",
+    icon:"夜",
+    src:"music/cyber.mp3"
+  },
+  {
+    title:"Dark Tattoo",
+    sub:"Studio ambience",
+    icon:"墨",
+    src:"music/dark.mp3"
+  }
+];
+
+const starterGenerations={
+  free:3,
+  starter:150,
+  pro:250,
+  yokai:500
+};
+
+const planNames={
+  free:"Free",
+  starter:"Starter",
+  pro:"Pro",
+  yokai:"YYOKAI Full"
+};
 
 const t={
   uk:{
@@ -300,8 +361,6 @@ const t={
     uploadTitle:"Завантаж ескіз",
     uploadText:"Фото, малюнок або референс. Для тесту сторінка вже робить demo stencil без API.",
     uploadHint:"Натисни, щоб завантажити фото",
-    mirror:"Mirror transfer",
-    bold:"Bold lines",
     clearBtn:"Очистити",
     generateBtn:"Generate Stencil",
     resultTitle:"Transfer Result",
@@ -311,15 +370,19 @@ const t={
     historyTitle:"Останні stencil результати",
     noImage:"Спочатку завантаж фото.",
     noGenerations:"Stencil Generations закінчились. Додай генерації для продовження.",
-    apiNotReady:"API ще не підключено. Demo stencil створено локально.",
     downloaded:"PNG завантажено.",
     generationsTitle:"Додати Stencil Generations",
     pack75:"Легкий пакет для швидких transfer задач.",
     pack150:"Оптимально для регулярної роботи.",
     pack250:"Для активного майстра.",
     pack500:"Studio pack для потужного workflow.",
-    paymentCreated:"Checkout створено. Переходимо до оплати..."
+    paymentCreated:"Checkout створено. Переходимо до оплати...",
+    mirror:"Mirror transfer",
+    bold:"Посилити контур",
+    openOld:"Відкрити",
+    downloadOld:"Завантажити"
   },
+
   en:{
     balance:"Balance",
     back:"Dashboard",
@@ -328,10 +391,8 @@ const t={
     plan:"Plan",
     mode:"Transfer Mode",
     uploadTitle:"Upload sketch",
-    uploadText:"Photo, drawing or reference. For testing, this page already creates demo stencil without API.",
+    uploadText:"Photo, drawing or reference. Demo stencil already works without API.",
     uploadHint:"Tap to upload an image",
-    mirror:"Mirror transfer",
-    bold:"Bold lines",
     clearBtn:"Clear",
     generateBtn:"Generate Stencil",
     resultTitle:"Transfer Result",
@@ -339,21 +400,25 @@ const t={
     emptyResult:"Your stencil result will appear here.",
     downloadHint:"Tap the result to download PNG",
     historyTitle:"Recent stencil results",
-    noImage:"Upload an image first.",
+    noImage:"Upload image first.",
     noGenerations:"Stencil Generations are empty. Add generations to continue.",
-    apiNotReady:"API is not connected yet. Demo stencil created locally.",
     downloaded:"PNG downloaded.",
     generationsTitle:"Add Stencil Generations",
     pack75:"Light pack for quick transfer tasks.",
     pack150:"Optimal for regular work.",
     pack250:"For active artists.",
     pack500:"Studio pack for powerful workflow.",
-    paymentCreated:"Checkout created. Redirecting to payment..."
+    paymentCreated:"Checkout created. Redirecting to payment...",
+    mirror:"Mirror transfer",
+    bold:"Enhance outline",
+    openOld:"Open",
+    downloadOld:"Download"
   }
 };
 
 function hideLoader(){
   const loader=document.getElementById("loaderScreen");
+
   if(loader){
     loader.classList.add("hide");
     setTimeout(()=>loader.remove(),520);
@@ -367,6 +432,7 @@ auth.onAuthStateChanged(async user=>{
   }
 
   currentUser=user;
+
   loadLocalCacheFast();
 
   try{
@@ -375,7 +441,7 @@ auth.onAuthStateChanged(async user=>{
     listenGenerations();
     await loadHistory();
   }catch(e){
-    console.log("stencil load error:",e);
+    console.log(e);
   }
 
   hideLoader();
@@ -386,9 +452,17 @@ setTimeout(hideLoader,2200);
 function loadLocalCacheFast(){
   const cached=JSON.parse(localStorage.getItem("yyokai_profile_"+currentUser.uid)||"{}");
 
-  if(cached.name)artistName.textContent=cached.name;
-  if(cached.accent)applyAccent(cached.accent);
-  if(cached.avatarUrl)avatar.innerHTML=`<img src="${cached.avatarUrl}">`;
+  if(cached.name){
+    artistName.textContent=cached.name;
+  }
+
+  if(cached.accent){
+    applyAccent(cached.accent);
+  }
+
+  if(cached.avatarUrl){
+    avatar.innerHTML=`<img src="${cached.avatarUrl}">`;
+  }
 
   if(cached.backgroundUrl){
     setTimeout(()=>{
@@ -400,41 +474,42 @@ function loadLocalCacheFast(){
 }
 
 async function loadProfile(){
-  const cached=JSON.parse(localStorage.getItem("yyokai_profile_"+currentUser.uid)||"{}");
   const snap=await db.ref("users/"+currentUser.uid).once("value");
   const data=snap.val()||{};
 
   currentPlanKey=data.planKey||"free";
 
-  const email=currentUser.email||data.email||"";
-  const name=data.name||cached.name||currentUser.displayName||"Guest Artist";
+  planView.textContent=planNames[currentPlanKey]||"Free";
 
-  artistName.textContent=name;
-  artistEmail.textContent=email;
+  if(data.settings&&data.settings.accent){
+    applyAccent(data.settings.accent);
+  }
 
-  if(data.settings&&data.settings.accent)applyAccent(data.settings.accent);
+  if(data.settings&&typeof data.settings.trackIndex==="number"){
+    setTrack(data.settings.trackIndex);
+  }else{
+    setTrack(0);
+  }
 
   db.ref("users/"+currentUser.uid+"/balance").on("value",snap=>{
     balanceValue.textContent="$"+Number(snap.val()||0).toFixed(2);
   });
-
-  planView.textContent=planNames[currentPlanKey]||"Free";
 }
 
 async function ensureInitialGenerations(){
-  const userRef=db.ref("users/"+currentUser.uid);
-  const snap=await userRef.once("value");
+  const ref=db.ref("users/"+currentUser.uid);
+  const snap=await ref.once("value");
   const data=snap.val()||{};
 
-  if(data.stencilGenerationsInitialized)return;
+  if(data.stencilGenerationsInitialized){
+    return;
+  }
 
   const initial=starterGenerations[currentPlanKey]||3;
 
-  await userRef.update({
+  await ref.update({
     stencilGenerations:initial,
-    stencilGenerationsInitialized:true,
-    stencilGenerationsInitialPlan:currentPlanKey,
-    stencilGenerationsInitializedAt:Date.now()
+    stencilGenerationsInitialized:true
   });
 }
 
@@ -447,46 +522,28 @@ function listenGenerations(){
 
 function handleFile(event){
   const file=event.target.files[0];
+
   if(!file)return;
 
   const reader=new FileReader();
+
   reader.onload=()=>{
     previewImage.src=reader.result;
     uploadBox.classList.add("has-image");
 
     sourceImage=new Image();
-    sourceImage.onload=()=>{};
     sourceImage.src=reader.result;
   };
+
   reader.readAsDataURL(file);
 }
 
 function clearImage(){
   sourceImage=null;
   currentStencilUrl="";
-  previewImage.src="";
-  resultCanvas.style.display="none";
   uploadBox.classList.remove("has-image");
   resultBox.classList.remove("has-image");
-  fileInput.value="";
-}
-
-async function spendGeneration(){
-  const ref=db.ref("users/"+currentUser.uid+"/stencilGenerations");
-
-  const result=await ref.transaction(current=>{
-    const value=Number(current||0);
-    if(value<=0)return;
-    return value-1;
-  });
-
-  return result.committed;
-}
-
-async function refundGeneration(){
-  await db.ref("users/"+currentUser.uid+"/stencilGenerations").transaction(current=>{
-    return Number(current||0)+1;
-  });
+  previewImage.src="";
 }
 
 async function generateStencil(){
@@ -501,51 +558,16 @@ async function generateStencil(){
     return;
   }
 
-  const spent=await spendGeneration();
-
-  if(!spent){
-    showToast(t[currentLang].noGenerations);
-    openGenerationsModal();
-    return;
-  }
-
   loadingArt.classList.add("open");
   resultBox.classList.remove("has-image");
 
-  try{
-    const token=await currentUser.getIdToken(true);
-    const imageData=await compressSourceImage();
+  await db.ref("users/"+currentUser.uid+"/stencilGenerations").set(stencilGenerations-1);
 
-    const res=await fetch(API_URL+"/ai/generate-stencil",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":"Bearer "+token
-      },
-      body:JSON.stringify({
-        image:imageData,
-        mirror:mirrorToggle.checked,
-        bold:boldToggle.checked
-      })
-    });
-
-    const data=await res.json();
-
-    if(!res.ok){
-      throw new Error(data.error||"API not ready");
-    }
-
-    await drawApiResult(data.image);
-    await saveResult(data.image,"api");
-
-  }catch(error){
-    console.log(error);
+  setTimeout(()=>{
     createLocalStencil();
-    await saveResult(currentStencilUrl,"demo");
-    showToast(t[currentLang].apiNotReady);
-  }
-
-  loadingArt.classList.remove("open");
+    loadingArt.classList.remove("open");
+    saveHistory();
+  },1800);
 }
 
 function createLocalStencil(){
@@ -553,8 +575,9 @@ function createLocalStencil(){
   const ctx=canvas.getContext("2d");
 
   const max=1200;
-  let w=sourceImage.naturalWidth||sourceImage.width;
-  let h=sourceImage.naturalHeight||sourceImage.height;
+
+  let w=sourceImage.width;
+  let h=sourceImage.height;
 
   if(w>h&&w>max){
     h=Math.round(h*(max/w));
@@ -583,136 +606,111 @@ function createLocalStencil(){
 
   const img=ctx.getImageData(0,0,w,h);
   const data=img.data;
-  const copy=new Uint8ClampedArray(data);
 
-  const threshold=boldToggle.checked?138:158;
-  const strength=boldToggle.checked?55:38;
+  for(let i=0;i<data.length;i+=4){
+    const gray=.299*data[i]+.587*data[i+1]+.114*data[i+2];
 
-  for(let y=1;y<h-1;y++){
-    for(let x=1;x<w-1;x++){
-      const i=(y*w+x)*4;
+    let v=gray>150?255:0;
 
-      const gray=.299*copy[i]+.587*copy[i+1]+.114*copy[i+2];
-
-      const left=((y*w+x-1)*4);
-      const right=((y*w+x+1)*4);
-      const top=(((y-1)*w+x)*4);
-      const bottom=(((y+1)*w+x)*4);
-
-      const gx=(copy[right]-copy[left])+(copy[right+1]-copy[left+1])+(copy[right+2]-copy[left+2]);
-      const gy=(copy[bottom]-copy[top])+(copy[bottom+1]-copy[top+1])+(copy[bottom+2]-copy[top+2]);
-
-      const edge=Math.sqrt(gx*gx+gy*gy);
-      const ink=(edge>strength||gray<threshold)?0:255;
-
-      data[i]=ink;
-      data[i+1]=ink;
-      data[i+2]=ink;
-      data[i+3]=255;
+    if(boldToggle.checked){
+      v=gray>120?255:0;
     }
+
+    data[i]=v;
+    data[i+1]=v;
+    data[i+2]=v;
   }
 
   ctx.putImageData(img,0,0);
 
   currentStencilUrl=canvas.toDataURL("image/png");
+
   resultBox.classList.add("has-image");
 }
 
-async function drawApiResult(url){
-  return new Promise(resolve=>{
-    const img=new Image();
-    img.onload=()=>{
-      const canvas=resultCanvas;
-      const ctx=canvas.getContext("2d");
-      canvas.width=img.width;
-      canvas.height=img.height;
-      ctx.drawImage(img,0,0);
-      currentStencilUrl=canvas.toDataURL("image/png");
-      resultBox.classList.add("has-image");
-      resolve();
-    };
-    img.src=url;
+async function saveHistory(){
+  await db.ref("stencilHistory/"+currentUser.uid).push({
+    image:currentStencilUrl,
+    createdAt:Date.now()
+  });
+
+  loadHistory();
+}
+
+async function loadHistory(){
+  const snap=await db.ref("stencilHistory/"+currentUser.uid).limitToLast(9).once("value");
+
+  const data=snap.val()||{};
+  const items=Object.entries(data).reverse();
+
+  historyList.innerHTML="";
+
+  items.forEach(([id,item])=>{
+    const card=document.createElement("div");
+    card.className="history-card";
+
+    card.innerHTML=`
+      <img src="${item.image}">
+      <div>${new Date(item.createdAt).toLocaleDateString()}</div>
+
+      <div class="history-actions">
+        <button onclick="openHistory('${item.image}')">
+          ${t[currentLang].openOld}
+        </button>
+
+        <button onclick="downloadHistory('${item.image}')">
+          ${t[currentLang].downloadOld}
+        </button>
+      </div>
+    `;
+
+    historyList.appendChild(card);
   });
 }
 
-function compressSourceImage(){
-  return new Promise(resolve=>{
-    const canvas=document.createElement("canvas");
+function openHistory(url){
+  const img=new Image();
+
+  img.onload=()=>{
+    const canvas=resultCanvas;
     const ctx=canvas.getContext("2d");
 
-    const max=1200;
-    let w=sourceImage.naturalWidth||sourceImage.width;
-    let h=sourceImage.naturalHeight||sourceImage.height;
+    canvas.width=img.width;
+    canvas.height=img.height;
 
-    if(w>h&&w>max){
-      h=Math.round(h*(max/w));
-      w=max;
-    }else if(h>=w&&h>max){
-      w=Math.round(w*(max/h));
-      h=max;
-    }
+    ctx.drawImage(img,0,0);
 
-    canvas.width=w;
-    canvas.height=h;
-    ctx.drawImage(sourceImage,0,0,w,h);
+    currentStencilUrl=url;
 
-    resolve(canvas.toDataURL("image/jpeg",.78));
-  });
+    resultBox.classList.add("has-image");
+
+    window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
+  };
+
+  img.src=url;
+}
+
+function downloadHistory(url){
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="yyokai-stencil.png";
+  a.click();
 }
 
 function downloadStencil(){
   if(!currentStencilUrl)return;
 
   const a=document.createElement("a");
+
   a.href=currentStencilUrl;
   a.download="yyokai-stencil.png";
-  document.body.appendChild(a);
+
   a.click();
-  a.remove();
 
   showToast(t[currentLang].downloaded);
-}
-
-async function saveResult(imageUrl,type){
-  await db.ref("stencilResults/"+currentUser.uid).push({
-    type,
-    imageUrl,
-    mirror:mirrorToggle.checked,
-    bold:boldToggle.checked,
-    createdAt:Date.now()
-  });
-
-  await loadHistory();
-}
-
-async function loadHistory(){
-  const snap=await db.ref("stencilResults/"+currentUser.uid).limitToLast(9).once("value");
-  const data=snap.val()||{};
-  const list=Object.values(data).reverse();
-
-  historyList.innerHTML="";
-
-  if(!list.length){
-    historyList.innerHTML=`<button class="history-card"><div>${t[currentLang].emptyResult||"No results yet"}</div></button>`;
-    return;
-  }
-
-  list.forEach(item=>{
-    const card=document.createElement("button");
-    card.className="history-card";
-
-    card.innerHTML=`
-      <img src="${item.imageUrl}" alt="">
-      <div>${item.bold?"Bold":"Classic"} · ${item.mirror?"Mirror":"Normal"}</div>
-    `;
-
-    card.onclick=()=>{
-      drawApiResult(item.imageUrl);
-      window.scrollTo({top:0,behavior:"smooth"});
-    };
-
-    historyList.appendChild(card);
-  });
 }
 
 function openGenerationsModal(){
@@ -728,11 +726,9 @@ async function buyGenerations(amount,generations){
 
   await paymentRef.set({
     uid:currentUser.uid,
-    email:currentUser.email||"",
     type:"stencil_generations",
     amount,
     generations,
-    currency:"USD",
     status:"pending",
     createdAt:Date.now()
   });
@@ -742,26 +738,14 @@ async function buyGenerations(amount,generations){
   setTimeout(()=>{
     location.href=BASE_PATH+
       "checkout.html?paymentId="+paymentRef.key+
-      "&type=stencil_generations"+
       "&amount="+amount+
-      "&generations="+generations;
-  },450);
+      "&generations="+generations+
+      "&type=stencil_generations";
+  },500);
 }
-
-function toggleProfile(){
-  profileMenu.classList.toggle("open");
-}
-
-document.addEventListener("click",e=>{
-  const profile=document.querySelector(".profile");
-  if(profile&&!profile.contains(e.target)){
-    profileMenu.classList.remove("open");
-  }
-});
 
 function setLang(lang,btn){
   currentLang=lang;
-  document.documentElement.lang=lang;
 
   Object.keys(t[lang]).forEach(key=>{
     document.querySelectorAll(`[data-i18n="${key}"]`).forEach(el=>{
@@ -769,8 +753,20 @@ function setLang(lang,btn){
     });
   });
 
-  document.querySelectorAll(".lang button").forEach(b=>b.classList.remove("active"));
+  mirrorText.textContent=t[lang].mirror;
+  boldText.textContent=t[lang].bold;
+
+  document.querySelectorAll(".lang button").forEach(b=>{
+    b.classList.remove("active");
+  });
+
   btn.classList.add("active");
+
+  loadHistory();
+}
+
+function toggleProfile(){
+  profileMenu.classList.toggle("open");
 }
 
 function applyAccent(color){
@@ -782,18 +778,60 @@ function applyBackgroundImage(url){
   document.body.classList.add("has-custom-bg");
 }
 
-function goDashboard(){
-  window.location.replace(BASE_PATH+"artist-dashboard.html");
-}
-
 function showToast(message){
   toast.textContent=message;
   toast.classList.add("open");
 
   setTimeout(()=>{
     toast.classList.remove("open");
-  },3600);
+  },3500);
 }
+
+function goDashboard(){
+  location.href=BASE_PATH+"artist-dashboard.html";
+}
+
+function setTrack(index){
+  trackIndex=index;
+
+  const track=tracks[index]||tracks[0];
+
+  bgMusic.src=track.src;
+  trackTitle.textContent=track.title;
+  trackSub.textContent=track.sub;
+  trackCover.textContent=track.icon;
+}
+
+function toggleMusic(){
+  if(!musicPlaying){
+    bgMusic.volume=.35;
+    bgMusic.play();
+    musicPlaying=true;
+    playPauseBtn.textContent="❚❚";
+  }else{
+    bgMusic.pause();
+    musicPlaying=false;
+    playPauseBtn.textContent="▶";
+  }
+}
+
+function nextTrack(){
+  trackIndex=(trackIndex+1)%tracks.length;
+  setTrack(trackIndex);
+}
+
+function prevTrack(){
+  trackIndex=(trackIndex-1+tracks.length)%tracks.length;
+  setTrack(trackIndex);
+}
+
+document.addEventListener("click",e=>{
+  const profile=document.querySelector(".profile");
+
+  if(profile&&!profile.contains(e.target)){
+    profileMenu.classList.remove("open");
+  }
+});
 </script>
 </body>
 </html>
