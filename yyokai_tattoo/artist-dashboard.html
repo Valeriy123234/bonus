@@ -1426,9 +1426,11 @@ function loadLocalCache(){
   }
 
   if(cached.backgroundUrl){
+  setTimeout(()=>{
     applyBackgroundImage(cached.backgroundUrl);
-  }
+  },300);
 }
+
 
 function saveLocalCache(data){
   const key=cacheKey();
@@ -1490,7 +1492,7 @@ try{
   hideLoader();
 });
 
-setTimeout(hideLoader,2200);
+setTimeout(hideLoader,900);
 
 function setLang(lang,btn){
   currentLang=lang;
