@@ -1448,7 +1448,7 @@ auth.onAuthStateChanged(async user=>{
   currentUser=user;
 
 loadLocalCache();
-
+hideLoader()
 try{
   const snap=await db.ref("users/"+user.uid).once("value");
     const data=snap.val()||{};
