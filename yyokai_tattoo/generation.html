@@ -388,26 +388,26 @@ auth.onAuthStateChanged(async user=>{
 
   currentUser=user;
 
-  try{
-    await loadProfile();
-    await ensureInitialGenerations();
-    listenGenerations();
-    await loadHistory();
-  }catch(e){
-    console.log("generation load error:",e);
-  }
+loadLocalCacheFast();
+
+try{
+  await loadProfile();
+  await ensureInitialGenerations();
+  listenGenerations();
+  await loadHistory();
+}catch(e){
+  console.log("generation load error:",e);
+}
 
   hideLoader();
 });
 
 setTimeout(hideLoader,2200);
 
-async function loadProfile(){
-  const cached=JSON.parse(localStorage.getItem("yyokai_profile_"+currentUser.uid)||"{}");
+  
 
-  if(cached.name){
-    artistName.textContent=cached.name;
-  }
+function loadLocalCacheFast(){
+  const cached=JSON.parse(localStorage.getItem("yyokai_profile_"+currentUser.uid)||"{}");
 
   if(cached.accent){
     applyAccent(cached.accent);
@@ -420,6 +420,21 @@ async function loadProfile(){
   if(cached.backgroundUrl){
     applyBackgroundImage(cached.backgroundUrl);
   }
+
+  if(cached.name){
+    artistName.textContent=cached.name;
+  }
+
+  artistEmail.textContent=currentUser.email||"";
+}
+
+async function loadProfile(){
+
+  
+
+  const cached=JSON.parse(localStorage.getItem("yyokai_profile_"+currentUser.uid)||"{}");
+
+  
 
   const snap=await db.ref("users/"+currentUser.uid).once("value");
   const data=snap.val()||{};
@@ -479,6 +494,8 @@ function listenGenerations(){
   });
 }
 
+
+  
 async function spendGeneration(){
   const ref=db.ref("users/"+currentUser.uid+"/aiGenerations");
 
