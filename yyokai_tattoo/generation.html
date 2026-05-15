@@ -391,10 +391,10 @@ auth.onAuthStateChanged(async user=>{
 loadLocalCacheFast();
 
 try{
-  await loadProfile();
-  await ensureInitialGenerations();
+  loadProfile();
+  ensureInitialGenerations();
   listenGenerations();
-  await loadHistory();
+  loadHistory();
 }catch(e){
   console.log("generation load error:",e);
 }
@@ -402,7 +402,7 @@ try{
   hideLoader();
 });
 
-setTimeout(hideLoader,2200);
+setTimeout(hideLoader,900);
 
   
 
@@ -418,8 +418,10 @@ function loadLocalCacheFast(){
   }
 
   if(cached.backgroundUrl){
+  setTimeout(()=>{
     applyBackgroundImage(cached.backgroundUrl);
-  }
+  },300);
+}
 
   if(cached.name){
     artistName.textContent=cached.name;
