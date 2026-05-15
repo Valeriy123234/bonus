@@ -1444,8 +1444,10 @@ auth.onAuthStateChanged(async user=>{
 
   currentUser=user;
 
-  try{
-    const snap=await db.ref("users/"+user.uid).once("value");
+loadLocalCache();
+
+try{
+  const snap=await db.ref("users/"+user.uid).once("value");
     const data=snap.val()||{};
 
     const email=user.email||data.email||"";
