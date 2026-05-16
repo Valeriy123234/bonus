@@ -62,11 +62,7 @@ body::before{
   transition:.45s ease;
 }
 
-.loader-screen.hide{
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-}
+.loader-screen.hide{opacity:0;visibility:hidden;pointer-events:none}
 
 button,input,select{font-family:inherit}
 button{cursor:pointer;transition:.15s}
@@ -285,13 +281,7 @@ button:active{transform:scale(.96);opacity:.88}
   justify-content:center;
 }
 
-.stat span{
-  color:#bbb;
-  font-size:13px;
-  font-weight:900;
-  margin-bottom:10px;
-}
-
+.stat span{color:#bbb;font-size:13px;font-weight:900;margin-bottom:10px}
 .stat strong{font-size:24px;line-height:1}
 .stat.clickable{cursor:pointer}
 
@@ -421,12 +411,12 @@ input:focus,select:focus{
 
 .sheet-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(96px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
   gap:12px;
 }
 
 .sheet-mini{
-  aspect-ratio:210/297;
+  aspect-ratio:var(--sheet-ratio,297/210);
   background:#fff;
   border-radius:12px;
   position:relative;
@@ -447,17 +437,11 @@ input:focus,select:focus{
   border-radius:999px;
 }
 
-.sheet-border{
-  position:absolute;
-  border:1px dashed rgba(0,0,0,.38);
-  overflow:hidden;
-}
-
-.sheet-piece{
-  position:absolute;
-  background-repeat:no-repeat;
-  background-size:var(--bgw) var(--bgh);
-  background-position:var(--bgx) var(--bgy);
+.sheet-mini img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
 }
 
 .empty-preview{
@@ -469,12 +453,7 @@ input:focus,select:focus{
   color:#aaa;
 }
 
-.empty-preview strong{
-  display:block;
-  color:#fff;
-  font-size:42px;
-  margin-bottom:8px;
-}
+.empty-preview strong{display:block;color:#fff;font-size:42px;margin-bottom:8px}
 
 .gen-modal{
   position:fixed;
@@ -521,11 +500,7 @@ input:focus,select:focus{
   font-size:22px;
 }
 
-.gen-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:14px;
-}
+.gen-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
 
 .gen-card{
   text-align:left;
@@ -559,10 +534,7 @@ input:focus,select:focus{
   transition:.22s;
 }
 
-.toast.open{
-  opacity:1;
-  transform:translateX(-50%) translateY(0);
-}
+.toast.open{opacity:1;transform:translateX(-50%) translateY(0)}
 
 @media(max-width:820px){
   .layout{grid-template-columns:1fr}
@@ -639,7 +611,7 @@ input:focus,select:focus{
 <section class="layout">
   <div class="panel">
     <h2 data-i18n="uploadTitle">Підготувати transfer</h2>
-    <p data-i18n="uploadText">YYOKAI обрізає порожні краї ескізу, зберігає пропорції та ріже тільки реальний малюнок.</p>
+    <p data-i18n="uploadText">YYOKAI обрізає порожні краї, центрує ескіз і показує preview точно так само, як буде в ZIP.</p>
 
     <label class="upload-box" id="uploadBox" for="fileInput">
       <img id="previewImage" alt="">
@@ -675,6 +647,14 @@ input:focus,select:focus{
           <option value="300">300 DPI</option>
         </select>
       </div>
+
+      <div class="field">
+        <label data-i18n="orientationLabel">Орієнтація A4</label>
+        <select id="orientationSelect">
+          <option value="landscape" selected>Horizontal A4</option>
+          <option value="portrait">Vertical A4</option>
+        </select>
+      </div>
     </div>
 
     <div class="controls">
@@ -699,7 +679,7 @@ input:focus,select:focus{
     </div>
   </div>
 </section>
-</main>
+  </main>
 
 <section class="gen-modal" id="generationsModal">
   <div class="gen-box">
@@ -763,12 +743,11 @@ let transferGenerations=0;
 let sourceImage=null;
 let sourceImageUrl="";
 let croppedCanvas=null;
-let cropBox=null;
 let musicPlaying=false;
 let trackIndex=0;
 
-const A4_W_CM=21;
-const A4_H_CM=29.7;
+const A4_PORTRAIT_W_CM=21;
+const A4_PORTRAIT_H_CM=29.7;
 
 const tracks=[
   {title:"Japanese Chill",sub:"YYOKAI playlist",icon:"⛩",src:"music/chill.mp3"},
@@ -799,12 +778,13 @@ const t={
     plan:"План",
     sheets:"A4 Sheets",
     uploadTitle:"Підготувати transfer",
-    uploadText:"YYOKAI обрізає порожні краї ескізу, зберігає пропорції та ріже тільки реальний малюнок.",
+    uploadText:"YYOKAI обрізає порожні краї, центрує ескіз і показує preview точно так само, як буде в ZIP.",
     uploadHint:"Натисни, щоб завантажити ескіз",
     widthLabel:"Ширина, см",
     heightLabel:"Висота, см",
     marginLabel:"Відступ, см",
     dpiLabel:"Якість",
+    orientationLabel:"Орієнтація A4",
     clearBtn:"Очистити",
     generateBtn:"Create ZIP",
     previewTitle:"A4 Preview",
@@ -830,12 +810,13 @@ const t={
     plan:"Plan",
     sheets:"A4 Sheets",
     uploadTitle:"Prepare transfer",
-    uploadText:"YYOKAI crops empty edges, keeps proportions and splits only the real artwork.",
+    uploadText:"YYOKAI crops empty edges, centers the sketch and shows preview exactly as it will be in ZIP.",
     uploadHint:"Tap to upload sketch",
     widthLabel:"Width, cm",
     heightLabel:"Height, cm",
     marginLabel:"Margin, cm",
     dpiLabel:"Quality",
+    orientationLabel:"A4 orientation",
     clearBtn:"Clear",
     generateBtn:"Create ZIP",
     previewTitle:"A4 Preview",
@@ -990,7 +971,6 @@ function clearImage(){
   sourceImage=null;
   sourceImageUrl="";
   croppedCanvas=null;
-  cropBox=null;
   previewImage.src="";
   fileInput.value="";
   uploadBox.classList.remove("has-image");
@@ -1006,16 +986,17 @@ function clearImage(){
   `;
 }
 
-[realWidth,realHeight,marginCm,dpiSelect].forEach(el=>{
+[realWidth,realHeight,marginCm,dpiSelect,orientationSelect].forEach(el=>{
   el.addEventListener("input",updatePreview);
+  el.addEventListener("change",updatePreview);
 });
 
 function prepareSmartCrop(){
   if(!sourceImage)return;
 
   const maxScan=1200;
-  let w=sourceImage.naturalWidth||sourceImage.width;
-  let h=sourceImage.naturalHeight||sourceImage.height;
+  const w=sourceImage.naturalWidth||sourceImage.width;
+  const h=sourceImage.naturalHeight||sourceImage.height;
 
   const scale=Math.min(1,maxScan/Math.max(w,h));
   const sw=Math.round(w*scale);
@@ -1044,7 +1025,7 @@ function prepareSmartCrop(){
       const b=data[i+2];
       const a=data[i+3];
 
-      const isWhite=r>245&&g>245&&b>245;
+      const isWhite=r>246&&g>246&&b>246;
       const isTransparent=a<15;
 
       if(!isWhite&&!isTransparent){
@@ -1058,7 +1039,10 @@ function prepareSmartCrop(){
   }
 
   if(!found){
-    minX=0;minY=0;maxX=sw;maxY=sh;
+    minX=0;
+    minY=0;
+    maxX=sw-1;
+    maxY=sh-1;
   }
 
   const pad=Math.round(Math.max(sw,sh)*0.015);
@@ -1074,8 +1058,6 @@ function prepareSmartCrop(){
     w:Math.round((maxX-minX+1)/scale),
     h:Math.round((maxY-minY+1)/scale)
   };
-
-  cropBox=realCrop;
 
   croppedCanvas=document.createElement("canvas");
   croppedCanvas.width=realCrop.w;
@@ -1096,9 +1078,18 @@ function getTransferSettings(){
   const heightCm=Number(realHeight.value||0);
   const margin=Number(marginCm.value||0);
   const dpi=Number(dpiSelect.value||200);
+  const orientation=orientationSelect.value||"landscape";
 
-  const printableW=A4_W_CM-margin*2;
-  const printableH=A4_H_CM-margin*2;
+  const pageWcm=orientation==="landscape"
+    ? A4_PORTRAIT_H_CM
+    : A4_PORTRAIT_W_CM;
+
+  const pageHcm=orientation==="landscape"
+    ? A4_PORTRAIT_W_CM
+    : A4_PORTRAIT_H_CM;
+
+  const printableW=pageWcm-margin*2;
+  const printableH=pageHcm-margin*2;
 
   if(widthCm<=0||heightCm<=0||printableW<=0||printableH<=0){
     return null;
@@ -1113,12 +1104,109 @@ function getTransferSettings(){
     heightCm,
     margin,
     dpi,
+    orientation,
+    pageWcm,
+    pageHcm,
     printableW,
     printableH,
     cols,
     rows,
     total
   };
+}
+
+function buildTransferPages(s,previewMode=false){
+  if(!croppedCanvas)return [];
+
+  const dpi=previewMode ? 75 : s.dpi;
+  const cmToPx=dpi/2.54;
+
+  const pageW=Math.round(s.pageWcm*cmToPx);
+  const pageH=Math.round(s.pageHcm*cmToPx);
+  const marginPx=Math.round(s.margin*cmToPx);
+
+  const printablePxW=pageW-marginPx*2;
+  const printablePxH=pageH-marginPx*2;
+
+  const fullW=Math.round(s.widthCm*cmToPx);
+  const fullH=Math.round(s.heightCm*cmToPx);
+
+  const master=document.createElement("canvas");
+  master.width=fullW;
+  master.height=fullH;
+
+  const mctx=master.getContext("2d");
+  mctx.fillStyle="#fff";
+  mctx.fillRect(0,0,fullW,fullH);
+
+  const imgRatio=croppedCanvas.width/croppedCanvas.height;
+  const targetRatio=fullW/fullH;
+
+  let drawW;
+  let drawH;
+
+  if(imgRatio>targetRatio){
+    drawW=fullW;
+    drawH=fullW/imgRatio;
+  }else{
+    drawH=fullH;
+    drawW=fullH*imgRatio;
+  }
+
+  const offsetX=(fullW-drawW)/2;
+  const offsetY=(fullH-drawH)/2;
+
+  mctx.drawImage(croppedCanvas,offsetX,offsetY,drawW,drawH);
+
+  const pages=[];
+
+  for(let r=0;r<s.rows;r++){
+    for(let c=0;c<s.cols;c++){
+      const sx=c*printablePxW;
+      const sy=r*printablePxH;
+      const sw=Math.min(printablePxW,fullW-sx);
+      const sh=Math.min(printablePxH,fullH-sy);
+
+      if(sw<=0||sh<=0)continue;
+      if(isMasterAreaBlank(master,sx,sy,sw,sh))continue;
+
+      const canvas=document.createElement("canvas");
+      canvas.width=pageW;
+      canvas.height=pageH;
+
+      const ctx=canvas.getContext("2d");
+      ctx.fillStyle="#fff";
+      ctx.fillRect(0,0,pageW,pageH);
+
+      ctx.strokeStyle="#000";
+      ctx.lineWidth=Math.max(1,Math.round(dpi/110));
+      ctx.setLineDash([14,9]);
+      ctx.strokeRect(marginPx,marginPx,printablePxW,printablePxH);
+      ctx.setLineDash([]);
+
+      ctx.drawImage(
+        master,
+        sx,sy,sw,sh,
+        marginPx,marginPx,sw,sh
+      );
+
+      drawCutMarks(ctx,pageW,pageH,marginPx,dpi);
+
+      ctx.fillStyle="#000";
+      ctx.font=Math.round(dpi*0.10)+"px Arial";
+      ctx.fillText(`YYOKAI A4`,marginPx,Math.max(18,marginPx-8));
+      ctx.fillText(`Row ${r+1}/${s.rows} · Col ${c+1}/${s.cols}`,marginPx,pageH-10);
+
+      pages.push({
+        canvas,
+        previewUrl:canvas.toDataURL("image/png"),
+        row:r,
+        col:c
+      });
+    }
+  }
+
+  return pages;
 }
 
 function updatePreview(){
@@ -1134,6 +1222,7 @@ function updatePreview(){
   previewInfo.innerHTML=`
     ${s.widthCm}×${s.heightCm} cm<br>
     ${s.cols} × ${s.rows} A4 · ${s.total} pages<br>
+    ${s.orientation==="landscape"?"Horizontal A4":"Vertical A4"}<br>
     ${t[currentLang].marginLabel}: ${s.margin} cm<br>
     ${sourceImage?t[currentLang].cropReady:""}
   `;
@@ -1142,49 +1231,58 @@ function updatePreview(){
     return;
   }
 
-  const cropUrl=croppedCanvas.toDataURL("image/png");
+  const pages=buildTransferPages(s,true);
+
+  sheetCountView.textContent=pages.length;
+
   const grid=document.createElement("div");
   grid.className="sheet-grid";
 
-  for(let r=0;r<s.rows;r++){
-    for(let c=0;c<s.cols;c++){
-      const page=document.createElement("div");
-      page.className="sheet-mini";
-      page.dataset.page=(r*s.cols+c+1)+"/"+s.total;
+  pages.forEach((pageData,index)=>{
+    const wrap=document.createElement("div");
+    wrap.className="sheet-mini";
+    wrap.dataset.page=(index+1)+"/"+pages.length;
+    wrap.style.setProperty("--sheet-ratio",s.pageWcm+"/"+s.pageHcm);
 
-      const border=document.createElement("div");
-      border.className="sheet-border";
+    const img=document.createElement("img");
+    img.src=pageData.previewUrl;
 
-      const marginX=(s.margin/A4_W_CM)*100;
-      const marginY=(s.margin/A4_H_CM)*100;
-
-      border.style.left=marginX+"%";
-      border.style.top=marginY+"%";
-      border.style.width=(100-marginX*2)+"%";
-      border.style.height=(100-marginY*2)+"%";
-
-      const piece=document.createElement("div");
-      piece.className="sheet-piece";
-      piece.style.backgroundImage=`url('${cropUrl}')`;
-
-      piece.style.setProperty("--bgw",(s.cols*100)+"%");
-      piece.style.setProperty("--bgh",(s.rows*100)+"%");
-      piece.style.setProperty("--bgx",(-c*100)+"%");
-      piece.style.setProperty("--bgy",(-r*100)+"%");
-
-      piece.style.left="0";
-      piece.style.top="0";
-      piece.style.width="100%";
-      piece.style.height="100%";
-
-      border.appendChild(piece);
-      page.appendChild(border);
-      grid.appendChild(page);
-    }
-  }
+    wrap.appendChild(img);
+    grid.appendChild(wrap);
+  });
 
   sheetPreview.innerHTML="";
   sheetPreview.appendChild(grid);
+}
+
+function isMasterAreaBlank(master,sx,sy,sw,sh){
+  const sample=document.createElement("canvas");
+  const max=140;
+  const scale=Math.min(1,max/Math.max(sw,sh));
+
+  sample.width=Math.max(1,Math.round(sw*scale));
+  sample.height=Math.max(1,Math.round(sh*scale));
+
+  const ctx=sample.getContext("2d",{willReadFrequently:true});
+  ctx.drawImage(master,sx,sy,sw,sh,0,0,sample.width,sample.height);
+
+  const img=ctx.getImageData(0,0,sample.width,sample.height);
+  const data=img.data;
+
+  let ink=0;
+
+  for(let i=0;i<data.length;i+=4){
+    const r=data[i];
+    const g=data[i+1];
+    const b=data[i+2];
+    const a=data[i+3];
+
+    if(a>10 && !(r>248&&g>248&&b>248)){
+      ink++;
+    }
+  }
+
+  return ink<8;
 }
 
 async function spendGeneration(){
@@ -1235,92 +1333,33 @@ async function generateTransfer(){
   try{
     showToast(t[currentLang].preparing);
 
-    const zip=new JSZip();
+    const pages=buildTransferPages(s,false);
 
-    const cmToPx=s.dpi/2.54;
-
-    const pageW=Math.round(A4_W_CM*cmToPx);
-    const pageH=Math.round(A4_H_CM*cmToPx);
-    const marginPx=Math.round(s.margin*cmToPx);
-
-    const printablePxW=pageW-marginPx*2;
-    const printablePxH=pageH-marginPx*2;
-
-    const fullW=Math.round(s.widthCm*cmToPx);
-    const fullH=Math.round(s.heightCm*cmToPx);
-
-    const master=document.createElement("canvas");
-    master.width=fullW;
-    master.height=fullH;
-
-    const mctx=master.getContext("2d");
-    mctx.fillStyle="#fff";
-    mctx.fillRect(0,0,fullW,fullH);
-    mctx.drawImage(croppedCanvas,0,0,fullW,fullH);
-
-    let pageIndex=1;
-
-    for(let r=0;r<s.rows;r++){
-      for(let c=0;c<s.cols;c++){
-        const sx=c*printablePxW;
-        const sy=r*printablePxH;
-        const sw=Math.min(printablePxW,fullW-sx);
-        const sh=Math.min(printablePxH,fullH-sy);
-
-        if(sw<=0||sh<=0){
-          continue;
-        }
-
-        if(isMasterAreaBlank(master,sx,sy,sw,sh)){
-          continue;
-        }
-
-        const canvas=document.createElement("canvas");
-        canvas.width=pageW;
-        canvas.height=pageH;
-
-        const ctx=canvas.getContext("2d");
-
-        ctx.fillStyle="#fff";
-        ctx.fillRect(0,0,pageW,pageH);
-
-        ctx.strokeStyle="#000";
-        ctx.lineWidth=Math.max(2,Math.round(s.dpi/110));
-        ctx.setLineDash([14,9]);
-        ctx.strokeRect(marginPx,marginPx,printablePxW,printablePxH);
-        ctx.setLineDash([]);
-
-        ctx.drawImage(
-          master,
-          sx,sy,sw,sh,
-          marginPx,marginPx,sw,sh
-        );
-
-        drawCutMarks(ctx,pageW,pageH,marginPx,s.dpi);
-
-        ctx.fillStyle="#000";
-        ctx.font=Math.round(s.dpi*0.10)+"px Arial";
-        ctx.fillText(`YYOKAI A4 ${pageIndex}`,marginPx,Math.max(24,marginPx-12));
-        ctx.fillText(`Row ${r+1}/${s.rows} · Col ${c+1}/${s.cols}`,marginPx,pageH-14);
-
-        const blob=await canvasToBlob(canvas);
-        const fileName=`yyokai_transfer_page_${String(pageIndex).padStart(2,"0")}.png`;
-
-        zip.file(fileName,blob);
-        pageIndex++;
-      }
+    if(!pages.length){
+      await refundGeneration();
+      showToast(t[currentLang].badSize);
+      return;
     }
 
-    const realTotal=pageIndex-1;
+    const zip=new JSZip();
+
+    for(let i=0;i<pages.length;i++){
+      const blob=await canvasToBlob(pages[i].canvas);
+      const fileName=`yyokai_transfer_page_${String(i+1).padStart(2,"0")}_of_${pages.length}.png`;
+      zip.file(fileName,blob);
+    }
 
     const readme=`
 YYOKAI A4 Transfer Split
 
 Real artwork size: ${s.widthCm} x ${s.heightCm} cm
+A4 orientation: ${s.orientation}
 A4 grid: ${s.cols} x ${s.rows}
-Exported pages with artwork: ${realTotal}
+Exported pages with artwork: ${pages.length}
 Margin: ${s.margin} cm
 DPI: ${s.dpi}
+Smart crop: enabled
+Preview: rendered by the same engine as ZIP
 
 Print settings:
 - Paper: A4
@@ -1337,25 +1376,26 @@ Print settings:
 
     const a=document.createElement("a");
     a.href=URL.createObjectURL(zipBlob);
-    a.download=`yyokai_transfer_${s.widthCm}x${s.heightCm}cm_${realTotal}_pages.zip`;
+    a.download=`yyokai_transfer_${s.widthCm}x${s.heightCm}cm_${pages.length}_pages.zip`;
     document.body.appendChild(a);
     a.click();
     a.remove();
-
-    showToast(t[currentLang].ready);
 
     await db.ref("transferHistory/"+currentUser.uid).push({
       widthCm:s.widthCm,
       heightCm:s.heightCm,
       margin:s.margin,
       dpi:s.dpi,
-      pages:realTotal,
+      orientation:s.orientation,
+      pages:pages.length,
       gridPages:s.total,
       cols:s.cols,
       rows:s.rows,
       smartCrop:true,
       createdAt:Date.now()
     });
+
+    showToast(t[currentLang].ready);
 
   }catch(error){
     await refundGeneration();
@@ -1364,39 +1404,12 @@ Print settings:
   }
 }
 
-function isMasterAreaBlank(master,sx,sy,sw,sh){
-  const sample=document.createElement("canvas");
-  const max=140;
-  const scale=Math.min(1,max/Math.max(sw,sh));
-
-  sample.width=Math.max(1,Math.round(sw*scale));
-  sample.height=Math.max(1,Math.round(sh*scale));
-
-  const ctx=sample.getContext("2d",{willReadFrequently:true});
-  ctx.drawImage(master,sx,sy,sw,sh,0,0,sample.width,sample.height);
-
-  const img=ctx.getImageData(0,0,sample.width,sample.height);
-  const data=img.data;
-
-  let ink=0;
-
-  for(let i=0;i<data.length;i+=4){
-    const r=data[i],g=data[i+1],b=data[i+2],a=data[i+3];
-
-    if(a>10 && !(r>248&&g>248&&b>248)){
-      ink++;
-    }
-  }
-
-  return ink<8;
-}
-
 function drawCutMarks(ctx,pageW,pageH,marginPx,dpi){
   const len=Math.round(dpi*0.18);
   const gap=Math.round(dpi*0.04);
 
   ctx.strokeStyle="#000";
-  ctx.lineWidth=Math.max(2,Math.round(dpi/120));
+  ctx.lineWidth=Math.max(1,Math.round(dpi/120));
 
   const points=[
     [marginPx,marginPx],
