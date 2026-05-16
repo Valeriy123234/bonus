@@ -42,10 +42,12 @@ button:active{transform:scale(.96);opacity:.88}
 .profile-menu.open{display:block}
 .profile-name{font-size:22px;font-weight:950}
 .profile-email{margin-top:4px;color:#aaa;font-size:13px}
-.balance{margin-top:12px;color:#aaa}.balance strong{color:#fff;font-size:20px}
+.balance{margin-top:12px;color:#aaa}
+.balance strong{color:#fff;font-size:20px}
 .player{margin:16px 0;padding:12px;border-radius:22px;background:rgba(7,7,7,.86);border:1px solid rgba(255,255,255,.14);display:grid;grid-template-columns:50px 1fr auto;gap:12px;align-items:center}
 .cover{width:50px;height:50px;border-radius:16px;display:grid;place-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12)}
-.track-title{font-size:14px;font-weight:950}.track-sub{font-size:12px;color:#888;margin-top:3px}
+.track-title{font-size:14px;font-weight:950}
+.track-sub{font-size:12px;color:#888;margin-top:3px}
 .music-controls{display:flex;gap:8px}
 .music-controls button{width:42px;height:42px;border-radius:14px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.075);color:#fff;font-size:20px}
 .menu-line{width:100%;margin-top:8px;padding:14px;border:0;border-radius:16px;background:rgba(255,255,255,.06);color:#ddd;text-align:left;font-weight:900}
@@ -78,6 +80,8 @@ button:active{transform:scale(.96);opacity:.88}
 .field label{display:block;color:#aaa;font-size:12px;font-weight:950;margin-bottom:7px}
 input,select{width:100%;max-width:100%;height:54px;border-radius:16px;padding:0 14px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.42);color:#fff;outline:none;font-size:15px}
 input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 15%,transparent)}
+.tip-box{grid-column:1/-1;color:#aaa;font-size:13px;line-height:1.45;padding:14px;border-radius:18px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1)}
+.tip-box b{color:#fff}
 
 .controls{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .action-btn,.ghost-btn{border:0;border-radius:999px;padding:16px 18px;font-weight:950}
@@ -102,7 +106,9 @@ input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-m
 .close{width:42px;height:42px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;font-size:22px}
 .gen-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
 .gen-card{text-align:left;padding:22px;border-radius:28px;border:1px solid rgba(255,255,255,.12);background:radial-gradient(circle at top right,color-mix(in srgb,var(--accent) 25%,transparent),transparent 36%),linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.03));color:#fff}
-.gen-price{font-size:34px;font-weight:950}.gen-count{margin-top:8px;font-size:22px;font-weight:950}.gen-desc{color:#aaa;margin-top:10px;line-height:1.5}
+.gen-price{font-size:34px;font-weight:950}
+.gen-count{margin-top:8px;font-size:22px;font-weight:950}
+.gen-desc{color:#aaa;margin-top:10px;line-height:1.5}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);z-index:300;width:min(430px,calc(100vw - 30px));padding:16px 18px;border-radius:22px;background:rgba(0,0,0,.94);border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);color:#fff;opacity:0;pointer-events:none;transition:.22s}
 .toast.open{opacity:1;transform:translateX(-50%) translateY(0)}
 
@@ -181,7 +187,7 @@ input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-m
 <section class="layout">
   <div class="panel">
     <h2 data-i18n="uploadTitle">Підготувати transfer</h2>
-    <p data-i18n="uploadText">YYOKAI обрізає порожні краї та ріже ескіз від лівого верхнього краю малюнка, щоб листи йшли природно.</p>
+    <p data-i18n="uploadText">YYOKAI ріже ескіз від лівого верхнього краю малюнка. Для точності краще завантажувати ескіз на білому фоні.</p>
 
     <label class="upload-box" id="uploadBox" for="fileInput">
       <img id="previewImage" alt="">
@@ -224,6 +230,12 @@ input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-m
           <option value="landscape" selected>Horizontal A4</option>
           <option value="portrait">Vertical A4</option>
         </select>
+      </div>
+
+      <div class="tip-box">
+        <b data-i18n="fileTip">Порада</b><br>
+        <span data-i18n="whiteBgTip">Ескіз має бути на білому фоні для найточнішої розбивки.</span><br>
+        <span data-i18n="orientationTip">P.S. Спробуй горизонтальну орієнтацію — часто потрібно менше A4 листів.</span>
       </div>
     </div>
 
@@ -348,13 +360,16 @@ const t={
     plan:"План",
     sheets:"A4 Sheets",
     uploadTitle:"Підготувати transfer",
-    uploadText:"YYOKAI обрізає порожні краї та ріже ескіз від лівого верхнього краю малюнка, щоб листи йшли природно.",
+    uploadText:"YYOKAI ріже ескіз від лівого верхнього краю малюнка. Для точності краще завантажувати ескіз на білому фоні.",
     uploadHint:"Натисни, щоб завантажити ескіз",
     widthLabel:"Ширина ескізу, см",
     heightLabel:"Висота ескізу, см",
     marginLabel:"Відступ, см",
     dpiLabel:"Якість",
     orientationLabel:"Орієнтація A4",
+    fileTip:"Порада",
+    whiteBgTip:"Ескіз має бути на білому фоні для найточнішої розбивки.",
+    orientationTip:"P.S. Спробуй горизонтальну орієнтацію — часто потрібно менше A4 листів.",
     clearBtn:"Очистити",
     generateBtn:"Create ZIP",
     previewTitle:"A4 Preview",
@@ -364,7 +379,6 @@ const t={
     badSize:"Вкажи правильний розмір у сантиметрах.",
     preparing:"Готуємо A4 transfer...",
     ready:"ZIP файл створено.",
-    cropReady:"Smart crop активний",
     naturalCut:"Розкладка від лівого краю ескізу",
     generationsTitle:"Додати Transfer Generations",
     pack75:"Легкий пакет для підготовки A4 transfer.",
@@ -381,13 +395,16 @@ const t={
     plan:"Plan",
     sheets:"A4 Sheets",
     uploadTitle:"Prepare transfer",
-    uploadText:"YYOKAI crops empty edges and cuts from the artwork left edge, so pages follow the sketch naturally.",
+    uploadText:"YYOKAI cuts from the artwork top-left edge. For accuracy, upload sketches on a white background.",
     uploadHint:"Tap to upload sketch",
     widthLabel:"Sketch width, cm",
     heightLabel:"Sketch height, cm",
     marginLabel:"Margin, cm",
     dpiLabel:"Quality",
     orientationLabel:"A4 Orientation",
+    fileTip:"Tip",
+    whiteBgTip:"The sketch should be on a white background for the most accurate split.",
+    orientationTip:"P.S. Try horizontal orientation — it often needs fewer A4 sheets.",
     clearBtn:"Clear",
     generateBtn:"Create ZIP",
     previewTitle:"A4 Preview",
@@ -397,7 +414,6 @@ const t={
     badSize:"Enter correct size in centimeters.",
     preparing:"Preparing A4 transfer...",
     ready:"ZIP file created.",
-    cropReady:"Smart crop active",
     naturalCut:"Layout starts from artwork left edge",
     generationsTitle:"Add Transfer Generations",
     pack75:"Light pack for A4 transfer preparation.",
@@ -410,6 +426,7 @@ const t={
 
 function hideLoader(){
   const loader=document.getElementById("loaderScreen");
+
   if(loader){
     loader.classList.add("hide");
     setTimeout(()=>loader.remove(),520);
@@ -519,7 +536,10 @@ function listenGenerations(){
 
 function handleFile(event){
   const file=event.target.files[0];
-  if(!file)return;
+
+  if(!file){
+    return;
+  }
 
   const reader=new FileReader();
 
@@ -529,10 +549,12 @@ function handleFile(event){
     uploadBox.classList.add("has-image");
 
     sourceImage=new Image();
+
     sourceImage.onload=()=>{
       prepareSmartCrop();
       updatePreview();
     };
+
     sourceImage.src=sourceImageUrl;
   };
 
@@ -565,7 +587,9 @@ function clearImage(){
 });
 
 function prepareSmartCrop(){
-  if(!sourceImage)return;
+  if(!sourceImage){
+    return;
+  }
 
   const maxScan=1200;
   const w=sourceImage.naturalWidth||sourceImage.width;
@@ -587,6 +611,19 @@ function prepareSmartCrop(){
   const img=ctx.getImageData(0,0,sw,sh);
   const data=img.data;
 
+  const corners=[
+    getPixel(data,sw,0,0),
+    getPixel(data,sw,sw-1,0),
+    getPixel(data,sw,0,sh-1),
+    getPixel(data,sw,sw-1,sh-1)
+  ];
+
+  const bg={
+    r:Math.round(corners.reduce((a,p)=>a+p.r,0)/4),
+    g:Math.round(corners.reduce((a,p)=>a+p.g,0)/4),
+    b:Math.round(corners.reduce((a,p)=>a+p.b,0)/4)
+  };
+
   let minX=sw;
   let minY=sh;
   let maxX=0;
@@ -601,11 +638,14 @@ function prepareSmartCrop(){
       const b=data[i+2];
       const a=data[i+3];
 
-      const isWhite=r>246&&g>246&&b>246;
-      const isTransparent=a<15;
+      const white=r>246&&g>246&&b>246;
+      const transparent=a<15;
+      const dist=Math.abs(r-bg.r)+Math.abs(g-bg.g)+Math.abs(b-bg.b);
+      const isBackground=white||transparent||dist<42;
 
-      if(!isWhite&&!isTransparent){
+      if(!isBackground){
         found=true;
+
         if(x<minX)minX=x;
         if(y<minY)minY=y;
         if(x>maxX)maxX=x;
@@ -642,12 +682,21 @@ function prepareSmartCrop(){
   const cctx=croppedCanvas.getContext("2d");
   cctx.fillStyle="#fff";
   cctx.fillRect(0,0,realCrop.w,realCrop.h);
-
   cctx.drawImage(
     sourceImage,
     realCrop.x,realCrop.y,realCrop.w,realCrop.h,
     0,0,realCrop.w,realCrop.h
   );
+}
+
+function getPixel(data,w,x,y){
+  const i=(y*w+x)*4;
+
+  return {
+    r:data[i],
+    g:data[i+1],
+    b:data[i+2]
+  };
 }
 
 function getTransferSettings(){
@@ -674,7 +723,6 @@ function getTransferSettings(){
 
   const cols=Math.ceil(artworkW/printableW);
   const rows=Math.ceil(artworkH/printableH);
-  const total=cols*rows;
 
   return {
     artworkW,
@@ -688,14 +736,16 @@ function getTransferSettings(){
     printableH,
     cols,
     rows,
-    total
+    total:cols*rows
   };
 }
 
 function buildTransferPages(s,previewMode=false){
-  if(!croppedCanvas)return [];
+  if(!croppedCanvas){
+    return [];
+  }
 
-  const dpi=previewMode ? 72 : s.dpi;
+  const dpi=previewMode?72:s.dpi;
   const cmToPx=dpi/2.54;
 
   const pageW=Math.round(s.pageWcm*cmToPx);
@@ -716,13 +766,6 @@ function buildTransferPages(s,previewMode=false){
   mctx.fillStyle="#fff";
   mctx.fillRect(0,0,fullW,fullH);
 
-  /*
-    Главное:
-    - realWidth / realHeight = размер самого эскиза, а не пустого листа.
-    - smart crop убирает белые поля.
-    - рисуем с x=0,y=0, без центрирования.
-    - поэтому первый лист начинается от левого края рисунка.
-  */
   mctx.drawImage(croppedCanvas,0,0,fullW,fullH);
 
   const pages=[];
@@ -734,34 +777,24 @@ function buildTransferPages(s,previewMode=false){
       const sw=Math.min(printablePxW,fullW-sx);
       const sh=Math.min(printablePxH,fullH-sy);
 
-      if(sw<=0||sh<=0)continue;
+      if(sw<=0||sh<=0){
+        continue;
+      }
 
       const canvas=document.createElement("canvas");
       canvas.width=pageW;
       canvas.height=pageH;
 
       const ctx=canvas.getContext("2d");
+
       ctx.fillStyle="#fff";
       ctx.fillRect(0,0,pageW,pageH);
-
-      ctx.strokeStyle="#000";
-      ctx.lineWidth=Math.max(1,Math.round(dpi/110));
-      ctx.setLineDash([14,9]);
-      ctx.strokeRect(marginPx,marginPx,printablePxW,printablePxH);
-      ctx.setLineDash([]);
 
       ctx.drawImage(
         master,
         sx,sy,sw,sh,
         marginPx,marginPx,sw,sh
       );
-
-      drawCutMarks(ctx,pageW,pageH,marginPx,dpi);
-
-      ctx.fillStyle="#000";
-      ctx.font=Math.round(dpi*0.10)+"px Arial";
-      ctx.fillText("YYOKAI A4",marginPx,Math.max(18,marginPx-8));
-      ctx.fillText(`Row ${r+1}/${s.rows} · Col ${c+1}/${s.cols}`,marginPx,pageH-10);
 
       pages.push({
         canvas,
@@ -785,11 +818,13 @@ function updatePreview(){
 
   if(!croppedCanvas){
     sheetCountView.textContent=s.total;
+
     previewInfo.innerHTML=`
       ${s.artworkW}×${s.artworkH} cm<br>
       ${s.cols} × ${s.rows} A4 · ${s.total} pages<br>
       ${t[currentLang].marginLabel}: ${s.margin} cm
     `;
+
     return;
   }
 
@@ -830,7 +865,11 @@ async function spendGeneration(){
 
   const result=await ref.transaction(current=>{
     const value=Number(current||0);
-    if(value<=0)return;
+
+    if(value<=0){
+      return;
+    }
+
     return value-1;
   });
 
@@ -885,8 +924,11 @@ async function generateTransfer(){
 
     for(let i=0;i<pages.length;i++){
       const blob=await canvasToBlob(pages[i].canvas);
-      const fileName=`yyokai_transfer_page_${String(i+1).padStart(2,"0")}_of_${pages.length}.png`;
-      zip.file(fileName,blob);
+
+      zip.file(
+        `yyokai_transfer_page_${String(i+1).padStart(2,"0")}_of_${pages.length}.png`,
+        blob
+      );
     }
 
     const readme=`
@@ -899,7 +941,8 @@ Exported pages: ${pages.length}
 Margin: ${s.margin} cm
 DPI: ${s.dpi}
 Layout: starts from artwork left/top edge
-Smart crop: enabled
+Guides: disabled
+Recommended input: sketch on white background
 
 Print settings:
 - Paper: A4
@@ -908,16 +951,16 @@ Print settings:
 - Fit to page: OFF
 - Do not resize image
 - Print all PNG pages at 100%
-- Cut/align by dashed borders and corner marks
 `.trim();
 
     zip.file("READ_ME_PRINT_SETTINGS.txt",readme);
 
     const zipBlob=await zip.generateAsync({type:"blob"});
-
     const a=document.createElement("a");
+
     a.href=URL.createObjectURL(zipBlob);
     a.download=`yyokai_transfer_${s.artworkW}x${s.artworkH}cm_${pages.length}_pages.zip`;
+
     document.body.appendChild(a);
     a.click();
     a.remove();
@@ -933,7 +976,8 @@ Print settings:
       pages:pages.length,
       cols:s.cols,
       rows:s.rows,
-      smartCrop:true,
+      guides:false,
+      recommendedBackground:"white",
       layout:"left_top_artwork_origin",
       createdAt:Date.now()
     });
@@ -943,34 +987,6 @@ Print settings:
     console.log(error);
     showToast("Error: "+error.message);
   }
-}
-
-function drawCutMarks(ctx,pageW,pageH,marginPx,dpi){
-  const len=Math.round(dpi*0.18);
-  const gap=Math.round(dpi*0.04);
-
-  ctx.strokeStyle="#000";
-  ctx.lineWidth=Math.max(1,Math.round(dpi/120));
-
-  const points=[
-    [marginPx,marginPx],
-    [pageW-marginPx,marginPx],
-    [marginPx,pageH-marginPx],
-    [pageW-marginPx,pageH-marginPx]
-  ];
-
-  points.forEach(([x,y])=>{
-    ctx.beginPath();
-    ctx.moveTo(x-len,y);
-    ctx.lineTo(x-gap,y);
-    ctx.moveTo(x+gap,y);
-    ctx.lineTo(x+len,y);
-    ctx.moveTo(x,y-len);
-    ctx.lineTo(x,y-gap);
-    ctx.moveTo(x,y+gap);
-    ctx.lineTo(x,y+len);
-    ctx.stroke();
-  });
 }
 
 function canvasToBlob(canvas){
@@ -1034,6 +1050,7 @@ function toggleProfile(){
 
 document.addEventListener("click",e=>{
   const profile=document.querySelector(".profile");
+
   if(profile&&!profile.contains(e.target)){
     profileMenu.classList.remove("open");
   }
@@ -1054,7 +1071,9 @@ async function nextTrack(){
   setTrack(trackIndex);
 
   if(currentUser){
-    await db.ref("users/"+currentUser.uid+"/settings").update({trackIndex});
+    await db.ref("users/"+currentUser.uid+"/settings").update({
+      trackIndex
+    });
   }
 }
 
@@ -1063,7 +1082,9 @@ async function prevTrack(){
   setTrack(trackIndex);
 
   if(currentUser){
-    await db.ref("users/"+currentUser.uid+"/settings").update({trackIndex});
+    await db.ref("users/"+currentUser.uid+"/settings").update({
+      trackIndex
+    });
   }
 }
 
